@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+
+  tools:background="@color/light_gray"
+  tools:context=".ui.activity.home.FeaturedFragment">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+      android:id="@+id/frame"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <ImageView
+        android:id="@+id/img_main_featured"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@color/light_gray"
+        android:contentDescription="@string/featured" />
+
+      <View
+        android:id="@+id/v_gradient"
+        android:layout_width="wrap_content"
+        android:layout_height="230dp"
+        android:background="@drawable/bg_gradient_shape" />
+    </FrameLayout>
+
+    <TextView
+      android:id="@+id/tv_trending"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="-20dp"
+      android:text="@string/trending_now" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_trending"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+    <TextView
+      android:id="@+id/tv_latest_trailer"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/upcoming_movies" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_upcoming"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+    <TextView
+      android:id="@+id/tv_playing_now"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/playing_now_on_theater" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_playing_now"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:paddingBottom="80dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+
+  </LinearLayout>
+
+
+</ScrollView>

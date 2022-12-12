@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:background="@color/dark_medium"
+  tools:context=".ui.activity.myfolder.MyFolderFragment">
+
+  <View
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="?attr/colorPrimary"
+    android:padding="20dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <ImageView
+    android:id="@+id/img_avatar"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:layout_marginStart="20dp"
+    android:contentDescription="@string/image_profile"
+    app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:src="@tools:sample/avatars" />
+
+  <LinearLayout
+    android:id="@+id/linearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
+    app:layout_constraintStart_toEndOf="@+id/img_avatar"
+    app:layout_constraintTop_toTopOf="@+id/img_avatar">
+
+    <TextView
+      android:id="@+id/tv_fullname"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Waffiq Aziz" />
+
+    <TextView
+      android:id="@+id/tv_email"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/gothic"
+      android:text="waffiq@gmail.com"
+      android:textColor="@color/white" />
+
+  </LinearLayout>
+
+  <ImageButton
+    android:id="@+id/iv_btn_edit"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:background="?selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:contentDescription="@string/button_edit"
+    android:focusable="true"
+    android:foreground="?selectableItemBackgroundBorderless"
+    android:minWidth="48dp"
+    android:minHeight="48dp"
+    android:src="@drawable/ic_edit"
+    app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+    app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+    app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_setting"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="24dp"
+    android:text="@string/account_settings"
+    app:icon="@drawable/ic_user"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/cb_dark_mode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:buttonTint="@color/yellow"
+    android:contentDescription="@string/account_settings"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_dark_mode"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/btn_dark_mode" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_dark_mode"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="8dp"
+    android:text="@string/dark_mode"
+    app:icon="@drawable/ic_dark"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_setting" />
+
+  <ImageView
+    android:id="@+id/imageView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:contentDescription="@string/account_settings"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_setting"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/btn_setting" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_language"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="8dp"
+    android:text="@string/language"
+    app:icon="@drawable/ic_internet"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:contentDescription="@string/account_settings"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_language"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_rate"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="8dp"
+    android:text="@string/rate_us"
+    app:icon="@drawable/ic_thumbs_up"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_language" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:contentDescription="@string/account_settings"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/btn_rate" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_help"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="8dp"
+    android:text="@string/help"
+    app:icon="@drawable/ic_alert_circle"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_rate" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:contentDescription="@string/account_settings"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_help"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/btn_help" />
+
+  <TextView
+    android:id="@+id/tv_terms_conditon"
+    style="@style/TextDivider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/terms_amp_condition"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+
+  <TextView
+    android:id="@+id/tv_privacy_policy"
+    style="@style/TextDivider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/privacy_amp_policy"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_signout"
+    style="@style/ButtonSignOut"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="70dp"
+    android:text="@string/sign_out"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
