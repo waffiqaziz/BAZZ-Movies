@@ -2,8 +2,7 @@ package com.waffiq.bazz_movies.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.data.model.Movie
-import com.waffiq.bazz_movies.data.model.Search
+import com.waffiq.bazz_movies.data.local.model.Search
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
 import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException

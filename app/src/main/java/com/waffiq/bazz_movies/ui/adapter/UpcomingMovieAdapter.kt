@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.model.Movie
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
-import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
+import com.waffiq.bazz_movies.data.local.model.Movie
 import com.waffiq.bazz_movies.databinding.ItemUpcomingBinding
 
 class UpcomingMovieAdapter :

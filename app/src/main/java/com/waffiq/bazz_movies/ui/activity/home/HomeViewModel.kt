@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.ui.activity.home
 
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.data.model.Movie
+import com.waffiq.bazz_movies.data.local.model.Movie
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 
 class HomeViewModel(

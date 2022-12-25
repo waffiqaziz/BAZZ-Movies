@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.data.remote.response
 
 import com.google.gson.annotations.SerializedName
-import com.waffiq.bazz_movies.data.model.Movie
+import com.waffiq.bazz_movies.data.local.model.Movie
 
 data class MoviesResponse(
   @SerializedName("page")

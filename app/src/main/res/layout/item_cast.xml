@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cv_cast"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_margin="5dp"
+  android:orientation="vertical"
+  tools:background="@color/light_gray">
+
+  <ImageView
+    android:id="@+id/img_cast_photo"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center"
+    android:adjustViewBounds="true"
+    tools:background="@tools:sample/avatars" />
+
+  <TextView
+    android:id="@+id/tv_cast_name"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:fontFamily="@font/gothic"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textColor="@color/white"
+    tools:text="Sam Worthington" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:fontFamily="@font/gothic"
+    android:maxLines="1"
+    android:textColor="@color/white"
+    android:text="@string/as" />
+
+  <TextView
+    android:gravity="center"
+    android:id="@+id/tv_cast_character"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:fontFamily="@font/gothic"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textColor="@color/white"
+    tools:text="Jake Sully" />
+
+</LinearLayout>

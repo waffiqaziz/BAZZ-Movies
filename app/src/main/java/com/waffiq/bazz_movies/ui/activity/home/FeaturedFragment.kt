@@ -1,12 +1,12 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.adapter.UpcomingMovieAdapter
+import com.waffiq.bazz_movies.ui.viewmodel.ListTopRatedMoviesViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
 
@@ -22,9 +23,7 @@ class FeaturedFragment : Fragment() {
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding!!
 
-  private val viewModel: HomeViewModel by viewModels {
-    ViewModelFactory(requireContext())
-  }
+  private lateinit var viewModel: HomeViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +32,8 @@ class FeaturedFragment : Fragment() {
     _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-//    // Inflate the layout for this fragment
-//    return inflater.inflate(R.layout.fragment_featured, container, false)
+    val factory = ViewModelFactory.getInstance(requireContext())
+    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
     setMoveNowPlaying()
     setTrending()

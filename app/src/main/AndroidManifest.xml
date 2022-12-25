@@ -17,7 +17,9 @@
     android:usesCleartextTraffic="true"
     tools:targetApi="31">
     <activity
+      android:screenOrientation="nosensor"
       android:name=".ui.activity.detail.DetailMovieActivity"
+      android:theme="@style/Theme.BAZZ_movies.NoActionBar"
       android:exported="false" />
     <activity
       android:name=".ui.activity.MainActivity"

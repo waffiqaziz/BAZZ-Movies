@@ -37,19 +37,19 @@ interface ApiService {
     @Query("page") page : Int
   ): MoviesResponse
 
-  @GET("3/genre/tv/list?api_key=$API_KEY")
-  suspend fun getTvSeriesGenres(
-    @Query("language") language: String = "en"
-  ): GenresResponse
-
-  @GET("3/genre/movie/list?api_key=$API_KEY")
-  fun getMovieGenres(
-    @Query("language") language: String = "en"
-  ): Call<GenresResponse>
+//  @GET("3/genre/movie/list?api_key=$API_KEY")
+//  fun getMovieGenres(
+//    @Query("language") language: String = "en"
+//  ): Call<GenresResponse>
 
   @GET("3/search/multi?api_key=$API_KEY")
   suspend fun search(
     @Query("query") query: String,
     @Query("page") page: Int,
   ): MultiSearchResponse
+
+  @GET("3/movie/{movie_id}/credits?api_key=$API_KEY&language=en-US")
+  fun getCredits(
+    @Path("movie_id") movie_id: Int
+  ): Call<CreditsResponse>
 }

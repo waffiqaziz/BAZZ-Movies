@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.data.remote.response
 
 
 import com.google.gson.annotations.SerializedName
-import com.waffiq.bazz_movies.data.model.Search
+import com.waffiq.bazz_movies.data.local.model.Search
 
 data class MultiSearchResponse(
     @SerializedName("page")

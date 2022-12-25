@@ -25,7 +25,7 @@
     app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:src="@tools:sample/avatars" />
+    android:src="@drawable/ic_bazz"/>
 
   <LinearLayout
     android:id="@+id/linearLayout"
@@ -49,7 +49,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:fontFamily="@font/gothic"
-      android:text="waffiq@gmail.com"
+      android:text="waffiq.a2002@gmail.com"
       android:textColor="@color/white" />
 
   </LinearLayout>

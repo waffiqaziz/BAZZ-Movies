@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.ui.adapter
 
-import android.util.Log
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
+import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 
 class TrendingAdapter :
   PagingDataAdapter<ResultItem, TrendingAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -37,23 +38,12 @@ class TrendingAdapter :
         .error(R.drawable.ic_broken_image)
         .into(binding.imgPoster)
 
-      Log.e("Trending Movie Type : ", movie.mediaType)
-
       // image OnClickListener
-//        imgItemImage.setOnClickListener {
-//          val optionsCompat: ActivityOptionsCompat =
-//            ActivityOptionsCompat.makeSceneTransitionAnimation(
-//              itemView.context as Activity,
-//              Pair(imgItemImage, "image"),
-//              Pair(tvName, "name"),
-//              Pair(tvCreatedTime, "created"),
-//              Pair(tvDescription, "description"),
-//            )
-//
-//          val intent = Intent(it.context, DetailStoryActivity::class.java)
-//          intent.putExtra(DetailStoryActivity.EXTRA_STORY, movie)
-//          it.context.startActivity(intent, optionsCompat.toBundle())
-//        }
+      binding.imgPoster.setOnClickListener {
+        val intent = Intent(it.context, DetailMovieActivity::class.java)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
+        it.context.startActivity(intent)
+      }
     }
   }
   companion object {

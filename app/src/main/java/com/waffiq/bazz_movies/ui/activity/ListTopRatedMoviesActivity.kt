@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waffiq.bazz_movies.databinding.ActivityListTopRatedMoviesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -12,14 +13,15 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
 class ListTopRatedMoviesActivity : AppCompatActivity() {
   private lateinit var binding: ActivityListTopRatedMoviesBinding
-  private val viewModel: ListTopRatedMoviesViewModel by viewModels {
-    ViewModelFactory(this)
-  }
+  private lateinit var viewModel: ListTopRatedMoviesViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityListTopRatedMoviesBinding.inflate(layoutInflater)
     setContentView(binding.root)
+
+    val factory = ViewModelFactory.getInstance(this)
+    viewModel = ViewModelProvider(this, factory)[ListTopRatedMoviesViewModel::class.java]
 
 //    setupToolbar()
     setListStory()

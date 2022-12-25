@@ -6,28 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.model.Genre
-import com.waffiq.bazz_movies.data.model.Movie
-import com.waffiq.bazz_movies.data.model.Search
+import androidx.paging.PagingSource
+import com.waffiq.bazz_movies.data.local.LocalDataSource
+import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.Movie
+import com.waffiq.bazz_movies.data.local.model.Search
 import com.waffiq.bazz_movies.data.paging.SearchPagingSource
 import com.waffiq.bazz_movies.data.paging.TopRatedMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.TrendingPagingSource
 import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
-import com.waffiq.bazz_movies.data.remote.ResultResponse
-import com.waffiq.bazz_movies.data.remote.response.GenresResponse
-import com.waffiq.bazz_movies.data.remote.response.MoviesResponse
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.*
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
-import com.waffiq.bazz_movies.data.room.MovieDatabase
+import com.waffiq.bazz_movies.data.local.room.FavoriteDatabase
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MoviesRepository(
-  private val storyDatabase: MovieDatabase,
   private val apiService: ApiService,
+  private val localDataSource: LocalDataSource
 ) {
 
 //  fun login(email: String, pass: String): LiveData<ResultResponse<LoginResult>> =
@@ -47,39 +46,12 @@ class MoviesRepository(
 //      }
 //    }
 
-  init {
-    getMoviesGenres()
-  }
 
-  private var _moviesGenres = MutableLiveData<List<Genre>>()
-  val movieGenres: LiveData<List<Genre>> = _moviesGenres
+  private var _creditsCast = MutableLiveData<List<CastItem>>()
+  val creditCast: LiveData<List<CastItem>> = _creditsCast
 
-  private fun getMoviesGenres(){
-    val client = ApiConfig
-      .getApiService()
-      .getMovieGenres()
-
-    client.enqueue(object : Callback<GenresResponse> {
-      override fun onResponse(
-        call: Call<GenresResponse>,
-        response: Response<GenresResponse>
-      ) {
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-            _moviesGenres.value = response.body()!!.genres
-          }
-        } else {
-          Log.e("cekkk ", "onFailure: ${response.message()}")
-        }
-      }
-
-      override fun onFailure(call: Call<GenresResponse>, t: Throwable) {
-
-        Log.e("Cekkk ", "onFailure: ${t.message}")
-      }
-    })
-  }
+  private var _creditsCrew = MutableLiveData<List<CrewItem>>()
+  val creditCrew: LiveData<List<CrewItem>> = _creditsCrew
 
   fun getPagingTopRatedMovies(): Flow<PagingData<Movie>> {
     return Pager(
@@ -115,7 +87,7 @@ class MoviesRepository(
   }
 
   fun getMovieNowPlaying(): LiveData<List<Movie>> {
-    val _itemMovie = MutableLiveData<List<Movie>>()
+    val itemMovie = MutableLiveData<List<Movie>>()
 
     val client = ApiConfig
       .getApiService()
@@ -131,7 +103,7 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             if (responseBody.results.isEmpty()) {
-              _itemMovie.value = response.body()?.results
+              itemMovie.value = response.body()?.results
             }
           }
         } else {
@@ -143,7 +115,7 @@ class MoviesRepository(
         Log.e(TAG, "onFailure: ${t.message}")
       }
     })
-    return _itemMovie
+    return itemMovie
   }
 
   fun search(query: String): Flow<PagingData<Search>> {
@@ -157,7 +129,57 @@ class MoviesRepository(
     ).flow
   }
 
+  fun getCredits(movieId : Int) {
+    val client = ApiConfig
+      .getApiService()
+      .getCredits(movieId)
+
+    client.enqueue(object : Callback<CreditsResponse> {
+      override fun onResponse(
+        call: Call<CreditsResponse>,
+        response: Response<CreditsResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _creditsCrew.value = response.body()!!.crew
+            _creditsCast.value = response.body()!!.cast
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+        }
+      }
+
+      override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+      }
+    })
+  }
+
+  fun getFavorite(): PagingSource<Int, Favorite> = localDataSource.getAllFavorite()
+
+  fun insert(fav: Favorite) {
+    localDataSource.insertFavorite(fav)
+  }
+
+  fun delete(fav: Favorite) {
+    localDataSource.deleteItemFavorite(fav)
+  }
+
+  fun isFavorite(id: Int) = localDataSource.isFavorite(id)
+
   companion object {
-    private const val TAG = "MoviesRepository"
+    private const val TAG = "MoviesRepository "
+
+    @Volatile
+    private var instance: MoviesRepository? = null
+
+    fun getInstance(
+      apiService: ApiService,
+      localData: LocalDataSource,
+    ): MoviesRepository =
+      instance ?: synchronized(this) {
+        instance ?: MoviesRepository(apiService,localData)
+      }
   }
 }

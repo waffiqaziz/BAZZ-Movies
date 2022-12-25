@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.model
+package com.waffiq.bazz_movies.data.local.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

@@ -1,8 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/dark_medium"
   tools:context=".ui.activity.detail.DetailMovieActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="40dp">
+
+    <ImageView
+      android:id="@+id/iv_poster"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/background_poster"
+      android:foreground="@drawable/bg_gradient_shape"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:src="@color/red_matte" />
+
+    <ImageButton
+      android:id="@+id/btn_back"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="4dp"
+      android:background="#00000000"
+      android:contentDescription="@string/back"
+      android:foreground="?selectableItemBackgroundBorderless"
+      android:minWidth="48dp"
+      android:minHeight="48dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_left_icon" />
+
+    <TextView
+      android:id="@+id/tv_title"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="-220dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/iv_poster"
+      tools:text="The Silence" />
+
+    <ImageButton
+      android:id="@+id/btn_bookmarks"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="4dp"
+      android:background="#00000000"
+      android:clickable="true"
+      android:contentDescription="@string/button_edit"
+      android:focusable="true"
+      android:foreground="?selectableItemBackgroundBorderless"
+      android:minWidth="48dp"
+      android:minHeight="48dp"
+      android:scaleType="centerInside"
+      android:src="@drawable/selector_bookmarks"
+      app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/tv_title" />
+
+    <TextView
+      android:id="@+id/tv_year_released"
+      style="@style/TextDivider"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      app:layout_constraintStart_toStartOf="@+id/tv_title"
+      app:layout_constraintTop_toBottomOf="@+id/tv_title"
+      tools:text="2020" />
+
+    <TextView
+      android:id="@+id/textView4"
+      style="@style/TextDivider"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:text="|"
+      app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+      app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
+
+    <TextView
+      android:id="@+id/tv_genre"
+      style="@style/TextDivider"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      app:layout_constraintStart_toEndOf="@+id/textView4"
+      app:layout_constraintTop_toTopOf="@+id/tv_year_released"
+      tools:text="Action, Drama, &amp; Family" />
+
+    <View
+      android:id="@+id/view"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="20dp"
+      android:background="@color/light_gray"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tv_year_released" />
+
+    <TextView
+      android:id="@+id/tv_overview"
+      style="@style/TextDivider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="20dp"
+      android:justificationMode="inter_word"
+      app:layout_constraintEnd_toEndOf="@+id/view"
+      app:layout_constraintStart_toStartOf="@+id/view"
+      app:layout_constraintTop_toTopOf="@+id/view"
+      tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
+
+    <TextView
+      android:id="@+id/tv_director"
+      style="@style/TextDivider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="20dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/tv_overview"
+      app:layout_constraintTop_toBottomOf="@+id/tv_overview"
+      tools:text="Director: John R. Leonetti"
+      android:layout_marginBottom="70dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_cast"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tv_cast_header" />
+
+    <TextView
+      android:id="@+id/tv_cast_header"
+      style="@style/TextHeader1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/cast"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tv_director" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

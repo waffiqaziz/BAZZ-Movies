@@ -1,15 +1,14 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waffiq.bazz_movies.R
@@ -23,17 +22,18 @@ class SearchFragment : Fragment() {
   private var _binding: FragmentSearchBinding? = null
   private val binding get() = _binding!!
 
+  private lateinit var searchViewModel: SearchViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val searchViewModel: SearchViewModel by viewModels {
-      ViewModelFactory(requireContext())
-    }
     _binding = FragmentSearchBinding.inflate(inflater, container, false)
     val root: View = binding.root
+
+    val factory = ViewModelFactory.getInstance(requireContext())
+    searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
     setupAll(searchViewModel)
     return root

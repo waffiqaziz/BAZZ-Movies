@@ -11,6 +11,8 @@
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_alert_circle.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_bazz.xml" value="0.2" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_bazz_logo.xml" value="0.1995" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_bookmark.xml" value="0.331" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_bookmark_selected.xml" value="0.331" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_broken_image.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_chevron_right.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_dark.xml" value="0.1995" />
@@ -25,17 +27,21 @@
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_internet.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_launcher_background.xml" value="0.174" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1995" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_left_icon.xml" value="0.196" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_mail.xml" value="0.1995" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_no_found.xml" value="0.2345" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1285" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_plus.xml" value="0.331" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_search.xml" value="0.3425" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_search_ilust.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_settings.xml" value="0.3725" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_star.xml" value="0.331" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_thumbs_up.xml" value="0.1995" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_user.xml" value="0.198" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/selector_bookmarks.xml" value="0.331" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/splash_background.xml" value="0.1985" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout-land/activity_login.xml" value="0.18" />
-        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_detail_movie.xml" value="0.2937152629328773" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_detail_movie.xml" value="0.40820980615735464" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_list_top_rated_movies.xml" value="0.1" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_login.xml" value="0.13" />
@@ -53,6 +59,7 @@
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/gradient_shape.xml" value="0.30440359127832406" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/illustration_search.xml" value="0.22" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/illustration_search_no_result.xml" value="0.33" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/item_cast.xml" value="0.30512820512820515" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/item_list_movie.xml" value="0.1573321932449765" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/item_list_story.xml" value="0.3052586575459598" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/item_loading.xml" value="0.3052586575459598" />

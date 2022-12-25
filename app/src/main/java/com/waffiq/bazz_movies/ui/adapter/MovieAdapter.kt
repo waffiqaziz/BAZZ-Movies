@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.model.Movie
+import com.waffiq.bazz_movies.data.local.model.Movie
 import com.waffiq.bazz_movies.databinding.ItemListMovieBinding
-import com.waffiq.bazz_movies.utils.Helper.getGenreName
+import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 
 class MovieAdapter :
   PagingDataAdapter<Movie, MovieAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -41,13 +41,7 @@ class MovieAdapter :
           .into(imgItemImage)
         tvName.text = movie.title
 
-        var temp = ""
-        for (i in 0..movie.genreIds.size - 1) {
-          if (i == movie.genreIds.size - 1) temp = temp + getGenreName(movie.genreIds[i])
-          else temp = temp + getGenreName(movie.genreIds[i]) + ", "
-        }
-
-        tvDescription.text = temp
+        tvDescription.text = iterateGenre(movie.genreIds)
         tvReleasedAt.text = movie.releaseDate
 
         Log.e("cek tittle 2: ", movie.title)

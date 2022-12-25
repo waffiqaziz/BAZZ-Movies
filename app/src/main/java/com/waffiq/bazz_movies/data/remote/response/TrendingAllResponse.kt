@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class TrendingAllResponse(
 
@@ -17,62 +19,63 @@ data class TrendingAllResponse(
 	val totalResults: Int
 )
 
+@Parcelize
 data class ResultItem(
 
 	@SerializedName("first_air_date")
-	val firstAirDate: String,
+	val firstAirDate: String? = null,
 
 	@SerializedName("overview")
-	val overview: String,
+	val overview: String? = null,
 
 	@SerializedName("original_language")
-	val originalLanguage: String,
+	val originalLanguage: String? = null,
 
-//	@SerializedName("genre_ids")
-//	val genreIds: List<Int>,
+	@SerializedName("genre_ids")
+	val genreIds: List<Int>? = null,
 
 	@SerializedName("poster_path")
-	val posterPath: String,
+	val posterPath: String? = null,
 
 //	@SerializedName("origin_country")
-//	val originCountry: List<String?>,
+//	val originCountry: List<String?>? = null,
 
 	@SerializedName("backdrop_path")
-	val backdropPath: String,
+	val backdropPath: String? = null,
 
 	@SerializedName("media_type")
-	val mediaType: String,
+	val mediaType: String? = null,
 
 	@SerializedName("original_name")
-	val originalName: String,
+	val originalName: String? = null,
 
 	@SerializedName("popularity")
-	val popularity: Double,
+	val popularity: Double? = null,
 
 	@SerializedName("vote_average")
-	val voteAverage: Double,
+	val voteAverage: Double? = null,
 
 	@SerializedName("name")
-	val name: String,
+	val name: String? = null,
 
 	@SerializedName("id")
-	val id: Int,
+	val id: Int? = null,
 
 	@SerializedName("adult")
-	val adult: Boolean,
+	val adult: Boolean? = null,
 
 	@SerializedName("vote_count")
-	val voteCount: Int,
+	val voteCount: Int? = null,
 
 	@SerializedName("original_title")
-	val originalTitle: String,
+	val originalTitle: String? = null,
 
 	@SerializedName("video")
-	val video: Boolean,
+	val video: Boolean? = null,
 
 	@SerializedName("title")
-	val title: String,
+	val title: String? = null,
 
 	@SerializedName("release_date")
-	val releaseDate: String
-)
+	val releaseDate: String? = null
+): Parcelable

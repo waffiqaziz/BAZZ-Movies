@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +10,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
-import com.waffiq.bazz_movies.ui.activity.ListTopRatedMoviesActivity
 import com.waffiq.bazz_movies.ui.activity.MainActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
   private lateinit var binding: ActivitySplashScreenBinding
 

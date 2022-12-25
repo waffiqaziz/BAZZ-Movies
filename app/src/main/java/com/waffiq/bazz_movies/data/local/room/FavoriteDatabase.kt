@@ -1,29 +1,30 @@
-package com.waffiq.bazz_movies.data.room
+package com.waffiq.bazz_movies.data.local.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.waffiq.bazz_movies.data.model.Favorite
-import com.waffiq.bazz_movies.data.model.Movie
+import com.waffiq.bazz_movies.data.local.model.Favorite
 
 @Database(
   entities = [Favorite::class],
   version = 1,
   exportSchema = false
 )
-abstract class MovieDatabase : RoomDatabase() {
+abstract class FavoriteDatabase : RoomDatabase() {
+
+  abstract fun favoriteDao(): FavoriteDao
 
   companion object {
     @Volatile
-    private var INSTANCE: MovieDatabase? = null
+    private var INSTANCE: FavoriteDatabase? = null
 
     @JvmStatic
-    fun getInstance(context: Context): MovieDatabase {
+    fun getInstance(context: Context): FavoriteDatabase {
       return INSTANCE ?: synchronized(this) {
         INSTANCE ?: Room.databaseBuilder(
           context.applicationContext,
-          MovieDatabase::class.java, "movie.db"
+          FavoriteDatabase::class.java, "favorite.db"
         )
           .fallbackToDestructiveMigration()
           .build()

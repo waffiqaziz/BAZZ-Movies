@@ -7,7 +7,7 @@
   <string name="password">Password</string>
   <string name="bazz">BAZZ</string>
   <string name="guest_session"><u>Guest Session</u></string>
-  <string name="background_poster">background poster</string>
+  <string name="background_poster">Background Poster</string>
   <string name="retry">Retry</string>
   <string name="error">Error</string>
   <string name="title_activity">BAZZ Movies</string>
@@ -38,4 +38,8 @@
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching\nfor maybe a litte mistake?</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
+  <string name="back">Back</string>
+  <string name="director">Director: %s</string>
+  <string name="cast">Cast</string>
+  <string name="as">as</string>
 </resources>
