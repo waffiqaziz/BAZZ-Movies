@@ -14,7 +14,7 @@
   <item
     android:id="@+id/navigation_my_folder"
     android:icon="@drawable/ic_folder"
-    android:title="@string/title_my_folder" />
+    android:title="@string/title_my_favorite" />
 
   <item
     android:id="@+id/navigation_more"

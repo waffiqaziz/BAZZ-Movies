@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
 import com.waffiq.bazz_movies.ui.activity.MainActivity
+import com.waffiq.bazz_movies.utils.Constants.DELAY_TIME
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -31,9 +32,5 @@ class SplashScreenActivity : AppCompatActivity() {
       overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
       finish()
     }
-  }
-
-  companion object {
-    const val DELAY_TIME = 2000L
   }
 }

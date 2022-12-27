@@ -13,6 +13,11 @@ object Helper {
       .show()
   }
 
+  fun showToastLong(context: Context, text: String){
+    Toast.makeText(context, text, Toast.LENGTH_SHORT)
+      .show()
+  }
+
   private fun getGenreName(int: Int): String {
     return when (int) {
       28 -> "Action"
@@ -55,20 +60,17 @@ object Helper {
     return temp
   }
 
-  fun mapResponsesToEntities(input: List<ResultItem>): List<Favorite> {
-    val favoriteList = ArrayList<Favorite>()
-    input.map {
-      val favorite = Favorite(
-        mediaId = it.id,
-        mediaType = it.mediaType,
-        title = it.name?: it.title?: it.originalTitle,
-        releaseDate = it.releaseDate?: it.firstAirDate,
-        rating = it.voteAverage,
-        imagePath = it.posterPath?: it.backdropPath,
-        genre = iterateGenre(it.genreIds?: listOf())
-      )
-      favoriteList.add(favorite)
-    }
-    return favoriteList
+  fun mapResponsesToEntities(input: ResultItem): Favorite {
+    return Favorite(
+      mediaId = input.id,
+      mediaType = input.mediaType,
+      title = input.name ?: input.title ?: input.originalTitle,
+      releaseDate = input.releaseDate ?: input.firstAirDate,
+      rating = input.voteAverage,
+      imagePath = input.backdropPath ?: input.posterPath,
+      genre = iterateGenre(input.genreIds ?: listOf()),
+      popularity = input.popularity,
+      overview = input.overview
+    )
   }
 }

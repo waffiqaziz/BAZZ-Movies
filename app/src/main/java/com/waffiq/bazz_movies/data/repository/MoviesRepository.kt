@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import com.waffiq.bazz_movies.data.local.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Movie
@@ -18,7 +17,7 @@ import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.remote.response.*
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
-import com.waffiq.bazz_movies.data.local.room.FavoriteDatabase
+import com.waffiq.bazz_movies.utils.AppExecutors
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,9 +25,11 @@ import retrofit2.Response
 
 class MoviesRepository(
   private val apiService: ApiService,
-  private val localDataSource: LocalDataSource
+  private val localDataSource: LocalDataSource,
+  private val appExecutors: AppExecutors
 ) {
 
+  //future updates
 //  fun login(email: String, pass: String): LiveData<ResultResponse<LoginResult>> =
 //    liveData {
 //      emit(ResultResponse.Loading)
@@ -45,7 +46,6 @@ class MoviesRepository(
 //        emit(ResultResponse.Error(e.message.toString()))
 //      }
 //    }
-
 
   private var _creditsCast = MutableLiveData<List<CastItem>>()
   val creditCast: LiveData<List<CastItem>> = _creditsCast
@@ -129,7 +129,7 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getCredits(movieId : Int) {
+  fun getCredits(movieId: Int) {
     val client = ApiConfig
       .getApiService()
       .getCredits(movieId)
@@ -156,14 +156,16 @@ class MoviesRepository(
     })
   }
 
-  fun getFavorite(): PagingSource<Int, Favorite> = localDataSource.getAllFavorite()
+  fun getAllFavorite(): LiveData<List<Favorite>> = localDataSource.getAllFavorite()
+
+  fun getSpecificFavorite(name: String): LiveData<List<Favorite>> = localDataSource.getSpecificFavorite(name)
 
   fun insert(fav: Favorite) {
-    localDataSource.insertFavorite(fav)
+    appExecutors.diskIO().execute { localDataSource.insertFavorite(fav) }
   }
 
   fun delete(fav: Favorite) {
-    localDataSource.deleteItemFavorite(fav)
+    appExecutors.diskIO().execute { localDataSource.deleteItemFavorite(fav) }
   }
 
   fun isFavorite(id: Int) = localDataSource.isFavorite(id)
@@ -177,9 +179,10 @@ class MoviesRepository(
     fun getInstance(
       apiService: ApiService,
       localData: LocalDataSource,
+      appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(apiService,localData)
+        instance ?: MoviesRepository(apiService, localData, appExecutors)
       }
   }
 }

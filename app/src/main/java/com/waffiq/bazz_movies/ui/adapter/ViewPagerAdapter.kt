@@ -9,22 +9,22 @@ import com.waffiq.bazz_movies.ui.activity.home.MovieFragment
 import com.waffiq.bazz_movies.ui.activity.home.TvSeriesFragment
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
-        FragmentStateAdapter(fragmentManager, lifecycle) {
+  FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount(): Int {
-        return NUM_TABS
+  override fun getItemCount(): Int {
+    return NUM_TABS
+  }
+
+  override fun createFragment(position: Int): Fragment {
+    return when (position) {
+      0 -> FeaturedFragment()
+      1 -> MovieFragment()
+      else -> TvSeriesFragment()
     }
 
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> FeaturedFragment()
-            1 -> MovieFragment()
-            else -> TvSeriesFragment()
-        }
+  }
 
-    }
-
-    companion object {
-        const val NUM_TABS = 3
-    }
+  companion object {
+    const val NUM_TABS = 3
+  }
 }

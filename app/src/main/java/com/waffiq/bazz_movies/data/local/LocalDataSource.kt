@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.data.local
 
-import androidx.paging.PagingSource
+import androidx.lifecycle.LiveData
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
 
@@ -15,7 +15,9 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
       }
   }
 
-  fun getAllFavorite(): PagingSource<Int, Favorite> = favoriteDao.getFavorite()
+  fun getAllFavorite(): LiveData<List<Favorite>> = favoriteDao.getFavorite()
+
+  fun getSpecificFavorite(name: String): LiveData<List<Favorite>> = favoriteDao.getSearchFavorite(name)
 
   fun insertFavorite(favoriteList: Favorite) = favoriteDao.insertFavorite(favoriteList)
 

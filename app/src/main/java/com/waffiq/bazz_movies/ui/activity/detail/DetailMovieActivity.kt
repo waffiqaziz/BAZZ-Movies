@@ -11,6 +11,12 @@ import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
+import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntities
+import com.waffiq.bazz_movies.utils.Helper.showToastLong
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -26,14 +32,35 @@ class DetailMovieActivity : AppCompatActivity() {
     val factory = ViewModelFactory.getInstance(this)
     viewModel = ViewModelProvider(this, factory)[DetailUserViewModel::class.java]
 
-    binding.btnBack.setOnClickListener { finish() }
+    getDataExtra()
     setData()
+    isFavorite()
+    btnListener()
+  }
+
+  private fun btnListener(){
+    binding.btnBack.setOnClickListener { finish() }
+
+    binding.btnBookmarks.setOnClickListener {
+      viewModel.insertToFavorite(mapResponsesToEntities(dataExtra))
+
+      showToastLong(this, this.getString(
+        R.string.added,
+        dataExtra.originalTitle?: dataExtra.title?: dataExtra.name
+      ))
+    }
+  }
+
+  private fun setStatusFavorite(statusFavorite: Boolean) {
+    binding.btnBookmarks.isSelected = statusFavorite
+    binding.btnBookmarks.isPressed = statusFavorite
+  }
+
+  private fun getDataExtra(){
+    dataExtra = intent.getParcelableExtra(EXTRA_MOVIE)!!
   }
 
   private fun setData() {
-    dataExtra =
-      intent.getParcelableExtra(EXTRA_MOVIE)!!
-
     Glide.with(binding.ivPoster)
       .load("http://image.tmdb.org/t/p/w500/" + dataExtra.posterPath) // URL movie poster
       .placeholder(R.drawable.ic_bazz_logo)
@@ -73,7 +100,17 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
+  private fun isFavorite() {
+    CoroutineScope(Dispatchers.IO).launch{
+      val result = viewModel.checkIsFavorite(dataExtra.id!!)
+      withContext(Dispatchers.Main) {
+        setStatusFavorite(result)
+      }
+    }
+  }
+
   companion object {
     const val EXTRA_MOVIE = "MOVIE"
   }
 }
+

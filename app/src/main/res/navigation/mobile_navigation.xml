@@ -19,13 +19,13 @@
 
   <fragment
     android:id="@+id/navigation_my_folder"
-    android:name="com.waffiq.bazz_movies.ui.activity.myfolder.MyFolderFragment"
-    android:label="@string/title_my_folder"
-    tools:layout="@layout/fragment_my_folder" />
+    android:name="com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteFragment"
+    android:label="@string/title_my_favorite"
+    tools:layout="@layout/fragment_my_favorite" />
 
   <fragment
     android:id="@+id/navigation_more"
     android:name="com.waffiq.bazz_movies.ui.activity.more.MoreFragment"
     android:label="@string/title_more"
-    tools:layout="@layout/fragment_my_folder" />
+    tools:layout="@layout/fragment_my_favorite" />
 </navigation>

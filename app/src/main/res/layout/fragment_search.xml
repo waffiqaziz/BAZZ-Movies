@@ -24,7 +24,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
     android:paddingBottom="50dp"
-    tools:listitem="@layout/item_search_result" />
+    tools:listitem="@layout/item_movies" />
 
   <include
     android:id="@+id/illustration_search_no_result_view"

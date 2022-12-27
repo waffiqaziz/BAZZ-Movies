@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:orientation="horizontal"
+  android:id="@+id/container_movies"
   android:layout_width="match_parent"
   tools:background="@color/dark_medium"
   android:layout_height="wrap_content">
 
   <ImageView
     android:id="@+id/iv_poster"
+    android:adjustViewBounds="true"
     android:layout_width="150dp"
     android:layout_height="101.25dp"
     tools:src="@color/red_matte" />

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -43,23 +42,6 @@ class MovieAdapter :
 
         tvDescription.text = iterateGenre(movie.genreIds)
         tvReleasedAt.text = movie.releaseDate
-
-        Log.e("cek tittle 2: ", movie.title)
-        // image OnClickListener
-//        imgItemImage.setOnClickListener {
-//          val optionsCompat: ActivityOptionsCompat =
-//            ActivityOptionsCompat.makeSceneTransitionAnimation(
-//              itemView.context as Activity,
-//              Pair(imgItemImage, "image"),
-//              Pair(tvName, "name"),
-//              Pair(tvCreatedTime, "created"),
-//              Pair(tvDescription, "description"),
-//            )
-//
-//          val intent = Intent(it.context, DetailStoryActivity::class.java)
-//          intent.putExtra(DetailStoryActivity.EXTRA_STORY, movie)
-//          it.context.startActivity(intent, optionsCompat.toBundle())
-//        }
       }
     }
   }

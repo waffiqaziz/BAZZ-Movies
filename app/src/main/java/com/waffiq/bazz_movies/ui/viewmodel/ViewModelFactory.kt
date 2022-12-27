@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.di.Injection
 import com.waffiq.bazz_movies.ui.activity.detail.DetailUserViewModel
 import com.waffiq.bazz_movies.ui.activity.home.HomeViewModel
+import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteViewModel
 import com.waffiq.bazz_movies.ui.activity.search.SearchViewModel
 
 class ViewModelFactory(
@@ -29,7 +30,6 @@ class ViewModelFactory(
         }
   }
 
-
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     return when {
@@ -44,6 +44,9 @@ class ViewModelFactory(
       }
       modelClass.isAssignableFrom(DetailUserViewModel::class.java) -> {
         DetailUserViewModel(moviesRepository) as T
+      }
+      modelClass.isAssignableFrom(MyFavoriteViewModel::class.java) -> {
+        MyFavoriteViewModel(moviesRepository) as T
       }
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:background="@color/dark_medium"
-  tools:context=".ui.activity.myfolder.MyFolderFragment">
+  tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
   <View
     android:id="@+id/frameLayout"

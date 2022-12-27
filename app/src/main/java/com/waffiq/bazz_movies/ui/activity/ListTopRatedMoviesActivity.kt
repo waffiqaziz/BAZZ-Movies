@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,9 +45,6 @@ class ListTopRatedMoviesActivity : AppCompatActivity() {
     viewModel.getTopRatedMovies().observe(this) {
       adapter.submitData(lifecycle,it)
     }
-//    viewModel.getMoviesGenres().observe(this){
-//      binding.tvInfo.text = it.toString()
-//    }
   }
 
 }

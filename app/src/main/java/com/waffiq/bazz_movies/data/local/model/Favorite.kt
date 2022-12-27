@@ -29,6 +29,10 @@ data class Favorite(
   @field:SerializedName("image")
   val imagePath: String? = null,
 
+  @ColumnInfo(name = "overview")
+  @field:SerializedName("overview")
+  val overview: String? = null,
+
   @ColumnInfo(name = "title")
   @field:SerializedName("title")
   val title: String? = null,
@@ -36,6 +40,10 @@ data class Favorite(
   @ColumnInfo(name = "releaseDate")
   @field:SerializedName("releaseDate")
   val releaseDate: String? = null,
+
+  @ColumnInfo(name = "popularity")
+  @field:SerializedName("popularity")
+  val popularity: Double? = null,
 
   @ColumnInfo(name = "rating")
   @field:SerializedName("rating")

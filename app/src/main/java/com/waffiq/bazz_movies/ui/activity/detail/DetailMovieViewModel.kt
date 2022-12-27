@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
 import androidx.lifecycle.ViewModel
+import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 
 class DetailUserViewModel(
@@ -15,18 +16,9 @@ class DetailUserViewModel(
 
   fun getCreditsDirector() = movieRepository.creditCrew
 
+  fun insertToFavorite(fav: Favorite) = movieRepository.insert(fav)
 
-//  fun insertToFavorite(fav: Favorite) {
-//    viewModelScope.launch {
-//      favoriteRepository.insert(fav)
-//    }
-//  }
-//
-//  fun removeFromFavorite(fav: Favorite) {
-//    viewModelScope.launch {
-//      favoriteRepository.delete(fav)
-//    }
-//  }
-//
-//  suspend fun checkIsFavorite(id: Int) = favoriteRepository.isFavorite(id)
+  fun removeFromFavorite(fav: Favorite) =  movieRepository.delete(fav)
+
+  fun checkIsFavorite(id: Int) = movieRepository.isFavorite(id)
 }

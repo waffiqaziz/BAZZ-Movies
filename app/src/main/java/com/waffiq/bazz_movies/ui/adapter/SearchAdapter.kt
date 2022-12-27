@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.Search
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
-import com.waffiq.bazz_movies.databinding.ItemSearchResultBinding
+import com.waffiq.bazz_movies.databinding.ItemMoviesBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 
@@ -19,7 +19,7 @@ class SearchAdapter :
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
-      ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+      ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -30,7 +30,7 @@ class SearchAdapter :
     }
   }
 
-  inner class ViewHolder(private var binding: ItemSearchResultBinding) :
+  inner class ViewHolder(private var binding: ItemMoviesBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: Search) {
@@ -45,7 +45,7 @@ class SearchAdapter :
       binding.tvTitle.text = data.title ?: data.originalTitle ?: data.originalName
       binding.tvGenre.text = iterateGenre(data.genreIds)
       data.posterPath
-      
+
       // image OnClickListener
       binding.ivPoster.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)

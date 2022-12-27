@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -14,9 +13,7 @@ import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.adapter.UpcomingMovieAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.ListTopRatedMoviesViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-
 
 class FeaturedFragment : Fragment() {
 
@@ -80,7 +77,6 @@ class FeaturedFragment : Fragment() {
       adapterUpcoming.submitData(lifecycle,it)
     }
   }
-
 
   override fun onDestroyView() {
     super.onDestroyView()
