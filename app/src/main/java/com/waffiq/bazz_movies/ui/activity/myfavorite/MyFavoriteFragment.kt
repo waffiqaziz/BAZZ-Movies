@@ -1,10 +1,12 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -98,6 +100,9 @@ class MyFavoriteFragment : Fragment() {
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
       ): Boolean {
+        val colorDrawable = ColorDrawable()
+        colorDrawable.color = ContextCompat.getColor(requireActivity(), R.color.red_matte)
+        viewHolder.itemView.background = colorDrawable
         return false
       }
 
@@ -105,6 +110,54 @@ class MyFavoriteFragment : Fragment() {
         val fav = (viewHolder as FavoriteAdapter.ViewHolder).getFavorite
         viewModel.deleteFav(fav)
       }
+
+//      override fun onChildDraw(
+//        canvas: Canvas,
+//        recyclerView: RecyclerView,
+//        viewHolder: RecyclerView.ViewHolder,
+//        dX: Float,
+//        dY: Float,
+//        actionState: Int,
+//        isCurrentlyActive: Boolean
+//      ) {
+//        //1. Background color based upon direction swiped
+//        when {
+//          abs(dX) < width / 3 -> canvas.drawColor(Color.GRAY)
+//          dX > width / 3 -> canvas.drawColor(deleteColor)
+//          else -> canvas.drawColor(archiveColor)
+//        }
+//
+//        //2. Printing the icons
+//        val textMargin = resources.getDimension(R.dimen.text_margin)
+//          .roundToInt()
+//        deleteIcon.bounds = Rect(
+//          textMargin,
+//          viewHolder.itemView.top + textMargin + 8.dp,
+//          textMargin + deleteIcon.intrinsicWidth,
+//          viewHolder.itemView.top + deleteIcon.intrinsicHeight
+//            + textMargin + 8.dp
+//        )
+//        archiveIcon.bounds = Rect(
+//          width - textMargin - archiveIcon.intrinsicWidth,
+//          viewHolder.itemView.top + textMargin + 8.dp,
+//          width - textMargin,
+//          viewHolder.itemView.top + archiveIcon.intrinsicHeight
+//            + textMargin + 8.dp
+//        )
+//
+//        //3. Drawing icon based upon direction swiped
+//        if (dX > 0) deleteIcon.draw(canvas) else archiveIcon.draw(canvas)
+//
+//        super.onChildDraw(
+//          canvas,
+//          recyclerView,
+//          viewHolder,
+//          dX,
+//          dY,
+//          actionState,
+//          isCurrentlyActive
+//        )
+//      }
 
     })
     itemTouchHelper.attachToRecyclerView(binding.rvFav)

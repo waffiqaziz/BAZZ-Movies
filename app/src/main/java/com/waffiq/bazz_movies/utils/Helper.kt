@@ -13,7 +13,7 @@ object Helper {
       .show()
   }
 
-  fun showToastLong(context: Context, text: String){
+  fun showToastLong(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT)
       .show()
   }
@@ -35,7 +35,7 @@ object Helper {
       9648 -> "Mystery"
       10749 -> "Romance"
       878 -> "Science Fiction"
-      10770 -> "TV Movie"
+      10770 -> "TV MovieAndTvModel"
       53 -> "Thriller"
       10752 -> "War"
       37 -> "Western"
@@ -64,7 +64,7 @@ object Helper {
     return Favorite(
       mediaId = input.id,
       mediaType = input.mediaType,
-      title = input.name ?: input.title ?: input.originalTitle,
+      title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
       releaseDate = input.releaseDate ?: input.firstAirDate,
       rating = input.voteAverage,
       imagePath = input.backdropPath ?: input.posterPath,

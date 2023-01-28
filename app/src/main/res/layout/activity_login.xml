@@ -5,6 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/dark"
+  android:id="@+id/constraint_layout"
   tools:context=".ui.activity.LoginActivity">
 
   <ImageView
@@ -52,7 +53,7 @@
     android:text="@string/login"
     android:textColor="@color/white"
     android:textSize="40sp"
-    app:layout_constraintBottom_toTopOf="@+id/ed_email"
+    app:layout_constraintBottom_toTopOf="@+id/ed_username"
     app:layout_constraintStart_toStartOf="parent" />
 
   <TextView
@@ -68,7 +69,7 @@
     app:layout_constraintTop_toTopOf="@+id/img_bazz_logo" />
 
   <EditText
-    android:id="@+id/ed_email"
+    android:id="@+id/ed_username"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
@@ -76,7 +77,7 @@
     android:layout_marginBottom="8dp"
     android:autofillHints="emailAddress"
     android:fontFamily="@font/gothic"
-    android:hint="@string/email"
+    android:hint="@string/username"
     android:inputType="textEmailAddress"
     android:minHeight="48dp"
     android:textColor="@color/white"
@@ -86,16 +87,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="@+id/textView"
     tools:ignore="DuplicateSpeakableTextCheck" />
-
-  <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="20dp"
-    android:layout_marginEnd="20dp"
-    android:contentDescription="@string/email"
-    android:src="@drawable/ic_mail"
-    app:layout_constraintBottom_toBottomOf="@+id/ed_email"
-    app:layout_constraintEnd_toEndOf="@+id/ed_email"
-    app:layout_constraintTop_toTopOf="@+id/ed_email" />
 
   <EditText
     android:id="@+id/ed_pass"
@@ -138,7 +129,8 @@
     android:fontFamily="@font/gothicb"
     android:text="@string/login"
     android:textAllCaps="false"
-    android:textColor="@color/dark"
+    android:backgroundTint="@color/yellow"
+    android:textColor="@color/dark_medium"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

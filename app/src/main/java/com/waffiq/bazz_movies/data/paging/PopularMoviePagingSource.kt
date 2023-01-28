@@ -8,12 +8,12 @@ import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class TopRatedMoviePagingSource(private val apiService: ApiService) : PagingSource<Int, ResultItem>() {
+class PopularMoviePagingSource(private val apiService: ApiService) : PagingSource<Int, ResultItem>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItem> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
-      val responseData = apiService.getTopRatedMovies(position).results
+      val responseData = apiService.getPopularMovies(position).results
 
       LoadResult.Page(
         data = responseData,

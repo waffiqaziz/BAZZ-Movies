@@ -30,6 +30,7 @@
     android:id="@+id/illustration_search_no_result_view"
     layout="@layout/illustration_search_no_result"
     android:visibility="invisible"
+    tools:visibility="invisible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

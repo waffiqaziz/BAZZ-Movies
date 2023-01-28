@@ -35,7 +35,7 @@
   <string name="sign_out">Sign Out</string>
   <string name="feature_not_ready">Feature still on Development</string>
   <string name="sorry_no_result">Sorry no result!</string>
-  <string name="no_result_explanation">We cannot find item you are searching\nfor maybe a litte mistake?</string>
+  <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
   <string name="back">Back</string>
   <string name="director">Director: %s</string>
@@ -43,4 +43,13 @@
   <string name="as">as</string>
   <string name="added">%s has been added to favorite</string>
   <string name="deleted">Item has been deleted from favorite</string>
+  <string name="popular">Popular</string>
+  <string name="top_rated">Top Rated</string>
+  <string name="now_playing">Now Playing</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="no_data">No Data</string>
+  <string name="username">Username</string>
+  <string name="gues_user">Guest User</string>
+  <string name="airing_today">Airing Today</string>
+  <string name="on_tv">On Tv</string>
 </resources>

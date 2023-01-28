@@ -33,13 +33,13 @@
 
     <ImageView
       android:id="@+id/iv_search_illustration_noResult"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="300dp"
+      android:layout_height="300dp"
       android:layout_marginBottom="16dp"
+      android:contentDescription="@string/search_illustration"
       android:src="@drawable/ic_no_found"
-      app:layout_constraintBottom_toTopOf="@+id/tv_header_noResult"
+      app:layout_constraintBottom_toBottomOf="@+id/tv_no_result"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      android:contentDescription="@string/search_illustration" />
+      app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

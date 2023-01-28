@@ -42,7 +42,7 @@ class SearchAdapter :
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPoster)
       binding.tvYearReleased.text = data.releaseDate ?: data.firstAirDate
-      binding.tvTitle.text = data.title ?: data.originalTitle ?: data.originalName
+      binding.tvTitle.text = data.name ?:data.title ?: data.originalTitle ?: data.originalName
       binding.tvGenre.text = iterateGenre(data.genreIds)
       data.posterPath
 
@@ -55,8 +55,10 @@ class SearchAdapter :
           releaseDate = data.releaseDate,
           overview = data.overview,
           title = data.title,
+          name = data.name,
           originalTitle = data.originalTitle,
           originalName = data.originalName,
+          mediaType = data.mediaType,
           genreIds = data.genreIds,
           id = data.id
         )

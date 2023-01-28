@@ -5,6 +5,8 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:layout_marginStart="20dp"
+  android:layout_marginEnd="20dp"
   tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
   <androidx.recyclerview.widget.RecyclerView
@@ -19,7 +21,9 @@
     android:id="@+id/view_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="No Data"
+    android:text="@string/no_data"
+    android:textColor="@color/yellow"
+    android:fontFamily="@font/gothicb"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

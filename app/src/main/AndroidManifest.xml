@@ -27,9 +27,6 @@
       android:screenOrientation="nosensor"
       android:label="@string/title_activity" />
     <activity
-      android:name=".ui.activity.ListTopRatedMoviesActivity"
-      android:exported="false" />
-    <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false"
       android:screenOrientation="nosensor" />

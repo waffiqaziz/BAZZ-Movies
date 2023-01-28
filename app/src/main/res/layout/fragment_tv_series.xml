@@ -1,15 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:background="@color/light_gray"
   tools:context=".ui.activity.home.TvSeriesFragment">
 
-  <TextView
-    style="@style/TextDivider"
-    android:layout_gravity="center"
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/feature_not_ready" />
+    android:paddingBottom="80dp"
+    android:orientation="vertical">
 
-</FrameLayout>
+    <TextView
+      android:id="@+id/tv_popular"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="20dp"
+      android:text="@string/popular" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_popular"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+    <TextView
+      android:id="@+id/tv_airing_today"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="20dp"
+      android:text="@string/airing_today" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_now_playing"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+    <TextView
+      android:id="@+id/tv_on_tv"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="20dp"
+      android:text="@string/on_tv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_upcoming"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+    <TextView
+      android:id="@+id/tv_top_rated"
+      style="@style/TextHeader1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="30dp"
+      android:text="@string/top_rated" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_top_rated"
+      android:layout_width="match_parent"
+      android:layout_height="150dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginTop="8dp" />
+
+  </LinearLayout>
+
+</ScrollView>

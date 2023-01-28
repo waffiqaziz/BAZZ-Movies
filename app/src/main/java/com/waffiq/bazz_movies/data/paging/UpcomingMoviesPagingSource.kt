@@ -2,15 +2,15 @@ package com.waffiq.bazz_movies.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.data.local.model.Movie
+import com.waffiq.bazz_movies.data.remote.response.ResultItem
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
 import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class UpcomingMoviesPagingSource(private val apiService: ApiService) : PagingSource<Int, Movie>() {
+class UpcomingMoviesPagingSource(private val apiService: ApiService) : PagingSource<Int, ResultItem>() {
 
-  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItem> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
       val responseData = apiService.getUpcomingMovies(position).results
@@ -27,7 +27,7 @@ class UpcomingMoviesPagingSource(private val apiService: ApiService) : PagingSou
     }
   }
 
-  override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+  override fun getRefreshKey(state: PagingState<Int, ResultItem>): Int? {
     return state.anchorPosition?.let { anchorPosition ->
       val anchorPage = state.closestPageToPosition(anchorPosition)
       anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

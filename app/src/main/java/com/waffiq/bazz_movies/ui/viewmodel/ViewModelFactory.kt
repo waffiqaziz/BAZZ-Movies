@@ -33,9 +33,6 @@ class ViewModelFactory(
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     return when {
-      modelClass.isAssignableFrom(ListTopRatedMoviesViewModel::class.java) -> {
-        ListTopRatedMoviesViewModel(moviesRepository) as T
-      }
       modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
         HomeViewModel(moviesRepository) as T
       }

@@ -1,60 +1,87 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.waffiq.bazz_movies.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.ui.adapter.MovieAdapter
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MovieFragment : Fragment() {
-  // TODO: Rename and change types of parameters
-  private var param1: String? = null
-  private var param2: String? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    arguments?.let {
-      param1 = it.getString(ARG_PARAM1)
-      param2 = it.getString(ARG_PARAM2)
-    }
-  }
+  private var _binding: FragmentMovieBinding? = null
+  private val binding get() = _binding!!
+
+  private lateinit var viewModel: HomeViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_movie, container, false)
+  ): View {
+    _binding = FragmentMovieBinding.inflate(inflater, container, false)
+    val root: View = binding.root
+
+    val factory = ViewModelFactory.getInstance(requireContext())
+    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
+    setData()
+
+    return root
   }
 
-  companion object {
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    @JvmStatic
-    fun newInstance(param1: String, param2: String) =
-      MovieFragment().apply {
-        arguments = Bundle().apply {
-          putString(ARG_PARAM1, param1)
-          putString(ARG_PARAM2, param2)
-        }
+  private fun setData(){
+    binding.rvPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val popularAdapter = MovieAdapter()
+    binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        popularAdapter.retry()
       }
+    )
+    viewModel.getPopularMovies().observe(viewLifecycleOwner) {
+      popularAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvNowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val nowPlayingAdapter = MovieAdapter()
+    binding.rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        nowPlayingAdapter.retry()
+      }
+    )
+    viewModel.getPlayingNowMovies().observe(viewLifecycleOwner) {
+      nowPlayingAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val upComingAdapter = MovieAdapter()
+    binding.rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        nowPlayingAdapter.retry()
+      }
+    )
+    viewModel.getUpcomingMovies().observe(viewLifecycleOwner) {
+      upComingAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvTopRated.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val topRatedAdapter = MovieAdapter()
+    binding.rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        topRatedAdapter.retry()
+      }
+    )
+    viewModel.getTopRatedMovies().observe(viewLifecycleOwner) {
+      topRatedAdapter.submitData(lifecycle,it)
+    }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

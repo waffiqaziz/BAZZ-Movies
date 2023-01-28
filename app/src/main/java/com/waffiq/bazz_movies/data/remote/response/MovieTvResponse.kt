@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class TrendingAllResponse(
+data class MovieTvResponse(
 
 	@SerializedName("page")
 	val page: Int,
@@ -37,14 +37,11 @@ data class ResultItem(
 	@SerializedName("poster_path")
 	val posterPath: String? = null,
 
-//	@SerializedName("origin_country")
-//	val originCountry: List<String?>? = null,
-
 	@SerializedName("backdrop_path")
 	val backdropPath: String? = null,
 
 	@SerializedName("media_type")
-	val mediaType: String? = null,
+	var mediaType: String? = null,
 
 	@SerializedName("original_name")
 	val originalName: String? = null,

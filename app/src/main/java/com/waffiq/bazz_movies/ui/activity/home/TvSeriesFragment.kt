@@ -1,60 +1,87 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.waffiq.bazz_movies.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
+import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.ui.adapter.TvAdapter
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TvSeriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TvSeriesFragment : Fragment() {
-  // TODO: Rename and change types of parameters
-  private var param1: String? = null
-  private var param2: String? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    arguments?.let {
-      param1 = it.getString(ARG_PARAM1)
-      param2 = it.getString(ARG_PARAM2)
-    }
-  }
+  private var _binding: FragmentTvSeriesBinding? = null
+  private val binding get() = _binding!!
+
+  private lateinit var viewModel: HomeViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_tv_series, container, false)
+  ): View {
+    _binding = FragmentTvSeriesBinding.inflate(inflater, container, false)
+    val root: View = binding.root
+
+    val factory = ViewModelFactory.getInstance(requireContext())
+    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
+    setData()
+
+    return root
   }
 
-  companion object {
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TvSeriesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    @JvmStatic
-    fun newInstance(param1: String, param2: String) =
-      TvSeriesFragment().apply {
-        arguments = Bundle().apply {
-          putString(ARG_PARAM1, param1)
-          putString(ARG_PARAM2, param2)
-        }
+  private fun setData(){
+    binding.rvPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val popularAdapter = TvAdapter()
+    binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        popularAdapter.retry()
       }
+    )
+    viewModel.getPopularTv().observe(viewLifecycleOwner) {
+      popularAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvNowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val nowPlayingAdapter = TvAdapter()
+    binding.rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        nowPlayingAdapter.retry()
+      }
+    )
+    viewModel.getAiringTodayTv().observe(viewLifecycleOwner) {
+      nowPlayingAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val upComingAdapter = TvAdapter()
+    binding.rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        upComingAdapter.retry()
+      }
+    )
+    viewModel.getOnTv().observe(viewLifecycleOwner) {
+      upComingAdapter.submitData(lifecycle,it)
+    }
+
+    binding.rvTopRated.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val topRatedAdapter = TvAdapter()
+    binding.rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        topRatedAdapter.retry()
+      }
+    )
+    viewModel.getTopRatedTv().observe(viewLifecycleOwner) {
+      topRatedAdapter.submitData(lifecycle,it)
+    }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }

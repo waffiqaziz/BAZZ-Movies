@@ -24,6 +24,8 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var dataExtra: ResultItem
   private lateinit var viewModel: DetailUserViewModel
 
+  private var favorited = false
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
@@ -34,29 +36,35 @@ class DetailMovieActivity : AppCompatActivity() {
 
     getDataExtra()
     setData()
-    isFavorite()
     btnListener()
+    isFavorite()
   }
 
-  private fun btnListener(){
+  private fun btnListener() {
     binding.btnBack.setOnClickListener { finish() }
 
     binding.btnBookmarks.setOnClickListener {
-      viewModel.insertToFavorite(mapResponsesToEntities(dataExtra))
+      if (!favorited) {
+        favorited = true
+        viewModel.insertToFavorite(mapResponsesToEntities(dataExtra))
+        showToastLong(
+          this, this.getString(
+            R.string.added,
+            dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
+          )
+        )
+        binding.btnBookmarks.setImageResource(R.drawable.ic_bookmark_selected)
+      } else {
+        favorited = false
+        viewModel.removeFromFavorite(mapResponsesToEntities(dataExtra))
+        binding.btnBookmarks.setImageResource(R.drawable.ic_bookmark)
+        showToastLong(this, this.getString(R.string.deleted))
+      }
 
-      showToastLong(this, this.getString(
-        R.string.added,
-        dataExtra.originalTitle?: dataExtra.title?: dataExtra.name
-      ))
     }
   }
 
-  private fun setStatusFavorite(statusFavorite: Boolean) {
-    binding.btnBookmarks.isSelected = statusFavorite
-    binding.btnBookmarks.isPressed = statusFavorite
-  }
-
-  private fun getDataExtra(){
+  private fun getDataExtra() {
     dataExtra = intent.getParcelableExtra(EXTRA_MOVIE)!!
   }
 
@@ -71,40 +79,75 @@ class DetailMovieActivity : AppCompatActivity() {
       dataExtra.apply {
         tvYearReleased.text = firstAirDate ?: releaseDate
         tvOverview.text = overview
-        tvTitle.text = title ?: originalTitle ?: originalName
+        tvTitle.text = name ?: title ?: originalTitle ?: originalName
         tvGenre.text = genreIds?.let { iterateGenre(it) }
       }
     }
 
-    //shows directors
-    viewModel.getAllCredits(dataExtra.id!!)
-    viewModel.getCreditsDirector().observe(this) { crew ->
-      binding.tvDirector.text = getString(
-        R.string.director,
-        crew.map { it }.filter {
-          it.job == "Director"
-        }.map { it.name }
-          .toString()
-          .dropLast(1)
-          .substring(1)
-      )
-    }
+    if (dataExtra.mediaType == "movie") {
+      //shows directors
+      viewModel.getAllCreditMovies(dataExtra.id!!)
+      viewModel.getCreditDirectorMovies().observe(this) { crew ->
+        binding.tvDirector.text = getString(
+          R.string.director,
+          crew.map { it }.filter {
+            it.job == "Director"
+          }.map { it.name }
+            .toString()
+            .dropLast(1)
+            .substring(1)
+        )
+      }
 
-    //shows picture cast
-    binding.rvCast.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-    val adapter = CastAdapter()
-    binding.rvCast.adapter = adapter
+      //shows picture cast
+      binding.rvCast.layoutManager =
+        LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+      val adapter = CastAdapter()
+      binding.rvCast.adapter = adapter
 
-    viewModel.getCreditsCast().observe(this) {
-      adapter.setCast(it)
+      viewModel.getCreditsCastMovies().observe(this) {
+        adapter.setCast(it)
+      }
+
+    } else if (dataExtra.mediaType == "tv") {
+
+      //shows directors
+      viewModel.getAllCreditTv(dataExtra.id!!)
+      viewModel.getCreditDirectorTv().observe(this) { crew ->
+        binding.tvDirector.text = getString(
+          R.string.director,
+          crew.map { it }.filter {
+            it.job == "Director"
+          }.map { it.name }
+            .toString()
+            .dropLast(1)
+            .substring(1)
+        )
+      }
+
+      //shows picture cast
+      binding.rvCast.layoutManager =
+        LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+      val adapter = CastAdapter()
+      binding.rvCast.adapter = adapter
+
+      viewModel.getCreditsCastTv().observe(this) {
+        adapter.setCast(it)
+      }
     }
   }
 
   private fun isFavorite() {
-    CoroutineScope(Dispatchers.IO).launch{
+    CoroutineScope(Dispatchers.Default).launch {
       val result = viewModel.checkIsFavorite(dataExtra.id!!)
       withContext(Dispatchers.Main) {
-        setStatusFavorite(result)
+        if (result) {
+          favorited = true
+          binding.btnBookmarks.setImageResource(R.drawable.ic_bookmark_selected)
+        } else {
+          favorited = false
+          binding.btnBookmarks.setImageResource(R.drawable.ic_bookmark)
+        }
       }
     }
   }

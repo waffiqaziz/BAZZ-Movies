@@ -58,11 +58,10 @@
       android:clickable="true"
       android:contentDescription="@string/button_edit"
       android:focusable="true"
-      android:foreground="?selectableItemBackgroundBorderless"
       android:minWidth="48dp"
       android:minHeight="48dp"
       android:scaleType="centerInside"
-      android:src="@drawable/selector_bookmarks"
+      android:src="@drawable/ic_bookmark"
       app:layout_constraintBottom_toBottomOf="@+id/tv_title"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@+id/tv_title" />
@@ -93,6 +92,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="5dp"
+      android:maxLines="1"
+      android:ellipsize="end"
       app:layout_constraintStart_toEndOf="@+id/textView4"
       app:layout_constraintTop_toTopOf="@+id/tv_year_released"
       tools:text="Action, Drama, &amp; Family" />

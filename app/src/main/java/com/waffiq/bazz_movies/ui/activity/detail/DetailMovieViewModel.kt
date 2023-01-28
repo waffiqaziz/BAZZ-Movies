@@ -8,13 +8,17 @@ class DetailUserViewModel(
   private val movieRepository: MoviesRepository,
 ) : ViewModel() {
 
-//  private val favoriteRepository: FavoriteRepository = FavoriteRepository(application)
+  fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
 
-  fun getAllCredits(movieId: Int) = movieRepository.getCredits(movieId)
+  fun getAllCreditTv(tvId: Int) = movieRepository.getCreditTv(tvId)
 
-  fun getCreditsCast() = movieRepository.creditCast
+  fun getCreditsCastMovies() = movieRepository.creditCastMovies
 
-  fun getCreditsDirector() = movieRepository.creditCrew
+  fun getCreditDirectorMovies() = movieRepository.creditCrewMovies
+
+  fun getCreditsCastTv() = movieRepository.creditCastTv
+
+  fun getCreditDirectorTv() = movieRepository.creditCrewTv
 
   fun insertToFavorite(fav: Favorite) = movieRepository.insert(fav)
 

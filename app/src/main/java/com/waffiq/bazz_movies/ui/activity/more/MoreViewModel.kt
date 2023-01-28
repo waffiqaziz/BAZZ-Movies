@@ -1,13 +1,13 @@
 package com.waffiq.bazz_movies.ui.activity.more
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.waffiq.bazz_movies.data.repository.UserRepository
 
-class MoreViewModel : ViewModel() {
+class MoreViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-  private val _text = MutableLiveData<String>().apply {
-    value = "This is more Fragment"
-  }
-  val text: LiveData<String> = _text
+  fun getUser() = userRepository.getUser().asLiveData()
+
+  suspend fun signOut() = userRepository.logout()
 }

@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.ui.adapter.MovieAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.ui.adapter.UpcomingMovieAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
 class FeaturedFragment : Fragment() {
@@ -33,7 +33,7 @@ class FeaturedFragment : Fragment() {
     viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
     setMoveNowPlaying()
-    setTrending()
+    setData()
     return root
   }
 
@@ -50,31 +50,38 @@ class FeaturedFragment : Fragment() {
       .into(binding.imgMainFeatured)
   }
 
-  private fun setTrending(){
+  private fun setData(){
     binding.rvTrending.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapter = TrendingAdapter()
-
     binding.rvTrending.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapter.retry()
       }
     )
-
     viewModel.getTrending().observe(viewLifecycleOwner) {
       adapter.submitData(lifecycle,it)
     }
 
     binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val adapterUpcoming = UpcomingMovieAdapter()
-
+    val adapterUpcoming = MovieAdapter()
     binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterUpcoming.retry()
       }
     )
-
     viewModel.getUpcomingMovies().observe(viewLifecycleOwner) {
-      adapterUpcoming.submitData(lifecycle,it)
+      adapterUpcoming.submitData(lifecycle, it)
+    }
+
+    binding.rvPlayingNow.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    val adapterPlayingNow = MovieAdapter()
+    binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        adapterPlayingNow.retry()
+      }
+    )
+    viewModel.getPlayingNowMovies().observe(viewLifecycleOwner) {
+      adapterPlayingNow.submitData(lifecycle, it)
     }
   }
 
