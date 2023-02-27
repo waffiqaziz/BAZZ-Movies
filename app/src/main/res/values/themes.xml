@@ -46,6 +46,12 @@
     <item name="fontFamily">@font/gothic</item>
   </style>
 
+  <style name="TextBody">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="fontFamily">@font/gothic</item>
+  </style>
+
   <style name="ButtonMoreStyle">
     <item name="android:paddingStart">20dp</item>
     <item name="android:layout_height">wrap_content</item>
@@ -71,4 +77,11 @@
     <item name="android:textColor">@color/red_matte</item>
     <item name="backgroundTint">@color/dark_medium</item>
   </style>
+
+  <style name="customButton">
+    <item name="textAllCaps">false</item>
+    <item name="android:minHeight">39dp</item>
+    <item name="android:textColor">@color/white</item>
+  </style>
+
 </resources>

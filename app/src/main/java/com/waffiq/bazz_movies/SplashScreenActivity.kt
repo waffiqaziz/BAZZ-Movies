@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
 import com.waffiq.bazz_movies.ui.activity.MainActivity
-import com.waffiq.bazz_movies.ui.viewmodel.MainViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.DELAY_TIME
 
@@ -22,7 +22,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
   private lateinit var binding: ActivitySplashScreenBinding
-  private lateinit var mainViewModel: MainViewModel
+  private lateinit var authenticationViewModel: AuthenticationViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -32,12 +32,12 @@ class SplashScreenActivity : AppCompatActivity() {
     window.navigationBarColor = ContextCompat.getColor(this, R.color.dark)
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
-    mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+    authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
 
     //add splash screen with fade transition 2 second
     binding.imgLogo.animate().setDuration(DELAY_TIME).alpha(1f).withEndAction {
 
-      mainViewModel.getUser().observe(this) {
+      authenticationViewModel.getUser().observe(this) {
         if (it.isLogin) gotoMainActivity(true)
         else gotoMainActivity(false)
       }

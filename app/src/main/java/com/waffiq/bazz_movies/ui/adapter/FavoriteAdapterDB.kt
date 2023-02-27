@@ -1,19 +1,22 @@
 package com.waffiq.bazz_movies.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.local.model.Favorite
-import com.waffiq.bazz_movies.databinding.ItemMoviesBinding
+import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 
-class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
-  private val listCast = ArrayList<Favorite>()
+  private val listCast = ArrayList<FavoriteDB>()
 
-  fun setFavorite(itemStory: List<Favorite>) {
+  fun setFavorite(itemStory: List<FavoriteDB>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -23,7 +26,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -33,45 +36,45 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
   override fun getItemCount() = listCast.size
 
-  inner class ViewHolder(private var binding: ItemMoviesBinding) :
+  inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    lateinit var getFavorite: Favorite
+    lateinit var getFavoriteDB: FavoriteDB
 
-    fun bind(fav: Favorite) {
-      getFavorite = fav
-      Glide.with(binding.ivPoster)
+    fun bind(fav: FavoriteDB) {
+      getFavoriteDB = fav
+      Glide.with(binding.ivPicture)
         .load("http://image.tmdb.org/t/p/w300/" + fav.imagePath )
         .placeholder(R.mipmap.ic_launcher)
         .error(R.drawable.ic_broken_image)
-        .into(binding.ivPoster)
+        .into(binding.ivPicture)
 
       binding.tvTitle.text = fav.title
       binding.tvGenre.text = fav.genre
       binding.tvYearReleased.text = fav.releaseDate
 
       //future update
-//      val resultItem = ResultItem(
-//        posterPath = fav.imagePath,
-//        releaseDate = fav.releaseDate,
-//        overview = fav.overview,
-//        title = fav.title,
-//        originalTitle = fav.title,
-//        genre = fav.genre,
-//        id = fav.mediaId
-//      )
+      val resultItem = ResultItem(
+        posterPath = fav.imagePath,
+        releaseDate = fav.releaseDate,
+        overview = fav.overview,
+        title = fav.title,
+        originalTitle = fav.title,
+        id = fav.mediaId
+      )
 //
-//      binding.containerMovies.setOnClickListener {
-//        val intent = Intent(it.context, DetailMovieActivity::class.java)
-//        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
-//        it.context.startActivity(intent)
-//      }
+      binding.containerResult.setOnClickListener {
+        val intent = Intent(it.context, DetailMovieActivity::class.java)
+        resultItem.mediaType = "movie"
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        it.context.startActivity(intent)
+      }
     }
   }
 
   inner class DiffCallback(
-    private val oldList: List<Favorite>,
-    private val newList: List<Favorite>
+    private val oldList: List<FavoriteDB>,
+    private val newList: List<FavoriteDB>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

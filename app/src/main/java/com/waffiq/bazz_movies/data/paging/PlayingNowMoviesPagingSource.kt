@@ -3,12 +3,12 @@ package com.waffiq.bazz_movies.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
-import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
+import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class PlayingNowMoviesPagingSource(private val apiService: ApiService) : PagingSource<Int, ResultItem>() {
+class PlayingNowMoviesPagingSource(private val apiService: TMDBApiService) : PagingSource<Int, ResultItem>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItem> {
     return try {

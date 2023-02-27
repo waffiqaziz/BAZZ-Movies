@@ -7,7 +7,7 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
+class AuthenticationViewModel(private val userRepository: UserRepository) : ViewModel() {
 
   fun getUser() = userRepository.getUser().asLiveData()
 
@@ -34,4 +34,8 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
       userRepository.saveUser(userModel)
     }
   }
+
+  suspend fun signOut() = userRepository.logout()
+
+  fun getLoading() = userRepository.isLoading
 }

@@ -10,8 +10,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.databinding.FragmentHomeBinding
-import com.waffiq.bazz_movies.ui.adapter.ViewPagerAdapter
+import com.waffiq.bazz_movies.ui.adapter.viewpager.HomeViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Constants.tabHomeHeadingArray
 
 class HomeFragment : Fragment() {
 
@@ -43,11 +44,11 @@ class HomeFragment : Fragment() {
     tabLayout = binding.tabs
     viewpager.isUserInputEnabled = false //disable swiping between tabs
 
-    val adapter = ViewPagerAdapter(childFragmentManager,lifecycle)
+    val adapter = HomeViewPagerAdapter(childFragmentManager,lifecycle)
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager) { tab, position ->
-      tab.text = tabHeadingArray[position]
+      tab.text = tabHomeHeadingArray[position]
     }.attach()
   }
 
@@ -56,11 +57,4 @@ class HomeFragment : Fragment() {
     _binding = null
   }
 
-  companion object {
-    private val tabHeadingArray = arrayOf(
-      "Featured",
-      "Movies",
-      "TV Series"
-    )
-  }
 }

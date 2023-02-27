@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.waffiq.bazz_movies.data.repository.UserRepository
 import com.waffiq.bazz_movies.di.Injection
-import com.waffiq.bazz_movies.ui.activity.more.MoreViewModel
 
 class ViewModelUserFactory(private val userRepository: UserRepository) :
   ViewModelProvider.NewInstanceFactory() {
@@ -14,11 +13,8 @@ class ViewModelUserFactory(private val userRepository: UserRepository) :
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     return when {
-      modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-        MainViewModel(userRepository) as T
-      }
-      modelClass.isAssignableFrom(MoreViewModel::class.java) -> {
-        MoreViewModel(userRepository) as T
+      modelClass.isAssignableFrom(AuthenticationViewModel::class.java) -> {
+        AuthenticationViewModel(userRepository) as T
       }
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

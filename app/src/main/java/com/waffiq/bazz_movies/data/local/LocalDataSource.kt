@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.data.local
 
 import androidx.lifecycle.LiveData
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
 
 class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) {
@@ -15,13 +15,19 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
       }
   }
 
-  fun getAllFavorite(): LiveData<List<Favorite>> = favoriteDao.getFavorite()
+  fun getAllFavorite(): LiveData<List<FavoriteDB>> = favoriteDao.getFavorite()
 
-  fun getSpecificFavorite(name: String): LiveData<List<Favorite>> = favoriteDao.getSearchFavorite(name)
+  fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> = favoriteDao.getSearchFavorite(name)
 
-  fun insertFavorite(favoriteList: Favorite) = favoriteDao.insertFavorite(favoriteList)
+  fun insertFavorite(favoriteDBList: FavoriteDB) = favoriteDao.insertFavorite(favoriteDBList)
 
-  fun deleteItemFavorite(favorite: Favorite) = favoriteDao.deleteItemFavorite(favorite)
+  fun deleteItemFavorite(favoriteDB: FavoriteDB) = favoriteDao.deleteItemFavorite(favoriteDB)
 
   fun isFavorite(id: Int) = favoriteDao.isFavorite(id)
+
+  fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)
+
+  fun updateFavorite(boolean: Boolean, id: Int) = favoriteDao.updateFavorite(boolean, id)
+
+  fun updateWatchlist(boolean: Boolean, id: Int) = favoriteDao.updateWatchlist(boolean, id)
 }

@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.di.Injection
-import com.waffiq.bazz_movies.ui.activity.detail.DetailUserViewModel
+import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieViewModel
 import com.waffiq.bazz_movies.ui.activity.home.HomeViewModel
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteViewModel
+import com.waffiq.bazz_movies.ui.activity.mywatchlist.MyWatchlistViewModel
 import com.waffiq.bazz_movies.ui.activity.search.SearchViewModel
 
 class ViewModelFactory(
@@ -39,11 +40,14 @@ class ViewModelFactory(
       modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
         SearchViewModel(moviesRepository) as T
       }
-      modelClass.isAssignableFrom(DetailUserViewModel::class.java) -> {
-        DetailUserViewModel(moviesRepository) as T
+      modelClass.isAssignableFrom(DetailMovieViewModel::class.java) -> {
+        DetailMovieViewModel(moviesRepository) as T
       }
       modelClass.isAssignableFrom(MyFavoriteViewModel::class.java) -> {
         MyFavoriteViewModel(moviesRepository) as T
+      }
+      modelClass.isAssignableFrom(MyWatchlistViewModel::class.java) -> {
+        MyWatchlistViewModel(moviesRepository) as T
       }
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

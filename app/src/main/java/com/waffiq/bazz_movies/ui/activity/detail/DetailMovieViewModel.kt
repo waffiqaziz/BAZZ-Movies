@@ -2,15 +2,27 @@ package com.waffiq.bazz_movies.ui.activity.detail
 
 import androidx.lifecycle.ViewModel
 import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 
-class DetailUserViewModel(
+class DetailMovieViewModel(
   private val movieRepository: MoviesRepository,
 ) : ViewModel() {
+
+
+  // Show Data
+  fun getDetailMovie(id: Int) = movieRepository.getDetailMovie(id)
+
+  fun getDetailTv(id: Int) = movieRepository.getDetailTv(id)
+
+  fun getExternalId(id: Int) = movieRepository.getExternalId(id)
 
   fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
 
   fun getAllCreditTv(tvId: Int) = movieRepository.getCreditTv(tvId)
+
+  fun getScore(apiKey: String, id: String) = movieRepository.getScoring(apiKey, id)
 
   fun getCreditsCastMovies() = movieRepository.creditCastMovies
 
@@ -20,9 +32,47 @@ class DetailUserViewModel(
 
   fun getCreditDirectorTv() = movieRepository.creditCrewTv
 
-  fun insertToFavorite(fav: Favorite) = movieRepository.insert(fav)
+  fun getSnackBarText() = movieRepository.snackBarText
 
-  fun removeFromFavorite(fav: Favorite) =  movieRepository.delete(fav)
+  fun score() = movieRepository.score
 
-  fun checkIsFavorite(id: Int) = movieRepository.isFavorite(id)
+  fun detailTv() = movieRepository.detailTv
+
+  fun detailMovie() = movieRepository.detailMovie
+
+  fun extenalId() = movieRepository.externalId
+
+  fun getStatedMovies(sessionId: String, id: Int) = movieRepository.getStated(sessionId, id)
+
+  fun stated() = movieRepository.stated
+
+
+  // DB Function
+  fun insertToFavoriteDB(fav: FavoriteDB) = movieRepository.insertDB(fav)
+
+  fun removeFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
+
+  fun checkIsFavoriteDB(id: Int) = movieRepository.isFavoriteDB(id)
+
+  fun checkIsWatchlistDB(id: Int) = movieRepository.isWatchlist(id)
+
+  fun updateToFavoriteDB(id: Int) = movieRepository.updateFavorite(true, id)
+
+  fun updateToRemoveFromFavoriteDB(id: Int) = movieRepository.updateFavorite(false, id)
+
+  fun updateToWatchlist(id: Int) = movieRepository.updateWatchlist(true, id)
+
+  fun updateToRemoveFromWatchlistDB(id: Int) = movieRepository.updateWatchlist(false, id)
+
+
+  fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
+    movieRepository.postFavorite(sessionId, data, userId)
+
+  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
+    movieRepository.postWatchlist(sessionId, data, userId)
+
+
+  fun postResponse() = movieRepository.postResponse
+
+  fun getLoading() = movieRepository.isLoading
 }

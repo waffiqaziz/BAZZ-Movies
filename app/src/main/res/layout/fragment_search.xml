@@ -24,13 +24,24 @@
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
     android:paddingBottom="50dp"
-    tools:listitem="@layout/item_movies" />
+    tools:listitem="@layout/item_result" />
 
   <include
     android:id="@+id/illustration_search_no_result_view"
     layout="@layout/illustration_search_no_result"
     android:visibility="invisible"
-    tools:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="invisible" />
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:indeterminateTint="@color/yellow"
+    android:visibility="invisible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

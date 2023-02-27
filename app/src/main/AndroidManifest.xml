@@ -17,15 +17,18 @@
     android:usesCleartextTraffic="true"
     tools:targetApi="31">
     <activity
-      android:screenOrientation="nosensor"
-      android:name=".ui.activity.detail.DetailMovieActivity"
-      android:theme="@style/Theme.BAZZ_movies.NoActionBar"
+      android:name=".ui.activity.person.PersonActivity"
       android:exported="false" />
+    <activity
+      android:name=".ui.activity.detail.DetailMovieActivity"
+      android:exported="false"
+      android:screenOrientation="nosensor"
+      android:theme="@style/Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name=".ui.activity.MainActivity"
       android:exported="false"
-      android:screenOrientation="nosensor"
-      android:label="@string/title_activity" />
+      android:label="@string/title_activity"
+      android:screenOrientation="nosensor" />
     <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false"

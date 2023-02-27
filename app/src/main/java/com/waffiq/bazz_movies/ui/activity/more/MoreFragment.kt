@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
+import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class MoreFragment : Fragment() {
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var moreViewModel: MoreViewModel
+  private lateinit var moreViewModel: AuthenticationViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -39,7 +40,7 @@ class MoreFragment : Fragment() {
 
     val pref = requireContext().dataStore
     val factory = ViewModelUserFactory.getInstance(pref)
-    this.moreViewModel = ViewModelProvider(this, factory)[MoreViewModel::class.java]
+    this.moreViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
 
     setData()
     btnAction()
@@ -61,15 +62,15 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       viewLifecycleOwner.lifecycleScope.launch{
-        startActivity(Intent(activity, LoginActivity::class.java))
         moreViewModel.signOut()
         activity?.finish()
+        startActivity(Intent(activity, LoginActivity::class.java))
       }
     }
   }
 
   private fun setData(){
-    moreViewModel.getUser().observe(requireActivity()){
+    moreViewModel.getUser().observe(viewLifecycleOwner){
       binding.apply {
         tvFullName.text = it.name
         tvUsername.text = it.username

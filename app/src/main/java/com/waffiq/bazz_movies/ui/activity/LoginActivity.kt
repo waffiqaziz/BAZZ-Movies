@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -15,17 +16,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
-import com.waffiq.bazz_movies.ui.viewmodel.MainViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_SIGNUP
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.Helper
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class LoginActivity : AppCompatActivity() {
   private lateinit var binding: ActivityLoginBinding
-  private lateinit var mainViewModel: MainViewModel
+  private lateinit var authenticationViewModel: AuthenticationViewModel
   private lateinit var user: UserModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
-    mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+    authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
 
     showPassword()
     openTMDB()
@@ -70,13 +70,13 @@ class LoginActivity : AppCompatActivity() {
 
   private fun btnListener() {
     user = UserModel(
-      name = "NaN",
-      username = "NaN",
-      password = "NaN",
-      userId = "NaN",
-      token = "NaN",
+      name = getString(R.string.nan),
+      username = getString(R.string.nan),
+      password = getString(R.string.nan),
+      userId = 0,
+      token = getString(R.string.nan),
       isLogin = false,
-      gravatarHast = "NaN"
+      gravatarHast = getString(R.string.nan)
     )
 
     binding.btnLogin.setOnClickListener {
@@ -84,9 +84,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     binding.tvGuest.setOnClickListener {
-      user.name = resources.getString(R.string.gues_user)
+      user.name = resources.getString(R.string.guest_user)
       user.username = resources.getString(R.string.no_data)
-      mainViewModel.saveUser(user)
+      user.isLogin = true
+      authenticationViewModel.saveUser(user)
       goToMainActivity()
     }
   }
@@ -102,33 +103,34 @@ class LoginActivity : AppCompatActivity() {
     user.password = binding.edPass.text.toString()
     user.isLogin = true
 
-    mainViewModel.createToken()
-    mainViewModel.getToken().observe(this) { token ->
+    authenticationViewModel.getLoading().observe(this) {
+      showLoading(it)
+    }
 
-      mainViewModel.login(user.username, user.password, token)
-      mainViewModel.getTokenVerified().observe(this) { tokenVerified ->
+    authenticationViewModel.createToken()
+    authenticationViewModel.getToken().observe(this) { token ->
 
-        mainViewModel.createSession(tokenVerified)
-        mainViewModel.getSessionId().observe(this) { sessionId ->
+      authenticationViewModel.login(user.username, user.password, token)
+      authenticationViewModel.getTokenVerified().observe(this) { tokenVerified ->
 
-          mainViewModel.getUserDetail(sessionId)
-          mainViewModel.getDataUserDetail().observe(this) {
+        authenticationViewModel.createSession(tokenVerified)
+        authenticationViewModel.getSessionId().observe(this) { sessionId ->
+
+          user.token = sessionId
+          authenticationViewModel.getUserDetail(sessionId)
+          authenticationViewModel.getDataUserDetail().observe(this) {
             user.gravatarHast = it.gravatarHast
             user.name = it.name
             user.userId = it.userId
 
-            Helper.showToastLong(this, user.toString())
-            mainViewModel.saveUser(user)
+            authenticationViewModel.saveUser(user)
             goToMainActivity()
           }
         }
       }
     }
 
-
-
-
-    mainViewModel.getSnackBarText().observe(this) {
+    authenticationViewModel.getSnackBarText().observe(this) {
       showSnackBar(it)
     }
   }
@@ -140,5 +142,13 @@ class LoginActivity : AppCompatActivity() {
       message,
       Snackbar.LENGTH_SHORT
     ).show()
+  }
+
+  private fun showLoading(isLoading: Boolean) {
+    if (isLoading) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
+    }
   }
 }

@@ -3,7 +3,8 @@ package com.waffiq.bazz_movies.utils
 import android.content.Context
 import android.widget.Toast
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.remote.response.KnownForItem
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
 
 object Helper {
@@ -60,8 +61,17 @@ object Helper {
     return temp
   }
 
-  fun mapResponsesToEntities(input: ResultItem): Favorite {
-    return Favorite(
+  fun getKnownFor(knownForItem: List<KnownForItem>): String {
+    var temp = ""
+    knownForItem.forEach {
+      temp = temp + it.title + ", "
+    }
+    temp = temp.dropLast(2)
+    return temp
+  }
+
+  fun mapResponsesToEntitiesFavorite(input: ResultItem): FavoriteDB {
+    return FavoriteDB(
       mediaId = input.id,
       mediaType = input.mediaType,
       title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
@@ -70,7 +80,25 @@ object Helper {
       imagePath = input.backdropPath ?: input.posterPath,
       genre = iterateGenre(input.genreIds ?: listOf()),
       popularity = input.popularity,
-      overview = input.overview
+      overview = input.overview,
+      is_favorited = true,
+      is_watchlist = false
+    )
+  }
+
+  fun mapResponsesToEntitiesWatchlist(input: ResultItem): FavoriteDB {
+    return FavoriteDB(
+      mediaId = input.id,
+      mediaType = input.mediaType,
+      title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
+      releaseDate = input.releaseDate ?: input.firstAirDate,
+      rating = input.voteAverage,
+      imagePath = input.backdropPath ?: input.posterPath,
+      genre = iterateGenre(input.genreIds ?: listOf()),
+      popularity = input.popularity,
+      overview = input.overview,
+      is_favorited = false,
+      is_watchlist = true
     )
   }
 }

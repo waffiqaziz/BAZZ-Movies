@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.ui.adapter
+package com.waffiq.bazz_movies.ui.adapter.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.ui.activity.home.FeaturedFragment
 import com.waffiq.bazz_movies.ui.activity.home.MovieFragment
 import com.waffiq.bazz_movies.ui.activity.home.TvSeriesFragment
 
-class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class HomeViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
   FragmentStateAdapter(fragmentManager, lifecycle) {
 
   override fun getItemCount(): Int {

@@ -5,4 +5,14 @@ object Constants{
   const val INITIAL_PAGE_INDEX = 1
   const val DELAY_TIME = 2000L
   const val TMDB_SIGNUP = "https://www.themoviedb.org/signup"
+
+  val tabHomeHeadingArray = arrayOf(
+    "Featured",
+    "Movies",
+    "TV Series"
+  )
+  val tabMoviesTvHeadingArray = arrayOf(
+    "Movies",
+    "TV Series"
+  )
 }

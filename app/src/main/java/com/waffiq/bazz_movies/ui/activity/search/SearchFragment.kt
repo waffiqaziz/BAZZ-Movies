@@ -82,10 +82,12 @@ class SearchFragment : Fragment() {
           override fun onQueryTextSubmit(query: String?): Boolean { //when user submit data
 
             if (query != null) {
-              searchViewModel.search(query)
-                .observe(viewLifecycleOwner) {
-                  adapter.submitData(lifecycle, it)
+              searchViewModel.search(query).observe(viewLifecycleOwner) {
+                adapter.submitData(lifecycle, it)
+                adapter.addLoadStateListener{
+                  binding.progressBar.isVisible = it.source.refresh is LoadState.Loading
                 }
+              }
             }
             return true
           }

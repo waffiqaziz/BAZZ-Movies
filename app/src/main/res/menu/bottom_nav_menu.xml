@@ -12,9 +12,14 @@
     android:title="@string/title_search" />
 
   <item
-    android:id="@+id/navigation_my_folder"
-    android:icon="@drawable/ic_folder"
+    android:id="@+id/navigation_my_favorite"
+    android:icon="@drawable/ic_hearth"
     android:title="@string/title_my_favorite" />
+
+  <item
+    android:id="@+id/navigation_my_watchlist"
+    android:icon="@drawable/ic_bookmark"
+    android:title="@string/title_my_watchlist" />
 
   <item
     android:id="@+id/navigation_more"

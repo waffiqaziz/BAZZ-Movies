@@ -8,7 +8,7 @@ data class UserModel(
   var name: String,
   var username: String,
   var password: String,
-  var userId: String,
+  var userId: Int,
   var token: String,
   var isLogin: Boolean,
   var gravatarHast: String

@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.remote.response.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.CreateSessionResponse
-import com.waffiq.bazz_movies.data.remote.retrofit.ApiConfig
-import com.waffiq.bazz_movies.data.remote.retrofit.ApiService
+import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
+import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Event
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONObject
@@ -18,7 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository(private val apiService: ApiService, private val pref: UserPreference) {
+class UserRepository(private val apiService: TMDBApiService, private val pref: UserPreference) {
 
   private var _token = MutableLiveData<String>()
   val token: LiveData<String> get() = _token
@@ -35,13 +35,18 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
   private val _user = MutableLiveData<UserModel>()
   val user: LiveData<UserModel> get() = _user
 
+  private val _isLoading = MutableLiveData<Boolean>()
+  val isLoading: LiveData<Boolean> = _isLoading
+
   fun login(username: String, pass: String, token: String){
-    val service = ApiConfig().getApiService().login(username, pass, token)
-    service.enqueue(object : Callback<AuthenticationResponse> {
+    _isLoading.value = true
+    val client = TMDBApiConfig().getApiService().login(username, pass, token)
+    client.enqueue(object : Callback<AuthenticationResponse> {
       override fun onResponse(
         call: Call<AuthenticationResponse>,
         response: Response<AuthenticationResponse>
       ) {
+        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
@@ -59,19 +64,21 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
       }
 
       override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
       }
     })
   }
 
   fun createToken(){
-    val service = ApiConfig().getApiService().createToken()
-    service.enqueue(object : Callback<AuthenticationResponse> {
+    _isLoading.value = true
+    val client = TMDBApiConfig().getApiService().createToken()
+    client.enqueue(object : Callback<AuthenticationResponse> {
       override fun onResponse(
         call: Call<AuthenticationResponse>,
         response: Response<AuthenticationResponse>
       ) {
+        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
@@ -89,6 +96,7 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
       }
 
       override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -98,12 +106,14 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
   suspend fun saveUser(userModel: UserModel) = pref.saveUser(userModel)
 
   fun createSessionLogin(token: String){
-    val service = ApiConfig().getApiService().createSessionLogin(token)
-    service.enqueue(object : Callback<CreateSessionResponse> {
+    _isLoading.value = true
+    val client = TMDBApiConfig().getApiService().createSessionLogin(token)
+    client.enqueue(object : Callback<CreateSessionResponse> {
       override fun onResponse(
         call: Call<CreateSessionResponse>,
         response: Response<CreateSessionResponse>
       ) {
+        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
@@ -121,6 +131,7 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
       }
 
       override fun onFailure(call: Call<CreateSessionResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -128,12 +139,14 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
   }
 
   fun getUserDetail(sessionId: String){
-    val service = ApiConfig().getApiService().getAccountDetails(sessionId)
-    service.enqueue(object : Callback<AccountDetailsResponse> {
+    _isLoading.value = true
+    val client = TMDBApiConfig().getApiService().getAccountDetails(sessionId)
+    client.enqueue(object : Callback<AccountDetailsResponse> {
       override fun onResponse(
         call: Call<AccountDetailsResponse>,
         response: Response<AccountDetailsResponse>
       ) {
+        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody?.id != null) {
@@ -141,7 +154,7 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
               name = responseBody.name.toString(),
               username = responseBody.username.toString(),
               password = "NaN",
-              userId = responseBody.id.toString(),
+              userId = responseBody.id,
               token = "NaN",
               isLogin = true,
               gravatarHast = responseBody.avatar?.gravatar?.hash.toString(),
@@ -158,6 +171,7 @@ class UserRepository(private val apiService: ApiService, private val pref: UserP
       }
 
       override fun onFailure(call: Call<AccountDetailsResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }

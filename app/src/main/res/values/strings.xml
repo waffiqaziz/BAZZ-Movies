@@ -1,24 +1,34 @@
 <resources>
   <string name="app_name">BAZZ Movies</string>
-  <string name="join">Join TMDB</string>
+  <string name="join_tmdb">Join TMDB</string>
   <string name="login">Login</string>
+  <string name="username">Username</string>
+  <string name="password">Password</string>
   <string name="email">Email</string>
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
-  <string name="password">Password</string>
   <string name="bazz">BAZZ</string>
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="background_poster">Background Poster</string>
   <string name="retry">Retry</string>
   <string name="error">Error</string>
+
   <string name="title_activity">BAZZ Movies</string>
   <string name="title_home">Home</string>
   <string name="title_search">Search</string>
   <string name="title_my_favorite">My Favorite</string>
   <string name="title_more">More</string>
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_my_watchlist">My Watchlist</string>
+
   <string name="trending_now">Trending now</string>
   <string name="featured">Featured</string>
   <string name="upcoming_movies">Upcoming Movies</string>
+  <string name="popular">Popular</string>
+  <string name="top_rated">Top Rated</string>
+  <string name="now_playing">Now Playing</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="airing_today">Airing Today</string>
+  <string name="playing_now_on_theater">Playing now on Theater</string>
+
   <string name="button_edit">Button Edit</string>
   <string name="general_setting">General Setting</string>
   <string name="image_profile">Image Profile</string>
@@ -26,30 +36,49 @@
   <string name="dark_mode">Dark Mode</string>
   <string name="rate_us">Rate us on PlayStore</string>
   <string name="help">Help</string>
-  <string name="search_any_movies">Search any Movies</string>
-  <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie or series as you like</string>
-  <string name="search_illustration">search illustration</string>
-  <string name="language">Language</string>
   <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
   <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
   <string name="sign_out">Sign Out</string>
   <string name="feature_not_ready">Feature still on Development</string>
+
+  <string name="search_any">Search any Movies</string>
+  <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
-  <string name="playing_now_on_theater">Playing now on Theater</string>
+  <string name="search_illustration">search illustration</string>
+  <string name="language">Language</string>
   <string name="back">Back</string>
+
+  <string name="summary">Summary</string>
   <string name="director">Director: %s</string>
+  <string name="writing">Creator: %s</string>
   <string name="cast">Cast</string>
   <string name="as">as</string>
-  <string name="added">%s has been added to favorite</string>
-  <string name="deleted">Item has been deleted from favorite</string>
-  <string name="popular">Popular</string>
-  <string name="top_rated">Top Rated</string>
-  <string name="now_playing">Now Playing</string>
-  <string name="upcoming">Upcoming</string>
+
+  <string name="added_favorite">%s has been added to favorite</string>
+  <string name="added_watchlist">%s has been added to watchlist</string>
+  <string name="deleted_from_favorite">Item has been deleted from favorite</string>
+  <string name="deleted_from_watchlist">Item has been deleted from watchlist</string>
+
   <string name="no_data">No Data</string>
-  <string name="username">Username</string>
-  <string name="gues_user">Guest User</string>
-  <string name="airing_today">Airing Today</string>
+  <string name="guest_user">Guest User</string>
   <string name="on_tv">On Tv</string>
+  <string name="rating">Rating</string>
+  <string name="cancel">Cancel</string>
+  <string name="submit">Submit</string>
+  <string name="add_to_favorite">add to favorite</string>
+  <string name="add_to_watchlist">add to watchlist</string>
+
+  <string name="your_score">Your Score</string>
+  <string name="your_rating">Your rating:</string>
+  <string name="metascore">Metascore</string>
+  <string name="imdb">IMDb</string>
+  <string name="filmaffinity">FilmAffinity</string>
+  <string name="tmdb">TMDB</string>
+  <string name="rotten_tomatoes">Rotten Tomatoes</string>
+
+  <string name="_divider">|</string>
+  <string name="nan">NaN</string>
+  <string name="picture">Picture</string>
+  <string name="future_update">Future Update</string>
 </resources>

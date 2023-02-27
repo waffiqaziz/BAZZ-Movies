@@ -22,7 +22,8 @@ android {
     buildConfigField("String", "API_KEY", API_KEY)
 
     // BASE URL
-    buildConfigField "String", "API_URL", '"https://api.themoviedb.org/"'
+    buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'
+    buildConfigField "String", "IMDbApiLib_API_URL", '"https://imdb-api.com/"'
   }
 
   buildTypes {

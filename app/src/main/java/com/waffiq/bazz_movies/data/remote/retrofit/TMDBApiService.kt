@@ -1,12 +1,14 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.waffiq.bazz_movies.BuildConfig.API_KEY
+import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.*
 import retrofit2.Call
 
 import retrofit2.http.*
 
-interface ApiService {
+interface TMDBApiService {
   @GET("3/authentication/token/new?api_key=$API_KEY")
   fun createToken(): Call<AuthenticationResponse>
 
@@ -73,6 +75,36 @@ interface ApiService {
     @Query("page") page : Int
   ): MovieTvResponse
 
+  @GET("3/account/{account_id}/favorite/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
+  suspend fun getFavoriteMovies(
+    @Query("session_id") session_id : String,
+    @Query("page") page : Int,
+  ): MovieTvResponse
+
+  @GET("3/account/{account_id}/favorite/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
+  suspend fun getFavoriteTv(
+    @Query("session_id") session_id : String,
+    @Query("page") page : Int,
+  ): MovieTvResponse
+
+  @GET("3/account/{account_id}/watchlist/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
+  suspend fun getWatchlistMovies(
+    @Query("session_id") session_id : String,
+    @Query("page") page : Int,
+  ): MovieTvResponse
+
+  @GET("3/account/{account_id}/watchlist/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
+  suspend fun getWatchlistTv(
+    @Query("session_id") session_id : String,
+    @Query("page") page : Int,
+  ): MovieTvResponse
+
+  @GET("3/movie/{movie_id}/account_states?api_key=$API_KEY")
+  fun getStated(
+    @Path("movie_id") movie_id: Int,
+    @Query("session_id") session_id : String
+  ): Call<StatedResponse>
+
 //  @GET("3/genre/movie/list?api_key=$API_KEY")
 //  fun getMovieGenres(
 //    @Query("language") language: String = "en"
@@ -93,4 +125,36 @@ interface ApiService {
   fun getCreditTv(
     @Path("tv_id") tv_id: Int
   ): Call<CreditsResponse>
+
+  @GET("3/movie/{movie_id}?api_key=$API_KEY&language=en-US")
+  fun getDetailMovie(
+    @Path("movie_id") movie_id: Int
+  ): Call<DetailMovieResponse>
+
+  @GET("3/tv/{tv_id}?api_key=$API_KEY&language=en-US")
+  fun getDetailTv(
+    @Path("tv_id") tv_id: Int
+  ): Call<DetailTvResponse>
+
+  @GET("3/tv/{tv_id}/external_ids?api_key=$API_KEY&language=en-US")
+  fun getExternalId(
+    @Path("tv_id") tv_id: Int
+  ): Call<ExternalIdResponse>
+
+  @Headers("Content-Type: application/json;charset=utf-8")
+  @POST("3/account/{account_id}/favorite?api_key=$API_KEY")
+  fun postFavoriteTMDB(
+    @Path("account_id") accountId: Int,
+    @Query("session_id") session_id : String,
+    @Body data: Favorite
+  ): Call<PostFavoriteWatchlistResponse>
+
+  @Headers("Content-Type: application/json;charset=utf-8")
+  @POST("3/account/{account_id}/watchlist?api_key=$API_KEY")
+  fun postWatchlistTMDB(
+    @Path("account_id") accountId: Int,
+    @Query("session_id") session_id : String,
+    @Body data: Watchlist
+  ): Call<PostFavoriteWatchlistResponse>
+
 }

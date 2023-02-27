@@ -1,10 +1,7 @@
 package com.waffiq.bazz_movies.data.local.model
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,7 +13,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         it[NAME_KEY] ?: "",
         it[USERNAME_KEY] ?: "",
         it[PASSWORD_KEY] ?: "",
-        it[USERID_KEY] ?: "",
+        it[USERID_KEY] ?: 0,
         it[TOKEN_KEY] ?: "",
         it[STATE_KEY] ?: false,
         it[GRAVATAR_KEY] ?: ""
@@ -41,7 +38,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
       it[STATE_KEY] = false
       it[NAME_KEY] = ""
       it[USERNAME_KEY] = ""
-      it[USERID_KEY] = ""
+      it[USERID_KEY] = 0
       it[TOKEN_KEY] = ""
       it[PASSWORD_KEY] = ""
       it[GRAVATAR_KEY] = ""
@@ -55,7 +52,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
     private val NAME_KEY = stringPreferencesKey("name")
     private val USERNAME_KEY = stringPreferencesKey("username")
     private val PASSWORD_KEY = stringPreferencesKey("password")
-    private val USERID_KEY = stringPreferencesKey("userId")
+    private val USERID_KEY = intPreferencesKey("userId")
     private val TOKEN_KEY = stringPreferencesKey("token")
     private val STATE_KEY = booleanPreferencesKey("state")
     private val GRAVATAR_KEY = stringPreferencesKey("gravatar")

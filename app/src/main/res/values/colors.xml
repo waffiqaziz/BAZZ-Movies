@@ -5,6 +5,7 @@
   <color name="dark_medium">#25272A</color>
   <color name="dark">#202123</color>
   <color name="dark_light">#2B2D30</color>
+  <color name="dark_light_100">#303437</color>
   <color name="teal_200">#FF03DAC5</color>
   <color name="teal_700">#FF018786</color>
   <color name="black">#FF000000</color>

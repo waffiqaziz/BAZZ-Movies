@@ -50,7 +50,7 @@ data class ResultItem(
 	val popularity: Double? = null,
 
 	@SerializedName("vote_average")
-	val voteAverage: Double? = null,
+	val voteAverage: Float? = null,
 
 	@SerializedName("name")
 	val name: String? = null,
@@ -76,3 +76,4 @@ data class ResultItem(
 	@SerializedName("release_date")
 	val releaseDate: String? = null
 ): Parcelable
+
