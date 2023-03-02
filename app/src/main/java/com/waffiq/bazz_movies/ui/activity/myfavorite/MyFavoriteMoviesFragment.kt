@@ -48,9 +48,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModelMovie = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
 
-//    setupSearchView()
     checkUser()
-//    initAction()
     return root
   }
 
@@ -186,7 +184,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 //  }
 
   private fun checkUser() {
-    //setup recycleview
+    //setup recyclerview
     binding.rvFavMovies.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -231,7 +229,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   private fun setDataGuestUser() {
     binding.rvFavMovies.adapter = adapterDB
 
-    viewModelMovie.allFavoriteDB.observe(viewLifecycleOwner) {
+    viewModelMovie.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
 //      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE

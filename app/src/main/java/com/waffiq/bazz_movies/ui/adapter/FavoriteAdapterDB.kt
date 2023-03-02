@@ -39,10 +39,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    lateinit var getFavoriteDB: FavoriteDB
-
     fun bind(fav: FavoriteDB) {
-      getFavoriteDB = fav
       Glide.with(binding.ivPicture)
         .load("http://image.tmdb.org/t/p/w300/" + fav.imagePath )
         .placeholder(R.mipmap.ic_launcher)
@@ -53,7 +50,6 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
       binding.tvGenre.text = fav.genre
       binding.tvYearReleased.text = fav.releaseDate
 
-      //future update
       val resultItem = ResultItem(
         posterPath = fav.imagePath,
         releaseDate = fav.releaseDate,
@@ -62,7 +58,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
         originalTitle = fav.title,
         id = fav.mediaId
       )
-//
+
       binding.containerResult.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
         resultItem.mediaType = "movie"

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.ui.activity.myfavorite
+package com.waffiq.bazz_movies.ui.activity.mywatchlist
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
+import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
-import com.waffiq.bazz_movies.ui.adapter.FavoriteTvAdapter
+import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
@@ -23,23 +23,23 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
-class MyFavoriteTvSeriesFragment : Fragment() {
-
-  private var _binding: FragmentMyFavoriteTvSeriesBinding? = null
+class MyWatchlistMoviesFragment : Fragment() {
+  private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var viewModel: MyFavoriteViewModel
+  private lateinit var viewModel: MyWatchlistViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    _binding = FragmentMyFavoriteTvSeriesBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    // Inflate the layout for this fragment
+    _binding = FragmentMyWatchlistMoviesBinding.inflate(inflater, container, false)
+    val root = binding.root
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
+    viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
 
     val pref = requireContext().dataStore
     val factoryAuth = ViewModelUserFactory.getInstance(pref)
@@ -51,7 +51,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private fun checkUser() {
     //setup recycleview
-    binding.rvFavTv.layoutManager =
+    binding.rvWatchlistMovie.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
@@ -63,10 +63,21 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     }
   }
 
-  private fun setDataUserLogin(userToken: String) {
-    val adapterPaging = FavoriteTvAdapter()
+  private fun setDataGuestUser() {
+    val adapterDB = FavoriteAdapterDB()
+    binding.rvWatchlistMovie.adapter = adapterDB
 
-    binding.rvFavTv.adapter = adapterPaging.withLoadStateFooter(
+    viewModel.getWatchlistMoviesDB.observe(viewLifecycleOwner) {
+      adapterDB.setFavorite(it)
+      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+    }
+  }
+
+  private fun setDataUserLogin(userToken: String) {
+    val adapterPaging = FavoriteMovieAdapter()
+
+    binding.rvWatchlistMovie.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()
       }
@@ -88,25 +99,15 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         loadState.source.refresh is LoadState.Loading //show progressbar
     }
 
-    viewModel.getFavoriteTvSeries(userToken)
+    viewModel.getWatchlistMovies(userToken)
       .observe(viewLifecycleOwner) {
         adapterPaging.submitData(lifecycle, it)
       }
-  }
-
-  private fun setDataGuestUser() {
-    val adapterDB = FavoriteAdapterDB()
-    binding.rvFavTv.adapter = adapterDB
-
-    viewModel.getFavoriteTvFromDB.observe(viewLifecycleOwner) {
-      adapterDB.setFavorite(it)
-      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-    }
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
   }
+
 }

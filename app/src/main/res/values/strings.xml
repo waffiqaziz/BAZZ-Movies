@@ -71,6 +71,7 @@
 
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
+  <string name="not_rated">NR</string>
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDb</string>
   <string name="filmaffinity">FilmAffinity</string>

@@ -7,6 +7,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
@@ -16,7 +18,6 @@ import java.text.DecimalFormat
 
 class FavoriteMovieAdapter :
   PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
-
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,26 +34,28 @@ class FavoriteMovieAdapter :
   inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: ResultItem) {
+    fun bind(resultItem: ResultItem) {
       Glide.with(binding.ivPicture)
-        .load("http://image.tmdb.org/t/p/w342/" + movie.posterPath) // URL movie poster
-        .placeholder(R.drawable.ic_bazz_logo)
+        .load("http://image.tmdb.org/t/p/w342/" + resultItem.posterPath) // URL movie poster
+        .placeholder(R.drawable.ic_bazz_placeholder_poster)
+        .transform(CenterCrop())
+        .transition(DrawableTransitionOptions.withCrossFade())
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
 
-      binding.tvTitle.text = movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
-      binding.tvYearReleased.text = movie.firstAirDate ?: movie.releaseDate
-      binding.tvGenre.text = movie.genreIds?.let { Helper.iterateGenre(it) }
-      binding.ratingBar.rating = (movie.voteAverage ?: 0F) / 2
+      binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+      binding.tvYearReleased.text = resultItem.firstAirDate ?: resultItem.releaseDate
+      binding.tvGenre.text = resultItem.genreIds?.let { Helper.iterateGenre(it) }
+      binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")
-      (df.format((movie.voteAverage ?: 0F)).toString() + "/10").also { binding.tvRating.text = it }
+      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also { binding.tvRating.text = it }
 
       // OnClickListener
       binding.container.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        movie.mediaType = "movie"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
+        resultItem.mediaType = "movie"
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
         it.context.startActivity(intent)
       }
     }

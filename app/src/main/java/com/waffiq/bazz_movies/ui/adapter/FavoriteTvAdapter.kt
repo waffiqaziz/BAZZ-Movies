@@ -11,15 +11,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
-import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
+import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Helper
+import java.text.DecimalFormat
 
-class TvAdapter :
-  PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
-
+class FavoriteTvAdapter :
+  PagingDataAdapter<ResultItem, FavoriteTvAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -30,27 +31,36 @@ class TvAdapter :
     }
   }
 
-  inner class ViewHolder(private var binding: ItemTrendingBinding) :
+  inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: ResultItem) {
-      Glide.with(binding.imgPoster)
-        .load("http://image.tmdb.org/t/p/w200/" + movie.posterPath) // URL movie poster
+    fun bind(resultItem: ResultItem) {
+      Glide.with(binding.ivPicture)
+        .load("http://image.tmdb.org/t/p/w342/" + resultItem.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(DrawableTransitionOptions.withCrossFade())
         .error(R.drawable.ic_broken_image)
-        .into(binding.imgPoster)
+        .into(binding.ivPicture)
 
-      // image OnClickListener
-      binding.imgPoster.setOnClickListener {
+      binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+      binding.tvYearReleased.text = resultItem.firstAirDate ?: resultItem.releaseDate
+      binding.tvGenre.text = resultItem.genreIds?.let { Helper.iterateGenre(it) }
+      binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
+
+      val df = DecimalFormat("#.#")
+      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also { binding.tvRating.text = it }
+
+      // OnClickListener
+      binding.container.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        movie.mediaType = "tv"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
+        resultItem.mediaType = "tv"
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
         it.context.startActivity(intent)
       }
     }
   }
+
   companion object {
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
       override fun areItemsTheSame(

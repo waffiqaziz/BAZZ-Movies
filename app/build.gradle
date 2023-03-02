@@ -19,7 +19,9 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     // API KEY inside gradle.properties
+
     buildConfigField("String", "API_KEY", API_KEY)
+    buildConfigField("String", "API_KEY_IMDB_API_LIB", API_KEY_IMDB_API_LIB)
 
     // BASE URL
     buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'

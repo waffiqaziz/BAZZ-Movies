@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.CastItem
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
@@ -40,7 +42,9 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
       with(binding) {
         Glide.with(imgCastPhoto)
           .load("http://image.tmdb.org/t/p/w300/" + cast.profilePath )
-          .placeholder(R.mipmap.ic_launcher)
+          .placeholder(R.drawable.ic_bazz_placeholder_poster)
+          .transform(CenterCrop())
+          .transition(DrawableTransitionOptions.withCrossFade())
           .error(R.drawable.ic_broken_image)
           .into(imgCastPhoto)
 

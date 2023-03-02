@@ -18,7 +18,7 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.TMDB_SIGNUP
+import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.Event
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
       startActivity(
         Intent(
           Intent.ACTION_VIEW,
-          Uri.parse(TMDB_SIGNUP)
+          Uri.parse(TMDB_LINK_SIGNUP)
         )
       )
     }

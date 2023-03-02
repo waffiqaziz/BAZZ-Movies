@@ -40,14 +40,16 @@ class DetailMovieViewModel(
 
   fun detailMovie() = movieRepository.detailMovie
 
-  fun extenalId() = movieRepository.externalId
+  fun externalId() = movieRepository.externalId
 
-  fun getStatedMovies(sessionId: String, id: Int) = movieRepository.getStated(sessionId, id)
+  fun getStatedMovie(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
+
+  fun getStatedTv(sessionId: String, id: Int) = movieRepository.getStatedTv(sessionId, id)
 
   fun stated() = movieRepository.stated
 
 
-  // DB Function
+  // Local DB Function
   fun insertToFavoriteDB(fav: FavoriteDB) = movieRepository.insertDB(fav)
 
   fun removeFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
@@ -65,6 +67,7 @@ class DetailMovieViewModel(
   fun updateToRemoveFromWatchlistDB(id: Int) = movieRepository.updateWatchlist(false, id)
 
 
+  // favorite & watchlist function network
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
     movieRepository.postFavorite(sessionId, data, userId)
 

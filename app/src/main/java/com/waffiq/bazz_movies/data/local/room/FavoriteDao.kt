@@ -5,15 +5,20 @@ import androidx.room.*
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
 
-
 @Dao
 interface FavoriteDao {
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1")
-  fun getFavorite(): LiveData<List<FavoriteDB>>
+  @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'tv'")
+  fun getFavoriteTv(): LiveData<List<FavoriteDB>>
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1")
-  fun getWatchlist(): LiveData<List<FavoriteDB>>
+  @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'movie'")
+  fun getFavoriteMovies(): LiveData<List<FavoriteDB>>
+
+  @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'movie'")
+  fun getWatchlistMovies(): LiveData<List<FavoriteDB>>
+
+  @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
+  fun getWatchlistTv(): LiveData<List<FavoriteDB>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE title LIKE '%' || :name || '%'")
   fun getSearchFavorite(name: String): LiveData<List<FavoriteDB>>
@@ -25,7 +30,7 @@ interface FavoriteDao {
   fun isWatchlist(id: Int): Boolean
 
   @Delete
-  fun deleteItemFavorite(favoriteDB: FavoriteDB) : Int // delete from table
+  fun deleteItem(favoriteDB: FavoriteDB) : Int // delete from table
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   fun insertFavorite(favoriteDB: FavoriteDB)

@@ -100,8 +100,14 @@ interface TMDBApiService {
   ): MovieTvResponse
 
   @GET("3/movie/{movie_id}/account_states?api_key=$API_KEY")
-  fun getStated(
+  fun getStatedMovie(
     @Path("movie_id") movie_id: Int,
+    @Query("session_id") session_id : String
+  ): Call<StatedResponse>
+
+  @GET("3/tv/{tv_id}/account_states?api_key=$API_KEY")
+  fun getStatedTv(
+    @Path("tv_id") movie_id: Int,
     @Query("session_id") session_id : String
   ): Call<StatedResponse>
 

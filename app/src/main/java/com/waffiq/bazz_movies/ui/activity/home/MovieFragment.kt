@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.ui.adapter.MovieAdapter
+import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
 class MovieFragment : Fragment() {
@@ -36,7 +36,7 @@ class MovieFragment : Fragment() {
 
   private fun setData(){
     binding.rvPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val popularAdapter = MovieAdapter()
+    val popularAdapter = MovieHomeAdapter()
     binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
         popularAdapter.retry()
@@ -47,7 +47,7 @@ class MovieFragment : Fragment() {
     }
 
     binding.rvNowPlaying.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val nowPlayingAdapter = MovieAdapter()
+    val nowPlayingAdapter = MovieHomeAdapter()
     binding.rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
         nowPlayingAdapter.retry()
@@ -58,7 +58,7 @@ class MovieFragment : Fragment() {
     }
 
     binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val upComingAdapter = MovieAdapter()
+    val upComingAdapter = MovieHomeAdapter()
     binding.rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
         nowPlayingAdapter.retry()
@@ -69,7 +69,7 @@ class MovieFragment : Fragment() {
     }
 
     binding.rvTopRated.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val topRatedAdapter = MovieAdapter()
+    val topRatedAdapter = MovieHomeAdapter()
     binding.rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
         topRatedAdapter.retry()

@@ -15,13 +15,19 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
       }
   }
 
-  fun getAllFavorite(): LiveData<List<FavoriteDB>> = favoriteDao.getFavorite()
+  val getFavoriteMovies = favoriteDao.getFavoriteMovies()
+
+  val getFavoriteTv = favoriteDao.getFavoriteTv()
+
+  val getWatchlistMovies = favoriteDao.getWatchlistMovies()
+
+  val getWatchlistTv = favoriteDao.getWatchlistTv()
 
   fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> = favoriteDao.getSearchFavorite(name)
 
   fun insertFavorite(favoriteDBList: FavoriteDB) = favoriteDao.insertFavorite(favoriteDBList)
 
-  fun deleteItemFavorite(favoriteDB: FavoriteDB) = favoriteDao.deleteItemFavorite(favoriteDB)
+  fun deleteItemFromDB(favoriteDB: FavoriteDB) = favoriteDao.deleteItem(favoriteDB)
 
   fun isFavorite(id: Int) = favoriteDao.isFavorite(id)
 

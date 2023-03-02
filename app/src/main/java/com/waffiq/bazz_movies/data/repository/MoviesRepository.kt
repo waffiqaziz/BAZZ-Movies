@@ -100,6 +100,39 @@ class MoviesRepository(
     ).flow
   }
 
+  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        FavoriteTvPagingSource(sessionId, tmdbApiService)
+      }
+    ).flow
+  }
+
+  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        WatchlistTvPagingSource(sessionId, tmdbApiService)
+      }
+    ).flow
+  }
+
+  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        WatchlistMoviePagingSource(sessionId, tmdbApiService)
+      }
+    ).flow
+  }
+
   fun getPagingPopularTv(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
@@ -373,10 +406,40 @@ class MoviesRepository(
     })
   }
 
-  fun getStated(sessionId: String, id: Int) {
+  fun getStatedMovie(sessionId: String, id: Int) {
     val client = TMDBApiConfig
       .getApiService()
-      .getStated(id, sessionId)
+      .getStatedMovie(id, sessionId)
+
+    client.enqueue(object : Callback<StatedResponse> {
+      override fun onResponse(
+        call: Call<StatedResponse>,
+        response: Response<StatedResponse>
+      ) {
+        if (response.isSuccessful) {
+          _stated.value = response.body()
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<StatedResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getStatedTv(sessionId: String, id: Int) {
+    val client = TMDBApiConfig
+      .getApiService()
+      .getStatedTv(id, sessionId)
 
     client.enqueue(object : Callback<StatedResponse> {
       override fun onResponse(
@@ -463,7 +526,13 @@ class MoviesRepository(
     })
   }
 
-  fun getAllFavoriteFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getAllFavorite()
+  fun getFavoriteMoviesFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteMovies
+
+  fun getFavoriteTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteTv
+
+  fun getWatchlistMovieFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistMovies
+
+  fun getWatchlistTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistTv
 
   fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
@@ -473,7 +542,7 @@ class MoviesRepository(
   }
 
   fun deleteFromDB(fav: FavoriteDB) {
-    appExecutors.diskIO().execute { localDataSource.deleteItemFavorite(fav) }
+    appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
   }
 
   fun isFavoriteDB(id: Int) = localDataSource.isFavorite(id)
@@ -491,13 +560,13 @@ class MoviesRepository(
     private var instance: MoviesRepository? = null
 
     fun getInstance(
-      tmdbApiService: TMDBApiService,
-      imdbApiLibService: IMDBApiLibService,
+      TMDBApiService: TMDBApiService,
+      IMDBApiLibService: IMDBApiLibService,
       localData: LocalDataSource,
       appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(tmdbApiService, imdbApiLibService, localData, appExecutors)
+        instance ?: MoviesRepository(TMDBApiService, IMDBApiLibService, localData, appExecutors)
       }
   }
 }

@@ -7,14 +7,15 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 
-class MovieAdapter :
-  PagingDataAdapter<ResultItem, MovieAdapter.ViewHolder>(DIFF_CALLBACK) {
-
+class MovieHomeAdapter :
+  PagingDataAdapter<ResultItem, MovieHomeAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,7 +35,9 @@ class MovieAdapter :
     fun bind(movie: ResultItem) {
       Glide.with(binding.imgPoster)
         .load("http://image.tmdb.org/t/p/w200/" + movie.posterPath) // URL movie poster
-        .placeholder(R.drawable.ic_bazz_logo)
+        .placeholder(R.drawable.ic_bazz_placeholder_poster)
+        .transform(CenterCrop())
+        .transition(DrawableTransitionOptions.withCrossFade())
         .error(R.drawable.ic_broken_image)
         .into(binding.imgPoster)
 

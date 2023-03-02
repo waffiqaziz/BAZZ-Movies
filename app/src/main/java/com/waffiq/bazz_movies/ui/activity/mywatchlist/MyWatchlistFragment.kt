@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistBinding
+import com.waffiq.bazz_movies.ui.adapter.viewpager.MyWatchlistViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Constants
 
 class MyWatchlistFragment : Fragment() {
 
@@ -31,7 +34,21 @@ class MyWatchlistFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
 
+    setupView()
     return root
+  }
+
+  private fun setupView(){
+    viewpager = binding.viewPager
+    tabLayout = binding.tabs
+    viewpager.isUserInputEnabled = false //disable swiping between tabs
+
+    val adapter = MyWatchlistViewPagerAdapter(childFragmentManager, lifecycle)
+    viewpager.adapter = adapter
+
+    TabLayoutMediator(tabLayout, viewpager){ tab, position ->
+      tab.text = Constants.tabMoviesTvHeadingArray[position]
+    }.attach()
   }
 
   override fun onDestroyView() {

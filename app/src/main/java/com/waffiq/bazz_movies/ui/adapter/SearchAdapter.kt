@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.ui.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -76,7 +75,7 @@ class SearchAdapter :
       .load(
         "http://image.tmdb.org/t/p/w300" + data.profilePath
       )
-      .placeholder(R.drawable.ic_bazz_placeholder)
+      .placeholder(R.drawable.ic_bazz_placeholder_search)
       .error(R.drawable.ic_broken_image)
       .transform(CenterCrop())
       .transition(DrawableTransitionOptions.withCrossFade())
@@ -93,7 +92,7 @@ class SearchAdapter :
         "http://image.tmdb.org/t/p/w300/" + (data.backdropPath ?: data.posterPath)
       )
       .transition(DrawableTransitionOptions.withCrossFade())
-      .placeholder(R.drawable.ic_bazz_placeholder)
+      .placeholder(R.drawable.ic_bazz_placeholder_search)
       .error(R.drawable.ic_broken_image)
       .into(binding.ivPicture)
     binding.tvYearReleased.text = data.releaseDate ?: data.firstAirDate

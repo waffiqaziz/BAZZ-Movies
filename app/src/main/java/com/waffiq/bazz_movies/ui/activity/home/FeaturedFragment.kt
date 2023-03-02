@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.ui.adapter.MovieAdapter
+import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 
@@ -63,7 +63,7 @@ class FeaturedFragment : Fragment() {
     }
 
     binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val adapterUpcoming = MovieAdapter()
+    val adapterUpcoming = MovieHomeAdapter()
     binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterUpcoming.retry()
@@ -74,7 +74,7 @@ class FeaturedFragment : Fragment() {
     }
 
     binding.rvPlayingNow.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val adapterPlayingNow = MovieAdapter()
+    val adapterPlayingNow = MovieHomeAdapter()
     binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPlayingNow.retry()

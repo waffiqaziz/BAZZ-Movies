@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.BuildConfig.API_KEY_IMDB_API_LIB
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Watchlist
@@ -142,7 +143,7 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         //show score
-        movie.imdbId?.let { viewModel.getScore("k_v3ex7lfp", it) }
+        movie.imdbId?.let { viewModel.getScore(API_KEY_IMDB_API_LIB, it) }
         viewModel.score().observe(this) {
           showScore(it)
         }
@@ -174,16 +175,16 @@ class DetailMovieActivity : AppCompatActivity() {
 
       //show score
       viewModel.getExternalId(dataExtra.id!!)
-      viewModel.extenalId().observe(this) { externalId ->
+      viewModel.externalId().observe(this) { externalId ->
         if (externalId.imdbId.isNullOrEmpty()) {
           binding.apply {
-            tvScoreImdb.text = "NR"
-            tvScoreFilmAffinity.text = "NR"
-            tvScoreMetascore.text = "NR"
-            tvScoreRottenTomatoes.text = "NR"
+            tvScoreImdb.text = getString(R.string.not_rated)
+            tvScoreFilmAffinity.text = getString(R.string.not_rated)
+            tvScoreMetascore.text = getString(R.string.not_rated)
+            tvScoreRottenTomatoes.text = getString(R.string.not_rated)
           }
         } else {
-          viewModel.getScore("k_v3ex7lfp", externalId.imdbId)
+          viewModel.getScore(API_KEY_IMDB_API_LIB, externalId.imdbId)
           viewModel.score().observe(this) {
             showScore(it)
           }
@@ -207,7 +208,7 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.btnFavorite.setOnClickListener {
       if (!isLogin) { //guest user
         if (!favorite) {
-          CoroutineScope(Dispatchers.IO).launch{
+          CoroutineScope(Dispatchers.IO).launch {
             if (viewModel.checkIsWatchlistDB(dataExtra.id!!)) { // if movies is on watchlist, then edit is_favorited to true
               viewModel.updateToFavoriteDB(dataExtra.id!!)
             } else { // insert
@@ -215,7 +216,7 @@ class DetailMovieActivity : AppCompatActivity() {
             }
           }
           favorite = true
-          binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
+          changeBtnFavoriteBG(favorite)
           showToastAddedFavorite()
         } else {
           if (viewModel.checkIsWatchlistDB(dataExtra.id!!)) { // if movies is on watchlist, then edit is_favorited to false
@@ -224,8 +225,8 @@ class DetailMovieActivity : AppCompatActivity() {
             viewModel.removeFromFavoriteDB(mapResponsesToEntitiesFavorite(dataExtra))
           }
           favorite = false
-          binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
-          showToastLong(this, this.getString(R.string.deleted_from_favorite))
+          changeBtnFavoriteBG(favorite)
+          showToastRemoveFromFavorite()
         }
       } else { // user login
         if (favorite) {
@@ -238,8 +239,8 @@ class DetailMovieActivity : AppCompatActivity() {
           authenticationViewModel.getUser().observe(this) { user ->
             viewModel.postFavorite(user.token, favoriteMode, user.userId)
           }
-          showToastLong(this, this.getString(R.string.deleted_from_favorite))
-          binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
+          showToastRemoveFromFavorite()
+          changeBtnFavoriteBG(favorite)
         } else {
           favorite = true
           val favoriteMode = Favorite(
@@ -250,7 +251,7 @@ class DetailMovieActivity : AppCompatActivity() {
           authenticationViewModel.getUser().observe(this) { user ->
             viewModel.postFavorite(user.token, favoriteMode, user.userId)
           }
-          binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
+          changeBtnFavoriteBG(favorite)
           showToastAddedFavorite()
         }
       }
@@ -259,7 +260,7 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.btnWatchlist.setOnClickListener {
       if (!isLogin) { //guest user
         if (!watchlist) {
-          CoroutineScope(Dispatchers.IO).launch{
+          CoroutineScope(Dispatchers.IO).launch {
             if (viewModel.checkIsFavoriteDB(dataExtra.id!!)) { // if movies is on favorite, then edit is_watchlist to true
               viewModel.updateToWatchlist(dataExtra.id!!)
             } else { // insert
@@ -267,7 +268,7 @@ class DetailMovieActivity : AppCompatActivity() {
             }
           }
           watchlist = true
-          binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
+          changeBtnWatchlistBG(watchlist)
           showToastAddedWatchlist()
         } else {
           if (viewModel.checkIsWatchlistDB(dataExtra.id!!)) { // if movies is on favorite, then edit is_watchlist to false
@@ -276,11 +277,11 @@ class DetailMovieActivity : AppCompatActivity() {
             viewModel.removeFromFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
           }
           watchlist = false
-          binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
+          changeBtnWatchlistBG(watchlist)
           showToastLong(this, this.getString(R.string.deleted_from_watchlist))
         }
       } else { // user login
-        if (watchlist) {
+        if (watchlist) {  // if movies is on favorite, then post watchlist as false (remove from watchlist)
           watchlist = false
           val watchlistMode = Watchlist(
             dataExtra.mediaType,
@@ -290,8 +291,8 @@ class DetailMovieActivity : AppCompatActivity() {
           authenticationViewModel.getUser().observe(this) { user ->
             viewModel.postWatchlist(user.token, watchlistMode, user.userId)
           }
-          showToastLong(this, this.getString(R.string.deleted_from_watchlist))
-          binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
+          showToastRemoveFromWatchlist()
+          changeBtnWatchlistBG(watchlist)
         } else {
           watchlist = true
           val watchlistMode = Watchlist(
@@ -302,7 +303,7 @@ class DetailMovieActivity : AppCompatActivity() {
           authenticationViewModel.getUser().observe(this) { user ->
             viewModel.postWatchlist(user.token, watchlistMode, user.userId)
           }
-          binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
+          changeBtnWatchlistBG(watchlist)
           showToastAddedWatchlist()
         }
       }
@@ -344,24 +345,17 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun isFavorite(isLogin: Boolean) {
     if (isLogin) { //user
       authenticationViewModel.getUser().observe(this) { user ->
-        viewModel.getStatedMovies(user.token, dataExtra.id!!)
+        getStated(user.token)
         viewModel.stated().observe(this) {
           favorite = it.favorite!!
-          if (favorite) binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
-          else binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
+          changeBtnFavoriteBG(favorite)
         }
       }
     } else { //guest user
       CoroutineScope(Dispatchers.Default).launch {
         val result = viewModel.checkIsFavoriteDB(dataExtra.id!!)
         withContext(Dispatchers.Main) {
-          if (result) {
-            favorite = true
-            binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
-          } else {
-            favorite = false
-            binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
-          }
+          changeBtnFavoriteBG(result)
         }
       }
     }
@@ -370,27 +364,42 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun isWatchlist(isLogin: Boolean) {
     if (isLogin) { //user
       authenticationViewModel.getUser().observe(this) { user ->
-        viewModel.getStatedMovies(user.token, dataExtra.id!!)
+        getStated(user.token)
         viewModel.stated().observe(this) {
           watchlist = it.watchlist!!
-          if (watchlist) binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
-          else binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
+          changeBtnWatchlistBG(watchlist)
         }
       }
     } else { //guest user
       CoroutineScope(Dispatchers.Default).launch {
         val result = viewModel.checkIsWatchlistDB(dataExtra.id!!)
         withContext(Dispatchers.Main) {
-          if (result) {
-            watchlist = true
-            binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
-          } else {
-            watchlist = false
-            binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
-          }
+          watchlist = result
+          changeBtnWatchlistBG(result)
         }
       }
     }
+  }
+
+  private fun changeBtnWatchlistBG(boolean: Boolean) {
+    // if watchlist
+    if (boolean) binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
+
+    //if not watchlist
+    else binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
+  }
+
+  private fun changeBtnFavoriteBG(boolean: Boolean) {
+    // if favorite
+    if (boolean) binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
+
+    //if not favorite
+    else binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
+  }
+
+  private fun getStated(token: String) {
+    if (dataExtra.mediaType == "movie") viewModel.getStatedMovie(token, dataExtra.id!!)
+    else viewModel.getStatedTv(token, dataExtra.id!!)
   }
 
   private fun showToastAddedFavorite() {
@@ -409,6 +418,14 @@ class DetailMovieActivity : AppCompatActivity() {
         dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
       )
     )
+  }
+
+  private fun showToastRemoveFromFavorite() {
+    showToastLong(this, this.getString(R.string.deleted_from_favorite))
+  }
+
+  private fun showToastRemoveFromWatchlist() {
+    showToastLong(this, this.getString(R.string.deleted_from_watchlist))
   }
 
   private fun showDialogRate() {

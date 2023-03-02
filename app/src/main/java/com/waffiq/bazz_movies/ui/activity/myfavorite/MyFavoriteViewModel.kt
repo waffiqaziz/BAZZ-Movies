@@ -15,22 +15,20 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   private val _undo = MutableLiveData<Event<FavoriteDB>>()
   val undo: LiveData<Event<FavoriteDB>> = _undo
 
-  val allFavoriteDB = movieRepository.getAllFavoriteFromDB()
-
-  fun searchFavorite(name: String): LiveData<List<FavoriteDB>> {
-    return movieRepository.getFavoriteDB(name)
-  }
-
+  // from db
+  val getFavoriteTvFromDB = movieRepository.getFavoriteMoviesFromDB()
+  val getFavoriteMoviesFromDB = movieRepository.getFavoriteTvFromDB()
+  fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
   fun deleteFavDB(favoriteDB: FavoriteDB) {
     movieRepository.deleteFromDB(favoriteDB)
     _snackBarText.value = Event(R.string.deleted_from_favorite)
     _undo.value = Event(favoriteDB)
   }
-
   fun insertToFavoriteDB(fav: FavoriteDB) = movieRepository.insertDB(fav)
 
+  // from network
   fun getFavoriteMovies(sessionId: String) =
     movieRepository.getPagingFavoriteMovies(sessionId).cachedIn(viewModelScope).asLiveData()
-
-
+  fun getFavoriteTvSeries(sessionId: String) =
+    movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
 }
