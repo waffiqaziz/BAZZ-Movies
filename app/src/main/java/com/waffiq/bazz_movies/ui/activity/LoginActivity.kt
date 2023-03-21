@@ -20,6 +20,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.Helper
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -95,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
   private fun goToMainActivity() {
     startActivity(Intent(this, MainActivity::class.java))
     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    Helper.showToastLong(this, "Login Successful")
     finish()
   }
 

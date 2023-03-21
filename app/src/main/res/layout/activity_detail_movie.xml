@@ -210,7 +210,6 @@
         app:layout_constraintStart_toStartOf="@+id/bg_top"
         app:layout_constraintTop_toBottomOf="@+id/tv_director" />
 
-
       <TextView
         android:id="@+id/tv_summary_header"
         style="@style/TextHeader1"
