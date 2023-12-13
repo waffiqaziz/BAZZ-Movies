@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper
@@ -48,6 +49,15 @@ class LoginActivity : AppCompatActivity() {
         Intent(
           Intent.ACTION_VIEW,
           Uri.parse(TMDB_LINK_SIGNUP)
+        )
+      )
+    }
+
+    binding.tvForgetPassword.setOnClickListener {
+      startActivity(
+        Intent(
+          Intent.ACTION_VIEW,
+          Uri.parse(TMDB_LINK_FORGET_PASSWORD)
         )
       )
     }

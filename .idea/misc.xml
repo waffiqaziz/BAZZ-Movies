@@ -14,6 +14,7 @@
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/bg_gradient.xml" value="0.1985" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/bg_gradient_shape.xml" value="0.2885" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/bg_mulmed.xml" value="0.3725" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/cursor_color.xml" value="0.1055" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/gradient_shape.xml" value="0.3425" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_alert_circle.xml" value="0.3725" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/drawable/ic_bazz.xml" value="0.2" />
@@ -59,7 +60,7 @@
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_detail_movie.xml" value="0.33" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_home.xml" value="0.16" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_list_top_rated_movies.xml" value="0.1" />
-        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_person.xml" value="0.2722222222222222" />
         <entry key="..\:/pem/AndroidStudio/Dicoding/Android Expert/bazz_movies/app/src/main/res/layout/activity_splash_screen.xml" value="0.3052586575459598" />

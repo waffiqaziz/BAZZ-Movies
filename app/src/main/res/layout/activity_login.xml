@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/dark"
-  android:id="@+id/constraint_layout"
   tools:context=".ui.activity.LoginActivity">
 
   <ImageView
@@ -57,12 +57,12 @@
     app:layout_constraintStart_toStartOf="parent" />
 
   <TextView
-    android:id="@+id/tv_joinTMDB"
+    android:id="@+id/tv_forget_password"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="20dp"
     android:fontFamily="@font/gothic"
-    android:text="@string/join_tmdb"
+    android:text="@string/forget_password"
     android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="@+id/img_bazz_logo"
     app:layout_constraintEnd_toEndOf="parent"
@@ -83,8 +83,10 @@
     android:textColor="@color/white"
     android:textColorHint="@color/light_gray"
     android:textColorLink="@color/white"
+    android:textCursorDrawable="@drawable/cursor_color"
     app:layout_constraintBottom_toTopOf="@+id/ed_pass"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
     app:layout_constraintStart_toStartOf="@+id/textView"
     tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -103,6 +105,7 @@
     android:textColor="@color/white"
     android:textColorHint="@color/light_gray"
     android:textColorLink="@color/white"
+    android:textCursorDrawable="@drawable/cursor_color"
     app:layout_constraintBottom_toTopOf="@+id/btn_login"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="@+id/textView"
@@ -126,10 +129,10 @@
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
     android:layout_marginBottom="8dp"
+    android:backgroundTint="@color/yellow"
     android:fontFamily="@font/gothicb"
     android:text="@string/login"
     android:textAllCaps="false"
-    android:backgroundTint="@color/yellow"
     android:textColor="@color/dark_medium"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"
     app:layout_constraintEnd_toEndOf="parent"
@@ -144,18 +147,18 @@
     android:fontFamily="@font/gothic"
     android:text="@string/guest_session"
     android:textColor="@color/white"
-    app:layout_constraintBottom_toTopOf="@+id/tv_disclaimer"
+    app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
     app:layout_constraintStart_toStartOf="@+id/btn_login" />
 
   <TextView
-    android:id="@+id/tv_disclaimer"
+    android:id="@+id/tv_joinTMDB"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:fontFamily="@font/gothic"
     android:gravity="center"
-    android:text="@string/credit"
+    android:text="@string/join_tmdb"
     android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -165,12 +168,12 @@
     android:id="@+id/progress_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:visibility="gone"
-    tools:visibility="visible"
     android:indeterminateTint="@color/yellow"
+    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
