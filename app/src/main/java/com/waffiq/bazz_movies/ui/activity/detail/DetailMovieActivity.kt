@@ -2,9 +2,12 @@ package com.waffiq.bazz_movies.ui.activity.detail
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -16,12 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.BuildConfig.API_KEY_IMDB_API_LIB
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.ScoreRatingResponse
+import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
@@ -45,7 +48,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var viewModel: DetailMovieViewModel
   private lateinit var authenticationViewModel: AuthenticationViewModel
 
-  private var favorite = false
+  private var favorite = false // is movie/tv series favorite/not
   private var watchlist = false
   private var isLogin = false
 
@@ -103,6 +106,20 @@ class DetailMovieActivity : AppCompatActivity() {
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
       }
     }
+
+    //show backdrop
+    Glide.with(binding.ivYoutubeVideo)
+      .load(
+        if (dataExtra.backdropPath.isNullOrEmpty()) {
+          "https://image.tmdb.org/t/p/w1280/" + dataExtra.posterPath
+        } else {
+          "https://image.tmdb.org/t/p/w1280/" + dataExtra.backdropPath
+        }
+      ) // URL movie poster
+      .placeholder(R.drawable.ic_bazz_logo)
+      .error(R.drawable.ic_broken_image)
+      .into(binding.ivYoutubeVideo)
+
     binding.tvScoreTmdb.text = dataExtra.voteAverage.toString()
 
     //setup rv cast
@@ -132,7 +149,7 @@ class DetailMovieActivity : AppCompatActivity() {
         adapter.setCast(it)
       }
 
-      //show score & genres
+      //show score, genres, backdrop, trailer
       viewModel.getDetailMovie(dataExtra.id!!)
       viewModel.detailMovie().observe(this) { movie ->
 
@@ -142,14 +159,24 @@ class DetailMovieActivity : AppCompatActivity() {
           binding.tvGenre.text = temp.joinToString(separator = ", ")
         }
 
-        //show score
-        movie.imdbId?.let { viewModel.getScore(API_KEY_IMDB_API_LIB, it) }
-        viewModel.score().observe(this) {
-          showScore(it)
+//        //show score
+//        movie.imdbId?.let { imdbId -> viewModel.getScore(API_KEY_IMDB_API_LIB, imdbId) }
+//        viewModel.score().observe(this) { showScore(it) }
+
+        //show OMDb detail (score)
+        movie.imdbId?.let { imdbId -> viewModel.getScore(imdbId) }
+        viewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
+
+        //trailer
+        movie.id?.let { viewModel.getLinkMovie(it) }
+        viewModel.getLinkMovie().observe(this){
+
+          btnTrailer(it)
         }
       }
 
-    } else if (dataExtra.mediaType == "tv") {
+    }
+    else if (dataExtra.mediaType == "tv") {
       viewModel.getSnackBarText().observe(this) {
         showSnackBar(it)
       }
@@ -178,16 +205,21 @@ class DetailMovieActivity : AppCompatActivity() {
       viewModel.externalId().observe(this) { externalId ->
         if (externalId.imdbId.isNullOrEmpty()) {
           binding.apply {
-            tvScoreImdb.text = getString(R.string.not_rated)
-            tvScoreFilmAffinity.text = getString(R.string.not_rated)
-            tvScoreMetascore.text = getString(R.string.not_rated)
-            tvScoreRottenTomatoes.text = getString(R.string.not_rated)
+            tvScoreImdb.text = getString(R.string.not_available)
+            tvScoreFilmAffinity.text = getString(R.string.not_available)
+            tvScoreMetascore.text = getString(R.string.not_available)
+            tvScoreRottenTomatoes.text = getString(R.string.not_available)
           }
         } else {
-          viewModel.getScore(API_KEY_IMDB_API_LIB, externalId.imdbId)
-          viewModel.score().observe(this) {
-            showScore(it)
-          }
+//        viewModel.getScore(API_KEY_IMDB_API_LIB, externalId.imdbId)
+//        viewModel.score().observe(this) { showScore(it) }
+
+          viewModel.getScore(externalId.imdbId)
+          viewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
+
+          //trailer
+          externalId.id?.let { viewModel.getLinkTv(it) }
+          viewModel.getLinkTv().observe(this){ btnTrailer(it) }
         }
       }
 
@@ -195,9 +227,25 @@ class DetailMovieActivity : AppCompatActivity() {
       viewModel.getDetailTv(dataExtra.id!!)
       viewModel.detailTv().observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
-        if (temp != null) {
-          binding.tvGenre.text = temp.joinToString(separator = ", ")
-        }
+        if (temp != null)  binding.tvGenre.text = temp.joinToString(separator = ", ")
+      }
+    }
+  }
+
+  private fun btnTrailer(link: String){
+    binding.ibPlay.setOnClickListener {
+      Log.d("KKKKK",link)
+      try {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("https://www.youtube.com/watch?v=$link")
+//        intent.setPackage("com.google.android.youtube")
+        startActivity(intent)
+      } catch (e: Exception) {
+        Snackbar.make(
+          binding.constraintLayout,
+          R.string.yt_not_installed,
+          Snackbar.LENGTH_LONG
+        ).show()
       }
     }
   }
@@ -316,7 +364,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDim.visibility = View.VISIBLE
+      binding.backgroundDim.visibility = View.VISIBLE // blur background when loading
       binding.progressBar.visibility = View.VISIBLE
     } else {
       binding.backgroundDim.visibility = View.GONE
@@ -330,6 +378,16 @@ class DetailMovieActivity : AppCompatActivity() {
       tvScoreFilmAffinity.text = if (data.filmAffinity == "") "NR" else data.filmAffinity
       tvScoreMetascore.text = if (data.metacritic == "") "NR" else data.metacritic
       tvScoreRottenTomatoes.text = if (data.rottenTomatoes == "") "NR" else data.rottenTomatoes
+    }
+  }
+
+  private fun showDetailOMDb(data: OMDbDetailsResponse) {
+    binding.apply {
+      tvScoreImdb.text = if (data.imdbRating == "") "NR" else data.imdbRating
+      tvScoreFilmAffinity.text = "N/A"
+      tvScoreMetascore.text = if (data.metascore == "") "NR" else data.metascore
+
+      tvScoreRottenTomatoes.text = "N/A"
     }
   }
 

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.remote.response.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
 
 class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {

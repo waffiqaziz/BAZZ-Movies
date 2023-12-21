@@ -10,19 +10,25 @@ class DetailMovieViewModel(
   private val movieRepository: MoviesRepository,
 ) : ViewModel() {
 
-
   // Show Data
   fun getDetailMovie(id: Int) = movieRepository.getDetailMovie(id)
 
   fun getDetailTv(id: Int) = movieRepository.getDetailTv(id)
 
+  // for tv
   fun getExternalId(id: Int) = movieRepository.getExternalId(id)
 
   fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
 
   fun getAllCreditTv(tvId: Int) = movieRepository.getCreditTv(tvId)
 
+  fun getLinkMovie(movieId: Int) = movieRepository.getVideoMovies(movieId)
+
+  fun getLinkTv(tvId: Int) = movieRepository.getVideoTv(tvId)
+
   fun getScore(apiKey: String, id: String) = movieRepository.getScoring(apiKey, id)
+
+  fun getScore(id: String) = movieRepository.getDetailOMDb(id)
 
   fun getCreditsCastMovies() = movieRepository.creditCastMovies
 
@@ -35,6 +41,12 @@ class DetailMovieViewModel(
   fun getSnackBarText() = movieRepository.snackBarText
 
   fun score() = movieRepository.score
+
+  fun getLinkMovie() = movieRepository.linkVideoMovie
+
+  fun getLinkTv() = movieRepository.linkVideoTv
+
+  fun detailOMDb() = movieRepository.detailOMDb
 
   fun detailTv() = movieRepository.detailTv
 

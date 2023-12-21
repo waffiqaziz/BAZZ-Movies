@@ -19,13 +19,14 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     // API KEY inside gradle.properties
-
     buildConfigField("String", "API_KEY", API_KEY)
     buildConfigField("String", "API_KEY_IMDB_API_LIB", API_KEY_IMDB_API_LIB)
+    buildConfigField("String", "API_KEY_OMDb", API_KEY_OMDb)
 
     // BASE URL
     buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'
     buildConfigField "String", "IMDbApiLib_API_URL", '"https://imdb-api.com/"'
+    buildConfigField "String", "OMDb_API_URL", '"http://www.omdbapi.com/"'
   }
 
   buildTypes {

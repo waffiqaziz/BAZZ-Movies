@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 

@@ -29,6 +29,7 @@
   <string name="airing_today">Airing Today</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
 
+  <!-- MORE -->
   <string name="button_edit">Button Edit</string>
   <string name="general_setting">General Setting</string>
   <string name="image_profile">Image Profile</string>
@@ -46,12 +47,15 @@
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
+  <string name="yt_not_installed">Youtube App Not Installed</string>
   <string name="language">Language</string>
   <string name="back">Back</string>
 
+  <!-- DETAIL MOVIE/TV -->
   <string name="summary">Summary</string>
   <string name="director">Director: %s</string>
   <string name="writing">Creator: %s</string>
+  <string name="watch_trailer">Watch Trailer</string>
   <string name="cast">Cast</string>
   <string name="as">as</string>
 
@@ -72,6 +76,9 @@
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
   <string name="not_rated">NR</string>
+  <string name="not_available">N/A</string>
+
+  <!-- SCORES -->
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDb</string>
   <string name="filmaffinity">FilmAffinity</string>
@@ -83,4 +90,11 @@
   <string name="picture">Picture</string>
   <string name="future_update">Future Update</string>
   <string name="forget_password">Forget Password</string>
+
+  <!-- PERSON -->
+  <string name="known_for">Known For</string>
+  <string name="biography">Biography</string>
+  <string name="born">Born</string>
+  <string name="photos">Photos</string>
+  <string name="recommendation">Recommendation</string>
 </resources>

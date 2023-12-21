@@ -145,7 +145,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -158,7 +158,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/white"
+        android:background="@color/light_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +170,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:justificationMode="inter_word"
         app:layout_constraintEnd_toEndOf="@+id/bg_top"
@@ -188,34 +188,48 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_overview"
         tools:text="Director: John R. Leonetti" />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_cast"
-        tools:orientation="horizontal" />
-
       <TextView
-        android:id="@+id/tv_cast_header"
-        style="@style/TextHeader1"
+        android:id="@+id/tv_watch_trailer"
+        style="@style/TextHeader2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/cast"
+        android:text="@string/watch_trailer"
         app:layout_constraintStart_toStartOf="@+id/bg_top"
         app:layout_constraintTop_toBottomOf="@+id/tv_director" />
 
-      <TextView
-        android:id="@+id/tv_summary_header"
-        style="@style/TextHeader1"
+      <ImageView
+        android:alpha="0.6"
+        android:id="@+id/iv_youtube_video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_watch_trailer"
+        tools:background="@tools:sample/backgrounds/scenic"
+        android:contentDescription="@string/background_poster" />
+
+      <ImageButton
+        android:id="@+id/ib_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_youtube_video"
+        app:layout_constraintEnd_toEndOf="@+id/iv_youtube_video"
+        app:layout_constraintStart_toStartOf="@+id/iv_youtube_video"
+        app:layout_constraintTop_toBottomOf="@+id/tv_watch_trailer"
+        android:contentDescription="@string/watch_trailer" />
+
+      <TextView
+        android:id="@+id/tv_summary_header"
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/summary"
         app:layout_constraintStart_toStartOf="@+id/bg_top"
         app:layout_constraintTop_toBottomOf="@+id/bg_top" />
@@ -350,19 +364,61 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-      <View
-        android:id="@+id/background_dim"
+      <TextView
+        android:id="@+id/tv_cast_header"
+        style="@style/TextHeader1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/cast"
+        app:layout_constraintStart_toStartOf="@+id/bg_top"
+        app:layout_constraintTop_toBottomOf="@+id/iv_youtube_video" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cast"
         android:layout_width="match_parent"
-        android:layout_height="2000dp"
-        android:background="#42000000"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_cast"
+        tools:orientation="horizontal" />
+
+<!--      <TextView-->
+<!--        android:id="@+id/tv_recommendation_header"-->
+<!--        style="@style/TextHeader1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="@string/recommendation"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/bg_top"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/rv_cast" />-->
+
+<!--      <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rv_recommendation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"-->
+<!--        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--        tools:listitem="@layout/item_cast"-->
+<!--        tools:orientation="horizontal" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>
+
+  <View
+    android:layout_width="match_parent"
+    android:id="@+id/background_dim"
+    android:layout_height="match_parent"
+    android:background="#42000000"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
   <ProgressBar
     android:id="@+id/progress_bar"

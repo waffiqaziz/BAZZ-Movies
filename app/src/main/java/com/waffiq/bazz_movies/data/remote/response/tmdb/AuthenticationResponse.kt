@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.remote.response
+package com.waffiq.bazz_movies.data.remote.response.tmdb
 
 import com.google.gson.annotations.SerializedName
 

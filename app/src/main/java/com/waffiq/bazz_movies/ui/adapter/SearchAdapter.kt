@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
-import com.waffiq.bazz_movies.data.remote.response.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
@@ -45,7 +45,8 @@ class SearchAdapter :
         binding.containerResult.setOnClickListener {
           it.context.startActivity(Intent(it.context, PersonActivity::class.java))
         }
-      } else { //movie & tv-series
+      }
+      else { //movie & tv-series
         showDataMovieTv(binding, data)
         binding.containerResult.setOnClickListener {
           val intent = Intent(it.context, DetailMovieActivity::class.java)

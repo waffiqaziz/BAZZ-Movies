@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 import com.waffiq.bazz_movies.BuildConfig.API_KEY
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.remote.response.*
+import com.waffiq.bazz_movies.data.remote.response.tmdb.*
 import retrofit2.Call
 
 import retrofit2.http.*
@@ -116,7 +116,7 @@ interface TMDBApiService {
 //    @Query("language") language: String = "en"
 //  ): Call<GenresResponse>
 
-  @GET("3/search/multi?api_key=$API_KEY")
+  @GET("3/search/multi?api_key=$API_KEY&include_adult=false")
   suspend fun search(
     @Query("query") query: String,
     @Query("page") page: Int,
@@ -141,6 +141,16 @@ interface TMDBApiService {
   fun getDetailTv(
     @Path("tv_id") tv_id: Int
   ): Call<DetailTvResponse>
+
+  @GET("3/movie/{id}/videos?api_key=$API_KEY&language=en-US")
+  fun getVideoMovies(
+    @Path("id") id: Int
+  ): Call<VideoResponse>
+
+  @GET("3/tv/{id}/videos?api_key=$API_KEY&language=en-US")
+  fun getVideoTv(
+    @Path("id") id: Int
+  ): Call<VideoResponse>
 
   @GET("3/tv/{tv_id}/external_ids?api_key=$API_KEY&language=en-US")
   fun getExternalId(

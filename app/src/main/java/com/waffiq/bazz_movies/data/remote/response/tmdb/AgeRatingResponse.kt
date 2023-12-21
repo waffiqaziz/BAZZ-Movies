@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.remote.response
+package com.waffiq.bazz_movies.data.remote.response.tmdb
 
 data class AgeRatingResponse(
 	val id: Int? = null,

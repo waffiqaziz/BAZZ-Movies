@@ -16,9 +16,11 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   val undo: LiveData<Event<FavoriteDB>> = _undo
 
   // from db
-  val getFavoriteTvFromDB = movieRepository.getFavoriteMoviesFromDB()
-  val getFavoriteMoviesFromDB = movieRepository.getFavoriteTvFromDB()
+  val getFavoriteTvFromDB = movieRepository.getFavoriteTvFromDB()
+  val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
+
   fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
+
   fun deleteFavDB(favoriteDB: FavoriteDB) {
     movieRepository.deleteFromDB(favoriteDB)
     _snackBarText.value = Event(R.string.deleted_from_favorite)

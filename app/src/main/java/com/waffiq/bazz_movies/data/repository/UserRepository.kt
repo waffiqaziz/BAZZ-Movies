@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
-import com.waffiq.bazz_movies.data.remote.response.AccountDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.AuthenticationResponse
-import com.waffiq.bazz_movies.data.remote.response.CreateSessionResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Event
@@ -18,7 +18,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository(private val apiService: TMDBApiService, private val pref: UserPreference) {
+class UserRepository(
+  private val apiService: TMDBApiService,
+  private val pref: UserPreference
+) {
 
   private var _token = MutableLiveData<String>()
   val token: LiveData<String> get() = _token

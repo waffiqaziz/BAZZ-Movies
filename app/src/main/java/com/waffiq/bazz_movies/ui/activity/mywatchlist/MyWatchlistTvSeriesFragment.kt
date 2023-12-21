@@ -34,7 +34,6 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    // Inflate the layout for this fragment
     _binding = FragmentMyWatchlistTvSeriesBinding.inflate(inflater, container, false)
     val root = binding.root
 
@@ -55,9 +54,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      if (user.token != "NaN") { //user login then show data from TMDB
+      if (user.token != "NaN") { //user login then show favorite data from TMDB API
         setDataUserLogin(user.token)
-      } else { //guest user then show data from database
+      } else { //guest user then show favorite data from database
         setDataGuestUser()
       }
     }
@@ -72,7 +71,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       }
     )
 
-    //show/hide view
+    //show or hide view
     adapterPaging.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached

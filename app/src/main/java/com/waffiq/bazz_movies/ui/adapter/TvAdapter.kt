@@ -10,13 +10,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 
 class TvAdapter :
   PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
-
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -51,6 +50,7 @@ class TvAdapter :
       }
     }
   }
+
   companion object {
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
       override fun areItemsTheSame(

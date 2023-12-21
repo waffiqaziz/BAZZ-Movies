@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.remote.response.KnownForItem
-import com.waffiq.bazz_movies.data.remote.response.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 
 object Helper {
 
