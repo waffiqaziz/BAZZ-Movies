@@ -29,6 +29,8 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun deleteItemFromDB(favoriteDB: FavoriteDB) = favoriteDao.deleteItem(favoriteDB)
 
+  fun deleteALl() = favoriteDao.deleteALl()
+
   fun isFavorite(id: Int) = favoriteDao.isFavorite(id)
 
   fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)

@@ -341,12 +341,12 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
 
-            try{
-               // select best trailer
+            try {
+              // select best trailer
               _linkVideoTv.value = responseBody.results.filter {
                 it.official == true && it.type.equals("Trailer")
               }.map { it.key }[0].toString().replace("[", "").replace("]", "")
-            }catch (e:IndexOutOfBoundsException){
+            } catch (e: IndexOutOfBoundsException) {
               _linkVideoTv.value = ""
             }
           }
@@ -689,6 +689,10 @@ class MoviesRepository(
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
+  }
+
+  fun deleteAll() {
+    appExecutors.diskIO().execute { localDataSource.deleteALl() }
   }
 
   fun isFavoriteDB(id: Int) {

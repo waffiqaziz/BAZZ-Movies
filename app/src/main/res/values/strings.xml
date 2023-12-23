@@ -100,4 +100,10 @@
   <string name="born">Born</string>
   <string name="photos">Photos</string>
   <string name="recommendation">Recommendation</string>
+
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="warning">Warning</string>
+  <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
+  <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
 </resources>

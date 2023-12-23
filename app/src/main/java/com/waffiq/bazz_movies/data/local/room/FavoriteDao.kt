@@ -32,6 +32,9 @@ interface FavoriteDao {
   @Delete
   fun deleteItem(favoriteDB: FavoriteDB) : Int // delete from table
 
+  @Query("DELETE FROM $TABLE_NAME")
+  fun deleteALl() : Int
+
   @Insert(onConflict = OnConflictStrategy.IGNORE)
   fun insertFavorite(favoriteDB: FavoriteDB)
 

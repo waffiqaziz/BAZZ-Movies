@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
@@ -41,7 +42,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
     fun bind(fav: FavoriteDB) {
       Glide.with(binding.ivPicture)
-        .load("http://image.tmdb.org/t/p/w300/" + fav.imagePath )
+        .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.imagePath )
         .placeholder(R.mipmap.ic_launcher)
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
@@ -61,7 +62,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       binding.containerResult.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        resultItem.mediaType = "movie"
+        resultItem.mediaType = fav.mediaType
         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
         it.context.startActivity(intent)
       }

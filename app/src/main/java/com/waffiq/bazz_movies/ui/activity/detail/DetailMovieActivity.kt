@@ -36,6 +36,10 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesFavorite
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesWatchlist
@@ -99,9 +103,9 @@ class DetailMovieActivity : AppCompatActivity() {
     Glide.with(binding.ivPicture)
       .load(
         if (dataExtra.backdropPath.isNullOrEmpty()) {
-          "http://image.tmdb.org/t/p/w500/" + dataExtra.posterPath
+          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
         } else {
-          "http://image.tmdb.org/t/p/w780/" + dataExtra.backdropPath
+          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
         }
       ) // URL movie poster
       .placeholder(R.drawable.ic_bazz_logo)
@@ -118,13 +122,13 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
 
-    // show backdrop
+    // show backdrop on trailer
     Glide.with(binding.ivYoutubeVideo)
       .load(
         if (dataExtra.backdropPath.isNullOrEmpty()) {
-          "https://image.tmdb.org/t/p/w1280/" + dataExtra.posterPath
+          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
         } else {
-          "https://image.tmdb.org/t/p/w1280/" + dataExtra.backdropPath
+          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
         }
       ) // URL movie poster
       .placeholder(R.drawable.ic_bazz_logo)
@@ -290,7 +294,7 @@ class DetailMovieActivity : AppCompatActivity() {
       Log.d("KKKKK", link)
       try {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("https://www.youtube.com/watch?v=$link")
+        intent.data = Uri.parse("$YOUTUBE_LINK_TRAILER$link")
 //        intent.setPackage("com.google.android.youtube")
         startActivity(intent)
       } catch (e: Exception) {

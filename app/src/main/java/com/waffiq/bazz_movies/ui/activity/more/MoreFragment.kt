@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.ui.activity.more
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +19,10 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.Helper.showToastLong
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
 import kotlinx.coroutines.launch
 
@@ -28,7 +33,8 @@ class MoreFragment : Fragment() {
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var moreViewModel: AuthenticationViewModel
+  private lateinit var authViewModel: AuthenticationViewModel
+  private lateinit var moreViewModel: MoreViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -40,14 +46,17 @@ class MoreFragment : Fragment() {
 
     val pref = requireContext().dataStore
     val factory = ViewModelUserFactory.getInstance(pref)
-    this.moreViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+    this.authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+
+    val factory2 = ViewModelFactory.getInstance(requireContext())
+    moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
 
     setData()
     btnAction()
     return root
   }
 
-  private fun btnAction(){
+  private fun btnAction() {
     binding.btnSetting.setOnClickListener { toastStillOnDevelopment(requireContext()) }
     binding.btnRate.setOnClickListener { toastStillOnDevelopment(requireContext()) }
     binding.btnLanguage.setOnClickListener { toastStillOnDevelopment(requireContext()) }
@@ -61,22 +70,46 @@ class MoreFragment : Fragment() {
     binding.tvTermsConditon.setOnClickListener { toastStillOnDevelopment(requireContext()) }
 
     binding.btnSignout.setOnClickListener {
-      viewLifecycleOwner.lifecycleScope.launch{
-        moreViewModel.signOut()
-        activity?.finish()
-        startActivity(Intent(activity, LoginActivity::class.java))
+      authViewModel.getUser().observe(viewLifecycleOwner) { user ->
+        if (user.token == "NaN") dialogSignOutGuestMode()
       }
     }
   }
 
-  private fun setData(){
-    moreViewModel.getUser().observe(viewLifecycleOwner){
+  private fun dialogSignOutGuestMode() {
+    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+    builder
+      .setMessage(getString(R.string.warning_signOut_guest_mode))
+      .setTitle(getString(R.string.warning))
+      .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+        signOut()
+        showToastLong(requireContext(), getString(R.string.all_data_deleted))
+        moreViewModel.deleteAll() // delete all data
+      }
+      .setNegativeButton(getString(R.string.no)) { dialog, which ->
+        dialog.dismiss()
+      }
+
+    val dialog: AlertDialog = builder.create()
+    dialog.show()
+  }
+
+  private fun signOut(){
+    viewLifecycleOwner.lifecycleScope.launch {
+      authViewModel.signOut()
+      activity?.finish()
+      startActivity(Intent(activity, LoginActivity::class.java))
+    }
+  }
+
+  private fun setData() {
+    authViewModel.getUser().observe(viewLifecycleOwner) {
       binding.apply {
         tvFullName.text = it.name
         tvUsername.text = it.username
 
         Glide.with(binding.imgAvatar)
-          .load("https://secure.gravatar.com/avatar/${it.gravatarHast}" + ".jpg?s=200" )
+          .load("$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200")
           .placeholder(R.mipmap.ic_launcher)
           .error(R.drawable.ic_broken_image)
           .into(binding.imgAvatar)

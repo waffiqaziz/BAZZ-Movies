@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class TvAdapter :
   PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -34,7 +35,7 @@ class TvAdapter :
 
     fun bind(movie: ResultItem) {
       Glide.with(binding.imgPoster)
-        .load("http://image.tmdb.org/t/p/w200/" + movie.posterPath) // URL movie poster
+        .load(TMDB_IMG_LINK_POSTER_W185 + movie.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(DrawableTransitionOptions.withCrossFade())

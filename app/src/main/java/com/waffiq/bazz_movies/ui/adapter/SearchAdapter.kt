@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.Helper.getKnownFor
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 
@@ -74,7 +75,7 @@ class SearchAdapter :
   private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
     Glide.with(binding.ivPicture)
       .load(
-        "http://image.tmdb.org/t/p/w300" + data.profilePath
+        TMDB_IMG_LINK_BACKDROP_W300 + data.profilePath
       )
       .placeholder(R.drawable.ic_bazz_placeholder_search)
       .error(R.drawable.ic_broken_image)
@@ -90,7 +91,7 @@ class SearchAdapter :
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
     Glide.with(binding.ivPicture)
       .load(
-        "http://image.tmdb.org/t/p/w300/" + (data.backdropPath ?: data.posterPath)
+        TMDB_IMG_LINK_BACKDROP_W300 + (data.backdropPath ?: data.posterPath)
       )
       .transition(DrawableTransitionOptions.withCrossFade())
       .placeholder(R.drawable.ic_bazz_placeholder_search)

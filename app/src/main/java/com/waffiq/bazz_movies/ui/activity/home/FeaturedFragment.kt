@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 
 class FeaturedFragment : Fragment() {
 
@@ -46,15 +47,16 @@ class FeaturedFragment : Fragment() {
     // show main picture
     Glide.with(binding.imgMainFeatured)
 //      .load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
-      .load("https://image.tmdb.org/t/p/w1280/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
+      .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(R.mipmap.ic_launcher)
       .error(R.drawable.ic_broken_image)
       .into(binding.imgMainFeatured)
   }
 
-  private fun setData(){
+  private fun setData() {
     // trending
-    binding.rvTrending.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    binding.rvTrending.layoutManager =
+      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapter = TrendingAdapter()
     binding.rvTrending.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
@@ -62,11 +64,12 @@ class FeaturedFragment : Fragment() {
       }
     )
     viewModel.getTrending().observe(viewLifecycleOwner) {
-      adapter.submitData(lifecycle,it)
+      adapter.submitData(lifecycle, it)
     }
 
     // upcoming movie
-    binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    binding.rvUpcoming.layoutManager =
+      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapterUpcoming = MovieHomeAdapter()
     binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
       footer = LoadingStateAdapter {
@@ -78,7 +81,8 @@ class FeaturedFragment : Fragment() {
     }
 
     // playing not at theater
-    binding.rvPlayingNow.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    binding.rvPlayingNow.layoutManager =
+      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapterPlayingNow = MovieHomeAdapter()
     binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
       footer = LoadingStateAdapter {

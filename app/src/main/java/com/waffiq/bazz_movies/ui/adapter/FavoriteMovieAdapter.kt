@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.utils.Helper
 import java.text.DecimalFormat
 
@@ -36,7 +37,7 @@ class FavoriteMovieAdapter :
 
     fun bind(resultItem: ResultItem) {
       Glide.with(binding.ivPicture)
-        .load("http://image.tmdb.org/t/p/w342/" + resultItem.posterPath) // URL movie poster
+        .load(TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(DrawableTransitionOptions.withCrossFade())

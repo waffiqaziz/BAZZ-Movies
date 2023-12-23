@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 
 class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
@@ -41,7 +42,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
     fun bind(cast: CastItem) {
       with(binding) {
         Glide.with(imgCastPhoto)
-          .load("http://image.tmdb.org/t/p/w300/" + cast.profilePath )
+          .load(TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath )
           .placeholder(R.drawable.ic_bazz_placeholder_poster)
           .transform(CenterCrop())
           .transition(DrawableTransitionOptions.withCrossFade())
