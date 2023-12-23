@@ -70,7 +70,14 @@ class MoviesRepository(
   val stated: LiveData<StatedResponse> get() = _stated
 
   private val _postResponse = MutableLiveData<PostFavoriteWatchlistResponse>()
+
   val postResponse: LiveData<PostFavoriteWatchlistResponse> get() = _postResponse
+
+  private val _isFavorite = MutableLiveData<Boolean>()
+  val isFavorite: LiveData<Boolean> = _isFavorite
+
+  private val _isWatchlist = MutableLiveData<Boolean>()
+  val isWatchlist: LiveData<Boolean> = _isWatchlist
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
@@ -180,7 +187,29 @@ class MoviesRepository(
         pageSize = 5
       ),
       pagingSourceFactory = {
-        TrendingPagingSource(tmdbApiService)
+        MultiTrendingPagingSource(tmdbApiService)
+      }
+    ).flow
+  }
+
+  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        RecommendationMoviePagingSource(movieId, tmdbApiService)
+      }
+    ).flow
+  }
+
+  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        RecommendationTvPagingSource(tvId, tmdbApiService)
       }
     ).flow
   }
@@ -312,10 +341,14 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
 
-            //select best trailer
-            _linkVideoTv.value = responseBody.results.filter {
-              it.official == true && it.type.equals("Trailer")
-            }.map { it.key }[0].toString().replace("[", "").replace("]", "")
+            try{
+               // select best trailer
+              _linkVideoTv.value = responseBody.results.filter {
+                it.official == true && it.type.equals("Trailer")
+              }.map { it.key }[0].toString().replace("[", "").replace("]", "")
+            }catch (e:IndexOutOfBoundsException){
+              _linkVideoTv.value = ""
+            }
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -658,13 +691,29 @@ class MoviesRepository(
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
   }
 
-  fun isFavoriteDB(id: Int) = localDataSource.isFavorite(id)
+  fun isFavoriteDB(id: Int) {
+    appExecutors.diskIO().execute {
+      _isFavorite.postValue(localDataSource.isFavorite(id))
+    }
+  }
 
-  fun isWatchlist(id: Int) = localDataSource.isWatchlist(id)
+  fun isWatchlist(id: Int) {
+    appExecutors.diskIO().execute {
+      _isWatchlist.postValue(localDataSource.isWatchlist(id))
+    }
+  }
 
-  fun updateFavorite(boolean: Boolean, id: Int) = localDataSource.updateFavorite(boolean, id)
+  fun updateFavorite(boolean: Boolean, id: Int) {
+    appExecutors.diskIO().execute {
+      localDataSource.updateFavorite(boolean, id)
+    }
+  }
 
-  fun updateWatchlist(boolean: Boolean, id: Int) = localDataSource.updateWatchlist(boolean, id)
+  fun updateWatchlist(boolean: Boolean, id: Int) {
+    appExecutors.diskIO().execute {
+      localDataSource.updateWatchlist(boolean, id)
+    }
+  }
 
   companion object {
     private const val TAG = "MoviesRepository "

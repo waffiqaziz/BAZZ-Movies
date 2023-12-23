@@ -12,6 +12,9 @@
   <string name="retry">Retry</string>
   <string name="error">Error</string>
 
+  <string name="login_as_guest_successful">Login as Guest Successful</string>
+  <string name="login_successful">Login Successful</string>
+
   <string name="title_activity">BAZZ Movies</string>
   <string name="title_home">Home</string>
   <string name="title_search">Search</string>

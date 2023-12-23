@@ -7,10 +7,10 @@ import retrofit2.http.*
 
 interface IMDBApiLibService {
 
-  @GET("en/API/Ratings/{api_key}/{imdb_id}")
+  @GET("en/API/Ratings/{apiKey}/{imdb_id}")
   fun getScore(
-    @Path("api_key") api_key: String,
-    @Path("imdb_id") imdb_id: String
+    @Path("apiKey") apiKey: String,
+    @Path("imdbId") imdbId: String
   ): Call<ScoreRatingResponse>
 
 }

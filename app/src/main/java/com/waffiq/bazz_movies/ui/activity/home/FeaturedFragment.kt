@@ -42,6 +42,8 @@ class FeaturedFragment : Fragment() {
 //    viewModel.getFirstMovieNowPlaying().observe(viewLifecycleOwner) {
 //      Log.e("Cek Link : ", it[0].backdropPath)
 //    }
+
+    // show main picture
     Glide.with(binding.imgMainFeatured)
 //      .load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load("https://image.tmdb.org/t/p/w1280/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
@@ -51,6 +53,7 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData(){
+    // trending
     binding.rvTrending.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapter = TrendingAdapter()
     binding.rvTrending.adapter = adapter.withLoadStateFooter(
@@ -62,6 +65,7 @@ class FeaturedFragment : Fragment() {
       adapter.submitData(lifecycle,it)
     }
 
+    // upcoming movie
     binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapterUpcoming = MovieHomeAdapter()
     binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
@@ -73,6 +77,7 @@ class FeaturedFragment : Fragment() {
       adapterUpcoming.submitData(lifecycle, it)
     }
 
+    // playing not at theater
     binding.rvPlayingNow.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val adapterPlayingNow = MovieHomeAdapter()
     binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(

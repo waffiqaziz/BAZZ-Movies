@@ -1,6 +1,9 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Watchlist
@@ -46,6 +49,12 @@ class DetailMovieViewModel(
 
   fun getLinkTv() = movieRepository.linkVideoTv
 
+  fun getRecommendationMovie(movieId: Int) = movieRepository.getPagingMovieRecommendation(movieId)
+    .cachedIn(viewModelScope).asLiveData()
+
+  fun getRecommendationTv(tvId: Int) = movieRepository.getPagingTvRecommendation(tvId)
+    .cachedIn(viewModelScope).asLiveData()
+
   fun detailOMDb() = movieRepository.detailOMDb
 
   fun detailTv() = movieRepository.detailTv
@@ -69,6 +78,10 @@ class DetailMovieViewModel(
   fun checkIsFavoriteDB(id: Int) = movieRepository.isFavoriteDB(id)
 
   fun checkIsWatchlistDB(id: Int) = movieRepository.isWatchlist(id)
+
+  fun getIsWatchlist() = movieRepository.isWatchlist
+
+  fun getIsFavorite() = movieRepository.isFavorite
 
   fun updateToFavoriteDB(id: Int) = movieRepository.updateFavorite(true, id)
 

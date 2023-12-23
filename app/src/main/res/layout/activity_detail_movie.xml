@@ -386,27 +386,27 @@
         tools:listitem="@layout/item_cast"
         tools:orientation="horizontal" />
 
-<!--      <TextView-->
-<!--        android:id="@+id/tv_recommendation_header"-->
-<!--        style="@style/TextHeader1"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="@string/recommendation"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/bg_top"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/rv_cast" />-->
+      <TextView
+        android:id="@+id/tv_recommendation_header"
+        style="@style/TextHeader1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/recommendation"
+        app:layout_constraintStart_toStartOf="@+id/bg_top"
+        app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
 
-<!--      <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rv_recommendation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"-->
-<!--        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--        tools:listitem="@layout/item_cast"-->
-<!--        tools:orientation="horizontal" />-->
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recommendation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_trending"
+        tools:orientation="horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>

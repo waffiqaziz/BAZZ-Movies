@@ -44,6 +44,18 @@ interface TMDBApiService {
     @Query("page") page : Int
   ): MovieTvResponse
 
+  @GET("3/movie/{movieId}/recommendations?api_key=$API_KEY")
+  suspend fun getRecommendedMovie(
+    @Path("movieId") movieId: Int,
+    @Query("page") page : Int
+  ): MovieTvResponse
+
+  @GET("3/tv/{tvId}/recommendations?api_key=$API_KEY")
+  suspend fun getRecommendedTv(
+    @Path("tvId") movieId: Int,
+    @Query("page") page : Int
+  ): MovieTvResponse
+
   @GET("3/tv/on_the_air?api_key=$API_KEY&language=en-US&page=1")
   suspend fun getTvOnTheAir(
     @Query("page") page : Int
@@ -58,7 +70,6 @@ interface TMDBApiService {
   suspend fun getUpcomingMovies(
     @Query("page") page : Int
   ): MovieTvResponse
-
 
   @GET("3/movie/now_playing?api_key=$API_KEY&language=en-US")
   suspend fun getPlayingNowMovies(
@@ -77,38 +88,38 @@ interface TMDBApiService {
 
   @GET("3/account/{account_id}/favorite/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteMovies(
-    @Query("session_id") session_id : String,
+    @Query("session_id") sessionId : String,
     @Query("page") page : Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/favorite/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteTv(
-    @Query("session_id") session_id : String,
+    @Query("session_id") sessionId : String,
     @Query("page") page : Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/watchlist/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistMovies(
-    @Query("session_id") session_id : String,
+    @Query("session_id") sessionId : String,
     @Query("page") page : Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/watchlist/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistTv(
-    @Query("session_id") session_id : String,
+    @Query("session_id") sessionId : String,
     @Query("page") page : Int,
   ): MovieTvResponse
 
-  @GET("3/movie/{movie_id}/account_states?api_key=$API_KEY")
+  @GET("3/movie/{movieId}/account_states?api_key=$API_KEY")
   fun getStatedMovie(
-    @Path("movie_id") movie_id: Int,
-    @Query("session_id") session_id : String
+    @Path("movieId") movieId: Int,
+    @Query("session_id") sessionId : String
   ): Call<StatedResponse>
 
-  @GET("3/tv/{tv_id}/account_states?api_key=$API_KEY")
+  @GET("3/tv/{tvId}/account_states?api_key=$API_KEY")
   fun getStatedTv(
-    @Path("tv_id") movie_id: Int,
-    @Query("session_id") session_id : String
+    @Path("tvId") tvId: Int,
+    @Query("session_id") sessionId : String
   ): Call<StatedResponse>
 
 //  @GET("3/genre/movie/list?api_key=$API_KEY")
@@ -122,24 +133,24 @@ interface TMDBApiService {
     @Query("page") page: Int,
   ): MultiSearchResponse
 
-  @GET("3/movie/{movie_id}/credits?api_key=$API_KEY&language=en-US")
+  @GET("3/movie/{movieId}/credits?api_key=$API_KEY&language=en-US")
   fun getCreditMovies(
-    @Path("movie_id") movie_id: Int
+    @Path("movieId") movieId: Int
   ): Call<CreditsResponse>
 
-  @GET("3/tv/{tv_id}/credits?api_key=$API_KEY&language=en-US")
+  @GET("3/tv/{tvId}/credits?api_key=$API_KEY&language=en-US")
   fun getCreditTv(
-    @Path("tv_id") tv_id: Int
+    @Path("tvId") tvId: Int
   ): Call<CreditsResponse>
 
-  @GET("3/movie/{movie_id}?api_key=$API_KEY&language=en-US")
+  @GET("3/movie/{movieId}?api_key=$API_KEY&language=en-US")
   fun getDetailMovie(
-    @Path("movie_id") movie_id: Int
+    @Path("movieId") movieId: Int
   ): Call<DetailMovieResponse>
 
-  @GET("3/tv/{tv_id}?api_key=$API_KEY&language=en-US")
+  @GET("3/tv/{tvId}?api_key=$API_KEY&language=en-US")
   fun getDetailTv(
-    @Path("tv_id") tv_id: Int
+    @Path("tvId") tvId: Int
   ): Call<DetailTvResponse>
 
   @GET("3/movie/{id}/videos?api_key=$API_KEY&language=en-US")
@@ -152,24 +163,24 @@ interface TMDBApiService {
     @Path("id") id: Int
   ): Call<VideoResponse>
 
-  @GET("3/tv/{tv_id}/external_ids?api_key=$API_KEY&language=en-US")
+  @GET("3/tv/{tvId}/external_ids?api_key=$API_KEY&language=en-US")
   fun getExternalId(
-    @Path("tv_id") tv_id: Int
+    @Path("tvId") tvId: Int
   ): Call<ExternalIdResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
-  @POST("3/account/{account_id}/favorite?api_key=$API_KEY")
+  @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
   fun postFavoriteTMDB(
-    @Path("account_id") accountId: Int,
-    @Query("session_id") session_id : String,
+    @Path("accountId") accountId: Int,
+    @Query("session_id") sessionId : String,
     @Body data: Favorite
   ): Call<PostFavoriteWatchlistResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
-  @POST("3/account/{account_id}/watchlist?api_key=$API_KEY")
+  @POST("3/account/{accountId}/watchlist?api_key=$API_KEY")
   fun postWatchlistTMDB(
-    @Path("account_id") accountId: Int,
-    @Query("session_id") session_id : String,
+    @Path("accountId") accountId: Int,
+    @Query("session_id") sessionId : String,
     @Body data: Watchlist
   ): Call<PostFavoriteWatchlistResponse>
 

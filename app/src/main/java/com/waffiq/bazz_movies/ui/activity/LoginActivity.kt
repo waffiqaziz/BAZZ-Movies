@@ -99,14 +99,15 @@ class LoginActivity : AppCompatActivity() {
       user.username = resources.getString(R.string.no_data)
       user.isLogin = true
       authenticationViewModel.saveUser(user)
-      goToMainActivity()
+      goToMainActivity(isGuest = true)
     }
   }
 
-  private fun goToMainActivity() {
+  private fun goToMainActivity(isGuest: Boolean) {
     startActivity(Intent(this, MainActivity::class.java))
     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-    Helper.showToastLong(this, "Login Successful")
+    if (isGuest) Helper.showToastLong(this, getString(R.string.login_as_guest_successful))
+    else Helper.showToastLong(this, getString(R.string.login_successful))
     finish()
   }
 
@@ -136,7 +137,7 @@ class LoginActivity : AppCompatActivity() {
             user.userId = it.userId
 
             authenticationViewModel.saveUser(user)
-            goToMainActivity()
+            goToMainActivity(isGuest = false)
           }
         }
       }

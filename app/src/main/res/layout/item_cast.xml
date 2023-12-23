@@ -11,7 +11,7 @@
     android:padding="5dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/dark_light_100"
+    android:background="@color/dark_medium"
     android:orientation="vertical">
 
     <ImageView
@@ -23,6 +23,7 @@
       tools:background="@tools:sample/avatars" />
 
     <TextView
+      android:layout_marginTop="4dp"
       android:theme="@style/TextCast"
       android:id="@+id/tv_cast_name"
       android:layout_width="match_parent"
