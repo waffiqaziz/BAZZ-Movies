@@ -9,16 +9,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemPerson
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
-class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
+class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
-  private val listCast = ArrayList<CastItem>()
+  private val listCast = ArrayList<CastItemPerson>()
 
-  fun setCast(itemStory: List<CastItem>) {
+  fun setCast(itemStory: List<CastItemPerson>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -41,31 +42,39 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
   inner class ViewHolder(private var binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(cast: CastItem) {
-      with(binding) {
-        Glide.with(imgCastPhoto)
-          .load(TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath )
-          .placeholder(R.drawable.ic_bazz_placeholder_poster)
-          .transform(CenterCrop())
-          .transition(DrawableTransitionOptions.withCrossFade())
-          .error(R.drawable.ic_broken_image)
-          .into(imgCastPhoto)
+    fun bind(cast: CastItemPerson) {
+      Glide.with(binding.imgCastPhoto)
+        .load(TMDB_IMG_LINK_POSTER_W185 + cast.posterPath)
+        .placeholder(R.drawable.ic_bazz_placeholder_poster)
+        .transform(CenterCrop())
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .error(R.drawable.ic_broken_image)
+        .into(binding.imgCastPhoto)
 
-        tvCastName.text = cast.name?: cast.originalName
-        tvCastCharacter.text = cast.character
-        // image OnClickListener
-        container.setOnClickListener {
-          val intent = Intent(it.context, PersonActivity::class.java)
-          intent.putExtra(PersonActivity.EXTRA_PERSON, cast)
-          it.context.startActivity(intent)
-        }
+      binding.tvCastName.text = cast.title
+      binding.tvCastCharacter.text = cast.character
+
+      val resultItem = ResultItem(
+        mediaType = "movie",
+        id = cast.id,
+        voteAverage = cast.voteAverage,
+        posterPath = cast.posterPath,
+        backdropPath = cast.backdropPath
+      )
+
+      // OnClickListener
+      binding.container.setOnClickListener {
+        val intent = Intent(it.context, DetailMovieActivity::class.java)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        it.context.startActivity(intent)
       }
+
     }
   }
 
   inner class DiffCallback(
-    private val oldList: List<CastItem>,
-    private val newList: List<CastItem>
+    private val oldList: List<CastItemPerson>,
+    private val newList: List<CastItemPerson>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

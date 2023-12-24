@@ -168,6 +168,21 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int
   ): Call<ExternalIdResponse>
 
+  @GET("3/person/{personId}?api_key=$API_KEY&language=en-US")
+  fun getDetailPerson(
+    @Path("personId") personId: Int
+  ): Call<DetailPersonResponse>
+
+  @GET("3/person/{personId}/movie_credits?api_key=$API_KEY&language=en-US")
+  fun getKnownForPerson(
+    @Path("personId") personId: Int
+  ): Call<CreditsPersonResponse>
+
+  @GET("3/person/{personId}/images?api_key=$API_KEY&language=en-US")
+  fun getImagePerson(
+    @Path("personId") personId: Int
+  ): Call<ImagePersonResponse>
+
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
   fun postFavoriteTMDB(

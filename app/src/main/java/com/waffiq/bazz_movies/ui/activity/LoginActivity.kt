@@ -120,12 +120,22 @@ class LoginActivity : AppCompatActivity() {
       showLoading(it)
     }
 
+    /**
+     * to login follow this step
+     * 1. Create a new request token
+     * 2. Get the user to authorize the request token
+     * 3. Create a new session id with the authorized request token
+     */
+
+    // create request token
     authenticationViewModel.createToken()
     authenticationViewModel.getToken().observe(this) { token ->
 
+      // Get the user to authorize the request token
       authenticationViewModel.login(user.username, user.password, token)
       authenticationViewModel.getTokenVerified().observe(this) { tokenVerified ->
 
+        // create a session with authorized token
         authenticationViewModel.createSession(tokenVerified)
         authenticationViewModel.getSessionId().observe(this) { sessionId ->
 

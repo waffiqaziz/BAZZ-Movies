@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.ui.activity.more
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -71,7 +70,8 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       authViewModel.getUser().observe(viewLifecycleOwner) { user ->
-        if (user.token == "NaN") dialogSignOutGuestMode()
+        if (user.token == "NaN") dialogSignOutGuestMode() // sign out for guest account
+        else signOut(true) // sign out for login account
       }
     }
   }
@@ -82,7 +82,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(R.string.warning_signOut_guest_mode))
       .setTitle(getString(R.string.warning))
       .setPositiveButton(getString(R.string.yes)) { dialog, which ->
-        signOut()
+        signOut(false)
         showToastLong(requireContext(), getString(R.string.all_data_deleted))
         moreViewModel.deleteAll() // delete all data
       }
@@ -94,12 +94,13 @@ class MoreFragment : Fragment() {
     dialog.show()
   }
 
-  private fun signOut(){
+  private fun signOut(showToast : Boolean){
     viewLifecycleOwner.lifecycleScope.launch {
       authViewModel.signOut()
       activity?.finish()
       startActivity(Intent(activity, LoginActivity::class.java))
     }
+    if(showToast) showToastLong(requireContext(), getString(R.string.sign_out_success))
   }
 
   private fun setData() {

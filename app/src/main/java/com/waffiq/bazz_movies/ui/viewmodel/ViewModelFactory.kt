@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.ui.activity.home.HomeViewModel
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModel
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteViewModel
 import com.waffiq.bazz_movies.ui.activity.mywatchlist.MyWatchlistViewModel
+import com.waffiq.bazz_movies.ui.activity.person.PersonMovieViewModel
 import com.waffiq.bazz_movies.ui.activity.search.SearchViewModel
 
 class ViewModelFactory(
@@ -52,6 +53,9 @@ class ViewModelFactory(
       }
       modelClass.isAssignableFrom(MoreViewModel::class.java) -> {
         MoreViewModel(moviesRepository) as T
+      }
+      modelClass.isAssignableFrom(PersonMovieViewModel::class.java) -> {
+        PersonMovieViewModel(moviesRepository) as T
       }
       else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

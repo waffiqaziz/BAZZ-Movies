@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class CreditsResponse(
 
@@ -14,6 +16,7 @@ data class CreditsResponse(
 	val crew: List<CrewItem>
 )
 
+@Parcelize
 data class CastItem(
 
 	@field:SerializedName("cast_id")
@@ -51,7 +54,7 @@ data class CastItem(
 
 	@field:SerializedName("order")
 	val order: Int? = null
-)
+): Parcelable
 
 data class CrewItem(
 

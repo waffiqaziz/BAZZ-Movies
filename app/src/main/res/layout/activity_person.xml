@@ -36,6 +36,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
+      <ImageView
+        android:id="@+id/btn_back_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:alpha="0.3"
+        android:background="@drawable/bg_back_button"
+        android:contentDescription="@string/back"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
       <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
@@ -57,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="-100dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,22 +84,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/known_for"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_known_for"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/playing_as"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_cast"
+        tools:orientation="horizontal" />
 
       <TextView
         android:id="@+id/tv_biography_header"
         style="@style/TextHeader2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/biography"
         app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/tv_known_for" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
 
-      <TextView
+      <io.github.glailton.expandabletextview.ExpandableTextView
         android:id="@+id/tv_biography"
         style="@style/TextBody"
         android:layout_width="match_parent"
@@ -94,9 +123,15 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:justificationMode="inter_word"
+        app:collapsedLines="3"
+        app:ellipsizeTextColor="@color/yellow"
+        app:expandType="layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
+        app:readLessText="@string/less_more"
+        app:readMoreText="@string/read_more"
+        app:textMode="line"
         tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
 
       <TextView
@@ -133,16 +168,33 @@
         app:layout_constraintStart_toStartOf="@+id/tv_known_for"
         app:layout_constraintTop_toBottomOf="@+id/tv_born" />
 
-      <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_center_vertical"
-        android:layout_width="wrap_content"
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_photos"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/playing_as"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_photos_header"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_trending"
+        tools:orientation="horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </ScrollView>
+
+  <View
+    android:layout_width="match_parent"
+    android:id="@+id/background_dim"
+    android:layout_height="match_parent"
+    android:background="#42000000"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
   <ProgressBar
     android:id="@+id/progress_bar"

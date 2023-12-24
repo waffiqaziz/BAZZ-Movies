@@ -30,6 +30,8 @@ class MoviesRepository(
   private val localDataSource: LocalDataSource,
   private val appExecutors: AppExecutors
 ) {
+
+  // detail
   private var _creditCastMovies = MutableLiveData<List<CastItem>>()
   val creditCastMovies: LiveData<List<CastItem>> = _creditCastMovies
 
@@ -48,11 +50,8 @@ class MoviesRepository(
   private var _linkVideoTv = MutableLiveData<String>()
   val linkVideoTv: LiveData<String> = _linkVideoTv
 
-  private val _snackbarText = MutableLiveData<Event<String>>()
-  val snackBarText: LiveData<Event<String>> get() = _snackbarText
-
-  private val _score = MutableLiveData<ScoreRatingResponse>()
-  val score: LiveData<ScoreRatingResponse> get() = _score
+  private val _externalId = MutableLiveData<ExternalIdResponse>()
+  val externalId: LiveData<ExternalIdResponse> get() = _externalId
 
   private val _detailOMDb = MutableLiveData<OMDbDetailsResponse>()
   val detailOMDb: LiveData<OMDbDetailsResponse> get() = _detailOMDb
@@ -63,25 +62,43 @@ class MoviesRepository(
   private val _detailTv = MutableLiveData<DetailTvResponse>()
   val detailTv: LiveData<DetailTvResponse> get() = _detailTv
 
-  private val _externalId = MutableLiveData<ExternalIdResponse>()
-  val externalId: LiveData<ExternalIdResponse> get() = _externalId
-
   private val _stated = MutableLiveData<StatedResponse>()
   val stated: LiveData<StatedResponse> get() = _stated
 
-  private val _postResponse = MutableLiveData<PostFavoriteWatchlistResponse>()
 
-  val postResponse: LiveData<PostFavoriteWatchlistResponse> get() = _postResponse
-
+  // for DB
   private val _isFavorite = MutableLiveData<Boolean>()
   val isFavorite: LiveData<Boolean> = _isFavorite
-
   private val _isWatchlist = MutableLiveData<Boolean>()
   val isWatchlist: LiveData<Boolean> = _isWatchlist
+
+  private val _score = MutableLiveData<ScoreRatingResponse>()
+  val score: LiveData<ScoreRatingResponse> get() = _score
+
+
+  // person
+  private val _detailPerson = MutableLiveData<DetailPersonResponse>()
+  val detailPerson: LiveData<DetailPersonResponse> get() = _detailPerson
+
+  private val _knownFor = MutableLiveData<List<CastItemPerson>>()
+  val knownFor: LiveData<List<CastItemPerson>> get() = _knownFor
+
+  private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
+  val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
+
+  // future
+  private val _postResponse = MutableLiveData<PostFavoriteWatchlistResponse>()
+  val postResponse: LiveData<PostFavoriteWatchlistResponse> get() = _postResponse
+
+
+  // utils
+  private val _snackbarText = MutableLiveData<Event<String>>()
+  val snackBarText: LiveData<Event<String>> get() = _snackbarText
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
+  // paging
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
@@ -247,6 +264,7 @@ class MoviesRepository(
     ).flow
   }
 
+
   fun search(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
       config = PagingConfig(
@@ -258,116 +276,8 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getCreditMovies(movieId: Int) {
-    val client = TMDBApiConfig
-      .getApiService()
-      .getCreditMovies(movieId)
-
-    client.enqueue(object : Callback<CreditsResponse> {
-      override fun onResponse(
-        call: Call<CreditsResponse>,
-        response: Response<CreditsResponse>
-      ) {
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-            _creditsCrewMovies.value = responseBody.crew
-            _creditCastMovies.value = responseBody.cast
-          }
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-
-          // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-          val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
-        }
-      }
-
-      override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
-      }
-    })
-  }
-
-  fun getVideoMovies(movieId: Int) {
-    val client = TMDBApiConfig
-      .getApiService()
-      .getVideoMovies(movieId)
-
-    client.enqueue(object : Callback<VideoResponse> {
-      override fun onResponse(
-        call: Call<VideoResponse>,
-        response: Response<VideoResponse>
-      ) {
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-
-            //select best trailer
-            _linkVideoMovie.value = responseBody.results.filter {
-              it.official == true && it.type.equals("Trailer")
-            }.map { it.key }[0].toString().replace("[", "").replace("]", "")
-          }
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-
-          // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-          val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
-        }
-      }
-
-      override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
-      }
-    })
-  }
-
-  fun getVideoTv(tvId: Int) {
-    val client = TMDBApiConfig
-      .getApiService()
-      .getVideoTv(tvId)
-
-    client.enqueue(object : Callback<VideoResponse> {
-      override fun onResponse(
-        call: Call<VideoResponse>,
-        response: Response<VideoResponse>
-      ) {
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-
-            try {
-              // select best trailer
-              _linkVideoTv.value = responseBody.results.filter {
-                it.official == true && it.type.equals("Trailer")
-              }.map { it.key }[0].toString().replace("[", "").replace("]", "")
-            } catch (e: IndexOutOfBoundsException) {
-              _linkVideoTv.value = ""
-            }
-          }
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-
-          // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-          val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
-        }
-      }
-
-      override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
-      }
-    })
-  }
-
   fun getCreditTv(tvId: Int) {
+    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getCreditTv(tvId)
@@ -377,6 +287,7 @@ class MoviesRepository(
         call: Call<CreditsResponse>,
         response: Response<CreditsResponse>
       ) {
+        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
@@ -392,6 +303,7 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -462,6 +374,7 @@ class MoviesRepository(
 
   // detail movie from TMDB API
   fun getDetailMovie(id: Int) {
+    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getDetailMovie(id)
@@ -471,10 +384,9 @@ class MoviesRepository(
         call: Call<DetailMovieResponse>,
         response: Response<DetailMovieResponse>
       ) {
-        if (response.isSuccessful) {
-
-          _detailMovie.value = response.body()
-        } else {
+        _isLoading.value = false
+        if (response.isSuccessful) _detailMovie.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -486,6 +398,7 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -493,6 +406,7 @@ class MoviesRepository(
   }
 
   fun getDetailTv(id: Int) {
+    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getDetailTv(id)
@@ -502,9 +416,9 @@ class MoviesRepository(
         call: Call<DetailTvResponse>,
         response: Response<DetailTvResponse>
       ) {
-        if (response.isSuccessful) {
-          _detailTv.value = response.body()
-        } else {
+        _isLoading.value = false
+        if (response.isSuccessful) _detailTv.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -516,6 +430,7 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<DetailTvResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -532,9 +447,8 @@ class MoviesRepository(
         call: Call<ExternalIdResponse>,
         response: Response<ExternalIdResponse>
       ) {
-        if (response.isSuccessful) {
-          _externalId.value = response.body()
-        } else {
+        if (response.isSuccessful) _externalId.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -546,6 +460,126 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<ExternalIdResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getVideoMovies(movieId: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getVideoMovies(movieId)
+
+    client.enqueue(object : Callback<VideoResponse> {
+      override fun onResponse(
+        call: Call<VideoResponse>,
+        response: Response<VideoResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+
+            try { //select best trailer
+              _linkVideoMovie.value = responseBody.results.filter {
+                it.official == true && it.type.equals("Trailer")
+              }.map { it.key }[0].toString().replace("[", "").replace("]", "")
+            } catch (e: IndexOutOfBoundsException) {
+              _linkVideoMovie.value = ""
+            }
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getVideoTv(tvId: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getVideoTv(tvId)
+
+    client.enqueue(object : Callback<VideoResponse> {
+      override fun onResponse(
+        call: Call<VideoResponse>,
+        response: Response<VideoResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+
+            try { // select best trailer
+              _linkVideoTv.value = responseBody.results.filter {
+                it.official == true && it.type.equals("Trailer")
+              }.map { it.key }[0].toString().replace("[", "").replace("]", "")
+            } catch (e: IndexOutOfBoundsException) {
+              _linkVideoTv.value = ""
+            }
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getCreditMovies(movieId: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getCreditMovies(movieId)
+
+    client.enqueue(object : Callback<CreditsResponse> {
+      override fun onResponse(
+        call: Call<CreditsResponse>,
+        response: Response<CreditsResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _creditsCrewMovies.value = responseBody.crew
+            _creditCastMovies.value = responseBody.cast
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -672,13 +706,120 @@ class MoviesRepository(
     })
   }
 
-  fun getFavoriteMoviesFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteMovies
 
-  fun getFavoriteTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteTv
+  // person
+  fun getDetailPerson(id: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getDetailPerson(id)
+
+    client.enqueue(object : Callback<DetailPersonResponse> {
+      override fun onResponse(
+        call: Call<DetailPersonResponse>,
+        response: Response<DetailPersonResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          _detailPerson.value = response.body()
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<DetailPersonResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getKnownForPerson(id: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getKnownForPerson(id)
+
+    client.enqueue(object : Callback<CreditsPersonResponse> {
+      override fun onResponse(
+        call: Call<CreditsPersonResponse>,
+        response: Response<CreditsPersonResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _knownFor.value = responseBody.cast!!
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<CreditsPersonResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getImagePerson(id: Int) {
+    _isLoading.value = true
+    val client = TMDBApiConfig
+      .getApiService()
+      .getImagePerson(id)
+
+    client.enqueue(object : Callback<ImagePersonResponse> {
+      override fun onResponse(
+        call: Call<ImagePersonResponse>,
+        response: Response<ImagePersonResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _imagePerson.value = responseBody.profiles!!
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<ImagePersonResponse>, t: Throwable) {
+        _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+
+  // database function
+  fun getFavoriteMoviesFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteMovies
 
   fun getWatchlistMovieFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistMovies
 
   fun getWatchlistTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistTv
+
+  fun getFavoriteTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteTv
 
   fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
@@ -701,23 +842,24 @@ class MoviesRepository(
     }
   }
 
-  fun isWatchlist(id: Int) {
+  fun isWatchlistDB(id: Int) {
     appExecutors.diskIO().execute {
       _isWatchlist.postValue(localDataSource.isWatchlist(id))
     }
   }
 
-  fun updateFavorite(boolean: Boolean, id: Int) {
+  fun updateFavoriteDB(boolean: Boolean, id: Int) {
     appExecutors.diskIO().execute {
       localDataSource.updateFavorite(boolean, id)
     }
   }
 
-  fun updateWatchlist(boolean: Boolean, id: Int) {
+  fun updateWatchlistDB(boolean: Boolean, id: Int) {
     appExecutors.diskIO().execute {
       localDataSource.updateWatchlist(boolean, id)
     }
   }
+
 
   companion object {
     private const val TAG = "MoviesRepository "
@@ -726,13 +868,13 @@ class MoviesRepository(
     private var instance: MoviesRepository? = null
 
     fun getInstance(
-      TMDBApiService: TMDBApiService,
-      IMDBApiLibService: IMDBApiLibService,
+      tmdbApiService: TMDBApiService,
+      imdbApiLibService: IMDBApiLibService,
       localData: LocalDataSource,
       appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(TMDBApiService, IMDBApiLibService, localData, appExecutors)
+        instance ?: MoviesRepository(tmdbApiService, imdbApiLibService, localData, appExecutors)
       }
   }
 }

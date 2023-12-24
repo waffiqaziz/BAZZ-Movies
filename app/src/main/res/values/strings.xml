@@ -43,7 +43,13 @@
   <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
   <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
   <string name="sign_out">Sign Out</string>
+  <string name="sign_out_success">Sign Out Success</string>
   <string name="feature_not_ready">Feature still on Development</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="warning">Warning</string>
+  <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
+  <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
 
   <string name="search_any">Search any Movies</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
@@ -61,6 +67,7 @@
   <string name="watch_trailer">Watch Trailer</string>
   <string name="cast">Cast</string>
   <string name="as">as</string>
+  <string name="recommendation">Recommendation</string>
 
   <string name="added_favorite">%s has been added to favorite</string>
   <string name="added_watchlist">%s has been added to watchlist</string>
@@ -84,7 +91,7 @@
   <!-- SCORES -->
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDb</string>
-  <string name="filmaffinity">FilmAffinity</string>
+  <string name="filmAffinity">FilmAffinity</string>
   <string name="tmdb">TMDB</string>
   <string name="rotten_tomatoes">Rotten Tomatoes</string>
 
@@ -99,11 +106,7 @@
   <string name="biography">Biography</string>
   <string name="born">Born</string>
   <string name="photos">Photos</string>
-  <string name="recommendation">Recommendation</string>
-
-  <string name="yes">Yes</string>
-  <string name="no">No</string>
-  <string name="warning">Warning</string>
-  <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
-  <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
+  <string name="read_more">Read More</string>
+  <string name="less_more">Less More</string>
+  <string name="playing_as">Playing as</string>
 </resources>

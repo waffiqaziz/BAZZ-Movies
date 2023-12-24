@@ -33,6 +33,21 @@
         tools:src="@color/red_matte" />
 
       <ImageButton
+        android:id="@+id/btn_back_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_back_button"
+        android:contentDescription="@string/back"
+        android:alpha="0.3"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_left_icon" />
+
+      <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-20dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -261,7 +276,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/filmaffinity"
+        android:text="@string/filmAffinity"
         app:layout_constraintEnd_toStartOf="@+id/guideline_center_vertical"
         app:layout_constraintStart_toEndOf="@+id/tv_imdb"
         app:layout_constraintTop_toTopOf="@+id/tv_imdb" />
