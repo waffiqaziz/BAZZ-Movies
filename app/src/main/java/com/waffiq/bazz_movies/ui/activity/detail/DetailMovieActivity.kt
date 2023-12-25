@@ -39,6 +39,7 @@ import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
 import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesFavorite
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesWatchlist
 import com.waffiq.bazz_movies.utils.Helper.showToastLong
@@ -111,7 +112,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // show data(year, overview, title)
     binding.apply {
       dataExtra.apply {
-        val year = firstAirDate ?: releaseDate
+        val year = (firstAirDate ?: releaseDate)?.let { dateFormater(it) }
         "${mediaType?.uppercase()} | $year".also { tvYearReleased.text = it }
         tvOverview.text = overview
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
@@ -214,6 +215,11 @@ class DetailMovieActivity : AppCompatActivity() {
         viewModel.getRecommendationMovie(movie.id!!).observe(this) {
           adapterRecommendation.submitData(lifecycle, it)
         }
+
+        // age rate
+        viewModel.ageRatingMovie().observe(this){
+          binding.tvAgeRating.text = it
+        }
       }
 
     } else if (dataExtra.mediaType == "tv") {
@@ -270,11 +276,15 @@ class DetailMovieActivity : AppCompatActivity() {
         adapterRecommendation.submitData(lifecycle, it)
       }
 
-      //show genres
+      //show genres & age rate
       viewModel.detailTv(dataExtra.id!!)
       viewModel.detailTv().observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
+
+        viewModel.ageRatingTv().observe(this){
+          binding.tvAgeRating.text = it
+        }
       }
     }
   }

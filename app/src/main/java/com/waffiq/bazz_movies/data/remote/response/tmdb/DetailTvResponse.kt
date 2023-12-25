@@ -82,6 +82,9 @@ data class DetailTvResponse(
 	@field:SerializedName("episode_run_time")
 	val episodeRunTime: List<Int?>? = null,
 
+	@field:SerializedName("content_ratings")
+	val contentRatings: ContentRatings? = null,
+
 	@field:SerializedName("adult")
 	val adult: Boolean? = null,
 
@@ -99,6 +102,24 @@ data class DetailTvResponse(
 
 	@field:SerializedName("status")
 	val status: String? = null
+)
+
+data class ContentRatings(
+
+	@field:SerializedName("results")
+	val results: List<ContentRatingsItem?>? = null
+)
+
+data class ContentRatingsItem(
+
+	@field:SerializedName("descriptors")
+	val descriptors: List<Any?>? = null,
+
+	@field:SerializedName("iso_3166_1")
+	val iso31661: String? = null,
+
+	@field:SerializedName("rating")
+	val rating: String? = null
 )
 
 data class SeasonsItem(

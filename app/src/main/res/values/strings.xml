@@ -105,6 +105,8 @@
   <string name="known_for">Known For</string>
   <string name="biography">Biography</string>
   <string name="born">Born</string>
+  <string name="day_of_death">Day of Death</string>
+  <string name="years_old">years old</string>
   <string name="photos">Photos</string>
   <string name="read_more">Read More</string>
   <string name="less_more">Less More</string>

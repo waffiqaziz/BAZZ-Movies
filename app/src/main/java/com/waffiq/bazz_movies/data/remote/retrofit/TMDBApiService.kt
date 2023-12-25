@@ -143,12 +143,12 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int
   ): Call<CreditsResponse>
 
-  @GET("3/movie/{movieId}?api_key=$API_KEY&language=en-US")
+  @GET("3/movie/{movieId}?api_key=$API_KEY&language=en-US&append_to_response=release_dates")
   fun getDetailMovie(
     @Path("movieId") movieId: Int
   ): Call<DetailMovieResponse>
 
-  @GET("3/tv/{tvId}?api_key=$API_KEY&language=en-US")
+  @GET("3/tv/{tvId}?api_key=$API_KEY&language=en-US&append_to_response=content_ratings")
   fun getDetailTv(
     @Path("tvId") tvId: Int
   ): Call<DetailTvResponse>

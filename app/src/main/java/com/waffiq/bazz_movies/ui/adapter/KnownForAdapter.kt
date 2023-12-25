@@ -55,11 +55,17 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       binding.tvCastCharacter.text = cast.character
 
       val resultItem = ResultItem(
+        overview = cast.overview,
+        title = cast.title,
+        originalTitle = cast.originalTitle,
+        originalName = cast.originalTitle,
         mediaType = "movie",
+        firstAirDate = cast.releaseDate,
+        releaseDate = cast.releaseDate,
         id = cast.id,
         voteAverage = cast.voteAverage,
         posterPath = cast.posterPath,
-        backdropPath = cast.backdropPath
+        backdropPath = cast.backdropPath,
       )
 
       // OnClickListener

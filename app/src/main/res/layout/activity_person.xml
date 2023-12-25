@@ -159,6 +159,30 @@
         tools:text="November 11, 1974 (64 years old) \nHollywood, Los Angeles, California, USA" />
 
       <TextView
+        android:id="@+id/tv_dead_header"
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/day_of_death"
+        app:layout_constraintStart_toStartOf="@+id/tv_known_for"
+        app:layout_constraintTop_toBottomOf="@+id/tv_born" />
+
+      <TextView
+        android:id="@+id/tv_death"
+        style="@style/TextBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:justificationMode="inter_word"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dead_header"
+        tools:text="2008-01-22 (28 years old)"/>
+
+      <TextView
         android:id="@+id/tv_photos_header"
         style="@style/TextHeader2"
         android:layout_width="wrap_content"
@@ -166,7 +190,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/photos"
         app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/tv_born" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_death" />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_photos"

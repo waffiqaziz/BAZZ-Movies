@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
@@ -44,7 +46,13 @@ class SearchAdapter :
         showDataPerson(binding, data)
 
         binding.containerResult.setOnClickListener {
-          it.context.startActivity(Intent(it.context, PersonActivity::class.java))
+          val person = CastItem(
+            id = data.id,
+            profilePath = data.profilePath
+          )
+          val intent = Intent(it.context, PersonActivity::class.java)
+          intent.putExtra(PersonActivity.EXTRA_PERSON, person)
+          it.context.startActivity(intent)
         }
       }
       else { //movie & tv-series

@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import java.text.DecimalFormat
 
 class FavoriteTvAdapter :
@@ -43,13 +44,18 @@ class FavoriteTvAdapter :
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
 
-      binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-      binding.tvYearReleased.text = resultItem.firstAirDate ?: resultItem.releaseDate
+      binding.tvTitle.text =
+        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
+        dateFormater(it)
+      }
       binding.tvGenre.text = resultItem.genreIds?.let { Helper.iterateGenre(it) }
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")
-      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also { binding.tvRating.text = it }
+      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
+        binding.tvRating.text = it
+      }
 
       // OnClickListener
       binding.container.setOnClickListener {

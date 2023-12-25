@@ -6,16 +6,21 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
 import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Helper.dateFormater
+import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
+import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
 
 class PersonActivity : AppCompatActivity() {
 
@@ -42,7 +47,8 @@ class PersonActivity : AppCompatActivity() {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         intent.getParcelableExtra("EXTRA_PERSON", CastItem::class.java)!!
       } else {
-        @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_PERSON)!!
+        @Suppress("DEPRECATION")
+        intent.getParcelableExtra(EXTRA_PERSON)!!
       }
     } else finish()
   }
@@ -66,17 +72,17 @@ class PersonActivity : AppCompatActivity() {
 
     // show picture
     personMovieViewModel.getImagePerson(dataExtra.id!!)
-    personMovieViewModel.getImagePerson().observe(this){  adapterImage.setCast(it)  }
+    personMovieViewModel.getImagePerson().observe(this) { adapterImage.setCast(it) }
 
     // show detail person
     personMovieViewModel.getDetailPerson(dataExtra.id!!)
     personMovieViewModel.getDetailPerson().observe(this) {
-      val birthday = "${it.birthday} \n ${it.placeOfBirth}"
 
       binding.tvName.text = it.name
       binding.tvBiography.text = it.biography
-      binding.tvBorn.text = birthday
+      showBirthdate(it)
 
+      // show photo
       Glide.with(binding.ivPicture)
         .load(
           if (dataExtra.profilePath.isNullOrEmpty()) {
@@ -88,11 +94,12 @@ class PersonActivity : AppCompatActivity() {
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
+
     }
 
     Handler(Looper.getMainLooper()).postDelayed({
       binding.tvBiography.performClick() // set automatic click
-    }, 500)
+    }, 800)
   }
 
   private fun btnListener() {
@@ -106,6 +113,33 @@ class PersonActivity : AppCompatActivity() {
     } else {
       binding.backgroundDim.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
+    }
+  }
+
+  private fun showBirthdate(it: DetailPersonResponse) {
+    if (it.deathday.isNullOrEmpty()) {
+      binding.tvDeath.isVisible = false
+      binding.tvDeadHeader.isVisible = false
+
+      val birthday = "${it.birthday?.let { dateFormater(it) }} (${
+        it.birthday?.let { getAgeBirth(it) }
+      } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
+      binding.tvBorn.text = birthday
+
+    } else {
+      binding.tvDeath.isVisible = true
+      binding.tvDeadHeader.isVisible = true
+
+      val birthDay = "${it.birthday?.let { dateFormater(it) }} \n${it.placeOfBirth}"
+      binding.tvBorn.text = birthDay
+      val deathDay = "${it.deathday?.let { dateFormater(it) }} (${
+        getAgeDeath(
+          it.birthday!!,
+          it.deathday!!
+        )
+      } ${getString(R.string.years_old)})"
+      binding.tvDeath.text = deathDay
+
     }
   }
 

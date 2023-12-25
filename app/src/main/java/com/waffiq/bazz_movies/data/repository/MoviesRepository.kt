@@ -59,8 +59,14 @@ class MoviesRepository(
   private val _detailMovie = MutableLiveData<DetailMovieResponse>()
   val detailMovie: LiveData<DetailMovieResponse> get() = _detailMovie
 
+  private val _ageRatingMovie = MutableLiveData<String>()
+  val ageRatingMovie: LiveData<String> get() = _ageRatingMovie
+
   private val _detailTv = MutableLiveData<DetailTvResponse>()
   val detailTv: LiveData<DetailTvResponse> get() = _detailTv
+
+  private val _ageRatingTv = MutableLiveData<String>()
+  val ageRatingTv: LiveData<String> get() = _ageRatingTv
 
   private val _stated = MutableLiveData<StatedResponse>()
   val stated: LiveData<StatedResponse> get() = _stated
@@ -385,8 +391,19 @@ class MoviesRepository(
         response: Response<DetailMovieResponse>
       ) {
         _isLoading.value = false
-        if (response.isSuccessful) _detailMovie.value = response.body()
-        else {
+        if (response.isSuccessful) {
+          _detailMovie.value = response.body()
+          try { // get age rating
+            _ageRatingMovie.value = response.body()?.releaseDates?.results?.filter {
+              it?.iso31661 == "US"
+            }?.map {
+              it?.releaseDateValue?.get(0)?.certification
+            }.toString().replace("[", "").replace("]", "")
+          } catch (e: NullPointerException) {
+            _ageRatingMovie.value = "N/A"
+          }
+
+        } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -417,8 +434,18 @@ class MoviesRepository(
         response: Response<DetailTvResponse>
       ) {
         _isLoading.value = false
-        if (response.isSuccessful) _detailTv.value = response.body()
-        else {
+        if (response.isSuccessful) {
+          _detailTv.value = response.body()
+
+          try { // get age rating
+            _ageRatingTv.value = response.body()?.contentRatings?.results?.filter {
+              it?.iso31661 == "US"
+            }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
+          } catch (e: NullPointerException) {
+            _ageRatingTv.value = "N/A"
+          }
+
+        } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error

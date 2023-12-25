@@ -16,9 +16,11 @@ class DetailMovieViewModel(
   // Show Data
   fun detailMovie(id: Int) = movieRepository.getDetailMovie(id)
   fun detailMovie() = movieRepository.detailMovie
+  fun ageRatingMovie() = movieRepository.ageRatingMovie
 
   fun detailTv(id: Int) = movieRepository.getDetailTv(id)
   fun detailTv() = movieRepository.detailTv
+  fun ageRatingTv() = movieRepository.ageRatingTv
 
   fun externalId(id: Int) = movieRepository.getExternalId(id)
   fun externalId() = movieRepository.externalId
