@@ -34,7 +34,8 @@
     <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false"
-      android:screenOrientation="nosensor" />
+      android:screenOrientation="nosensor"
+      android:theme="@style/Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name="com.waffiq.bazz_movies.SplashScreenActivity"
       android:exported="true"

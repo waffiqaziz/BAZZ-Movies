@@ -26,7 +26,6 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
-import com.waffiq.bazz_movies.data.remote.response.ScoreRatingResponse
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
@@ -39,6 +38,7 @@ import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
 import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesFavorite
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesWatchlist
@@ -96,7 +96,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showDetailData() {
     viewModel.getLoading().observe(this) { showLoading(it) }
 
-    //shows poster
+    //shows backdrop
     Glide.with(binding.ivPicture)
       .load(
         if (dataExtra.backdropPath.isNullOrEmpty()) {
@@ -104,35 +104,30 @@ class DetailMovieActivity : AppCompatActivity() {
         } else {
           TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
         }
-      ) // URL movie poster
+      )
       .placeholder(R.drawable.ic_bazz_logo)
       .error(R.drawable.ic_broken_image)
       .into(binding.ivPicture)
+
+    //shows poster
+    Glide.with(binding.ivPoster)
+      .load(TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath) // URL movie poster
+      .placeholder(R.drawable.ic_bazz_placeholder_poster)
+      .error(R.drawable.ic_broken_image)
+      .into(binding.ivPoster)
 
     // show data(year, overview, title)
     binding.apply {
       dataExtra.apply {
         val year = (firstAirDate ?: releaseDate)?.let { dateFormater(it) }
-        "${mediaType?.uppercase()} | $year".also { tvYearReleased.text = it }
+        tvYearReleased.text = year
+        tvMediaType.text = mediaType?.uppercase()
         tvOverview.text = overview
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
       }
     }
 
-    // show backdrop on trailer
-    Glide.with(binding.ivYoutubeVideo)
-      .load(
-        if (dataExtra.backdropPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        } else {
-          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-        }
-      ) // URL movie poster
-      .placeholder(R.drawable.ic_bazz_logo)
-      .error(R.drawable.ic_broken_image)
-      .into(binding.ivYoutubeVideo)
-
-    binding.tvScoreTmdb.text = dataExtra.voteAverage.toString()
+    binding.tvScoreTmdb.text = (dataExtra.voteAverage ?: "N/A" .toString()).toString()
 
     // setup rv cast
     binding.rvCast.layoutManager =
@@ -193,6 +188,8 @@ class DetailMovieActivity : AppCompatActivity() {
           binding.tvGenre.text = temp.joinToString(separator = ", ")
         }
 
+        binding.tvDuration.text = convertRuntime(movie.runtime!!)
+
 //        //show score
 //        movie.imdbId?.let { imdbId -> viewModel.getScore(API_KEY_IMDB_API_LIB, imdbId) }
 //        viewModel.score().observe(this) { showScore(it) }
@@ -217,7 +214,7 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         // age rate
-        viewModel.ageRatingMovie().observe(this){
+        viewModel.ageRatingMovie().observe(this) {
           binding.tvAgeRating.text = it
         }
       }
@@ -248,9 +245,7 @@ class DetailMovieActivity : AppCompatActivity() {
         if (externalId.imdbId.isNullOrEmpty()) {
           binding.apply {
             tvScoreImdb.text = getString(R.string.not_available)
-            tvScoreFilmAffinity.text = getString(R.string.not_available)
             tvScoreMetascore.text = getString(R.string.not_available)
-            tvScoreRottenTomatoes.text = getString(R.string.not_available)
           }
         } else {
 //        viewModel.getScore(API_KEY_IMDB_API_LIB, externalId.imdbId)
@@ -282,7 +277,7 @@ class DetailMovieActivity : AppCompatActivity() {
         val temp = tv.genres?.map { it?.name }
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
-        viewModel.ageRatingTv().observe(this){
+        viewModel.ageRatingTv().observe(this) {
           binding.tvAgeRating.text = it
         }
       }
@@ -290,9 +285,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun hideTrailer(hide: Boolean) {
-    binding.ivYoutubeVideo.isVisible = !hide
     binding.ibPlay.isVisible = !hide
-    binding.tvWatchTrailer.isVisible = !hide
   }
 
   private fun btnTrailer(link: String) {
@@ -319,24 +312,18 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.btnFavorite.setOnClickListener {
       if (!isLogin) { //guest user
         if (!favorite) {
-          // get movie is watchlist or not
-          viewModel.isWatchlistDB().observe(this) {
-            if (it) { // if movies is on watchlist, then edit is_favorited = true
-              viewModel.updateToFavoriteDB(dataExtra.id!!)
-            } else { // insert movie into room dataset, then set is_favorited = true
-              viewModel.insertToFavoriteDB(mapResponsesToEntitiesFavorite(dataExtra))
-            }
+          if (watchlist) { // if movies is on watchlist, then edit is_favorited = true
+            viewModel.updateToFavoriteDB(dataExtra.id!!)
+          } else { // insert movie into room dataset, then set is_favorited = true
+            viewModel.insertToFavoriteDB(mapResponsesToEntitiesFavorite(dataExtra))
           }
           favorite = true
           showToastAddedFavorite()
         } else {
-          // get movie is watchlist or not
-          viewModel.isWatchlistDB().observe(this) {
-            if (it) { // if movies is on watchlist, then edit is_favorited to false
-              viewModel.updateToRemoveFromFavoriteDB(dataExtra.id!!)
-            } else { // remove movie from room database,  cuz not in favorite
-              viewModel.removeFromFavoriteDB(mapResponsesToEntitiesFavorite(dataExtra))
-            }
+          if (watchlist) { // if movies is on watchlist, then edit is_favorited to false
+            viewModel.updateToRemoveFromFavoriteDB(dataExtra.id!!)
+          } else { // remove movie from room database,  cuz not in favorite
+            viewModel.removeFromFavoriteDB(mapResponsesToEntitiesFavorite(dataExtra))
           }
           favorite = false
           showToastRemoveFromFavorite()
@@ -373,24 +360,18 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.btnWatchlist.setOnClickListener {
       if (!isLogin) { // guest user
         if (!watchlist) { // if not in watchlist, then add to watchlist
-          // get movie is favorite or not
-          viewModel.isFavoriteDB().observe(this) {
-            if (it) { // if movie is on favorite, then update is_watchlist = true
-              viewModel.updateToWatchlistDB(dataExtra.id!!)
-            } else { // insert movie into room database and set is_watchlist = true
-              viewModel.insertToFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
-            }
+          if (favorite) { // if movie is on favorite, then update is_watchlist = true
+            viewModel.updateToWatchlistDB(dataExtra.id!!)
+          } else { // insert movie into room database and set is_watchlist = true
+            viewModel.insertToFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
           }
           watchlist = true
           showToastAddedWatchlist()
         } else {
-          // get movie is favorite or not
-          viewModel.isFavoriteDB().observe(this) {
-            if (it) { // if movie is favorite, then update is_watchlist to false
-              viewModel.updateToRemoveFromWatchlistDB(dataExtra.id!!)
-            } else { // remove movie from room database, cuz not in watchlist
-              viewModel.removeFromFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
-            }
+          if (favorite) { // if movie is favorite, then update is_watchlist to false
+            viewModel.updateToRemoveFromWatchlistDB(dataExtra.id!!)
+          } else { // remove movie from room database, cuz not in watchlist
+            viewModel.removeFromFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
           }
           watchlist = false
           showToastLong(this, this.getString(R.string.deleted_from_watchlist))
@@ -439,22 +420,10 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun showScoreIMDBLib(data: ScoreRatingResponse) {
-    binding.apply {
-      tvScoreImdb.text = if (data.imDb == "") "NR" else data.imDb
-      tvScoreFilmAffinity.text = if (data.filmAffinity == "") "NR" else data.filmAffinity
-      tvScoreMetascore.text = if (data.metacritic == "") "NR" else data.metacritic
-      tvScoreRottenTomatoes.text = if (data.rottenTomatoes == "") "NR" else data.rottenTomatoes
-    }
-  }
-
   private fun showDetailOMDb(data: OMDbDetailsResponse) {
     binding.apply {
       tvScoreImdb.text = if (data.imdbRating == "") "NR" else data.imdbRating
-      tvScoreFilmAffinity.text = "N/A"
       tvScoreMetascore.text = if (data.metascore == "") "NR" else data.metascore
-
-      tvScoreRottenTomatoes.text = "N/A"
     }
   }
 
@@ -576,4 +545,3 @@ class DetailMovieActivity : AppCompatActivity() {
     const val EXTRA_MOVIE = "MOVIE"
   }
 }
-

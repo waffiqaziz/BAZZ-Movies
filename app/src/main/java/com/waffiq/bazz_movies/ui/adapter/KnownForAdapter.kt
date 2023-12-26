@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemPerson
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
+import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
@@ -29,7 +30,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemCastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemPlayForBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -39,7 +40,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
   override fun getItemCount() = listCast.size
 
-  inner class ViewHolder(private var binding: ItemCastBinding) :
+  inner class ViewHolder(private var binding: ItemPlayForBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: CastItemPerson) {

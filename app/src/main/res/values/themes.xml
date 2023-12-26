@@ -2,10 +2,10 @@
   <!-- Base application theme. -->
   <style name="Theme.BAZZ_movies" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     <!-- Primary brand color. -->
-    <item name="colorPrimary">@color/dark</item>
+    <item name="colorPrimary">@color/gray_800</item>
     <item name="colorPrimaryVariant">@color/yellow</item>
     <item name="colorOnPrimary">@color/white</item>
-    <item name="colorAccent">@color/dark_medium</item>
+    <item name="colorAccent">@color/gray_700</item>
     <!-- Secondary brand color. -->
     <item name="colorSecondary">@color/teal_200</item>
     <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -35,7 +35,7 @@
   </style>
 
   <style name="TextHeader1">
-    <item name="android:textSize">28sp</item>
+    <item name="android:textSize">24sp</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/gothicb</item>
   </style>
@@ -48,7 +48,7 @@
 
   <style name="TextDivider">
     <item name="android:textSize">14sp</item>
-    <item name="android:textColor">@color/light_gray</item>
+    <item name="android:textColor">@color/gray_400</item>
     <item name="fontFamily">@font/gothic</item>
   </style>
 
@@ -64,8 +64,17 @@
 
   <style name="TextBody">
     <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/gray_100</item>
+    <item name="fontFamily">@font/gothic</item>
+  </style>
+
+  <style name="TextScore">
+    <item name="android:textSize">14sp</item>
     <item name="android:textColor">@color/white</item>
     <item name="fontFamily">@font/gothic</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_width">75dp</item>
+    <item name="android:layout_marginTop">4dp</item>
   </style>
 
   <style name="ButtonMoreStyle">
@@ -86,12 +95,12 @@
   </style>
 
   <style name="ButtonSignOut">
-    <item name="strokeColor">@color/light_gray</item>
+    <item name="strokeColor">@color/gray_400</item>
     <item name="textAllCaps">false</item>
     <item name="fontFamily">@font/gothicb</item>
     <item name="strokeWidth">0.8dp</item>
     <item name="android:textColor">@color/red_matte</item>
-    <item name="backgroundTint">@color/dark_medium</item>
+    <item name="backgroundTint">@color/gray_700</item>
   </style>
 
   <style name="customButton">

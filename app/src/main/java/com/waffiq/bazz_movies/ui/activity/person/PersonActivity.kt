@@ -132,10 +132,10 @@ class PersonActivity : AppCompatActivity() {
 
       val birthDay = "${it.birthday?.let { dateFormater(it) }} \n${it.placeOfBirth}"
       binding.tvBorn.text = birthDay
-      val deathDay = "${it.deathday?.let { dateFormater(it) }} (${
+      val deathDay = "${dateFormater(it.deathday)} (${
         getAgeDeath(
           it.birthday!!,
-          it.deathday!!
+          it.deathday
         )
       } ${getString(R.string.years_old)})"
       binding.tvDeath.text = deathDay

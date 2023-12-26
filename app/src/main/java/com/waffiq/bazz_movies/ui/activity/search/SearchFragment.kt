@@ -59,12 +59,12 @@ class SearchFragment : Fragment() {
         && adapter.itemCount < 1
       ) {
         /// show empty view
-        binding.illustrationSearchNoResultView.container.isVisible = true
-        binding.illustrationSearchView.container.isVisible = false
+        binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
+        binding.illustrationSearchView.containerSearch.isVisible = false
       } else {
         ///  hide empty view
-        binding.illustrationSearchView.container.isVisible = false
-        binding.illustrationSearchNoResultView.container.isVisible = false
+        binding.illustrationSearchView.containerSearch.isVisible = false
+        binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
     }
 

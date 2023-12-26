@@ -25,9 +25,13 @@ data class FavoriteDB(
   @field:SerializedName("genre")
   val genre: String? = null,
 
-  @ColumnInfo(name = "image")
-  @field:SerializedName("image")
-  val imagePath: String? = null,
+  @ColumnInfo(name = "backDrop")
+  @field:SerializedName("backDrop")
+  val backDrop: String? = null,
+
+  @ColumnInfo(name = "poster")
+  @field:SerializedName("poster")
+  val poster: String? = null,
 
   @ColumnInfo(name = "overview")
   @field:SerializedName("overview")

@@ -80,7 +80,8 @@ object Helper {
       title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
       releaseDate = input.releaseDate ?: input.firstAirDate,
       rating = input.voteAverage,
-      imagePath = input.backdropPath ?: input.posterPath,
+      backDrop = input.backdropPath,
+      poster = input.posterPath,
       genre = iterateGenre(input.genreIds ?: listOf()),
       popularity = input.popularity,
       overview = input.overview,
@@ -96,7 +97,8 @@ object Helper {
       title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
       releaseDate = input.releaseDate ?: input.firstAirDate,
       rating = input.voteAverage,
-      imagePath = input.backdropPath ?: input.posterPath,
+      backDrop = input.backdropPath,
+      poster = input.posterPath,
       genre = iterateGenre(input.genreIds ?: listOf()),
       popularity = input.popularity,
       overview = input.overview,
@@ -138,5 +140,11 @@ object Helper {
       LocalDate.of(yearBirth, monthBirth, dayBirth),
       LocalDate.of(yearDeath, monthDeath, dayDeath)
     ).years
+  }
+
+  fun convertRuntime(t: Int): String{
+    val hours: Int = t / 60 // since both are ints, you get an int
+    val minutes: Int = t % 60
+    return "${hours}h ${minutes}m"
   }
 }

@@ -11,7 +11,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.databinding.ItemResultBinding

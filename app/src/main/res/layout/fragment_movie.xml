@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/light_gray"
+  tools:background="@color/gray_400"
   tools:context=".ui.activity.home.MovieFragment">
 
   <LinearLayout

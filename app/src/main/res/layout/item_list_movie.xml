@@ -20,7 +20,8 @@
       android:layout_height="400dp"
       android:adjustViewBounds="true"
       android:scaleType="centerCrop"
-      tools:src="@color/light_gray" />
+      tools:src="@color/gray_400"
+      android:contentDescription="@string/picture" />
 
     <TextView
       android:id="@+id/tv_name"

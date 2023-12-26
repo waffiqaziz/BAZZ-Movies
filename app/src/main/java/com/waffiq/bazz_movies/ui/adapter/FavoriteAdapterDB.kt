@@ -43,7 +43,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
     fun bind(fav: FavoriteDB) {
       Glide.with(binding.ivPicture)
-        .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.imagePath )
+        .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop )
         .placeholder(R.mipmap.ic_launcher)
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
@@ -53,7 +53,8 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
       binding.tvYearReleased.text = fav.releaseDate?.let { dateFormater(it) }
 
       val resultItem = ResultItem(
-        posterPath = fav.imagePath,
+        backdropPath = fav.backDrop,
+        posterPath = fav.poster,
         releaseDate = fav.releaseDate,
         overview = fav.overview,
         title = fav.title,
