@@ -5,7 +5,6 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/gray_700"
   tools:context=".ui.activity.detail.DetailMovieActivity">
 
   <ScrollView
@@ -30,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/background_poster"
+        android:contentDescription="@string/poster"
         android:foreground="@drawable/bg_gradient_shape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,10 +42,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ic_play"
         android:contentDescription="@string/watch_trailer"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/iv_picture"
         app:layout_constraintEnd_toEndOf="@+id/iv_picture"
         app:layout_constraintStart_toStartOf="@+id/iv_picture"
-        app:layout_constraintTop_toTopOf="@+id/iv_picture" />
+        app:layout_constraintTop_toTopOf="@+id/iv_picture"
+        tools:visibility="visible" />
 
       <ImageButton
         android:id="@+id/btn_back_bg"
@@ -117,7 +118,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_picture"
         tools:layout_width="120dp"
-        tools:src="@drawable/ic_bazz_placeholder_poster" />
+        tools:src="@drawable/ic_bazz_placeholder_poster"
+        android:contentDescription="@string/poster" />
 
       <TextView
         android:id="@+id/tv_title"
@@ -162,7 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/_divider"
-        android:textColor="@color/gray_400"
+        android:textColor="@color/grey_400"
         app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
         app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
 
@@ -173,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/_divider"
-        android:textColor="@color/gray_400"
+        android:textColor="@color/grey_400"
         app:layout_constraintStart_toEndOf="@+id/tv_year_released"
         app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
 
@@ -220,8 +222,8 @@
       <TextView
         android:id="@+id/tv_metascore"
         style="@style/TextScore"
-        android:gravity="center"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/metascore"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toEndOf="@+id/tv_imdb"
@@ -388,22 +390,23 @@
   </ScrollView>
 
   <View
-    android:id="@+id/background_dim"
+    android:id="@+id/background_dim_movie"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    android:background="#42000000"
-    android:visibility="gone"
+    android:background="@color/grey_800"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="gone" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:indeterminateTint="@color/yellow"
-    android:visibility="invisible"
+    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

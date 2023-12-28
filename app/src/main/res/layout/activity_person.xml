@@ -5,7 +5,6 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/gray_700"
   tools:context=".ui.activity.person.PersonActivity">
 
   <ScrollView
@@ -30,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/background_poster"
+        android:contentDescription="@string/poster"
         android:foreground="@drawable/bg_gradient_shape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -213,7 +212,7 @@
 
   <View
     android:layout_width="match_parent"
-    android:id="@+id/background_dim"
+    android:id="@+id/background_dim_person"
     android:layout_height="match_parent"
     android:background="#42000000"
     android:visibility="gone"

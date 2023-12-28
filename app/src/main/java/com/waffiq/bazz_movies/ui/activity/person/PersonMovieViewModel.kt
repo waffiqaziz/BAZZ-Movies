@@ -8,11 +8,11 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
   fun getDetailPerson(id: Int) = movieRepository.getDetailPerson((id))
   fun getDetailPerson() = movieRepository.detailPerson
 
-  fun getLoading() = movieRepository.isLoading
-
   fun getKnownFor(id: Int) = movieRepository.getKnownForPerson(id)
   fun getKnownFor() = movieRepository.knownFor
 
   fun getImagePerson(id: Int) = movieRepository.getImagePerson(id)
   fun getImagePerson() = movieRepository.imagePerson
+
+  fun getLoading() = movieRepository.isLoading
 }

@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/gray_700"
+  tools:background="@color/grey_700"
   tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
   <View
@@ -22,10 +22,10 @@
     android:layout_height="70dp"
     android:layout_marginStart="20dp"
     android:contentDescription="@string/image_profile"
+    android:src="@drawable/ic_bazz"
     app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:src="@drawable/ic_bazz"/>
+    app:layout_constraintTop_toTopOf="parent" />
 
   <LinearLayout
     android:id="@+id/linearLayout"
@@ -49,8 +49,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:fontFamily="@font/gothic"
-      tools:text="Username"
-      android:textColor="@color/white" />
+      android:textColor="@color/white"
+      tools:text="Username" />
 
   </LinearLayout>
 

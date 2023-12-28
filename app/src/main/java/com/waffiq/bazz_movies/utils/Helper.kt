@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.utils
 
 import android.content.Context
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -146,5 +148,11 @@ object Helper {
     val hours: Int = t / 60 // since both are ints, you get an int
     val minutes: Int = t % 60
     return "${hours}h ${minutes}m"
+  }
+
+  fun animFadeOutLong(context: Context): Animation{
+    val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
+    animation.duration = 700
+    return animation
   }
 }

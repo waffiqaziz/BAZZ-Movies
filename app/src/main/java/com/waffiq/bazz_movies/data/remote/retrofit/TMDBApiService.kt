@@ -66,7 +66,7 @@ interface TMDBApiService {
     @Query("page") page : Int
   ): MovieTvResponse
 
-  @GET("3/movie/upcoming?api_key=$API_KEY&language=en-US&region=US&with_release_type=2|3")
+  @GET("3/movie/upcoming?api_key=$API_KEY&language=en-US&region=id&with_release_type=2|3")
   suspend fun getUpcomingMovies(
     @Query("page") page : Int
   ): MovieTvResponse

@@ -4,7 +4,7 @@
   android:orientation="horizontal"
   android:id="@+id/container_result"
   android:layout_width="match_parent"
-  tools:background="@color/gray_700"
+  tools:background="@color/grey_700"
   android:layout_height="wrap_content">
 
   <ImageView

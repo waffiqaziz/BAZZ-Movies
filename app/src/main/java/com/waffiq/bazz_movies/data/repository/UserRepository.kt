@@ -54,7 +54,7 @@ class UserRepository(
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
 
-            _tokenVerified.value = responseBody.request_token
+            _tokenVerified.value = responseBody.requestToken
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -85,7 +85,7 @@ class UserRepository(
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
-            _token.value = responseBody.request_token
+            _token.value = responseBody.requestToken
           }
 
         } else {
@@ -121,7 +121,7 @@ class UserRepository(
           val responseBody = response.body()
           if (responseBody != null && responseBody.success) {
 
-            _sessionId.value = responseBody.session_id
+            _sessionId.value = responseBody.sessionId
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")

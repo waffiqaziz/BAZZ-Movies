@@ -8,6 +8,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -25,8 +27,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -38,11 +40,13 @@ import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
 import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesFavorite
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesWatchlist
 import com.waffiq.bazz_movies.utils.Helper.showToastLong
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -96,18 +100,14 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showDetailData() {
     viewModel.getLoading().observe(this) { showLoading(it) }
 
-    //shows backdrop
-    Glide.with(binding.ivPicture)
-      .load(
-        if (dataExtra.backdropPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        } else {
-          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-        }
-      )
-      .placeholder(R.drawable.ic_bazz_logo)
-      .error(R.drawable.ic_broken_image)
-      .into(binding.ivPicture)
+    // shows backdrop
+    Glide.with(binding.ivPicture).load(
+      if (dataExtra.backdropPath.isNullOrEmpty()) {
+        TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+      } else {
+        TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+      }
+    ).placeholder(R.drawable.ic_bazz_logo).error(R.drawable.ic_broken_image).into(binding.ivPicture)
 
     //shows poster
     Glide.with(binding.ivPoster)
@@ -127,7 +127,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
 
-    binding.tvScoreTmdb.text = (dataExtra.voteAverage ?: "N/A" .toString()).toString()
+    binding.tvScoreTmdb.text = (dataExtra.voteAverage ?: "N/A").toString()
 
     // setup rv cast
     binding.rvCast.layoutManager =
@@ -145,6 +145,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     )
 
+
     // hide recommendation if null
     adapterRecommendation.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading &&
@@ -158,10 +159,9 @@ class DetailMovieActivity : AppCompatActivity() {
         binding.rvRecommendation.isVisible = true
       }
     }
-
     //show data based media type
     if (dataExtra.mediaType == "movie") {
-      //shows directors
+      // shows directors
       viewModel.getAllCreditMovies(dataExtra.id!!)
       viewModel.getCreditDirectorMovies().observe(this) { crew ->
         binding.tvDirector.text = getString(
@@ -175,10 +175,19 @@ class DetailMovieActivity : AppCompatActivity() {
         )
       }
 
-      //show cast
-      viewModel.getCreditsCastMovies().observe(this) { adapterCast.setCast(it) }
+      // show or hide cast
+      viewModel.getCreditsCastMovies().observe(this) {
+        adapterCast.setCast(it)
+        if (adapterCast.itemCount <= 0) {
+          binding.rvCast.isVisible = false
+          binding.tvCastHeader.isVisible = false
+        } else {
+          binding.rvCast.isVisible = true
+          binding.tvCastHeader.isVisible = true
+        }
+      }
 
-      //show score, genres, backdrop, trailer
+      // show score, genres, backdrop, trailer
       viewModel.detailMovie(dataExtra.id!!)
       viewModel.detailMovie().observe(this) { movie ->
 
@@ -222,7 +231,7 @@ class DetailMovieActivity : AppCompatActivity() {
     } else if (dataExtra.mediaType == "tv") {
       viewModel.getSnackBarText().observe(this) { showSnackBar(it) }
 
-      //show directors
+      // show directors
       viewModel.getAllCreditTv(dataExtra.id!!)
       viewModel.getCreditDirectorTv().observe(this) { crew ->
         binding.tvDirector.text = getString(
@@ -236,17 +245,24 @@ class DetailMovieActivity : AppCompatActivity() {
         )
       }
 
-      //show cast
-      viewModel.getCreditsCastTv().observe(this) { adapterCast.setCast(it) }
+      // show or hide cast
+      viewModel.getCreditsCastTv().observe(this) {
+        adapterCast.setCast(it)
+        if (adapterCast.itemCount <= 0) {
+          binding.rvCast.isVisible = false
+          binding.tvCastHeader.isVisible = false
+        } else {
+          binding.rvCast.isVisible = true
+          binding.tvCastHeader.isVisible = true
+        }
+      }
 
       //show score
       viewModel.externalId(dataExtra.id!!)
       viewModel.externalId().observe(this) { externalId ->
         if (externalId.imdbId.isNullOrEmpty()) {
-          binding.apply {
-            tvScoreImdb.text = getString(R.string.not_available)
-            tvScoreMetascore.text = getString(R.string.not_available)
-          }
+          binding.tvScoreImdb.text = getString(R.string.not_available)
+          binding.tvScoreMetascore.text = getString(R.string.not_available)
         } else {
 //        viewModel.getScore(API_KEY_IMDB_API_LIB, externalId.imdbId)
 //        viewModel.score().observe(this) { showScore(it) }
@@ -282,10 +298,6 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
     }
-  }
-
-  private fun hideTrailer(hide: Boolean) {
-    binding.ibPlay.isVisible = !hide
   }
 
   private fun btnTrailer(link: String) {
@@ -410,16 +422,6 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.tvScoreYourScore.text = getString(R.string.nan)
   }
 
-  private fun showLoading(isLoading: Boolean) {
-    if (isLoading) {
-      binding.backgroundDim.visibility = View.VISIBLE // blur background when loading
-      binding.progressBar.visibility = View.VISIBLE
-    } else {
-      binding.backgroundDim.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
-    }
-  }
-
   private fun showDetailOMDb(data: OMDbDetailsResponse) {
     binding.apply {
       tvScoreImdb.text = if (data.imdbRating == "") "NR" else data.imdbRating
@@ -469,9 +471,7 @@ class DetailMovieActivity : AppCompatActivity() {
         changeBtnWatchlistBG(it)
         watchlist = it
       }
-
     }
-
   }
 
   private fun changeBtnWatchlistBG(boolean: Boolean) {
@@ -530,15 +530,33 @@ class DetailMovieActivity : AppCompatActivity() {
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
     val buttonYesAlert = dialog.findViewById(R.id.btn_yes) as Button
-    buttonYesAlert.setOnClickListener {
-      showToastLong(this, "Yes")
-    }
+    buttonYesAlert.setOnClickListener { showToastLong(this, "Yes") }
 
     val buttonNoAlert = dialog.findViewById(R.id.btn_no) as Button
-    buttonNoAlert.setOnClickListener {
-      dialog.dismiss()
-    }
+    buttonNoAlert.setOnClickListener { dialog.dismiss() }
     dialog.show()
+  }
+
+  private fun hideTrailer(hide: Boolean) {
+    binding.ibPlay.isVisible = !hide
+  }
+
+  private fun animFadeOut() {
+    val animation = animFadeOutLong(this)
+    binding.backgroundDimMovie.startAnimation(animation)
+    binding.progressBar.startAnimation(animation)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      binding.backgroundDimMovie.visibility = View.GONE
+      binding.progressBar.visibility = View.GONE
+    }, 600)
+  }
+
+  private fun showLoading(isLoading: Boolean) {
+    if (isLoading) {
+      binding.backgroundDimMovie.visibility = View.VISIBLE // blur background when loading
+      binding.progressBar.visibility = View.VISIBLE
+    } else animFadeOut()
   }
 
   companion object {

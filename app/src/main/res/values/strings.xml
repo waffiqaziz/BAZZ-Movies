@@ -8,7 +8,7 @@
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
   <string name="bazz">BAZZ</string>
   <string name="guest_session"><u>Guest Session</u></string>
-  <string name="background_poster">Background Poster</string>
+  <string name="poster">Poster</string>
   <string name="retry">Retry</string>
   <string name="error">Error</string>
 
@@ -91,9 +91,7 @@
   <!-- SCORES -->
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDb</string>
-  <string name="filmAffinity">FilmAffinity</string>
   <string name="tmdb">TMDB</string>
-  <string name="rotten_tomatoes">Rotten Tomatoes</string>
 
   <string name="_divider">|</string>
   <string name="nan">NaN</string>

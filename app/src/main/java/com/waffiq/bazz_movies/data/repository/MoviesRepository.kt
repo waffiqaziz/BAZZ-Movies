@@ -283,7 +283,6 @@ class MoviesRepository(
   }
 
   fun getCreditTv(tvId: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getCreditTv(tvId)
@@ -293,7 +292,6 @@ class MoviesRepository(
         call: Call<CreditsResponse>,
         response: Response<CreditsResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
@@ -309,7 +307,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -349,7 +346,6 @@ class MoviesRepository(
 
   // detail movie from OMDb API
   fun getDetailOMDb(imdbId: String) {
-    _isLoading.value = true
     val client = OMDbApiConfig
       .getOMDBApiService()
       .getMovieDetailOMDb(imdbId)
@@ -359,7 +355,6 @@ class MoviesRepository(
         call: Call<OMDbDetailsResponse>,
         response: Response<OMDbDetailsResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           _detailOMDb.value = response.body()
         } else {
@@ -371,7 +366,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<OMDbDetailsResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -380,7 +374,6 @@ class MoviesRepository(
 
   // detail movie from TMDB API
   fun getDetailMovie(id: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getDetailMovie(id)
@@ -390,7 +383,6 @@ class MoviesRepository(
         call: Call<DetailMovieResponse>,
         response: Response<DetailMovieResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           _detailMovie.value = response.body()
           try { // get age rating
@@ -415,7 +407,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -423,7 +414,6 @@ class MoviesRepository(
   }
 
   fun getDetailTv(id: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getDetailTv(id)
@@ -433,7 +423,6 @@ class MoviesRepository(
         call: Call<DetailTvResponse>,
         response: Response<DetailTvResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           _detailTv.value = response.body()
 
@@ -457,7 +446,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<DetailTvResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -578,7 +566,6 @@ class MoviesRepository(
   }
 
   fun getCreditMovies(movieId: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getCreditMovies(movieId)
@@ -588,7 +575,6 @@ class MoviesRepository(
         call: Call<CreditsResponse>,
         response: Response<CreditsResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
@@ -736,7 +722,6 @@ class MoviesRepository(
 
   // person
   fun getDetailPerson(id: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getDetailPerson(id)
@@ -746,7 +731,6 @@ class MoviesRepository(
         call: Call<DetailPersonResponse>,
         response: Response<DetailPersonResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           _detailPerson.value = response.body()
         } else {
@@ -761,7 +745,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<DetailPersonResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -804,7 +787,6 @@ class MoviesRepository(
   }
 
   fun getImagePerson(id: Int) {
-    _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
       .getImagePerson(id)
@@ -814,7 +796,6 @@ class MoviesRepository(
         call: Call<ImagePersonResponse>,
         response: Response<ImagePersonResponse>
       ) {
-        _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
@@ -831,7 +812,6 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<ImagePersonResponse>, t: Throwable) {
-        _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }

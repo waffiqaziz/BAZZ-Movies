@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
 import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
@@ -106,14 +107,22 @@ class PersonActivity : AppCompatActivity() {
     binding.btnBack.setOnClickListener { finish() }
   }
 
+  private fun animFadeOut() {
+    val animation = animFadeOutLong(this)
+    binding.backgroundDimPerson.startAnimation(animation)
+    binding.progressBar.startAnimation(animation)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      binding.backgroundDimPerson.visibility = View.GONE
+      binding.progressBar.visibility = View.GONE
+    }, 600)
+  }
+
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDim.visibility = View.VISIBLE // blur background when loading
+      binding.backgroundDimPerson.visibility = View.VISIBLE // blur background when loading
       binding.progressBar.visibility = View.VISIBLE
-    } else {
-      binding.backgroundDim.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
-    }
+    } else animFadeOut()
   }
 
   private fun showBirthdate(it: DetailPersonResponse) {

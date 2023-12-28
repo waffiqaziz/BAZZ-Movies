@@ -9,7 +9,7 @@
   android:layout_gravity="center">
 
   <ImageView
-    android:background="@color/gray_600"
+    android:background="@color/grey_600"
     android:id="@+id/img_poster"
     android:layout_width="100dp"
     android:layout_height="150dp"
