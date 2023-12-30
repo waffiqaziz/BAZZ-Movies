@@ -41,6 +41,7 @@ interface TMDBApiService {
 
   @GET("3/trending/all/week?api_key=$API_KEY")
   suspend fun getTrending(
+    @Query("region") region : String,
     @Query("page") page : Int
   ): MovieTvResponse
 
@@ -56,23 +57,25 @@ interface TMDBApiService {
     @Query("page") page : Int
   ): MovieTvResponse
 
-  @GET("3/tv/on_the_air?api_key=$API_KEY&language=en-US&page=1")
+  @GET("3/tv/on_the_air?api_key=$API_KEY&language=en-US")
   suspend fun getTvOnTheAir(
     @Query("page") page : Int
   ): MovieTvResponse
 
-  @GET("3/tv/airing_today?api_key=$API_KEY&language=en-US&page=1")
+  @GET("3/tv/airing_today?api_key=$API_KEY&language=en-US")
   suspend fun getTvAiringToday(
     @Query("page") page : Int
   ): MovieTvResponse
 
-  @GET("3/movie/upcoming?api_key=$API_KEY&language=en-US&region=id&with_release_type=2|3")
+  @GET("3/movie/upcoming?api_key=$API_KEY&language=en-US&with_release_type=2|3")
   suspend fun getUpcomingMovies(
+    @Query("region") region : String,
     @Query("page") page : Int
   ): MovieTvResponse
 
   @GET("3/movie/now_playing?api_key=$API_KEY&language=en-US")
   suspend fun getPlayingNowMovies(
+    @Query("region") region : String,
     @Query("page") page : Int
   ): MovieTvResponse
 

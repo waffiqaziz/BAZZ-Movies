@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.utils
 
 import android.content.Context
+import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -11,6 +12,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.util.TimeZone
 
 object Helper {
 
@@ -154,5 +156,58 @@ object Helper {
     val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
     animation.duration = 700
     return animation
+  }
+
+  private fun setLocation(context: Context): String {
+    val telMgr: TelephonyManager =
+      context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+    when (telMgr.simState) {
+      TelephonyManager.SIM_STATE_ABSENT -> {
+        val tz: TimeZone = TimeZone.getDefault()
+
+        return tz.id
+      }
+
+      TelephonyManager.SIM_STATE_READY ->
+        return telMgr.networkCountryIso.toString()
+
+      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_NOT_READY -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_PERM_DISABLED -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_PIN_REQUIRED -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_PUK_REQUIRED -> {
+        TODO()
+      }
+
+      TelephonyManager.SIM_STATE_UNKNOWN -> {
+        TODO()
+      }
+    }
+    return ""
+  }
+
+  fun getLocation(context: Context): String {
+    return if (setLocation(context).isNotEmpty()) setLocation(context).lowercase() else "us"
   }
 }

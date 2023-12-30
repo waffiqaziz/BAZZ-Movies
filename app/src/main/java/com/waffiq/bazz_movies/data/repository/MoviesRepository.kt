@@ -204,13 +204,13 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingTrending(): Flow<PagingData<ResultItem>> {
+  fun getPagingTrending(region : String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 5
       ),
       pagingSourceFactory = {
-        MultiTrendingPagingSource(tmdbApiService)
+        MultiTrendingPagingSource(region, tmdbApiService)
       }
     ).flow
   }
@@ -237,24 +237,24 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingUpcomingMovies(): Flow<PagingData<ResultItem>> {
+  fun getPagingUpcomingMovies(region : String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 20
       ),
       pagingSourceFactory = {
-        UpcomingMoviesPagingSource(tmdbApiService)
+        UpcomingMoviesPagingSource(region, tmdbApiService)
       }
     ).flow
   }
 
-  fun getPagingPlayingNowMovies(): Flow<PagingData<ResultItem>> {
+  fun getPagingPlayingNowMovies(region : String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 20
       ),
       pagingSourceFactory = {
-        PlayingNowMoviesPagingSource(tmdbApiService)
+        PlayingNowMoviesPagingSource(region, tmdbApiService)
       }
     ).flow
   }

@@ -15,6 +15,8 @@ import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.utils.Helper.getLocation
+
 
 class FeaturedFragment : Fragment() {
 
@@ -54,6 +56,9 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData() {
+    val region = getLocation(requireContext())
+
+
     // trending
     binding.rvTrending.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -63,7 +68,7 @@ class FeaturedFragment : Fragment() {
         adapter.retry()
       }
     )
-    viewModel.getTrending().observe(viewLifecycleOwner) {
+    viewModel.getTrending(region).observe(viewLifecycleOwner) {
       adapter.submitData(lifecycle, it)
     }
 
@@ -76,7 +81,7 @@ class FeaturedFragment : Fragment() {
         adapterUpcoming.retry()
       }
     )
-    viewModel.getUpcomingMovies().observe(viewLifecycleOwner) {
+    viewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       adapterUpcoming.submitData(lifecycle, it)
     }
 
@@ -89,7 +94,7 @@ class FeaturedFragment : Fragment() {
         adapterPlayingNow.retry()
       }
     )
-    viewModel.getPlayingNowMovies().observe(viewLifecycleOwner) {
+    viewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       adapterPlayingNow.submitData(lifecycle, it)
     }
   }

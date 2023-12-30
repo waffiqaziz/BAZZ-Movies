@@ -11,6 +11,8 @@ import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.getLocation
 
 class MovieFragment : Fragment() {
 
@@ -35,6 +37,8 @@ class MovieFragment : Fragment() {
   }
 
   private fun setData(){
+    val region = getLocation(requireContext())
+
     binding.rvPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val popularAdapter = MovieHomeAdapter()
     binding.rvPopular.adapter = popularAdapter.withLoadStateFooter(
@@ -53,7 +57,7 @@ class MovieFragment : Fragment() {
         nowPlayingAdapter.retry()
       }
     )
-    viewModel.getPlayingNowMovies().observe(viewLifecycleOwner) {
+    viewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       nowPlayingAdapter.submitData(lifecycle,it)
     }
 
@@ -64,7 +68,7 @@ class MovieFragment : Fragment() {
         nowPlayingAdapter.retry()
       }
     )
-    viewModel.getUpcomingMovies().observe(viewLifecycleOwner) {
+    viewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       upComingAdapter.submitData(lifecycle,it)
     }
 

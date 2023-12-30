@@ -8,11 +8,11 @@ class HomeViewModel(
   private val movieRepository: MoviesRepository
 ) : ViewModel() {
 
-  fun getTrending() = movieRepository.getPagingTrending().cachedIn(viewModelScope).asLiveData()
+  fun getTrending(region : String) = movieRepository.getPagingTrending(region).cachedIn(viewModelScope).asLiveData()
 
-  fun getUpcomingMovies() = movieRepository.getPagingUpcomingMovies().cachedIn(viewModelScope).asLiveData()
+  fun getUpcomingMovies(region : String) = movieRepository.getPagingUpcomingMovies(region).cachedIn(viewModelScope).asLiveData()
 
-  fun getPlayingNowMovies() = movieRepository.getPagingPlayingNowMovies().cachedIn(viewModelScope).asLiveData()
+  fun getPlayingNowMovies(region : String) = movieRepository.getPagingPlayingNowMovies(region).cachedIn(viewModelScope).asLiveData()
 
   fun getTopRatedMovies() = movieRepository.getPagingTopRatedMovies().cachedIn(viewModelScope).asLiveData()
 
