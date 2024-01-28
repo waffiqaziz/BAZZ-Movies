@@ -3,6 +3,8 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="com.waffiq.bazz_movies">
 
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
@@ -37,7 +39,7 @@
       android:screenOrientation="nosensor"
       android:theme="@style/Theme.BAZZ_movies.NoActionBar" />
     <activity
-      android:name="com.waffiq.bazz_movies.SplashScreenActivity"
+      android:name="com.waffiq.bazz_movies.ui.activity.SplashScreenActivity"
       android:exported="true"
       android:theme="@style/Theme.BAZZ_movies.NoActionBar">
       <intent-filter>

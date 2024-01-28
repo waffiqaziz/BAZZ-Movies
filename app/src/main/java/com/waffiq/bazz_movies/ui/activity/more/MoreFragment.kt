@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
-import com.waffiq.bazz_movies.utils.Helper.showToastLong
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
 import kotlinx.coroutines.launch
 
@@ -83,7 +83,7 @@ class MoreFragment : Fragment() {
       .setTitle(getString(R.string.warning))
       .setPositiveButton(getString(R.string.yes)) { dialog, which ->
         signOut(false)
-        showToastLong(requireContext(), getString(R.string.all_data_deleted))
+        showToastShort(requireContext(), getString(R.string.all_data_deleted))
         moreViewModel.deleteAll() // delete all data
       }
       .setNegativeButton(getString(R.string.no)) { dialog, which ->
@@ -100,7 +100,7 @@ class MoreFragment : Fragment() {
       activity?.finish()
       startActivity(Intent(activity, LoginActivity::class.java))
     }
-    if(showToast) showToastLong(requireContext(), getString(R.string.sign_out_success))
+    if(showToast) showToastShort(requireContext(), getString(R.string.sign_out_success))
   }
 
   private fun setData() {

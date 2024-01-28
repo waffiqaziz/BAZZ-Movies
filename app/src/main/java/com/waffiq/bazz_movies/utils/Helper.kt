@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.utils
 
 import android.content.Context
+import android.os.Build
 import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -21,7 +22,7 @@ object Helper {
       .show()
   }
 
-  fun showToastLong(context: Context, text: String) {
+  fun showToastShort(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT)
       .show()
   }
@@ -146,68 +147,57 @@ object Helper {
     ).years
   }
 
-  fun convertRuntime(t: Int): String{
+  fun convertRuntime(t: Int): String {
     val hours: Int = t / 60 // since both are ints, you get an int
     val minutes: Int = t % 60
     return "${hours}h ${minutes}m"
   }
 
-  fun animFadeOutLong(context: Context): Animation{
+  fun animFadeOutLong(context: Context): Animation {
     val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
     animation.duration = 700
     return animation
   }
 
-  private fun setLocation(context: Context): String {
+  private fun getNetworkLocation(context: Context): String {
     val telMgr: TelephonyManager =
       context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
-    when (telMgr.simState) {
-      TelephonyManager.SIM_STATE_ABSENT -> {
-        val tz: TimeZone = TimeZone.getDefault()
-
-        return tz.id
-      }
+    return when (telMgr.simState) {
+      TelephonyManager.SIM_STATE_ABSENT ->
+        TimeZone.getDefault().id.lowercase()
 
       TelephonyManager.SIM_STATE_READY ->
-        return telMgr.networkCountryIso.toString()
+        telMgr.networkCountryIso.lowercase()
 
-      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> ""
 
-      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> ""
 
-      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> ""
 
-      TelephonyManager.SIM_STATE_NOT_READY -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_NOT_READY -> ""
 
-      TelephonyManager.SIM_STATE_PERM_DISABLED -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_PERM_DISABLED -> ""
 
-      TelephonyManager.SIM_STATE_PIN_REQUIRED -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_PIN_REQUIRED -> ""
 
-      TelephonyManager.SIM_STATE_PUK_REQUIRED -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_PUK_REQUIRED -> ""
 
-      TelephonyManager.SIM_STATE_UNKNOWN -> {
-        TODO()
-      }
+      TelephonyManager.SIM_STATE_UNKNOWN -> ""
+
+      else -> ""
     }
-    return ""
   }
 
   fun getLocation(context: Context): String {
-    return if (setLocation(context).isNotEmpty()) setLocation(context).lowercase() else "us"
+
+    return getNetworkLocation(context).ifEmpty {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        context.resources.configuration.locales.get(0).country.toString().lowercase()
+      } else {
+        context.resources.configuration.locale.country.toString().lowercase()
+      }
+    }
   }
 }

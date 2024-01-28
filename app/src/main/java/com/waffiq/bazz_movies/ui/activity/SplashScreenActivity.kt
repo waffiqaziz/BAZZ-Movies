@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies
+package com.waffiq.bazz_movies.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,12 +10,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
-import com.waffiq.bazz_movies.ui.activity.LoginActivity
-import com.waffiq.bazz_movies.ui.activity.MainActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.DELAY_TIME
+import com.waffiq.bazz_movies.utils.Constants
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -35,7 +34,7 @@ class SplashScreenActivity : AppCompatActivity() {
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
 
     //add splash screen with fade transition 2 second
-    binding.imgLogo.animate().setDuration(DELAY_TIME).alpha(1f).withEndAction {
+    binding.imgLogo.animate().setDuration(Constants.DELAY_TIME).alpha(1f).withEndAction {
 
       authenticationViewModel.getUser().observe(this) {
         if (it.isLogin) gotoMainActivity(true)

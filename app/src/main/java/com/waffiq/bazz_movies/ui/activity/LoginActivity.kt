@@ -106,8 +106,8 @@ class LoginActivity : AppCompatActivity() {
   private fun goToMainActivity(isGuest: Boolean) {
     startActivity(Intent(this, MainActivity::class.java))
     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-    if (isGuest) Helper.showToastLong(this, getString(R.string.login_as_guest_successful))
-    else Helper.showToastLong(this, getString(R.string.login_successful))
+    if (isGuest) Helper.showToastShort(this, getString(R.string.login_as_guest_successful))
+    else Helper.showToastShort(this, getString(R.string.login_successful))
     finish()
   }
 

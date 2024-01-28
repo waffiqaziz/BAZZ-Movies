@@ -45,7 +45,7 @@ import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesFavorite
 import com.waffiq.bazz_movies.utils.Helper.mapResponsesToEntitiesWatchlist
-import com.waffiq.bazz_movies.utils.Helper.showToastLong
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -386,7 +386,7 @@ class DetailMovieActivity : AppCompatActivity() {
             viewModel.removeFromFavoriteDB(mapResponsesToEntitiesWatchlist(dataExtra))
           }
           watchlist = false
-          showToastLong(this, this.getString(R.string.deleted_from_watchlist))
+          showToastShort(this, this.getString(R.string.deleted_from_watchlist))
         }
         changeBtnWatchlistBG(watchlist)
       } else { // user login
@@ -496,7 +496,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showToastAddedFavorite() {
-    showToastLong(
+    showToastShort(
       this, this.getString(
         R.string.added_favorite,
         dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
@@ -505,7 +505,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showToastAddedWatchlist() {
-    showToastLong(
+    showToastShort(
       this, this.getString(
         R.string.added_watchlist,
         dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
@@ -514,11 +514,11 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showToastRemoveFromFavorite() {
-    showToastLong(this, this.getString(R.string.deleted_from_favorite))
+    showToastShort(this, this.getString(R.string.deleted_from_favorite))
   }
 
   private fun showToastRemoveFromWatchlist() {
-    showToastLong(this, this.getString(R.string.deleted_from_watchlist))
+    showToastShort(this, this.getString(R.string.deleted_from_watchlist))
   }
 
   private fun showDialogRate() {
@@ -530,7 +530,7 @@ class DetailMovieActivity : AppCompatActivity() {
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
     val buttonYesAlert = dialog.findViewById(R.id.btn_yes) as Button
-    buttonYesAlert.setOnClickListener { showToastLong(this, "Yes") }
+    buttonYesAlert.setOnClickListener { showToastShort(this, "Yes") }
 
     val buttonNoAlert = dialog.findViewById(R.id.btn_no) as Button
     buttonNoAlert.setOnClickListener { dialog.dismiss() }

@@ -85,7 +85,7 @@ dependencies {
 
   coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.9"
 
-  // livecycle
+  // lifecycle
   implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
@@ -99,11 +99,11 @@ dependencies {
   // Swipe Refresh Layout
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
-// Shimmer Effect
-  implementation 'com.facebook.shimmer:shimmer:0.5.0'
-
   // ExpandableTextView
   implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.4'
+
+  // gms
+  implementation "com.google.android.gms:play-services-location:21.1.0"
 }
 repositories {
   mavenCentral()
