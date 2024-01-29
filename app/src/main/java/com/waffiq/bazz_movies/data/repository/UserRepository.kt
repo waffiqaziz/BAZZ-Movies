@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
+import com.waffiq.bazz_movies.data.remote.response.CountyAPIResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
+import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiConfig
+import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Event
@@ -19,7 +22,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserRepository(
-  private val apiService: TMDBApiService,
+  private val countryIPApiService: CountryIPApiService,
+  private val tmdbApiService: TMDBApiService,
   private val pref: UserPreference
 ) {
 
@@ -38,10 +42,13 @@ class UserRepository(
   private val _user = MutableLiveData<UserModel>()
   val user: LiveData<UserModel> get() = _user
 
+  private val _countryCode = MutableLiveData<String>()
+  val countryCode: LiveData<String> = _countryCode
+
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
-  fun login(username: String, pass: String, token: String){
+  fun login(username: String, pass: String, token: String) {
     _isLoading.value = true
     val client = TMDBApiConfig().getApiService().login(username, pass, token)
     client.enqueue(object : Callback<AuthenticationResponse> {
@@ -73,7 +80,7 @@ class UserRepository(
     })
   }
 
-  fun createToken(){
+  fun createToken() {
     _isLoading.value = true
     val client = TMDBApiConfig().getApiService().createToken()
     client.enqueue(object : Callback<AuthenticationResponse> {
@@ -108,7 +115,9 @@ class UserRepository(
 
   suspend fun saveUser(userModel: UserModel) = pref.saveUser(userModel)
 
-  fun createSessionLogin(token: String){
+  suspend fun saveRegion(region: String) = pref.saveRegion(region)
+
+  fun createSessionLogin(token: String) {
     _isLoading.value = true
     val client = TMDBApiConfig().getApiService().createSessionLogin(token)
     client.enqueue(object : Callback<CreateSessionResponse> {
@@ -141,7 +150,7 @@ class UserRepository(
     })
   }
 
-  fun getUserDetail(sessionId: String){
+  fun getUserDetail(sessionId: String) {
     _isLoading.value = true
     val client = TMDBApiConfig().getApiService().getAccountDetails(sessionId)
     client.enqueue(object : Callback<AccountDetailsResponse> {
@@ -154,10 +163,11 @@ class UserRepository(
           val responseBody = response.body()
           if (responseBody?.id != null) {
             _user.value = UserModel(
+              userId = responseBody.id,
               name = responseBody.name.toString(),
               username = responseBody.username.toString(),
               password = "NaN",
-              userId = responseBody.id,
+              region = "NaN",
               token = "NaN",
               isLogin = true,
               gravatarHast = responseBody.avatar?.gravatar?.hash.toString(),
@@ -183,6 +193,42 @@ class UserRepository(
 
   fun getUser(): Flow<UserModel> {
     return pref.getUser()
+  }
+
+  fun getUserRegion(): Flow<String>{
+    return pref.getRegion()
+  }
+
+  fun getCountryCode() {
+    _isLoading.value = true
+    val client = CountryIPApiConfig().getApiService().getIP()
+    client.enqueue(object : Callback<CountyAPIResponse> {
+      override fun onResponse(
+        call: Call<CountyAPIResponse>,
+        response: Response<CountyAPIResponse>
+      ) {
+        _isLoading.value = false
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) _countryCode.value = responseBody.country!!
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+          _countryCode.value = ""
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<CountyAPIResponse>, t: Throwable) {
+        _isLoading.value = false
+        _countryCode.value = ""
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
   }
 
   suspend fun logout() {

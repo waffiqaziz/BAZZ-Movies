@@ -1,11 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
-import android.Manifest
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
-import android.content.IntentSender
-import android.content.pm.PackageManager
-import android.location.Location
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,52 +9,38 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import java.util.Locale
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Granularity
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
+import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import java.util.concurrent.TimeUnit
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class FeaturedFragment : Fragment() {
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var viewModel: HomeViewModel
-
-  private lateinit var fusedLocationClient: FusedLocationProviderClient
-  private lateinit var locationRequest: LocationRequest
-  private lateinit var locationCallback: LocationCallback
-
-  private lateinit var region: String
+  private lateinit var homeViewModel: HomeViewModel
+  private lateinit var moreViewModelUser: MoreViewModelUser
 
   @RequiresApi(Build.VERSION_CODES.S)
   override fun onCreateView(
@@ -70,15 +51,14 @@ class FeaturedFragment : Fragment() {
     val root: View = binding.root
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-    fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-    getMyLastLocation()
-    createLocationRequest()
-//    createLocationCallback()
+    val pref = requireContext().dataStore
+    val factory2 = ViewModelUserFactory.getInstance(pref)
+    moreViewModelUser = ViewModelProvider(this, factory2)[MoreViewModelUser::class.java]
 
+    setRegion()
     setMoveNowPlaying()
-    setData()
     return root
   }
 
@@ -97,121 +77,29 @@ class FeaturedFragment : Fragment() {
       .into(binding.imgMainFeatured)
   }
 
-  // get the location data
-  private fun createLocationCallback() {
-    locationCallback = object : LocationCallback() {
-      override fun onLocationResult(locationResult: LocationResult) {
-        for (location in locationResult.locations) {
-          Log.d(TAG, "onLocationResult: " + location.latitude + ", " + location.longitude)
-        }
-      }
-    }
-  }
+  private fun setRegion() {
+    // check if user already have region
+    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) { userRegion ->
 
-  private val locationPermissionRequest = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissions ->
-    val granted = permissions.entries.all { it.value }
+      // if user didn't have region, then get region from Country API
+      if (userRegion.equals("NaN")) {
+        moreViewModelUser.getCountryCode()
+        moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
 
-    if (granted) {
-      getMyLastLocation()
-    } else showToastShort(requireContext(), "Permission Denied")
-  }
-
-  // show prompt to activated gps
-  private val resolutionLauncher =
-    registerForActivityResult(
-      ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-      when (result.resultCode) {
-        RESULT_OK ->
-          Log.i(TAG, "All location settings are satisfied.")
-
-        // this will show if user didn't activate gps
-        RESULT_CANCELED ->
-          showToastShort(
-            requireContext(),
-            getString(R.string.please_enable_gps),
-          )
-      }
-    }
-
-  private fun createLocationRequest() {
-    locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1).apply {
-      setMinUpdateDistanceMeters(1F)
-      setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
-      setWaitForAccurateLocation(true)
-    }.build()
-
-    // check if gps active/not
-    val builder = LocationSettingsRequest.Builder()
-      .addLocationRequest(locationRequest)
-    val client = LocationServices.getSettingsClient(requireContext())
-    client.checkLocationSettings(builder.build())
-      .addOnSuccessListener {
-        getMyLastLocation()
-      }
-      .addOnFailureListener { exception ->
-        if (exception is ResolvableApiException) {
-          try {
-            resolutionLauncher.launch(
-              IntentSenderRequest.Builder(exception.resolution).build()
-            )
-          } catch (sendEx: IntentSender.SendIntentException) {
-            sendEx.message?.let { showToastShort(requireContext(), it) }
+          if (countryCode.isNullOrEmpty()) { // if success
+            setData(countryCode)
+            moreViewModelUser.saveUserRegion(countryCode)
+          } else { // if null, then set region using SIM Card and default phone configuration
+            val region = getLocation(requireContext())
+            setData(region)
+            moreViewModelUser.saveUserRegion(region)
           }
         }
-      }
-  }
-
-  private fun checkPermission(permission: String): Boolean {
-    return ContextCompat.checkSelfPermission(
-      requireContext(),
-      permission
-    ) == PackageManager.PERMISSION_GRANTED
-  }
-
-  private fun getMyLastLocation() {
-    if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
-      checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-    ) {
-      fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-        if (location != null) Log.e("KKK", "Lat: ${location.latitude}, Long: ${location.longitude}")
-        else showToastShort(requireContext(), "Location is not found. Try Again")
-      }
-    } else locationPermissionRequest.launch(PERMISSIONS)
-  }
-
-  private fun setData() {
-    // get region
-    region = getLocation(requireContext())
-    if (region.isNotEmpty()) {
-
-      // check permission
-      if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
-        checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-      ){
-        fusedLocationClient.getCurrentLocation(
-          Priority.PRIORITY_LOW_POWER,
-          object : CancellationToken() {
-            override fun onCanceledRequested(p0: OnTokenCanceledListener) =
-              CancellationTokenSource().token
-
-            override fun isCancellationRequested() = false
-          })
-          .addOnSuccessListener { location: Location? ->
-            if (location == null)
-              showToastShort(requireContext(), "Cannot get location.")
-            else {
-              val lat = location.latitude
-              val lon = location.longitude
-
-              Log.e("KKKK", "$lat $lon")
-            }
-          }
-      }
+      } else setData(userRegion) // user already have region
     }
+  }
 
+  private fun setData(region: String) {
     binding.rvTrending.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     binding.rvUpcoming.layoutManager =
@@ -226,7 +114,7 @@ class FeaturedFragment : Fragment() {
     binding.rvTrending.adapter = adapterTrending.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterTrending.retry() }
     )
-    viewModel.getTrending(region).observe(viewLifecycleOwner) {
+    homeViewModel.getTrending(region).observe(viewLifecycleOwner) {
       adapterTrending.submitData(lifecycle, it)
     }
 
@@ -234,7 +122,7 @@ class FeaturedFragment : Fragment() {
     binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterUpcoming.retry() }
     )
-    viewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
+    homeViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       adapterUpcoming.submitData(lifecycle, it)
     }
 
@@ -242,8 +130,32 @@ class FeaturedFragment : Fragment() {
     binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterPlayingNow.retry() }
     )
-    viewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
+    homeViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       adapterPlayingNow.submitData(lifecycle, it)
+    }
+
+    adapterPlayingNow.addLoadStateListener { loadState ->
+      if (loadState.source.refresh is LoadState.NotLoading
+        && loadState.append.endOfPaginationReached
+        && adapterPlayingNow.itemCount < 1
+      ) {
+        showToastShort(
+          requireContext(),
+          getString(R.string.no_movie_currently_playing, Locale("", region).displayCountry)
+        )
+      }
+    }
+
+    adapterUpcoming.addLoadStateListener { loadState ->
+      if (loadState.source.refresh is LoadState.NotLoading
+        && loadState.append.endOfPaginationReached
+        && adapterUpcoming.itemCount < 1
+      ) {
+        showToastShort(
+          requireContext(),
+          getString(R.string.no_upcoming_movie, Locale("", region).displayCountry)
+        )
+      }
     }
   }
 
@@ -262,51 +174,8 @@ class FeaturedFragment : Fragment() {
     } else animFadeOut()
   }
 
-  private fun startLocationUpdates() {
-    if (ActivityCompat.checkSelfPermission(
-        requireContext(),
-        Manifest.permission.ACCESS_COARSE_LOCATION
-      ) != PackageManager.PERMISSION_GRANTED &&
-      ActivityCompat.checkSelfPermission(
-        requireContext(),
-        Manifest.permission.ACCESS_FINE_LOCATION
-      ) != PackageManager.PERMISSION_GRANTED
-    ) {
-      return
-    }
-    fusedLocationClient.requestLocationUpdates(
-      locationRequest,
-      locationCallback,
-      null /* Looper */
-    )
-  }
-
-  private fun stopLocationUpdates() {
-    fusedLocationClient.removeLocationUpdates(locationCallback)
-  }
-
-//  override fun onPause() {
-//    super.onPause()
-//    stopLocationUpdates()
-//  }
-//
-//  override fun onResume() {
-//    super.onResume()
-//    startLocationUpdates()
-//  }
-
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
   }
-
-  companion object {
-    private const val TAG = "FeatureFragment"
-
-    var PERMISSIONS = arrayOf(
-      Manifest.permission.ACCESS_COARSE_LOCATION,
-      Manifest.permission.ACCESS_FINE_LOCATION
-    )
-  }
-
 }

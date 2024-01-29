@@ -1,25 +1,33 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.getLocation
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class MovieFragment : Fragment() {
 
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var viewModel: HomeViewModel
+  private lateinit var homeViewModel: HomeViewModel
+  private lateinit var moreViewModelUser: MoreViewModelUser
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +37,40 @@ class MovieFragment : Fragment() {
     val root: View = binding.root
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-    setData()
+    val pref = requireContext().dataStore
+    val factory2 = ViewModelUserFactory.getInstance(pref)
+    moreViewModelUser = ViewModelProvider(this, factory2)[MoreViewModelUser::class.java]
+
+    setRegion()
 
     return root
   }
 
-  private fun setData(){
-    val region = getLocation(requireContext())
+  private fun setRegion() {
+    // check if user already have region
+    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) { userRegion ->
+
+      // if user didn't have region, then get region from Country API
+      if (userRegion.equals("NaN")) {
+        moreViewModelUser.getCountryCode()
+        moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
+
+          if (countryCode.isNullOrEmpty()) { // if success
+            setData(countryCode)
+            moreViewModelUser.saveUserRegion(countryCode)
+          } else { // if null, then set region using SIM Card and default phone configuration
+            val region = getLocation(requireContext())
+            setData(region)
+            moreViewModelUser.saveUserRegion(region)
+          }
+        }
+      } else setData(userRegion) // user already have region
+    }
+  }
+
+  private fun setData(region: String){
 
     binding.rvPopular.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     val popularAdapter = MovieHomeAdapter()
@@ -46,7 +79,7 @@ class MovieFragment : Fragment() {
         popularAdapter.retry()
       }
     )
-    viewModel.getPopularMovies().observe(viewLifecycleOwner) {
+    homeViewModel.getPopularMovies().observe(viewLifecycleOwner) {
       popularAdapter.submitData(lifecycle,it)
     }
 
@@ -57,7 +90,7 @@ class MovieFragment : Fragment() {
         nowPlayingAdapter.retry()
       }
     )
-    viewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
+    homeViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       nowPlayingAdapter.submitData(lifecycle,it)
     }
 
@@ -68,7 +101,7 @@ class MovieFragment : Fragment() {
         nowPlayingAdapter.retry()
       }
     )
-    viewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
+    homeViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       upComingAdapter.submitData(lifecycle,it)
     }
 
@@ -79,7 +112,7 @@ class MovieFragment : Fragment() {
         topRatedAdapter.retry()
       }
     )
-    viewModel.getTopRatedMovies().observe(viewLifecycleOwner) {
+    homeViewModel.getTopRatedMovies().observe(viewLifecycleOwner) {
       topRatedAdapter.submitData(lifecycle,it)
     }
   }

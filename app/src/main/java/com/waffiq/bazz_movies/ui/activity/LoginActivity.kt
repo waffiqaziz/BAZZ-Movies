@@ -81,10 +81,11 @@ class LoginActivity : AppCompatActivity() {
 
   private fun btnListener() {
     user = UserModel(
+      userId = 0,
       name = getString(R.string.nan),
       username = getString(R.string.nan),
       password = getString(R.string.nan),
-      userId = 0,
+      region = getString(R.string.nan),
       token = getString(R.string.nan),
       isLogin = false,
       gravatarHast = getString(R.string.nan)

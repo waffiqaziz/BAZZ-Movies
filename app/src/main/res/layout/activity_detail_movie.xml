@@ -307,7 +307,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_metascore" />
 
-      <TextView
+      <io.github.glailton.expandabletextview.ExpandableTextView
         android:id="@+id/tv_overview"
         style="@style/TextBody"
         android:layout_width="0dp"
@@ -316,6 +316,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:justificationMode="inter_word"
+        app:collapsedLines="3"
+        app:ellipsizeTextColor="@color/yellow"
+        app:expandType="layout"
+        app:readLessText="@string/less_more"
+        app:readMoreText="@string/read_more"
+        app:textMode="line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_summary_header"

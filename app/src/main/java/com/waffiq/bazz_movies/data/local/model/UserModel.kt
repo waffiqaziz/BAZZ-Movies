@@ -5,10 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserModel(
+  var userId: Int,
   var name: String,
   var username: String,
   var password: String,
-  var userId: Int,
+  var region: String,
   var token: String,
   var isLogin: Boolean,
   var gravatarHast: String

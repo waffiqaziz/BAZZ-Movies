@@ -110,4 +110,7 @@
   <string name="less_more">Less More</string>
   <string name="playing_as">Playing as</string>
   <string name="please_enable_gps">Please enable GPS to use this app</string>
+  <string name="select_region">Select Region</string>
+  <string name="no_upcoming_movie">No Upcoming Movie in %1$s \n Please Consider Change Different Country</string>
+  <string name="no_movie_currently_playing">No Movie Currently Playing in %1$s \n Please Consider Change Different Country</string>
 </resources>

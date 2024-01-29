@@ -102,8 +102,8 @@ dependencies {
   // ExpandableTextView
   implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.4'
 
-  // gms
-  implementation "com.google.android.gms:play-services-location:21.1.0"
+  // AndroidCountryPicker
+  implementation 'com.hbb20:ccp:2.7.0'
 }
 repositories {
   mavenCentral()

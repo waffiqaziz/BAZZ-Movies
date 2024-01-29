@@ -3,10 +3,13 @@ package com.waffiq.bazz_movies.ui.activity.more
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -14,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
@@ -21,6 +25,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
 import kotlinx.coroutines.launch
@@ -34,6 +39,7 @@ class MoreFragment : Fragment() {
 
   private lateinit var authViewModel: AuthenticationViewModel
   private lateinit var moreViewModel: MoreViewModel
+  private lateinit var moreViewModelUser: MoreViewModelUser
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -45,14 +51,25 @@ class MoreFragment : Fragment() {
 
     val pref = requireContext().dataStore
     val factory = ViewModelUserFactory.getInstance(pref)
-    this.authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+    authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+    moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
 
+    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) {
+      Log.i("MoreFragment" , "Get user region country : $it")
+    }
+
+    setTypeface()
     setData()
     btnAction()
     return root
+  }
+
+  private fun setTypeface() {
+    val typeFace = ResourcesCompat.getFont(requireContext(), R.font.gothic) as Typeface
+    binding.btnCountryPicker.setTypeFace(typeFace)
   }
 
   private fun btnAction() {
@@ -74,6 +91,14 @@ class MoreFragment : Fragment() {
         else signOut(true) // sign out for login account
       }
     }
+    binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
+    binding.btnCountryPicker.setOnCountryChangeListener {
+      moreViewModelUser.saveUserRegion(binding.btnCountryPicker.selectedCountryNameCode)
+      showToastShort(
+        requireContext(),
+        "${binding.btnCountryPicker.selectedCountryEnglishName} as Country"
+      )
+    }
   }
 
   private fun dialogSignOutGuestMode() {
@@ -81,12 +106,12 @@ class MoreFragment : Fragment() {
     builder
       .setMessage(getString(R.string.warning_signOut_guest_mode))
       .setTitle(getString(R.string.warning))
-      .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+      .setPositiveButton(getString(R.string.yes)) { _, _ ->
         signOut(false)
         showToastShort(requireContext(), getString(R.string.all_data_deleted))
         moreViewModel.deleteAll() // delete all data
       }
-      .setNegativeButton(getString(R.string.no)) { dialog, which ->
+      .setNegativeButton(getString(R.string.no)) { dialog, _ ->
         dialog.dismiss()
       }
 
@@ -94,16 +119,20 @@ class MoreFragment : Fragment() {
     dialog.show()
   }
 
-  private fun signOut(showToast : Boolean){
+  private fun signOut(showToast: Boolean) {
     viewLifecycleOwner.lifecycleScope.launch {
       authViewModel.signOut()
       activity?.finish()
       startActivity(Intent(activity, LoginActivity::class.java))
     }
-    if(showToast) showToastShort(requireContext(), getString(R.string.sign_out_success))
+    if (showToast) showToastShort(requireContext(), getString(R.string.sign_out_success))
   }
 
   private fun setData() {
+    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) {
+      showSnackBar(it)
+    }
+
     authViewModel.getUser().observe(viewLifecycleOwner) {
       binding.apply {
         tvFullName.text = it.name
@@ -116,6 +145,30 @@ class MoreFragment : Fragment() {
           .into(binding.imgAvatar)
       }
     }
+
+    // check if user already have countryCode
+    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) { userCountry ->
+
+      if (userCountry.equals("NaN")) { // if not yet, then set country
+        moreViewModelUser.getCountryCode()
+        moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
+
+          if(countryCode.isNotEmpty()){
+            moreViewModelUser.saveUserRegion(countryCode)
+            binding.btnCountryPicker.setCountryForNameCode(countryCode)
+          }
+        }
+      } else binding.btnCountryPicker.setCountryForNameCode(userCountry)
+    }
+  }
+
+  private fun showSnackBar(eventMessage: Event<String>) {
+    val message = eventMessage.getContentIfNotHandled() ?: return
+    Snackbar.make(
+      binding.constraintLayout,
+      message,
+      Snackbar.LENGTH_SHORT
+    ).show()
   }
 
   override fun onDestroyView() {

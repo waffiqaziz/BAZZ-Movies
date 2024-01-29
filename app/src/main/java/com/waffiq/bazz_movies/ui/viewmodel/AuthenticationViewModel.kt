@@ -35,6 +35,7 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
     }
   }
 
+
   suspend fun signOut() = userRepository.logout()
 
   fun getLoading() = userRepository.isLoading
