@@ -86,7 +86,7 @@ class FeaturedFragment : Fragment() {
         moreViewModelUser.getCountryCode()
         moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
 
-          if (countryCode.isNullOrEmpty()) { // if success
+          if (countryCode.isNotEmpty()) { // if success
             setData(countryCode)
             moreViewModelUser.saveUserRegion(countryCode)
           } else { // if null, then set region using SIM Card and default phone configuration

@@ -46,7 +46,7 @@ class PersonActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_PERSON)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra("EXTRA_PERSON", CastItem::class.java)!!
+        intent.getParcelableExtra(EXTRA_PERSON, CastItem::class.java)!!
       } else {
         @Suppress("DEPRECATION")
         intent.getParcelableExtra(EXTRA_PERSON)!!

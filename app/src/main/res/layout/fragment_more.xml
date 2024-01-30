@@ -88,6 +88,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="10dp"
+    android:checked="true"
     android:buttonTint="@color/yellow"
     android:contentDescription="@string/account_settings"
     android:src="@drawable/ic_chevron_right"

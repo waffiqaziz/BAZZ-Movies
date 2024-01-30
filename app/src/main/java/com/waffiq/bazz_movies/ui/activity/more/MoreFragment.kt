@@ -58,7 +58,7 @@ class MoreFragment : Fragment() {
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
 
     moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) {
-      Log.i("MoreFragment" , "Get user region country : $it")
+      Log.i("MoreFragment", "Get user region country : $it")
     }
 
     setTypeface()
@@ -129,9 +129,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun setData() {
-    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) {
-      showSnackBar(it)
-    }
+    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) { showSnackBar(it) }
 
     authViewModel.getUser().observe(viewLifecycleOwner) {
       binding.apply {
@@ -153,7 +151,7 @@ class MoreFragment : Fragment() {
         moreViewModelUser.getCountryCode()
         moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
 
-          if(countryCode.isNotEmpty()){
+          if (countryCode.isNotEmpty()) {
             moreViewModelUser.saveUserRegion(countryCode)
             binding.btnCountryPicker.setCountryForNameCode(countryCode)
           }

@@ -45,30 +45,20 @@ class LoginActivity : AppCompatActivity() {
 
   private fun openTMDB() {
     binding.tvJoinTMDB.setOnClickListener {
-      startActivity(
-        Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse(TMDB_LINK_SIGNUP)
-        )
-      )
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_SIGNUP)))
     }
 
     binding.tvForgetPassword.setOnClickListener {
-      startActivity(
-        Intent(
-          Intent.ACTION_VIEW,
-          Uri.parse(TMDB_LINK_FORGET_PASSWORD)
-        )
-      )
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_FORGET_PASSWORD)))
     }
   }
 
   private fun showPassword() {
     binding.apply {
       btnEye.setOnClickListener {
-        //if not clicked yet, then hide password
+        // if not clicked yet, then hide password
         if (edPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
-          //password visible hide it
+          // password visible hide it
           edPass.transformationMethod = PasswordTransformationMethod.getInstance()
           btnEye.setImageResource(R.drawable.ic_eye_off)
         } else {
@@ -91,10 +81,10 @@ class LoginActivity : AppCompatActivity() {
       gravatarHast = getString(R.string.nan)
     )
 
-    binding.btnLogin.setOnClickListener {
-      login()
-    }
+    // login as user
+    binding.btnLogin.setOnClickListener { loginAsUserRegistered() }
 
+    // login as guest
     binding.tvGuest.setOnClickListener {
       user.name = resources.getString(R.string.guest_user)
       user.username = resources.getString(R.string.no_data)
@@ -112,14 +102,12 @@ class LoginActivity : AppCompatActivity() {
     finish()
   }
 
-  private fun login() {
+  private fun loginAsUserRegistered() {
     user.username = binding.edUsername.text.toString()
     user.password = binding.edPass.text.toString()
     user.isLogin = true
 
-    authenticationViewModel.getLoading().observe(this) {
-      showLoading(it)
-    }
+    authenticationViewModel.getLoading().observe(this) { showLoading(it) }
 
     /**
      * to login follow this step
@@ -128,15 +116,15 @@ class LoginActivity : AppCompatActivity() {
      * 3. Create a new session id with the authorized request token
      */
 
-    // create request token
+    // 1. create request token
     authenticationViewModel.createToken()
     authenticationViewModel.getToken().observe(this) { token ->
 
-      // Get the user to authorize the request token
+      // 2. Get the user to authorize the request token
       authenticationViewModel.login(user.username, user.password, token)
       authenticationViewModel.getTokenVerified().observe(this) { tokenVerified ->
 
-        // create a session with authorized token
+        // 3. create a new session with authorized token
         authenticationViewModel.createSession(tokenVerified)
         authenticationViewModel.getSessionId().observe(this) { sessionId ->
 
@@ -154,9 +142,7 @@ class LoginActivity : AppCompatActivity() {
       }
     }
 
-    authenticationViewModel.getSnackBarText().observe(this) {
-      showSnackBar(it)
-    }
+    authenticationViewModel.getSnackBarText().observe(this) { showSnackBar(it) }
   }
 
   private fun showSnackBar(eventMessage: Event<String>) {
@@ -169,10 +155,7 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun showLoading(isLoading: Boolean) {
-    if (isLoading) {
-      binding.progressBar.visibility = View.VISIBLE
-    } else {
-      binding.progressBar.visibility = View.GONE
-    }
+    if (isLoading) binding.progressBar.visibility = View.VISIBLE
+    else binding.progressBar.visibility = View.GONE
   }
 }
