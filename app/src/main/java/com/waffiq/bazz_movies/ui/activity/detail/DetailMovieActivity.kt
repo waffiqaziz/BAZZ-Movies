@@ -90,7 +90,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_MOVIE)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra("EXTRA_MOVIE", ResultItem::class.java)!!
+        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java)!!
       } else {
         @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_MOVIE)!!
       }
