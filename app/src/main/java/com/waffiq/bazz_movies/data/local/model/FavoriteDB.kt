@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName
 import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Model table for favorite and watchlist
+ */
 @Parcelize
 @Entity(tableName = TABLE_NAME)
 data class FavoriteDB(
@@ -55,10 +58,10 @@ data class FavoriteDB(
 
   @ColumnInfo(name = "is_favorited")
   @field:SerializedName("is_favorited")
-  val is_favorited: Boolean? = null,
+  val isFavorite: Boolean? = null,
 
   @ColumnInfo(name = "is_watchlist")
   @field:SerializedName("is_watchlist")
-  val is_watchlist: Boolean? = null
+  val isWatchlist: Boolean? = null
 
 ): Parcelable

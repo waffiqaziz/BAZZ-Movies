@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
-import com.waffiq.bazz_movies.BuildConfig.TMDB_API_URL
 import com.waffiq.bazz_movies.utils.Constants.COUNTRY_API_LINK
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

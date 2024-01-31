@@ -47,7 +47,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
     }
   }
 
-  suspend fun signOut() { // remove all data from datastore
+  suspend fun removeUserData() { // remove all data from datastore
     dataStore.edit {
       it[USERID_KEY] = 0
       it[NAME_KEY] = ""

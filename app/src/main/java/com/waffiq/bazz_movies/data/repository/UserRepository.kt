@@ -10,9 +10,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiConfig
-import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
-import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Event
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONObject
@@ -22,8 +20,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserRepository(
-  private val countryIPApiService: CountryIPApiService,
-  private val tmdbApiService: TMDBApiService,
   private val pref: UserPreference
 ) {
 
@@ -231,8 +227,8 @@ class UserRepository(
     })
   }
 
-  suspend fun logout() {
-    pref.signOut()
+  suspend fun removeUserData() {
+    pref.removeUserData()
   }
 
   companion object {

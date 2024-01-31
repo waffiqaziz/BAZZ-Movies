@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.viewmodel
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel

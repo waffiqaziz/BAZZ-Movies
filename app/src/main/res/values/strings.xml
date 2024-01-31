@@ -4,13 +4,11 @@
   <string name="login">Login</string>
   <string name="username">Username</string>
   <string name="password">Password</string>
-  <string name="email">Email</string>
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
   <string name="bazz">BAZZ</string>
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>
-  <string name="error">Error</string>
 
   <string name="login_as_guest_successful">Login as Guest Successful</string>
   <string name="login_successful">Login Successful</string>
@@ -34,7 +32,6 @@
 
   <!-- MORE -->
   <string name="button_edit">Button Edit</string>
-  <string name="general_setting">General Setting</string>
   <string name="image_profile">Image Profile</string>
   <string name="account_settings">Account Settings</string>
   <string name="dark_mode">Dark Mode</string>
@@ -85,7 +82,6 @@
 
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
-  <string name="not_rated">NR</string>
   <string name="not_available">N/A</string>
 
   <!-- SCORES -->
@@ -96,7 +92,6 @@
   <string name="_divider">|</string>
   <string name="nan">NaN</string>
   <string name="picture">Picture</string>
-  <string name="future_update">Future Update</string>
   <string name="forget_password">Forget Password</string>
 
   <!-- PERSON -->
@@ -109,7 +104,6 @@
   <string name="read_more">Read More</string>
   <string name="less_more">Less More</string>
   <string name="playing_as">Playing as</string>
-  <string name="please_enable_gps">Please enable GPS to use this app</string>
   <string name="select_region">Select Region</string>
   <string name="no_upcoming_movie">No Upcoming Movie in %1$s \n Please Consider Change Different Country</string>
   <string name="no_movie_currently_playing">No Movie Currently Playing in %1$s \n Please Consider Change Different Country</string>

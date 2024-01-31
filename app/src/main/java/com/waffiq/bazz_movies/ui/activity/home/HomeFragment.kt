@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
   private fun setupTabLayoutViewPager(){
     viewpager = binding.viewPager
     tabLayout = binding.tabs
-    viewpager.isUserInputEnabled = false //disable swiping between tabs
+    viewpager.isUserInputEnabled = false //disable swipe action between tabs
 
     val adapter = HomeViewPagerAdapter(childFragmentManager,lifecycle)
     viewpager.adapter = adapter

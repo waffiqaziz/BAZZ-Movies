@@ -15,12 +15,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
-import com.waffiq.bazz_movies.ui.activity.LoginActivity
+import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
@@ -28,7 +27,6 @@ import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
-import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -87,17 +85,21 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       authViewModel.getUser().observe(viewLifecycleOwner) { user ->
-        if (user.token == "NaN") dialogSignOutGuestMode() // sign out for guest account
-        else signOut(true) // sign out for login account
+        // sign out for guest account
+        if (user.token == "NaN" || user.token.isEmpty()) dialogSignOutGuestMode()
+        else { // sign out for login account
+          removeAllUserData()
+          showToastShort(requireContext(), getString(R.string.sign_out_success))
+        }
       }
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
     binding.btnCountryPicker.setOnCountryChangeListener {
       moreViewModelUser.saveUserRegion(binding.btnCountryPicker.selectedCountryNameCode)
-      showToastShort(
-        requireContext(),
-        "${binding.btnCountryPicker.selectedCountryEnglishName} as Country"
-      )
+//      showToastShort(
+//        requireContext(),
+//        "${binding.btnCountryPicker.selectedCountryEnglishName} as Country"
+//      )
     }
   }
 
@@ -107,7 +109,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(R.string.warning_signOut_guest_mode))
       .setTitle(getString(R.string.warning))
       .setPositiveButton(getString(R.string.yes)) { _, _ ->
-        signOut(false)
+        removeAllUserData()
         showToastShort(requireContext(), getString(R.string.all_data_deleted))
         moreViewModel.deleteAll() // delete all data
       }
@@ -119,13 +121,10 @@ class MoreFragment : Fragment() {
     dialog.show()
   }
 
-  private fun signOut(showToast: Boolean) {
-    viewLifecycleOwner.lifecycleScope.launch {
-      authViewModel.signOut()
-      activity?.finish()
-      startActivity(Intent(activity, LoginActivity::class.java))
-    }
-    if (showToast) showToastShort(requireContext(), getString(R.string.sign_out_success))
+  private fun removeAllUserData() {
+    authViewModel.removeUserData()
+    activity?.finish()
+    startActivity(Intent(activity, SplashScreenActivity::class.java))
   }
 
   private fun setData() {

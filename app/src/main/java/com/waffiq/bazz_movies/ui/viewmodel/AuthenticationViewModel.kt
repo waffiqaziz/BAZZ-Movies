@@ -17,7 +17,8 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
 
   fun getToken() = userRepository.token
 
-  fun login(username: String, password: String, token: String) = userRepository.login(username, password, token)
+  fun login(username: String, password: String, token: String) =
+    userRepository.login(username, password, token)
 
   fun getTokenVerified() = userRepository.tokenVerified
 
@@ -30,13 +31,12 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
   fun getDataUserDetail() = userRepository.user
 
   fun saveUser(userModel: UserModel) {
-    viewModelScope.launch {
-      userRepository.saveUser(userModel)
-    }
+    viewModelScope.launch { userRepository.saveUser(userModel) }
   }
 
-
-  suspend fun signOut() = userRepository.logout()
+  fun removeUserData() {
+    viewModelScope.launch { userRepository.removeUserData() }
+  }
 
   fun getLoading() = userRepository.isLoading
 }
