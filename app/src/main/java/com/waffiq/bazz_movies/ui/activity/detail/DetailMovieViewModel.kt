@@ -25,9 +25,6 @@ class DetailMovieViewModel(
   fun externalId(id: Int) = movieRepository.getExternalId(id)
   fun externalId() = movieRepository.externalId
 
-  fun scoreIMDbLib(apiKey: String, id: String) = movieRepository.getScoring(apiKey, id)
-  fun scoreIMDbLib() = movieRepository.score
-
   fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
   fun getCreditsCastMovies() = movieRepository.creditCastMovies
   fun getCreditDirectorMovies() = movieRepository.creditCrewMovies
@@ -59,11 +56,11 @@ class DetailMovieViewModel(
   fun isWatchlistDB(id: Int) = movieRepository.isWatchlistDB(id)
   fun isWatchlistDB() = movieRepository.isWatchlist
 
-  fun insertToFavoriteDB(fav: FavoriteDB) = movieRepository.insertDB(fav)
-  fun updateToFavoriteDB(id: Int) = movieRepository.updateFavoriteDB(true, id)
-  fun updateToRemoveFromFavoriteDB(id: Int) = movieRepository.updateFavoriteDB(false, id)
-  fun updateToWatchlistDB(id: Int) = movieRepository.updateWatchlistDB(true, id)
-  fun updateToRemoveFromWatchlistDB(id: Int) = movieRepository.updateWatchlistDB(false, id)
+  fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
+  fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
+  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
+  fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
+  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
   fun removeFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
 
   // favorite & watchlist TMDB
@@ -71,7 +68,6 @@ class DetailMovieViewModel(
     movieRepository.postFavorite(sessionId, data, userId)
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
     movieRepository.postWatchlist(sessionId, data, userId)
-
   fun postResponse() = movieRepository.postResponse
 
   fun getSnackBarText() = movieRepository.snackBarText

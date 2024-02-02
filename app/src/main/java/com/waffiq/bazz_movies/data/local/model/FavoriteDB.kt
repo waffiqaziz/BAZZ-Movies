@@ -58,10 +58,10 @@ data class FavoriteDB(
 
   @ColumnInfo(name = "is_favorited")
   @field:SerializedName("is_favorited")
-  val isFavorite: Boolean? = null,
+  var isFavorite: Boolean? = null,
 
   @ColumnInfo(name = "is_watchlist")
   @field:SerializedName("is_watchlist")
-  val isWatchlist: Boolean? = null
+  var isWatchlist: Boolean? = null
 
 ): Parcelable

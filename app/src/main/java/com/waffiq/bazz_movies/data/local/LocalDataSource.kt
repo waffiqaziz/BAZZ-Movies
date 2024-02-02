@@ -25,7 +25,7 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> = favoriteDao.getSearchFavorite(name)
 
-  fun insertFavorite(favoriteDBList: FavoriteDB) = favoriteDao.insertFavorite(favoriteDBList)
+  fun insert(favoriteDBList: FavoriteDB) = favoriteDao.insert(favoriteDBList)
 
   fun deleteItemFromDB(favoriteDB: FavoriteDB) = favoriteDao.deleteItem(favoriteDB)
 
@@ -35,7 +35,5 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)
 
-  fun updateFavorite(boolean: Boolean, id: Int) = favoriteDao.updateFavorite(boolean, id)
-
-  fun updateWatchlist(boolean: Boolean, id: Int) = favoriteDao.updateWatchlist(boolean, id)
+  fun update(fav: FavoriteDB) = favoriteDao.update(fav.isFavorite!!, fav.isWatchlist!!, fav.mediaId!!)
 }

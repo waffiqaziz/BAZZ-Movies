@@ -30,7 +30,8 @@
       android:name=".ui.activity.MainActivity"
       android:exported="false"
       android:label="@string/title_activity"
-      android:screenOrientation="nosensor" />
+      android:screenOrientation="nosensor"
+      android:windowSoftInputMode="adjustPan"/>
     <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false"

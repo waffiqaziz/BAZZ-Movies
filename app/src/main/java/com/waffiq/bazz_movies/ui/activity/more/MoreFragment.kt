@@ -51,6 +51,7 @@ class MoreFragment : Fragment() {
     val factory = ViewModelUserFactory.getInstance(pref)
     authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
     moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
+    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) { showSnackBar(it) }
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
@@ -128,7 +129,6 @@ class MoreFragment : Fragment() {
   }
 
   private fun setData() {
-    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) { showSnackBar(it) }
 
     authViewModel.getUser().observe(viewLifecycleOwner) {
       binding.apply {
@@ -141,6 +141,8 @@ class MoreFragment : Fragment() {
           .error(R.drawable.ic_broken_image)
           .into(binding.imgAvatar)
       }
+
+
     }
 
     // check if user already have countryCode

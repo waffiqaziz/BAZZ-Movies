@@ -36,11 +36,8 @@ interface FavoriteDao {
   fun deleteALl() : Int
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
-  fun insertFavorite(favoriteDB: FavoriteDB)
+  fun insert(favoriteDB: FavoriteDB)
 
-  @Query("UPDATE $TABLE_NAME SET is_favorited = :bool WHERE mediaId = :id")
-  fun updateFavorite(bool: Boolean, id: Int): Int
-
-  @Query("UPDATE $TABLE_NAME SET is_watchlist = :bool WHERE mediaId = :id")
-  fun updateWatchlist(bool: Boolean, id: Int): Int
+  @Query("UPDATE $TABLE_NAME SET is_favorited = :isFavorite, is_watchlist = :isWatchlist WHERE mediaId = :id")
+  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int): Int
 }

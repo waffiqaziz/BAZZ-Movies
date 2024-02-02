@@ -72,12 +72,19 @@
   </style>
 
   <style name="TextScore">
+    <item name="android:padding">12dp</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">@color/grey_100</item>
+    <item name="fontFamily">@font/gothic</item>
+  </style>
+
+  <style name="TextScoreHeader">
+    <item name="android:layout_marginTop">-12dp</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">@color/white</item>
     <item name="fontFamily">@font/gothic</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_width">75dp</item>
-    <item name="android:layout_marginTop">4dp</item>
   </style>
 
   <style name="ButtonMoreStyle">
@@ -112,4 +119,8 @@
     <item name="android:textColor">@color/white</item>
   </style>
 
+  <style name="roundedCornersImageView" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">15dp</item>
+  </style>
 </resources>

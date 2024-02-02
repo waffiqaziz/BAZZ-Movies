@@ -28,15 +28,16 @@ class FavoriteMovieAdapter :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position)
-    if (data != null) {
-      holder.bind(data)
-    }
+    if (data != null) holder.bind(data)
   }
 
   inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
+    lateinit var data: ResultItem
 
     fun bind(resultItem: ResultItem) {
+      data = resultItem
+
       Glide.with(binding.ivPicture)
         .load(TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)

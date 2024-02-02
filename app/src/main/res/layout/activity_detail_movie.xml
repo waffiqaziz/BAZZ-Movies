@@ -82,7 +82,6 @@
         android:id="@+id/btn_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:background="#00000000"
         android:clickable="true"
         android:contentDescription="@string/add_to_favorite"
@@ -91,13 +90,14 @@
         android:minHeight="48dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_hearth"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_watchlist"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
       <ImageButton
         android:id="@+id/btn_watchlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:background="#00000000"
         android:clickable="true"
         android:contentDescription="@string/add_to_watchlist"
@@ -106,7 +106,7 @@
         android:minHeight="48dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_bookmark"
-        app:layout_constraintEnd_toStartOf="@+id/btn_favorite"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
       <ImageView
@@ -221,7 +221,7 @@
 
       <TextView
         android:id="@+id/tv_metascore"
-        style="@style/TextScore"
+        style="@style/TextScoreHeader"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/metascore"
@@ -231,10 +231,10 @@
 
       <TextView
         android:id="@+id/tv_score_imdb"
-        style="@style/TextBody"
+        style="@style/TextScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_imdb"
         app:layout_constraintStart_toStartOf="@+id/tv_imdb"
         app:layout_constraintTop_toBottomOf="@+id/iv_poster"
@@ -242,7 +242,7 @@
 
       <TextView
         android:id="@+id/tv_score_tmdb"
-        style="@style/TextBody"
+        style="@style/TextScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/tv_tmdb"
@@ -255,6 +255,7 @@
         style="@style/TextBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_your_score"
         app:layout_constraintStart_toStartOf="@+id/tv_your_score"
         app:layout_constraintTop_toTopOf="@+id/tv_score_imdb"
@@ -262,9 +263,10 @@
 
       <TextView
         android:id="@+id/tv_score_metascore"
-        style="@style/TextBody"
+        style="@style/TextScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_metascore"
         app:layout_constraintStart_toStartOf="@+id/tv_metascore"
         app:layout_constraintTop_toTopOf="@+id/tv_score_imdb"
@@ -272,7 +274,7 @@
 
       <TextView
         android:id="@+id/tv_imdb"
-        style="@style/TextScore"
+        style="@style/TextScoreHeader"
         android:layout_height="wrap_content"
         android:text="@string/imdb"
         app:layout_constraintStart_toStartOf="@+id/iv_poster"
@@ -280,7 +282,7 @@
 
       <TextView
         android:id="@+id/tv_tmdb"
-        style="@style/TextScore"
+        style="@style/TextScoreHeader"
         android:layout_height="wrap_content"
         android:text="@string/tmdb"
         app:layout_constraintEnd_toStartOf="@+id/tv_your_score"
@@ -289,7 +291,7 @@
 
       <TextView
         android:id="@+id/tv_your_score"
-        style="@style/TextScore"
+        style="@style/TextScoreHeader"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:text="@string/your_score"

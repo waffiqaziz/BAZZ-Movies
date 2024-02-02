@@ -18,6 +18,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   private val listCast = ArrayList<FavoriteDB>()
 
+
   fun setFavorite(itemStory: List<FavoriteDB>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -40,8 +41,11 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
+    lateinit var data: FavoriteDB
 
     fun bind(fav: FavoriteDB) {
+      data = fav
+
       Glide.with(binding.ivPicture)
         .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop )
         .placeholder(R.mipmap.ic_launcher)

@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import java.time.LocalDate
@@ -78,7 +79,11 @@ object Helper {
     return temp
   }
 
-  fun mapResponsesToEntitiesFavorite(input: ResultItem): FavoriteDB {
+  private fun mapResponsesToEntitiesFavoriteDB(
+    isFavorite: Boolean,
+    isWatchlist: Boolean,
+    input: ResultItem
+  ): FavoriteDB {
     return FavoriteDB(
       mediaId = input.id,
       mediaType = input.mediaType,
@@ -90,32 +95,31 @@ object Helper {
       genre = iterateGenre(input.genreIds ?: listOf()),
       popularity = input.popularity,
       overview = input.overview,
-      isFavorite = true,
-      isWatchlist = false
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist
     )
   }
 
-  fun mapResponsesToEntitiesWatchlist(input: ResultItem): FavoriteDB {
-    return FavoriteDB(
-      mediaId = input.id,
-      mediaType = input.mediaType,
-      title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
-      releaseDate = input.releaseDate ?: input.firstAirDate,
-      rating = input.voteAverage,
-      backDrop = input.backdropPath,
-      poster = input.posterPath,
-      genre = iterateGenre(input.genreIds ?: listOf()),
-      popularity = input.popularity,
-      overview = input.overview,
-      isFavorite = false,
-      isWatchlist = true
-    )
+  fun favTrueWatchlistTrue(data: ResultItem): FavoriteDB {
+    return mapResponsesToEntitiesFavoriteDB(isFavorite = true, isWatchlist = true, input = data)
+  }
+
+  fun favTrueWatchlistFalse(data: ResultItem): FavoriteDB {
+    return mapResponsesToEntitiesFavoriteDB(isFavorite = true, isWatchlist = false, input = data)
+  }
+
+  fun favFalseWatchlistTrue(data: ResultItem): FavoriteDB {
+    return mapResponsesToEntitiesFavoriteDB(isFavorite = false, isWatchlist = true, input = data)
+  }
+
+  fun favFalseWatchlistFalse(data: ResultItem): FavoriteDB {
+    return mapResponsesToEntitiesFavoriteDB(isFavorite = false, isWatchlist = false, input = data)
   }
 
   fun dateFormater(date: String): String? {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val newDate = formatter.parse(date)
-    return DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate)
+    return DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
   }
 
   fun getAgeBirth(date: String): Int {
@@ -148,7 +152,7 @@ object Helper {
   }
 
   fun convertRuntime(t: Int): String {
-    val hours: Int = t / 60 // since both are ints, you get an int
+    val hours: Int = t / 60
     val minutes: Int = t % 60
     return "${hours}h ${minutes}m"
   }
@@ -200,4 +204,38 @@ object Helper {
       }
     }
   }
+
+  fun detailCrew(context: Context, crew: List<CrewItem>): String {
+    val writing = crew.map { it }.filter {
+      it.job == "Writing"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val author = crew.map { it }.filter {
+      it.job == "Author"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val screenplay = crew.map { it }.filter {
+      it.job == "Screenplay"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val novel = crew.map { it }.filter {
+      it.job == "Novel"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    context.getString(R.string.writing)
+    return ""
+  }
+
 }

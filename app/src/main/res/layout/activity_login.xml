@@ -139,6 +139,7 @@
     tools:ignore="DuplicateSpeakableTextCheck" />
 
   <TextView
+    android:padding="12dp"
     android:id="@+id/tv_guest"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -154,7 +155,7 @@
     android:id="@+id/tv_joinTMDB"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="40dp"
+    android:layout_marginBottom="50dp"
     android:fontFamily="@font/gothic"
     android:gravity="center"
     android:text="@string/join_tmdb"

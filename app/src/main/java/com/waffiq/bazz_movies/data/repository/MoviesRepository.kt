@@ -6,15 +6,47 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.paging.*
-import com.waffiq.bazz_movies.data.remote.response.ScoreRatingResponse
+import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
+import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
+import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
+import com.waffiq.bazz_movies.data.paging.MultiTrendingPagingSource
+import com.waffiq.bazz_movies.data.paging.OnTvPagingSource
+import com.waffiq.bazz_movies.data.paging.PlayingNowMoviesPagingSource
+import com.waffiq.bazz_movies.data.paging.PopularMoviePagingSource
+import com.waffiq.bazz_movies.data.paging.PopularTvPagingSource
+import com.waffiq.bazz_movies.data.paging.RecommendationMoviePagingSource
+import com.waffiq.bazz_movies.data.paging.RecommendationTvPagingSource
+import com.waffiq.bazz_movies.data.paging.SearchPagingSource
+import com.waffiq.bazz_movies.data.paging.TopRatedMoviePagingSource
+import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
+import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
+import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
+import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.*
-import com.waffiq.bazz_movies.data.remote.retrofit.*
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemPerson
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CreditsPersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiConfig
+import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
+import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.AppExecutors
 import com.waffiq.bazz_movies.utils.Event
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +58,6 @@ import retrofit2.Response
 
 class MoviesRepository(
   private val tmdbApiService: TMDBApiService,
-  private val imdbApiLibService: IMDBApiLibService,
   private val localDataSource: LocalDataSource,
   private val appExecutors: AppExecutors
 ) {
@@ -78,9 +109,6 @@ class MoviesRepository(
   private val _isWatchlist = MutableLiveData<Boolean>()
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 
-  private val _score = MutableLiveData<ScoreRatingResponse>()
-  val score: LiveData<ScoreRatingResponse> get() = _score
-
 
   // person
   private val _detailPerson = MutableLiveData<DetailPersonResponse>()
@@ -92,17 +120,28 @@ class MoviesRepository(
   private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
   val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
 
+
   // future
-  private val _postResponse = MutableLiveData<PostFavoriteWatchlistResponse>()
-  val postResponse: LiveData<PostFavoriteWatchlistResponse> get() = _postResponse
+  private val _postResponse = MutableLiveData<String>()
+  val postResponse: LiveData<String> get() = _postResponse
 
 
   // utils
-  private val _snackbarText = MutableLiveData<Event<String>>()
-  val snackBarText: LiveData<Event<String>> get() = _snackbarText
+  private val _snackBarText = MutableLiveData<Event<String>>()
+  val snackBarText: LiveData<Event<String>> get() = _snackBarText
+
+  private val _snackBarTextInt = MutableLiveData<Event<Int>>()
+  val snackBarTextInt: LiveData<Event<Int>> get() = _snackBarTextInt
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
+
+  private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
+  val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
+
+  private val _undo = MutableLiveData<Event<Favorite>>()
+  val undo: LiveData<Event<Favorite>> = _undo
+
 
   // paging
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
@@ -204,7 +243,7 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingTrending(region : String): Flow<PagingData<ResultItem>> {
+  fun getPagingTrending(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 5
@@ -237,7 +276,7 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingUpcomingMovies(region : String): Flow<PagingData<ResultItem>> {
+  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 20
@@ -248,7 +287,7 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingPlayingNowMovies(region : String): Flow<PagingData<ResultItem>> {
+  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 20
@@ -302,44 +341,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
-      }
-    })
-  }
-
-  // scoring movie from IMDBLib API
-  fun getScoring(apiKey: String, id: String) {
-    _isLoading.value = true
-    val client = IMDBApiLibConfig
-      .getIMDBLibApiService()
-      .getScore(apiKey, id)
-
-    client.enqueue(object : Callback<ScoreRatingResponse> {
-      override fun onResponse(
-        call: Call<ScoreRatingResponse>,
-        response: Response<ScoreRatingResponse>
-      ) {
-        _isLoading.value = false
-        if (response.isSuccessful) {
-          _score.value = response.body()
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-
-          // get message error
-          _snackbarText.value = Event(response.body()?.errorMessage.toString())
-        }
-      }
-
-      override fun onFailure(call: Call<ScoreRatingResponse>, t: Throwable) {
-        _isLoading.value = false
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -361,13 +369,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          _snackbarText.value = Event(response.body()?.response.toString())
+          _snackBarText.value = Event(response.body()?.response.toString())
         }
       }
 
       override fun onFailure(call: Call<OMDbDetailsResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -402,13 +410,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -441,13 +449,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<DetailTvResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -470,13 +478,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<ExternalIdResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -511,14 +519,14 @@ class MoviesRepository(
           // get message error
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -553,14 +561,14 @@ class MoviesRepository(
           // get message error
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<VideoResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -587,14 +595,14 @@ class MoviesRepository(
           // get message error
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -618,13 +626,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<StatedResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -648,13 +656,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<StatedResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -670,7 +678,10 @@ class MoviesRepository(
         response: Response<PostFavoriteWatchlistResponse>
       ) {
         if (response.isSuccessful) {
-          _postResponse.value = response.body()
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _postResponse.value = responseBody.statusMessage!!
+          }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -678,13 +689,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<PostFavoriteWatchlistResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -700,7 +711,10 @@ class MoviesRepository(
         response: Response<PostFavoriteWatchlistResponse>
       ) {
         if (response.isSuccessful) {
-          _postResponse.value = response.body()
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _postResponse.value = responseBody.statusMessage!!
+          }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -708,13 +722,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<PostFavoriteWatchlistResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -740,13 +754,13 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<DetailPersonResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -774,14 +788,14 @@ class MoviesRepository(
           // get message error
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<CreditsPersonResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -807,13 +821,13 @@ class MoviesRepository(
           // get message error
           val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
-          _snackbarText.value = Event(message)
+          _snackBarText.value = Event(message)
         }
       }
 
       override fun onFailure(call: Call<ImagePersonResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
-        _snackbarText.value = Event(t.message.toString())
+        _snackBarText.value = Event(t.message.toString())
       }
     })
   }
@@ -831,12 +845,17 @@ class MoviesRepository(
   fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
 
-  fun insertDB(fav: FavoriteDB) {
-    appExecutors.diskIO().execute { localDataSource.insertFavorite(fav) }
+  fun insertToDB(fav: FavoriteDB) {
+    appExecutors.diskIO().execute { localDataSource.insert(fav) }
   }
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
+    _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
+//    val temp = fav
+//    temp.isFavorite = !fav.isFavorite!!
+//    temp.isWatchlist = !fav.isWatchlist!!
+    _undoDB.value = Event(fav)
   }
 
   fun deleteAll() {
@@ -855,16 +874,26 @@ class MoviesRepository(
     }
   }
 
-  fun updateFavoriteDB(boolean: Boolean, id: Int) {
-    appExecutors.diskIO().execute {
-      localDataSource.updateFavorite(boolean, id)
-    }
+  fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
+    if (isDelete) { // update set is_favorite = false
+      _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
+      _undoDB.value = Event(fav)
+
+      fav.isFavorite = false
+      appExecutors.diskIO().execute { localDataSource.update(fav) }
+    } else // update set is_favorite = true
+      appExecutors.diskIO().execute { localDataSource.update(fav) }
   }
 
-  fun updateWatchlistDB(boolean: Boolean, id: Int) {
-    appExecutors.diskIO().execute {
-      localDataSource.updateWatchlist(boolean, id)
-    }
+  fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
+    if (isDelete) { // update set is_watchlist = false
+      _snackBarTextInt.value = Event(R.string.deleted_from_watchlist)
+      _undoDB.value = Event(fav)
+
+      fav.isWatchlist = false
+      appExecutors.diskIO().execute { localDataSource.update(fav) }
+    } else // update set is_watchlist = true
+      appExecutors.diskIO().execute { localDataSource.update(fav) }
   }
 
 
@@ -876,12 +905,11 @@ class MoviesRepository(
 
     fun getInstance(
       tmdbApiService: TMDBApiService,
-      imdbApiLibService: IMDBApiLibService,
       localData: LocalDataSource,
       appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(tmdbApiService, imdbApiLibService, localData, appExecutors)
+        instance ?: MoviesRepository(tmdbApiService, localData, appExecutors)
       }
   }
 }
