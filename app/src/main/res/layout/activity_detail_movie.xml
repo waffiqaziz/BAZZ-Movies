@@ -62,7 +62,8 @@
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_left_icon" />
+        app:srcCompat="@drawable/ic_left_icon"
+        tools:ignore="DuplicateClickableBoundsCheck" />
 
       <ImageButton
         android:id="@+id/btn_back"
@@ -115,11 +116,11 @@
         android:layout_height="180dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="-40dp"
+        android:contentDescription="@string/poster"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_picture"
         tools:layout_width="120dp"
-        tools:src="@drawable/ic_bazz_placeholder_poster"
-        android:contentDescription="@string/poster" />
+        tools:src="@drawable/ic_bazz_placeholder_poster" />
 
       <TextView
         android:id="@+id/tv_title"
@@ -321,23 +322,37 @@
         app:collapsedLines="3"
         app:ellipsizeTextColor="@color/yellow"
         app:expandType="layout"
-        app:readLessText="@string/less_more"
-        app:readMoreText="@string/read_more"
-        app:textMode="line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_summary_header"
+        app:readLessText="@string/less_more"
+        app:readMoreText="@string/read_more"
+        app:textMode="line"
         tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
+      <!--
+            <TextView
+              android:id="@+id/tv_director"
+              style="@style/TextBody"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              app:layout_constraintStart_toStartOf="@+id/tv_overview"
+              app:layout_constraintTop_toBottomOf="@+id/tv_overview"
+              tools:text="Director: John R. Leonetti" />
+      -->
 
-      <TextView
-        android:id="@+id/tv_director"
-        style="@style/TextBody"
-        android:layout_width="wrap_content"
+      <FrameLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@+id/tv_overview"
         app:layout_constraintTop_toBottomOf="@+id/tv_overview"
-        tools:text="Director: John R. Leonetti" />
+        tools:background="@color/yellow"
+        tools:layout_height="100dp" />
 
       <TextView
         android:id="@+id/tv_cast_header"
@@ -346,8 +361,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/cast"
-        app:layout_constraintStart_toStartOf="@+id/tv_director"
-        app:layout_constraintTop_toBottomOf="@+id/tv_director" />
+        app:layout_constraintStart_toStartOf="@+id/table"
+        app:layout_constraintTop_toBottomOf="@+id/table" />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cast"

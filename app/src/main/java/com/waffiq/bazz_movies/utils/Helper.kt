@@ -206,8 +206,38 @@ object Helper {
   }
 
   fun detailCrew(context: Context, crew: List<CrewItem>): String {
+    var crewString = ""
+
+    val director = crew.map { it }.filter {
+      it.job == "Director"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val story = crew.map { it }.filter {
+      it.job == "Story"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
     val writing = crew.map { it }.filter {
       it.job == "Writing"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val characters = crew.map { it }.filter {
+      it.job == "Characters"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val creator = crew.map { it }.filter {
+      it.job == "Executive Producer"
     }.map { it.name }
       .toString()
       .dropLast(1)
@@ -235,7 +265,113 @@ object Helper {
       .substring(1)
 
     context.getString(R.string.writing)
-    return ""
+
+    if(director.isNotEmpty()) crewString += "Director : $director \n"
+    if(story.isNotEmpty()) crewString += "Story : $story \n"
+    if(creator.isNotEmpty()) crewString += "Creator : $creator \n"
+    if(characters.isNotEmpty()) crewString += "Characters : $characters \n"
+    if(writing.isNotEmpty()) crewString += "Writing : $writing \n"
+    if(author.isNotEmpty()) crewString += "Author : $author \n"
+    if(screenplay.isNotEmpty()) crewString += "Screenplay : $screenplay \n"
+    if(novel.isNotEmpty()) crewString += "Novel : $novel \n"
+
+    return crewString
+  }
+
+  fun detailCrew(crew: List<CrewItem>): Pair<MutableList<String>, MutableList<String>> {
+    val job: MutableList<String> = ArrayList()
+    val name: MutableList<String> = ArrayList()
+
+    val director = crew.map { it }.filter {
+      it.job == "Director"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val story = crew.map { it }.filter {
+      it.job == "Story"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val writing = crew.map { it }.filter {
+      it.job == "Writing"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val characters = crew.map { it }.filter {
+      it.job == "Characters"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val creator = crew.map { it }.filter {
+      it.job == "Executive Producer"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val author = crew.map { it }.filter {
+      it.job == "Author"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val screenplay = crew.map { it }.filter {
+      it.job == "Screenplay"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    val novel = crew.map { it }.filter {
+      it.job == "Novel"
+    }.map { it.name }
+      .toString()
+      .dropLast(1)
+      .substring(1)
+
+    if (director.isNotEmpty()) {
+      job.add("Director")
+      name.add(director)
+    }
+    if (story.isNotEmpty()) {
+      job.add("Story")
+      name.add(story)
+    }
+    if (creator.isNotEmpty()) {
+      job.add("Creator")
+      name.add(creator)
+    }
+    if (characters.isNotEmpty()) {
+      job.add("Characters")
+      name.add(characters)
+    }
+    if (writing.isNotEmpty()) {
+      job.add("Writing")
+      name.add(writing)
+    }
+    if (author.isNotEmpty()) {
+      job.add("Author")
+      name.add(author)
+    }
+    if (screenplay.isNotEmpty()) {
+      job.add("Screenplay")
+      name.add(screenplay)
+    }
+    if (novel.isNotEmpty()) {
+      job.add("Novel")
+      name.add(novel)
+    }
+
+    return job to name
   }
 
 }

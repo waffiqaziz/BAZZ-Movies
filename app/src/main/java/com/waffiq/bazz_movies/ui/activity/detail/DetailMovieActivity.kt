@@ -11,11 +11,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -44,11 +50,13 @@ import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
+import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistFalse
 import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -163,15 +171,8 @@ class DetailMovieActivity : AppCompatActivity() {
       // shows directors
       viewModel.getAllCreditMovies(dataExtra.id!!)
       viewModel.getCreditDirectorMovies().observe(this) { crew ->
-        binding.tvDirector.text = getString(
-          R.string.director,
-          crew.map { it }.filter {
-            it.job == "Director"
-          }.map { it.name }
-            .toString()
-            .dropLast(1)
-            .substring(1)
-        )
+//        binding.tvDirector.text = detailCrew(this, crew)
+        createTable(detailCrew(crew))
       }
 
       // show or hide cast
@@ -227,15 +228,9 @@ class DetailMovieActivity : AppCompatActivity() {
       // show directors
       viewModel.getAllCreditTv(dataExtra.id!!)
       viewModel.getCreditDirectorTv().observe(this) { crew ->
-        binding.tvDirector.text = getString(
-          R.string.writing,
-          crew.map { it }.filter {
-            it.job == "Writing"
-          }.map { it.name }
-            .toString()
-            .dropLast(1)
-            .substring(1)
-        )
+
+//        binding.tvDirector.text = detailCrew(this, crew)
+        createTable(detailCrew(crew))
       }
 
       // show or hide cast
@@ -287,6 +282,51 @@ class DetailMovieActivity : AppCompatActivity() {
         viewModel.ageRatingTv().observe(this) { binding.tvAgeRating.text = it }
       }
     }
+  }
+
+  private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {
+    val (job, crewName) = pair
+
+    // Create a TableLayout
+    val tableLayout = TableLayout(this)
+    tableLayout.layoutParams = TableLayout.LayoutParams(
+      TableLayout.LayoutParams.MATCH_PARENT,
+      TableLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    // Create rows
+    for (i in 0..<job.size) {
+      val tableRow = TableRow(this)
+      tableRow.layoutParams = TableRow.LayoutParams(
+        TableRow.LayoutParams.MATCH_PARENT,
+        TableRow.LayoutParams.WRAP_CONTENT
+      )
+
+      val cell1 = createTableCell(job[i])
+      val cell2 = createTableCell(": "+ crewName[i])
+
+      tableRow.addView(cell1)
+      tableRow.addView(cell2)
+
+      tableLayout.addView(tableRow)
+    }
+
+    binding.table.addView(tableLayout)
+  }
+
+  private fun createTableCell(text: String): TextView {
+    val textView = TextView(this)
+    textView.text = text
+    textView.layoutParams = TableRow.LayoutParams(
+      TableRow.LayoutParams.WRAP_CONTENT,
+      TableRow.LayoutParams.WRAP_CONTENT
+    )
+    textView.typeface = ResourcesCompat.getFont(this, R.font.gothic)
+    textView.gravity = Gravity.START
+    textView.textSize = 14F
+    textView.setPadding(0, 7, 24, 7)
+    textView.setTextColor(ActivityCompat.getColor(this, R.color.grey_100))
+    return textView
   }
 
   private fun btnTrailer(link: String) {
