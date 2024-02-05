@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/grey_400"
+  tools:background="@color/grey_700"
   tools:context=".ui.activity.home.MovieFragment">
 
   <LinearLayout
@@ -14,7 +14,7 @@
 
     <TextView
       android:id="@+id/tv_popular"
-      style="@style/TextHeader1"
+      style="@style/TextHeader2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
@@ -33,7 +33,7 @@
 
     <TextView
       android:id="@+id/tv_airing_today"
-      style="@style/TextHeader1"
+      style="@style/TextHeader2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
@@ -52,7 +52,7 @@
 
     <TextView
       android:id="@+id/tv_on_tv"
-      style="@style/TextHeader1"
+      style="@style/TextHeader2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"
@@ -71,7 +71,7 @@
 
     <TextView
       android:id="@+id/tv_top_rated"
-      style="@style/TextHeader1"
+      style="@style/TextHeader2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="20dp"

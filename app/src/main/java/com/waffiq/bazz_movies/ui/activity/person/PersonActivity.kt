@@ -73,7 +73,7 @@ class PersonActivity : AppCompatActivity() {
 
     // show picture
     personMovieViewModel.getImagePerson(dataExtra.id!!)
-    personMovieViewModel.getImagePerson().observe(this) { adapterImage.setCast(it) }
+    personMovieViewModel.getImagePerson().observe(this) { adapterImage.setImage(it) }
 
     // show detail person
     personMovieViewModel.getDetailPerson(dataExtra.id!!)

@@ -12,8 +12,10 @@
     android:layout_height="0dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0">
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
@@ -299,6 +301,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_score_your_score" />
 
+
+      <View
+        android:id="@+id/divider_score"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:foreground="@color/yellow_alpha_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_imdb" />
+
       <TextView
         android:id="@+id/tv_summary_header"
         style="@style/TextHeader2"
@@ -308,7 +323,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/summary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_metascore" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_score" />
 
       <io.github.glailton.expandabletextview.ExpandableTextView
         android:id="@+id/tv_overview"
@@ -361,7 +376,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/cast"
-        app:layout_constraintStart_toStartOf="@+id/table"
+        app:layout_constraintStart_toStartOf="@+id/tv_overview"
         app:layout_constraintTop_toBottomOf="@+id/table" />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -417,6 +432,7 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:background="@color/grey_800"
+    android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -429,7 +445,7 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     android:indeterminateTint="@color/yellow"
-    android:visibility="gone"
+    android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

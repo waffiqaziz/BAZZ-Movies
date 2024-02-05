@@ -12,6 +12,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
@@ -58,6 +59,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
         setDataUserLogin(user.token)
       } else { //guest user then show favorite data from database
         setDataGuestUser()
+        binding.rvWatchlistTv.addItemDecoration(
+          DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        )
       }
     }
   }

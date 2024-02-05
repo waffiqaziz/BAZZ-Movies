@@ -28,16 +28,16 @@ import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastCombinedItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemPerson
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CreditsPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
@@ -99,11 +99,14 @@ class MoviesRepository(
   private val _ageRatingTv = MutableLiveData<String>()
   val ageRatingTv: LiveData<String> get() = _ageRatingTv
 
+  private val _productionCountry = MutableLiveData<String>()
+  val productionCountry: LiveData<String> get() = _productionCountry
+
   private val _stated = MutableLiveData<StatedResponse>()
   val stated: LiveData<StatedResponse> get() = _stated
 
 
-  // for DB
+  // for DB all
   private val _isFavorite = MutableLiveData<Boolean>()
   val isFavorite: LiveData<Boolean> = _isFavorite
   private val _isWatchlist = MutableLiveData<Boolean>()
@@ -114,8 +117,8 @@ class MoviesRepository(
   private val _detailPerson = MutableLiveData<DetailPersonResponse>()
   val detailPerson: LiveData<DetailPersonResponse> get() = _detailPerson
 
-  private val _knownFor = MutableLiveData<List<CastItemPerson>>()
-  val knownFor: LiveData<List<CastItemPerson>> get() = _knownFor
+  private val _knownFor = MutableLiveData<List<CastCombinedItem>>()
+  val knownFor: LiveData<List<CastCombinedItem>> get() = _knownFor
 
   private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
   val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
@@ -310,6 +313,7 @@ class MoviesRepository(
   }
 
 
+  // multisearch
   fun search(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
       config = PagingConfig(
@@ -319,37 +323,6 @@ class MoviesRepository(
         SearchPagingSource(tmdbApiService, query)
       }
     ).flow
-  }
-
-  fun getCreditTv(tvId: Int) {
-    val client = TMDBApiConfig
-      .getApiService()
-      .getCreditTv(tvId)
-
-    client.enqueue(object : Callback<CreditsResponse> {
-      override fun onResponse(
-        call: Call<CreditsResponse>,
-        response: Response<CreditsResponse>
-      ) {
-        if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) {
-            _creditsCrewTv.value = responseBody.crew
-            _creditCastTv.value = responseBody.cast
-          }
-        } else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-          val message = jsonObject.getString("status_message")
-          _snackBarText.value = Event(message)
-        }
-      }
-
-      override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
-        Log.e(TAG, "onFailure: ${t.message}")
-        _snackBarText.value = Event(t.message.toString())
-      }
-    })
   }
 
   // detail movie from OMDb API
@@ -380,7 +353,7 @@ class MoviesRepository(
     })
   }
 
-  // detail movie from TMDB API
+  // detail data from TMDB API
   fun getDetailMovie(id: Int) {
     val client = TMDBApiConfig
       .getApiService()
@@ -393,14 +366,20 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _detailMovie.value = response.body()
-          try { // get age rating
-            _ageRatingMovie.value = response.body()?.releaseDates?.results?.filter {
-              it?.iso31661 == "US"
-            }?.map {
-              it?.releaseDateValue?.get(0)?.certification
-            }.toString().replace("[", "").replace("]", "")
-          } catch (e: NullPointerException) {
-            _ageRatingMovie.value = "N/A"
+          val responseBody = response.body()
+          if (responseBody != null) {
+            try { // get age rating
+              val productionCountry = responseBody.productionCountries?.get(0)?.iso31661
+
+              _productionCountry.value = productionCountry!!
+              _ageRatingMovie.value = responseBody.releaseDates?.results?.filter {
+                it?.iso31661 == "US" || it?.iso31661 == productionCountry
+              }?.map {
+                it?.releaseDateValue?.get(0)?.certification
+              }.toString().replace("[", "").replace("]", "")
+            } catch (e: NullPointerException) {
+              _ageRatingMovie.value = "N/A"
+            }
           }
 
         } else {
@@ -433,13 +412,18 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _detailTv.value = response.body()
+          val responseBody = response.body()
+          if (responseBody != null) {
+            try { // get age rating
+              val productionCountry = responseBody.productionCountries?.get(0)?.iso31661
 
-          try { // get age rating
-            _ageRatingTv.value = response.body()?.contentRatings?.results?.filter {
-              it?.iso31661 == "US"
-            }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-          } catch (e: NullPointerException) {
-            _ageRatingTv.value = "N/A"
+              _productionCountry.value = productionCountry!!
+              _ageRatingTv.value = responseBody.contentRatings?.results?.filter {
+                it?.iso31661 == "US" || it?.iso31661 == productionCountry
+              }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
+            } catch (e: NullPointerException) {
+              _ageRatingTv.value = "N/A"
+            }
           }
 
         } else {
@@ -578,10 +562,10 @@ class MoviesRepository(
       .getApiService()
       .getCreditMovies(movieId)
 
-    client.enqueue(object : Callback<CreditsResponse> {
+    client.enqueue(object : Callback<MovieTvCreditsResponse> {
       override fun onResponse(
-        call: Call<CreditsResponse>,
-        response: Response<CreditsResponse>
+        call: Call<MovieTvCreditsResponse>,
+        response: Response<MovieTvCreditsResponse>
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
@@ -599,8 +583,39 @@ class MoviesRepository(
         }
       }
 
-      override fun onFailure(call: Call<CreditsResponse>, t: Throwable) {
+      override fun onFailure(call: Call<MovieTvCreditsResponse>, t: Throwable) {
         _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackBarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getCreditTv(tvId: Int) {
+    val client = TMDBApiConfig
+      .getApiService()
+      .getCreditTv(tvId)
+
+    client.enqueue(object : Callback<MovieTvCreditsResponse> {
+      override fun onResponse(
+        call: Call<MovieTvCreditsResponse>,
+        response: Response<MovieTvCreditsResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _creditsCrewTv.value = responseBody.crew
+            _creditCastTv.value = responseBody.cast
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackBarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<MovieTvCreditsResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
         _snackBarText.value = Event(t.message.toString())
       }
@@ -769,12 +784,12 @@ class MoviesRepository(
     _isLoading.value = true
     val client = TMDBApiConfig
       .getApiService()
-      .getKnownForPerson(id)
+      .getKnownForPersonCombinedMovieTv(id)
 
-    client.enqueue(object : Callback<CreditsPersonResponse> {
+    client.enqueue(object : Callback<CombinedCreditResponse> {
       override fun onResponse(
-        call: Call<CreditsPersonResponse>,
-        response: Response<CreditsPersonResponse>
+        call: Call<CombinedCreditResponse>,
+        response: Response<CombinedCreditResponse>
       ) {
         _isLoading.value = false
         if (response.isSuccessful) {
@@ -792,7 +807,7 @@ class MoviesRepository(
         }
       }
 
-      override fun onFailure(call: Call<CreditsPersonResponse>, t: Throwable) {
+      override fun onFailure(call: Call<CombinedCreditResponse>, t: Throwable) {
         _isLoading.value = false
         Log.e(TAG, "onFailure: ${t.message}")
         _snackBarText.value = Event(t.message.toString())
@@ -852,9 +867,6 @@ class MoviesRepository(
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
     _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
-//    val temp = fav
-//    temp.isFavorite = !fav.isFavorite!!
-//    temp.isWatchlist = !fav.isWatchlist!!
     _undoDB.value = Event(fav)
   }
 
@@ -881,8 +893,13 @@ class MoviesRepository(
 
       fav.isFavorite = false
       appExecutors.diskIO().execute { localDataSource.update(fav) }
-    } else // update set is_favorite = true
+    } else {  // update set is_favorite = true
+      _undoDB.value = Event(fav)
+
+      fav.isFavorite = true
+      _snackBarTextInt.value = Event(R.string.added_to_favorite)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
+    }
   }
 
   fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
@@ -892,8 +909,13 @@ class MoviesRepository(
 
       fav.isWatchlist = false
       appExecutors.diskIO().execute { localDataSource.update(fav) }
-    } else // update set is_watchlist = true
+    } else { // update set is_watchlist = true
+      _undoDB.value = Event(fav)
+
+      fav.isWatchlist = true
+      _snackBarTextInt.value = Event(R.string.added_to_watchlist)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
+    }
   }
 
 

@@ -14,19 +14,18 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
   fun isWatchlistDB(id: Int) = movieRepository.isWatchlistDB(id)
   fun isWatchlistDB() = movieRepository.isWatchlist
+  fun undoDeleteDB() = movieRepository.undoDB
+
+  fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
+  fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
+  fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
+  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
 
   fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 
-  fun deleteFavDB(favoriteDB: FavoriteDB) {
-    movieRepository.deleteFromDB(favoriteDB)
-  }
-
-  fun undoDeleteDB() = movieRepository.undoDB
-
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
 
-  fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
 
   // from network
   fun getFavoriteMovies(sessionId: String) =

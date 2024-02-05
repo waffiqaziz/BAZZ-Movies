@@ -16,7 +16,7 @@ class ImagePersonAdapter : RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>()
 
   private val listCast = ArrayList<ProfilesItem>()
 
-  fun setCast(itemStory: List<ProfilesItem>) {
+  fun setImage(itemStory: List<ProfilesItem>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 

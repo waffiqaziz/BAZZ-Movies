@@ -17,24 +17,21 @@ class DetailMovieViewModel(
   fun detailMovie(id: Int) = movieRepository.getDetailMovie(id)
   fun detailMovie() = movieRepository.detailMovie
   fun ageRatingMovie() = movieRepository.ageRatingMovie
+  fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
+  fun getCreditsCastMovies() = movieRepository.creditCastMovies
+  fun getCreditDirectorMovies() = movieRepository.creditCrewMovies
+  fun getLinkMovie(movieId: Int) = movieRepository.getVideoMovies(movieId)
+  fun getLinkMovie() = movieRepository.linkVideoMovie
+  fun getProductionCountry() = movieRepository.productionCountry
 
   fun detailTv(id: Int) = movieRepository.getDetailTv(id)
   fun detailTv() = movieRepository.detailTv
   fun ageRatingTv() = movieRepository.ageRatingTv
-
   fun externalId(id: Int) = movieRepository.getExternalId(id)
   fun externalId() = movieRepository.externalId
-
-  fun getAllCreditMovies(movieId: Int) = movieRepository.getCreditMovies(movieId)
-  fun getCreditsCastMovies() = movieRepository.creditCastMovies
-  fun getCreditDirectorMovies() = movieRepository.creditCrewMovies
   fun getAllCreditTv(tvId: Int) = movieRepository.getCreditTv(tvId)
   fun getCreditsCastTv() = movieRepository.creditCastTv
   fun getCreditDirectorTv() = movieRepository.creditCrewTv
-
-  fun getLinkMovie(movieId: Int) = movieRepository.getVideoMovies(movieId)
-  fun getLinkMovie() = movieRepository.linkVideoMovie
-
   fun getLinkTv(tvId: Int) = movieRepository.getVideoTv(tvId)
   fun getLinkTv() = movieRepository.linkVideoTv
 
@@ -61,7 +58,7 @@ class DetailMovieViewModel(
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
   fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
-  fun removeFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
+  fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
 
   // favorite & watchlist TMDB
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =

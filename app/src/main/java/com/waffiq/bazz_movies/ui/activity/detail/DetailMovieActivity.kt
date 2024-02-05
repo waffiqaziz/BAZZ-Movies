@@ -57,7 +57,6 @@ import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
-
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class DetailMovieActivity : AppCompatActivity() {
@@ -126,8 +125,11 @@ class DetailMovieActivity : AppCompatActivity() {
     // show data(year, overview, title)
     binding.apply {
       dataExtra.apply {
-        val year = (firstAirDate ?: releaseDate)?.let { dateFormater(it) }
-        tvYearReleased.text = year
+        val year = dateFormater((firstAirDate ?: releaseDate ?: ""))!!
+        if (year.isEmpty()) {
+          tvYearReleased.text = getString(R.string.not_available)
+        } else tvYearReleased.text = year
+
         tvMediaType.text = mediaType?.uppercase()
         tvOverview.text = overview
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
@@ -166,7 +168,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
 
-    //show data based media type
+    //show more detail data based media type
     if (dataExtra.mediaType == "movie") {
       // shows directors
       viewModel.getAllCreditMovies(dataExtra.id!!)
@@ -193,9 +195,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
         //show genre
         val temp = movie.genres?.map { it?.name }
-        if (temp != null) {
-          binding.tvGenre.text = temp.joinToString(separator = ", ")
-        }
+        if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         binding.tvDuration.text = convertRuntime(movie.runtime!!)
 
@@ -222,15 +222,16 @@ class DetailMovieActivity : AppCompatActivity() {
         viewModel.ageRatingMovie().observe(this) { binding.tvAgeRating.text = it }
       }
 
+
     } else if (dataExtra.mediaType == "tv") {
       viewModel.getSnackBarText().observe(this) { showSnackBar(it) }
 
       // show directors
       viewModel.getAllCreditTv(dataExtra.id!!)
-      viewModel.getCreditDirectorTv().observe(this) { crew ->
+      viewModel.getCreditDirectorTv().observe(this) {
 
-//        binding.tvDirector.text = detailCrew(this, crew)
-        createTable(detailCrew(crew))
+        // binding.tvDirector.text = detailCrew(this, crew)
+        createTable(detailCrew(it))
       }
 
       // show or hide cast
@@ -279,8 +280,15 @@ class DetailMovieActivity : AppCompatActivity() {
         val temp = tv.genres?.map { it?.name }
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
-        viewModel.ageRatingTv().observe(this) { binding.tvAgeRating.text = it }
+        viewModel.ageRatingTv().observe(this) {
+          binding.tvAgeRating.text = it ?: getString(R.string.not_available)
+        }
       }
+    }
+
+    // show production country
+    viewModel.getProductionCountry().observe(this) {
+      binding.tvYearReleased.append(" ($it)")
     }
   }
 
@@ -303,7 +311,7 @@ class DetailMovieActivity : AppCompatActivity() {
       )
 
       val cell1 = createTableCell(job[i])
-      val cell2 = createTableCell(": "+ crewName[i])
+      val cell2 = createTableCell(": " + crewName[i])
 
       tableRow.addView(cell1)
       tableRow.addView(cell2)
@@ -364,7 +372,7 @@ class DetailMovieActivity : AppCompatActivity() {
             if (watchlist) { // if movies is on watchlist, then edit is_favorite to false
               viewModel.updateToRemoveFromFavoriteDB(favFalseWatchlistTrue(dataExtra))
             } else { // remove movie from room database, cuz not in favorite
-              viewModel.removeFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
+              viewModel.delFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
             }
             favorite = false
             showToastRemoveFromFavorite()
@@ -396,7 +404,7 @@ class DetailMovieActivity : AppCompatActivity() {
             if (favorite) { // if movie is also favorite, then update is_watchlist to false
               viewModel.updateToRemoveFromWatchlistDB(favTrueWatchlistFalse(dataExtra))
             } else { // remove movie from room database, cuz is not favorite
-              viewModel.removeFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
+              viewModel.delFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
             }
             watchlist = false
             showToastShort(this@DetailMovieActivity, getString(R.string.deleted_from_watchlist))
@@ -418,14 +426,14 @@ class DetailMovieActivity : AppCompatActivity() {
       tvYourScore.setOnClickListener { showDialogRate() }
       tvScoreYourScore.text = getString(R.string.not_available)
 
-      tvScoreImdb.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNR() }
-      tvScoreTmdb.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNR() }
-      tvScoreMetascore.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNR() }
+      tvScoreImdb.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      tvScoreTmdb.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      tvScoreMetascore.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNotRated() }
 
     }
   }
 
-  private fun showDialogNR() {
+  private fun showDialogNotRated() {
     val builder: AlertDialog.Builder = AlertDialog.Builder(this)
     builder
       .setTitle(getString(R.string.not_available_full))
@@ -460,6 +468,8 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
+
+  // show score from OMDb API
   private fun showDetailOMDb(data: OMDbDetailsResponse) {
     binding.apply {
       tvScoreImdb.text =

@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.waffiq.bazz_movies.R
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemPerson
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastCombinedItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
@@ -17,9 +17,9 @@ import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
-  private val listCast = ArrayList<CastItemPerson>()
+  private val listCast = ArrayList<CastCombinedItem>()
 
-  fun setCast(itemStory: List<CastItemPerson>) {
+  fun setCast(itemStory: List<CastCombinedItem>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -42,7 +42,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
   inner class ViewHolder(private var binding: ItemPlayForBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(cast: CastItemPerson) {
+    fun bind(cast: CastCombinedItem) {
       Glide.with(binding.imgCastPhoto)
         .load(TMDB_IMG_LINK_POSTER_W185 + cast.posterPath)
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
@@ -57,13 +57,17 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       val resultItem = ResultItem(
         overview = cast.overview,
         title = cast.title,
+        name = cast.name,
         originalTitle = cast.originalTitle,
         originalName = cast.originalTitle,
-        mediaType = "movie",
+        mediaType = cast.mediaType,
         firstAirDate = cast.releaseDate,
         releaseDate = cast.releaseDate,
+        genreIds = cast.genreIds,
         id = cast.id,
+        popularity = cast.popularity,
         voteAverage = cast.voteAverage,
+        voteCount = cast.voteCount,
         posterPath = cast.posterPath,
         backdropPath = cast.backdropPath,
       )
@@ -79,8 +83,8 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
   }
 
   inner class DiffCallback(
-    private val oldList: List<CastItemPerson>,
-    private val newList: List<CastItemPerson>
+    private val oldList: List<CastCombinedItem>,
+    private val newList: List<CastCombinedItem>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

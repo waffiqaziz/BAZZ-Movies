@@ -24,8 +24,7 @@ object Helper {
   }
 
   fun showToastShort(context: Context, text: String) {
-    Toast.makeText(context, text, Toast.LENGTH_SHORT)
-      .show()
+    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
   }
 
   private fun getGenreName(int: Int): String {
@@ -63,18 +62,14 @@ object Helper {
 
   fun iterateGenre(data: List<Int>): String {
     var temp = ""
-    data.forEach {
-      temp = temp + getGenreName(it) + ", "
-    }
+    data.forEach { temp = temp + getGenreName(it) + ", " }
     temp = temp.dropLast(2)
     return temp
   }
 
   fun getKnownFor(knownForItem: List<KnownForItem>): String {
     var temp = ""
-    knownForItem.forEach {
-      temp = temp + it.title + ", "
-    }
+    knownForItem.forEach { temp = temp + it.title + ", " }
     temp = temp.dropLast(2)
     return temp
   }
@@ -117,9 +112,11 @@ object Helper {
   }
 
   fun dateFormater(date: String): String? {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val newDate = formatter.parse(date)
-    return DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
+    return if(date.isNotEmpty()){
+      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+      val newDate = formatter.parse(date)
+      DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
+    } else date
   }
 
   fun getAgeBirth(date: String): Int {
@@ -128,10 +125,7 @@ object Helper {
     val month = dateParts[1].toInt()
     val day = dateParts[2].toInt()
 
-    return Period.between(
-      LocalDate.of(year, month, day),
-      LocalDate.now()
-    ).years
+    return Period.between(LocalDate.of(year, month, day), LocalDate.now()).years
   }
 
   fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
@@ -199,9 +193,7 @@ object Helper {
     return getNetworkLocation(context).ifEmpty {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         context.resources.configuration.locales.get(0).country.toString().lowercase()
-      } else {
-        context.resources.configuration.locale.country.toString().lowercase()
-      }
+      } else context.resources.configuration.locale.country.toString().lowercase()
     }
   }
 
@@ -210,70 +202,44 @@ object Helper {
 
     val director = crew.map { it }.filter {
       it.job == "Director"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val story = crew.map { it }.filter {
       it.job == "Story"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val writing = crew.map { it }.filter {
-      it.job == "Writing"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+      it.job == "Writer"
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val characters = crew.map { it }.filter {
       it.job == "Characters"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val creator = crew.map { it }.filter {
       it.job == "Executive Producer"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val author = crew.map { it }.filter {
       it.job == "Author"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val screenplay = crew.map { it }.filter {
       it.job == "Screenplay"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val novel = crew.map { it }.filter {
       it.job == "Novel"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
-    context.getString(R.string.writing)
-
-    if(director.isNotEmpty()) crewString += "Director : $director \n"
-    if(story.isNotEmpty()) crewString += "Story : $story \n"
-    if(creator.isNotEmpty()) crewString += "Creator : $creator \n"
-    if(characters.isNotEmpty()) crewString += "Characters : $characters \n"
-    if(writing.isNotEmpty()) crewString += "Writing : $writing \n"
-    if(author.isNotEmpty()) crewString += "Author : $author \n"
-    if(screenplay.isNotEmpty()) crewString += "Screenplay : $screenplay \n"
-    if(novel.isNotEmpty()) crewString += "Novel : $novel \n"
+    if (director.isNotEmpty()) crewString += "Director : $director \n"
+    if (story.isNotEmpty()) crewString += "Story : $story \n"
+    if (creator.isNotEmpty()) crewString += "Creator : $creator \n"
+    if (characters.isNotEmpty()) crewString += "Characters : $characters \n"
+    if (writing.isNotEmpty()) crewString += "Writer : $writing \n"
+    if (author.isNotEmpty()) crewString += "Author : $author \n"
+    if (screenplay.isNotEmpty()) crewString += "Screenplay : $screenplay \n"
+    if (novel.isNotEmpty()) crewString += "Novel : $novel \n"
 
     return crewString
   }
@@ -284,59 +250,35 @@ object Helper {
 
     val director = crew.map { it }.filter {
       it.job == "Director"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val story = crew.map { it }.filter {
       it.job == "Story"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val writing = crew.map { it }.filter {
-      it.job == "Writing"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+      it.job == "Writer"
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val characters = crew.map { it }.filter {
       it.job == "Characters"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val creator = crew.map { it }.filter {
       it.job == "Executive Producer"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val author = crew.map { it }.filter {
       it.job == "Author"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val screenplay = crew.map { it }.filter {
       it.job == "Screenplay"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     val novel = crew.map { it }.filter {
       it.job == "Novel"
-    }.map { it.name }
-      .toString()
-      .dropLast(1)
-      .substring(1)
+    }.map { it.name }.toString().dropLast(1).substring(1)
 
     if (director.isNotEmpty()) {
       job.add("Director")

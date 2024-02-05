@@ -139,12 +139,12 @@ interface TMDBApiService {
   @GET("3/movie/{movieId}/credits?api_key=$API_KEY&language=en-US")
   fun getCreditMovies(
     @Path("movieId") movieId: Int
-  ): Call<CreditsResponse>
+  ): Call<MovieTvCreditsResponse>
 
   @GET("3/tv/{tvId}/credits?api_key=$API_KEY&language=en-US")
   fun getCreditTv(
     @Path("tvId") tvId: Int
-  ): Call<CreditsResponse>
+  ): Call<MovieTvCreditsResponse>
 
   @GET("3/movie/{movieId}?api_key=$API_KEY&language=en-US&append_to_response=release_dates")
   fun getDetailMovie(
@@ -176,10 +176,10 @@ interface TMDBApiService {
     @Path("personId") personId: Int
   ): Call<DetailPersonResponse>
 
-  @GET("3/person/{personId}/movie_credits?api_key=$API_KEY&language=en-US")
-  fun getKnownForPerson(
+  @GET("3/person/{personId}/combined_credits?api_key=$API_KEY&language=en-US")
+  fun getKnownForPersonCombinedMovieTv(
     @Path("personId") personId: Int
-  ): Call<CreditsPersonResponse>
+  ): Call<CombinedCreditResponse>
 
   @GET("3/person/{personId}/images?api_key=$API_KEY&language=en-US")
   fun getImagePerson(

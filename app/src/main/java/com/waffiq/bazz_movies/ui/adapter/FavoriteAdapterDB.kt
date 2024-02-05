@@ -48,7 +48,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       Glide.with(binding.ivPicture)
         .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop )
-        .placeholder(R.mipmap.ic_launcher)
+        .placeholder(R.drawable.ic_bazz_placeholder_search)
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
 

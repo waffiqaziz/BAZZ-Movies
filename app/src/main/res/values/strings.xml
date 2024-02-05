@@ -86,6 +86,8 @@
   <string name="added_watchlist">%s has been added to watchlist</string>
   <string name="deleted_from_favorite">Item has been deleted from favorite</string>
   <string name="deleted_from_watchlist">Item has been deleted from watchlist</string>
+  <string name="added_to_watchlist">Item has been added to watchlist</string>
+  <string name="added_to_favorite">Item has been added to favorite</string>
 
   <string name="no_data">No Data</string>
   <string name="on_tv">On Tv</string>

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class CreditsResponse(
+data class MovieTvCreditsResponse(
 
 	@field:SerializedName("cast")
 	val cast: List<CastItem>,
