@@ -887,17 +887,18 @@ class MoviesRepository(
   }
 
   fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
-    if (isDelete) { // update set is_favorite = false
+    // update set is_favorite = false, (for movie that want to delete, but already on watchlist)
+    if (isDelete) {
       _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
       _undoDB.value = Event(fav)
 
       fav.isFavorite = false
       appExecutors.diskIO().execute { localDataSource.update(fav) }
-    } else {  // update set is_favorite = true
+    } else {  // update set is_favorite = true, (for movie that already on watchlist)
       _undoDB.value = Event(fav)
 
       fav.isFavorite = true
-      _snackBarTextInt.value = Event(R.string.added_to_favorite)
+//      _snackBarTextInt.value = Event(R.string.added_to_favorite)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }
@@ -913,7 +914,7 @@ class MoviesRepository(
       _undoDB.value = Event(fav)
 
       fav.isWatchlist = true
-      _snackBarTextInt.value = Event(R.string.added_to_watchlist)
+//      _snackBarTextInt.value = Event(R.string.added_to_watchlist)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }

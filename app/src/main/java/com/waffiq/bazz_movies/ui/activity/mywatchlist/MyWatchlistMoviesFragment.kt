@@ -73,8 +73,14 @@ class MyWatchlistMoviesFragment : Fragment() {
 
     viewModel.getWatchlistMoviesDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
-      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+      if (it.isNotEmpty()) {
+        binding.rvWatchlistMovie.visibility = View.VISIBLE
+        binding.viewEmpty.visibility = View.GONE
+      } else {
+        binding.rvWatchlistMovie.visibility = View.GONE
+        binding.viewEmpty.visibility = View.VISIBLE
+      }
+      binding.progressBar.visibility = View.GONE
     }
   }
 

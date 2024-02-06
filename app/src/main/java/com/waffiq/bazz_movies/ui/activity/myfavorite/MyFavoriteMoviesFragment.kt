@@ -53,7 +53,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private var isWantToDelete = false
 
-  private val oldFav : FavoriteDB by lazy { FavoriteDB() }
+  private var state: UInt = 1u
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -81,12 +81,12 @@ class MyFavoriteMoviesFragment : Fragment() {
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
         initActionUserLogin()
-        setDataUserLogin(user.token)
+        setDataUserLoginProgessBarEmptyView(user.token)
       } else { //guest user then show data from database
         favViewModelMovie.getSnackBarTextInt()
           .observe(viewLifecycleOwner) { showSnackBarGuest(it) }
         initActionGuest()
-        setDataGuestUser()
+        setDataGuestUserProgressBarEmptyView()
       }
     }
   }
@@ -163,7 +163,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         } else { // swipe right, action add delete
           // showToastShort(requireContext(), "${fav.title}")
           isWantToDelete = true
-          checkIsWatchlist(true, fav)
+          checkIsWatchlistDB(true, fav)
         }
       }
 
@@ -252,19 +252,22 @@ class MyFavoriteMoviesFragment : Fragment() {
     itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
   }
 
-  private fun checkIsWatchlist(isWantToDelete: Boolean, fav: FavoriteDB) {
+  private fun checkIsWatchlistDB(isWantToDelete: Boolean, fav: FavoriteDB) {
     Log.e("KKKK123", fav.title.toString())
     // check if item is in watchlist or not
     favViewModelMovie.isWatchlistDB(fav.mediaId!!)
     favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
       if (it) { // if yes, then check action to delete from favorite or add to watchlist
-        if (isWantToDelete) favViewModelMovie.updateToRemoveFromFavoriteDB(fav) // delete from favorite
+        if (isWantToDelete) {
+          favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
+        } // delete from favorite
         else favViewModelMovie.updateToWatchlistDB(fav) // add to watchlist set is_favorited = false
       } else { // if no, delete from database
         favViewModelMovie.delFromFavoriteDB(fav)
       }
       Log.e("KKKKjjj", fav.title.toString())
     }
+    state = 1u
   }
 
   private fun initActionUserLogin() {
@@ -319,12 +322,21 @@ class MyFavoriteMoviesFragment : Fragment() {
       Snackbar.LENGTH_LONG
     ).setAction("Undo") {
       val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
-      if (isWantToDelete) { // undo action delete from favorite
-        fav.isFavorite = true
-        favViewModelMovie.insertToDB(fav)
-      } else { // undo action add to watchlist
-        fav.isWatchlist = false
-        favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
+      favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
+        if (it) { // movie is on watchlist
+          if (isWantToDelete)
+            favViewModelMovie.updateToFavoriteDB(fav)
+          else
+            favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
+        } else { // movie is not on watchlist
+          if (isWantToDelete) {
+            fav.isFavorite = true
+            favViewModelMovie.insertToDB(fav)
+          } else {
+            fav.isWatchlist = true
+            favViewModelMovie.insertToDB(fav)
+          }
+        }
       }
     }.setAnchorView(binding.guideSnackbar).show()
   }
@@ -341,7 +353,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       .show()
   }
 
-  private fun setDataUserLogin(userToken: String) {
+  private fun setDataUserLoginProgessBarEmptyView(userToken: String) {
     binding.rvFavMovies.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()
@@ -370,7 +382,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       }
   }
 
-  private fun setDataGuestUser() {
+  private fun setDataGuestUserProgressBarEmptyView() {
     binding.rvFavMovies.adapter = adapterDB
     binding.rvFavMovies.addItemDecoration(
       DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
@@ -378,8 +390,14 @@ class MyFavoriteMoviesFragment : Fragment() {
 
     favViewModelMovie.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
-      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+      if (it.isNotEmpty()) {
+        binding.rvFavMovies.visibility = View.VISIBLE
+        binding.viewEmpty.visibility = View.GONE
+      } else {
+        binding.rvFavMovies.visibility = View.GONE
+        binding.viewEmpty.visibility = View.VISIBLE
+      }
+      binding.progressBar.visibility = View.GONE
     }
   }
 
@@ -388,4 +406,3 @@ class MyFavoriteMoviesFragment : Fragment() {
     _binding = null
   }
 }
-

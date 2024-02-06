@@ -18,7 +18,6 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   private val listCast = ArrayList<FavoriteDB>()
 
-
   fun setFavorite(itemStory: List<FavoriteDB>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)

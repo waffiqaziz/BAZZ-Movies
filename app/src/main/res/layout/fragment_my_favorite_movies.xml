@@ -10,17 +10,19 @@
     android:id="@+id/rv_fav_movies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="50dp"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
-    tools:listitem="@layout/item_mulmed" />
+    android:paddingBottom="50dp"
+    android:visibility="invisible"
+    tools:listitem="@layout/item_mulmed"
+    tools:visibility="visible" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:indeterminateTint="@color/yellow"
-    android:visibility="invisible"
+    android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

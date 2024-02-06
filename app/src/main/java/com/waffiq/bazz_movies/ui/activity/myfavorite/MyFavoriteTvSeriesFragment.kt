@@ -104,8 +104,14 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
     viewModel.getFavoriteTvFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
-      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+      if (it.isNotEmpty()) {
+        binding.rvFavTv.visibility = View.VISIBLE
+        binding.viewEmpty.visibility = View.GONE
+      } else {
+        binding.rvFavTv.visibility = View.GONE
+        binding.viewEmpty.visibility = View.VISIBLE
+      }
+      binding.progressBar.visibility = View.GONE
     }
   }
 

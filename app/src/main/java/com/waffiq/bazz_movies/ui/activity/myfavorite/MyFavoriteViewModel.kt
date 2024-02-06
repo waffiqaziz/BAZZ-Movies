@@ -6,18 +6,24 @@ import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
   // from db
   val getFavoriteTvFromDB = movieRepository.getFavoriteTvFromDB()
   val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
-  fun isWatchlistDB(id: Int) = movieRepository.isWatchlistDB(id)
+  fun isWatchlistDB(id: Int) {
+    viewModelScope.launch {
+      movieRepository.isWatchlistDB(id)
+    }
+  }
   fun isWatchlistDB() = movieRepository.isWatchlist
   fun undoDeleteDB() = movieRepository.undoDB
 
   fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
   fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
+  fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
   fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)

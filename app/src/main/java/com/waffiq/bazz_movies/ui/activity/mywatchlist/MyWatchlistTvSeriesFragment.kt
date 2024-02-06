@@ -103,8 +103,14 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
     viewModel.getWatchlistTvSeriesDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
-      binding.viewEmpty.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
-//      binding.progressBar.visibility = if (it.isNotEmpty()) View.INVISIBLE else View.VISIBLE
+      if (it.isNotEmpty()) {
+        binding.rvWatchlistTv.visibility = View.VISIBLE
+        binding.viewEmpty.visibility = View.GONE
+      } else {
+        binding.rvWatchlistTv.visibility = View.GONE
+        binding.viewEmpty.visibility = View.VISIBLE
+      }
+      binding.progressBar.visibility = View.GONE
     }
   }
 
