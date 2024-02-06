@@ -82,9 +82,10 @@ class MyWatchlistTvSeriesFragment : Fragment() {
         && adapterPaging.itemCount < 1
       ) {
         /// show empty view
-        binding.viewEmpty.isVisible = true
+        binding.viewEmpty.visibility = View.VISIBLE
       } else {
         ///  hide empty view
+        binding.viewEmpty.visibility = View.GONE
       }
 
       binding.progressBar.isVisible =

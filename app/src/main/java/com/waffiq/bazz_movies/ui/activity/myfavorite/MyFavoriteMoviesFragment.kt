@@ -53,8 +53,6 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private var isWantToDelete = false
 
-  private var state: UInt = 1u
-
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
@@ -81,10 +79,12 @@ class MyFavoriteMoviesFragment : Fragment() {
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
         initActionUserLogin()
-        setDataUserLoginProgessBarEmptyView(user.token)
+        setDataUserLoginProgressBarEmptyView(user.token)
       } else { //guest user then show data from database
         favViewModelMovie.getSnackBarTextInt()
           .observe(viewLifecycleOwner) { showSnackBarGuest(it) }
+        favViewModelMovie.getSnackBarTextInt2()
+          .observe(viewLifecycleOwner) { showSnackBarNoAction(it) }
         initActionGuest()
         setDataGuestUserProgressBarEmptyView()
       }
@@ -157,11 +157,9 @@ class MyFavoriteMoviesFragment : Fragment() {
         val position = viewHolder.bindingAdapterPosition
         binding.rvFavMovies.adapter?.notifyItemChanged(position)
         if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
-          showToastShort(requireContext(), getString(R.string.feature_not_ready))
           isWantToDelete = false
-          // checkIsWatchlist(false, fav)
+          checkIsWatchlistDB(false, fav)
         } else { // swipe right, action add delete
-          // showToastShort(requireContext(), "${fav.title}")
           isWantToDelete = true
           checkIsWatchlistDB(true, fav)
         }
@@ -179,12 +177,12 @@ class MyFavoriteMoviesFragment : Fragment() {
         if (isCanceled) {
           clearCanvas(
             c,
-            itemView.right + dX / 2,
+            itemView.right + dX,
             itemView.top.toFloat(),
             itemView.right.toFloat(),
             itemView.bottom.toFloat()
           )
-          super.onChildDraw(c, recyclerView, viewHolder, dX / 2, dY, actionState, isCurrentlyActive)
+          super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
           return
         }
 
@@ -241,7 +239,7 @@ class MyFavoriteMoviesFragment : Fragment() {
           watchlistIcon.draw(c)
         }
 
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY / 3, actionState, isCurrentlyActive)
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
       }
 
       private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
@@ -253,21 +251,17 @@ class MyFavoriteMoviesFragment : Fragment() {
   }
 
   private fun checkIsWatchlistDB(isWantToDelete: Boolean, fav: FavoriteDB) {
-    Log.e("KKKK123", fav.title.toString())
     // check if item is in watchlist or not
     favViewModelMovie.isWatchlistDB(fav.mediaId!!)
     favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
       if (it) { // if yes, then check action to delete from favorite or add to watchlist
-        if (isWantToDelete) {
-          favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
-        } // delete from favorite
-        else favViewModelMovie.updateToWatchlistDB(fav) // add to watchlist set is_favorited = false
-      } else { // if no, delete from database
-        favViewModelMovie.delFromFavoriteDB(fav)
+        if (isWantToDelete) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
+        // else showToastShort(requireContext(), getString(R.string.already_watchlist))
+      } else { // if no, then check action to delete from favorite or add to watchlist
+        if (isWantToDelete) favViewModelMovie.delFromFavoriteDB(fav)
+        else favViewModelMovie.updateToWatchlistDB(fav)
       }
-      Log.e("KKKKjjj", fav.title.toString())
     }
-    state = 1u
   }
 
   private fun initActionUserLogin() {
@@ -353,7 +347,16 @@ class MyFavoriteMoviesFragment : Fragment() {
       .show()
   }
 
-  private fun setDataUserLoginProgessBarEmptyView(userToken: String) {
+  private fun showSnackBarNoAction(eventMessage: Event<Int>) {
+    val message = eventMessage.getContentIfNotHandled() ?: return
+    Snackbar.make(
+      binding.guideSnackbar,
+      getString(message),
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(binding.guideSnackbar).show()
+  }
+
+  private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     binding.rvFavMovies.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()

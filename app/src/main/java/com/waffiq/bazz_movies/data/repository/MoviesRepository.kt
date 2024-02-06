@@ -136,6 +136,9 @@ class MoviesRepository(
   private val _snackBarTextInt = MutableLiveData<Event<Int>>()
   val snackBarTextInt: LiveData<Event<Int>> get() = _snackBarTextInt
 
+  private val _snackBarTextInt2 = MutableLiveData<Event<Int>>()
+  val snackBarTextInt2: LiveData<Event<Int>> get() = _snackBarTextInt2
+
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
@@ -866,7 +869,7 @@ class MoviesRepository(
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
-    _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
+    _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
     _undoDB.value = Event(fav)
   }
 
@@ -889,7 +892,7 @@ class MoviesRepository(
   fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
     // update set is_favorite = false, (for movie that want to delete, but already on watchlist)
     if (isDelete) {
-      _snackBarTextInt.value = Event(R.string.deleted_from_favorite)
+      _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
       _undoDB.value = Event(fav)
 
       fav.isFavorite = false
@@ -898,14 +901,14 @@ class MoviesRepository(
       _undoDB.value = Event(fav)
 
       fav.isFavorite = true
-//      _snackBarTextInt.value = Event(R.string.added_to_favorite)
+      _snackBarTextInt2.value = Event(R.string.added_to_favorite2)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }
 
   fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
     if (isDelete) { // update set is_watchlist = false
-      _snackBarTextInt.value = Event(R.string.deleted_from_watchlist)
+      _snackBarTextInt.value = Event(R.string.deleted_from_watchlist2)
       _undoDB.value = Event(fav)
 
       fav.isWatchlist = false
@@ -914,7 +917,7 @@ class MoviesRepository(
       _undoDB.value = Event(fav)
 
       fav.isWatchlist = true
-//      _snackBarTextInt.value = Event(R.string.added_to_watchlist)
+      _snackBarTextInt2.value = Event(R.string.added_to_watchlist2)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }

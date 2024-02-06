@@ -407,7 +407,7 @@ class DetailMovieActivity : AppCompatActivity() {
               viewModel.delFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
             }
             watchlist = false
-            showToastShort(this@DetailMovieActivity, getString(R.string.deleted_from_watchlist))
+            showToastShort(this@DetailMovieActivity, getString(R.string.deleted_from_watchlist, dataExtra.title))
           }
           changeBtnWatchlistBG(watchlist)
         } else { // user login
@@ -541,7 +541,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastAddedFavorite() {
     showToastShort(
       this, this.getString(
-        R.string.added_favorite,
+        R.string.added_to_favorite,
         dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
       )
     )
@@ -550,18 +550,18 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastAddedWatchlist() {
     showToastShort(
       this, this.getString(
-        R.string.added_watchlist,
+        R.string.added_to_watchlist,
         dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title
       )
     )
   }
 
   private fun showToastRemoveFromFavorite() {
-    showToastShort(this, this.getString(R.string.deleted_from_favorite))
+    showToastShort(this, this.getString(R.string.deleted_from_favorite, dataExtra.title))
   }
 
   private fun showToastRemoveFromWatchlist() {
-    showToastShort(this, this.getString(R.string.deleted_from_watchlist))
+    showToastShort(this, this.getString(R.string.deleted_from_watchlist, dataExtra.title))
   }
 
   private fun showDialogRate() {
@@ -586,7 +586,7 @@ class DetailMovieActivity : AppCompatActivity() {
       binding.constraintLayout,
       message,
       Snackbar.LENGTH_SHORT
-    ).show()
+    ).setAnchorView(binding.guideSnackbar).show()
   }
 
 
@@ -597,6 +597,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun animFadeOut() {
     val animation = animFadeOutLong(this)
     binding.backgroundDimMovie.startAnimation(animation)
+    binding.progressBar.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).postDelayed({

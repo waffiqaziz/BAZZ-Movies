@@ -79,15 +79,19 @@
   <string name="not_available_full">Not Available</string>
   <string name="cant_provide_a_score">Sorry we can\'t provide a score or it hasn\'t been rated yet</string>
   <string name="metascore">Metascore</string>
-  <string name="imdb">IMDb</string>
+  <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
 
-  <string name="added_favorite">%s has been added to favorite</string>
-  <string name="added_watchlist">%s has been added to watchlist</string>
-  <string name="deleted_from_favorite">Item has been deleted from favorite</string>
-  <string name="deleted_from_watchlist">Item has been deleted from watchlist</string>
-  <string name="added_to_watchlist">Item has been added to watchlist</string>
-  <string name="added_to_favorite">Item has been added to favorite</string>
+  <string name="already_favorite">%s already on favorite</string>
+  <string name="already_watchlist">%s already watchlist</string>
+  <string name="added_to_favorite">%s has been added to favorite</string>
+  <string name="added_to_watchlist">%s has been added to watchlist</string>
+  <string name="added_to_favorite2">Item has been added to favorite</string>
+  <string name="added_to_watchlist2">Item has been added to watchlist</string>
+  <string name="deleted_from_favorite">%s has been deleted from favorite</string>
+  <string name="deleted_from_favorite2">Item has been deleted from favorite</string>
+  <string name="deleted_from_watchlist">%s has been deleted from watchlist</string>
+  <string name="deleted_from_watchlist2">Item has been deleted from watchlist</string>
 
   <string name="no_data">No Data</string>
   <string name="on_tv">On Tv</string>

@@ -31,7 +31,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
-
+  fun getSnackBarTextInt2() = movieRepository.snackBarTextInt2
 
   // from network
   fun getFavoriteMovies(sessionId: String) =
