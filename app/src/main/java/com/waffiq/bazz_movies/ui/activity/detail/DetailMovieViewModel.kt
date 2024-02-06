@@ -62,7 +62,7 @@ class DetailMovieViewModel(
 
   // favorite & watchlist TMDB
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
-    movieRepository.postFavorite(sessionId, data, userId)
+    movieRepository.postFavorite(false, sessionId, data, userId)
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
     movieRepository.postWatchlist(sessionId, data, userId)
   fun postResponse() = movieRepository.postResponse

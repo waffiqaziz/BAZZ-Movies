@@ -29,6 +29,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private var _binding: FragmentMyFavoriteTvSeriesBinding? = null
   private val binding get() = _binding!!
 
+  private val adapterPaging = FavoriteTvAdapter()
+  private val adapterDB = FavoriteAdapterDB()
+
   private lateinit var viewModel: MyFavoriteViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
 
@@ -68,8 +71,6 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   }
 
   private fun setDataUserLogin(userToken: String) {
-    val adapterPaging = FavoriteTvAdapter()
-
     binding.rvFavTv.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()
@@ -99,7 +100,6 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   }
 
   private fun setDataGuestUser() {
-    val adapterDB = FavoriteAdapterDB()
     binding.rvFavTv.adapter = adapterDB
 
     viewModel.getFavoriteTvFromDB.observe(viewLifecycleOwner) {
@@ -113,6 +113,11 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
       binding.progressBar.visibility = View.GONE
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    adapterPaging.refresh()
   }
 
   override fun onDestroyView() {

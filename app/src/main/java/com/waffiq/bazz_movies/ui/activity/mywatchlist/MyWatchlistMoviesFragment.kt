@@ -28,6 +28,9 @@ class MyWatchlistMoviesFragment : Fragment() {
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding!!
 
+  private val adapterPaging = FavoriteMovieAdapter()
+  private val adapterDB = FavoriteAdapterDB()
+
   private lateinit var viewModel: MyWatchlistViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
 
@@ -68,7 +71,6 @@ class MyWatchlistMoviesFragment : Fragment() {
   }
 
   private fun setDataGuestUser() {
-    val adapterDB = FavoriteAdapterDB()
     binding.rvWatchlistMovie.adapter = adapterDB
 
     viewModel.getWatchlistMoviesDB.observe(viewLifecycleOwner) {
@@ -85,8 +87,6 @@ class MyWatchlistMoviesFragment : Fragment() {
   }
 
   private fun setDataUserLogin(userToken: String) {
-    val adapterPaging = FavoriteMovieAdapter()
-
     binding.rvWatchlistMovie.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()
@@ -114,6 +114,11 @@ class MyWatchlistMoviesFragment : Fragment() {
       .observe(viewLifecycleOwner) {
         adapterPaging.submitData(lifecycle, it)
       }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    adapterPaging.refresh()
   }
 
   override fun onDestroyView() {

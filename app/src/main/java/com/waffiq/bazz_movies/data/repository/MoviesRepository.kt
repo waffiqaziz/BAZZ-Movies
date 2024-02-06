@@ -685,7 +685,7 @@ class MoviesRepository(
     })
   }
 
-  fun postFavorite(sessionId: String, data: Favorite, userId: Int) {
+  fun postFavorite(isNeedSnackbar: Boolean, sessionId: String, data: Favorite, userId: Int) {
     val client = TMDBApiConfig
       .getApiService()
       .postFavoriteTMDB(userId, sessionId, data)
@@ -699,6 +699,7 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
+            if (isNeedSnackbar) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
