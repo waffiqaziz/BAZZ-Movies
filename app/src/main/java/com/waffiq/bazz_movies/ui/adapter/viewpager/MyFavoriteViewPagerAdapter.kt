@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteMoviesFragment
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteTvSeriesFragment
+import com.waffiq.bazz_movies.utils.Constants.NUM_TABS
 
 class MyFavoriteViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
   FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -19,9 +20,5 @@ class MyFavoriteViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Li
       0 -> MyFavoriteMoviesFragment()
       else -> MyFavoriteTvSeriesFragment()
     }
-  }
-
-  companion object {
-    const val NUM_TABS = 2
   }
 }

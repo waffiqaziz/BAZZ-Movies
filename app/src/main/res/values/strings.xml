@@ -82,8 +82,10 @@
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
 
-  <string name="already_favorite">%s already on favorite</string>
-  <string name="already_watchlist">%s already watchlist</string>
+  <string name="already_favorite">%s already in favorite</string>
+  <string name="already_favorite2">Item already in favorite</string>
+  <string name="already_watchlist">%s already in watchlist</string>
+  <string name="already_watchlist2">Item already in watchlist</string>
   <string name="added_to_favorite">%s has been added to favorite</string>
   <string name="added_to_watchlist">%s has been added to watchlist</string>
   <string name="added_to_favorite2">Item has been added to favorite</string>

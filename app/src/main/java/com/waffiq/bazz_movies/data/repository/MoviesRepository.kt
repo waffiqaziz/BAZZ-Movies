@@ -145,9 +145,6 @@ class MoviesRepository(
   private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
   val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
 
-  private val _undo = MutableLiveData<Event<Favorite>>()
-  val undo: LiveData<Event<Favorite>> = _undo
-
 
   // paging
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
@@ -637,6 +634,10 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _stated.value = response.body()
+          if (response.body()?.favorite!!) _snackBarTextInt2.value =
+            Event(R.string.already_favorite2)
+          if (response.body()?.watchlist!!) _snackBarTextInt2.value =
+            Event(R.string.already_watchlist2)
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -887,6 +888,11 @@ class MoviesRepository(
   fun isWatchlistDB(id: Int) {
     appExecutors.diskIO().execute {
       _isWatchlist.postValue(localDataSource.isWatchlist(id))
+
+      // if result true then set value snackbar already watchlist
+      if (localDataSource.isWatchlist(id)) _snackBarTextInt2.postValue(
+        Event(R.string.already_watchlist2)
+      )
     }
   }
 

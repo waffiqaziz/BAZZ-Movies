@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
@@ -46,7 +47,10 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
       data = fav
 
       Glide.with(binding.ivPicture)
-        .load(TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop )
+        .load(
+          if (fav.backDrop?.isNotEmpty() == true) TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
+          else TMDB_IMG_LINK_POSTER_W185 + fav.poster
+        )
         .placeholder(R.drawable.ic_bazz_placeholder_search)
         .error(R.drawable.ic_broken_image)
         .into(binding.ivPicture)
