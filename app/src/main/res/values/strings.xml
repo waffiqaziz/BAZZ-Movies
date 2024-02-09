@@ -9,6 +9,7 @@
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>
+  <string name="no_connection">No internet connection</string>
 
   <string name="login_as_guest_successful">Login as Guest Successful</string>
   <string name="login_successful">Login Successful</string>

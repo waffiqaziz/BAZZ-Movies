@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Helper
 
 class TvSeriesFragment : Fragment() {
 
@@ -29,6 +33,7 @@ class TvSeriesFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
+    showSnackBarNoAction(Helper.checkInternet(requireContext()))
     setData()
 
     return root
@@ -78,6 +83,32 @@ class TvSeriesFragment : Fragment() {
     viewModel.getTopRatedTv().observe(viewLifecycleOwner) {
       topRatedAdapter.submitData(lifecycle,it)
     }
+
+    binding.swipeRefresh.setOnRefreshListener {
+      popularAdapter.refresh()
+      topRatedAdapter.refresh()
+      popularAdapter.refresh()
+      upComingAdapter.refresh()
+      showSnackBarNoAction(Helper.checkInternet(requireContext()))
+      binding.swipeRefresh.isRefreshing = false
+    }
+  }
+
+  private fun showSnackBarNoAction(message: String) {
+    val snackBar = Snackbar.make(
+      activity?.findViewById(android.R.id.content)!!,
+      message,
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(binding.guideSnackbar)
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(
+      ContextCompat.getColor(
+        requireContext(),
+        R.color.red_matte
+      )
+    )
+    if (message.isNotEmpty()) snackBar.show()
   }
 
   override fun onDestroyView() {

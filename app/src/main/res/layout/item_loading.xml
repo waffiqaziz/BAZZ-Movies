@@ -7,9 +7,11 @@
   android:padding="8dp">
 
   <TextView
+    android:fontFamily="@font/gothic"
     android:id="@+id/error_msg"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textSize="11sp"
     android:layout_gravity="center"
     android:textAlignment="center"
     android:textColor="@color/white"
@@ -20,12 +22,17 @@
     style="?android:attr/progressBarStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:indeterminate="true"
+    android:indeterminateTint="?attr/colorPrimaryVariant"
+    android:indeterminateTintMode="src_atop" />
 
   <Button
     android:id="@+id/retry_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:textColor="?attr/colorPrimary"
+    android:backgroundTint="?attr/colorPrimaryVariant"
     android:text="@string/retry" />
 </LinearLayout>

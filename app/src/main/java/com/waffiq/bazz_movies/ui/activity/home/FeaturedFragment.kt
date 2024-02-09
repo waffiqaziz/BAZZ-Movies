@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
@@ -27,6 +29,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.checkInternet
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import java.util.Locale
@@ -56,8 +59,10 @@ class FeaturedFragment : Fragment() {
     val factory2 = ViewModelUserFactory.getInstance(pref)
     moreViewModelUser = ViewModelProvider(this, factory2)[MoreViewModelUser::class.java]
 
+    showSnackBarNoAction(checkInternet(requireContext()))
     setRegion()
     setMoveNowPlaying()
+
     return root
   }
 
@@ -156,6 +161,31 @@ class FeaturedFragment : Fragment() {
         )
       }
     }
+
+    binding.swipeRefresh.setOnRefreshListener {
+      adapterTrending.refresh()
+      adapterPlayingNow.refresh()
+      adapterUpcoming.refresh()
+      showSnackBarNoAction(checkInternet(requireContext()))
+      binding.swipeRefresh.isRefreshing = false
+    }
+  }
+
+  private fun showSnackBarNoAction(message: String) {
+    val snackBar = Snackbar.make(
+      activity?.findViewById(android.R.id.content)!!,
+      message,
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(binding.guideSnackbar)
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(
+      ContextCompat.getColor(
+        requireContext(),
+        R.color.red_matte
+      )
+    )
+    if (message.isNotEmpty()) snackBar.show()
   }
 
   private fun animFadeOut() {

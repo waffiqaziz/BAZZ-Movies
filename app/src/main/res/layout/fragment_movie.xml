@@ -1,93 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:background="@color/grey_700"
   tools:context=".ui.activity.home.MovieFragment">
 
-  <LinearLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipe_refresh"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
+
+            <TextView
+              android:id="@+id/tv_popular"
+              style="@style/TextHeader2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:text="@string/popular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/rv_popular"
+              android:layout_width="match_parent"
+              android:layout_height="150dp"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="8dp"
+              tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              tools:listitem="@layout/item_trending"
+              tools:orientation="horizontal" />
+
+            <TextView
+              android:id="@+id/tv_airing_today"
+              style="@style/TextHeader2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:text="@string/now_playing" />
+
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/rv_now_playing"
+              android:layout_width="match_parent"
+              android:layout_height="150dp"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="8dp"
+              tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              tools:listitem="@layout/item_trending"
+              tools:orientation="horizontal" />
+
+            <TextView
+              android:id="@+id/tv_on_tv"
+              style="@style/TextHeader2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:text="@string/upcoming" />
+
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/rv_upcoming"
+              android:layout_width="match_parent"
+              android:layout_height="150dp"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="8dp"
+              tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              tools:listitem="@layout/item_trending"
+              tools:orientation="horizontal" />
+
+            <TextView
+              android:id="@+id/tv_top_rated"
+              style="@style/TextHeader2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="20dp"
+              android:text="@string/top_rated" />
+
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/rv_top_rated"
+              android:layout_width="match_parent"
+              android:layout_height="150dp"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="8dp"
+              tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              tools:listitem="@layout/item_trending"
+              tools:orientation="horizontal" />
+
+          </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+      </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guide_snackbar"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="80dp">
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintGuide_percent="0.91358024"
+    app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-      android:id="@+id/tv_popular"
-      style="@style/TextHeader2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="20dp"
-      android:text="@string/popular" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_popular"
-      android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="8dp"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_trending"
-      tools:orientation="horizontal" />
 
-    <TextView
-      android:id="@+id/tv_airing_today"
-      style="@style/TextHeader2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="20dp"
-      android:text="@string/now_playing" />
 
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_now_playing"
-      android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="8dp"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_trending"
-      tools:orientation="horizontal" />
-
-    <TextView
-      android:id="@+id/tv_on_tv"
-      style="@style/TextHeader2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="20dp"
-      android:text="@string/upcoming" />
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_upcoming"
-      android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="8dp"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_trending"
-      tools:orientation="horizontal" />
-
-    <TextView
-      android:id="@+id/tv_top_rated"
-      style="@style/TextHeader2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="20dp"
-      android:text="@string/top_rated" />
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_top_rated"
-      android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="8dp"
-      tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_trending"
-      tools:orientation="horizontal" />
-
-  </LinearLayout>
-
-</ScrollView>

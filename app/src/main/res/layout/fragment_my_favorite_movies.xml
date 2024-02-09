@@ -50,7 +50,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintGuide_end="70dp"
+    app:layout_constraintGuide_percent="0.91358024"
     app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
