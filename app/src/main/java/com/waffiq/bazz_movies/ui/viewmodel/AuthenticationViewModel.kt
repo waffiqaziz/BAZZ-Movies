@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.repository.UserRepository
@@ -9,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-  fun getUser() = userRepository.getUser().asLiveData()
+  fun getUser() = userRepository.getUser().asLiveData().distinctUntilChanged()
 
   fun getSnackBarText() = userRepository.snackBarText
 

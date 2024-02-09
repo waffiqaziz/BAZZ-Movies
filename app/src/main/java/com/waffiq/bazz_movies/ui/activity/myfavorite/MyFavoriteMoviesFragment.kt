@@ -36,8 +36,6 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.Helper
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -82,13 +80,33 @@ class MyFavoriteMoviesFragment : Fragment() {
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
+
+        /**
+         * three snack-bar on login user purpose to handle different result,
+         * getSnackBarTextInt(), handle undo action
+         * getSnackBarTextInt2(),  handle return from success adding watchlist
+         */
+
+        favViewModelMovie.getSnackBarTextInt2()
+          .observe(viewLifecycleOwner) { showSnackBarNoAction(it) }
+        favViewModelMovie.getSnackBarTextInt3().observe(viewLifecycleOwner) {
+          showSnackBarNoAction(it)
+        }
         initActionUserLogin()
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { //guest user then show data from database
+
+        /**
+         * three snack-bar on guest user purpose to handle different result,
+         * - getSnackBarTextInt() for undo action, which need return data
+         * - getSnackBarTextInt2() for success adding watchlist which has conflict with isWatchlist() function. so need to be separated
+         * - getSnackBarTextInt3() for check is in watchlist/not
+         */
         favViewModelMovie.getSnackBarTextInt()
-          .observe(viewLifecycleOwner) { showSnackBarGuest(it) }
+          .observe(viewLifecycleOwner) { showSnackBarUndoGuest(it) }
         favViewModelMovie.getSnackBarTextInt2()
           .observe(viewLifecycleOwner) { showSnackBarNoAction(it) }
+
         initActionGuest()
         setDataGuestUserProgressBarEmptyView()
       }
@@ -263,7 +281,8 @@ class MyFavoriteMoviesFragment : Fragment() {
         else favViewModelMovie.delFromFavoriteDB(fav)
       } else { // add to watchlist action
         if (it) {
-          mSnackbar?.dismiss()
+          favViewModelMovie.getSnackBarTextInt3()
+            .observe(viewLifecycleOwner) { event -> showSnackBarNoAction(event) }
         } else favViewModelMovie.updateToWatchlistDB(fav)
       }
     }
@@ -403,7 +422,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       favorite = false
     )
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      favViewModelMovie.postFavoriteSnackBar(user, favoriteMode)
+      favViewModelMovie.postFavoriteToDelete(user, favoriteMode)
 
       favViewModelMovie.getSnackBarTextInt()
         .observe(viewLifecycleOwner) { showSnackBarFavUserLogin(user, favoriteMode, it) }
@@ -419,22 +438,19 @@ class MyFavoriteMoviesFragment : Fragment() {
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       favViewModelMovie.getStated(user.token, movieId)
-      favViewModelMovie.getStated().observe(viewLifecycleOwner) {
-        if (it.watchlist != true) {
-          Helper.showToastShort(requireContext(), getString(R.string.added_to_watchlist2))
-          favViewModelMovie.postWatchlist(user, watchlistMode)
-        } else Helper.showToastShort(requireContext(), getString(R.string.already_watchlist2))
+      favViewModelMovie.getStated().observe(viewLifecycleOwner) { state ->
+        if (!state.watchlist!!)  favViewModelMovie.postWatchlist(user, watchlistMode)
       }
     }
   }
 
-  private fun showSnackBarGuest(eventMessage: Event<Int>) {
+  private fun showSnackBarUndoGuest(eventMessage: Event<Int>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
     mSnackbar = Snackbar.make(
       binding.root,
       getString(message),
       Snackbar.LENGTH_LONG
-    ).setAction("Undo") {
+    ).setAction(getString(R.string.undo)) {
       val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
       favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
         if (it) { // movie is on watchlist
@@ -462,7 +478,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       binding.root,
       getString(message),
       Snackbar.LENGTH_LONG
-    ).setAction("Undo") {
+    ).setAction(getString(R.string.undo)) {
       fav.favorite = true
       favViewModelMovie.postFavorite(user, fav)
       adapterPaging.notifyItemInserted(positionIn)

@@ -64,7 +64,7 @@ class DetailMovieViewModel(
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
     movieRepository.postFavorite(false, sessionId, data, userId)
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
-    movieRepository.postWatchlist(sessionId, data, userId)
+    movieRepository.postWatchlist(false, sessionId, data, userId)
   fun postResponse() = movieRepository.postResponse
 
   fun getSnackBarText() = movieRepository.snackBarText

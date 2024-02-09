@@ -82,6 +82,8 @@
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
 
+
+  <string name="undo">Undo</string>
   <string name="already_favorite">%s already in favorite</string>
   <string name="already_favorite2">Item already in favorite</string>
   <string name="already_watchlist">%s already in watchlist</string>

@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -103,7 +104,7 @@ class MoviesRepository(
   val productionCountry: LiveData<String> get() = _productionCountry
 
   private val _stated = MutableLiveData<StatedResponse>()
-  val stated: LiveData<StatedResponse> get() = _stated
+  val stated: LiveData<StatedResponse> get() = _stated.distinctUntilChanged()
 
 
   // for DB all
@@ -138,6 +139,9 @@ class MoviesRepository(
 
   private val _snackBarTextInt2 = MutableLiveData<Event<Int>>()
   val snackBarTextInt2: LiveData<Event<Int>> get() = _snackBarTextInt2
+
+  private val _snackBarTextInt3 = MutableLiveData<Event<Int>>()
+  val snackBarTextInt3: LiveData<Event<Int>> get() = _snackBarTextInt3
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
@@ -634,9 +638,9 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _stated.value = response.body()
-          if (response.body()?.favorite!!) _snackBarTextInt2.value =
+          if (response.body()?.favorite!!) _snackBarTextInt3.value =
             Event(R.string.already_favorite2)
-          if (response.body()?.watchlist!!) _snackBarTextInt2.value =
+          if (response.body()?.watchlist!!) _snackBarTextInt3.value =
             Event(R.string.already_watchlist2)
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -686,7 +690,9 @@ class MoviesRepository(
     })
   }
 
-  fun postFavorite(isNeedSnackbar: Boolean, sessionId: String, data: Favorite, userId: Int) {
+
+  // post favorite and watchlist
+  fun postFavorite(isDelete: Boolean, sessionId: String, data: Favorite, userId: Int) {
     val client = TMDBApiConfig
       .getApiService()
       .postFavoriteTMDB(userId, sessionId, data)
@@ -700,7 +706,8 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
-            if (isNeedSnackbar) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
+            if (isDelete) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
+            else _snackBarTextInt2.value = Event(R.string.added_to_favorite2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -720,7 +727,7 @@ class MoviesRepository(
     })
   }
 
-  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) {
+  fun postWatchlist(isDelete: Boolean, sessionId: String, data: Watchlist, userId: Int) {
     val client = TMDBApiConfig
       .getApiService()
       .postWatchlistTMDB(userId, sessionId, data)
@@ -734,6 +741,8 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
+            if (isDelete) _snackBarTextInt.value = Event(R.string.deleted_from_watchlist2)
+            else _snackBarTextInt2.value = Event(R.string.added_to_watchlist2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -890,7 +899,7 @@ class MoviesRepository(
       _isWatchlist.postValue(localDataSource.isWatchlist(id))
 
       // if result true then set value snackbar already watchlist
-      if (localDataSource.isWatchlist(id)) _snackBarTextInt2.postValue(
+      if (localDataSource.isWatchlist(id)) _snackBarTextInt3.postValue(
         Event(R.string.already_watchlist2)
       )
     }

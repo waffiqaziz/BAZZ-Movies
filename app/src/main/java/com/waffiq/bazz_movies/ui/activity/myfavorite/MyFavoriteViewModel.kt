@@ -7,8 +7,6 @@ import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
-import com.waffiq.bazz_movies.utils.Event
-import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
@@ -33,6 +31,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
 
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
   fun getSnackBarTextInt2() = movieRepository.snackBarTextInt2
+  fun getSnackBarTextInt3() = movieRepository.snackBarTextInt3
 
   /**
    * Function for network
@@ -43,14 +42,14 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun getFavoriteTvSeries(sessionId: String) =
     movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
 
-  fun postFavoriteSnackBar(user: UserModel, data: Favorite) =
+  fun postFavoriteToDelete(user: UserModel, data: Favorite) =
     movieRepository.postFavorite(true, user.token, data, user.userId)
 
   fun postFavorite(user: UserModel, data: Favorite) =
     movieRepository.postFavorite(false, user.token, data, user.userId)
 
   fun postWatchlist(user: UserModel, data: Watchlist) =
-    movieRepository.postWatchlist(user.token, data, user.userId)
+    movieRepository.postWatchlist(false, user.token, data, user.userId)
 
   fun getStated(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
   fun getStated() = movieRepository.stated
