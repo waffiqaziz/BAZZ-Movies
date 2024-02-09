@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
@@ -56,6 +57,7 @@ import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -104,10 +106,21 @@ class DetailMovieActivity : AppCompatActivity() {
         @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_MOVIE)!!
       }
     } else finish()
+
+    binding.swipeRefresh.setOnRefreshListener {
+      val i = Intent(this, DetailMovieActivity::class.java)
+      i.putExtra(EXTRA_MOVIE, dataExtra)
+      overridePendingTransition(0, 0)
+      binding.swipeRefresh.isRefreshing = false
+      startActivity(i)
+      overridePendingTransition(0, 0)
+      finish()
+    }
   }
 
   private fun showDetailData() {
     viewModel.getLoading().observe(this) { showLoading(it) }
+    viewModel.getSnackBarText().observe(this) { showSnackBarWarning(it) }
 
     // shows backdrop
     Glide.with(binding.ivPicture).load(
@@ -224,7 +237,6 @@ class DetailMovieActivity : AppCompatActivity() {
 
 
     } else if (dataExtra.mediaType == "tv") {
-      viewModel.getSnackBarText().observe(this) { showSnackBar(it) }
 
       // show directors
       viewModel.getAllCreditTv(dataExtra.id!!)
@@ -407,7 +419,10 @@ class DetailMovieActivity : AppCompatActivity() {
               viewModel.delFromFavoriteDB(favFalseWatchlistFalse(dataExtra))
             }
             watchlist = false
-            showToastShort(this@DetailMovieActivity, getString(R.string.deleted_from_watchlist, dataExtra.title))
+            showToastShort(
+              this@DetailMovieActivity,
+              getString(R.string.deleted_from_watchlist, dataExtra.title)
+            )
           }
           changeBtnWatchlistBG(watchlist)
         } else { // user login
@@ -580,13 +595,22 @@ class DetailMovieActivity : AppCompatActivity() {
     dialog.show()
   }
 
-  private fun showSnackBar(eventMessage: Event<String>) {
+  private fun showSnackBarWarning(eventMessage: Event<String>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
-    Snackbar.make(
+    val snackBar = Snackbar.make(
       binding.constraintLayout,
       message,
       Snackbar.LENGTH_SHORT
-    ).setAnchorView(binding.guideSnackbar).show()
+    )
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(
+      ContextCompat.getColor(
+        this,
+        R.color.red_matte
+      )
+    )
+    snackBar.show()
   }
 
 
