@@ -10,7 +10,7 @@ data class StatedResponse(
   val favorite: Boolean? = null,
 
   @field:SerializedName("rated")
-  val rated: Boolean? = null,
+  val rated: Any? = null,
 
   @field:SerializedName("watchlist")
   val watchlist: Boolean? = null,

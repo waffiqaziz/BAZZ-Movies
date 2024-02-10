@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -92,6 +93,16 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun checkUser() {
     authenticationViewModel.getUser().observe(this) {
       isLogin = it.token != "NaN"
+
+      // hide user score if login as guest
+      if (isLogin) { // show all score if login
+        binding.yourScoreViewGroup.isGone = false
+        binding.spaceRight.isGone = false
+      } else { // hide if guest
+        binding.yourScoreViewGroup.isGone = true
+        binding.spaceRight.isGone = true
+      }
+
       isFavorite(isLogin)
       isWatchlist(isLogin)
     }
@@ -304,51 +315,6 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {
-    val (job, crewName) = pair
-
-    // Create a TableLayout
-    val tableLayout = TableLayout(this)
-    tableLayout.layoutParams = TableLayout.LayoutParams(
-      TableLayout.LayoutParams.MATCH_PARENT,
-      TableLayout.LayoutParams.WRAP_CONTENT
-    )
-
-    // Create rows
-    for (i in 0..<job.size) {
-      val tableRow = TableRow(this)
-      tableRow.layoutParams = TableRow.LayoutParams(
-        TableRow.LayoutParams.MATCH_PARENT,
-        TableRow.LayoutParams.WRAP_CONTENT
-      )
-
-      val cell1 = createTableCell(job[i])
-      val cell2 = createTableCell(": " + crewName[i])
-
-      tableRow.addView(cell1)
-      tableRow.addView(cell2)
-
-      tableLayout.addView(tableRow)
-    }
-
-    binding.table.addView(tableLayout)
-  }
-
-  private fun createTableCell(text: String): TextView {
-    val textView = TextView(this)
-    textView.text = text
-    textView.layoutParams = TableRow.LayoutParams(
-      TableRow.LayoutParams.WRAP_CONTENT,
-      TableRow.LayoutParams.WRAP_CONTENT
-    )
-    textView.typeface = ResourcesCompat.getFont(this, R.font.gothic)
-    textView.gravity = Gravity.START
-    textView.textSize = 14F
-    textView.setPadding(0, 7, 24, 7)
-    textView.setTextColor(ActivityCompat.getColor(this, R.color.grey_100))
-    return textView
-  }
-
   private fun btnTrailer(link: String) {
     binding.ibPlay.setOnClickListener {
       Log.d("KKKKK", link)
@@ -437,13 +403,11 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      tvScoreYourScore.setOnClickListener { showDialogRate() }
-      tvYourScore.setOnClickListener { showDialogRate() }
-      tvScoreYourScore.text = getString(R.string.not_available)
+      yourScoreViewGroup.setOnClickListener { showDialogRate() }
 
-      tvScoreImdb.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
-      tvScoreTmdb.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
-      tvScoreMetascore.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      imdbViewGroup.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      tmdbViewGroup.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      metascoreViewGroup.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNotRated() }
 
     }
   }
@@ -500,6 +464,8 @@ class DetailMovieActivity : AppCompatActivity() {
         getStated(user.token)
         viewModel.stated().observe(this) {
           favorite = it.favorite!!
+          binding.tvScoreYourScore.text = if (it.rated == false) getString(R.string.not_available)
+          else it.rated.toString().replace("{value=", "").replace("}", "")
           changeBtnFavoriteBG(favorite)
         }
       }
@@ -518,6 +484,8 @@ class DetailMovieActivity : AppCompatActivity() {
         getStated(user.token)
         viewModel.stated().observe(this) {
           watchlist = it.watchlist!!
+          binding.tvScoreYourScore.text = if (it.rated == false) getString(R.string.not_available)
+          else it.rated.toString().replace("{value=", "").replace("}", "")
           changeBtnWatchlistBG(watchlist)
         }
       }
@@ -632,10 +600,57 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimMovie.visibility = View.VISIBLE // blur background when loading
+      binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
     } else animFadeOut()
   }
+
+  // credits table
+  private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {
+    val (job, crewName) = pair
+
+    // Create a TableLayout
+    val tableLayout = TableLayout(this)
+    tableLayout.layoutParams = TableLayout.LayoutParams(
+      TableLayout.LayoutParams.MATCH_PARENT,
+      TableLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    // Create rows
+    for (i in 0..<job.size) {
+      val tableRow = TableRow(this)
+      tableRow.layoutParams = TableRow.LayoutParams(
+        TableRow.LayoutParams.MATCH_PARENT,
+        TableRow.LayoutParams.WRAP_CONTENT
+      )
+
+      val cell1 = createTableCell(job[i])
+      val cell2 = createTableCell(": " + crewName[i])
+
+      tableRow.addView(cell1)
+      tableRow.addView(cell2)
+
+      tableLayout.addView(tableRow)
+    }
+
+    binding.table.addView(tableLayout)
+  }
+
+  private fun createTableCell(text: String): TextView {
+    val textView = TextView(this)
+    textView.text = text
+    textView.layoutParams = TableRow.LayoutParams(
+      TableRow.LayoutParams.WRAP_CONTENT,
+      TableRow.LayoutParams.WRAP_CONTENT
+    )
+    textView.typeface = ResourcesCompat.getFont(this, R.font.gothic)
+    textView.gravity = Gravity.START
+    textView.textSize = 14F
+    textView.setPadding(0, 7, 24, 7)
+    textView.setTextColor(ActivityCompat.getColor(this, R.color.grey_100))
+    return textView
+  }
+
 
   companion object {
     const val EXTRA_MOVIE = "MOVIE"

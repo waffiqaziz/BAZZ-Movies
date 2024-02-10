@@ -7,217 +7,228 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.person.PersonActivity">
 
-  <ScrollView
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingBottom="40dp"
+      android:layout_height="match_parent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
-      <ImageView
-        android:id="@+id/iv_picture"
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/poster"
-        android:foreground="@drawable/bg_gradient_shape"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-      <ImageView
-        android:id="@+id/btn_back_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:alpha="0.3"
-        android:background="@drawable/bg_back_button"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-      <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:background="#00000000"
-        android:contentDescription="@string/back"
-        android:foreground="?selectableItemBackgroundBorderless"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_left_icon" />
-
-      <TextView
-        android:id="@+id/tv_Name"
-        style="@style/TextHeader1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="-100dp"
-        android:layout_marginEnd="20dp"
+        android:paddingBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_picture"
-        tools:text="Leonardo DiCaprio" />
+        app:layout_constraintTop_toTopOf="parent">
 
-      <TextView
-        android:id="@+id/tv_known_for"
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/known_for"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
+        <ImageView
+          android:id="@+id/iv_picture"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          android:contentDescription="@string/poster"
+          android:foreground="@drawable/bg_gradient_shape"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:src="@tools:sample/avatars" />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_known_for"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="@string/playing_as"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_cast"
-        tools:orientation="horizontal" />
+        <ImageView
+          android:id="@+id/btn_back_bg"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
+          android:layout_marginTop="4dp"
+          android:alpha="0.3"
+          android:background="@drawable/bg_back_button"
+          android:contentDescription="@string/back"
+          android:minWidth="48dp"
+          android:minHeight="48dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
 
-      <TextView
-        android:id="@+id/tv_biography_header"
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/biography"
-        app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
+        <ImageButton
+          android:id="@+id/btn_back"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
+          android:layout_marginTop="4dp"
+          android:background="#00000000"
+          android:contentDescription="@string/back"
+          android:foreground="?selectableItemBackgroundBorderless"
+          android:minWidth="48dp"
+          android:minHeight="48dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_left_icon" />
 
-      <io.github.glailton.expandabletextview.ExpandableTextView
-        android:id="@+id/tv_biography"
-        style="@style/TextBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:justificationMode="inter_word"
-        app:collapsedLines="3"
-        app:ellipsizeTextColor="@color/yellow"
-        app:expandType="layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
-        app:readLessText="@string/less_more"
-        app:readMoreText="@string/read_more"
-        app:textMode="line"
-        tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
+        <TextView
+          android:id="@+id/tv_Name"
+          style="@style/TextHeader1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="-100dp"
+          android:layout_marginEnd="20dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/iv_picture"
+          tools:text="Leonardo DiCaprio" />
 
-      <TextView
-        android:id="@+id/tv_born_header"
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/born"
-        app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/tv_biography" />
+        <TextView
+          android:id="@+id/tv_known_for"
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="16dp"
+          android:text="@string/known_for"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
 
-      <TextView
-        android:id="@+id/tv_born"
-        style="@style/TextBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:justificationMode="inter_word"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_born_header"
-        tools:text="November 11, 1974 (64 years old) \nHollywood, Los Angeles, California, USA" />
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_known_for"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:contentDescription="@string/playing_as"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
+          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_cast"
+          tools:orientation="horizontal" />
 
-      <TextView
-        android:id="@+id/tv_dead_header"
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/day_of_death"
-        app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/tv_born" />
+        <TextView
+          android:id="@+id/tv_biography_header"
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/biography"
+          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
+          app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
 
-      <TextView
-        android:id="@+id/tv_death"
-        style="@style/TextBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:justificationMode="inter_word"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dead_header"
-        tools:text="2008-01-22 (28 years old)"/>
+        <io.github.glailton.expandabletextview.ExpandableTextView
+          android:id="@+id/tv_biography"
+          style="@style/TextBody"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:justificationMode="inter_word"
+          app:collapsedLines="3"
+          app:ellipsizeTextColor="@color/yellow"
+          app:expandType="layout"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
+          app:readLessText="@string/less_more"
+          app:readMoreText="@string/read_more"
+          app:textMode="line"
+          tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
 
-      <TextView
-        android:id="@+id/tv_photos_header"
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/photos"
-        app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-        app:layout_constraintTop_toBottomOf="@+id/tv_death" />
+        <TextView
+          android:id="@+id/tv_born_header"
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/born"
+          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
+          app:layout_constraintTop_toBottomOf="@+id/tv_biography" />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_photos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="@string/playing_as"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_photos_header"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_trending"
-        tools:orientation="horizontal" />
+        <TextView
+          android:id="@+id/tv_born"
+          style="@style/TextBody"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:justificationMode="inter_word"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_born_header"
+          tools:text="November 11, 1974 (64 years old) \nHollywood, Los Angeles, California, USA" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+          android:id="@+id/tv_dead_header"
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/day_of_death"
+          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
+          app:layout_constraintTop_toBottomOf="@+id/tv_born" />
 
-  </ScrollView>
+        <TextView
+          android:id="@+id/tv_death"
+          style="@style/TextBody"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:justificationMode="inter_word"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_dead_header"
+          tools:text="2008-01-22 (28 years old)" />
+
+        <TextView
+          android:id="@+id/tv_photos_header"
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/photos"
+          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
+          app:layout_constraintTop_toBottomOf="@+id/tv_death" />
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_photos"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:contentDescription="@string/playing_as"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/tv_photos_header"
+          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_trending"
+          tools:orientation="horizontal" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <View
-    android:layout_width="match_parent"
     android:id="@+id/background_dim_person"
-    android:layout_height="match_parent"
-    android:background="#42000000"
-    android:visibility="gone"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/grey_800"
+    android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="gone"/>
 
   <ProgressBar
     android:id="@+id/progress_bar"

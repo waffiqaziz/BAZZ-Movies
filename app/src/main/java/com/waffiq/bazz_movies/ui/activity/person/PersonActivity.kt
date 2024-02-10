@@ -1,15 +1,20 @@
 package com.waffiq.bazz_movies.ui.activity.person
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
@@ -18,6 +23,7 @@ import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
@@ -52,10 +58,21 @@ class PersonActivity : AppCompatActivity() {
         intent.getParcelableExtra(EXTRA_PERSON)!!
       }
     } else finish()
+
+    binding.swipeRefresh.setOnRefreshListener {
+      val i = Intent(this, PersonActivity::class.java)
+      i.putExtra(EXTRA_PERSON, dataExtra)
+      overridePendingTransition(0, 0)
+      binding.swipeRefresh.isRefreshing = false
+      startActivity(i)
+      overridePendingTransition(0, 0)
+      finish()
+    }
   }
 
   private fun showData() {
     personMovieViewModel.getLoading().observe(this) { showLoading(it) }
+    personMovieViewModel.getSnackbar().observe(this) { showSnackBarWarning(it) }
 
     // setup recycle view and adapter
     binding.rvKnownFor.layoutManager =
@@ -66,6 +83,13 @@ class PersonActivity : AppCompatActivity() {
       LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     val adapterImage = ImagePersonAdapter()
     binding.rvPhotos.adapter = adapterImage
+
+    binding.tvName.text = dataExtra.name ?: dataExtra.originalName
+    Glide.with(binding.ivPicture)
+      .load(Constants.TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath)
+      .placeholder(R.drawable.ic_bazz_placeholder_poster)
+      .error(R.drawable.ic_broken_image)
+      .into(binding.ivPicture)
 
     // show known for
     personMovieViewModel.getKnownFor(dataExtra.id!!)
@@ -78,25 +102,10 @@ class PersonActivity : AppCompatActivity() {
     // show detail person
     personMovieViewModel.getDetailPerson(dataExtra.id!!)
     personMovieViewModel.getDetailPerson().observe(this) {
-
-      binding.tvName.text = it.name
       binding.tvBiography.text = it.biography
       showBirthdate(it)
-
-      // show photo
-      Glide.with(binding.ivPicture)
-        .load(
-          if (dataExtra.profilePath.isNullOrEmpty()) {
-            Constants.TMDB_IMG_LINK_POSTER_W500 + it.profilePath
-          } else {
-            Constants.TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.profilePath
-          }
-        ) // URL movie poster
-        .placeholder(R.drawable.ic_bazz_placeholder_poster)
-        .error(R.drawable.ic_broken_image)
-        .into(binding.ivPicture)
-
     }
+
 
     Handler(Looper.getMainLooper()).postDelayed({
       binding.tvBiography.performClick() // set automatic click
@@ -150,6 +159,24 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.text = deathDay
 
     }
+  }
+
+  private fun showSnackBarWarning(eventMessage: Event<String>) {
+    val message = eventMessage.getContentIfNotHandled() ?: return
+    val snackBar = Snackbar.make(
+      binding.constraintLayout,
+      message,
+      Snackbar.LENGTH_SHORT
+    )
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(
+      ContextCompat.getColor(
+        this,
+        R.color.red_matte
+      )
+    )
+    snackBar.show()
   }
 
   companion object {
