@@ -8,6 +8,8 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -82,7 +84,35 @@ class LoginActivity : AppCompatActivity() {
     )
 
     // login as user
-    binding.btnLogin.setOnClickListener { loginAsUserRegistered() }
+    binding.btnLogin.setOnClickListener {
+
+      // check if username and password form is filled or not
+      if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
+        binding.edPass.error = getString(R.string.please_enter_a_password)
+        binding.btnEye.visibility = View.GONE
+      }
+      if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank())
+        binding.edUsername.error = getString(R.string.please_enter_a_username)
+
+      // add listener to shop again btn eye
+      binding.edPass.addTextChangedListener {
+        binding.btnEye.visibility = View.VISIBLE
+      }
+
+
+      // add listener for auto fill in
+      if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank())
+        binding.edUsername.error = null
+      if (binding.edPass.text.isNotEmpty() && binding.edPass.text.isNotBlank())
+        binding.edPass.error = null
+
+      if (binding.edUsername.text.isNotEmpty()
+        && binding.edUsername.text.isNotBlank()
+        && binding.edPass.text.isNotEmpty()
+        && binding.edPass.text.isNotBlank()
+      ) loginAsUserRegistered()
+
+    }
 
     // login as guest
     binding.tvGuest.setOnClickListener {
@@ -147,11 +177,20 @@ class LoginActivity : AppCompatActivity() {
 
   private fun showSnackBar(eventMessage: Event<String>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
-    Snackbar.make(
+    val snackBar = Snackbar.make(
       binding.constraintLayout,
       message,
       Snackbar.LENGTH_SHORT
-    ).show()
+    )
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(
+      ContextCompat.getColor(
+        this,
+        R.color.red_matte
+      )
+    )
+    snackBar.show()
   }
 
   private fun showLoading(isLoading: Boolean) {

@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.remote.response.CountyAPIResponse
