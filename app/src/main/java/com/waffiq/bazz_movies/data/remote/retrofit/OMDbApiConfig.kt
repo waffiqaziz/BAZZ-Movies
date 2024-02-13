@@ -9,13 +9,10 @@ import java.util.concurrent.TimeUnit
 
 class OMDbApiConfig {
   fun getOMDBApiService(): OMDbApiService {
-    val loggingInterceptor =
-      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     val client = OkHttpClient.Builder()
       .connectTimeout(30, TimeUnit.SECONDS)
       .readTimeout(30, TimeUnit.SECONDS)
       .writeTimeout(30, TimeUnit.SECONDS)
-      .addInterceptor(loggingInterceptor)
       .build()
     val retrofit = Retrofit.Builder()
       .baseUrl(OMDb_API_URL)
@@ -27,10 +24,7 @@ class OMDbApiConfig {
 
   companion object {
     fun getOMDBApiService(): OMDbApiService {
-      val loggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
       val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
         .build()
       val retrofit = Retrofit.Builder()
         .baseUrl(OMDb_API_URL)

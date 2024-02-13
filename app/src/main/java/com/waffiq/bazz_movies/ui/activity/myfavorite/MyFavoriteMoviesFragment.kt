@@ -425,7 +425,6 @@ class MyFavoriteMoviesFragment : Fragment() {
       favViewModelMovie.getStated(user.token, mediaId)
       favViewModelMovie.getStated().observe(this) {
         it.let {
-          Log.e("KKKK", mediaTitle)
           if (!it?.watchlist!!) {
             showSnackBarNoAction("<b>$mediaTitle</b> " + getString(R.string.added_to_watchlist))
             favViewModelMovie.postWatchlist(user, watchlistMode)
