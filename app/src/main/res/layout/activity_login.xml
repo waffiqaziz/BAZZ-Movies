@@ -152,6 +152,7 @@
     app:layout_constraintStart_toStartOf="@+id/btn_login" />
 
   <TextView
+    android:padding="12dp"
     android:id="@+id/tv_joinTMDB"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

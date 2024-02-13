@@ -370,7 +370,7 @@
           android:layout_width="match_parent"
           android:layout_height="1.5dp"
           android:layout_marginStart="20dp"
-          android:layout_marginTop="16dp"
+          android:layout_marginTop="8dp"
           android:layout_marginEnd="20dp"
           android:background="@color/yellow_alpha_50"
           app:layout_constraintEnd_toEndOf="parent"

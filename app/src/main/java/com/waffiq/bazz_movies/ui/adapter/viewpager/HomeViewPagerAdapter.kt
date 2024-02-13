@@ -21,7 +21,6 @@ class HomeViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycl
       1 -> MovieFragment()
       else -> TvSeriesFragment()
     }
-
   }
 
   companion object {

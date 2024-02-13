@@ -13,3 +13,7 @@ data class Watchlist(
   @SerializedName("media_id") val mediaId: Int?,
   @SerializedName("watchlist") var watchlist: Boolean?,
 )
+
+data class Rate(
+  @SerializedName("value") val value: Any,
+)

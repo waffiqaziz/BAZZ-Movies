@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
@@ -39,7 +40,8 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
@@ -103,8 +105,13 @@ class MoviesRepository(
   private val _productionCountry = MutableLiveData<String>()
   val productionCountry: LiveData<String> get() = _productionCountry
 
-  private val _stated = MutableLiveData<StatedResponse>()
-  val stated: LiveData<StatedResponse> get() = _stated.distinctUntilChanged()
+
+  // stated
+  private val _stated = MutableLiveData<StatedResponse?>()
+  val stated: LiveData<StatedResponse?> get() = _stated
+
+  private val _statedEvent = MutableLiveData<Event<StatedResponse?>>()
+  val statedEvent: LiveData<Event<StatedResponse?>> get() = _statedEvent
 
 
   // for DB all
@@ -129,19 +136,11 @@ class MoviesRepository(
   private val _postResponse = MutableLiveData<String>()
   val postResponse: LiveData<String> get() = _postResponse
 
-
-  // utils
   private val _snackBarText = MutableLiveData<Event<String>>()
   val snackBarText: LiveData<Event<String>> get() = _snackBarText
 
   private val _snackBarTextInt = MutableLiveData<Event<Int>>()
   val snackBarTextInt: LiveData<Event<Int>> get() = _snackBarTextInt
-
-  private val _snackBarTextInt2 = MutableLiveData<Event<Int>>()
-  val snackBarTextInt2: LiveData<Event<Int>> get() = _snackBarTextInt2
-
-  private val _snackBarTextInt3 = MutableLiveData<Event<Int>>()
-  val snackBarTextInt3: LiveData<Event<Int>> get() = _snackBarTextInt3
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
@@ -372,15 +371,25 @@ class MoviesRepository(
           _detailMovie.value = response.body()
           val responseBody = response.body()
           if (responseBody != null) {
-            try { // get age rating
-              val productionCountry = responseBody.productionCountries?.get(0)?.iso31661
-
-              _productionCountry.value = productionCountry!!
-              _ageRatingMovie.value = responseBody.releaseDates?.results?.filter {
-                it?.iso31661 == "US" || it?.iso31661 == productionCountry
-              }?.map {
-                it?.releaseDateValue?.get(0)?.certification
-              }.toString().replace("[", "").replace("]", "")
+            var productionCountry: String
+            try {
+              productionCountry = responseBody.productionCountries?.get(0)?.iso31661.toString()
+              _productionCountry.value = productionCountry
+            } catch (e: IndexOutOfBoundsException) {
+              _productionCountry.value = "N/A"
+              productionCountry = ""
+            }
+            try {
+              if (productionCountry.isEmpty()) {
+                _ageRatingMovie.value = "N/A"
+              } else {
+                _ageRatingMovie.value = responseBody.releaseDates?.results?.filter {
+                  it?.iso31661 == "US" || it?.iso31661 == productionCountry
+                }?.map {
+                  it?.releaseDateValue?.get(0)?.certification
+                }.toString().replace("[", "").replace("]", "")
+                  .replace(" ", "").replace(",", "")
+              }
             } catch (e: NullPointerException) {
               _ageRatingMovie.value = "N/A"
             }
@@ -425,6 +434,7 @@ class MoviesRepository(
               _ageRatingTv.value = responseBody.contentRatings?.results?.filter {
                 it?.iso31661 == "US" || it?.iso31661 == productionCountry
               }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
+                .replace(" ", "").replace(",", "")
             } catch (e: NullPointerException) {
               _ageRatingTv.value = "N/A"
             }
@@ -636,12 +646,12 @@ class MoviesRepository(
         call: Call<StatedResponse>,
         response: Response<StatedResponse>
       ) {
+        val responseBody = response.body()
         if (response.isSuccessful) {
-          _stated.value = response.body()
-          if (response.body()?.favorite!!) _snackBarTextInt3.value =
-            Event(R.string.already_favorite2)
-          if (response.body()?.watchlist!!) _snackBarTextInt3.value =
-            Event(R.string.already_watchlist2)
+          if (responseBody != null) {
+            _stated.value = response.body()
+            _statedEvent.value = Event(response.body())
+          }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -672,6 +682,7 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _stated.value = response.body()
+          _statedEvent.value = Event(response.body())
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -692,22 +703,20 @@ class MoviesRepository(
 
 
   // post favorite and watchlist
-  fun postFavorite(isDelete: Boolean, sessionId: String, data: Favorite, userId: Int) {
+  fun postFavorite(sessionId: String, data: Favorite, userId: Int) {
     val client = TMDBApiConfig
       .getApiService()
       .postFavoriteTMDB(userId, sessionId, data)
 
-    client.enqueue(object : Callback<PostFavoriteWatchlistResponse> {
+    client.enqueue(object : Callback<PostResponse> {
       override fun onResponse(
-        call: Call<PostFavoriteWatchlistResponse>,
-        response: Response<PostFavoriteWatchlistResponse>
+        call: Call<PostResponse>,
+        response: Response<PostResponse>
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
-            if (isDelete) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
-            else _snackBarTextInt2.value = Event(R.string.added_to_favorite2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -720,29 +729,27 @@ class MoviesRepository(
         }
       }
 
-      override fun onFailure(call: Call<PostFavoriteWatchlistResponse>, t: Throwable) {
+      override fun onFailure(call: Call<PostResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
         _snackBarText.value = Event(t.message.toString())
       }
     })
   }
 
-  fun postWatchlist(isDelete: Boolean, sessionId: String, data: Watchlist, userId: Int) {
+  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) {
     val client = TMDBApiConfig
       .getApiService()
       .postWatchlistTMDB(userId, sessionId, data)
 
-    client.enqueue(object : Callback<PostFavoriteWatchlistResponse> {
+    client.enqueue(object : Callback<PostResponse> {
       override fun onResponse(
-        call: Call<PostFavoriteWatchlistResponse>,
-        response: Response<PostFavoriteWatchlistResponse>
+        call: Call<PostResponse>,
+        response: Response<PostResponse>
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
-            if (isDelete) _snackBarTextInt.value = Event(R.string.deleted_from_watchlist2)
-            else _snackBarTextInt2.value = Event(R.string.added_to_watchlist2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -755,13 +762,78 @@ class MoviesRepository(
         }
       }
 
-      override fun onFailure(call: Call<PostFavoriteWatchlistResponse>, t: Throwable) {
+      override fun onFailure(call: Call<PostResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
         _snackBarText.value = Event(t.message.toString())
       }
     })
   }
 
+  fun postMovieRate(sessionId: String, data: Rate, movieId: Int) {
+    val client = TMDBApiConfig
+      .getApiService()
+      .postMovieRate(movieId, sessionId, data)
+
+    client.enqueue(object : Callback<PostRateResponse> {
+      override fun onResponse(
+        call: Call<PostRateResponse>,
+        response: Response<PostRateResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _postResponse.value = responseBody.statusMessage!!
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackBarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<PostRateResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackBarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun postTvRate(sessionId: String, data: Rate, tvId: Int) {
+    val client = TMDBApiConfig
+      .getApiService()
+      .postTvRate(tvId, sessionId, data)
+
+    client.enqueue(object : Callback<PostRateResponse> {
+      override fun onResponse(
+        call: Call<PostRateResponse>,
+        response: Response<PostRateResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) {
+            _postResponse.value = responseBody.statusMessage!!
+          }
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackBarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<PostRateResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackBarText.value = Event(t.message.toString())
+      }
+    })
+  }
 
   // person
   fun getDetailPerson(id: Int) {
@@ -897,11 +969,6 @@ class MoviesRepository(
   fun isWatchlistDB(id: Int) {
     appExecutors.diskIO().execute {
       _isWatchlist.postValue(localDataSource.isWatchlist(id))
-
-      // if result true then set value snackbar already watchlist
-      if (localDataSource.isWatchlist(id)) _snackBarTextInt3.postValue(
-        Event(R.string.already_watchlist2)
-      )
     }
   }
 
@@ -917,7 +984,6 @@ class MoviesRepository(
       _undoDB.value = Event(fav)
 
       fav.isFavorite = true
-      _snackBarTextInt2.value = Event(R.string.added_to_favorite2)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }
@@ -933,7 +999,6 @@ class MoviesRepository(
       _undoDB.value = Event(fav)
 
       fav.isWatchlist = true
-      _snackBarTextInt2.value = Event(R.string.added_to_watchlist2)
       appExecutors.diskIO().execute { localDataSource.update(fav) }
     }
   }

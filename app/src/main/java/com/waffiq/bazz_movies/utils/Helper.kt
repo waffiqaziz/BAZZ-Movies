@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
@@ -26,7 +27,7 @@ object Helper {
   }
 
   fun showToastShort(context: Context, text: String) {
-    Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show()
   }
 
   private fun getGenreName(int: Int): String {
@@ -199,53 +200,6 @@ object Helper {
     }
   }
 
-  fun detailCrew(context: Context, crew: List<CrewItem>): String {
-    var crewString = ""
-
-    val director = crew.map { it }.filter {
-      it.job == "Director"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val story = crew.map { it }.filter {
-      it.job == "Story"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val writing = crew.map { it }.filter {
-      it.job == "Writer"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val characters = crew.map { it }.filter {
-      it.job == "Characters"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val creator = crew.map { it }.filter {
-      it.job == "Executive Producer"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val author = crew.map { it }.filter {
-      it.job == "Author"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val screenplay = crew.map { it }.filter {
-      it.job == "Screenplay"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    val novel = crew.map { it }.filter {
-      it.job == "Novel"
-    }.map { it.name }.toString().dropLast(1).substring(1)
-
-    if (director.isNotEmpty()) crewString += "Director : $director \n"
-    if (story.isNotEmpty()) crewString += "Story : $story \n"
-    if (creator.isNotEmpty()) crewString += "Creator : $creator \n"
-    if (characters.isNotEmpty()) crewString += "Characters : $characters \n"
-    if (writing.isNotEmpty()) crewString += "Writer : $writing \n"
-    if (author.isNotEmpty()) crewString += "Author : $author \n"
-    if (screenplay.isNotEmpty()) crewString += "Screenplay : $screenplay \n"
-    if (novel.isNotEmpty()) crewString += "Novel : $novel \n"
-
-    return crewString
-  }
-
   fun detailCrew(crew: List<CrewItem>): Pair<MutableList<String>, MutableList<String>> {
     val job: MutableList<String> = ArrayList()
     val name: MutableList<String> = ArrayList()
@@ -351,5 +305,4 @@ object Helper {
     return if (!isInternetConnectionAvailable(context))
       context.getString(R.string.no_connection) else ""
   }
-
 }

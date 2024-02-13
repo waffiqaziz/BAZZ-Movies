@@ -16,13 +16,26 @@ data class StatedResponse(
   val watchlist: Boolean? = null,
 )
 
-data class PostFavoriteWatchlistResponse(
+data class PostResponse(
   @field:SerializedName("status_code")
   val statusCode: Int? = null,
 
   @field:SerializedName("status_message")
   val statusMessage: String? = null,
 )
+
+data class PostRateResponse(
+  @field:SerializedName("success")
+  val success: Boolean? = null,
+
+  @field:SerializedName("status_code")
+  val statusCode: Int? = null,
+
+  @field:SerializedName("status_message")
+  val statusMessage: String? = null,
+)
+
+
 
 
 

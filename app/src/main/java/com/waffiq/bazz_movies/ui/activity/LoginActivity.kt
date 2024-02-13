@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -22,6 +25,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
+import com.waffiq.bazz_movies.utils.CustomTypefaceSpan
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper
 
@@ -88,17 +92,16 @@ class LoginActivity : AppCompatActivity() {
 
       // check if username and password form is filled or not
       if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
-        binding.edPass.error = getString(R.string.please_enter_a_password)
+        binding.edPass.error = applyFontFamily(getString(R.string.please_enter_a_password))
         binding.btnEye.visibility = View.GONE
       }
       if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank())
-        binding.edUsername.error = getString(R.string.please_enter_a_username)
+        binding.edUsername.error = applyFontFamily(getString(R.string.please_enter_a_username))
 
       // add listener to shop again btn eye
       binding.edPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
       }
-
 
       // add listener for auto fill in
       if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank())
@@ -197,4 +200,13 @@ class LoginActivity : AppCompatActivity() {
     if (isLoading) binding.progressBar.visibility = View.VISIBLE
     else binding.progressBar.visibility = View.GONE
   }
+
+  private fun applyFontFamily(text: String): SpannableStringBuilder {
+    val spannableStringBuilder = SpannableStringBuilder(text)
+    val typeface = ResourcesCompat.getFont(this, R.font.gothic)
+    val customTypefaceSpan = typeface?.let { CustomTypefaceSpan(it) }
+    spannableStringBuilder.setSpan(customTypefaceSpan, 0, text.length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannableStringBuilder
+  }
+
 }

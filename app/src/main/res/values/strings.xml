@@ -40,10 +40,10 @@
   <string name="guest_user">Guest User</string>
   <string name="button_edit">Button Edit</string>
   <string name="image_profile">Image Profile</string>
-  <string name="account_settings">Account Settings</string>
   <string name="dark_mode">Dark Mode</string>
   <string name="rate_us">Rate us on PlayStore</string>
   <string name="help">Help</string>
+  <string name="suggestion">Suggestion</string>
   <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
   <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
   <string name="sign_out">Sign Out</string>
@@ -87,17 +87,17 @@
 
 
   <string name="undo">Undo</string>
-  <string name="already_favorite">%s already in favorite</string>
+  <string name="already_favorite">already in favorite</string>
   <string name="already_favorite2">Item already in favorite</string>
-  <string name="already_watchlist">%s already in watchlist</string>
+  <string name="already_watchlist">already in watchlist</string>
   <string name="already_watchlist2">Item already in watchlist</string>
-  <string name="added_to_favorite">%s has been added to favorite</string>
-  <string name="added_to_watchlist">%s has been added to watchlist</string>
+  <string name="added_to_favorite">has been added to favorite</string>
+  <string name="added_to_watchlist">has been added to watchlist</string>
   <string name="added_to_favorite2">Item has been added to favorite</string>
   <string name="added_to_watchlist2">Item has been added to watchlist</string>
-  <string name="deleted_from_favorite">%s has been deleted from favorite</string>
+  <string name="deleted_from_favorite">has been deleted from favorite</string>
   <string name="deleted_from_favorite2">Item has been deleted from favorite</string>
-  <string name="deleted_from_watchlist">%s has been deleted from watchlist</string>
+  <string name="deleted_from_watchlist">has been deleted from watchlist</string>
   <string name="deleted_from_watchlist2">Item has been deleted from watchlist</string>
 
   <string name="no_data">No Data</string>

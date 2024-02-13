@@ -25,18 +25,18 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
+    style="@style/TextHeader1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/your_rating"
     android:textColor="@color/grey_700"
-    style="@style/TextHeader1"
     app:layout_constraintBottom_toBottomOf="@+id/bg_top"
     app:layout_constraintEnd_toEndOf="@+id/bg_top"
     app:layout_constraintStart_toStartOf="@+id/bg_top"
     app:layout_constraintTop_toTopOf="@+id/bg" />
 
   <RatingBar
-    android:id="@+id/rating_bar"
+    android:id="@+id/rating_bar_action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="25dp"
@@ -56,8 +56,8 @@
     android:padding="0dp"
     android:text="@string/cancel"
     android:textSize="20sp"
-    app:layout_constraintStart_toStartOf="@+id/rating_bar"
-    app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+    app:layout_constraintStart_toStartOf="@+id/rating_bar_action"
+    app:layout_constraintTop_toBottomOf="@+id/rating_bar_action" />
 
   <androidx.appcompat.widget.AppCompatButton
     android:id="@+id/btn_yes"
@@ -70,7 +70,7 @@
     android:padding="0dp"
     android:text="@string/submit"
     android:textSize="20sp"
-    app:layout_constraintEnd_toEndOf="@+id/rating_bar"
+    app:layout_constraintEnd_toEndOf="@+id/rating_bar_action"
     app:layout_constraintTop_toTopOf="@+id/btn_no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

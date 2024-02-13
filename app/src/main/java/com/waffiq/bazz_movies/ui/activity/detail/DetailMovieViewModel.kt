@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 
@@ -38,14 +39,16 @@ class DetailMovieViewModel(
   fun getScoreOMDb(id: String) = movieRepository.getDetailOMDb(id)
   fun detailOMDb() = movieRepository.detailOMDb
 
-  fun getRecommendationMovie(movieId: Int) = movieRepository.getPagingMovieRecommendation(movieId)
-    .cachedIn(viewModelScope).asLiveData()
-  fun getRecommendationTv(tvId: Int) = movieRepository.getPagingTvRecommendation(tvId)
-    .cachedIn(viewModelScope).asLiveData()
+  fun getRecommendationMovie(movieId: Int) =
+    movieRepository.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope).asLiveData()
+
+  fun getRecommendationTv(tvId: Int) =
+    movieRepository.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
 
   fun getStatedMovie(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
   fun getStatedTv(sessionId: String, id: Int) = movieRepository.getStatedTv(sessionId, id)
-  fun stated() = movieRepository.stated
+  fun getStated() = movieRepository.stated
+  fun getStatedEvent() = movieRepository.statedEvent
 
   // Local DB Function
   fun isFavoriteDB() = movieRepository.isFavorite
@@ -62,9 +65,18 @@ class DetailMovieViewModel(
 
   // favorite & watchlist TMDB
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
-    movieRepository.postFavorite(false, sessionId, data, userId)
+    movieRepository.postFavorite(sessionId, data, userId)
+
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
-    movieRepository.postWatchlist(false, sessionId, data, userId)
+    movieRepository.postWatchlist(sessionId, data, userId)
+
+  // add rating
+  fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
+    movieRepository.postMovieRate(sessionId, data, movieId)
+
+  fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
+    movieRepository.postTvRate(sessionId, data, tvId)
+
   fun postResponse() = movieRepository.postResponse
 
   fun getSnackBarText() = movieRepository.snackBarText

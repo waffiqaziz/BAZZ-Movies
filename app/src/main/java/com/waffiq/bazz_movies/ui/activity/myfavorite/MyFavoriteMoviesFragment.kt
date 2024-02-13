@@ -7,10 +7,13 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -80,32 +83,12 @@ class MyFavoriteMoviesFragment : Fragment() {
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
-
-        /**
-         * three snack-bar on login user purpose to handle different result,
-         * getSnackBarTextInt(), handle undo action
-         * getSnackBarTextInt2(),  handle return from success adding watchlist
-         */
-
-        favViewModelMovie.getSnackBarTextInt2()
-          .observe(viewLifecycleOwner) { showSnackBarNoAction(it) }
-        favViewModelMovie.getSnackBarTextInt3().observe(viewLifecycleOwner) {
-          showSnackBarNoAction(it)
-        }
         initActionUserLogin()
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { //guest user then show data from database
 
-        /**
-         * three snack-bar on guest user purpose to handle different result,
-         * - getSnackBarTextInt() for undo action, which need return data
-         * - getSnackBarTextInt2() for success adding watchlist which has conflict with isWatchlist() function. so need to be separated
-         * - getSnackBarTextInt3() for check is in watchlist/not
-         */
         favViewModelMovie.getSnackBarTextInt()
           .observe(viewLifecycleOwner) { showSnackBarUndoGuest(it) }
-        favViewModelMovie.getSnackBarTextInt2()
-          .observe(viewLifecycleOwner) { showSnackBarNoAction(it) }
 
         initActionGuest()
         setDataGuestUserProgressBarEmptyView()
@@ -281,9 +264,11 @@ class MyFavoriteMoviesFragment : Fragment() {
         else favViewModelMovie.delFromFavoriteDB(fav)
       } else { // add to watchlist action
         if (it) {
-          favViewModelMovie.getSnackBarTextInt3()
-            .observe(viewLifecycleOwner) { event -> showSnackBarNoAction(event) }
-        } else favViewModelMovie.updateToWatchlistDB(fav)
+          showSnackBarNoAction("<b>${fav.title}</b> " + getString(R.string.already_watchlist))
+        } else {
+          favViewModelMovie.updateToWatchlistDB(fav)
+          showSnackBarNoAction("<b>${fav.title}</b> " + getString(R.string.added_to_watchlist))
+        }
       }
     }
   }
@@ -322,7 +307,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         // swipe action
         if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
           isWantToDelete = false
-          postToAddWatchlistTMDB(fav.id!!)
+          postToAddWatchlistTMDB(fav.id!!, fav.title ?: fav.originalTitle!!)
         } else { // swipe right, action to delete
           isWantToDelete = true
           postToRemoveFavTMDB(fav.id!!)
@@ -429,17 +414,23 @@ class MyFavoriteMoviesFragment : Fragment() {
     }
   }
 
-  private fun postToAddWatchlistTMDB(movieId: Int) {
+  private fun postToAddWatchlistTMDB(mediaId: Int, mediaTitle: String) {
     val watchlistMode = Watchlist(
       mediaType = "movie",
-      mediaId = movieId,
+      mediaId = mediaId,
       watchlist = true
     )
 
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      favViewModelMovie.getStated(user.token, movieId)
-      favViewModelMovie.getStated().observe(viewLifecycleOwner) { state ->
-        if (!state.watchlist!!)  favViewModelMovie.postWatchlist(user, watchlistMode)
+    viewModelAuth.getUser().observe(this) { user ->
+      favViewModelMovie.getStated(user.token, mediaId)
+      favViewModelMovie.getStated().observe(this) {
+        it.let {
+          Log.e("KKKK", mediaTitle)
+          if (!it?.watchlist!!) {
+            showSnackBarNoAction("<b>$mediaTitle</b> " + getString(R.string.added_to_watchlist))
+            favViewModelMovie.postWatchlist(user, watchlistMode)
+          } else showSnackBarNoAction("<b>$mediaTitle</b> " + getString(R.string.already_watchlist))
+        }
       }
     }
   }
@@ -486,11 +477,19 @@ class MyFavoriteMoviesFragment : Fragment() {
     mSnackbar?.show()
   }
 
-  private fun showSnackBarNoAction(eventMessage: Event<Int>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
+  private fun showSnackBarNoAction(message: String) {
     mSnackbar = Snackbar.make(
       binding.root,
-      getString(message),
+      HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY),
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(binding.guideSnackbar)
+    mSnackbar?.show()
+  }
+
+  private fun showSnackBarNoActionint(message: Int) {
+    mSnackbar = Snackbar.make(
+      binding.root,
+      HtmlCompat.fromHtml(getString(message), HtmlCompat.FROM_HTML_MODE_LEGACY),
       Snackbar.LENGTH_SHORT
     ).setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()

@@ -30,8 +30,6 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
-  fun getSnackBarTextInt2() = movieRepository.snackBarTextInt2
-  fun getSnackBarTextInt3() = movieRepository.snackBarTextInt3
 
   /**
    * Function for network
@@ -43,13 +41,13 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
 
   fun postFavoriteToDelete(user: UserModel, data: Favorite) =
-    movieRepository.postFavorite(true, user.token, data, user.userId)
+    movieRepository.postFavorite(user.token, data, user.userId)
 
   fun postFavorite(user: UserModel, data: Favorite) =
-    movieRepository.postFavorite(false, user.token, data, user.userId)
+    movieRepository.postFavorite(user.token, data, user.userId)
 
   fun postWatchlist(user: UserModel, data: Watchlist) =
-    movieRepository.postWatchlist(false, user.token, data, user.userId)
+    movieRepository.postWatchlist(user.token, data, user.userId)
 
   fun getStated(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
   fun getStated() = movieRepository.stated

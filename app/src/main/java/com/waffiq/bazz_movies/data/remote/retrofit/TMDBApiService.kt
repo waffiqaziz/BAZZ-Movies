@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.waffiq.bazz_movies.BuildConfig.API_KEY
 import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.*
 import retrofit2.Call
@@ -31,98 +32,98 @@ interface TMDBApiService {
 
   @GET("3/movie/top_rated?api_key=$API_KEY&language=en-US")
   suspend fun getTopRatedMovies(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/tv/top_rated?api_key=$API_KEY&language=en-US")
   suspend fun getTopRatedTv(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/trending/all/week?api_key=$API_KEY")
   suspend fun getTrending(
-    @Query("region") region : String,
-    @Query("page") page : Int
+    @Query("region") region: String,
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/movie/{movieId}/recommendations?api_key=$API_KEY")
   suspend fun getRecommendedMovie(
     @Path("movieId") movieId: Int,
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/tv/{tvId}/recommendations?api_key=$API_KEY")
   suspend fun getRecommendedTv(
     @Path("tvId") movieId: Int,
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/tv/on_the_air?api_key=$API_KEY&language=en-US")
   suspend fun getTvOnTheAir(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/tv/airing_today?api_key=$API_KEY&language=en-US")
   suspend fun getTvAiringToday(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/movie/upcoming?api_key=$API_KEY&language=en-US&with_release_type=2|3")
   suspend fun getUpcomingMovies(
-    @Query("region") region : String,
-    @Query("page") page : Int
+    @Query("region") region: String,
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/movie/now_playing?api_key=$API_KEY&language=en-US")
   suspend fun getPlayingNowMovies(
-    @Query("region") region : String,
-    @Query("page") page : Int
+    @Query("region") region: String,
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/movie/popular?api_key=$API_KEY&language=en-US")
   suspend fun getPopularMovies(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/tv/popular?api_key=$API_KEY&language=en-US")
   suspend fun getPopularTv(
-    @Query("page") page : Int
+    @Query("page") page: Int
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/favorite/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteMovies(
-    @Query("session_id") sessionId : String,
-    @Query("page") page : Int,
+    @Query("session_id") sessionId: String,
+    @Query("page") page: Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/favorite/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteTv(
-    @Query("session_id") sessionId : String,
-    @Query("page") page : Int,
+    @Query("session_id") sessionId: String,
+    @Query("page") page: Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/watchlist/movies?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistMovies(
-    @Query("session_id") sessionId : String,
-    @Query("page") page : Int,
+    @Query("session_id") sessionId: String,
+    @Query("page") page: Int,
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/watchlist/tv?api_key=$API_KEY&language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistTv(
-    @Query("session_id") sessionId : String,
-    @Query("page") page : Int,
+    @Query("session_id") sessionId: String,
+    @Query("page") page: Int,
   ): MovieTvResponse
 
   @GET("3/movie/{movieId}/account_states?api_key=$API_KEY")
   fun getStatedMovie(
     @Path("movieId") movieId: Int,
-    @Query("session_id") sessionId : String
+    @Query("session_id") sessionId: String
   ): Call<StatedResponse>
 
   @GET("3/tv/{tvId}/account_states?api_key=$API_KEY")
   fun getStatedTv(
     @Path("tvId") tvId: Int,
-    @Query("session_id") sessionId : String
+    @Query("session_id") sessionId: String
   ): Call<StatedResponse>
 
 //  @GET("3/genre/movie/list?api_key=$API_KEY")
@@ -190,16 +191,31 @@ interface TMDBApiService {
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
   fun postFavoriteTMDB(
     @Path("accountId") accountId: Int,
-    @Query("session_id") sessionId : String,
+    @Query("session_id") sessionId: String,
     @Body data: Favorite
-  ): Call<PostFavoriteWatchlistResponse>
+  ): Call<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/watchlist?api_key=$API_KEY")
   fun postWatchlistTMDB(
     @Path("accountId") accountId: Int,
-    @Query("session_id") sessionId : String,
+    @Query("session_id") sessionId: String,
     @Body data: Watchlist
-  ): Call<PostFavoriteWatchlistResponse>
+  ): Call<PostResponse>
 
+  @Headers("Content-Type: application/json;charset=utf-8")
+  @POST("3/movie/{movieId}/rating?api_key=$API_KEY")
+  fun postMovieRate(
+    @Path("movieId") movieId: Int,
+    @Query("session_id") sessionId: String,
+    @Body data: Rate
+  ): Call<PostRateResponse>
+
+  @Headers("Content-Type: application/json;charset=utf-8")
+  @POST("3/tv/{tvId}/rating?api_key=$API_KEY")
+  fun postTvRate(
+    @Path("tvId") tvId: Int,
+    @Query("session_id") sessionId: String,
+    @Body data: Rate
+  ): Call<PostRateResponse>
 }

@@ -72,17 +72,6 @@
     app:layout_constraintEnd_toEndOf="@+id/frameLayout"
     app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
-
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_setting"
-    style="@style/ButtonMoreStyle"
-    android:layout_marginTop="24dp"
-    android:text="@string/account_settings"
-    app:icon="@drawable/ic_user"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
   <com.google.android.material.checkbox.MaterialCheckBox
     android:id="@+id/cb_dark_mode"
     android:layout_width="wrap_content"
@@ -90,32 +79,20 @@
     android:layout_marginEnd="10dp"
     android:checked="true"
     android:buttonTint="@color/yellow"
-    android:contentDescription="@string/account_settings"
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_dark_mode"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@+id/btn_dark_mode" />
 
   <com.google.android.material.button.MaterialButton
+    android:layout_marginTop="24dp"
     android:id="@+id/btn_dark_mode"
     style="@style/ButtonMoreStyle"
-    android:layout_marginTop="8dp"
     android:text="@string/dark_mode"
     app:icon="@drawable/ic_dark"
     app:iconGravity="textStart"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_setting" />
-
-  <ImageView
-    android:id="@+id/iv_account_settings"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:contentDescription="@string/account_settings"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_setting"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_setting" />
+    app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_language"
@@ -131,11 +108,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="20dp"
-    android:contentDescription="@string/account_settings"
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_language"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode"
+    android:contentDescription="@string/language" />
 
   <com.google.android.material.button.MaterialButton
     android:paddingEnd="120dp"
@@ -147,7 +124,8 @@
     app:icon="@drawable/ic_region"
     app:iconGravity="textStart"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_language" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_language"
+    tools:ignore="RtlSymmetry" />
 
   <com.hbb20.CountryCodePicker
     android:id="@+id/btn_countryPicker"
@@ -187,11 +165,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="20dp"
-    android:contentDescription="@string/account_settings"
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_rate" />
+    app:layout_constraintTop_toTopOf="@+id/btn_rate"
+    android:contentDescription="@string/rate_us" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_help"
@@ -207,11 +185,32 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="20dp"
-    android:contentDescription="@string/account_settings"
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_help"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_help" />
+    app:layout_constraintTop_toTopOf="@+id/btn_help"
+    android:contentDescription="@string/help" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_suggestion"
+    style="@style/ButtonMoreStyle"
+    android:layout_marginTop="8dp"
+    android:text="@string/suggestion"
+    app:icon="@drawable/ic_lamp"
+    app:iconGravity="textStart"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="20dp"
+    android:src="@drawable/ic_chevron_right"
+    app:layout_constraintBottom_toBottomOf="@+id/btn_suggestion"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/btn_suggestion"
+    android:contentDescription="@string/suggestion" />
+
 
   <TextView
     android:id="@+id/tv_terms_conditon"
@@ -220,9 +219,11 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
     android:layout_marginTop="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
     android:text="@string/terms_amp_condition"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+    app:layout_constraintTop_toBottomOf="@+id/btn_suggestion" />
 
   <TextView
     android:id="@+id/tv_privacy_policy"
@@ -230,7 +231,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
-    android:layout_marginTop="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
     android:text="@string/privacy_amp_policy"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />

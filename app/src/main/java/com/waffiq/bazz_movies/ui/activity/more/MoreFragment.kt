@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +24,8 @@ import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Constants.GMAIL_BAZZ_HELPER
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
@@ -72,7 +75,6 @@ class MoreFragment : Fragment() {
   }
 
   private fun btnAction() {
-    binding.btnSetting.setOnClickListener { toastStillOnDevelopment(requireContext()) }
     binding.btnRate.setOnClickListener { toastStillOnDevelopment(requireContext()) }
     binding.btnLanguage.setOnClickListener { toastStillOnDevelopment(requireContext()) }
     binding.ivBtnEdit.setOnClickListener { toastStillOnDevelopment(requireContext()) }
@@ -80,9 +82,20 @@ class MoreFragment : Fragment() {
       binding.cbDarkMode.isChecked = !binding.cbDarkMode.isChecked
       toastStillOnDevelopment(requireContext())
     }
-    binding.btnHelp.setOnClickListener { toastStillOnDevelopment(requireContext()) }
-    binding.tvPrivacyPolicy.setOnClickListener { toastStillOnDevelopment(requireContext()) }
-    binding.tvTermsConditon.setOnClickListener { toastStillOnDevelopment(requireContext()) }
+    binding.btnHelp.setOnClickListener {
+      startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:$GMAIL_BAZZ_HELPER?subject=Help BAZZ Movies")
+      }, "Help"))
+    }
+    binding.tvPrivacyPolicy.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PRIVACY_POLICY_LINK)))
+    }
+    binding.tvTermsConditon.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.TERMS_CONDITIONS_LINK)))
+    }
+    binding.btnSuggestion.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FORM_HELPER)))
+    }
 
     binding.btnSignout.setOnClickListener {
       authViewModel.getUser().observe(viewLifecycleOwner) { user ->
@@ -97,10 +110,6 @@ class MoreFragment : Fragment() {
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
     binding.btnCountryPicker.setOnCountryChangeListener {
       moreViewModelUser.saveUserRegion(binding.btnCountryPicker.selectedCountryNameCode)
-//      showToastShort(
-//        requireContext(),
-//        "${binding.btnCountryPicker.selectedCountryEnglishName} as Country"
-//      )
     }
   }
 
