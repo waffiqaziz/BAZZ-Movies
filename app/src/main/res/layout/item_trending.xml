@@ -13,7 +13,6 @@
     android:id="@+id/img_poster"
     android:layout_width="100dp"
     android:layout_height="150dp"
-    android:adjustViewBounds="true"
     tools:background="@drawable/ic_bazz_placeholder_poster"
     android:contentDescription="@string/picture" />
 

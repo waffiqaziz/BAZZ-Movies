@@ -37,25 +37,15 @@
             android:orientation="vertical"
             android:paddingBottom="80dp">
 
-            <FrameLayout
-              android:id="@+id/frame"
+            <ImageView
+              android:id="@+id/img_main_featured"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-              <ImageView
-                android:id="@+id/img_main_featured"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:background="@color/grey_400"
-                android:contentDescription="@string/featured" />
-
-              <View
-                android:id="@+id/v_gradient"
-                android:layout_width="wrap_content"
-                android:layout_height="230dp"
-                android:background="@drawable/bg_gradient_shape" />
-            </FrameLayout>
+              android:layout_height="wrap_content"
+              android:adjustViewBounds="true"
+              android:contentDescription="@string/featured"
+              android:foreground="@drawable/bg_gradient_shape"
+              tools:layout_height="250dp"
+              tools:src="@color/red_matte" />
 
             <TextView
               android:id="@+id/tv_trending"
@@ -128,10 +118,10 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
-      android:layout_gravity="center"
       android:id="@+id/progress_bar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_gravity="center"
       android:animateLayoutChanges="true"
       android:indeterminateTint="@color/yellow"
       android:visibility="gone"

@@ -4,6 +4,7 @@
   <string name="login">Login</string>
   <string name="username">Username</string>
   <string name="password">Password</string>
+  <string name="hide_unhide_password">hide/unhide password</string>
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>

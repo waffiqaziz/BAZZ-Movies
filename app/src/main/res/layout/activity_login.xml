@@ -59,8 +59,9 @@
     android:id="@+id/tv_forget_password"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
+    android:layout_marginEnd="6dp"
     android:fontFamily="@font/gothic"
+    android:padding="14dp"
     android:text="@string/forget_password"
     android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="@+id/img_bazz_logo"
@@ -113,9 +114,13 @@
   <ImageView
     android:id="@+id/btn_eye"
     android:layout_width="wrap_content"
-    android:layout_height="20dp"
-    android:layout_marginEnd="20dp"
-    android:contentDescription="@string/password"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="-5dp"
+    android:layout_marginEnd="16dp"
+    android:background="?attr/selectableItemBackground"
+    android:contentDescription="@string/hide_unhide_password"
+    android:padding="12dp"
+    android:scaleType="fitCenter"
     android:src="@drawable/ic_eye_off"
     app:layout_constraintBottom_toBottomOf="@+id/ed_pass"
     app:layout_constraintEnd_toEndOf="@+id/ed_pass"
@@ -139,12 +144,12 @@
     tools:ignore="DuplicateSpeakableTextCheck" />
 
   <TextView
-    android:padding="12dp"
     android:id="@+id/tv_guest"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="24dp"
     android:fontFamily="@font/gothic"
+    android:padding="14dp"
     android:text="@string/guest_session"
     android:textColor="@color/white"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
@@ -152,13 +157,13 @@
     app:layout_constraintStart_toStartOf="@+id/btn_login" />
 
   <TextView
-    android:padding="12dp"
     android:id="@+id/tv_joinTMDB"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="50dp"
     android:fontFamily="@font/gothic"
     android:gravity="center"
+    android:padding="14dp"
     android:text="@string/join_tmdb"
     android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"

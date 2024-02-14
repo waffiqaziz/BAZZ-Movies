@@ -9,7 +9,10 @@ import java.util.concurrent.TimeUnit
 
 class CountryIPApiConfig {
   fun getApiService(): CountryIPApiService {
+    val loggingInterceptor =
+      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     val client = OkHttpClient.Builder()
+      .addInterceptor(loggingInterceptor)
       .connectTimeout(30, TimeUnit.SECONDS)
       .readTimeout(30, TimeUnit.SECONDS)
       .writeTimeout(30, TimeUnit.SECONDS)
@@ -24,7 +27,10 @@ class CountryIPApiConfig {
 
   companion object {
     fun getApiService(): CountryIPApiService {
+      val loggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
       val client = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
         .build()
       val retrofit = Retrofit.Builder()
         .baseUrl(COUNTRY_API_LINK)
