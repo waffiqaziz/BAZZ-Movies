@@ -11,3 +11,6 @@
 local.properties
 /gradle.properties
 .idea/gradle.xml
+*.aab
+*.apk
+*.keystore
