@@ -42,6 +42,8 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: CastItem) {
+      binding.imgCastPhoto.contentDescription = cast.name
+
       with(binding) {
         Glide.with(imgCastPhoto)
           .load(TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath )

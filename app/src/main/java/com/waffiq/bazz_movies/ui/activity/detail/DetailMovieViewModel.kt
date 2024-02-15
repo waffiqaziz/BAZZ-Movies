@@ -48,7 +48,6 @@ class DetailMovieViewModel(
   fun getStatedMovie(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
   fun getStatedTv(sessionId: String, id: Int) = movieRepository.getStatedTv(sessionId, id)
   fun getStated() = movieRepository.stated
-  fun getStatedEvent() = movieRepository.statedEvent
 
   // Local DB Function
   fun isFavoriteDB() = movieRepository.isFavorite
@@ -76,8 +75,6 @@ class DetailMovieViewModel(
 
   fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
     movieRepository.postTvRate(sessionId, data, tvId)
-
-  fun postResponse() = movieRepository.postResponse
 
   fun getSnackBarText() = movieRepository.snackBarText
   fun getLoading() = movieRepository.isLoading

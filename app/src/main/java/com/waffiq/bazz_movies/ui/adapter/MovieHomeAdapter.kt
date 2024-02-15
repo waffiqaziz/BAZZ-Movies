@@ -34,6 +34,9 @@ class MovieHomeAdapter :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(movie: ResultItem) {
+      binding.imgPoster.contentDescription =
+        movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
+
       Glide.with(binding.imgPoster)
         .load(TMDB_IMG_LINK_POSTER_W185 + movie.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)

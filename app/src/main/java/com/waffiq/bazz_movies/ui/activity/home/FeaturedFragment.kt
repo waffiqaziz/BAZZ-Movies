@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
@@ -67,16 +68,12 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setMoveNowPlaying() {
-//    val data = viewModel.getFirstMovieNowPlaying()
-//    viewModel.getFirstMovieNowPlaying().observe(viewLifecycleOwner) {
-//      Log.e("Cek Link : ", it[0].backdropPath)
-//    }
-
     // show main picture
     Glide.with(binding.imgMainFeatured)
       //.load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
-      .placeholder(R.mipmap.ic_launcher)
+      .placeholder(R.drawable.ic_bazz_placeholder_search)
+      .transition(DrawableTransitionOptions.withCrossFade())
       .error(R.drawable.ic_broken_image)
       .into(binding.imgMainFeatured)
   }
@@ -138,6 +135,7 @@ class FeaturedFragment : Fragment() {
       adapterPlayingNow.submitData(lifecycle, it)
     }
 
+    // check if there any movie that play on selected region, if not show info on toast and edit text
     adapterPlayingNow.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
@@ -147,9 +145,15 @@ class FeaturedFragment : Fragment() {
           requireContext(),
           getString(R.string.no_movie_currently_playing, Locale("", region).displayCountry)
         )
+        binding.rvPlayingNow.visibility = View.INVISIBLE
+        if (!binding.tvPlayingNow.text.contains(getString(R.string.data)))
+          binding.tvPlayingNow.append(" (" + getString(R.string.no_data) + ")")
+      } else {
+        binding.rvPlayingNow.visibility = View.VISIBLE
       }
     }
 
+    // check if there any upcoming movie on selected region, if not show info on toast and edit text
     adapterUpcoming.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
@@ -159,6 +163,11 @@ class FeaturedFragment : Fragment() {
           requireContext(),
           getString(R.string.no_upcoming_movie, Locale("", region).displayCountry)
         )
+        binding.rvUpcoming.visibility = View.INVISIBLE
+        if (!binding.tvUpcomingMovie.text.contains(getString(R.string.data)))
+          binding.tvUpcomingMovie.append(" (" + getString(R.string.no_data) + ")")
+      } else {
+        binding.rvUpcoming.visibility = View.VISIBLE
       }
     }
 

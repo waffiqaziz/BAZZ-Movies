@@ -43,6 +43,8 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: CastCombinedItem) {
+      binding.imgCastPhoto.contentDescription = cast.title
+
       Glide.with(binding.imgCastPhoto)
         .load(TMDB_IMG_LINK_POSTER_W185 + cast.posterPath)
         .placeholder(R.drawable.ic_bazz_placeholder_poster)

@@ -45,6 +45,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
     fun bind(fav: FavoriteDB) {
       data = fav
+      binding.ivPicture.contentDescription = fav.title
 
       Glide.with(binding.ivPicture)
         .load(

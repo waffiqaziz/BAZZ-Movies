@@ -8,6 +8,7 @@
   tools:context=".ui.activity.LoginActivity">
 
   <ImageView
+    android:background="@color/black"
     android:id="@+id/img_poster"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
     android:layout_marginBottom="16dp"
     android:fontFamily="@font/gothicb"
     android:text="@string/login"
+    android:contentDescription="@string/text_login"
     android:textColor="@color/white"
     android:textSize="40sp"
     app:layout_constraintBottom_toTopOf="@+id/ed_username"
@@ -136,6 +138,7 @@
     android:backgroundTint="@color/yellow"
     android:fontFamily="@font/gothicb"
     android:text="@string/login"
+    android:contentDescription="@string/button_login"
     android:textAllCaps="false"
     android:textColor="@color/grey_700"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"

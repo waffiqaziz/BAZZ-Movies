@@ -33,9 +33,11 @@ class TvAdapter :
   inner class ViewHolder(private var binding: ItemTrendingBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: ResultItem) {
+    fun bind(tv: ResultItem) {
+      binding.imgPoster.contentDescription = tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
+
       Glide.with(binding.imgPoster)
-        .load(TMDB_IMG_LINK_POSTER_W185 + movie.posterPath) // URL movie poster
+        .load(TMDB_IMG_LINK_POSTER_W185 + tv.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(DrawableTransitionOptions.withCrossFade())
@@ -45,8 +47,8 @@ class TvAdapter :
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        movie.mediaType = "tv"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
+        tv.mediaType = "tv"
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tv)
         it.context.startActivity(intent)
       }
     }

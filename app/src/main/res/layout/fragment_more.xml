@@ -55,30 +55,13 @@
 
   </LinearLayout>
 
-  <ImageButton
-    android:id="@+id/iv_btn_edit"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:background="?selectableItemBackgroundBorderless"
-    android:clickable="true"
-    android:contentDescription="@string/button_edit"
-    android:focusable="true"
-    android:foreground="?selectableItemBackgroundBorderless"
-    android:minWidth="48dp"
-    android:minHeight="48dp"
-    android:src="@drawable/ic_edit"
-    app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-    app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-    app:layout_constraintTop_toTopOf="@+id/linearLayout" />
-
   <com.google.android.material.checkbox.MaterialCheckBox
     android:id="@+id/cb_dark_mode"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:checked="true"
+    android:layout_marginEnd="8dp"
     android:buttonTint="@color/yellow"
+    android:checked="true"
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_dark_mode"
     app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +114,7 @@
     android:id="@+id/btn_countryPicker"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="9dp"
+    android:layout_marginEnd="8dp"
     app:ccpDialog_backgroundColor="@color/grey_700"
     app:ccpDialog_fastScroller_bubbleColor="@color/yellow"
     app:ccpDialog_fastScroller_handleColor="@color/yellow"
@@ -188,8 +171,7 @@
     android:src="@drawable/ic_chevron_right"
     app:layout_constraintBottom_toBottomOf="@+id/btn_help"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_help"
-    android:contentDescription="@string/help" />
+    app:layout_constraintTop_toTopOf="@+id/btn_help" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_suggestion"

@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData

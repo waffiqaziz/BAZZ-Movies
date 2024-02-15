@@ -56,33 +56,19 @@
           app:layout_constraintTop_toTopOf="@+id/iv_picture"
           tools:visibility="visible" />
 
-        <ImageButton
-          android:id="@+id/btn_back_bg"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginTop="4dp"
-          android:alpha="0.3"
-          android:background="@drawable/bg_back_button"
-          android:contentDescription="@string/back"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/ic_left_icon"
-          tools:ignore="DuplicateClickableBoundsCheck" />
 
         <ImageButton
           android:id="@+id/btn_back"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
           android:layout_marginTop="4dp"
-          android:background="#00000000"
+          android:background="@drawable/bg_back_button"
           android:contentDescription="@string/back"
           android:foreground="?selectableItemBackgroundBorderless"
           android:minWidth="48dp"
           android:minHeight="48dp"
-          app:layout_constraintStart_toStartOf="@+id/btn_back_bg"
+          app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:srcCompat="@drawable/ic_left_icon" />
 
@@ -335,6 +321,7 @@
             android:layout_weight="1" />
 
           <LinearLayout
+            android:contentDescription="@string/rating"
             android:id="@+id/your_score_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

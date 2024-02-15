@@ -12,8 +12,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
@@ -28,6 +26,7 @@ import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormater
 import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
 import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 class PersonActivity : AppCompatActivity() {
 
@@ -98,14 +97,25 @@ class PersonActivity : AppCompatActivity() {
     // show picture
     personMovieViewModel.getImagePerson(dataExtra.id!!)
     personMovieViewModel.getImagePerson().observe(this) { adapterImage.setImage(it) }
+    showToastShort(this, adapterImage.itemCount.toString())
+//    if (adapterImage.itemCount == 0 ){
+//      binding.rvPhotos.visibility = View.GONE
+//      binding.tvPhotosHeader.visibility = View.GONE
+//    } else{
+//      binding.rvPhotos.visibility = View.VISIBLE
+//      binding.tvPhotosHeader.visibility = View.VISIBLE
+//    }
 
     // show detail person
     personMovieViewModel.getDetailPerson(dataExtra.id!!)
     personMovieViewModel.getDetailPerson().observe(this) {
-      binding.tvBiography.text = it.biography
+      if (it.birthday != null)
+        if (it.birthday.isNotBlank() && it.birthday.isNotEmpty()) binding.tvBiography.text =
+          it.biography
+        else binding.tvBiography.text = getString(R.string.no_biography)
+      else binding.tvBiography.text = getString(R.string.no_biography)
       showBirthdate(it)
     }
-
 
     Handler(Looper.getMainLooper()).postDelayed({
       binding.tvBiography.performClick() // set automatic click
@@ -139,10 +149,14 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.isVisible = false
       binding.tvDeadHeader.isVisible = false
 
-      val birthday = "${it.birthday?.let { dateFormater(it) }} (${
-        it.birthday?.let { getAgeBirth(it) }
-      } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
-      binding.tvBorn.text = birthday
+      if (it.birthday != null)
+        if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
+          val birthday = "${it.birthday.let { dateFormater(it) }} (${
+            it.birthday.let { getAgeBirth(it) }
+          } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
+          binding.tvBorn.text = birthday
+        } else binding.tvBorn.text = getString(R.string.no_data)
+      else binding.tvBorn.text = getString(R.string.no_data)
 
     } else {
       binding.tvDeath.isVisible = true

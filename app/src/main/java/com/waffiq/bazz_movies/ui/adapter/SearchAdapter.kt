@@ -43,18 +43,18 @@ class SearchAdapter :
 
       if (data.mediaType == "person") {
         showDataPerson(binding, data)
-
         binding.containerResult.setOnClickListener {
           val person = CastItem(
             id = data.id,
-            profilePath = data.profilePath
+            profilePath = data.profilePath,
+            name = data.name,
+            originalName = data.originalName
           )
           val intent = Intent(it.context, PersonActivity::class.java)
           intent.putExtra(PersonActivity.EXTRA_PERSON, person)
           it.context.startActivity(intent)
         }
-      }
-      else { //movie & tv-series
+      } else { //movie & tv-series
         showDataMovieTv(binding, data)
         binding.containerResult.setOnClickListener {
           val intent = Intent(it.context, DetailMovieActivity::class.java)
@@ -80,6 +80,8 @@ class SearchAdapter :
   }
 
   private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+    binding.ivPicture.contentDescription =
+      data.name ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
         TMDB_IMG_LINK_BACKDROP_W300 + data.profilePath
@@ -96,6 +98,8 @@ class SearchAdapter :
   }
 
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+    binding.ivPicture.contentDescription =
+      data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
         TMDB_IMG_LINK_BACKDROP_W300 + (data.backdropPath ?: data.posterPath)

@@ -63,14 +63,14 @@ class TvSeriesFragment : Fragment() {
     }
 
     binding.rvUpcoming.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    val upComingAdapter = TvAdapter()
-    binding.rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
+    val onTvAdapter = TvAdapter()
+    binding.rvUpcoming.adapter = onTvAdapter.withLoadStateFooter(
       footer = LoadingStateAdapter {
-        upComingAdapter.retry()
+        onTvAdapter.retry()
       }
     )
     viewModel.getOnTv().observe(viewLifecycleOwner) {
-      upComingAdapter.submitData(lifecycle,it)
+      onTvAdapter.submitData(lifecycle,it)
     }
 
     binding.rvTopRated.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -88,7 +88,7 @@ class TvSeriesFragment : Fragment() {
       popularAdapter.refresh()
       topRatedAdapter.refresh()
       popularAdapter.refresh()
-      upComingAdapter.refresh()
+      onTvAdapter.refresh()
       showSnackBarNoAction(Helper.checkInternet(requireContext()))
       binding.swipeRefresh.isRefreshing = false
     }

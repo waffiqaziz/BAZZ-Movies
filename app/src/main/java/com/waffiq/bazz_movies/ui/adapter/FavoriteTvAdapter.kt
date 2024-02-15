@@ -36,6 +36,9 @@ class FavoriteTvAdapter :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(resultItem: ResultItem) {
+      binding.ivPicture.contentDescription =
+        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+
       Glide.with(binding.ivPicture)
         .load("http://image.tmdb.org/t/p/w342/" + resultItem.posterPath) // URL movie poster
         .placeholder(R.drawable.ic_bazz_placeholder_poster)

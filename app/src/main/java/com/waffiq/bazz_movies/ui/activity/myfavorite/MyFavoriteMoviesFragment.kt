@@ -7,8 +7,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -480,15 +478,6 @@ class MyFavoriteMoviesFragment : Fragment() {
     mSnackbar = Snackbar.make(
       binding.root,
       HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY),
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(binding.guideSnackbar)
-    mSnackbar?.show()
-  }
-
-  private fun showSnackBarNoActionint(message: Int) {
-    mSnackbar = Snackbar.make(
-      binding.root,
-      HtmlCompat.fromHtml(getString(message), HtmlCompat.FROM_HTML_MODE_LEGACY),
       Snackbar.LENGTH_SHORT
     ).setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()

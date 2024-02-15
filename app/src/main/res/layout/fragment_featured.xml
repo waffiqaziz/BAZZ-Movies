@@ -59,7 +59,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_trending"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               android:layout_marginEnd="20dp"
@@ -69,7 +69,7 @@
               tools:orientation="horizontal" />
 
             <TextView
-              android:id="@+id/tv_latest_trailer"
+              android:id="@+id/tv_upcoming_movie"
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_playing_now"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               android:layout_marginEnd="20dp"

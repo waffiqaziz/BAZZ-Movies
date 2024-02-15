@@ -2,6 +2,8 @@
   <string name="app_name">BAZZ Movies</string>
   <string name="join_tmdb">Don\'t Have Account? Join TMDB</string>
   <string name="login">Login</string>
+  <string name="text_login">text login</string>
+  <string name="button_login">button login</string>
   <string name="username">Username</string>
   <string name="password">Password</string>
   <string name="hide_unhide_password">hide/unhide password</string>
@@ -34,12 +36,12 @@
   <string name="upcoming">Upcoming</string>
   <string name="airing_today">Airing Today</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
+  <string name="on_tv">On Tv</string>
   <string name="no_upcoming_movie">No Upcoming Movie in %1$s \n Please Consider Change Different Country</string>
   <string name="no_movie_currently_playing">No Movie Currently Playing in %1$s \n Please Consider Change Different Country</string>
 
   <!-- MORE -->
   <string name="guest_user">Guest User</string>
-  <string name="button_edit">Button Edit</string>
   <string name="image_profile">Image Profile</string>
   <string name="dark_mode">Dark Mode</string>
   <string name="rate_us">Rate us on PlayStore</string>
@@ -57,19 +59,20 @@
   <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
   <string name="select_region">Select Region</string>
 
+  <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
-  <string name="yt_not_installed">Youtube App Not Installed</string>
+
   <string name="language">Language</string>
   <string name="back">Back</string>
 
   <!-- DETAIL MOVIE/TV -->
+  <string name="yt_not_installed">Youtube App Not Installed</string>
+  <string name="_divider">|</string>
   <string name="summary">Summary</string>
-  <string name="director">Director: %s</string>
-  <string name="writing">Creator: %s</string>
   <string name="watch_trailer">Watch Trailer</string>
   <string name="cast">Cast</string>
   <string name="as">as</string>
@@ -86,27 +89,19 @@
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
 
-
   <string name="undo">Undo</string>
-  <string name="already_favorite">already in favorite</string>
-  <string name="already_favorite2">Item already in favorite</string>
   <string name="already_watchlist">already in watchlist</string>
-  <string name="already_watchlist2">Item already in watchlist</string>
   <string name="added_to_favorite">has been added to favorite</string>
   <string name="added_to_watchlist">has been added to watchlist</string>
-  <string name="added_to_favorite2">Item has been added to favorite</string>
-  <string name="added_to_watchlist2">Item has been added to watchlist</string>
   <string name="deleted_from_favorite">has been deleted from favorite</string>
   <string name="deleted_from_favorite2">Item has been deleted from favorite</string>
   <string name="deleted_from_watchlist">has been deleted from watchlist</string>
   <string name="deleted_from_watchlist2">Item has been deleted from watchlist</string>
 
   <string name="no_data">No Data</string>
-  <string name="on_tv">On Tv</string>
   <string name="add_to_favorite">add to favorite</string>
   <string name="add_to_watchlist">add to watchlist</string>
 
-  <string name="_divider">|</string>
   <string name="picture">Picture</string>
   <string name="forget_password">Forget Password</string>
   <string name="nan">NaN</string>
@@ -121,5 +116,8 @@
   <string name="read_more">Read More</string>
   <string name="less_more">Less More</string>
   <string name="playing_as">Playing as</string>
+  <string name="no_biography">No biography</string>
+  <string name="data">Data</string>
+
 
 </resources>

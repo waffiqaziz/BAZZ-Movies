@@ -48,7 +48,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_popular"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -67,7 +67,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_now_playing"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -86,7 +86,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_upcoming"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -105,7 +105,7 @@
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_top_rated"
               android:layout_width="match_parent"
-              android:layout_height="150dp"
+              android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

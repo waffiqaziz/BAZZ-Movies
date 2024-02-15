@@ -37,6 +37,8 @@ class FavoriteMovieAdapter :
 
     fun bind(resultItem: ResultItem) {
       data = resultItem
+      binding.ivPicture.contentDescription =
+        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
 
       Glide.with(binding.ivPicture)
         .load(TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath) // URL movie poster

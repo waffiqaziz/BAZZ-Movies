@@ -11,6 +11,7 @@
   <color name="grey_800">#202123</color>
   <color name="grey_700">#25272A</color>
   <color name="grey_600">#2B2D30</color>
+  <color name="grey_600_alpha">#902B2D30</color>
   <color name="grey_400">#BBBBBB</color>
   <color name="grey_100">#D1D1D1</color>
   <color name="white">#FFFFFFFF</color>

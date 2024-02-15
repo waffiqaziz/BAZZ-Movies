@@ -41,27 +41,13 @@
           app:layout_constraintTop_toTopOf="parent"
           tools:src="@tools:sample/avatars" />
 
-        <ImageView
-          android:id="@+id/btn_back_bg"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginTop="4dp"
-          android:alpha="0.3"
-          android:background="@drawable/bg_back_button"
-          android:contentDescription="@string/back"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
         <ImageButton
           android:id="@+id/btn_back"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="4dp"
           android:layout_marginTop="4dp"
-          android:background="#00000000"
+          android:background="@drawable/bg_back_button"
           android:contentDescription="@string/back"
           android:foreground="?selectableItemBackgroundBorderless"
           android:minWidth="48dp"
@@ -149,7 +135,7 @@
           app:layout_constraintStart_toStartOf="@+id/tv_known_for"
           app:layout_constraintTop_toBottomOf="@+id/tv_biography" />
 
-        <TextView
+          <TextView
           android:id="@+id/tv_born"
           style="@style/TextBody"
           android:layout_width="match_parent"

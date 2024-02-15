@@ -1,8 +1,16 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -23,6 +31,7 @@ class SearchFragment : Fragment() {
   private val binding get() = _binding!!
 
   private lateinit var searchViewModel: SearchViewModel
+  private lateinit var closeButton: View
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -76,6 +85,8 @@ class SearchFragment : Fragment() {
 
         val item = menu.findItem(R.id.action_search)
         val searchView = item?.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        customizeSearchView(searchView)
 
         // search queryTextChange Listener
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -84,7 +95,7 @@ class SearchFragment : Fragment() {
             if (query != null) {
               searchViewModel.search(query).observe(viewLifecycleOwner) { resultItemSearch ->
                 adapter.submitData(lifecycle, resultItemSearch)
-                adapter.addLoadStateListener{
+                adapter.addLoadStateListener {
                   binding.progressBar.isVisible = it.source.refresh is LoadState.Loading
                 }
               }
@@ -93,23 +104,10 @@ class SearchFragment : Fragment() {
           }
 
           override fun onQueryTextChange(query: String?): Boolean {
-//            Log.d("onQueryTextChange", "query: $query")
+            // Log.d("onQueryTextChange", "query: $query")
             return true
           }
         })
-
-        //Expand Collapse listener
-//        item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-//          override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-//            Toast.makeText(context, "Action Collapse", Toast.LENGTH_SHORT).show()
-//            return true
-//          }
-//
-//          override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-//            Toast.makeText(context, "Action Expand", Toast.LENGTH_SHORT).show()
-//            return true
-//          }
-//        })
       }
 
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -117,12 +115,53 @@ class SearchFragment : Fragment() {
           R.id.action_search -> {
             true
           }
+
           else -> false
         }
       }
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+
   }
 
+  private fun customizeSearchView(searchView: SearchView) {
+    lateinit var backButton: ImageView
+    val searchPlate = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
+    traverseViewHierarchy(searchPlate)
+
+    for (i in 0 until searchView.childCount) {
+      val child = searchView.getChildAt(i)
+      if (child is ImageView) {
+        // Check if the child is the arrow icon
+        backButton = child
+        // Set your custom drawable
+        val drawable: Drawable? = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_search)
+        backButton.setImageDrawable(drawable)
+        break
+      }
+    }
+  }
+
+  private fun traverseViewHierarchy(view: View) {
+    if (view is ViewGroup) {
+      for (i in 0 until view.childCount) {
+        val child = view.getChildAt(i)
+        if (child is ViewGroup) {
+          traverseViewHierarchy(child)
+        } else if (child is View && child.contentDescription == "Clear query") {
+          closeButton = child
+          val ivCloseButton = closeButton as ImageView
+          ivCloseButton.contentDescription = getString(R.string.clear_query)
+          ivCloseButton.setImageDrawable(
+            ContextCompat.getDrawable(
+              requireActivity(),
+              R.drawable.ic_cross
+            )
+          )
+        }
+      }
+    }
+  }
 
   override fun onDestroyView() {
     super.onDestroyView()
