@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
@@ -44,6 +45,7 @@ class SearchFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
+    (activity as AppCompatActivity).supportActionBar?.show()
     setupAll(searchViewModel)
     return root
   }

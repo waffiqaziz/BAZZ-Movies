@@ -5,7 +5,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:layout_marginStart="20dp"
-  android:layout_marginEnd="20dp"
   tools:background="@color/grey_700"
   tools:context=".ui.activity.search.SearchFragment">
 
@@ -23,7 +22,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
-    android:paddingBottom="50dp"
     tools:listitem="@layout/item_result" />
 
   <include

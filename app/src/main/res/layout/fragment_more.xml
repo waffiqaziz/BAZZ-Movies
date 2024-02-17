@@ -1,235 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
   android:id="@+id/constraint_layout"
+  android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:background="@color/grey_700"
   tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
-  <View
-    android:id="@+id/frameLayout"
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="?attr/colorPrimary"
-    android:padding="20dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
-  <ImageView
-    android:id="@+id/img_avatar"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
-    android:layout_marginStart="20dp"
-    android:contentDescription="@string/image_profile"
-    android:src="@drawable/ic_bazz"
-    app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-  <LinearLayout
-    android:id="@+id/linearLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
-    app:layout_constraintStart_toEndOf="@+id/img_avatar"
-    app:layout_constraintTop_toTopOf="@+id/img_avatar">
-
-    <TextView
-      android:id="@+id/tv_fullName"
-      style="@style/TextHeader1"
-      android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      tools:text="Name" />
+      android:paddingBottom="70dp">
 
-    <TextView
-      android:id="@+id/tv_username"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/gothic"
-      android:textColor="@color/white"
-      tools:text="Username" />
+      <View
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="?attr/colorPrimary"
+        android:padding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-  </LinearLayout>
+      <ImageView
+        android:id="@+id/img_avatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/image_profile"
+        android:src="@drawable/ic_bazz"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-  <com.google.android.material.checkbox.MaterialCheckBox
-    android:id="@+id/cb_dark_mode"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    android:buttonTint="@color/yellow"
-    android:checked="true"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_dark_mode"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_dark_mode" />
+      <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar"
+        app:layout_constraintTop_toTopOf="@+id/img_avatar">
 
-  <com.google.android.material.button.MaterialButton
-    android:layout_marginTop="24dp"
-    android:id="@+id/btn_dark_mode"
-    style="@style/ButtonMoreStyle"
-    android:text="@string/dark_mode"
-    app:icon="@drawable/ic_dark"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        <TextView
+          android:id="@+id/tv_fullName"
+          style="@style/TextHeader1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="Name" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_language"
-    style="@style/ButtonMoreStyle"
-    android:layout_marginTop="8dp"
-    android:text="@string/language"
-    app:icon="@drawable/ic_internet"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
+        <TextView
+          android:id="@+id/tv_username"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/gothic"
+          android:textColor="@color/white"
+          tools:text="Username" />
 
-  <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_language"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode"
-    android:contentDescription="@string/language" />
+      </LinearLayout>
 
-  <com.google.android.material.button.MaterialButton
-    android:paddingEnd="120dp"
-    android:id="@+id/btn_region"
-    style="@style/ButtonMoreStyle"
-    android:layout_width="wrap_content"
-    android:layout_marginTop="8dp"
-    android:text="@string/select_region"
-    app:icon="@drawable/ic_region"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_language"
-    tools:ignore="RtlSymmetry" />
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_dark_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:buttonTint="@color/yellow"
+        android:checked="true"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_dark_mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_dark_mode" />
 
-  <com.hbb20.CountryCodePicker
-    android:id="@+id/btn_countryPicker"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
-    app:ccpDialog_backgroundColor="@color/grey_700"
-    app:ccpDialog_fastScroller_bubbleColor="@color/yellow"
-    app:ccpDialog_fastScroller_handleColor="@color/yellow"
-    app:ccpDialog_keyboardAutoPopup="false"
-    app:ccpDialog_searchEditTextTint="@color/yellow"
-    app:ccpDialog_showCloseIcon="true"
-    app:ccpDialog_textColor="@color/white"
-    app:ccp_arrowColor="@color/yellow"
-    app:ccp_arrowSize="36sp"
-    app:ccp_autoDetectCountry="false"
-    app:ccp_clickable="true"
-    app:ccp_contentColor="@color/white"
-    app:ccp_showPhoneCode="false"
-    app:ccp_textGravity="RIGHT"
-    app:ccp_textSize="14sp"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_region"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_region" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_dark_mode"
+        style="@style/ButtonMoreStyle"
+        android:layout_marginTop="24dp"
+        android:text="@string/dark_mode"
+        app:icon="@drawable/ic_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_rate"
-    style="@style/ButtonMoreStyle"
-    android:layout_marginTop="8dp"
-    android:text="@string/rate_us"
-    app:icon="@drawable/ic_thumbs_up"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_region" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_language"
+        style="@style/ButtonMoreStyle"
+        android:layout_marginTop="8dp"
+        android:text="@string/language"
+        app:icon="@drawable/ic_internet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
 
-  <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_rate"
-    android:contentDescription="@string/rate_us" />
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/language"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_language"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_dark_mode" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_help"
-    style="@style/ButtonMoreStyle"
-    android:layout_marginTop="8dp"
-    android:text="@string/help"
-    app:icon="@drawable/ic_alert_circle"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_rate" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_region"
+        style="@style/ButtonMoreStyle"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="120dp"
+        android:text="@string/select_region"
+        app:icon="@drawable/ic_region"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_language"
+        tools:ignore="RtlSymmetry" />
 
-  <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_help"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_help" />
+      <com.hbb20.CountryCodePicker
+        android:id="@+id/btn_countryPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:ccpDialog_backgroundColor="@color/grey_700"
+        app:ccpDialog_fastScroller_bubbleColor="@color/yellow"
+        app:ccpDialog_fastScroller_handleColor="@color/yellow"
+        app:ccpDialog_keyboardAutoPopup="false"
+        app:ccpDialog_searchEditTextTint="@color/yellow"
+        app:ccpDialog_showCloseIcon="true"
+        app:ccpDialog_textColor="@color/white"
+        app:ccp_arrowColor="@color/yellow"
+        app:ccp_arrowSize="36sp"
+        app:ccp_autoDetectCountry="false"
+        app:ccp_clickable="true"
+        app:ccp_contentColor="@color/white"
+        app:ccp_showPhoneCode="false"
+        app:ccp_textGravity="RIGHT"
+        app:ccp_textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_region"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_region" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_suggestion"
-    style="@style/ButtonMoreStyle"
-    android:layout_marginTop="8dp"
-    android:text="@string/suggestion"
-    app:icon="@drawable/ic_lamp"
-    app:iconGravity="textStart"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_rate"
+        style="@style/ButtonMoreStyle"
+        android:layout_marginTop="8dp"
+        android:text="@string/rate_us"
+        app:icon="@drawable/ic_thumbs_up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_region" />
 
-  <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="20dp"
-    android:src="@drawable/ic_chevron_right"
-    app:layout_constraintBottom_toBottomOf="@+id/btn_suggestion"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/btn_suggestion"
-    android:contentDescription="@string/suggestion" />
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/rate_us"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_rate" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_help"
+        style="@style/ButtonMoreStyle"
+        android:layout_marginTop="8dp"
+        android:text="@string/help"
+        app:icon="@drawable/ic_alert_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_rate" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/open_help"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_help"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_help" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_suggestion"
+        style="@style/ButtonMoreStyle"
+        android:layout_marginTop="8dp"
+        android:text="@string/suggestion"
+        app:icon="@drawable/ic_lamp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_help" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/suggestion"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_suggestion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_suggestion" />
 
 
-  <TextView
-    android:id="@+id/tv_terms_conditon"
-    style="@style/TextDivider"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginTop="16dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:text="@string/terms_amp_condition"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btn_suggestion" />
+      <TextView
+        android:id="@+id/tv_terms_conditon"
+        style="@style/TextDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/terms_amp_condition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_suggestion" />
 
-  <TextView
-    android:id="@+id/tv_privacy_policy"
-    style="@style/TextDivider"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:text="@string/privacy_amp_policy"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
+      <TextView
+        android:id="@+id/tv_privacy_policy"
+        style="@style/TextDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/privacy_amp_policy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_signout"
-    style="@style/ButtonSignOut"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginBottom="70dp"
-    android:text="@string/sign_out"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_signout"
+        style="@style/ButtonSignOut"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/sign_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_privacy_policy" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

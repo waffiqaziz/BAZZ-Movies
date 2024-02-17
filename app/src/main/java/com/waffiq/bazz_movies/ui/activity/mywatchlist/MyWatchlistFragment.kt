@@ -1,9 +1,11 @@
 package com.waffiq.bazz_movies.ui.activity.mywatchlist
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -35,6 +37,7 @@ class MyWatchlistFragment : Fragment() {
     viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
 
     setupView()
+    hideActionBar()
     return root
   }
 
@@ -49,6 +52,13 @@ class MyWatchlistFragment : Fragment() {
     TabLayoutMediator(tabLayout, viewpager){ tab, position ->
       tab.text = Constants.tabMoviesTvHeadingArray[position]
     }.attach()
+  }
+
+  private fun hideActionBar(){
+    // disable action bar
+    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      (activity as AppCompatActivity).supportActionBar?.hide()
+    }
   }
 
   override fun onDestroyView() {

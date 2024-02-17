@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -34,6 +36,7 @@ import com.waffiq.bazz_movies.utils.Helper.checkInternet
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import java.util.Locale
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -63,6 +66,7 @@ class FeaturedFragment : Fragment() {
     showSnackBarNoAction(checkInternet(requireContext()))
     setRegion()
     setMoveNowPlaying()
+    hideActionBar()
 
     return root
   }
@@ -210,6 +214,18 @@ class FeaturedFragment : Fragment() {
     if (isLoading) {
       binding.progressBar.visibility = View.VISIBLE
     } else animFadeOut()
+  }
+
+  private fun hideActionBar(){
+    // disable action bar
+    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+  }
+
+  override fun onResume(){
+    super.onResume()
+    hideActionBar()
   }
 
   override fun onDestroyView() {

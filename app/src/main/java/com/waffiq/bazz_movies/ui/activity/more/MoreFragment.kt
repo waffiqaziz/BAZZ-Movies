@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,10 +57,6 @@ class MoreFragment : Fragment() {
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
-
-    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) {
-      Log.i("MoreFragment", "Get user region country : $it")
-    }
 
     setTypeface()
     setData()
