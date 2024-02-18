@@ -394,17 +394,6 @@
           app:readMoreText="@string/read_more"
           app:textMode="line"
           tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
-        <!--
-              <TextView
-                android:id="@+id/tv_director"
-                style="@style/TextBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/tv_overview"
-                app:layout_constraintTop_toBottomOf="@+id/tv_overview"
-                tools:text="Director: John R. Leonetti" />
-        -->
 
         <FrameLayout
           android:id="@+id/table"

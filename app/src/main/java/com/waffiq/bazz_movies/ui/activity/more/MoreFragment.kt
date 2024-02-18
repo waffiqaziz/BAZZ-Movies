@@ -19,12 +19,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
+import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants
-import com.waffiq.bazz_movies.utils.Constants.GMAIL_BAZZ_HELPER
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
@@ -76,10 +76,8 @@ class MoreFragment : Fragment() {
       binding.cbDarkMode.isChecked = !binding.cbDarkMode.isChecked
       toastStillOnDevelopment(requireContext())
     }
-    binding.btnHelp.setOnClickListener {
-      startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
-        data = Uri.parse("mailto:$GMAIL_BAZZ_HELPER?subject=Help BAZZ Movies")
-      }, "Help"))
+    binding.btnFaq.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_LINK)))
     }
     binding.tvPrivacyPolicy.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PRIVACY_POLICY_LINK)))
@@ -89,6 +87,11 @@ class MoreFragment : Fragment() {
     }
     binding.btnSuggestion.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FORM_HELPER)))
+    }
+    binding.btnAboutUs.setOnClickListener {
+      activity?.let {
+        it.startActivity(Intent(it, AboutActivity::class.java))
+      }
     }
 
     binding.btnSignout.setOnClickListener {

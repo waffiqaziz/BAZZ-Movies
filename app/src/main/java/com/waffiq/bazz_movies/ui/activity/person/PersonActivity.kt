@@ -151,8 +151,8 @@ class PersonActivity : AppCompatActivity() {
 
       if (it.birthday != null)
         if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
-          val birthday = "${it.birthday.let { dateFormater(it) }} (${
-            it.birthday.let { getAgeBirth(it) }
+          val birthday = "${dateFormater(it.birthday)} (${
+            getAgeBirth(it.birthday)
           } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
           binding.tvBorn.text = birthday
         } else binding.tvBorn.text = getString(R.string.no_data)

@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     setupActionBarWithNavController(navController, appBarConfiguration)
     */
 
+    // show icon on action bar
     supportActionBar?.setDisplayShowHomeEnabled(true)
     supportActionBar?.setIcon(R.mipmap.ic_launcher)
 

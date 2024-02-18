@@ -109,9 +109,6 @@ class MoviesRepository(
   private val _stated = MutableLiveData<StatedResponse?>()
   val stated: LiveData<StatedResponse?> get() = _stated
 
-  private val _statedEvent = MutableLiveData<Event<StatedResponse?>>()
-  val statedEvent: LiveData<Event<StatedResponse?>> get() = _statedEvent
-
 
   // for DB all
   private val _isFavorite = MutableLiveData<Boolean>()
@@ -315,7 +312,7 @@ class MoviesRepository(
   }
 
 
-  // multisearch
+  // multi-search
   fun search(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
       config = PagingConfig(
@@ -649,7 +646,6 @@ class MoviesRepository(
         if (response.isSuccessful) {
           if (responseBody != null) {
             _stated.value = response.body()
-            _statedEvent.value = Event(response.body())
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -681,7 +677,6 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           _stated.value = response.body()
-          _statedEvent.value = Event(response.body())
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -716,6 +711,7 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
+            if(!data.favorite!!) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -945,9 +941,7 @@ class MoviesRepository(
   fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
 
-  fun insertToDB(fav: FavoriteDB) {
-    appExecutors.diskIO().execute { localDataSource.insert(fav) }
-  }
+  fun insertToDB(fav: FavoriteDB) = appExecutors.diskIO().execute { localDataSource.insert(fav) }
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
@@ -955,9 +949,7 @@ class MoviesRepository(
     _undoDB.value = Event(fav)
   }
 
-  fun deleteAll() {
-    appExecutors.diskIO().execute { localDataSource.deleteALl() }
-  }
+  fun deleteAll() = appExecutors.diskIO().execute { localDataSource.deleteALl() }
 
   fun isFavoriteDB(id: Int) {
     appExecutors.diskIO().execute {

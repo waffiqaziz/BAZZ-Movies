@@ -191,7 +191,7 @@ class UserRepository(
     return pref.getUser()
   }
 
-  fun getUserRegion(): Flow<String>{
+  fun getUserRegion(): Flow<String> {
     return pref.getRegion()
   }
 

@@ -45,7 +45,7 @@
   <string name="image_profile">Image Profile</string>
   <string name="dark_mode">Dark Mode</string>
   <string name="rate_us">Rate us on PlayStore</string>
-  <string name="help">Help</string>
+  <string name="faq">FAQ</string>
   <string name="suggestion">Suggestion</string>
   <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
   <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
@@ -58,6 +58,12 @@
   <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
   <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
   <string name="select_region">Select Region</string>
+  <string name="open_help">open help</string>
+  <string name="open_about_us">open about us</string>
+  <string name="about">About</string>
+  <string name="about_text">I\'m the sole developer behind the BAZZ Movies app that transforms how you manage your movie collection. Driven by my passion for movies and technology, I embarked on a journey to create an intuitive solution for fellow cinephiles. With my app, you can effortlessly organize, discover, and enjoy your favorite films anytime, anywhere. Join me on this cinematic adventure, and let\'s elevate your movie experience together!</string>
+  <string name="tmdb_endorse">This app uses the TMDB API but is not endorsed or certified by TMDB.</string>
+
 
   <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
@@ -118,7 +124,6 @@
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
   <string name="data">Data</string>
-  <string name="open_help">open help</string>
 
 
 </resources>
