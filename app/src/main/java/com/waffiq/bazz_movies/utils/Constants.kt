@@ -23,6 +23,7 @@ object Constants {
     "https://docs.google.com/forms/d/e/1FAIpQLScHL8ElRS4bqSkA__lGX97AnuJ0unA1DRAryIrgc72kuWOg_g/viewform?usp=sf_link"
   const val FAQ_LINK =
     "https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing"
+  const val TMDB_LINK_MAIN = "https://www.themoviedb.org/"
 
 
   val tabHomeHeadingArray = arrayOf("Featured", "Movies", "TV Series")

@@ -41,7 +41,13 @@ interface TMDBApiService {
   ): MovieTvResponse
 
   @GET("3/trending/all/week?api_key=$API_KEY")
-  suspend fun getTrending(
+  suspend fun getTrendingWeek(
+    @Query("region") region: String,
+    @Query("page") page: Int
+  ): MovieTvResponse
+
+  @GET("3/trending/all/day?api_key=$API_KEY")
+  suspend fun getTrendingDay(
     @Query("region") region: String,
     @Query("page") page: Int
   ): MovieTvResponse

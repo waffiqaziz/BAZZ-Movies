@@ -8,7 +8,9 @@ class HomeViewModel(
   private val movieRepository: MoviesRepository
 ) : ViewModel() {
 
-  fun getTrending(region : String) = movieRepository.getPagingTrending(region).cachedIn(viewModelScope).asLiveData()
+  fun getTrendingWeek(region : String) = movieRepository.getPagingTrendingWeek(region).cachedIn(viewModelScope).asLiveData()
+
+  fun getTrendingDay(region : String) = movieRepository.getPagingTrendingDay(region).cachedIn(viewModelScope).asLiveData()
 
   fun getUpcomingMovies(region : String) = movieRepository.getPagingUpcomingMovies(region).cachedIn(viewModelScope).asLiveData()
 

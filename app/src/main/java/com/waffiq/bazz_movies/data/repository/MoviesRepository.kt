@@ -15,7 +15,8 @@ import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
-import com.waffiq.bazz_movies.data.paging.MultiTrendingPagingSource
+import com.waffiq.bazz_movies.data.paging.MultiTrendingDayPagingSource
+import com.waffiq.bazz_movies.data.paging.MultiTrendingWeekPagingSource
 import com.waffiq.bazz_movies.data.paging.OnTvPagingSource
 import com.waffiq.bazz_movies.data.paging.PlayingNowMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.PopularMoviePagingSource
@@ -245,13 +246,24 @@ class MoviesRepository(
     ).flow
   }
 
-  fun getPagingTrending(region: String): Flow<PagingData<ResultItem>> {
+  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(
         pageSize = 5
       ),
       pagingSourceFactory = {
-        MultiTrendingPagingSource(region, tmdbApiService)
+        MultiTrendingWeekPagingSource(region, tmdbApiService)
+      }
+    ).flow
+  }
+
+  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 5
+      ),
+      pagingSourceFactory = {
+        MultiTrendingDayPagingSource(region, tmdbApiService)
       }
     ).flow
   }

@@ -115,12 +115,29 @@ class FeaturedFragment : Fragment() {
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
 
-    // trending
+    // trending week
     binding.rvTrending.adapter = adapterTrending.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterTrending.retry() }
     )
-    homeViewModel.getTrending(region).observe(viewLifecycleOwner) {
-      adapterTrending.submitData(lifecycle, it)
+    // default will be week
+    if (binding.rbThisWeek.isChecked) {
+      homeViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
+        adapterTrending.submitData(lifecycle, it)
+      }
+    }
+    binding.rbToday.setOnClickListener {
+      homeViewModel.getTrendingDay(region).observe(viewLifecycleOwner) {
+        adapterTrending.submitData(lifecycle, it)
+      }
+      adapterTrending.retry()
+      adapterTrending.refresh()
+    }
+    binding.rbThisWeek.setOnClickListener {
+      homeViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
+        adapterTrending.submitData(lifecycle, it)
+      }
+      adapterTrending.retry()
+      adapterTrending.refresh()
     }
 
     // upcoming movie
@@ -216,14 +233,14 @@ class FeaturedFragment : Fragment() {
     } else animFadeOut()
   }
 
-  private fun hideActionBar(){
+  private fun hideActionBar() {
     // disable action bar
     if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       (activity as AppCompatActivity).supportActionBar?.hide()
     }
   }
 
-  override fun onResume(){
+  override fun onResume() {
     super.onResume()
     hideActionBar()
   }

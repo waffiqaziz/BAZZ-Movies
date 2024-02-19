@@ -10,7 +10,7 @@
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
-  <string name="bazz">BAZZ</string>
+  <string name="bazz">BAZZ Movies</string>
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>
@@ -28,6 +28,8 @@
 
   <!-- FEATURED -->
   <string name="trending_now">Trending now</string>
+  <string name="today">Today</string>
+  <string name="this_week">This Week</string>
   <string name="featured">Featured</string>
   <string name="upcoming_movies">Upcoming Movies</string>
   <string name="popular">Popular</string>
@@ -62,7 +64,7 @@
   <string name="open_about_us">open about us</string>
   <string name="about">About</string>
   <string name="about_text">I\'m the sole developer behind the BAZZ Movies app that transforms how you manage your movie collection. Driven by my passion for movies and technology, I embarked on a journey to create an intuitive solution for fellow cinephiles. With my app, you can effortlessly organize, discover, and enjoy your favorite films anytime, anywhere. Join me on this cinematic adventure, and let\'s elevate your movie experience together!</string>
-  <string name="tmdb_endorse">This app uses the TMDB API but is not endorsed or certified by TMDB.</string>
+  <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but is not endorsed or certified by TMDB.</string>
 
 
   <string name="clear_query">Clear query</string>

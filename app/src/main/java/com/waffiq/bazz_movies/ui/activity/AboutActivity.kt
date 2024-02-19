@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.ui.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
+import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_MAIN
 
 class AboutActivity : AppCompatActivity() {
 
@@ -19,6 +22,10 @@ class AboutActivity : AppCompatActivity() {
 
     binding.fab.setOnClickListener{
       finish()
+    }
+
+    binding.ivTmdbLogo.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_MAIN)))
     }
   }
 }
