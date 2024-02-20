@@ -16,18 +16,15 @@
     android:layout_marginEnd="20dp"
     tools:listitem="@layout/item_result" />
 
-  <TextView
-    android:id="@+id/view_empty"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:fontFamily="@font/gothicb"
-    android:text="@string/no_data"
-    android:textColor="@color/yellow"
+  <include
+    android:id="@+id/illustration_no_data_view"
+    layout="@layout/illustration_no_data"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="invisible" />
 
   <ProgressBar
     android:id="@+id/progress_bar"

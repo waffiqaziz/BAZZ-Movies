@@ -2,18 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/container_search_no_result"
+  android:id="@+id/container_search_no_data"
   tools:background="@color/grey_700"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
     <TextView
-      android:id="@+id/tv_header_noResult"
+      android:id="@+id/tv_header_no_data"
       style="@style/TextHeader1"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="100dp"
-      android:text="@string/sorry_no_result"
+      android:text="@string/no_data_found"
       android:textAlignment="center"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
@@ -25,20 +25,20 @@
       style="@style/TextDivider"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/no_result_explanation"
+      android:text="@string/no_data_explanation"
       app:layout_constraintEnd_toEndOf="parent"
       android:textAlignment="center"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tv_header_noResult" />
+      app:layout_constraintTop_toBottomOf="@+id/tv_header_no_data" />
 
     <ImageView
       android:id="@+id/iv_illustration_no_data"
-      android:layout_width="300dp"
-      android:layout_height="300dp"
-      android:layout_marginBottom="16dp"
-      android:contentDescription="@string/search_illustration"
-      android:src="@drawable/ic_no_found"
-      app:layout_constraintBottom_toBottomOf="@+id/tv_no_data"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:contentDescription="@string/no_data_illustration"
+      android:src="@drawable/ic_no_data"
+      app:layout_constraintBottom_toTopOf="@+id/tv_header_no_data"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
 

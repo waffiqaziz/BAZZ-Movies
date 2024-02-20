@@ -66,13 +66,17 @@
   <string name="about_text">I\'m the sole developer behind the BAZZ Movies app that transforms how you manage your movie collection. Driven by my passion for movies and technology, I embarked on a journey to create an intuitive solution for fellow cinephiles. With my app, you can effortlessly organize, discover, and enjoy your favorite films anytime, anywhere. Join me on this cinematic adventure, and let\'s elevate your movie experience together!</string>
   <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but is not endorsed or certified by TMDB.</string>
 
-
   <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
+
+  <string name="data">Data</string>
+  <string name="no_data_illustration">no data illustration</string>
+  <string name="no_data_found">No data found!</string>
+  <string name="no_data_explanation">We cannot find data you are looking for,\nmaybe add favorite or watchlist first</string>
 
   <string name="language">Language</string>
   <string name="back">Back</string>
@@ -96,6 +100,7 @@
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
+  <string name="tmdb_full">The Movie Database</string>
 
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
@@ -125,7 +130,5 @@
   <string name="less_more">Less More</string>
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
-  <string name="data">Data</string>
-
 
 </resources>

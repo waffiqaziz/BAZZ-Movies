@@ -60,13 +60,15 @@
                 style="@style/TextHeader2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="10dp"
                 android:text="@string/trending_now" />
 
               <RadioGroup
                 android:id="@+id/toggle"
-                android:layout_width="170dp"
+                android:layout_width="190dp"
                 android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_switch_outline_button"
                 android:checkedButton="@+id/rb_this_week"
                 android:orientation="horizontal">
@@ -108,7 +110,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginStart="20dp"
-              android:layout_marginTop="8dp"
+              android:layout_marginTop="12dp"
               android:layout_marginEnd="20dp"
               android:contentDescription="@string/trending_now"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

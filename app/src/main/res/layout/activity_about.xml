@@ -24,9 +24,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
-    android:justificationMode="inter_word"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="20dp"
+    android:justificationMode="inter_word"
     android:text="@string/tmdb_endorse"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +36,7 @@
     android:id="@+id/iv_tmdb_logo"
     android:layout_width="0dp"
     android:layout_height="0dp"
+    android:contentDescription="@string/tmdb_full"
     android:src="@drawable/ic_tmdb"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHeight_percent="0.20"
@@ -65,10 +66,10 @@
     android:layout_margin="16dp"
     android:layout_marginEnd="20dp"
     android:layout_marginBottom="32dp"
+    android:backgroundTint="@color/yellow"
     android:contentDescription="@string/submit"
     android:src="@drawable/ic_left_icon"
-    app:rippleColor="@color/yellow_alpha_50"
-    android:backgroundTint="@color/yellow"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    app:layout_constraintEnd_toEndOf="parent"
+    app:rippleColor="@color/yellow_alpha_50" />
 </androidx.constraintlayout.widget.ConstraintLayout>

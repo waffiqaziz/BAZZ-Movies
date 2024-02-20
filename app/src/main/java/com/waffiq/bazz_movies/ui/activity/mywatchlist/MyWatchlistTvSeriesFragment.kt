@@ -53,7 +53,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   }
 
   private fun checkUser() {
-    //setup recycleview
+    // setup recyclerview
     binding.rvWatchlistTv.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -76,21 +76,21 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       }
     )
 
-    //show or hide view
+    // show or hide view
     adapterPaging.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
         && adapterPaging.itemCount < 1
       ) {
-        /// show empty view
-        binding.viewEmpty.visibility = View.VISIBLE
+        // show empty view
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.VISIBLE
       } else {
-        ///  hide empty view
-        binding.viewEmpty.visibility = View.GONE
+        //  hide empty view
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.GONE
       }
 
       binding.progressBar.isVisible =
-        loadState.source.refresh is LoadState.Loading //show progressbar
+        loadState.source.refresh is LoadState.Loading // show progressbar
     }
 
     viewModel.getWatchlistTvSeries(userToken)
@@ -106,10 +106,10 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvWatchlistTv.visibility = View.VISIBLE
-        binding.viewEmpty.visibility = View.GONE
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.GONE
       } else {
         binding.rvWatchlistTv.visibility = View.GONE
-        binding.viewEmpty.visibility = View.VISIBLE
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.VISIBLE
       }
       binding.progressBar.visibility = View.GONE
     }

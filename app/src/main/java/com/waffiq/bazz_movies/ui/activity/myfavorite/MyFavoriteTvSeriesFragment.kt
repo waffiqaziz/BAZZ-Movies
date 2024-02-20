@@ -54,14 +54,14 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   }
 
   private fun checkUser() {
-    //setup recycleview
+    //setup recyclerview
     binding.rvFavTv.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      if (user.token != "NaN") { //user login then show data from TMDB
+      if (user.token != "NaN") { // user login then show data from TMDB
         setDataUserLogin(user.token)
-      } else { //guest user then show data from database
+      } else { // guest user then show data from database
         setDataGuestUser()
         binding.rvFavTv.addItemDecoration(
           DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
@@ -77,20 +77,20 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
     )
 
-    //show/hide view
+    // show/hide view
     adapterPaging.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
         && adapterPaging.itemCount < 1
       ) {
-        /// show empty view
-        binding.viewEmpty.isVisible = true
+        // show empty view
+        binding.illustrationNoDataView.containerSearchNoData.isVisible = true
       } else {
-        ///  hide empty view
+        //  hide empty view
       }
 
       binding.progressBar.isVisible =
-        loadState.source.refresh is LoadState.Loading //show progressbar
+        loadState.source.refresh is LoadState.Loading // show progressbar
     }
 
     viewModel.getFavoriteTvSeries(userToken)
@@ -106,10 +106,10 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavTv.visibility = View.VISIBLE
-        binding.viewEmpty.visibility = View.GONE
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.GONE
       } else {
         binding.rvFavTv.visibility = View.GONE
-        binding.viewEmpty.visibility = View.VISIBLE
+        binding.illustrationNoDataView.containerSearchNoData.visibility = View.VISIBLE
       }
       binding.progressBar.visibility = View.GONE
     }
