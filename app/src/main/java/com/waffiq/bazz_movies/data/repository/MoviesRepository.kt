@@ -842,6 +842,7 @@ class MoviesRepository(
     })
   }
 
+
   // person
   fun getDetailPerson(id: Int) {
     val client = TMDBApiConfig

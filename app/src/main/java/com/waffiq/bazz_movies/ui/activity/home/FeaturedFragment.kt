@@ -2,14 +2,12 @@ package com.waffiq.bazz_movies.ui.activity.home
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
@@ -48,7 +46,6 @@ class FeaturedFragment : Fragment() {
   private lateinit var homeViewModel: HomeViewModel
   private lateinit var moreViewModelUser: MoreViewModelUser
 
-  @RequiresApi(Build.VERSION_CODES.S)
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?

@@ -131,4 +131,7 @@
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
 
+  <string name="reset">Reset</string>
+  <string name="apply">Apply</string>
+
 </resources>

@@ -61,11 +61,24 @@ class PersonActivity : AppCompatActivity() {
     binding.swipeRefresh.setOnRefreshListener {
       val i = Intent(this, PersonActivity::class.java)
       i.putExtra(EXTRA_PERSON, dataExtra)
-      overridePendingTransition(0, 0)
+      activityTransition()
       binding.swipeRefresh.isRefreshing = false
       startActivity(i)
-      overridePendingTransition(0, 0)
+      activityTransition()
       finish()
+    }
+  }
+
+  private fun activityTransition(){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      overrideActivityTransition(
+        OVERRIDE_TRANSITION_OPEN,
+        android.R.anim.fade_in,
+        android.R.anim.fade_out
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
   }
 

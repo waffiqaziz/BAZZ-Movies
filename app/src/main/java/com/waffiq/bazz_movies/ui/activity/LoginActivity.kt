@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -127,9 +128,19 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
+
   private fun goToMainActivity(isGuest: Boolean) {
     startActivity(Intent(this, MainActivity::class.java))
-    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      overrideActivityTransition(
+        OVERRIDE_TRANSITION_OPEN,
+        android.R.anim.fade_in,
+        android.R.anim.fade_out
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
     if (isGuest) Helper.showToastShort(this, getString(R.string.login_as_guest_successful))
     else Helper.showToastShort(this, getString(R.string.login_successful))
     finish()
@@ -205,7 +216,12 @@ class LoginActivity : AppCompatActivity() {
     val spannableStringBuilder = SpannableStringBuilder(text)
     val typeface = ResourcesCompat.getFont(this, R.font.gothic)
     val customTypefaceSpan = typeface?.let { CustomTypefaceSpan(it) }
-    spannableStringBuilder.setSpan(customTypefaceSpan, 0, text.length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannableStringBuilder.setSpan(
+      customTypefaceSpan,
+      0,
+      text.length,
+      SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
     return spannableStringBuilder
   }
 

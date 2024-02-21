@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -46,12 +47,25 @@ class SplashScreenActivity : AppCompatActivity() {
   private fun gotoMainActivity(boolean: Boolean) {
     if (boolean) {
       startActivity(Intent(this, MainActivity::class.java))
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+      activityTransition()
       finish()
     } else {
       startActivity(Intent(this, LoginActivity::class.java))
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+      activityTransition()
       finish()
+    }
+  }
+
+  private fun activityTransition(){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      overrideActivityTransition(
+        OVERRIDE_TRANSITION_OPEN,
+        android.R.anim.fade_in,
+        android.R.anim.fade_out
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
   }
 }

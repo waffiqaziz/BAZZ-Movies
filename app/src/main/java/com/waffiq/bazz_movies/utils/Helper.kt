@@ -191,6 +191,7 @@ object Helper {
     }
   }
 
+  @Suppress("DEPRECATION")
   fun getLocation(context: Context): String {
 
     return getNetworkLocation(context).ifEmpty {
