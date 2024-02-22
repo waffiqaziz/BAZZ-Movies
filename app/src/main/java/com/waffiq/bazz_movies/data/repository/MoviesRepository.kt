@@ -445,6 +445,10 @@ class MoviesRepository(
                 .replace(" ", "").replace(",", "")
             } catch (e: NullPointerException) {
               _ageRatingTv.value = "N/A"
+              _productionCountry.value = "N/A"
+            } catch (e: IndexOutOfBoundsException){
+              _ageRatingTv.value = "N/A"
+              _productionCountry.value = "N/A"
             }
           }
 
