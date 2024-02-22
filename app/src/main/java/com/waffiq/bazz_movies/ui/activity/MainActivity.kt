@@ -49,9 +49,15 @@ class MainActivity : AppCompatActivity() {
     setupActionBarWithNavController(navController, appBarConfiguration)
     */
 
-    // show icon on action bar
-    supportActionBar?.setDisplayShowHomeEnabled(true)
-    supportActionBar?.setIcon(R.mipmap.ic_launcher)
+    // custom action bar
 
+    val actionBarTitleView = layoutInflater.inflate(R.layout.custom_action_bar_title, null)
+    supportActionBar?.apply {
+      setDisplayShowCustomEnabled(true)
+      setDisplayShowHomeEnabled(true)
+      setIcon(R.mipmap.ic_launcher)
+      customView = actionBarTitleView
+      title = null // Hide the default title
+    }
   }
 }

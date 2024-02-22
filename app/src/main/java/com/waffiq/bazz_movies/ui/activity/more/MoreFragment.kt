@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -57,6 +58,9 @@ class MoreFragment : Fragment() {
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
+
+    // hide action bar
+    (activity as AppCompatActivity).supportActionBar?.hide()
 
     setTypeface()
     setData()

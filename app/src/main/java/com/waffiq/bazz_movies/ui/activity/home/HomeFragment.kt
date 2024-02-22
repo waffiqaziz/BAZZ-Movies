@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager) { tab, position ->
-      tab.text = tabHomeHeadingArray[position]
+      tab.text = requireActivity().getString(tabHomeHeadingArray[position])
     }.attach()
   }
 

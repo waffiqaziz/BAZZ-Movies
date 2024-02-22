@@ -4,8 +4,8 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.home.HomeFragment"
-  android:orientation="vertical">
+  android:orientation="vertical"
+  tools:context=".ui.activity.home.HomeFragment">
 
   <com.google.android.material.tabs.TabLayout
     android:id="@+id/tabs"
@@ -13,10 +13,11 @@
     android:layout_height="@dimen/tab_layout_height"
     android:background="?attr/colorPrimary"
     app:tabIndicatorColor="@color/yellow"
-    app:tabTextAppearance="@style/TextTabLayoutStyle"
-    app:tabSelectedTextColor="@color/yellow"
     app:tabRippleColor="@color/white"
-    app:tabTextColor="@color/white"/>
+    app:tabSelectedTextColor="@color/yellow"
+    app:tabTextAppearance="@style/TextTabLayoutStyle"
+    android:contentDescription="@string/tab_layout_explanation"
+    app:tabTextColor="@color/white" />
 
   <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/view_pager"

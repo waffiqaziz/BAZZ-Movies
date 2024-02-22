@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.utils
 
+import com.waffiq.bazz_movies.R
+
 object Constants {
   const val TABLE_NAME = "favorite"
   const val INITIAL_PAGE_INDEX = 1
@@ -26,6 +28,6 @@ object Constants {
   const val TMDB_LINK_MAIN = "https://www.themoviedb.org/"
 
 
-  val tabHomeHeadingArray = arrayOf("Featured", "Movies", "TV Series")
-  val tabMoviesTvHeadingArray = arrayOf("Movies", "TV Series")
+  val tabHomeHeadingArray = arrayOf(R.string.featured, R.string.movies, R.string.tv_series)
+  val tabMoviesTvHeadingArray = arrayOf( R.string.movies, R.string.tv_series)
 }

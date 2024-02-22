@@ -7,12 +7,11 @@
   android:layout_height="match_parent">
 
   <androidx.recyclerview.widget.RecyclerView
+    android:paddingHorizontal="20dp"
     android:id="@+id/rv_fav_movies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="20dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="20dp"
     android:paddingBottom="50dp"
     android:visibility="invisible"
     tools:listitem="@layout/item_mulmed"

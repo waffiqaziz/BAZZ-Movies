@@ -6,7 +6,7 @@
   <string name="button_login">button login</string>
   <string name="username">Username</string>
   <string name="password">Password</string>
-  <string name="hide_unhide_password">hide/unhide password</string>
+  <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
   <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
@@ -27,6 +27,10 @@
   <string name="title_my_watchlist">My Watchlist</string>
 
   <!-- FEATURED -->
+  <string name="movies">Movies</string>
+  <string name="tv_series">TV Series</string>
+  <string name="person">Person</string>
+  <string name="multi_search">Multi Search</string>
   <string name="trending_now">Trending now</string>
   <string name="today">Today</string>
   <string name="this_week">This Week</string>
@@ -131,7 +135,6 @@
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
 
-  <string name="reset">Reset</string>
-  <string name="apply">Apply</string>
+  <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
 
 </resources>

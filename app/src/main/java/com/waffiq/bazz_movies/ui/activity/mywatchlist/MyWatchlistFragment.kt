@@ -50,7 +50,7 @@ class MyWatchlistFragment : Fragment() {
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager){ tab, position ->
-      tab.text = Constants.tabMoviesTvHeadingArray[position]
+      tab.text = requireActivity().getString(Constants.tabMoviesTvHeadingArray[position])
     }.attach()
   }
 
