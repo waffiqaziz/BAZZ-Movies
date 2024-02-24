@@ -132,7 +132,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun activityTransition(){
+  private fun activityTransition() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
       overrideActivityTransition(
         OVERRIDE_TRANSITION_OPEN,
@@ -260,7 +260,10 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         // age rate
-        detailViewModel.ageRatingMovie().observe(this) { binding.tvAgeRating.text = it }
+        detailViewModel.ageRatingMovie().observe(this) {
+          binding.tvAgeRating.text =
+            if (it.isNotEmpty() && it.isNotBlank()) it else getString(R.string.not_available)
+        }
       }
 
 
@@ -666,7 +669,7 @@ class DetailMovieActivity : AppCompatActivity() {
     textView.gravity = Gravity.START
     textView.textSize = 14F
     textView.setPadding(0, 7, 24, 7)
-    textView.setTextColor(ActivityCompat.getColor(this, R.color.grey_100))
+    textView.setTextColor(ActivityCompat.getColor(this, R.color.gray_100))
     return textView
   }
 

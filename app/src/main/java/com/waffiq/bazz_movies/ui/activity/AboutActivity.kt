@@ -17,8 +17,14 @@ class AboutActivity : AppCompatActivity() {
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    supportActionBar?.setDisplayShowHomeEnabled(true)
-    supportActionBar?.setIcon(R.mipmap.ic_launcher)
+    val actionBarTitleView = layoutInflater.inflate(R.layout.custom_action_bar_title, null)
+    supportActionBar?.apply {
+      setDisplayShowCustomEnabled(true)
+      setDisplayShowHomeEnabled(true)
+      setIcon(R.mipmap.ic_launcher)
+      customView = actionBarTitleView
+      title = null // Hide the default title
+    }
 
     binding.fab.setOnClickListener{
       finish()

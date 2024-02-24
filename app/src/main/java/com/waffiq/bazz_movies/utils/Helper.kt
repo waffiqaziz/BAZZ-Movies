@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB

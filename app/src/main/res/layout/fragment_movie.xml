@@ -5,7 +5,6 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/grey_700"
   tools:context=".ui.activity.home.MovieFragment">
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -41,15 +40,15 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:layout_marginTop="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginTop="@dimen/default_margin_parent_20"
               android:text="@string/popular" />
 
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_popular"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"
@@ -60,15 +59,15 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:layout_marginTop="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginTop="@dimen/default_margin_parent_20"
               android:text="@string/now_playing" />
 
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_now_playing"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"
@@ -79,15 +78,15 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:layout_marginTop="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginTop="@dimen/default_margin_parent_20"
               android:text="@string/upcoming" />
 
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_upcoming"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"
@@ -98,15 +97,15 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
-              android:layout_marginTop="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginTop="@dimen/default_margin_parent_20"
               android:text="@string/top_rated" />
 
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_top_rated"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"

@@ -5,7 +5,6 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/grey_700"
   tools:context=".ui.activity.home.FeaturedFragment">
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -51,9 +50,9 @@
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="-20dp"
-              android:layout_marginEnd="20dp"
+              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:orientation="horizontal">
 
               <TextView
@@ -75,44 +74,29 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                  style="@style/MySwitchRadioButton"
                   android:id="@+id/rb_today"
-                  android:layout_width="0dp"
-                  android:layout_height="match_parent"
                   android:layout_marginStart="1dp"
-                  android:layout_marginTop="1dp"
-                  android:layout_marginBottom="1dp"
-                  android:layout_weight="1"
-                  android:background="@drawable/bg_switch_selector"
                   android:button="@null"
-                  android:gravity="center"
-                  android:text="@string/today"
-                  android:textColor="@color/radio_button_state" />
+                  android:text="@string/today"/>
 
                 <RadioButton
+                  style="@style/MySwitchRadioButton"
                   android:id="@+id/rb_this_week"
-                  android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_marginTop="1dp"
                   android:layout_marginEnd="1dp"
-                  android:layout_marginBottom="1dp"
-                  android:layout_weight="1"
-                  android:background="@drawable/bg_switch_selector"
                   android:button="@null"
-                  android:gravity="center"
-                  android:text="@string/this_week"
-                  android:textColor="@color/radio_button_state" />
+                  android:text="@string/this_week"/>
               </RadioGroup>
 
             </LinearLayout>
-
 
             <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_trending"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="12dp"
-              android:layout_marginEnd="20dp"
+              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/trending_now"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"
@@ -123,7 +107,7 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="16dp"
               android:text="@string/upcoming_movies" />
 
@@ -131,9 +115,9 @@
               android:id="@+id/rv_upcoming"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
-              android:layout_marginEnd="20dp"
+              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/upcoming_movies"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_upcoming"
@@ -144,7 +128,7 @@
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="16dp"
               android:text="@string/playing_now_on_theater" />
 
@@ -152,9 +136,9 @@
               android:id="@+id/rv_playing_now"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="20dp"
+              android:layout_marginStart="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
-              android:layout_marginEnd="20dp"
+              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/playing_now_on_theater"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_upcoming"

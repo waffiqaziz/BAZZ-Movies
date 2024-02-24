@@ -61,8 +61,8 @@
           android:id="@+id/btn_back"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginTop="4dp"
+          android:layout_marginStart="5dp"
+          android:layout_marginTop="5dp"
           android:background="@drawable/bg_back_button"
           android:contentDescription="@string/back"
           android:foreground="?selectableItemBackgroundBorderless"
@@ -72,42 +72,55 @@
           app:layout_constraintTop_toTopOf="parent"
           app:srcCompat="@drawable/ic_left_icon" />
 
-        <ImageButton
-          android:id="@+id/btn_favorite"
+        <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="#00000000"
-          android:clickable="true"
-          android:contentDescription="@string/add_to_favorite"
-          android:focusable="true"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:scaleType="centerInside"
-          android:src="@drawable/ic_hearth"
-          app:layout_constraintEnd_toStartOf="@+id/btn_watchlist"
-          app:layout_constraintTop_toTopOf="@+id/btn_back" />
-
-        <ImageButton
-          android:id="@+id/btn_watchlist"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="4dp"
-          android:background="#00000000"
-          android:clickable="true"
-          android:contentDescription="@string/add_to_watchlist"
-          android:focusable="true"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:scaleType="centerInside"
-          android:src="@drawable/ic_bookmark"
+          android:layout_marginTop="5dp"
+          android:layout_marginEnd="5dp"
+          android:background="@drawable/bg_button_group"
+          android:orientation="horizontal"
+          android:paddingHorizontal="5dp"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@+id/btn_back" />
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageButton
+            android:id="@+id/btn_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:clickable="true"
+            android:contentDescription="@string/add_to_favorite"
+            android:focusable="true"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_hearth"
+            app:layout_constraintEnd_toStartOf="@+id/btn_watchlist"
+            app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+          <ImageButton
+            android:id="@+id/btn_watchlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:background="#00000000"
+            android:clickable="true"
+            android:contentDescription="@string/add_to_watchlist"
+            android:focusable="true"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+        </LinearLayout>
 
         <ImageView
           android:id="@+id/iv_poster"
           android:layout_width="120dp"
           android:layout_height="180dp"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="-40dp"
           android:contentDescription="@string/poster"
           app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +134,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="16dp"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:layout_marginBottom="8dp"
           app:layout_constrainedWidth="true"
           app:layout_constraintBottom_toTopOf="@+id/tv_year_released"
@@ -158,7 +171,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           android:text="@string/_divider"
-          android:textColor="@color/grey_400"
+          android:textColor="@color/gray_400"
           app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
           app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
 
@@ -169,7 +182,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
           android:text="@string/_divider"
-          android:textColor="@color/grey_400"
+          android:textColor="@color/gray_400"
           app:layout_constraintStart_toEndOf="@+id/tv_year_released"
           app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
 
@@ -191,7 +204,7 @@
           style="@style/TextBody"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:layout_marginBottom="4dp"
           android:ellipsize="end"
           android:maxLines="2"
@@ -356,10 +369,10 @@
           android:id="@+id/divider_score"
           android:layout_width="match_parent"
           android:layout_height="1.5dp"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:background="@color/yellow_alpha_50"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
+          android:background="@color/yellow_alpha_80"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/score_container" />
@@ -369,7 +382,7 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
           android:text="@string/summary"
           app:layout_constraintStart_toStartOf="parent"
@@ -380,9 +393,9 @@
           style="@style/TextBody"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:justificationMode="inter_word"
           app:collapsedLines="3"
           app:ellipsizeTextColor="@color/yellow"
@@ -399,9 +412,9 @@
           android:id="@+id/table"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:orientation="horizontal"
           app:layout_constraintStart_toStartOf="@+id/tv_overview"
           app:layout_constraintTop_toBottomOf="@+id/tv_overview"
@@ -422,9 +435,9 @@
           android:id="@+id/rv_cast"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
@@ -446,22 +459,15 @@
           android:id="@+id/rv_recommendation"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_trending"
           tools:orientation="horizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-          android:id="@+id/guideline"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          app:layout_constraintGuide_begin="210dp" />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -471,9 +477,7 @@
 
   <View
     android:id="@+id/background_dim_movie"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:background="@color/grey_800"
+    style="@style/MyDimStyle"
     android:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

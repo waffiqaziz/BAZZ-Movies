@@ -7,4 +7,5 @@
   android:textAppearance="?android:attr/textAppearanceLarge"
   android:textColor="?attr/colorOnPrimary"
   android:text="@string/bazz"
-  android:fontFamily="@font/paradroidbi" />
+  android:fontFamily="@font/paradroidbi"
+  android:layout_marginTop="-2dp"/>

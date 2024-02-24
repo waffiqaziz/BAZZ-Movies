@@ -7,12 +7,11 @@
   android:layout_height="match_parent">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:paddingHorizontal="20dp"
     android:id="@+id/rv_fav_movies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
-    android:paddingBottom="50dp"
+    android:paddingHorizontal="@dimen/default_margin_parent_20"
     android:visibility="invisible"
     tools:listitem="@layout/item_mulmed"
     tools:visibility="visible" />
@@ -45,7 +44,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintGuide_percent="0.91"
+    app:layout_constraintGuide_end="65dp"
     app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

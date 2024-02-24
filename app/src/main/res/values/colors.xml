@@ -2,18 +2,25 @@
 <resources>
   <color name="purple_200">#FFBB86FC</color>
   <color name="yellow">#FFD130</color>
-  <color name="yellow_alpha_50">#80FFD130</color>
+  <color name="yellow_white">#FDF9E9</color>
+  <color name="cream">#E3E6A4</color>
+  <color name="cream_alpha">#80E3E6A4</color>
+  <color name="yellow_alpha_80">#80FFD130</color>
   <color name="dark_light_100">#303437</color>
   <color name="teal_200">#FF03DAC5</color>
   <color name="teal_700">#FF018786</color>
   <color name="red_matte">#FF8282</color>
   <color name="black">#FF000000</color>
-  <color name="grey_800">#202123</color>
-  <color name="grey_700">#25272A</color>
-  <color name="grey_600">#2B2D30</color>
-  <color name="grey_600_alpha">#902B2D30</color>
-  <color name="grey_400">#BBBBBB</color>
-  <color name="grey_100">#D1D1D1</color>
+  <color name="gray">#161619</color>
+  <color name="gray_900">#252629</color>
+  <color name="gray_800">#48484C</color>
+  <color name="gray_700">#606165</color>
+  <color name="gray_600">#828388</color>
+  <color name="gray_600_alpha">#90161619</color>
+  <color name="gray_400">#ADAEB3</color>
+  <color name="gray_300">#C1C2C7</color>
+  <color name="gray_200">#D3D4D9</color>
+  <color name="gray_100">#DEDFE4</color>
   <color name="white">#FFFFFFFF</color>
 
 </resources>

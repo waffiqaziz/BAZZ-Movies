@@ -37,6 +37,8 @@ class MyFavoriteFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
 
+    (activity as AppCompatActivity).supportActionBar?.show()
+
     setupTabLayoutViewPager()
     hideActionBar()
     return root

@@ -29,7 +29,7 @@ class SplashScreenActivity : AppCompatActivity() {
     binding = ActivitySplashScreenBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    window.navigationBarColor = ContextCompat.getColor(this, R.color.grey_800)
+    window.navigationBarColor = ContextCompat.getColor(this, R.color.gray_900)
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]

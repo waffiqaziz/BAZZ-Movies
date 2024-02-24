@@ -11,8 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
-    android:paddingHorizontal="20dp"
-    android:paddingBottom="50dp"
+    android:paddingHorizontal="@dimen/default_margin_parent_20"
     tools:listitem="@layout/item_result" />
 
   <include

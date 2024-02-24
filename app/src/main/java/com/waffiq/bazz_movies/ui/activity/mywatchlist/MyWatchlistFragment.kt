@@ -36,6 +36,8 @@ class MyWatchlistFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
 
+    (activity as AppCompatActivity).supportActionBar?.show()
+
     setupView()
     hideActionBar()
     return root

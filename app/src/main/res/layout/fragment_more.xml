@@ -5,14 +5,13 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:background="@color/grey_700"
   tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
   <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    android:scrollbarThumbVertical="@color/yellow_alpha_50"
+    android:scrollbarThumbVertical="@color/yellow_alpha_80"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="?attr/colorPrimary"
-        android:padding="20dp"
+        android:padding="@dimen/default_margin_parent_20"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +32,7 @@
         android:id="@+id/img_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
         android:contentDescription="@string/image_profile"
         android:src="@drawable/ic_bazz"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
@@ -100,7 +99,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/default_margin_parent_20"
         android:contentDescription="@string/language"
         android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="@+id/btn_language"
@@ -124,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:ccpDialog_backgroundColor="@color/grey_700"
+        app:ccpDialog_backgroundColor="@color/gray_700"
         app:ccpDialog_fastScroller_bubbleColor="@color/yellow"
         app:ccpDialog_fastScroller_handleColor="@color/yellow"
         app:ccpDialog_keyboardAutoPopup="false"
@@ -155,7 +154,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/default_margin_parent_20"
         android:contentDescription="@string/rate_us"
         android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
@@ -174,7 +173,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/default_margin_parent_20"
         android:contentDescription="@string/open_help"
         android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="@+id/btn_faq"
@@ -193,7 +192,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/default_margin_parent_20"
         android:contentDescription="@string/suggestion"
         android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="@+id/btn_suggestion"
@@ -212,7 +211,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="@dimen/default_margin_parent_20"
         android:contentDescription="@string/open_about_us"
         android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="@+id/btn_about_us"
@@ -224,7 +223,7 @@
         style="@style/TextDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="@string/terms_amp_condition"
@@ -236,7 +235,7 @@
         style="@style/TextDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="@string/privacy_amp_policy"

@@ -110,14 +110,6 @@ class PersonActivity : AppCompatActivity() {
     // show picture
     personMovieViewModel.getImagePerson(dataExtra.id!!)
     personMovieViewModel.getImagePerson().observe(this) { adapterImage.setImage(it) }
-    showToastShort(this, adapterImage.itemCount.toString())
-//    if (adapterImage.itemCount == 0 ){
-//      binding.rvPhotos.visibility = View.GONE
-//      binding.tvPhotosHeader.visibility = View.GONE
-//    } else{
-//      binding.rvPhotos.visibility = View.VISIBLE
-//      binding.tvPhotosHeader.visibility = View.VISIBLE
-//    }
 
     // show detail person
     personMovieViewModel.getDetailPerson(dataExtra.id!!)
