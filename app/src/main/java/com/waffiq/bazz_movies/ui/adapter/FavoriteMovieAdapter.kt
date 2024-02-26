@@ -14,8 +14,8 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.utils.Helper
-import com.waffiq.bazz_movies.utils.Helper.dateFormater
+import com.waffiq.bazz_movies.utils.Helper.dateFormatter
+import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 import java.text.DecimalFormat
 
 class FavoriteMovieAdapter :
@@ -51,9 +51,9 @@ class FavoriteMovieAdapter :
       binding.tvTitle.text =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
-        dateFormater(it)
+        dateFormatter(it)
       }
-      binding.tvGenre.text = resultItem.genreIds?.let { Helper.iterateGenre(it) }
+      binding.tvGenre.text = resultItem.genreIds?.let { iterateGenre(it) }
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")

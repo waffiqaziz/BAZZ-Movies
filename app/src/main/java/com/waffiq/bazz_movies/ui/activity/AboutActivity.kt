@@ -17,6 +17,7 @@ class AboutActivity : AppCompatActivity() {
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    // setup action bar
     val actionBarTitleView = layoutInflater.inflate(R.layout.custom_action_bar_title, null)
     supportActionBar?.apply {
       setDisplayShowCustomEnabled(true)
@@ -26,10 +27,9 @@ class AboutActivity : AppCompatActivity() {
       title = null // Hide the default title
     }
 
-    binding.fab.setOnClickListener{
-      finish()
-    }
+    binding.fab.setOnClickListener { finish() }
 
+    // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_MAIN)))
     }

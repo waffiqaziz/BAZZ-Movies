@@ -8,7 +8,6 @@ import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -28,7 +27,11 @@ object Helper {
   }
 
   fun showToastShort(context: Context, text: String) {
-    Toast.makeText(context, HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY), Toast.LENGTH_SHORT).show()
+    Toast.makeText(
+      context, HtmlCompat.fromHtml(
+        text, HtmlCompat.FROM_HTML_MODE_LEGACY
+      ), Toast.LENGTH_SHORT
+    ).show()
   }
 
   private fun getGenreName(int: Int): String {
@@ -115,7 +118,7 @@ object Helper {
     return mapResponsesToEntitiesFavoriteDB(isFavorite = false, isWatchlist = false, input = data)
   }
 
-  fun dateFormater(date: String): String? {
+  fun dateFormatter(date: String): String? {
     return if (date.isNotEmpty()) {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
       val newDate = formatter.parse(date)
@@ -275,7 +278,7 @@ object Helper {
   }
 
   private fun isInternetConnectionAvailable(context: Context): Boolean {
-    var result = false
+    val result: Boolean
     val connectivityManager =
       context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkCapabilities = connectivityManager.activeNetwork ?: return false
@@ -291,7 +294,6 @@ object Helper {
   }
 
   fun checkInternet(context: Context): String {
-    return if (!isInternetConnectionAvailable(context))
-      context.getString(R.string.no_connection) else ""
+    return if (!isInternetConnectionAvailable(context)) context.getString(R.string.no_connection) else ""
   }
 }

@@ -58,6 +58,7 @@ class MyWatchlistMoviesFragment : Fragment() {
     binding.rvWatchlistMovie.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDB
         setDataUserLogin(user.token)

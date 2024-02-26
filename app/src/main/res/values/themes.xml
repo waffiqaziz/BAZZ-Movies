@@ -30,8 +30,6 @@
     <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
   </style>
 
-  <style name="Theme.BAZZ_movies" parent="Base.Theme.BAZZ_movies" />
-
   <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog" />
 
   <style name="MyChip" parent="Widget.MaterialComponents.Chip.Filter">
@@ -86,6 +84,26 @@
     <item name="android:background">@color/gray_900</item>
     <item name="android:layout_height">0dp</item>
     <item name="android:layout_width">0dp</item>
+  </style>
+
+  <style name="MyDimStyleMatchParent">
+    <item name="android:background">@color/gray_900</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="MyProgressBar">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:animateLayoutChanges">true</item>
+    <item name="android:indeterminateTint">@color/yellow</item>
+    <item name="android:visibility">gone</item>
+  </style>
+
+  <style name="MySpaceDetailPage">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">0dp</item>
+    <item name="android:layout_weight">1</item>
   </style>
 
   <!-- Style for SearchView -->
@@ -152,19 +170,20 @@
   </style>
 
   <style name="TextScore">
-    <item name="android:padding">12dp</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">@color/gray_100</item>
     <item name="fontFamily">@font/gothic</item>
   </style>
 
   <style name="TextScoreHeader">
-    <item name="android:layout_marginTop">-12dp</item>
+    <item name="android:layout_marginTop">12dp</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/gothic</item>
     <item name="android:gravity">center</item>
-    <item name="android:layout_width">90dp</item>
+    <item name="android:layout_width">wrap_content</item>
   </style>
 
   <!-- Style button on more page -->

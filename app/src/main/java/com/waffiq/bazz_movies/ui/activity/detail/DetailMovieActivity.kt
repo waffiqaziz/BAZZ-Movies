@@ -53,7 +53,7 @@ import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
-import com.waffiq.bazz_movies.utils.Helper.dateFormater
+import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistFalse
 import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistTrue
@@ -165,7 +165,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // show data(year, overview, title)
     binding.apply {
       dataExtra.apply {
-        val year = dateFormater((firstAirDate ?: releaseDate ?: ""))!!
+        val year = dateFormatter((firstAirDate ?: releaseDate ?: ""))!!
         if (year.isEmpty()) {
           tvYearReleased.text = getString(R.string.not_available)
         } else tvYearReleased.text = year
@@ -611,12 +611,11 @@ class DetailMovieActivity : AppCompatActivity() {
     val animation = animFadeOutLong(this)
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).postDelayed({
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
-    }, 600)
+    }, DELAY_TIME)
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -676,5 +675,6 @@ class DetailMovieActivity : AppCompatActivity() {
 
   companion object {
     const val EXTRA_MOVIE = "MOVIE"
+    const val DELAY_TIME = 600L
   }
 }

@@ -5,7 +5,8 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.detail.DetailMovieActivity">
+  tools:context=".ui.activity.detail.DetailMovieActivity"
+  tools:targetApi="o">
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
@@ -237,10 +238,7 @@
           android:orientation="horizontal"
           app:layout_constraintTop_toBottomOf="@+id/iv_poster">
 
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
 
           <LinearLayout
             android:id="@+id/imdb_viewGroup"
@@ -265,10 +263,7 @@
 
           </LinearLayout>
 
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
 
           <LinearLayout
             android:id="@+id/metascore_viewGroup"
@@ -283,7 +278,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:padding="12dp"
               android:text="@string/not_available"
               app:layout_constraintEnd_toEndOf="@+id/tv_metascore"
               app:layout_constraintStart_toStartOf="@+id/tv_metascore"
@@ -301,10 +295,7 @@
 
           </LinearLayout>
 
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
 
           <LinearLayout
             android:id="@+id/tmdb_viewGroup"
@@ -316,8 +307,6 @@
             <TextView
               android:id="@+id/tv_score_tmdb"
               style="@style/TextScore"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
               android:layout_gravity="center"
               tools:text="8.5" />
 
@@ -328,16 +317,13 @@
 
           </LinearLayout>
 
-          <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
 
           <LinearLayout
-            android:contentDescription="@string/rating"
             android:id="@+id/your_score_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/rating"
             android:orientation="vertical"
             android:paddingBottom="10dp">
 
@@ -347,7 +333,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:padding="12dp"
               tools:text="8.5" />
 
             <TextView
@@ -357,7 +342,7 @@
 
           </LinearLayout>
 
-          <Space
+          <androidx.legacy.widget.Space
             android:id="@+id/space_right"
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -487,11 +472,7 @@
 
   <ProgressBar
     android:id="@+id/progress_bar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:indeterminateTint="@color/yellow"
-    android:visibility="visible"
+    style="@style/MyProgressBar"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

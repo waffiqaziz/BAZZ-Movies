@@ -23,10 +23,9 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.dateFormater
+import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
 import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 class PersonActivity : AppCompatActivity() {
 
@@ -69,12 +68,10 @@ class PersonActivity : AppCompatActivity() {
     }
   }
 
-  private fun activityTransition(){
+  private fun activityTransition() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
       overrideActivityTransition(
-        OVERRIDE_TRANSITION_OPEN,
-        android.R.anim.fade_in,
-        android.R.anim.fade_out
+        OVERRIDE_TRANSITION_OPEN, android.R.anim.fade_in, android.R.anim.fade_out
       )
     } else {
       @Suppress("DEPRECATION")
@@ -124,7 +121,7 @@ class PersonActivity : AppCompatActivity() {
 
     Handler(Looper.getMainLooper()).postDelayed({
       binding.tvBiography.performClick() // set automatic click
-    }, 800)
+    }, DELAY_CLICK_TIME)
   }
 
   private fun btnListener() {
@@ -139,7 +136,7 @@ class PersonActivity : AppCompatActivity() {
     Handler(Looper.getMainLooper()).postDelayed({
       binding.backgroundDimPerson.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
-    }, 600)
+    }, DELAY_TIME)
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -156,7 +153,7 @@ class PersonActivity : AppCompatActivity() {
 
       if (it.birthday != null)
         if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
-          val birthday = "${dateFormater(it.birthday)} (${
+          val birthday = "${dateFormatter(it.birthday)} (${
             getAgeBirth(it.birthday)
           } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
           binding.tvBorn.text = birthday
@@ -167,13 +164,10 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.isVisible = true
       binding.tvDeadHeader.isVisible = true
 
-      val birthDay = "${it.birthday?.let { dateFormater(it) }} \n${it.placeOfBirth}"
+      val birthDay = "${it.birthday?.let { dateFormatter(it) }} \n${it.placeOfBirth}"
       binding.tvBorn.text = birthDay
-      val deathDay = "${dateFormater(it.deathday)} (${
-        getAgeDeath(
-          it.birthday!!,
-          it.deathday
-        )
+      val deathDay = "${dateFormatter(it.deathday)} (${
+        getAgeDeath(it.birthday!!, it.deathday)
       } ${getString(R.string.years_old)})"
       binding.tvDeath.text = deathDay
 
@@ -182,23 +176,16 @@ class PersonActivity : AppCompatActivity() {
 
   private fun showSnackBarWarning(eventMessage: Event<String>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
-    val snackBar = Snackbar.make(
-      binding.constraintLayout,
-      message,
-      Snackbar.LENGTH_SHORT
-    )
+    val snackBar = Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_SHORT)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        this,
-        R.color.red_matte
-      )
-    )
+    snackbarView.setBackgroundColor(ContextCompat.getColor(this, R.color.red_matte))
     snackBar.show()
   }
 
   companion object {
     const val EXTRA_PERSON = "EXTRA_PERSON"
+    const val DELAY_TIME = 600L
+    const val DELAY_CLICK_TIME = 800L
   }
 }

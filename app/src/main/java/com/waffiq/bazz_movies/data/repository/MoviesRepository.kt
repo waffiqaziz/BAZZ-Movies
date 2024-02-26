@@ -323,9 +323,7 @@ class MoviesRepository(
     ).flow
   }
 
-
-  // multi-search
-  fun search(query: String): Flow<PagingData<ResultsItemSearch>> {
+  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
       config = PagingConfig(
         pageSize = 20
@@ -335,6 +333,7 @@ class MoviesRepository(
       }
     ).flow
   }
+
 
   // detail movie from OMDb API
   fun getDetailOMDb(imdbId: String) {
@@ -446,7 +445,7 @@ class MoviesRepository(
             } catch (e: NullPointerException) {
               _ageRatingTv.value = "N/A"
               _productionCountry.value = "N/A"
-            } catch (e: IndexOutOfBoundsException){
+            } catch (e: IndexOutOfBoundsException) {
               _ageRatingTv.value = "N/A"
               _productionCountry.value = "N/A"
             }
@@ -727,7 +726,7 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage!!
-            if(!data.favorite!!) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
+            if (!data.favorite!!) _snackBarTextInt.value = Event(R.string.deleted_from_favorite2)
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")

@@ -15,6 +15,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,12 +30,11 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.checkInternet
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import java.util.Locale
-
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -102,26 +102,41 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData(region: String) {
-    binding.rvTrending.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    binding.rvUpcoming.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    binding.rvPlayingNow.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    // setup adapter
     val adapterTrending = TrendingAdapter()
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
+    adapterPlayingNow.addLoadStateListener { combinedLoadStatesHandle(it) } // show loading(progressbar)
 
-    // trending week
-    binding.rvTrending.adapter = adapterTrending.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterTrending.retry() }
-    )
-    // default will be week
+    // setup recyclerview
+    binding.apply {
+      rvTrending.layoutManager =
+        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvTrending.adapter = adapterTrending.withLoadStateFooter(
+        footer = LoadingStateAdapter { adapterTrending.retry() }
+      )
+
+      rvUpcoming.layoutManager =
+        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
+        footer = LoadingStateAdapter { adapterUpcoming.retry() }
+      )
+
+      rvPlayingNow.layoutManager =
+        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
+        footer = LoadingStateAdapter { adapterPlayingNow.retry() }
+      )
+    }
+
+    // trending week, default will be week
     if (binding.rbThisWeek.isChecked) {
       homeViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
         adapterTrending.submitData(lifecycle, it)
       }
     }
+
+    // handle movie trending based on switch button
     binding.rbToday.setOnClickListener {
       homeViewModel.getTrendingDay(region).observe(viewLifecycleOwner) {
         adapterTrending.submitData(lifecycle, it)
@@ -137,18 +152,10 @@ class FeaturedFragment : Fragment() {
       adapterTrending.refresh()
     }
 
-    // upcoming movie
-    binding.rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterUpcoming.retry() }
-    )
+    // get movie upcoming and playing now on cinema
     homeViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       adapterUpcoming.submitData(lifecycle, it)
     }
-
-    // playing not at theater
-    binding.rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterPlayingNow.retry() }
-    )
     homeViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       adapterPlayingNow.submitData(lifecycle, it)
     }
@@ -166,9 +173,7 @@ class FeaturedFragment : Fragment() {
         binding.rvPlayingNow.visibility = View.INVISIBLE
         if (!binding.tvPlayingNow.text.contains(getString(R.string.data)))
           binding.tvPlayingNow.append(" (" + getString(R.string.no_data) + ")")
-      } else {
-        binding.rvPlayingNow.visibility = View.VISIBLE
-      }
+      } else binding.rvPlayingNow.visibility = View.VISIBLE
     }
 
     // check if there any upcoming movie on selected region, if not show info on toast and edit text
@@ -184,9 +189,8 @@ class FeaturedFragment : Fragment() {
         binding.rvUpcoming.visibility = View.INVISIBLE
         if (!binding.tvUpcomingMovie.text.contains(getString(R.string.data)))
           binding.tvUpcomingMovie.append(" (" + getString(R.string.no_data) + ")")
-      } else {
-        binding.rvUpcoming.visibility = View.VISIBLE
-      }
+      } else binding.rvUpcoming.visibility = View.VISIBLE
+
     }
 
     binding.swipeRefresh.setOnRefreshListener {
@@ -198,6 +202,24 @@ class FeaturedFragment : Fragment() {
     }
   }
 
+  private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
+    if (loadState.refresh is LoadState.Loading ||
+      loadState.append is LoadState.Loading
+    )
+      showLoading(true) // show ProgressBar
+    else {
+      showLoading(false) // hide ProgressBar
+
+      val errorState = when { // If theres an error, show a toast
+        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+        else -> null
+      }
+      errorState?.let { showToastShort(requireActivity(), it.error.toString()) }
+    }
+  }
+
   private fun showSnackBarNoAction(message: String) {
     val snackBar = Snackbar.make(
       activity?.findViewById(android.R.id.content)!!,
@@ -206,28 +228,26 @@ class FeaturedFragment : Fragment() {
     ).setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        requireContext(),
-        R.color.red_matte
-      )
-    )
+    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red_matte))
     if (message.isNotEmpty()) snackBar.show()
   }
 
-  private fun animFadeOut() {
-    val animation = Helper.animFadeOutLong(requireContext())
+  private fun animationFadeOut() {
+    val animation = animFadeOutLong(requireContext())
+    binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).postDelayed({
+      binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
-    }, 600)
+    }, DELAY_TIME)
   }
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
+      binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
-    } else animFadeOut()
+    } else animationFadeOut()
   }
 
   private fun hideActionBar() {
@@ -245,5 +265,9 @@ class FeaturedFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  companion object {
+    const val DELAY_TIME = 600L
   }
 }

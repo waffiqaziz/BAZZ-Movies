@@ -74,18 +74,18 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                  style="@style/MySwitchRadioButton"
                   android:id="@+id/rb_today"
+                  style="@style/MySwitchRadioButton"
                   android:layout_marginStart="1dp"
                   android:button="@null"
-                  android:text="@string/today"/>
+                  android:text="@string/today" />
 
                 <RadioButton
-                  style="@style/MySwitchRadioButton"
                   android:id="@+id/rb_this_week"
+                  style="@style/MySwitchRadioButton"
                   android:layout_marginEnd="1dp"
                   android:button="@null"
-                  android:text="@string/this_week"/>
+                  android:text="@string/this_week" />
               </RadioGroup>
 
             </LinearLayout>
@@ -151,20 +151,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
-      android:id="@+id/progress_bar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:animateLayoutChanges="true"
-      android:indeterminateTint="@color/yellow"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:visibility="visible" />
-
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
   <androidx.constraintlayout.widget.Guideline
@@ -175,6 +161,25 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintGuide_percent="0.91"
     app:layout_constraintStart_toStartOf="parent" />
+
+  <View
+    android:id="@+id/background_dim_movie"
+    style="@style/MyDimStyleMatchParent"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="invisible" />
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="@style/MyProgressBar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
