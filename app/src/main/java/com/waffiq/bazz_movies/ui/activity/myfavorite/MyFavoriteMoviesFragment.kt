@@ -24,7 +24,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.color.yellow
+import com.waffiq.bazz_movies.R.drawable.ic_trash
+import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
+import com.waffiq.bazz_movies.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.R.string.already_watchlist
+import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
@@ -52,8 +58,10 @@ class MyFavoriteMoviesFragment : Fragment() {
   private val adapterPaging = FavoriteMovieAdapter()
 
   private var mSnackbar: Snackbar? = null
-  private var isWantToDelete = false
+
+  // helper
   private var positionIn = 0
+  private var isWantToDelete = false
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -190,12 +198,12 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
 
         if (dX > 0) { // swipe left to delete item
-          val editIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_trash)
+          val editIcon = ContextCompat.getDrawable(requireContext(), ic_trash)
           val intrinsicWidth = editIcon?.intrinsicWidth
           val intrinsicHeight = editIcon?.intrinsicHeight
 
           // draw the red background
-          background.color = ContextCompat.getColor(requireContext(), R.color.red_matte)
+          background.color = ContextCompat.getColor(requireContext(), red_matte)
           background.setBounds(itemView.left, itemView.top, dX.toInt() + 10, itemView.bottom)
           background.draw(c)
 
@@ -211,12 +219,12 @@ class MyFavoriteMoviesFragment : Fragment() {
           editIcon.draw(c)
         } else {  // swipe right to add to watchlist
           val watchlistIcon =
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark_dark)
+            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark)
           val intrinsicWidth = watchlistIcon?.intrinsicWidth
           val intrinsicHeight = watchlistIcon?.intrinsicHeight
 
           // draw the delete background
-          background.color = ContextCompat.getColor(requireContext(), R.color.yellow)
+          background.color = ContextCompat.getColor(requireContext(), yellow)
           background.setBounds(
             itemView.right + dX.toInt(),
             itemView.top,
@@ -262,10 +270,10 @@ class MyFavoriteMoviesFragment : Fragment() {
         else favViewModelMovie.delFromFavoriteDB(fav)
       } else { // add to watchlist action
         if (it) {
-          showSnackBarNoAction("<b>${fav.title}</b> " + getString(R.string.already_watchlist))
+          showSnackBarNoAction("<b>${fav.title}</b> " + getString(already_watchlist))
         } else {
           favViewModelMovie.updateToWatchlistDB(fav)
-          showSnackBarNoAction("<b>${fav.title}</b> " + getString(R.string.added_to_watchlist))
+          showSnackBarNoAction("<b>${fav.title}</b> " + getString(added_to_watchlist))
         }
       }
     }
@@ -290,7 +298,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         target: RecyclerView.ViewHolder
       ): Boolean {
         val colorDrawable = ColorDrawable()
-        colorDrawable.color = ContextCompat.getColor(requireActivity(), R.color.red_matte)
+        colorDrawable.color = ContextCompat.getColor(requireActivity(), red_matte)
         viewHolder.itemView.background = colorDrawable
         return false
       }
@@ -335,12 +343,12 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
 
         if (dX > 0) { // swipe left to delete item
-          val editIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_trash)
+          val editIcon = ContextCompat.getDrawable(requireContext(), ic_trash)
           val intrinsicWidth = editIcon?.intrinsicWidth
           val intrinsicHeight = editIcon?.intrinsicHeight
 
           // draw the red background
-          background.color = ContextCompat.getColor(requireContext(), R.color.red_matte)
+          background.color = ContextCompat.getColor(requireContext(), red_matte)
           background.setBounds(itemView.left, itemView.top, dX.toInt() + 10, itemView.bottom)
           background.draw(c)
 
@@ -356,12 +364,12 @@ class MyFavoriteMoviesFragment : Fragment() {
           editIcon.draw(c)
         } else {  // swipe right to add to watchlist
           val watchlistIcon =
-            ContextCompat.getDrawable(requireContext(), R.drawable.ic_bookmark_dark)
+            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark)
           val intrinsicWidth = watchlistIcon?.intrinsicWidth
           val intrinsicHeight = watchlistIcon?.intrinsicHeight
 
           // draw the delete background
-          background.color = ContextCompat.getColor(requireContext(), R.color.yellow)
+          background.color = ContextCompat.getColor(requireContext(), yellow)
           background.setBounds(
             itemView.right + dX.toInt(),
             itemView.top,
@@ -424,9 +432,9 @@ class MyFavoriteMoviesFragment : Fragment() {
       favViewModelMovie.getStated().observe(this) {
         it.let {
           if (!it?.watchlist!!) {
-            showSnackBarNoAction("<b>$mediaTitle</b> " + getString(R.string.added_to_watchlist))
+            showSnackBarNoAction("<b>$mediaTitle</b> " + getString(added_to_watchlist))
             favViewModelMovie.postWatchlist(user, watchlistMode)
-          } else showSnackBarNoAction("<b>$mediaTitle</b> " + getString(R.string.already_watchlist))
+          } else showSnackBarNoAction("<b>$mediaTitle</b> " + getString(already_watchlist))
         }
       }
     }
@@ -438,8 +446,9 @@ class MyFavoriteMoviesFragment : Fragment() {
       binding.root,
       getString(message),
       Snackbar.LENGTH_LONG
-    ).setAction(getString(R.string.undo)) {
+    ).setAction(getString(undo)) {
       val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
+      favViewModelMovie.isWatchlistDB(fav.mediaId!!)
       favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
         if (it) { // movie is on watchlist
           if (isWantToDelete)
@@ -466,7 +475,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       binding.root,
       getString(message),
       Snackbar.LENGTH_LONG
-    ).setAction(getString(R.string.undo)) {
+    ).setAction(getString(undo)) {
       fav.favorite = true
       favViewModelMovie.postFavorite(user, fav)
       adapterPaging.notifyItemInserted(positionIn)

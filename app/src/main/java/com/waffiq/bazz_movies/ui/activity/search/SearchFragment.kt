@@ -20,7 +20,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.waffiq.bazz_movies.R
+import androidx.recyclerview.widget.RecyclerView
+import com.waffiq.bazz_movies.R.string.clear_query
+import com.waffiq.bazz_movies.R.menu.search_menu
+import com.waffiq.bazz_movies.R.id.action_search
+import com.waffiq.bazz_movies.R.drawable.ic_search
+import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
@@ -46,13 +51,15 @@ class SearchFragment : Fragment() {
     searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
     (activity as AppCompatActivity).supportActionBar?.show()
-    setupAll(searchViewModel)
+
+    setupSearchView(searchViewModel)
+    setupFab()
+    setupFilter()
     return root
   }
 
-  private fun setupAll(searchViewModel: SearchViewModel) {
-
-    //setup recycleView
+  private fun setupSearchView(searchViewModel: SearchViewModel) {
+    // setup recycleView
     binding.rvSearch.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     val adapter = SearchAdapter()
@@ -63,7 +70,7 @@ class SearchFragment : Fragment() {
       }
     )
 
-    //show/hide view
+    // show or hide view
     adapter.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
@@ -83,15 +90,15 @@ class SearchFragment : Fragment() {
     val menuHost: MenuHost = requireActivity()
     menuHost.addMenuProvider(object : MenuProvider {
       override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.search_menu, menu)
+        menuInflater.inflate(search_menu, menu)
 
-        val item = menu.findItem(R.id.action_search)
-        val searchView = item?.actionView as SearchView
+        val searchView = menu.findItem(action_search).actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         customizeSearchView(searchView)
 
         // search queryTextChange Listener
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
           override fun onQueryTextSubmit(query: String?): Boolean { //when user submit data
 
             if (query != null) {
@@ -102,11 +109,16 @@ class SearchFragment : Fragment() {
                 }
               }
             }
+            // hide virtual keyboard when submitted
+            searchView.clearFocus()
+
+            // show fab
+            binding.fabFilter.visibility = View.VISIBLE
+
             return true
           }
 
           override fun onQueryTextChange(query: String?): Boolean {
-            // Log.d("onQueryTextChange", "query: $query")
             return true
           }
         })
@@ -114,16 +126,11 @@ class SearchFragment : Fragment() {
 
       override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
-          R.id.action_search -> {
-            true
-          }
-
+          action_search -> true
           else -> false
         }
       }
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-
   }
 
   private fun customizeSearchView(searchView: SearchView) {
@@ -137,7 +144,7 @@ class SearchFragment : Fragment() {
         // Check if the child is the arrow icon
         backButton = child
         // Set your custom drawable
-        val drawable: Drawable? = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_search)
+        val drawable: Drawable? = ContextCompat.getDrawable(requireActivity(), ic_search)
         backButton.setImageDrawable(drawable)
         break
       }
@@ -153,16 +160,35 @@ class SearchFragment : Fragment() {
         } else if (child is View && child.contentDescription == "Clear query") {
           closeButton = child
           val ivCloseButton = closeButton as ImageView
-          ivCloseButton.contentDescription = getString(R.string.clear_query)
-          ivCloseButton.setImageDrawable(
-            ContextCompat.getDrawable(
-              requireActivity(),
-              R.drawable.ic_cross
-            )
-          )
+          ivCloseButton.contentDescription = getString(clear_query)
+          ivCloseButton.setImageDrawable(ContextCompat.getDrawable(requireActivity(), ic_cross))
         }
       }
     }
+  }
+
+  private fun setupFilter() {
+    binding.fabFilter.setOnClickListener {
+      val bottomSheetDialogFragment = BottomSheetSearchFragment()
+      bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
+    }
+  }
+
+  private fun setupFab() {
+    binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+      override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+
+        // if the recycler view is scroll down hide the FAB
+        if (dy > 5 && binding.fabFilter.isShown) binding.fabFilter.hide()
+
+        // if the recycler view is scroll up show the FAB
+        if (dy < -5 && !binding.fabFilter.isShown) binding.fabFilter.show()
+
+        // recycler view at the first time fab always shown
+        if (!recyclerView.canScrollVertically(-1)) binding.fabFilter.show()
+      }
+    })
   }
 
   override fun onDestroyView() {

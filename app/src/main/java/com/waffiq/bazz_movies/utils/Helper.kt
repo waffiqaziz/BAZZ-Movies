@@ -9,7 +9,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.string.feature_not_ready
+import com.waffiq.bazz_movies.R.string.no_connection
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
@@ -22,7 +23,7 @@ import java.util.TimeZone
 object Helper {
 
   fun toastStillOnDevelopment(context: Context) {
-    Toast.makeText(context, context.getString(R.string.feature_not_ready), Toast.LENGTH_SHORT)
+    Toast.makeText(context, context.getString(feature_not_ready), Toast.LENGTH_SHORT)
       .show()
   }
 
@@ -294,6 +295,6 @@ object Helper {
   }
 
   fun checkInternet(context: Context): String {
-    return if (!isInternetConnectionAvailable(context)) context.getString(R.string.no_connection) else ""
+    return if (!isInternetConnectionAvailable(context)) context.getString(no_connection) else ""
   }
 }

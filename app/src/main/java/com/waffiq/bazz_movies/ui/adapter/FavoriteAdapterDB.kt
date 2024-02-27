@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
@@ -52,8 +53,8 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
           if (fav.backDrop?.isNotEmpty() == true) TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
           else TMDB_IMG_LINK_POSTER_W185 + fav.poster
         )
-        .placeholder(R.drawable.ic_bazz_placeholder_search)
-        .error(R.drawable.ic_broken_image)
+        .placeholder(ic_bazz_placeholder_search)
+        .error(ic_broken_image)
         .into(binding.ivPicture)
 
       binding.tvTitle.text = fav.title

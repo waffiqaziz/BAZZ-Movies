@@ -13,7 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.string.no_biography
+import com.waffiq.bazz_movies.R.string.no_data
+import com.waffiq.bazz_movies.R.string.years_old
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
@@ -96,8 +101,8 @@ class PersonActivity : AppCompatActivity() {
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName
     Glide.with(binding.ivPicture)
       .load(Constants.TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath)
-      .placeholder(R.drawable.ic_bazz_placeholder_poster)
-      .error(R.drawable.ic_broken_image)
+      .placeholder(ic_bazz_placeholder_poster)
+      .error(ic_broken_image)
       .into(binding.ivPicture)
 
     // show known for
@@ -114,8 +119,8 @@ class PersonActivity : AppCompatActivity() {
       if (it.birthday != null)
         if (it.birthday.isNotBlank() && it.birthday.isNotEmpty()) binding.tvBiography.text =
           it.biography
-        else binding.tvBiography.text = getString(R.string.no_biography)
-      else binding.tvBiography.text = getString(R.string.no_biography)
+        else binding.tvBiography.text = getString(no_biography)
+      else binding.tvBiography.text = getString(no_biography)
       showBirthdate(it)
     }
 
@@ -155,10 +160,10 @@ class PersonActivity : AppCompatActivity() {
         if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
           val birthday = "${dateFormatter(it.birthday)} (${
             getAgeBirth(it.birthday)
-          } ${getString(R.string.years_old)}) \n${it.placeOfBirth}"
+          } ${getString(years_old)}) \n${it.placeOfBirth}"
           binding.tvBorn.text = birthday
-        } else binding.tvBorn.text = getString(R.string.no_data)
-      else binding.tvBorn.text = getString(R.string.no_data)
+        } else binding.tvBorn.text = getString(no_data)
+      else binding.tvBorn.text = getString(no_data)
 
     } else {
       binding.tvDeath.isVisible = true
@@ -168,7 +173,7 @@ class PersonActivity : AppCompatActivity() {
       binding.tvBorn.text = birthDay
       val deathDay = "${dateFormatter(it.deathday)} (${
         getAgeDeath(it.birthday!!, it.deathday)
-      } ${getString(R.string.years_old)})"
+      } ${getString(years_old)})"
       binding.tvDeath.text = deathDay
 
     }
@@ -179,7 +184,7 @@ class PersonActivity : AppCompatActivity() {
     val snackBar = Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_SHORT)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(this, R.color.red_matte))
+    snackbarView.setBackgroundColor(ContextCompat.getColor(this, red_matte))
     snackBar.show()
   }
 

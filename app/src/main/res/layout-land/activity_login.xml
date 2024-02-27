@@ -123,15 +123,9 @@
 
   <Button
     android:id="@+id/btn_login"
-    android:layout_width="450dp"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:backgroundTint="@color/yellow"
+    style="@style/MyLoginButtonLand"
     android:contentDescription="@string/button_login"
-    android:fontFamily="@font/gothicb"
     android:text="@string/login"
-    android:textAllCaps="false"
-    android:textColor="@color/gray_700"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

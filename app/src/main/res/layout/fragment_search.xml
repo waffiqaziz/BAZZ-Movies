@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/search_fragment"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:layout_marginStart="20dp"
-  tools:background="@color/grey_700"
   tools:context=".ui.activity.search.SearchFragment">
 
-  <include
-    android:id="@+id/illustration_search_view"
-    layout="@layout/illustration_search"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:visibility="visible" />
-
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_search"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    tools:listitem="@layout/item_result" />
+    android:layout_height="match_parent">
 
-  <include
-    android:id="@+id/illustration_search_no_result_view"
-    layout="@layout/illustration_search_no_result"
+    <include
+      android:id="@+id/illustration_search_view"
+      layout="@layout/illustration_search"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="invisible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_search"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      tools:listitem="@layout/item_result" />
+
+    <include
+      android:id="@+id/illustration_search_no_result_view"
+      layout="@layout/illustration_search_no_result"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="invisible" />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab_filter"
+    style="@style/MyFAB"
+    android:layout_gravity="end|bottom"
+    android:layout_marginHorizontal="@dimen/fab_margin"
+    android:layout_marginTop="@dimen/fab_margin"
+    android:layout_marginBottom="@dimen/margin_bottom_for_fab"
+    android:contentDescription="@string/sort_filter"
     android:visibility="invisible"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:rippleColor="@color/yellow_alpha_80"
+    app:srcCompat="@drawable/ic_filter"
     tools:visibility="visible" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:indeterminateTint="@color/yellow"
     android:visibility="invisible"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     tools:visibility="visible" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,7 +13,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
@@ -150,12 +150,7 @@ class TvSeriesFragment : Fragment() {
     ).setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        requireContext(),
-        R.color.red_matte
-      )
-    )
+    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
     if (message.isNotEmpty()) snackBar.show()
   }
 

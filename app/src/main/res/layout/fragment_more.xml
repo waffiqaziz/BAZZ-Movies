@@ -8,6 +8,7 @@
   tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
 
   <ScrollView
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -222,8 +223,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
+        android:paddingVertical="12dp"
         android:text="@string/terms_amp_condition"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_about_us" />
@@ -234,8 +234,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
+        android:paddingVertical="12dp"
         android:text="@string/privacy_amp_policy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />

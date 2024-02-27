@@ -18,7 +18,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.string.sign_out_success
+import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
+import com.waffiq.bazz_movies.R.string.all_data_deleted
+import com.waffiq.bazz_movies.R.string.yes
+import com.waffiq.bazz_movies.R.string.no
+import com.waffiq.bazz_movies.R.string.warning
+import com.waffiq.bazz_movies.R.mipmap.ic_launcher
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
@@ -69,7 +77,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun setTypeface() {
-    val typeFace = ResourcesCompat.getFont(requireContext(), R.font.gothic) as Typeface
+    val typeFace = ResourcesCompat.getFont(requireContext(), gothic) as Typeface
     binding.btnCountryPicker.setTypeFace(typeFace)
   }
 
@@ -104,7 +112,7 @@ class MoreFragment : Fragment() {
         if (user.token == "NaN" || user.token.isEmpty()) dialogSignOutGuestMode()
         else { // sign out for login account
           removeAllUserData()
-          showToastShort(requireContext(), getString(R.string.sign_out_success))
+          showToastShort(requireContext(), getString(sign_out_success))
         }
       }
     }
@@ -117,14 +125,14 @@ class MoreFragment : Fragment() {
   private fun dialogSignOutGuestMode() {
     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
     builder
-      .setMessage(getString(R.string.warning_signOut_guest_mode))
-      .setTitle(getString(R.string.warning))
-      .setPositiveButton(getString(R.string.yes)) { _, _ ->
+      .setMessage(getString(warning_signOut_guest_mode))
+      .setTitle(getString(warning))
+      .setPositiveButton(getString(yes)) { _, _ ->
         removeAllUserData()
-        showToastShort(requireContext(), getString(R.string.all_data_deleted))
+        showToastShort(requireContext(), getString(all_data_deleted))
         moreViewModel.deleteAll() // delete all data
       }
-      .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+      .setNegativeButton(getString(no)) { dialog, _ ->
         dialog.dismiss()
       }
 
@@ -147,8 +155,8 @@ class MoreFragment : Fragment() {
 
         Glide.with(binding.imgAvatar)
           .load("$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200")
-          .placeholder(R.mipmap.ic_launcher)
-          .error(R.drawable.ic_broken_image)
+          .placeholder(ic_launcher)
+          .error(ic_broken_image)
           .into(binding.imgAvatar)
       }
 

@@ -9,7 +9,6 @@
   <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
-  <string name="credit">Build with TMDB API and Android Studio\n Credit goes to the Owner</string>
   <string name="bazz">BAZZ Movies</string>
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
@@ -25,6 +24,7 @@
   <string name="title_my_favorite">My Favorite</string>
   <string name="title_more">More</string>
   <string name="title_my_watchlist">My Watchlist</string>
+  <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
 
   <!-- FEATURED -->
   <string name="movies">Movies</string>
@@ -137,7 +137,38 @@
   <string name="less_more">Less More</string>
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
+  <string name="actress_photo">actress photo</string>
 
-  <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
+  <string name="close">close</string>
+
+  <!-- Bottom sheet search, sort, filter -->
+  <string name="sort_filter">Sort &amp; Filter</string>
+  <string name="type_search">Search by</string>
+  <string name="filter_by_genre">Filter by genre</string>
+  <string name="action">action</string>
+  <string name="adventure">adventure</string>
+  <string name="animation">animation</string>
+  <string name="comedy">comedy</string>
+  <string name="crime">crime</string>
+  <string name="documentary">documentary</string>
+  <string name="drama">drama</string>
+  <string name="family">family</string>
+  <string name="fantasy">fantasy</string>
+  <string name="history">history</string>
+  <string name="horror">horror</string>
+  <string name="music">music</string>
+  <string name="mystery">mystery</string>
+  <string name="romance">romance</string>
+  <string name="science_fiction">sci-fi</string>
+  <string name="thriller">thriller</string>
+  <string name="tv_movie">tv movie</string>
+  <string name="war">war</string>
+  <string name="western">western</string>
+  <string name="reset">Reset</string>
+  <string name="apply">Apply</string>
+  <string name="maximum_selected_genres_reached">Maximum selected genres reached</string>
+
+
+
 
 </resources>

@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
@@ -54,7 +55,7 @@ class SearchAdapter :
           intent.putExtra(PersonActivity.EXTRA_PERSON, person)
           it.context.startActivity(intent)
         }
-      } else { //movie & tv-series
+      } else { // movie & tv-series
         showDataMovieTv(binding, data)
         binding.containerResult.setOnClickListener {
           val intent = Intent(it.context, DetailMovieActivity::class.java)
@@ -86,8 +87,8 @@ class SearchAdapter :
       .load(
         TMDB_IMG_LINK_BACKDROP_W300 + data.profilePath
       )
-      .placeholder(R.drawable.ic_bazz_placeholder_search)
-      .error(R.drawable.ic_broken_image)
+      .placeholder(ic_bazz_placeholder_search)
+      .error(ic_broken_image)
       .transform(CenterCrop())
       .transition(DrawableTransitionOptions.withCrossFade())
       .into(binding.ivPicture)
@@ -105,8 +106,8 @@ class SearchAdapter :
         TMDB_IMG_LINK_BACKDROP_W300 + (data.backdropPath ?: data.posterPath)
       )
       .transition(DrawableTransitionOptions.withCrossFade())
-      .placeholder(R.drawable.ic_bazz_placeholder_search)
-      .error(R.drawable.ic_broken_image)
+      .placeholder(ic_bazz_placeholder_search)
+      .error(ic_broken_image)
       .into(binding.ivPicture)
     binding.tvYearReleased.text = data.releaseDate ?: data.firstAirDate
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName

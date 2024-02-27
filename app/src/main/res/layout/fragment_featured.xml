@@ -23,6 +23,7 @@
         android:orientation="horizontal">
 
         <androidx.core.widget.NestedScrollView
+          android:id="@+id/nested_scroll_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:scrollbars="vertical"
@@ -50,9 +51,8 @@
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
               android:layout_marginTop="-20dp"
-              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:orientation="horizontal">
 
               <TextView
@@ -94,9 +94,8 @@
               android:id="@+id/rv_trending"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
               android:layout_marginTop="12dp"
-              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/trending_now"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_trending"
@@ -115,9 +114,8 @@
               android:id="@+id/rv_upcoming"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
-              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/upcoming_movies"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_upcoming"
@@ -136,9 +134,8 @@
               android:id="@+id/rv_playing_now"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/default_margin_parent_20"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
               android:layout_marginTop="8dp"
-              android:layout_marginEnd="@dimen/default_margin_parent_20"
               android:contentDescription="@string/playing_now_on_theater"
               tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               tools:listitem="@layout/item_upcoming"

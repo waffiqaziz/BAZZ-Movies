@@ -8,5 +8,5 @@ class SearchViewModel(
   private val movieRepository: MoviesRepository
 ) : ViewModel() {
 
-  fun search(query: String) = movieRepository.search(query).cachedIn(viewModelScope).asLiveData()
+  fun search(query: String) = movieRepository.getPagingSearch(query).cachedIn(viewModelScope).asLiveData()
 }

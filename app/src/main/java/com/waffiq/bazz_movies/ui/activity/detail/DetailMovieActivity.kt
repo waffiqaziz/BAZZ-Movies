@@ -33,7 +33,28 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
+import com.waffiq.bazz_movies.R.drawable.ic_bookmark
+import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
+import com.waffiq.bazz_movies.R.drawable.ic_hearth
+import com.waffiq.bazz_movies.R.string.not_available
+import com.waffiq.bazz_movies.R.string.yt_not_installed
+import com.waffiq.bazz_movies.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.R.string.added_to_favorite
+import com.waffiq.bazz_movies.R.string.deleted_from_favorite
+import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
+import com.waffiq.bazz_movies.R.string.not_available_full
+import com.waffiq.bazz_movies.R.string.cant_provide_a_score
+import com.waffiq.bazz_movies.R.id.rating_bar_action
+import com.waffiq.bazz_movies.R.id.btn_yes
+import com.waffiq.bazz_movies.R.id.btn_no
+import com.waffiq.bazz_movies.R.layout.popup_rating
+import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
@@ -60,7 +81,6 @@ import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -153,13 +173,13 @@ class DetailMovieActivity : AppCompatActivity() {
     Glide.with(binding.ivPicture).load(
       if (dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
       else TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-    ).placeholder(R.drawable.ic_bazz_logo).error(R.drawable.ic_broken_image).into(binding.ivPicture)
+    ).placeholder(ic_bazz_logo).error(ic_broken_image).into(binding.ivPicture)
 
     //shows poster
     Glide.with(binding.ivPoster)
       .load(TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath) // URL movie poster
-      .placeholder(R.drawable.ic_bazz_placeholder_poster)
-      .error(R.drawable.ic_broken_image)
+      .placeholder(ic_bazz_placeholder_poster)
+      .error(ic_broken_image)
       .into(binding.ivPoster)
 
     // show data(year, overview, title)
@@ -167,7 +187,7 @@ class DetailMovieActivity : AppCompatActivity() {
       dataExtra.apply {
         val year = dateFormatter((firstAirDate ?: releaseDate ?: ""))!!
         if (year.isEmpty()) {
-          tvYearReleased.text = getString(R.string.not_available)
+          tvYearReleased.text = getString(not_available)
         } else tvYearReleased.text = year
 
         tvMediaType.text = mediaType?.uppercase()
@@ -178,7 +198,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     // show tmdb score
     binding.tvScoreTmdb.text = (if (dataExtra.voteAverage == 0.0F) {
-      getString(R.string.not_available)
+      getString(not_available)
     } else dataExtra.voteAverage).toString()
 
     // setup rv cast
@@ -262,7 +282,7 @@ class DetailMovieActivity : AppCompatActivity() {
         // age rate
         detailViewModel.ageRatingMovie().observe(this) {
           binding.tvAgeRating.text =
-            if (it.isNotEmpty() && it.isNotBlank()) it else getString(R.string.not_available)
+            if (it.isNotEmpty() && it.isNotBlank()) it else getString(not_available)
         }
       }
 
@@ -290,8 +310,8 @@ class DetailMovieActivity : AppCompatActivity() {
       detailViewModel.externalId().observe(this) { externalId ->
 
         if (externalId.imdbId.isNullOrEmpty()) {
-          binding.tvScoreImdb.text = getString(R.string.not_available)
-          binding.tvScoreMetascore.text = getString(R.string.not_available)
+          binding.tvScoreImdb.text = getString(not_available)
+          binding.tvScoreMetascore.text = getString(not_available)
         } else {
           detailViewModel.getScoreOMDb(externalId.imdbId)
           detailViewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
@@ -320,7 +340,7 @@ class DetailMovieActivity : AppCompatActivity() {
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         detailViewModel.ageRatingTv().observe(this) {
-          binding.tvAgeRating.text = it ?: getString(R.string.not_available)
+          binding.tvAgeRating.text = it ?: getString(not_available)
         }
       }
     }
@@ -337,7 +357,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showRatingUserLogin(state: StatedResponse) {
-    binding.tvScoreYourScore.text = if (state.rated == false) getString(R.string.not_available)
+    binding.tvScoreYourScore.text = if (state.rated == false) getString(not_available)
     else state.rated.toString().replace("{value=", "").replace("}", "")
   }
 
@@ -350,7 +370,7 @@ class DetailMovieActivity : AppCompatActivity() {
       } catch (e: Exception) {
         Snackbar.make(
           binding.constraintLayout,
-          R.string.yt_not_installed,
+          yt_not_installed,
           Snackbar.LENGTH_LONG
         ).show()
       }
@@ -464,9 +484,9 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showDetailOMDb(data: OMDbDetailsResponse) {
     binding.apply {
       tvScoreImdb.text =
-        if (data.imdbRating == "") getString(R.string.not_available) else data.imdbRating
+        if (data.imdbRating == "") getString(not_available) else data.imdbRating
       tvScoreMetascore.text =
-        if (data.metascore == "") getString(R.string.not_available) else data.metascore
+        if (data.metascore == "") getString(not_available) else data.metascore
     }
   }
 
@@ -498,18 +518,18 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun changeBtnWatchlistBG(boolean: Boolean) {
     // if watchlist
-    if (boolean) binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark_selected)
+    if (boolean) binding.btnWatchlist.setImageResource(ic_bookmark_selected)
 
     //if not watchlist
-    else binding.btnWatchlist.setImageResource(R.drawable.ic_bookmark)
+    else binding.btnWatchlist.setImageResource(ic_bookmark)
   }
 
   private fun changeBtnFavoriteBG(boolean: Boolean) {
     // if favorite
-    if (boolean) binding.btnFavorite.setImageResource(R.drawable.ic_hearth_selected)
+    if (boolean) binding.btnFavorite.setImageResource(ic_hearth_selected)
 
     //if not favorite
-    else binding.btnFavorite.setImageResource(R.drawable.ic_hearth)
+    else binding.btnFavorite.setImageResource(ic_hearth)
   }
 
 
@@ -517,7 +537,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastAddedFavorite() {
     showToastShort(
       this, "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
-        R.string.added_to_favorite
+        added_to_favorite
       )
     )
   }
@@ -525,7 +545,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastAddedWatchlist() {
     showToastShort(
       this, "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
-        R.string.added_to_watchlist
+        added_to_watchlist
       )
     )
   }
@@ -533,22 +553,26 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastRemoveFromFavorite() {
     showToastShort(
       this,
-      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(R.string.deleted_from_favorite)
+      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+        deleted_from_favorite
+      )
     )
   }
 
   private fun showToastRemoveFromWatchlist() {
     showToastShort(
       this,
-      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(R.string.deleted_from_watchlist)
+      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+        deleted_from_watchlist
+      )
     )
   }
 
   private fun showDialogNotRated() {
     val builder: AlertDialog.Builder = AlertDialog.Builder(this)
     builder
-      .setTitle(getString(R.string.not_available_full))
-      .setMessage(getString(R.string.cant_provide_a_score))
+      .setTitle(getString(not_available_full))
+      .setMessage(getString(cant_provide_a_score))
 
     val dialog: AlertDialog = builder.create()
     dialog.show()
@@ -556,15 +580,15 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showDialogRate() {
     val dialog = Dialog(this)
-    val dialogView = View.inflate(this, R.layout.popup_rating, null)
+    val dialogView = View.inflate(this, popup_rating, null)
 
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(dialogView)
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    val ratingBar = dialogView.findViewById<RatingBar>(R.id.rating_bar_action)
+    val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
 
-    val buttonYesAlert = dialogView.findViewById(R.id.btn_yes) as Button
+    val buttonYesAlert = dialogView.findViewById(btn_yes) as Button
     buttonYesAlert.setOnClickListener {
       showToastShort(this, "Rating: ${ratingBar.rating * 2}")
       val rate = Rate(value = ratingBar.rating * 2)
@@ -579,7 +603,7 @@ class DetailMovieActivity : AppCompatActivity() {
       dialog.dismiss()
     }
 
-    val buttonNoAlert = dialogView.findViewById(R.id.btn_no) as Button
+    val buttonNoAlert = dialogView.findViewById(btn_no) as Button
     buttonNoAlert.setOnClickListener { dialog.dismiss() }
     dialog.show()
   }
@@ -593,12 +617,7 @@ class DetailMovieActivity : AppCompatActivity() {
     )
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        this,
-        R.color.red_matte
-      )
-    )
+    snackbarView.setBackgroundColor(ContextCompat.getColor(this, red_matte))
     snackBar.show()
   }
 
@@ -664,11 +683,11 @@ class DetailMovieActivity : AppCompatActivity() {
       TableRow.LayoutParams.WRAP_CONTENT,
       TableRow.LayoutParams.WRAP_CONTENT
     )
-    textView.typeface = ResourcesCompat.getFont(this, R.font.gothic)
+    textView.typeface = ResourcesCompat.getFont(this, gothic)
     textView.gravity = Gravity.START
     textView.textSize = 14F
     textView.setPadding(0, 7, 24, 7)
-    textView.setTextColor(ActivityCompat.getColor(this, R.color.gray_100))
+    textView.setTextColor(ActivityCompat.getColor(this, gray_100))
     return textView
   }
 

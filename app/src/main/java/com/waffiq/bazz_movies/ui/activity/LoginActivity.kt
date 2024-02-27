@@ -19,7 +19,17 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_eye_off
+import com.waffiq.bazz_movies.R.drawable.ic_eye
+import com.waffiq.bazz_movies.R.string.nan
+import com.waffiq.bazz_movies.R.string.please_enter_a_password
+import com.waffiq.bazz_movies.R.string.please_enter_a_username
+import com.waffiq.bazz_movies.R.string.guest_user
+import com.waffiq.bazz_movies.R.string.no_data
+import com.waffiq.bazz_movies.R.string.login_as_guest_successful
+import com.waffiq.bazz_movies.R.string.login_successful
+import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
@@ -67,10 +77,10 @@ class LoginActivity : AppCompatActivity() {
         if (edPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
           // password visible hide it
           edPass.transformationMethod = PasswordTransformationMethod.getInstance()
-          btnEye.setImageResource(R.drawable.ic_eye_off)
+          btnEye.setImageResource(ic_eye_off)
         } else {
           edPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
-          btnEye.setImageResource(R.drawable.ic_eye)
+          btnEye.setImageResource(ic_eye)
         }
       }
     }
@@ -79,13 +89,13 @@ class LoginActivity : AppCompatActivity() {
   private fun btnListener() {
     user = UserModel(
       userId = 0,
-      name = getString(R.string.nan),
-      username = getString(R.string.nan),
-      password = getString(R.string.nan),
-      region = getString(R.string.nan),
-      token = getString(R.string.nan),
+      name = getString(nan),
+      username = getString(nan),
+      password = getString(nan),
+      region = getString(nan),
+      token = getString(nan),
       isLogin = false,
-      gravatarHast = getString(R.string.nan)
+      gravatarHast = getString(nan)
     )
 
     // login as user
@@ -93,11 +103,11 @@ class LoginActivity : AppCompatActivity() {
 
       // check if username and password form is filled or not
       if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
-        binding.edPass.error = applyFontFamily(getString(R.string.please_enter_a_password))
+        binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
         binding.btnEye.visibility = View.GONE
       }
       if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank())
-        binding.edUsername.error = applyFontFamily(getString(R.string.please_enter_a_username))
+        binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
 
       // add listener to shop again btn eye
       binding.edPass.addTextChangedListener {
@@ -120,8 +130,8 @@ class LoginActivity : AppCompatActivity() {
 
     // login as guest
     binding.tvGuest.setOnClickListener {
-      user.name = resources.getString(R.string.guest_user)
-      user.username = resources.getString(R.string.no_data)
+      user.name = resources.getString(guest_user)
+      user.username = resources.getString(no_data)
       user.isLogin = true
       authenticationViewModel.saveUser(user)
       goToMainActivity(isGuest = true)
@@ -141,8 +151,8 @@ class LoginActivity : AppCompatActivity() {
       @Suppress("DEPRECATION")
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-    if (isGuest) Helper.showToastShort(this, getString(R.string.login_as_guest_successful))
-    else Helper.showToastShort(this, getString(R.string.login_successful))
+    if (isGuest) Helper.showToastShort(this, getString(login_as_guest_successful))
+    else Helper.showToastShort(this, getString(login_successful))
     finish()
   }
 
@@ -201,7 +211,7 @@ class LoginActivity : AppCompatActivity() {
     snackbarView.setBackgroundColor(
       ContextCompat.getColor(
         this,
-        R.color.red_matte
+        red_matte
       )
     )
     snackBar.show()
@@ -214,7 +224,7 @@ class LoginActivity : AppCompatActivity() {
 
   private fun applyFontFamily(text: String): SpannableStringBuilder {
     val spannableStringBuilder = SpannableStringBuilder(text)
-    val typeface = ResourcesCompat.getFont(this, R.font.gothic)
+    val typeface = ResourcesCompat.getFont(this, gothic)
     val customTypefaceSpan = typeface?.let { CustomTypefaceSpan(it) }
     spannableStringBuilder.setSpan(
       customTypefaceSpan,

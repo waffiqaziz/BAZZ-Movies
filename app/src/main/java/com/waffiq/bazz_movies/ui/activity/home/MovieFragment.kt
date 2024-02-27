@@ -17,7 +17,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -165,7 +165,7 @@ class MovieFragment : Fragment() {
   }
 
   private fun animationFadeOut() {
-    val animation =animFadeOutLong(requireContext())
+    val animation = animFadeOutLong(requireContext())
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
@@ -190,12 +190,7 @@ class MovieFragment : Fragment() {
     ).setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        requireContext(),
-        R.color.red_matte
-      )
-    )
+    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
     if (message.isNotEmpty()) snackBar.show()
   }
 

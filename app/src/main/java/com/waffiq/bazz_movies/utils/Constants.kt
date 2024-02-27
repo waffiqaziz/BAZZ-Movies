@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.utils
 
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.string.featured
+import com.waffiq.bazz_movies.R.string.movies
+import com.waffiq.bazz_movies.R.string.tv_series
 
 object Constants {
   const val TABLE_NAME = "favorite"
@@ -28,6 +30,6 @@ object Constants {
   const val TMDB_LINK_MAIN = "https://www.themoviedb.org/"
 
 
-  val tabHomeHeadingArray = arrayOf(R.string.featured, R.string.movies, R.string.tv_series)
-  val tabMoviesTvHeadingArray = arrayOf( R.string.movies, R.string.tv_series)
+  val tabHomeHeadingArray = intArrayOf(featured, movies, tv_series)
+  val tabMoviesTvHeadingArray = intArrayOf( movies, tv_series)
 }

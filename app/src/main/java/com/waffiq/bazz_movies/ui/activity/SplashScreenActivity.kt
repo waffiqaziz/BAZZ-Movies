@@ -11,7 +11,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.gray_900
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
@@ -29,7 +29,8 @@ class SplashScreenActivity : AppCompatActivity() {
     binding = ActivitySplashScreenBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    window.navigationBarColor = ContextCompat.getColor(this, R.color.gray_900)
+    // change color navigation bar
+    window.navigationBarColor = ContextCompat.getColor(this, gray_900)
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]

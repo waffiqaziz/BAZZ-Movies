@@ -21,7 +21,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.string.data
+import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
+import com.waffiq.bazz_movies.R.string.no_upcoming_movie
+import com.waffiq.bazz_movies.R.string.no_data
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -73,9 +79,9 @@ class FeaturedFragment : Fragment() {
     Glide.with(binding.imgMainFeatured)
       //.load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
-      .placeholder(R.drawable.ic_bazz_placeholder_search)
+      .placeholder(ic_bazz_placeholder_search)
       .transition(DrawableTransitionOptions.withCrossFade())
-      .error(R.drawable.ic_broken_image)
+      .error(ic_broken_image)
       .into(binding.imgMainFeatured)
   }
 
@@ -168,11 +174,11 @@ class FeaturedFragment : Fragment() {
       ) {
         showToastShort(
           requireContext(),
-          getString(R.string.no_movie_currently_playing, Locale("", region).displayCountry)
+          getString(no_movie_currently_playing, Locale("", region).displayCountry)
         )
         binding.rvPlayingNow.visibility = View.INVISIBLE
-        if (!binding.tvPlayingNow.text.contains(getString(R.string.data)))
-          binding.tvPlayingNow.append(" (" + getString(R.string.no_data) + ")")
+        if (!binding.tvPlayingNow.text.contains(getString(data)))
+          binding.tvPlayingNow.append(" (" + getString(no_data) + ")")
       } else binding.rvPlayingNow.visibility = View.VISIBLE
     }
 
@@ -184,11 +190,11 @@ class FeaturedFragment : Fragment() {
       ) {
         showToastShort(
           requireContext(),
-          getString(R.string.no_upcoming_movie, Locale("", region).displayCountry)
+          getString(no_upcoming_movie, Locale("", region).displayCountry)
         )
         binding.rvUpcoming.visibility = View.INVISIBLE
-        if (!binding.tvUpcomingMovie.text.contains(getString(R.string.data)))
-          binding.tvUpcomingMovie.append(" (" + getString(R.string.no_data) + ")")
+        if (!binding.tvUpcomingMovie.text.contains(getString(data)))
+          binding.tvUpcomingMovie.append(" (" + getString(no_data) + ")")
       } else binding.rvUpcoming.visibility = View.VISIBLE
 
     }
@@ -228,7 +234,7 @@ class FeaturedFragment : Fragment() {
     ).setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red_matte))
+    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
     if (message.isNotEmpty()) snackBar.show()
   }
 
@@ -268,6 +274,6 @@ class FeaturedFragment : Fragment() {
   }
 
   companion object {
-    const val DELAY_TIME = 600L
+    const val DELAY_TIME = 700L
   }
 }
