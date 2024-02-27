@@ -81,16 +81,17 @@
   </style>
 
   <style name="MyBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-    <item name="itemTextAppearance">@style/CustomBottomNavigationTextAppearance</item>
+    <item name="itemTextAppearanceActive">@style/CustomBottomNavigationTextAppearance</item>
+    <item name="itemTextAppearanceInactive">@style/CustomBottomNavigationTextAppearance</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">48dp</item>
     <item name="android:layout_gravity">bottom</item>
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:textSize">11sp</item>
   </style>
 
   <style name="CustomBottomNavigationTextAppearance" parent="TextAppearance.AppCompat">
     <item name="android:fontFamily">@font/gothic</item>
+    <item name="android:textSize">11sp</item>
   </style>
 
   <style name="MyDimStyle">
