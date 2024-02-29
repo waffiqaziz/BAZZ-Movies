@@ -17,3 +17,7 @@ data class Watchlist(
 data class Rate(
   @SerializedName("value") val value: Any,
 )
+
+data class SessionID(
+  @SerializedName("session_id") val sessionID: String,
+)

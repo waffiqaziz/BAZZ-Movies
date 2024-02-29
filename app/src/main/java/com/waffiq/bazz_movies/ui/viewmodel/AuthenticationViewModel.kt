@@ -39,5 +39,7 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
     viewModelScope.launch { userRepository.removeUserData() }
   }
 
+  fun getSnackbar() = userRepository.snackBarText
+
   fun getLoading() = userRepository.isLoading
 }

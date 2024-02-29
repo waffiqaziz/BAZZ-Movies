@@ -5,7 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.layout.custom_action_bar_title
+import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_MAIN
 
@@ -20,11 +21,11 @@ class AboutActivity : AppCompatActivity() {
 
     // setup action bar
     @SuppressLint("InflateParams")
-    val actionBarTitleView = layoutInflater.inflate(R.layout.custom_action_bar_title, null)
+    val actionBarTitleView = layoutInflater.inflate(custom_action_bar_title, null)
     supportActionBar?.apply {
       setDisplayShowCustomEnabled(true)
       setDisplayShowHomeEnabled(true)
-      setIcon(R.mipmap.ic_launcher)
+      setIcon(ic_launcher)
       customView = actionBarTitleView
       title = null // Hide the default title
     }

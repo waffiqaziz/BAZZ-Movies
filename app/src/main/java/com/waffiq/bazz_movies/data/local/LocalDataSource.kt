@@ -10,9 +10,7 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     private var instance: LocalDataSource? = null
 
     fun getInstance(favoriteDao: FavoriteDao): LocalDataSource =
-      instance ?: synchronized(this) {
-        instance ?: LocalDataSource(favoriteDao)
-      }
+      instance ?: synchronized(this) { instance ?: LocalDataSource(favoriteDao) }
   }
 
   val getFavoriteMovies = favoriteDao.getFavoriteMovies()
@@ -23,7 +21,8 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   val getWatchlistTv = favoriteDao.getWatchlistTv()
 
-  fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> = favoriteDao.getSearchFavorite(name)
+  fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> =
+    favoriteDao.getSearchFavorite(name)
 
   fun insert(favoriteDBList: FavoriteDB) = favoriteDao.insert(favoriteDBList)
 
@@ -35,5 +34,6 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)
 
-  fun update(fav: FavoriteDB) = favoriteDao.update(fav.isFavorite!!, fav.isWatchlist!!, fav.mediaId!!)
+  fun update(fav: FavoriteDB) =
+    favoriteDao.update(fav.isFavorite!!, fav.isWatchlist!!, fav.mediaId!!)
 }

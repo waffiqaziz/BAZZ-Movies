@@ -3,12 +3,14 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.waffiq.bazz_movies.data.local.model.SessionID
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.remote.response.CountyAPIResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
 import com.waffiq.bazz_movies.utils.Event
@@ -44,6 +46,10 @@ class UserRepository(
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
 
+  private val _postResponse = MutableLiveData<String>()
+  val postResponse: LiveData<String> get() = _postResponse
+
+
   fun login(username: String, pass: String, token: String) {
     _isLoading.value = true
     val client = TMDBApiConfig().getApiService().login(username, pass, token)
@@ -55,10 +61,8 @@ class UserRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null && responseBody.success) {
-
-            _tokenVerified.value = responseBody.requestToken
-          }
+          if (responseBody != null && responseBody.success) _tokenVerified.value =
+            responseBody.requestToken
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -87,10 +91,7 @@ class UserRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null && responseBody.success) {
-            _token.value = responseBody.requestToken
-          }
-
+          if (responseBody != null && responseBody.success) _token.value = responseBody.requestToken
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -103,6 +104,35 @@ class UserRepository(
 
       override fun onFailure(call: Call<AuthenticationResponse>, t: Throwable) {
         _isLoading.value = false
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackbarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun deleteSession(data: SessionID) {
+    val client = TMDBApiConfig().getApiService().delSession(data.sessionID)
+
+    client.enqueue(object : Callback<PostRateResponse> {
+      override fun onResponse(
+        call: Call<PostRateResponse>,
+        response: Response<PostRateResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "Success"
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          Log.e(TAG, "onFailure: ${response.message()}")
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackbarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<PostRateResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
         _snackbarText.value = Event(t.message.toString())
       }
@@ -124,10 +154,8 @@ class UserRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null && responseBody.success) {
-
-            _sessionId.value = responseBody.sessionId
-          }
+          if (responseBody != null && responseBody.success) _sessionId.value =
+            responseBody.sessionId
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.waffiq.bazz_movies.R.string.no
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.data.local.model.SessionID
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
@@ -109,9 +111,12 @@ class MoreFragment : Fragment() {
     binding.btnSignout.setOnClickListener {
       authViewModel.getUser().observe(viewLifecycleOwner) { user ->
         // sign out for guest account
-        if (user.token == "NaN" || user.token.isEmpty()) dialogSignOutGuestMode()
-        else { // sign out for login account
-          removeAllUserData()
+        if (user.token == "NaN" || user.token.isEmpty()) {
+          dialogSignOutGuestMode()
+        } else { // sign out for login account
+          Log.e("More Fragment", "token login")
+          moreViewModelUser.deleteSession(SessionID(user.token)) // revoke session for login user
+          removePrefUserData() // remove preference user data
           showToastShort(requireContext(), getString(sign_out_success))
         }
       }
@@ -123,24 +128,27 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutGuestMode() {
-    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+    val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
     builder
       .setMessage(getString(warning_signOut_guest_mode))
       .setTitle(getString(warning))
-      .setPositiveButton(getString(yes)) { _, _ ->
-        removeAllUserData()
-        showToastShort(requireContext(), getString(all_data_deleted))
-        moreViewModel.deleteAll() // delete all data
+      .setPositiveButton(getString(yes)) { dialog, _ ->
+        moreViewModel.deleteAll() // delete all user data  (watchlist and favorite)
+        showToastShort(requireActivity(), getString(all_data_deleted))
+        dialog.dismiss()
+        removePrefUserData() // remove preference user data
       }
       .setNegativeButton(getString(no)) { dialog, _ ->
         dialog.dismiss()
       }
 
     val dialog: AlertDialog = builder.create()
-    dialog.show()
+    if (! requireActivity().isFinishing) {
+      dialog.show()
+    }
   }
 
-  private fun removeAllUserData() {
+  private fun removePrefUserData() {
     authViewModel.removeUserData()
     activity?.finish()
     startActivity(Intent(activity, SplashScreenActivity::class.java))

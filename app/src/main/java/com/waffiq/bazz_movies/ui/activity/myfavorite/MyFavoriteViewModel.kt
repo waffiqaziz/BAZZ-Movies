@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -26,8 +28,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
 
-
-  fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
+  // fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
 

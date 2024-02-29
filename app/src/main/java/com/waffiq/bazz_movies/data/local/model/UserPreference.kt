@@ -1,7 +1,11 @@
 package com.waffiq.bazz_movies.data.local.model
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -36,15 +40,11 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
   }
 
   suspend fun saveRegion(region: String) {
-    dataStore.edit {
-      it[REGION_KEY] = region
-    }
+    dataStore.edit { it[REGION_KEY] = region }
   }
 
   fun getRegion(): Flow<String> {
-    return dataStore.data.map {
-      it[REGION_KEY] ?: ""
-    }
+    return dataStore.data.map { it[REGION_KEY] ?: "" }
   }
 
   suspend fun removeUserData() { // remove all data from datastore

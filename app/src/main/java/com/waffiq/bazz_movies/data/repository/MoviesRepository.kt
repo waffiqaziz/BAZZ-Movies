@@ -114,6 +114,7 @@ class MoviesRepository(
   // for DB all
   private val _isFavorite = MutableLiveData<Boolean>()
   val isFavorite: LiveData<Boolean> = _isFavorite
+
   private val _isWatchlist = MutableLiveData<Boolean>()
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 

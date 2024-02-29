@@ -4,10 +4,30 @@ import com.waffiq.bazz_movies.BuildConfig.API_KEY
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.remote.response.tmdb.*
+import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MultiSearchResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import retrofit2.Call
-
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TMDBApiService {
   @GET("3/authentication/token/new?api_key=$API_KEY")
@@ -223,5 +243,11 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
     @Body data: Rate
+  ): Call<PostRateResponse>
+
+  @Headers("Content-Type: application/json;charset=utf-8")
+  @DELETE("3/authentication/session?api_key=$API_KEY")
+  fun delSession(
+    @Query("session_id") sessionId: String
   ): Call<PostRateResponse>
 }
