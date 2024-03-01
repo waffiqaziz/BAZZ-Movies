@@ -243,10 +243,8 @@ class FeaturedFragment : Fragment() {
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      binding.backgroundDimMovie.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
-    }, DELAY_TIME)
+    binding.backgroundDimMovie.visibility = View.GONE
+    binding.progressBar.visibility = View.GONE
   }
 
   private fun showLoading(isLoading: Boolean) {
