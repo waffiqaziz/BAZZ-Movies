@@ -111,6 +111,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:animateLayoutChanges">true</item>
     <item name="android:indeterminateTint">@color/yellow</item>
+    <item name="android:indeterminate">true</item>
     <item name="android:visibility">gone</item>
   </style>
 
@@ -140,6 +141,13 @@
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">0dp</item>
     <item name="android:layout_weight">1</item>
+  </style>
+
+  <style name="MySocialMediaButton">
+    <item name="android:padding">12dp</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
   </style>
 
   <!-- Style for SearchView -->
@@ -214,7 +222,7 @@
   </style>
 
   <style name="TextScoreHeader">
-    <item name="android:layout_marginTop">12dp</item>
+    <item name="android:layout_marginTop">4dp</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/gothic</item>

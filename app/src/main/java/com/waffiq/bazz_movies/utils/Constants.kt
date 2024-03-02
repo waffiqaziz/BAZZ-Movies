@@ -18,6 +18,15 @@ object Constants {
   const val YOUTUBE_LINK_TRAILER = "https://www.youtube.com/watch?v="
   const val GRAVATAR_LINK = "https://secure.gravatar.com/avatar/"
   const val COUNTRY_API_LINK = "https://api.country.is"
+
+  const val INSTAGRAM_LINK = "https://www.instagram.com/"
+  const val X_LINK = "https://twitter.com/"
+  const val FACEBOOK_LINK = "https://www.facebook.com/"
+  const val TIKTOK_PERSON_LINK = "https://www.tiktok.com/@"
+  const val YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/"
+  const val WIKIDATA_PERSON_LINK = "https://www.wikidata.org/wiki/"
+  const val IMDB_PERSON_LINK = "https://www.imdb.com/name/"
+
   const val TERMS_CONDITIONS_LINK =
     "https://www.freeprivacypolicy.com/live/e3b6a0d4-ea46-4a95-914b-4120b0e83e9c"
   const val PRIVACY_POLICY_LINK =

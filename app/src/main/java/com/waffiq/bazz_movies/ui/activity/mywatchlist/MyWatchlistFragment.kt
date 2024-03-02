@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.MyWatchlistViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Constants.tabMoviesTvHeadingArray
 
 class MyWatchlistFragment : Fragment() {
 
@@ -52,7 +52,7 @@ class MyWatchlistFragment : Fragment() {
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager){ tab, position ->
-      tab.text = requireActivity().getString(Constants.tabMoviesTvHeadingArray[position])
+      tab.text = requireActivity().getString(tabMoviesTvHeadingArray[position])
     }.attach()
   }
 

@@ -14,6 +14,9 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
   fun getImagePerson(id: Int) = movieRepository.getImagePerson(id)
   fun getImagePerson() = movieRepository.imagePerson
 
+  fun getExternalIDPerson(id: Int) = movieRepository.getExternalIDPerson(id)
+  fun getExternalIDPerson() = movieRepository.externalIdPerson
+
   fun getLoading() = movieRepository.isLoading
 
   fun getSnackbar() = movieRepository.snackBarText

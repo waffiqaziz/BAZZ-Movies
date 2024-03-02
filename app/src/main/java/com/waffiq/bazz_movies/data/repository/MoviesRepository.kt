@@ -37,6 +37,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
@@ -129,6 +130,9 @@ class MoviesRepository(
   private val _imagePerson = MutableLiveData<List<ProfilesItem>>()
   val imagePerson: LiveData<List<ProfilesItem>> get() = _imagePerson
 
+  private val _externalIdPerson = MutableLiveData<ExternalIDPersonResponse>()
+  val externalIdPerson: LiveData<ExternalIDPersonResponse> get() = _externalIdPerson
+
 
   // future
   private val _postResponse = MutableLiveData<String>()
@@ -150,188 +154,120 @@ class MoviesRepository(
   // paging
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        TopRatedMoviePagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { TopRatedMoviePagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        PopularMoviePagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { PopularMoviePagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        FavoriteMoviePagingSource(sessionId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { FavoriteMoviePagingSource(sessionId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        FavoriteTvPagingSource(sessionId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { FavoriteTvPagingSource(sessionId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        WatchlistTvPagingSource(sessionId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { WatchlistTvPagingSource(sessionId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        WatchlistMoviePagingSource(sessionId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { WatchlistMoviePagingSource(sessionId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingPopularTv(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        PopularTvPagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { PopularTvPagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingOnTv(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        OnTvPagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { OnTvPagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        AiringTodayTvPagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { AiringTodayTvPagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        MultiTrendingWeekPagingSource(region, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { MultiTrendingWeekPagingSource(region, tmdbApiService) }
     ).flow
   }
 
   fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        MultiTrendingDayPagingSource(region, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { MultiTrendingDayPagingSource(region, tmdbApiService) }
     ).flow
   }
 
   fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        RecommendationMoviePagingSource(movieId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { RecommendationMoviePagingSource(movieId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        RecommendationTvPagingSource(tvId, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { RecommendationTvPagingSource(tvId, tmdbApiService) }
     ).flow
   }
 
   fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 20
-      ),
-      pagingSourceFactory = {
-        UpcomingMoviesPagingSource(region, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 20),
+      pagingSourceFactory = { UpcomingMoviesPagingSource(region, tmdbApiService) }
     ).flow
   }
 
   fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 20
-      ),
-      pagingSourceFactory = {
-        PlayingNowMoviesPagingSource(region, tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 20),
+      pagingSourceFactory = { PlayingNowMoviesPagingSource(region, tmdbApiService) }
     ).flow
   }
 
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 5
-      ),
-      pagingSourceFactory = {
-        TopRatedTvPagingSource(tmdbApiService)
-      }
+      config = PagingConfig(pageSize = 5),
+      pagingSourceFactory = { TopRatedTvPagingSource(tmdbApiService) }
     ).flow
   }
 
   fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
-      config = PagingConfig(
-        pageSize = 20
-      ),
-      pagingSourceFactory = {
-        SearchPagingSource(tmdbApiService, query)
-      }
+      config = PagingConfig(pageSize = 20),
+      pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
     ).flow
   }
 
@@ -347,9 +283,8 @@ class MoviesRepository(
         call: Call<OMDbDetailsResponse>,
         response: Response<OMDbDetailsResponse>
       ) {
-        if (response.isSuccessful) {
-          _detailOMDb.value = response.body()
-        } else {
+        if (response.isSuccessful) _detailOMDb.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -388,15 +323,14 @@ class MoviesRepository(
               productionCountry = ""
             }
             try {
-              if (productionCountry.isEmpty()) {
-                _ageRatingMovie.value = "N/A"
-              } else {
+              if (productionCountry.isEmpty()) _ageRatingMovie.value = "N/A"
+              else {
                 _ageRatingMovie.value = responseBody.releaseDates?.results?.filter {
                   it?.iso31661 == "US" || it?.iso31661 == productionCountry
                 }?.map {
                   it?.releaseDateValue?.get(0)?.certification
                 }.toString().replace("[", "").replace("]", "")
-                  .replace(" ", "").replace(",", "")
+                  .replace(" ", "").replace(",", ", ")
               }
             } catch (e: NullPointerException) {
               _ageRatingMovie.value = "N/A"
@@ -442,7 +376,7 @@ class MoviesRepository(
               _ageRatingTv.value = responseBody.contentRatings?.results?.filter {
                 it?.iso31661 == "US" || it?.iso31661 == productionCountry
               }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-                .replace(" ", "").replace(",", "")
+                .replace(" ", "").replace(",", ", ")
             } catch (e: NullPointerException) {
               _ageRatingTv.value = "N/A"
               _productionCountry.value = "N/A"
@@ -659,11 +593,8 @@ class MoviesRepository(
         response: Response<StatedResponse>
       ) {
         val responseBody = response.body()
-        if (response.isSuccessful) {
-          if (responseBody != null) {
-            _stated.value = response.body()
-          }
-        } else {
+        if (response.isSuccessful) if (responseBody != null) _stated.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -691,9 +622,8 @@ class MoviesRepository(
         call: Call<StatedResponse>,
         response: Response<StatedResponse>
       ) {
-        if (response.isSuccessful) {
-          _stated.value = response.body()
-        } else {
+        if (response.isSuccessful) _stated.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -759,9 +689,7 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) {
-            _postResponse.value = responseBody.statusMessage!!
-          }
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -792,9 +720,7 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) {
-            _postResponse.value = responseBody.statusMessage!!
-          }
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -825,9 +751,7 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) {
-            _postResponse.value = responseBody.statusMessage!!
-          }
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -858,9 +782,8 @@ class MoviesRepository(
         call: Call<DetailPersonResponse>,
         response: Response<DetailPersonResponse>
       ) {
-        if (response.isSuccessful) {
-          _detailPerson.value = response.body()
-        } else {
+        if (response.isSuccessful) _detailPerson.value = response.body()
+        else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
@@ -892,9 +815,7 @@ class MoviesRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) {
-            _knownFor.value = responseBody.cast!!
-          }
+          if (responseBody != null) _knownFor.value = responseBody.cast!!
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -925,9 +846,7 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) {
-            _imagePerson.value = responseBody.profiles!!
-          }
+          if (responseBody != null) _imagePerson.value = responseBody.profiles!!
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -939,6 +858,36 @@ class MoviesRepository(
       }
 
       override fun onFailure(call: Call<ImagePersonResponse>, t: Throwable) {
+        Log.e(TAG, "onFailure: ${t.message}")
+        _snackBarText.value = Event(t.message.toString())
+      }
+    })
+  }
+
+  fun getExternalIDPerson(id: Int) {
+    val client = TMDBApiConfig
+      .getApiService()
+      .getExternalIdPerson(id)
+
+    client.enqueue(object : Callback<ExternalIDPersonResponse> {
+      override fun onResponse(
+        call: Call<ExternalIDPersonResponse>,
+        response: Response<ExternalIDPersonResponse>
+      ) {
+        if (response.isSuccessful) {
+          val responseBody = response.body()
+          if (responseBody != null) _externalIdPerson.value = responseBody
+        } else {
+          Log.e(TAG, "onFailure: ${response.message()}")
+
+          // get message error
+          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val message = jsonObject.getString("status_message")
+          _snackBarText.value = Event(message)
+        }
+      }
+
+      override fun onFailure(call: Call<ExternalIDPersonResponse>, t: Throwable) {
         Log.e(TAG, "onFailure: ${t.message}")
         _snackBarText.value = Event(t.message.toString())
       }

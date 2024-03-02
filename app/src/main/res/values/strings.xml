@@ -108,6 +108,7 @@
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
   <string name="tmdb_full">The Movie Database</string>
+  <string name="status_">Status : %1$s</string>
 
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
@@ -167,8 +168,23 @@
   <string name="reset">Reset</string>
   <string name="apply">Apply</string>
   <string name="maximum_selected_genres_reached">Maximum selected genres reached</string>
-
-
+  <string name="kids">kids</string>
+  <string name="mistery">mistery</string>
+  <string name="news">news</string>
+  <string name="reality">reality</string>
+  <string name="soap">soap</string>
+  <string name="talk">talk</string>
+  <string name="war_politic"><![CDATA[war & politic]]></string>
+  <string name="action_n_adventure"><![CDATA[action & adventure]]></string>
+  <string name="sci_fi_n_fantasy"><![CDATA[sci-fi & fantasy]]></string>
+  <string name="open_actor_actress_instagram_page">open actor/actress Instagram page</string>
+  <string name="open_actor_x_account">open actor/actress X account</string>
+  <string name="open_actor_actress_facebook_page">open actor/actress Facebook page</string>
+  <string name="open_actor_actress_tiktok_page">open actor/actress Tik Tok page</string>
+  <string name="open_actor_actress_imdb_page">open actor/actress IMDb page</string>
+  <string name="open_actor_actress_youtube_channel">open actor/actress youtube channel</string>
+  <string name="open_actor_actress_wikidata_page">open actor/actress Wikidata page</string>
+  <string name="open_actor_actress_home_page">open actor/actress home page</string>
 
 
 </resources>

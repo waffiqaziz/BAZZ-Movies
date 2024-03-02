@@ -223,3 +223,39 @@ data class CastCombinedItem(
 	@field:SerializedName("order")
 	val order: Int? = null
 )
+
+data class ExternalIDPersonResponse(
+
+	@field:SerializedName("imdb_id")
+	val imdbId: String? = null,
+
+	@field:SerializedName("freebase_mid")
+	val freebaseMid: String? = null,
+
+	@field:SerializedName("tiktok_id")
+	val tiktokId: String? = null,
+
+	@field:SerializedName("wikidata_id")
+	val wikidataId: String? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("freebase_id")
+	val freebaseId: String? = null,
+
+	@field:SerializedName("twitter_id")
+	val twitterId: String? = null,
+
+	@field:SerializedName("youtube_id")
+	val youtubeId: String? = null,
+
+	@field:SerializedName("tvrage_id")
+	val tvrageId: String? = null,
+
+	@field:SerializedName("facebook_id")
+	val facebookId: String? = null,
+
+	@field:SerializedName("instagram_id")
+	val instagramId: String? = null
+)

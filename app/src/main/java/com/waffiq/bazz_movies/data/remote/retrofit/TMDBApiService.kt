@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
@@ -203,15 +204,20 @@ interface TMDBApiService {
     @Path("personId") personId: Int
   ): Call<DetailPersonResponse>
 
-  @GET("3/person/{personId}/combined_credits?api_key=$API_KEY&language=en-US")
-  fun getKnownForPersonCombinedMovieTv(
-    @Path("personId") personId: Int
-  ): Call<CombinedCreditResponse>
-
   @GET("3/person/{personId}/images?api_key=$API_KEY&language=en-US")
   fun getImagePerson(
     @Path("personId") personId: Int
   ): Call<ImagePersonResponse>
+
+  @GET("3/person/{personId}/external_ids?api_key=$API_KEY")
+  fun getExternalIdPerson(
+    @Path("personId") personId: Int
+  ): Call<ExternalIDPersonResponse>
+
+  @GET("3/person/{personId}/combined_credits?api_key=$API_KEY&language=en-US")
+  fun getKnownForPersonCombinedMovieTv(
+    @Path("personId") personId: Int
+  ): Call<CombinedCreditResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")

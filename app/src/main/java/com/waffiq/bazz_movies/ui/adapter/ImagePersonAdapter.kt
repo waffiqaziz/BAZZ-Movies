@@ -12,8 +12,10 @@ import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItem
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 
-class ImagePersonAdapter : RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>() {
+class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
+  RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<ProfilesItem>()
 
@@ -33,6 +35,13 @@ class ImagePersonAdapter : RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>()
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
+
+    // on click listener to open image inside dialog
+    holder.itemView.setOnClickListener {
+      onItemClick.invoke(
+        position,
+        listCast.map { TMDB_IMG_LINK_POSTER_W500 + it.filePath.toString() })
+    }
   }
 
   override fun getItemCount() = listCast.size

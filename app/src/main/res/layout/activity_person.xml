@@ -49,7 +49,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="4dp"
           android:layout_marginTop="4dp"
-          android:background="@drawable/bg_back_button"
+          android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
           android:foreground="?selectableItemBackgroundBorderless"
           android:minWidth="48dp"
@@ -70,16 +70,66 @@
           app:layout_constraintTop_toBottomOf="@+id/iv_picture"
           tools:text="Leonardo DiCaprio" />
 
+        <com.google.android.material.divider.MaterialDivider
+          android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+          app:dividerColor="@color/gray_800"
+          app:layout_constraintBottom_toTopOf="@+id/tv_known_for"
+          app:layout_constraintTop_toBottomOf="@+id/view_group_social_media" />
+
         <TextView
           android:id="@+id/tv_known_for"
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp"
           android:text="@string/known_for"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
+          app:layout_constraintTop_toBottomOf="@+id/iv_picture" />
+
+        <LinearLayout
+          android:id="@+id/view_group_social_media"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          app:layout_constraintEnd_toEndOf="@+id/tv_Name"
+          app:layout_constraintStart_toStartOf="@+id/tv_Name"
+          app:layout_constraintTop_toBottomOf="@+id/tv_Name">
+
+          <ImageView
+            android:id="@+id/iv_instagram"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_instagram_page"
+            android:src="@drawable/ic_instagram" />
+
+          <ImageView
+            android:id="@+id/iv_x"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_x_account"
+            android:src="@drawable/ic_x" />
+
+          <ImageView
+            android:id="@+id/iv_facebook"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_facebook_page"
+            android:src="@drawable/ic_facebook" />
+
+          <ImageView
+            android:id="@+id/iv_tiktok"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_tiktok_page"
+            android:src="@drawable/ic_tik_tok" />
+
+          <ImageView
+            android:id="@+id/iv_youtube"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_youtube_channel"
+            android:src="@drawable/ic_youtube" />
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_known_for"
@@ -88,7 +138,6 @@
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:contentDescription="@string/playing_as"
-          app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -104,6 +153,45 @@
           android:text="@string/biography"
           app:layout_constraintStart_toStartOf="@+id/tv_known_for"
           app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
+
+        <LinearLayout
+          android:id="@+id/view_group_social_media2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
+          android:orientation="horizontal"
+          app:layout_constraintBottom_toBottomOf="@+id/tv_biography_header"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/tv_biography_header">
+
+          <ImageView
+            android:id="@+id/iv_imdb"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_imdb_page"
+            android:src="@drawable/ic_imdb" />
+
+          <ImageView
+            android:id="@+id/iv_wikidata"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_wikidata_page"
+            android:src="@drawable/ic_wikidata" />
+
+          <View
+            android:id="@+id/divider1"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="?android:attr/dividerVertical" />
+
+          <ImageView
+            android:id="@+id/iv_link"
+            style="@style/MySocialMediaButton"
+            android:contentDescription="@string/open_actor_actress_home_page"
+            android:src="@drawable/ic_link" />
+
+        </LinearLayout>
+
 
         <io.github.glailton.expandabletextview.ExpandableTextView
           android:id="@+id/tv_biography"
