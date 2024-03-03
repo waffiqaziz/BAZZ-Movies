@@ -48,10 +48,11 @@ import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.R.string.not_available_full
 import com.waffiq.bazz_movies.R.string.cant_provide_a_score
+import com.waffiq.bazz_movies.R.string.status_
 import com.waffiq.bazz_movies.R.id.rating_bar_action
 import com.waffiq.bazz_movies.R.id.btn_yes
 import com.waffiq.bazz_movies.R.id.btn_no
-import com.waffiq.bazz_movies.R.layout.popup_rating
+import com.waffiq.bazz_movies.R.layout.dialog_rating
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.font.gothic
 import com.waffiq.bazz_movies.R.color.gray_100
@@ -186,9 +187,8 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.apply {
       dataExtra.apply {
         val year = dateFormatter((firstAirDate ?: releaseDate ?: ""))!!
-        if (year.isEmpty()) {
-          tvYearReleased.text = getString(not_available)
-        } else tvYearReleased.text = year
+        if (year.isEmpty()) tvYearReleased.text = getString(not_available)
+        else tvYearReleased.text = year
 
         tvMediaType.text = mediaType?.uppercase()
         tvOverview.text = overview
@@ -197,9 +197,8 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     // show tmdb score
-    binding.tvScoreTmdb.text = (if (dataExtra.voteAverage == 0.0F) {
-      getString(not_available)
-    } else dataExtra.voteAverage).toString()
+    binding.tvScoreTmdb.text = if (dataExtra.voteAverage == 0.0F) getString(not_available)
+    else dataExtra.voteAverage.toString()
 
     // setup rv cast
     binding.rvCast.layoutManager =
@@ -338,6 +337,10 @@ class DetailMovieActivity : AppCompatActivity() {
       detailViewModel.detailTv().observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
+
+        // show runtime
+        binding.tvDuration.text = getString(status_, tv.status)
+
 
         detailViewModel.ageRatingTv().observe(this) {
           binding.tvAgeRating.text = it ?: getString(not_available)
@@ -484,9 +487,9 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showDetailOMDb(data: OMDbDetailsResponse) {
     binding.apply {
       tvScoreImdb.text =
-        if (data.imdbRating == "") getString(not_available) else data.imdbRating
+        if (data.imdbRating.isNullOrEmpty() || data.imdbRating.isBlank()) getString(not_available) else data.imdbRating
       tvScoreMetascore.text =
-        if (data.metascore == "") getString(not_available) else data.metascore
+        if (data.metascore.isNullOrEmpty() || data.metascore.isBlank()) getString(not_available) else data.metascore
     }
   }
 
@@ -536,7 +539,7 @@ class DetailMovieActivity : AppCompatActivity() {
   // toast, snackbar, dialog
   private fun showToastAddedFavorite() {
     showToastShort(
-      this, "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+      this, "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         added_to_favorite
       )
     )
@@ -544,7 +547,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showToastAddedWatchlist() {
     showToastShort(
-      this, "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+      this, "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         added_to_watchlist
       )
     )
@@ -553,7 +556,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastRemoveFromFavorite() {
     showToastShort(
       this,
-      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+      "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         deleted_from_favorite
       )
     )
@@ -562,7 +565,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showToastRemoveFromWatchlist() {
     showToastShort(
       this,
-      "<b>${dataExtra.name ?: dataExtra.originalTitle ?: dataExtra.title}</b> " + getString(
+      "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         deleted_from_watchlist
       )
     )
@@ -580,7 +583,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showDialogRate() {
     val dialog = Dialog(this)
-    val dialogView = View.inflate(this, popup_rating, null)
+    val dialogView = View.inflate(this, dialog_rating, null)
 
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(dialogView)

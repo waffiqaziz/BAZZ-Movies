@@ -29,7 +29,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/your_rating"
-    android:textColor="@color/gray_700"
+    android:textColor="@color/gray_900"
     app:layout_constraintBottom_toBottomOf="@+id/bg_top"
     app:layout_constraintEnd_toEndOf="@+id/bg_top"
     app:layout_constraintStart_toStartOf="@+id/bg_top"
@@ -44,32 +44,28 @@
     app:layout_constraintStart_toStartOf="@+id/bg"
     app:layout_constraintTop_toBottomOf="@+id/bg_top" />
 
-  <androidx.appcompat.widget.AppCompatButton
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_no"
     style="@style/customButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="29dp"
-    android:background="@drawable/ic_switch_button_off"
+    android:backgroundTint="@color/red_matte"
     android:fontFamily="@font/gothicb"
-    android:insetBottom="0dp"
-    android:padding="0dp"
+    android:padding="7dp"
     android:text="@string/cancel"
-    android:textSize="20sp"
     app:layout_constraintStart_toStartOf="@+id/rating_bar_action"
     app:layout_constraintTop_toBottomOf="@+id/rating_bar_action" />
 
-  <androidx.appcompat.widget.AppCompatButton
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_yes"
     style="@style/customButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/ic_switch_button_on"
+    android:backgroundTint="@color/green"
     android:fontFamily="@font/gothicb"
-    android:insetBottom="0dp"
-    android:padding="0dp"
+    android:padding="7dp"
     android:text="@string/submit"
-    android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="@+id/rating_bar_action"
     app:layout_constraintTop_toTopOf="@+id/btn_no" />
 
