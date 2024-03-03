@@ -35,8 +35,11 @@ import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.Constants.FAQ_LINK
+import com.waffiq.bazz_movies.utils.Constants.FORM_HELPER
+import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
+import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
@@ -91,16 +94,16 @@ class MoreFragment : Fragment() {
       toastStillOnDevelopment(requireContext())
     }
     binding.btnFaq.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FAQ_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FAQ_LINK)))
     }
     binding.tvPrivacyPolicy.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PRIVACY_POLICY_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_LINK)))
     }
     binding.tvTermsConditon.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.TERMS_CONDITIONS_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_LINK)))
     }
     binding.btnSuggestion.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FORM_HELPER)))
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FORM_HELPER)))
     }
     binding.btnAboutUs.setOnClickListener {
       activity?.let {

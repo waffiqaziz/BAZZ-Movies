@@ -38,7 +38,7 @@ import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.CustomTypefaceSpan
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -151,8 +151,8 @@ class LoginActivity : AppCompatActivity() {
       @Suppress("DEPRECATION")
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-    if (isGuest) Helper.showToastShort(this, getString(login_as_guest_successful))
-    else Helper.showToastShort(this, getString(login_successful))
+    if (isGuest) showToastShort(this, getString(login_as_guest_successful))
+    else showToastShort(this, getString(login_successful))
     finish()
   }
 

@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.R.color.gray_900
 import com.waffiq.bazz_movies.databinding.ActivitySplashScreenBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants
+import com.waffiq.bazz_movies.utils.Constants.DELAY_TIME_SPLASH_SCREEN
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -36,7 +36,7 @@ class SplashScreenActivity : AppCompatActivity() {
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
 
     //add splash screen with fade transition 2 second
-    binding.imgLogo.animate().setDuration(Constants.DELAY_TIME).alpha(1f).withEndAction {
+    binding.imgLogo.animate().setDuration(DELAY_TIME_SPLASH_SCREEN).alpha(1f).withEndAction {
 
       authenticationViewModel.getUser().observe(this) {
         if (it.isLogin) gotoMainActivity(true)

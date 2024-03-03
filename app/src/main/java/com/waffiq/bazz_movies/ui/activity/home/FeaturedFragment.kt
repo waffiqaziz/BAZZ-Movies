@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.ui.activity.home
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.string.data
+import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.R.string.no_data
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
