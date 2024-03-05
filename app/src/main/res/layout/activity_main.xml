@@ -21,7 +21,7 @@
     app:itemBackground="?attr/selectableItemBackgroundBorderless"
     app:itemIconSize="18dp"
     app:itemIconTint="@color/bottom_nav_color"
-    app:itemRippleColor="@color/white"
+    app:itemRippleColor="@color/gray_300"
     app:itemTextColor="@color/bottom_nav_color"
     app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
     app:menu="@menu/bottom_nav_menu" />

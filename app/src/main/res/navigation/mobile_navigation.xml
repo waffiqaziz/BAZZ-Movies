@@ -2,14 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/mobile_navigation"
   app:startDestination="@+id/navigation_home">
 
   <fragment
     android:id="@+id/navigation_home"
     android:name="com.waffiq.bazz_movies.ui.activity.home.HomeFragment"
     android:label="@string/title_home"
-    tools:layout="@layout/fragment_home" />
+    tools:layout="@layout/fragment_featured" />
 
   <fragment
     android:id="@+id/navigation_search"
@@ -21,17 +20,19 @@
     android:id="@+id/navigation_my_favorite"
     android:name="com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteFragment"
     android:label="@string/title_my_favorite"
-    tools:layout="@layout/fragment_my_favorite" />
+    tools:layout="@layout/fragment_my_favorite_movies" />
 
   <fragment
     android:id="@+id/navigation_my_watchlist"
     android:name="com.waffiq.bazz_movies.ui.activity.mywatchlist.MyWatchlistFragment"
     android:label="@string/title_my_watchlist"
-    tools:layout="@layout/fragment_my_watchlist" />
+    tools:layout="@layout/fragment_my_watchlist_movies" />
 
   <fragment
     android:id="@+id/navigation_more"
     android:name="com.waffiq.bazz_movies.ui.activity.more.MoreFragment"
     android:label="@string/title_more"
-    tools:layout="@layout/fragment_my_favorite" />
+    tools:layout="@layout/fragment_more">
+
+  </fragment>
 </navigation>

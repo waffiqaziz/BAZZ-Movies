@@ -14,7 +14,7 @@
     android:background="?attr/colorPrimary"
     android:contentDescription="@string/tab_layout_explanation"
     app:tabIndicatorColor="@color/yellow"
-    app:tabRippleColor="@color/white"
+    app:tabRippleColor="@color/gray_300"
     app:tabSelectedTextColor="@color/yellow"
     app:tabTextAppearance="@style/TextTabLayoutStyle"
     app:tabTextColor="@color/white" />
