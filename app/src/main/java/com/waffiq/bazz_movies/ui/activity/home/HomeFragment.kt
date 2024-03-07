@@ -14,11 +14,12 @@ import com.waffiq.bazz_movies.databinding.FragmentHomeBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.HomeViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants.tabHomeHeadingArray
+import com.waffiq.bazz_movies.R.string.binding_error
 
 class HomeFragment : Fragment() {
 
   private var _binding: FragmentHomeBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout

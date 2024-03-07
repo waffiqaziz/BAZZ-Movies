@@ -41,7 +41,7 @@ data class ResultItem(
 	val backdropPath: String? = null,
 
 	@SerializedName("media_type")
-	var mediaType: String? = null,
+	val mediaType: String? = null,
 
 	@SerializedName("original_name")
 	val originalName: String? = null,

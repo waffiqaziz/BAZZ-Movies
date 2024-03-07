@@ -48,8 +48,7 @@ class TvAdapter :
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        tv.mediaType = "tv"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tv)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tv.copy(mediaType = "tv"))
         it.context.startActivity(intent)
       }
     }

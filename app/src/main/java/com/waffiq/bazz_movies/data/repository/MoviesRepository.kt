@@ -342,7 +342,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -372,7 +372,7 @@ class MoviesRepository(
             try { // get age rating
               val productionCountry = responseBody.productionCountries?.get(0)?.iso31661
 
-              _productionCountry.value = productionCountry!!
+              _productionCountry.value = productionCountry ?: "N/A"
               _ageRatingTv.value = responseBody.contentRatings?.results?.filter {
                 it?.iso31661 == "US" || it?.iso31661 == productionCountry
               }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
@@ -391,7 +391,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -420,7 +420,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -461,7 +461,7 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -503,7 +503,7 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -537,7 +537,7 @@ class MoviesRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -569,7 +569,7 @@ class MoviesRepository(
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -599,7 +599,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -628,7 +628,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -656,15 +656,17 @@ class MoviesRepository(
         if (response.isSuccessful) {
           val responseBody = response.body()
           if (responseBody != null) {
-            _postResponse.value = responseBody.statusMessage!!
-            if (!data.favorite!!) _snackBarTextInt.value = Event(string.deleted_from_favorite2)
+            _postResponse.value = responseBody.statusMessage ?: "No Response"
+            if(data.favorite != null){
+              if (!data.favorite) _snackBarTextInt.value = Event(string.deleted_from_favorite2)
+            }
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -689,13 +691,13 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -720,13 +722,13 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -751,13 +753,13 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage!!
+          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -788,7 +790,7 @@ class MoviesRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -815,12 +817,13 @@ class MoviesRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _knownFor.value = responseBody.cast!!
+          if (responseBody != null)
+            _knownFor.value = responseBody.cast ?: emptyList()
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -846,12 +849,12 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _imagePerson.value = responseBody.profiles!!
+          if (responseBody != null) _imagePerson.value = responseBody.profiles ?: emptyList()
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -875,13 +878,12 @@ class MoviesRepository(
         response: Response<ExternalIDPersonResponse>
       ) {
         if (response.isSuccessful) {
-          val responseBody = response.body()
-          if (responseBody != null) _externalIdPerson.value = responseBody
+          if (response.body() != null) _externalIdPerson.value = response.body()
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackBarText.value = Event(message)
         }
@@ -935,13 +937,27 @@ class MoviesRepository(
       _snackBarTextInt.value = Event(string.deleted_from_favorite2)
       _undoDB.value = Event(fav)
 
-      fav.isFavorite = false
-      appExecutors.diskIO().execute { localDataSource.update(fav) }
+      if (fav.isWatchlist != null) {
+        appExecutors.diskIO().execute {
+          localDataSource.update(
+            isFavorite = false,
+            isWatchlist = fav.isWatchlist,
+            id = fav.mediaId
+          )
+        }
+      } else Log.e(TAG, "favDB: $fav")
     } else {  // update set is_favorite = true, (for movie that already on watchlist)
       _undoDB.value = Event(fav)
 
-      fav.isFavorite = true
-      appExecutors.diskIO().execute { localDataSource.update(fav) }
+      if (fav.isWatchlist != null) {
+        appExecutors.diskIO().execute {
+          localDataSource.update(
+            isFavorite = true,
+            isWatchlist = fav.isWatchlist,
+            id = fav.mediaId
+          )
+        }
+      } else Log.e(TAG, "favDB: $fav")
     }
   }
 
@@ -950,13 +966,27 @@ class MoviesRepository(
       _snackBarTextInt.value = Event(string.deleted_from_watchlist2)
       _undoDB.value = Event(fav)
 
-      fav.isWatchlist = false
-      appExecutors.diskIO().execute { localDataSource.update(fav) }
+      if (fav.isFavorite != null) {
+        appExecutors.diskIO().execute {
+          localDataSource.update(
+            isFavorite = fav.isFavorite,
+            isWatchlist = false,
+            id = fav.mediaId
+          )
+        }
+      } else Log.e(TAG, "favDB: $fav")
     } else { // update set is_watchlist = true
       _undoDB.value = Event(fav)
 
-      fav.isWatchlist = true
-      appExecutors.diskIO().execute { localDataSource.update(fav) }
+      if (fav.isFavorite != null) {
+        appExecutors.diskIO().execute {
+          localDataSource.update(
+            isFavorite = fav.isFavorite,
+            isWatchlist = true,
+            id = fav.mediaId
+          )
+        }
+      } else Log.e(TAG, "favDB: $fav")
     }
   }
 

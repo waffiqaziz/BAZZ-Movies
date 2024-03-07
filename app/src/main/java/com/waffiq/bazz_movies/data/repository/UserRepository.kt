@@ -67,7 +67,7 @@ class UserRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }
@@ -96,7 +96,7 @@ class UserRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }
@@ -126,7 +126,7 @@ class UserRepository(
 
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }
@@ -160,7 +160,7 @@ class UserRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }
@@ -201,7 +201,7 @@ class UserRepository(
           Log.e(TAG, "onFailure: ${response.message()}")
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }
@@ -234,13 +234,13 @@ class UserRepository(
         _isLoading.value = false
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _countryCode.value = responseBody.country!!
+          if (responseBody != null) _countryCode.value = responseBody.country ?: ""
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
           _countryCode.value = ""
 
           // get message error
-          val jsonObject = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+          val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
           val message = jsonObject.getString("status_message")
           _snackbarText.value = Event(message)
         }

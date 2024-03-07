@@ -37,6 +37,8 @@ object Helper {
 
   private fun getGenreName(int: Int): String {
     return when (int) {
+
+      // movies
       28 -> "Action"
       12 -> "Adventure"
       16 -> "Animation"
@@ -52,10 +54,12 @@ object Helper {
       9648 -> "Mystery"
       10749 -> "Romance"
       878 -> "Science Fiction"
-      10770 -> "TV MovieAndTvModel"
+      10770 -> "TV Movie"
       53 -> "Thriller"
       10752 -> "War"
       37 -> "Western"
+
+      // for TV
       10759 -> "Action & Adventure"
       10762 -> "Kids"
       10763 -> "News"
@@ -75,6 +79,54 @@ object Helper {
     return temp
   }
 
+  private fun genreToInt(genre: String): Int {
+    return when (genre) {
+      // movies
+      "action" -> 28
+      "adventure" -> 12
+      "animation" -> 16
+      "comedy" -> 35
+      "crime" -> 80
+      "documentary" -> 99
+      "drama" -> 18
+      "family" -> 10751
+      "fantasy" -> 14
+      "history" -> 36
+      "horror" -> 27
+      "music" -> 10402
+      "mystery" -> 9648
+      "romance" -> 10749
+      "science fiction" -> 878
+      "tv movie" -> 10770
+      "thriller" -> 53
+      "war" -> 10752
+      "western" -> 37
+
+      // for TV
+      "action & adventure" -> 10759
+      "kids" -> 10762
+      "news" -> 10763
+      "reality" -> 10764
+      "sci-fi & fantasy" -> 10765
+      "soap" -> 10766
+      "talk" -> 10767
+      "war & politics" -> 10768
+      else -> 0
+    }
+  }
+
+  fun iterateGenreToInt(data: List<String>): String {
+    var temp = ""
+
+    /**
+     *  "," Comma's are treated like an AND and query while "|"Pipe's are an OR.
+     *  https://www.themoviedb.org/talk/635968b34a4bf6007c5997f3
+     */
+    data.forEach { temp = temp + genreToInt(it) + "|" } // using OR
+    temp = temp.dropLast(2)
+    return temp
+  }
+
   fun getKnownFor(knownForItem: List<KnownForItem>): String {
     var temp = ""
     knownForItem.forEach { temp = temp + it.title + ", " }
@@ -88,7 +140,7 @@ object Helper {
     input: ResultItem
   ): FavoriteDB {
     return FavoriteDB(
-      mediaId = input.id,
+      mediaId = input.id ?: error("No ID For Database"),
       mediaType = input.mediaType,
       title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
       releaseDate = input.releaseDate ?: input.firstAirDate,
@@ -161,7 +213,7 @@ object Helper {
 
   fun animFadeOutLong(context: Context): Animation {
     val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
-    animation.duration = 700
+    animation.duration = 800
     return animation
   }
 

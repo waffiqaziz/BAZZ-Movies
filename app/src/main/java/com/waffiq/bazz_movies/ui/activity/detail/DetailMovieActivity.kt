@@ -136,9 +136,10 @@ class DetailMovieActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_MOVIE)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java)!!
+        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java) ?: error("No DataExtra")
       } else {
-        @Suppress("DEPRECATION") intent.getParcelableExtra(EXTRA_MOVIE)!!
+        @Suppress("DEPRECATION")
+        intent.getParcelableExtra(EXTRA_MOVIE) ?: error("No DataExtra")
       }
     } else finish()
 
@@ -186,7 +187,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // show data(year, overview, title)
     binding.apply {
       dataExtra.apply {
-        val year = dateFormatter((firstAirDate ?: releaseDate ?: ""))!!
+        val year = dateFormatter((firstAirDate ?: releaseDate ?: "")) ?: ""
         if (year.isEmpty()) tvYearReleased.text = getString(not_available)
         else tvYearReleased.text = year
 
@@ -196,7 +197,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
 
-    // show tmdb score
+    // show tmdb scor e
     binding.tvScoreTmdb.text = if (dataExtra.voteAverage == 0.0F) getString(not_available)
     else dataExtra.voteAverage.toString()
 
@@ -230,8 +231,9 @@ class DetailMovieActivity : AppCompatActivity() {
 
     //show more detail data based media type
     if (dataExtra.mediaType == "movie") {
+
       // shows directors
-      detailViewModel.getAllCreditMovies(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.getAllCreditMovies(it) }
       detailViewModel.getCreditDirectorMovies().observe(this) { crew ->
         createTable(detailCrew(crew))
       }
@@ -249,7 +251,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       // show score, genres, backdrop, trailer
-      detailViewModel.detailMovie(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.detailMovie(it) }
       detailViewModel.detailMovie().observe(this) { movie ->
 
         // show genre
@@ -257,7 +259,7 @@ class DetailMovieActivity : AppCompatActivity() {
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
-        binding.tvDuration.text = convertRuntime(movie.runtime!!)
+        binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
 
         // show OMDb detail (score)
         movie.imdbId?.let { imdbId -> detailViewModel.getScoreOMDb(imdbId) }
@@ -274,8 +276,10 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         // recommendation movie
-        detailViewModel.getRecommendationMovie(movie.id!!).observe(this) {
-          adapterRecommendation.submitData(lifecycle, it)
+        movie.id?.let { movieID ->
+          detailViewModel.getRecommendationMovie(movieID).observe(this) {
+            adapterRecommendation.submitData(lifecycle, it)
+          }
         }
 
         // age rate
@@ -289,7 +293,7 @@ class DetailMovieActivity : AppCompatActivity() {
     } else if (dataExtra.mediaType == "tv") {
 
       // show directors
-      detailViewModel.getAllCreditTv(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.getAllCreditTv(it) }
       detailViewModel.getCreditDirectorTv().observe(this) { createTable(detailCrew(it)) }
 
       // show or hide cast
@@ -304,8 +308,8 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      //show score
-      detailViewModel.externalId(dataExtra.id!!)
+      // show score
+      dataExtra.id?.let { detailViewModel.externalId(it) }
       detailViewModel.externalId().observe(this) { externalId ->
 
         if (externalId.imdbId.isNullOrEmpty()) {
@@ -316,7 +320,7 @@ class DetailMovieActivity : AppCompatActivity() {
           detailViewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
 
           //trailer
-          externalId.id?.let { detailViewModel.getLinkTv(it) }
+          dataExtra.id?.let { detailViewModel.getLinkTv(it) }
           detailViewModel.getLinkTv().observe(this) {
             if (it.isNullOrEmpty()) hideTrailer(true)
             else {
@@ -328,12 +332,14 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       // recommendation tv
-      detailViewModel.getRecommendationTv(dataExtra.id!!).observe(this) {
-        adapterRecommendation.submitData(lifecycle, it)
+      dataExtra.id?.let { mediaId ->
+        detailViewModel.getRecommendationTv(mediaId).observe(this) {
+          adapterRecommendation.submitData(lifecycle, it)
+        }
       }
 
       //show genres & age rate
-      detailViewModel.detailTv(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.detailTv(it) }
       detailViewModel.detailTv().observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
@@ -355,8 +361,10 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun getStated(token: String) {
-    if (dataExtra.mediaType == "movie") detailViewModel.getStatedMovie(token, dataExtra.id!!)
-    else detailViewModel.getStatedTv(token, dataExtra.id!!)
+    if (dataExtra.mediaType == "movie") dataExtra.id?.let {
+      detailViewModel.getStatedMovie(token, it)
+    }
+    else dataExtra.id?.let { detailViewModel.getStatedTv(token, it) }
   }
 
   private fun showRatingUserLogin(state: StatedResponse) {
@@ -498,20 +506,22 @@ class DetailMovieActivity : AppCompatActivity() {
       authViewModel.getUser().observe(this) { user ->
         getStated(user.token)
         detailViewModel.getStated().observe(this) {
-          favorite = it?.favorite!!
-          watchlist = it.watchlist!!
-          showRatingUserLogin(it)
+          if (it != null) {
+            favorite = it.favorite
+            watchlist = it.watchlist
+            showRatingUserLogin(it)
+          }
           changeBtnFavoriteBG(favorite)
           changeBtnWatchlistBG(watchlist)
         }
       }
     } else { //guest user
-      detailViewModel.isFavoriteDB(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.isFavoriteDB(it) }
       detailViewModel.isFavoriteDB().observe(this) {
         changeBtnFavoriteBG(it)
         favorite = it
       }
-      detailViewModel.isWatchlistDB(dataExtra.id!!)
+      dataExtra.id?.let { detailViewModel.isWatchlistDB(it) }
       detailViewModel.isWatchlistDB().observe(this) {
         changeBtnWatchlistBG(it)
         watchlist = it
@@ -597,8 +607,8 @@ class DetailMovieActivity : AppCompatActivity() {
       val rate = Rate(value = ratingBar.rating * 2)
       authViewModel.getUser().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
-          detailViewModel.postMovieRate(user.token, rate, dataExtra.id!!)
-        else detailViewModel.postTvRate(user.token, rate, dataExtra.id!!)
+          dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, rate, it1) }
+        else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, rate, it1) }
 
         // change rating
         binding.tvScoreYourScore.text = rate.value.toString()

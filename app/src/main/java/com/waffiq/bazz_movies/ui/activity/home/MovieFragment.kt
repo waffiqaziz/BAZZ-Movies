@@ -17,6 +17,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
@@ -35,7 +36,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MovieFragment : Fragment() {
 
   private var _binding: FragmentMovieBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var homeViewModel: HomeViewModel
   private lateinit var moreViewModelUser: MoreViewModelUser
@@ -69,7 +70,7 @@ class MovieFragment : Fragment() {
         moreViewModelUser.getCountryCode()
         moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
 
-          if (countryCode.isNullOrEmpty()) { // if success
+          if (countryCode.isNotEmpty()) { // if success
             setData(countryCode)
             moreViewModelUser.saveUserRegion(countryCode)
           } else { // if null, then set region using SIM Card and default phone configuration
@@ -169,10 +170,10 @@ class MovieFragment : Fragment() {
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    Handler(Looper.getMainLooper()).postDelayed({
+    Handler(Looper.getMainLooper()).post {
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
-    }, FeaturedFragment.DELAY_TIME)
+    }
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -183,11 +184,14 @@ class MovieFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    val snackBar = Snackbar.make(
-      activity?.findViewById(android.R.id.content)!!,
-      message,
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(binding.guideSnackbar)
+    lateinit var snackBar :Snackbar
+    activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
+      snackBar = Snackbar.make(
+        contentView,
+        message,
+        Snackbar.LENGTH_SHORT
+      ).setAnchorView(binding.guideSnackbar)
+    }
 
     val snackbarView = snackBar.view
     snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))

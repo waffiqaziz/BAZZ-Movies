@@ -15,13 +15,14 @@ import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.MyFavoriteViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants.tabMoviesTvHeadingArray
+import com.waffiq.bazz_movies.R.string.binding_error
 
 class MyFavoriteFragment : Fragment() {
 
   private var _binding: FragmentMyFavoriteBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewModel : MyFavoriteViewModel
+  private lateinit var viewModel: MyFavoriteViewModel
 
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout
@@ -44,12 +45,12 @@ class MyFavoriteFragment : Fragment() {
     return root
   }
 
-  private fun setupTabLayoutViewPager(){
+  private fun setupTabLayoutViewPager() {
     viewpager = binding.viewPager
     tabLayout = binding.tabs
     viewpager.isUserInputEnabled = false //disable swiping between tabs
 
-    val adapter = MyFavoriteViewPagerAdapter(childFragmentManager,lifecycle)
+    val adapter = MyFavoriteViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager) { tab, position ->
@@ -57,7 +58,7 @@ class MyFavoriteFragment : Fragment() {
     }.attach()
   }
 
-  private fun hideActionBar(){
+  private fun hideActionBar() {
     // disable action bar
     if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       (activity as AppCompatActivity).supportActionBar?.hide()

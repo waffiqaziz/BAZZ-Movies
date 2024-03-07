@@ -21,12 +21,13 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.R.string.binding_error
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class MyWatchlistMoviesFragment : Fragment() {
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private val adapterPaging = FavoriteMovieAdapter()
   private val adapterDB = FavoriteAdapterDB()

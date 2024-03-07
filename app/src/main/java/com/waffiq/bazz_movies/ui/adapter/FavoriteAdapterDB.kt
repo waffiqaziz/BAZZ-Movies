@@ -68,12 +68,12 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
         overview = fav.overview,
         title = fav.title,
         originalTitle = fav.title,
+        mediaType = fav.mediaType,
         id = fav.mediaId
       )
 
       binding.containerResult.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        resultItem.mediaType = fav.mediaType
         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
         it.context.startActivity(intent)
       }

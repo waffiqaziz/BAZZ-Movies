@@ -73,10 +73,10 @@ class PersonActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_PERSON)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_PERSON, CastItem::class.java)!!
+        intent.getParcelableExtra(EXTRA_PERSON, CastItem::class.java) ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")
-        intent.getParcelableExtra(EXTRA_PERSON)!!
+        intent.getParcelableExtra(EXTRA_PERSON) ?: error("No DataExtra")
       }
     } else finish()
 
@@ -127,7 +127,7 @@ class PersonActivity : AppCompatActivity() {
       .into(binding.ivPicture)
 
     // set button click social media
-    personMovieViewModel.getExternalIDPerson(dataExtra.id!!)
+    dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
     personMovieViewModel.getExternalIDPerson().observe(this) { externalID ->
 
       // show or hide social media
@@ -196,17 +196,17 @@ class PersonActivity : AppCompatActivity() {
     }
 
     // show known for
-    personMovieViewModel.getKnownFor(dataExtra.id!!)
+    dataExtra.id?.let { personMovieViewModel.getKnownFor(it) }
     personMovieViewModel.getKnownFor().observe(this) { adapterKnownFor.setCast(it) }
 
     // show picture
-    personMovieViewModel.getImagePerson(dataExtra.id!!)
+    dataExtra.id?.let { personMovieViewModel.getImagePerson(it) }
     personMovieViewModel.getImagePerson().observe(this) {
       adapterImage.setImage(it)
     }
 
     // show detail person
-    personMovieViewModel.getDetailPerson(dataExtra.id!!)
+    dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
     personMovieViewModel.getDetailPerson().observe(this) {
       if (it.birthday != null)
         if (it.birthday.isNotBlank() && it.birthday.isNotEmpty()) binding.tvBiography.text =
@@ -293,7 +293,7 @@ class PersonActivity : AppCompatActivity() {
       val birthDay = "${it.birthday?.let { dateFormatter(it) }} \n${it.placeOfBirth}"
       binding.tvBorn.text = birthDay
       val deathDay = "${dateFormatter(it.deathday)} (${
-        getAgeDeath(it.birthday!!, it.deathday)
+        it.birthday?.let { birthday -> getAgeDeath(birthday, it.deathday) }
       } ${getString(years_old)})"
       binding.tvDeath.text = deathDay
     }

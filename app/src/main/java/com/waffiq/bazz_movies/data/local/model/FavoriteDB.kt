@@ -18,11 +18,11 @@ data class FavoriteDB(
   @PrimaryKey
   @ColumnInfo(name = "mediaId")
   @field:SerializedName("mediaId")
-  val mediaId: Int? = null,
+  val mediaId: Int,
 
   @ColumnInfo(name = "mediaType")
   @field:SerializedName("mediaType")
-  var mediaType: String? = null,
+  val mediaType: String? = null,
 
   @ColumnInfo(name = "genre")
   @field:SerializedName("genre")
@@ -58,10 +58,10 @@ data class FavoriteDB(
 
   @ColumnInfo(name = "is_favorited")
   @field:SerializedName("is_favorited")
-  var isFavorite: Boolean? = null,
+  val isFavorite: Boolean? = null,
 
   @ColumnInfo(name = "is_watchlist")
   @field:SerializedName("is_watchlist")
-  var isWatchlist: Boolean? = null
+  val isWatchlist: Boolean? = null
 
 ): Parcelable

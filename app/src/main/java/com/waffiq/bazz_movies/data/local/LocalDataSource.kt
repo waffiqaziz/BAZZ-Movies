@@ -34,6 +34,6 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)
 
-  fun update(fav: FavoriteDB) =
-    favoriteDao.update(fav.isFavorite!!, fav.isWatchlist!!, fav.mediaId!!)
+  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int) =
+    favoriteDao.update(isFavorite, isWatchlist, id)
 }

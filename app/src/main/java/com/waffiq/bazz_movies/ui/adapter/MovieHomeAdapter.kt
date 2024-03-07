@@ -49,8 +49,7 @@ class MovieHomeAdapter :
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        movie.mediaType = "movie"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie.copy(mediaType = "movie"))
         it.context.startActivity(intent)
       }
     }

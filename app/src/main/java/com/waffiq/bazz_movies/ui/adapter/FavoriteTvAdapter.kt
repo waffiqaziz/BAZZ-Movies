@@ -64,8 +64,7 @@ class FavoriteTvAdapter :
       // OnClickListener
       binding.container.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        resultItem.mediaType = "tv"
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem.copy(mediaType = "tv"))
         it.context.startActivity(intent)
       }
     }

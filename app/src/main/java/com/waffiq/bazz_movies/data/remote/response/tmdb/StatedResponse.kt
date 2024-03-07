@@ -7,13 +7,13 @@ data class StatedResponse(
   val id: Int? = null,
 
   @field:SerializedName("favorite")
-  val favorite: Boolean? = null,
+  val favorite: Boolean,
 
   @field:SerializedName("rated")
   val rated: Any? = null,
 
   @field:SerializedName("watchlist")
-  val watchlist: Boolean? = null,
+  val watchlist: Boolean,
 )
 
 data class PostResponse(

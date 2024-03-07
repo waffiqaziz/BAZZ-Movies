@@ -5,6 +5,7 @@
   android:id="@+id/bottom_sheet_parent"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:fitsSystemWindows="false"
   tools:background="@color/gray_700"
   tools:context=".ui.activity.search.BottomSheetSearchFragment">
 
@@ -18,7 +19,8 @@
     android:orientation="vertical"
     android:paddingHorizontal="24dp"
     android:paddingBottom="16dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    app:behavior_hideable="true"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
       android:id="@+id/dragHandle"
@@ -39,10 +41,10 @@
     <TextView
       android:id="@+id/label_type_search"
       style="@style/TextHeader2"
-      android:layout_marginBottom="4dp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="12dp"
+      android:layout_marginBottom="4dp"
       android:text="@string/type_search"
       android:textAppearance="?textAppearanceLabelLarge"
       android:textColor="@color/gray_900" />
@@ -96,191 +98,303 @@
 
     </HorizontalScrollView>
 
-    <com.google.android.material.divider.MaterialDivider
-      android:id="@+id/sortDivider"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp" />
-
-    <TextView
-      android:id="@+id/label_filter_by_genre"
-      style="@style/TextHeader2"
+    <LinearLayout
+      android:id="@+id/container_genre"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="4dp"
-      android:layout_marginTop="16dp"
-      android:text="@string/filter_by_genre"
-      android:textAppearance="?textAppearanceLabelLarge"
-      android:textColor="@color/black" />
+      android:orientation="vertical">
 
-    <com.google.android.material.chip.ChipGroup
-      android:id="@+id/cg_genre"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:chipSpacingVertical="0dp"
-      app:selectionRequired="false"
-      app:singleSelection="false">
-
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_action"
-        style="@style/MyChip"
+      <TextView
+        android:id="@+id/label_filter_by_genre"
+        style="@style/TextHeader2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action"
-        tools:checked="true" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/filter_by_genre"
+        android:textAppearance="?textAppearanceLabelLarge"
+        android:textColor="@color/black" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_adventure"
-        style="@style/MyChip"
+      <!--   Movies Chip Group   -->
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_movie_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/adventure" />
+        app:chipSpacingVertical="0dp"
+        app:selectionRequired="false"
+        app:singleSelection="false">
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_animation"
-        style="@style/MyChip"
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_action"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/action"
+          tools:checked="true" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_adventure"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/adventure" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_animation"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/animation" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_comedy"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/comedy" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_crime"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/crime" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_documentary"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/documentary" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_drama"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/drama" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_family"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/family" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_fantasy"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/fantasy" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_history"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/history" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_horror"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/horror" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_music"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/music" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_mystery"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/mystery" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_romance"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/romance" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_scifi"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/science_fiction" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_thriller"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/thriller" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_war"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/war" />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_movie_western"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/western" />
+
+      </com.google.android.material.chip.ChipGroup>
+
+      <!--   TV-Series Chip Group   -->
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_tv_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/animation" />
+        app:selectionRequired="false"
+        app:singleSelection="true">
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_comedy"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/comedy" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_action_n_adventure"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/action_n_adventure" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_crime"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/crime" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_animation"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/animation" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_documentary"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/documentary" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_comedy"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/comedy" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_drama"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/drama" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_crime"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/crime" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_family"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/family" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_documentary"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/documentary" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_fantasy"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fantasy" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_drama"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/drama" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_history"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/history" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_family"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/family" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_horror"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/horror" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_kids"
+          style="@style/MyChip"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/kids" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_music"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/music" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_mistery"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/mistery" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_mystery"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mystery" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_news"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/news" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_romance"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/romance" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_reality"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/reality" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_scifi"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/science_fiction" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_sci_fi_n_fantasy"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/sci_fi_n_fantasy" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_thriller"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/thriller" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_soap"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/soap" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_tvMovie"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tv_movie" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_talk"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/talk" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_war"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/war" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_war_politic"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/war_politic" />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/chip_western"
-        style="@style/MyChip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/western" />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/chip_tv_western"
+          style="@style/MyChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/western" />
 
-    </com.google.android.material.chip.ChipGroup>
+      </com.google.android.material.chip.ChipGroup>
 
-    <com.google.android.material.divider.MaterialDivider
-      android:id="@+id/dividerFilter"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp" />
+    </LinearLayout>
 
     <LinearLayout
-      android:layout_marginTop="16dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
       android:orientation="horizontal">
+
 
       <FrameLayout
         android:id="@+id/btn_reset_all"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
         android:layout_weight="1"
         android:clipChildren="false"
         android:clipToPadding="false">
 
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/btnResetAll"
           style="@style/MyResetButton"
           android:text="@string/reset"
           app:strokeColor="@color/gray_900" />
@@ -292,12 +406,11 @@
         style="@style/MyApplyButton"
         android:text="@string/apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/frameLayout"
-        app:layout_constraintTop_toBottomOf="@id/dividerFilter" />
+        app:layout_constraintStart_toEndOf="@id/frameLayout" />
 
     </LinearLayout>
 
-
   </LinearLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

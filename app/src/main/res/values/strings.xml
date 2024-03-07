@@ -110,6 +110,7 @@
   <string name="tmdb_full">The Movie Database</string>
   <string name="status_">Status : %1$s</string>
 
+  <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
   <string name="added_to_favorite">has been added to favorite</string>
@@ -118,6 +119,7 @@
   <string name="deleted_from_favorite2">Item has been deleted from favorite</string>
   <string name="deleted_from_watchlist">has been deleted from watchlist</string>
   <string name="deleted_from_watchlist2">Item has been deleted from watchlist</string>
+  <string name="action_not_successful">Action not successful</string>
 
   <string name="no_data">No Data</string>
   <string name="add_to_favorite">add to favorite</string>
@@ -185,6 +187,7 @@
   <string name="open_actor_actress_youtube_channel">open actor/actress youtube channel</string>
   <string name="open_actor_actress_wikidata_page">open actor/actress Wikidata page</string>
   <string name="open_actor_actress_home_page">open actor/actress home page</string>
+  <string name="binding_error">Binding should not be accessed before onCreateView() or after onDestroyView()</string>
 
 
 </resources>

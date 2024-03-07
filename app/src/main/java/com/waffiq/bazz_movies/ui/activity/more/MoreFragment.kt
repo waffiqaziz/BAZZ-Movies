@@ -25,6 +25,7 @@ import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.R.string.all_data_deleted
 import com.waffiq.bazz_movies.R.string.yes
 import com.waffiq.bazz_movies.R.string.no
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
@@ -49,7 +50,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MoreFragment : Fragment() {
 
   private var _binding: FragmentMoreBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding?: error(getString(binding_error))
 
   private lateinit var authViewModel: AuthenticationViewModel
   private lateinit var moreViewModel: MoreViewModel

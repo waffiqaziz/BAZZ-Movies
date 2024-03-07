@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +27,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
-import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
+import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.R.string.already_watchlist
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -49,7 +51,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class MyFavoriteMoviesFragment : Fragment() {
 
   private var _binding: FragmentMyFavoriteMoviesBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var favViewModelMovie: MyFavoriteViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
@@ -170,7 +172,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
           isWantToDelete = false
           checkIsWatchlistDB(false, fav)
-        } else { // swipe right, action add delete
+        } else { // swipe right, action delete
           isWantToDelete = true
           checkIsWatchlistDB(true, fav)
         }
@@ -198,9 +200,10 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
 
         if (dX > 0) { // swipe left to delete item
-          val editIcon = ContextCompat.getDrawable(requireContext(), ic_trash)
-          val intrinsicWidth = editIcon?.intrinsicWidth
-          val intrinsicHeight = editIcon?.intrinsicHeight
+          val editIcon =
+            ContextCompat.getDrawable(requireContext(), ic_trash) ?: error("No icon Found")
+          val intrinsicWidth = editIcon.intrinsicWidth
+          val intrinsicHeight = editIcon.intrinsicHeight
 
           // draw the red background
           background.color = ContextCompat.getColor(requireContext(), red_matte)
@@ -208,10 +211,10 @@ class MyFavoriteMoviesFragment : Fragment() {
           background.draw(c)
 
           // calculate position of delete icon
-          val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+          val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
           val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
           val deleteIconLeft = itemView.left + deleteIconMargin
-          val deleteIconRight = deleteIconLeft + intrinsicWidth!!
+          val deleteIconRight = deleteIconLeft + intrinsicWidth
           val deleteIconBottom = deleteIconTop + intrinsicHeight
 
           // Draw the delete icon
@@ -219,9 +222,9 @@ class MyFavoriteMoviesFragment : Fragment() {
           editIcon.draw(c)
         } else {  // swipe right to add to watchlist
           val watchlistIcon =
-            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark)
-          val intrinsicWidth = watchlistIcon?.intrinsicWidth
-          val intrinsicHeight = watchlistIcon?.intrinsicHeight
+            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark) ?: error("No Icon Found")
+          val intrinsicWidth = watchlistIcon.intrinsicWidth
+          val intrinsicHeight = watchlistIcon.intrinsicHeight
 
           // draw the delete background
           background.color = ContextCompat.getColor(requireContext(), yellow)
@@ -234,9 +237,9 @@ class MyFavoriteMoviesFragment : Fragment() {
           background.draw(c)
 
           // calculate position of delete icon
-          val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+          val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
           val watchlistIconMargin = (itemHeight - intrinsicHeight) / 2
-          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth!!
+          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth
           val watchlistIconRight = watchlistIconLeft + intrinsicWidth
           val watchlistIconBottom = watchlistIconTop + intrinsicHeight
 
@@ -263,15 +266,14 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun checkIsWatchlistDB(isWantToDelete: Boolean, fav: FavoriteDB) {
     // check if item is in watchlist or not
-    favViewModelMovie.isWatchlistDB(fav.mediaId!!)
-    favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
+    favViewModelMovie.isWatchlistDB(fav.mediaId)
+    favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) { isWatchlist ->
       if (isWantToDelete) {
-        if (it) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
+        if (isWatchlist) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
         else favViewModelMovie.delFromFavoriteDB(fav)
       } else { // add to watchlist action
-        if (it) {
-          showSnackBarNoAction("<b>${fav.title}</b> " + getString(already_watchlist))
-        } else {
+        if (isWatchlist) showSnackBarNoAction("<b>${fav.title}</b> " + getString(already_watchlist))
+        else {
           favViewModelMovie.updateToWatchlistDB(fav)
           showSnackBarNoAction("<b>${fav.title}</b> " + getString(added_to_watchlist))
         }
@@ -313,10 +315,14 @@ class MyFavoriteMoviesFragment : Fragment() {
         // swipe action
         if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
           isWantToDelete = false
-          postToAddWatchlistTMDB(fav.id!!, fav.title ?: fav.originalTitle!!)
+          fav.id?.let { mediaId ->
+            (fav.title ?: fav.originalTitle)?.let { title ->
+              postToAddWatchlistTMDB(mediaId, title)
+            }
+          }
         } else { // swipe right, action to delete
           isWantToDelete = true
-          postToRemoveFavTMDB(fav.id!!)
+          fav.id?.let { postToRemoveFavTMDB(it) }
           adapterPaging.notifyItemRemoved(position)
         }
       }
@@ -343,9 +349,10 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
 
         if (dX > 0) { // swipe left to delete item
-          val editIcon = ContextCompat.getDrawable(requireContext(), ic_trash)
-          val intrinsicWidth = editIcon?.intrinsicWidth
-          val intrinsicHeight = editIcon?.intrinsicHeight
+          val editIcon =
+            ContextCompat.getDrawable(requireContext(), ic_trash) ?: error("No Icon Found")
+          val intrinsicWidth = editIcon.intrinsicWidth
+          val intrinsicHeight = editIcon.intrinsicHeight
 
           // draw the red background
           background.color = ContextCompat.getColor(requireContext(), red_matte)
@@ -353,10 +360,10 @@ class MyFavoriteMoviesFragment : Fragment() {
           background.draw(c)
 
           // calculate position of delete icon
-          val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+          val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
           val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
           val deleteIconLeft = itemView.left + deleteIconMargin
-          val deleteIconRight = deleteIconLeft + intrinsicWidth!!
+          val deleteIconRight = deleteIconLeft + intrinsicWidth
           val deleteIconBottom = deleteIconTop + intrinsicHeight
 
           // Draw the delete icon
@@ -364,9 +371,9 @@ class MyFavoriteMoviesFragment : Fragment() {
           editIcon.draw(c)
         } else {  // swipe right to add to watchlist
           val watchlistIcon =
-            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark)
-          val intrinsicWidth = watchlistIcon?.intrinsicWidth
-          val intrinsicHeight = watchlistIcon?.intrinsicHeight
+            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark) ?: error("No Icon Found")
+          val intrinsicWidth = watchlistIcon.intrinsicWidth
+          val intrinsicHeight = watchlistIcon.intrinsicHeight
 
           // draw the delete background
           background.color = ContextCompat.getColor(requireContext(), yellow)
@@ -379,9 +386,9 @@ class MyFavoriteMoviesFragment : Fragment() {
           background.draw(c)
 
           // calculate position of delete icon
-          val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+          val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
           val watchlistIconMargin = (itemHeight - intrinsicHeight) / 2
-          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth!!
+          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth
           val watchlistIconRight = watchlistIconLeft + intrinsicWidth
           val watchlistIconBottom = watchlistIconTop + intrinsicHeight
 
@@ -427,11 +434,11 @@ class MyFavoriteMoviesFragment : Fragment() {
       watchlist = true
     )
 
-    viewModelAuth.getUser().observe(this) { user ->
+    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       favViewModelMovie.getStated(user.token, mediaId)
-      favViewModelMovie.getStated().observe(this) {
-        it.let {
-          if (!it?.watchlist!!) {
+      favViewModelMovie.getStated().observe(viewLifecycleOwner) {
+        if (it != null) {
+          if (!it.watchlist) {
             showSnackBarNoAction("<b>$mediaTitle</b> " + getString(added_to_watchlist))
             favViewModelMovie.postWatchlist(user, watchlistMode)
           } else showSnackBarNoAction("<b>$mediaTitle</b> " + getString(already_watchlist))
@@ -448,21 +455,14 @@ class MyFavoriteMoviesFragment : Fragment() {
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
       val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
-      favViewModelMovie.isWatchlistDB(fav.mediaId!!)
+      favViewModelMovie.isWatchlistDB(fav.mediaId)
       favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
         if (it) { // movie is on watchlist
-          if (isWantToDelete)
-            favViewModelMovie.updateToFavoriteDB(fav)
-          else
-            favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
+          if (isWantToDelete) favViewModelMovie.updateToFavoriteDB(fav)
+          else favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
         } else { // movie is not on watchlist
-          if (isWantToDelete) {
-            fav.isFavorite = true
-            favViewModelMovie.insertToDB(fav)
-          } else {
-            fav.isWatchlist = true
-            favViewModelMovie.insertToDB(fav)
-          }
+          if (isWantToDelete) favViewModelMovie.insertToDB(fav.copy(isFavorite = true))
+          else favViewModelMovie.insertToDB(fav.copy(isWatchlist = true))
         }
       }
     }.setAnchorView(binding.guideSnackbar)
@@ -476,8 +476,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       getString(message),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      fav.favorite = true
-      favViewModelMovie.postFavorite(user, fav)
+      favViewModelMovie.postFavorite(user, fav.copy(favorite = true))
       adapterPaging.notifyItemInserted(positionIn)
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
@@ -551,5 +550,9 @@ class MyFavoriteMoviesFragment : Fragment() {
     super.onDestroyView()
     _binding = null
     mSnackbar?.dismiss()
+  }
+
+  companion object {
+    const val TAG = "MyFavoriteMoviesFragment"
   }
 }

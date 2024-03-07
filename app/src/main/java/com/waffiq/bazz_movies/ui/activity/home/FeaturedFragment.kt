@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.ui.activity.home
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +28,7 @@ import com.waffiq.bazz_movies.R.string.data
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -45,7 +48,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class FeaturedFragment : Fragment() {
 
   private var _binding: FragmentFeaturedBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var homeViewModel: HomeViewModel
   private lateinit var moreViewModelUser: MoreViewModelUser
@@ -225,15 +228,19 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    val snackBar = Snackbar.make(
-      activity?.findViewById(android.R.id.content)!!,
-      message,
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(binding.guideSnackbar)
+    lateinit var snackbar: Snackbar
 
-    val snackbarView = snackBar.view
+    activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
+      snackbar = Snackbar.make(
+        contentView,
+        message,
+        Snackbar.LENGTH_SHORT
+      ).setAnchorView(binding.guideSnackbar)
+    }
+
+    val snackbarView = snackbar.view
     snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
-    if (message.isNotEmpty()) snackBar.show()
+    if (message.isNotEmpty()) snackbar.show()
   }
 
   private fun animationFadeOut() {
@@ -241,8 +248,10 @@ class FeaturedFragment : Fragment() {
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    binding.backgroundDimMovie.visibility = View.GONE
-    binding.progressBar.visibility = View.GONE
+    Handler(Looper.getMainLooper()).post {
+      binding.backgroundDimMovie.visibility = View.GONE
+      binding.progressBar.visibility = View.GONE
+    }
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -267,9 +276,5 @@ class FeaturedFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
-  }
-
-  companion object {
-    const val DELAY_TIME = 700L
   }
 }
