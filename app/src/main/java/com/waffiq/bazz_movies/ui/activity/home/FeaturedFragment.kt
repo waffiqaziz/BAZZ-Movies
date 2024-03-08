@@ -69,14 +69,13 @@ class FeaturedFragment : Fragment() {
 
     showSnackBarNoAction(checkInternet(requireContext()))
     setRegion()
-    setMoveNowPlaying()
+    showMainPicture()
     hideActionBar()
 
     return root
   }
 
-  private fun setMoveNowPlaying() {
-    // show main picture
+  private fun showMainPicture() {
     Glide.with(binding.imgMainFeatured)
       //.load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
@@ -212,8 +211,7 @@ class FeaturedFragment : Fragment() {
   private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
     if (loadState.refresh is LoadState.Loading ||
       loadState.append is LoadState.Loading
-    )
-      showLoading(true) // show ProgressBar
+    ) showLoading(true) // show ProgressBar
     else {
       showLoading(false) // hide ProgressBar
 
@@ -231,11 +229,8 @@ class FeaturedFragment : Fragment() {
     lateinit var snackbar: Snackbar
 
     activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
-      snackbar = Snackbar.make(
-        contentView,
-        message,
-        Snackbar.LENGTH_SHORT
-      ).setAnchorView(binding.guideSnackbar)
+      snackbar = Snackbar.make(contentView, message, Snackbar.LENGTH_SHORT)
+        .setAnchorView(binding.guideSnackbar)
     }
 
     val snackbarView = snackbar.view

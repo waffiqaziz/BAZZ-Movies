@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.R.string
+import com.waffiq.bazz_movies.R.string.deleted_from_favorite2
 import com.waffiq.bazz_movies.data.local.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -657,9 +657,6 @@ class MoviesRepository(
           val responseBody = response.body()
           if (responseBody != null) {
             _postResponse.value = responseBody.statusMessage ?: "No Response"
-            if(data.favorite != null){
-              if (!data.favorite) _snackBarTextInt.value = Event(string.deleted_from_favorite2)
-            }
           }
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
@@ -691,7 +688,8 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
+          if (responseBody != null) _postResponse.value =
+            responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -722,7 +720,8 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
+          if (responseBody != null) _postResponse.value =
+            responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -753,7 +752,8 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) {
           val responseBody = response.body()
-          if (responseBody != null) _postResponse.value = responseBody.statusMessage ?: "No Response"
+          if (responseBody != null) _postResponse.value =
+            responseBody.statusMessage ?: "No Response"
         } else {
           Log.e(TAG, "onFailure: ${response.message()}")
 
@@ -913,7 +913,6 @@ class MoviesRepository(
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
-    _snackBarTextInt.value = Event(string.deleted_from_favorite2)
     _undoDB.value = Event(fav)
   }
 
@@ -934,7 +933,6 @@ class MoviesRepository(
   fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
     // update set is_favorite = false, (for movie that want to delete, but already on watchlist)
     if (isDelete) {
-      _snackBarTextInt.value = Event(string.deleted_from_favorite2)
       _undoDB.value = Event(fav)
 
       if (fav.isWatchlist != null) {
@@ -963,7 +961,6 @@ class MoviesRepository(
 
   fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
     if (isDelete) { // update set is_watchlist = false
-      _snackBarTextInt.value = Event(string.deleted_from_watchlist2)
       _undoDB.value = Event(fav)
 
       if (fav.isFavorite != null) {

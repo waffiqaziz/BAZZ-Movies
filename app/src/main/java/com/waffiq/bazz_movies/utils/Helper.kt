@@ -213,7 +213,7 @@ object Helper {
 
   fun animFadeOutLong(context: Context): Animation {
     val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
-    animation.duration = 800
+    animation.duration = 750
     return animation
   }
 

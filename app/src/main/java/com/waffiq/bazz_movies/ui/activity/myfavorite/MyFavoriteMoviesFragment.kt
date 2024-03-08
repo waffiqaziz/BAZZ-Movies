@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -32,10 +33,10 @@ import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.R.string.already_watchlist
 import com.waffiq.bazz_movies.R.string.binding_error
+import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteMoviesBinding
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
@@ -62,7 +63,6 @@ class MyFavoriteMoviesFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
 
   // helper
-  private var positionIn = 0
   private var isWantToDelete = false
 
   override fun onCreateView(
@@ -95,8 +95,8 @@ class MyFavoriteMoviesFragment : Fragment() {
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { //guest user then show data from database
 
-        favViewModelMovie.getSnackBarTextInt()
-          .observe(viewLifecycleOwner) { showSnackBarUndoGuest(it) }
+//        favViewModelMovie.getSnackBarTextInt()
+//          .observe(viewLifecycleOwner) { showSnackBarUndoGuest(it) }
 
         initActionGuest()
         setDataGuestUserProgressBarEmptyView()
@@ -163,6 +163,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         return false
       }
 
+      @SuppressLint("NotifyDataSetChanged")
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
 
@@ -171,11 +172,15 @@ class MyFavoriteMoviesFragment : Fragment() {
         binding.rvFavMovies.adapter?.notifyItemChanged(position)
         if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
           isWantToDelete = false
-          checkIsWatchlistDB(false, fav)
+          performSwipeGuestUser(false, fav)
         } else { // swipe right, action delete
           isWantToDelete = true
-          checkIsWatchlistDB(true, fav)
+          performSwipeGuestUser(true, fav)
         }
+        favViewModelMovie.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
+          adapterDB.refreshData(it, position)
+        }
+        binding.rvFavMovies.adapter?.notifyDataSetChanged()
       }
 
       override fun onChildDraw(
@@ -264,15 +269,19 @@ class MyFavoriteMoviesFragment : Fragment() {
     itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
   }
 
-  private fun checkIsWatchlistDB(isWantToDelete: Boolean, fav: FavoriteDB) {
+  private fun performSwipeGuestUser(isWantToDelete: Boolean, fav: FavoriteDB) {
     // check if item is in watchlist or not
-    favViewModelMovie.isWatchlistDB(fav.mediaId)
-    favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) { isWatchlist ->
+    if (fav.isWatchlist != null) {
       if (isWantToDelete) {
-        if (isWatchlist) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
+        if (fav.isWatchlist) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
         else favViewModelMovie.delFromFavoriteDB(fav)
+        if (fav.title != null) showSnackBarUndoGuest(fav.title)
       } else { // add to watchlist action
-        if (isWatchlist) showSnackBarNoAction("<b>${fav.title}</b> " + getString(already_watchlist))
+        if (fav.isWatchlist) showSnackBarNoAction(
+          "<b>${fav.title}</b> " + getString(
+            already_watchlist
+          )
+        )
         else {
           favViewModelMovie.updateToWatchlistDB(fav)
           showSnackBarNoAction("<b>${fav.title}</b> " + getString(added_to_watchlist))
@@ -308,7 +317,6 @@ class MyFavoriteMoviesFragment : Fragment() {
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
         val position = viewHolder.absoluteAdapterPosition
-        positionIn = position
 
         adapterPaging.notifyItemChanged(position)
         binding.rvFavMovies.adapter?.notifyItemChanged(position)
@@ -322,7 +330,7 @@ class MyFavoriteMoviesFragment : Fragment() {
           }
         } else { // swipe right, action to delete
           isWantToDelete = true
-          fav.id?.let { postToRemoveFavTMDB(it) }
+          if (fav.id != null && fav.title != null) postToRemoveFavTMDB(fav.title, fav.id, position)
           adapterPaging.notifyItemRemoved(position)
         }
       }
@@ -413,18 +421,17 @@ class MyFavoriteMoviesFragment : Fragment() {
     itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
   }
 
-  private fun postToRemoveFavTMDB(movieId: Int) {
+  private fun postToRemoveFavTMDB(title: String, movieId: Int, position: Int) {
     val favoriteMode = Favorite(
       mediaType = "movie",
       mediaId = movieId,
       favorite = false
     )
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      favViewModelMovie.postFavoriteToDelete(user, favoriteMode)
 
-      favViewModelMovie.getSnackBarTextInt()
-        .observe(viewLifecycleOwner) { showSnackBarFavUserLogin(user, favoriteMode, it) }
+    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+      favViewModelMovie.postFavorite(user, favoriteMode)
     }
+    showSnackBarFavUserLogin(title, favoriteMode, position)
   }
 
   private fun postToAddWatchlistTMDB(mediaId: Int, mediaTitle: String) {
@@ -447,17 +454,18 @@ class MyFavoriteMoviesFragment : Fragment() {
     }
   }
 
-  private fun showSnackBarUndoGuest(eventMessage: Event<Int>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
+  private fun showSnackBarUndoGuest(title: String) {
     mSnackbar = Snackbar.make(
       binding.root,
-      getString(message),
+      HtmlCompat.fromHtml(
+        "<b>$title</b> " + getString(deleted_from_favorite),
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+      ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
       val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
-      favViewModelMovie.isWatchlistDB(fav.mediaId)
-      favViewModelMovie.isWatchlistDB().observe(viewLifecycleOwner) {
-        if (it) { // movie is on watchlist
+      if (fav.isWatchlist != null) {
+        if (fav.isWatchlist) { // movie is on watchlist
           if (isWantToDelete) favViewModelMovie.updateToFavoriteDB(fav)
           else favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
         } else { // movie is not on watchlist
@@ -469,15 +477,19 @@ class MyFavoriteMoviesFragment : Fragment() {
     mSnackbar?.show()
   }
 
-  private fun showSnackBarFavUserLogin(user: UserModel, fav: Favorite, eventMessage: Event<Int>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
+  private fun showSnackBarFavUserLogin(title: String, fav: Favorite, position: Int) {
     mSnackbar = Snackbar.make(
       binding.root,
-      getString(message),
+      HtmlCompat.fromHtml(
+        "<b>$title</b> " + getString(deleted_from_favorite),
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+      ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      favViewModelMovie.postFavorite(user, fav.copy(favorite = true))
-      adapterPaging.notifyItemInserted(positionIn)
+      viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+        favViewModelMovie.postFavorite(user, fav.copy(favorite = true))
+      }
+      adapterPaging.notifyItemInserted(position)
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
   }

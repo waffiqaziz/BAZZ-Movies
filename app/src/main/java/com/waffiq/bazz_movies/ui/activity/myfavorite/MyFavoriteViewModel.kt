@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.activity.myfavorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -17,8 +18,6 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
    */
   val getFavoriteTvFromDB = movieRepository.getFavoriteTvFromDB()
   val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
-  fun isWatchlistDB(id: Int) = movieRepository.isWatchlistDB(id)
-  fun isWatchlistDB() = movieRepository.isWatchlist
   fun undoDeleteDB() = movieRepository.undoDB
 
   fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
@@ -33,16 +32,13 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun getSnackBarTextInt() = movieRepository.snackBarTextInt
 
   /**
-   * Function for network
+   * Function for remote
    */
   fun getFavoriteMovies(sessionId: String) =
     movieRepository.getPagingFavoriteMovies(sessionId).cachedIn(viewModelScope).asLiveData()
 
   fun getFavoriteTvSeries(sessionId: String) =
     movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
-
-  fun postFavoriteToDelete(user: UserModel, data: Favorite) =
-    movieRepository.postFavorite(user.token, data, user.userId)
 
   fun postFavorite(user: UserModel, data: Favorite) =
     movieRepository.postFavorite(user.token, data, user.userId)

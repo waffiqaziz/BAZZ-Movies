@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.ui.activity.home
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
+import android.os.Looper.getMainLooper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -170,7 +170,7 @@ class MovieFragment : Fragment() {
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    Handler(Looper.getMainLooper()).post {
+    Handler(getMainLooper()).post {
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
     }
@@ -184,13 +184,10 @@ class MovieFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    lateinit var snackBar :Snackbar
+    lateinit var snackBar: Snackbar
     activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
-      snackBar = Snackbar.make(
-        contentView,
-        message,
-        Snackbar.LENGTH_SHORT
-      ).setAnchorView(binding.guideSnackbar)
+      snackBar = Snackbar.make(contentView, message, Snackbar.LENGTH_SHORT)
+        .setAnchorView(binding.guideSnackbar)
     }
 
     val snackbarView = snackBar.view

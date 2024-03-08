@@ -17,10 +17,9 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
           android:id="@+id/nested_scroll_view"
@@ -144,7 +143,7 @@
 
         </androidx.core.widget.NestedScrollView>
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+      </FrameLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

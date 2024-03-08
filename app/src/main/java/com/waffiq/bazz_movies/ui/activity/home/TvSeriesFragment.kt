@@ -26,7 +26,7 @@ import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 class TvSeriesFragment : Fragment() {
 
   private var _binding: FragmentTvSeriesBinding? = null
-  private val binding get() = _binding?: error(getString(binding_error))
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewModel: HomeViewModel
 
@@ -77,9 +77,7 @@ class TvSeriesFragment : Fragment() {
       rvTopRated.layoutManager =
         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
       rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter {
-          topRatedAdapter.retry()
-        }
+        footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )
     }
 
@@ -110,8 +108,7 @@ class TvSeriesFragment : Fragment() {
   private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
     if (loadState.refresh is LoadState.Loading ||
       loadState.append is LoadState.Loading
-    )
-      showLoading(true) // show ProgressBar
+    ) showLoading(true) // show ProgressBar
     else {
       showLoading(false) // hide ProgressBar
 
@@ -130,7 +127,7 @@ class TvSeriesFragment : Fragment() {
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    Handler(Looper.getMainLooper()).post{
+    Handler(Looper.getMainLooper()).post {
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
     }
@@ -144,13 +141,10 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    lateinit var snackBar :Snackbar
+    lateinit var snackBar: Snackbar
     activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
-      snackBar = Snackbar.make(
-        contentView,
-        message,
-        Snackbar.LENGTH_SHORT
-      ).setAnchorView(binding.guideSnackbar)
+      snackBar = Snackbar.make(contentView, message, Snackbar.LENGTH_SHORT)
+        .setAnchorView(binding.guideSnackbar)
     }
 
     val snackbarView = snackBar.view

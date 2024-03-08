@@ -18,15 +18,21 @@ import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
-  private val listCast = ArrayList<FavoriteDB>()
+  private val listItemDB = ArrayList<FavoriteDB>()
 
   fun setFavorite(itemStory: List<FavoriteDB>) {
-    val diffCallback = DiffCallback(this.listCast, itemStory)
+    val diffCallback = DiffCallback(this.listItemDB, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-    this.listCast.clear()
-    this.listCast.addAll(itemStory)
+    this.listItemDB.clear()
+    this.listItemDB.addAll(itemStory)
     diffResult.dispatchUpdatesTo(this)
+  }
+
+  fun refreshData(newList: List<FavoriteDB>, position: Int) {
+    listItemDB.clear()
+    listItemDB.addAll(newList)
+    notifyItemChanged(position)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,10 +41,10 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.bind(listCast[position])
+    holder.bind(listItemDB[position])
   }
 
-  override fun getItemCount() = listCast.size
+  override fun getItemCount() = listItemDB.size
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
