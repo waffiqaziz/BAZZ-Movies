@@ -113,6 +113,7 @@
   <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
+  <string name="already_favorite">already in favorite</string>
   <string name="added_to_favorite">has been added to favorite</string>
   <string name="added_to_watchlist">has been added to watchlist</string>
   <string name="deleted_from_favorite">has been deleted from favorite</string>

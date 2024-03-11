@@ -51,8 +51,8 @@ class DetailMovieViewModel(
 
   // Local DB Function
   fun isFavoriteDB() = movieRepository.isFavorite
-  fun isFavoriteDB(id: Int) = movieRepository.isFavoriteDB(id)
-  fun isWatchlistDB(id: Int) = movieRepository.isWatchlistDB(id)
+  fun isFavoriteDB(id: Int, mediaType: String) = movieRepository.isFavoriteDB(id, mediaType)
+  fun isWatchlistDB(id: Int, mediaType: String) = movieRepository.isWatchlistDB(id, mediaType)
   fun isWatchlistDB() = movieRepository.isWatchlist
 
   fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)

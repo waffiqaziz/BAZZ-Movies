@@ -26,14 +26,15 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   fun insert(favoriteDBList: FavoriteDB) = favoriteDao.insert(favoriteDBList)
 
-  fun deleteItemFromDB(favoriteDB: FavoriteDB) = favoriteDao.deleteItem(favoriteDB)
+  fun deleteItemFromDB(mediaId : Int, mediaType: String) =
+    favoriteDao.deleteItem(mediaId, mediaType)
 
   fun deleteALl() = favoriteDao.deleteALl()
 
-  fun isFavorite(id: Int) = favoriteDao.isFavorite(id)
+  fun isFavorite(id: Int, mediaType: String) = favoriteDao.isFavorite(id, mediaType)
 
-  fun isWatchlist(id: Int) = favoriteDao.isWatchlist(id)
+  fun isWatchlist(id: Int, mediaType: String) = favoriteDao.isWatchlist(id, mediaType)
 
-  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int) =
-    favoriteDao.update(isFavorite, isWatchlist, id)
+  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String) =
+    favoriteDao.update(isFavorite, isWatchlist, id, mediaType)
 }

@@ -29,12 +29,6 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
     diffResult.dispatchUpdatesTo(this)
   }
 
-  fun refreshData(newList: List<FavoriteDB>, position: Int) {
-    listItemDB.clear()
-    listItemDB.addAll(newList)
-    notifyItemChanged(position)
-  }
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
@@ -96,12 +90,15 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
     override fun getNewListSize() = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-      oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId
+      (oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId
+        && oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite
+        && oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist
+        && oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType)
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-      val oldEmployee = oldList[oldItemPosition]
-      val newEmployee = newList[newItemPosition]
-      return oldEmployee.mediaId == newEmployee.mediaId
-    }
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+      (oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId
+        && oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite
+        && oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist
+        && oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType)
   }
 }

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,7 +7,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +43,6 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Event
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -84,21 +81,16 @@ class MyFavoriteMoviesFragment : Fragment() {
   }
 
   private fun checkUser() {
-
     // setup recyclerview
     binding.rvFavMovies.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
-        initActionUserLogin()
+        initAction(true)
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { //guest user then show data from database
-
-//        favViewModelMovie.getSnackBarTextInt()
-//          .observe(viewLifecycleOwner) { showSnackBarUndoGuest(it) }
-
-        initActionGuest()
+        initAction(false)
         setDataGuestUserProgressBarEmptyView()
       }
     }
@@ -142,7 +134,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 //    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 //  }
 
-  private fun initActionGuest() {
+  private fun initAction(isLogin: Boolean) {
     val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
       private val clearPaint =
         Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
@@ -163,24 +155,41 @@ class MyFavoriteMoviesFragment : Fragment() {
         return false
       }
 
-      @SuppressLint("NotifyDataSetChanged")
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
+        if (isLogin) {
+          val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
+          val position = viewHolder.absoluteAdapterPosition
 
-        // swipe action
-        val position = viewHolder.bindingAdapterPosition
-        binding.rvFavMovies.adapter?.notifyItemChanged(position)
-        if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
-          isWantToDelete = false
-          performSwipeGuestUser(false, fav)
-        } else { // swipe right, action delete
-          isWantToDelete = true
-          performSwipeGuestUser(true, fav)
+          adapterPaging.notifyItemChanged(position)
+          binding.rvFavMovies.adapter?.notifyItemChanged(position)
+          // swipe action
+          if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
+            isWantToDelete = false
+            fav.id?.let { mediaId ->
+              (fav.title ?: fav.originalTitle)?.let { title ->
+                postToAddWatchlistTMDB(mediaId, title)
+              }
+            }
+          } else { // swipe right, action to delete
+            isWantToDelete = true
+            if (fav.id != null && fav.title != null)
+              postToRemoveFavTMDB(fav.title, fav.id, position)
+            adapterPaging.notifyItemRemoved(position)
+          }
+        } else {
+          val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
+          val position = viewHolder.bindingAdapterPosition
+
+          // swipe action
+          binding.rvFavMovies.adapter?.notifyItemChanged(position)
+          if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
+            isWantToDelete = false
+            performSwipeGuestUser(false, fav)
+          } else { // swipe right, action delete
+            isWantToDelete = true
+            performSwipeGuestUser(true, fav)
+          }
         }
-        favViewModelMovie.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
-          adapterDB.refreshData(it, position)
-        }
-        binding.rvFavMovies.adapter?.notifyDataSetChanged()
       }
 
       override fun onChildDraw(
@@ -278,9 +287,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         if (fav.title != null) showSnackBarUndoGuest(fav.title)
       } else { // add to watchlist action
         if (fav.isWatchlist) showSnackBarNoAction(
-          "<b>${fav.title}</b> " + getString(
-            already_watchlist
-          )
+          "<b>${fav.title}</b> " + getString(already_watchlist)
         )
         else {
           favViewModelMovie.updateToWatchlistDB(fav)
@@ -288,137 +295,6 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
       }
     }
-  }
-
-  private fun initActionUserLogin() {
-    val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-      private val clearPaint =
-        Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
-
-      override fun getMovementFlags(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-      ): Int {
-        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(0, swipeFlags)
-      }
-
-      override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
-      ): Boolean {
-        val colorDrawable = ColorDrawable()
-        colorDrawable.color = ContextCompat.getColor(requireActivity(), red_matte)
-        viewHolder.itemView.background = colorDrawable
-        return false
-      }
-
-      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
-        val position = viewHolder.absoluteAdapterPosition
-
-        adapterPaging.notifyItemChanged(position)
-        binding.rvFavMovies.adapter?.notifyItemChanged(position)
-        // swipe action
-        if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
-          isWantToDelete = false
-          fav.id?.let { mediaId ->
-            (fav.title ?: fav.originalTitle)?.let { title ->
-              postToAddWatchlistTMDB(mediaId, title)
-            }
-          }
-        } else { // swipe right, action to delete
-          isWantToDelete = true
-          if (fav.id != null && fav.title != null) postToRemoveFavTMDB(fav.title, fav.id, position)
-          adapterPaging.notifyItemRemoved(position)
-        }
-      }
-
-      override fun onChildDraw(
-        c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-        dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
-      ) {
-        val background = ColorDrawable()
-        val itemView = viewHolder.itemView
-        val itemHeight = itemView.bottom - itemView.top
-        val isCanceled = dX == 0f && !isCurrentlyActive
-
-        if (isCanceled) {
-          clearCanvas(
-            c,
-            itemView.right + dX,
-            itemView.top.toFloat(),
-            itemView.right.toFloat(),
-            itemView.bottom.toFloat()
-          )
-          super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-          return
-        }
-
-        if (dX > 0) { // swipe left to delete item
-          val editIcon =
-            ContextCompat.getDrawable(requireContext(), ic_trash) ?: error("No Icon Found")
-          val intrinsicWidth = editIcon.intrinsicWidth
-          val intrinsicHeight = editIcon.intrinsicHeight
-
-          // draw the red background
-          background.color = ContextCompat.getColor(requireContext(), red_matte)
-          background.setBounds(itemView.left, itemView.top, dX.toInt() + 10, itemView.bottom)
-          background.draw(c)
-
-          // calculate position of delete icon
-          val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-          val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
-          val deleteIconLeft = itemView.left + deleteIconMargin
-          val deleteIconRight = deleteIconLeft + intrinsicWidth
-          val deleteIconBottom = deleteIconTop + intrinsicHeight
-
-          // Draw the delete icon
-          editIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-          editIcon.draw(c)
-        } else {  // swipe right to add to watchlist
-          val watchlistIcon =
-            ContextCompat.getDrawable(requireContext(), ic_bookmark_dark) ?: error("No Icon Found")
-          val intrinsicWidth = watchlistIcon.intrinsicWidth
-          val intrinsicHeight = watchlistIcon.intrinsicHeight
-
-          // draw the delete background
-          background.color = ContextCompat.getColor(requireContext(), yellow)
-          background.setBounds(
-            itemView.right + dX.toInt(),
-            itemView.top,
-            itemView.right,
-            itemView.bottom
-          )
-          background.draw(c)
-
-          // calculate position of delete icon
-          val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-          val watchlistIconMargin = (itemHeight - intrinsicHeight) / 2
-          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth
-          val watchlistIconRight = watchlistIconLeft + intrinsicWidth
-          val watchlistIconBottom = watchlistIconTop + intrinsicHeight
-
-          // draw the delete icon
-          watchlistIcon.setBounds(
-            watchlistIconLeft,
-            watchlistIconTop,
-            watchlistIconRight,
-            watchlistIconBottom
-          )
-          watchlistIcon.draw(c)
-        }
-
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-      }
-
-      private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
-        c?.drawRect(left, top, right, bottom, clearPaint)
-      }
-    })
-
-    itemTouchHelper.attachToRecyclerView(binding.rvFavMovies)
   }
 
   private fun postToRemoveFavTMDB(title: String, movieId: Int, position: Int) {
@@ -505,9 +381,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     binding.rvFavMovies.adapter = adapterPaging.withLoadStateFooter(
-      footer = LoadingStateAdapter {
-        adapterPaging.retry()
-      }
+      footer = LoadingStateAdapter { adapterPaging.retry() }
     )
 
     // show/hide view
@@ -517,10 +391,10 @@ class MyFavoriteMoviesFragment : Fragment() {
         && adapterPaging.itemCount < 1
       ) {
         // show empty view
-        binding.illustrationNoDataView.containerSearchNoData.visibility = View.VISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       } else {
         //  hide empty view
-        binding.illustrationNoDataView.containerSearchNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
         binding.rvFavMovies.visibility = View.VISIBLE
       }
 
@@ -544,10 +418,10 @@ class MyFavoriteMoviesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavMovies.visibility = View.VISIBLE
-        binding.illustrationNoDataView.containerSearchNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
       } else {
         binding.rvFavMovies.visibility = View.INVISIBLE
-        binding.illustrationNoDataView.containerSearchNoData.visibility = View.VISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
       binding.progressBar.visibility = View.INVISIBLE
     }
@@ -562,9 +436,5 @@ class MyFavoriteMoviesFragment : Fragment() {
     super.onDestroyView()
     _binding = null
     mSnackbar?.dismiss()
-  }
-
-  companion object {
-    const val TAG = "MyFavoriteMoviesFragment"
   }
 }

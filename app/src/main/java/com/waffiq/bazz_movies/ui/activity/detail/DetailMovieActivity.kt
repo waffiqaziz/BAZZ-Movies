@@ -256,6 +256,8 @@ class DetailMovieActivity : AppCompatActivity() {
 
         // show genre
         val temp = movie.genres?.map { it?.name }
+        val tempID =  movie.genres?.map { it?.id ?: 0 }
+        if(tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
@@ -342,6 +344,8 @@ class DetailMovieActivity : AppCompatActivity() {
       dataExtra.id?.let { detailViewModel.detailTv(it) }
       detailViewModel.detailTv().observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
+        val tempID =  tv.genres?.map { it?.id ?: 0 }
+        if(tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
@@ -516,12 +520,12 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
     } else { //guest user
-      dataExtra.id?.let { detailViewModel.isFavoriteDB(it) }
+      dataExtra.id?.let { detailViewModel.isFavoriteDB(it, dataExtra.mediaType.toString()) }
       detailViewModel.isFavoriteDB().observe(this) {
         changeBtnFavoriteBG(it)
         favorite = it
       }
-      dataExtra.id?.let { detailViewModel.isWatchlistDB(it) }
+      dataExtra.id?.let { detailViewModel.isWatchlistDB(it, dataExtra.mediaType.toString()) }
       detailViewModel.isWatchlistDB().observe(this) {
         changeBtnWatchlistBG(it)
         watchlist = it

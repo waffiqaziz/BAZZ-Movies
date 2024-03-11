@@ -1,9 +1,8 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -29,7 +28,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
 
   // fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 
-  fun getSnackBarTextInt() = movieRepository.snackBarTextInt
+  // fun getSnackBarTextInt() = movieRepository.snackBarTextInt
 
   /**
    * Function for remote

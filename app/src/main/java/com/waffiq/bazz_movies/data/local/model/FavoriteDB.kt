@@ -15,7 +15,10 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = TABLE_NAME)
 data class FavoriteDB(
 
-  @PrimaryKey
+  @PrimaryKey(autoGenerate = true)
+  @ColumnInfo(name = "id")
+  val id: Int = 0,
+
   @ColumnInfo(name = "mediaId")
   @field:SerializedName("mediaId")
   val mediaId: Int,

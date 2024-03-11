@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.R.string.deleted_from_favorite2
 import com.waffiq.bazz_movies.data.local.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
@@ -912,21 +911,24 @@ class MoviesRepository(
   fun insertToDB(fav: FavoriteDB) = appExecutors.diskIO().execute { localDataSource.insert(fav) }
 
   fun deleteFromDB(fav: FavoriteDB) {
-    appExecutors.diskIO().execute { localDataSource.deleteItemFromDB(fav) }
+    appExecutors.diskIO().execute {
+      if (fav.mediaType != null)
+        localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
+    }
     _undoDB.value = Event(fav)
   }
 
   fun deleteAll() = appExecutors.diskIO().execute { localDataSource.deleteALl() }
 
-  fun isFavoriteDB(id: Int) {
+  fun isFavoriteDB(id: Int, mediaType: String) {
     appExecutors.diskIO().execute {
-      _isFavorite.postValue(localDataSource.isFavorite(id))
+      _isFavorite.postValue(localDataSource.isFavorite(id, mediaType))
     }
   }
 
-  fun isWatchlistDB(id: Int) {
+  fun isWatchlistDB(id: Int, mediaType: String) {
     appExecutors.diskIO().execute {
-      _isWatchlist.postValue(localDataSource.isWatchlist(id))
+      _isWatchlist.postValue(localDataSource.isWatchlist(id, mediaType))
     }
   }
 
@@ -935,24 +937,26 @@ class MoviesRepository(
     if (isDelete) {
       _undoDB.value = Event(fav)
 
-      if (fav.isWatchlist != null) {
+      if (fav.isWatchlist != null && fav.mediaType != null) {
         appExecutors.diskIO().execute {
           localDataSource.update(
             isFavorite = false,
             isWatchlist = fav.isWatchlist,
-            id = fav.mediaId
+            id = fav.mediaId,
+            mediaType = fav.mediaType
           )
         }
       } else Log.e(TAG, "favDB: $fav")
     } else {  // update set is_favorite = true, (for movie that already on watchlist)
       _undoDB.value = Event(fav)
 
-      if (fav.isWatchlist != null) {
+      if (fav.isWatchlist != null && fav.mediaType != null) {
         appExecutors.diskIO().execute {
           localDataSource.update(
             isFavorite = true,
             isWatchlist = fav.isWatchlist,
-            id = fav.mediaId
+            id = fav.mediaId,
+            mediaType = fav.mediaType
           )
         }
       } else Log.e(TAG, "favDB: $fav")
@@ -963,24 +967,26 @@ class MoviesRepository(
     if (isDelete) { // update set is_watchlist = false
       _undoDB.value = Event(fav)
 
-      if (fav.isFavorite != null) {
+      if (fav.isFavorite != null && fav.mediaType != null) {
         appExecutors.diskIO().execute {
           localDataSource.update(
             isFavorite = fav.isFavorite,
             isWatchlist = false,
-            id = fav.mediaId
+            id = fav.mediaId,
+            mediaType = fav.mediaType
           )
         }
       } else Log.e(TAG, "favDB: $fav")
     } else { // update set is_watchlist = true
       _undoDB.value = Event(fav)
 
-      if (fav.isFavorite != null) {
+      if (fav.isFavorite != null && fav.mediaType != null) {
         appExecutors.diskIO().execute {
           localDataSource.update(
             isFavorite = fav.isFavorite,
             isWatchlist = true,
-            id = fav.mediaId
+            id = fav.mediaId,
+            mediaType = fav.mediaType
           )
         }
       } else Log.e(TAG, "favDB: $fav")
