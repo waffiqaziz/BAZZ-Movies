@@ -8,19 +8,20 @@ import androidx.core.view.children
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
-import com.waffiq.bazz_movies.R.color.cream_alpha
-import com.waffiq.bazz_movies.R.color.bg_chip
-import com.waffiq.bazz_movies.R.color.gray_200
 import com.waffiq.bazz_movies.R.string.maximum_selected_genres_reached
+import com.waffiq.bazz_movies.R.string.binding_error
+import com.waffiq.bazz_movies.data.local.model.FilterSearch
 import com.waffiq.bazz_movies.databinding.FragmentBottomSheetSearchBinding
+import com.waffiq.bazz_movies.utils.Helper.iterateGenreToInt
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
-class BottomSheetSearchFragment : BottomSheetDialogFragment() {
+class BottomSheetSearchFragment(private val inputListener: ListenerFilter) :
+  BottomSheetDialogFragment() {
 
   private var _binding: FragmentBottomSheetSearchBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewModel: BottomSheetSearchViewModel
+  //private lateinit var viewModel: BottomSheetSearchViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -32,7 +33,7 @@ class BottomSheetSearchFragment : BottomSheetDialogFragment() {
 
     btnListener()
     chipGroupListener()
-    chipListener()
+    selectedChipGroup()
 
     // Fixes bottom sheet not fully expanded inside its parent view
     requireDialog().setOnShowListener {
@@ -50,64 +51,66 @@ class BottomSheetSearchFragment : BottomSheetDialogFragment() {
 
   private fun btnListener() {
     binding.btnApply.setOnClickListener {
-      val selectedChip = binding.cgGenre.children
-        .filter { (it as Chip).isChecked }
-        .map { (it as Chip).text }.toString()
+      val selectedChipValues = mutableListOf<String>()
+      lateinit var filterSearch: FilterSearch
 
-      showToastShort(requireActivity(),selectedChip)
+      if (binding.movieTypes.isChecked) {
+        for (i in 0 until binding.cgMovieGenre.childCount) {
+          val chip = binding.cgMovieGenre.getChildAt(i) as Chip
+          if (chip.isChecked) {
+            val chipText = chip.text.toString()
+            selectedChipValues.add(chipText)
+          }
+        }
+      } else if (binding.tvTypes.isChecked) {
+        for (i in 0 until binding.cgTvGenre.childCount) {
+          val chip = binding.cgTvGenre.getChildAt(i) as Chip
+          if (chip.isChecked) {
+            val chipText = chip.text.toString()
+            selectedChipValues.add(chipText)
+          }
+        }
+      } else if (binding.multiTypes.isChecked) {
+        filterSearch = FilterSearch(1, null, null)
+      }
+
+      inputListener.passData("BISMILLAH")
+      showToastShort(requireActivity(), filterSearch.toString())
+      showToastShort(requireActivity(), iterateGenreToInt(selectedChipValues))
       dismiss()
     }
   }
 
-  private fun chipListener() {
-    binding.apply {
-      multiTypes.isChecked = true
-      cgGenre.children.forEach { view ->
-        if (view is Chip) {
-          view.chipBackgroundColor = requireActivity().getColorStateList(cream_alpha)
-          view.isClickable = false
-        }
-      }
+  private fun selectedChipGroup() {
+    binding.multiTypes.isChecked = true
+    binding.containerGenre.visibility = View.GONE
 
-      movieTypes.setOnClickListener {
-        cgGenre.children.forEach { view ->
-          if (view is Chip) {
-            view.chipBackgroundColor = requireActivity().getColorStateList(bg_chip)
-            view.isClickable = true
-          }
-        }
-      }
-      tvTypes.setOnClickListener {
-        cgGenre.children.forEach { view ->
-          if (view is Chip) {
-            view.chipBackgroundColor = requireActivity().getColorStateList(bg_chip)
-            view.isClickable = true
-          }
-        }
-      }
-      multiTypes.setOnClickListener {
-        cgGenre.children.forEach { view ->
-          if (view is Chip) {
-            view.chipBackgroundColor = requireActivity().getColorStateList(cream_alpha)
-            view.isClickable = false
-          }
-        }
-      }
-      personTypes.setOnClickListener {
-        cgGenre.children.forEach { view ->
-          if (view is Chip) {
-            view.chipBackgroundColor = requireActivity().getColorStateList(gray_200)
-            view.isClickable = false
-          }
-        }
-      }
+    // hide genre chips available for multi and person search
+    binding.multiTypes.setOnClickListener {
+      binding.containerGenre.visibility = View.GONE
+    }
+    binding.personTypes.setOnClickListener {
+      binding.containerGenre.visibility = View.GONE
+    }
+
+    binding.movieTypes.setOnClickListener {
+      binding.containerGenre.visibility = View.VISIBLE
+      binding.cgMovieGenre.visibility = View.VISIBLE
+      binding.cgTvGenre.visibility = View.GONE
+    }
+
+    binding.tvTypes.setOnClickListener {
+      binding.containerGenre.visibility = View.VISIBLE
+      binding.cgTvGenre.visibility = View.VISIBLE
+      binding.cgMovieGenre.visibility = View.GONE
     }
   }
 
-  private fun chipGroupListener() {
-    var selectedChipCount = 0
 
-    binding.cgGenre.children.forEach { view ->
+  private fun chipGroupListener() {
+    var selectedChipCount: Byte = 0
+
+    binding.cgMovieGenre.children.forEach { view ->
       if (view is Chip) {
         view.setOnCheckedChangeListener { chip, isChecked ->
           if (isChecked) {
@@ -123,6 +126,28 @@ class BottomSheetSearchFragment : BottomSheetDialogFragment() {
         }
       }
     }
+
+    var selectedChipCount2: Byte = 0
+    binding.cgMovieGenre.children.forEach { view ->
+      if (view is Chip) {
+        view.setOnCheckedChangeListener { chip, isChecked ->
+          if (isChecked) {
+            if (selectedChipCount2 >= MAX_SELECTED_CHIPS) {
+              // If maximum selected chips reached, uncheck the chip and show toast
+              chip.isChecked = false
+              showToastShort(
+                requireActivity(),
+                getString(maximum_selected_genres_reached)
+              )
+            } else selectedChipCount2++
+          } else selectedChipCount2--
+        }
+      }
+    }
+  }
+
+  interface ListenerFilter {
+    fun passData(data: Any)
   }
 
   override fun onDestroyView() {

@@ -22,6 +22,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.R.string.clear_query
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.drawable.ic_search
@@ -30,11 +31,12 @@ import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), BottomSheetSearchFragment.ListenerFilter {
 
   private var _binding: FragmentSearchBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var closeButton: View
@@ -96,7 +98,7 @@ class SearchFragment : Fragment() {
         searchView.maxWidth = Int.MAX_VALUE
         customizeSearchView(searchView)
 
-        // search queryTextChange Listener
+        // search queryTextChange ListenerFilter
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
           override fun onQueryTextSubmit(query: String?): Boolean { //when user submit data
@@ -168,8 +170,10 @@ class SearchFragment : Fragment() {
   }
 
   private fun setupFilter() {
+
+    // show filter via DialogFragment
     binding.fabFilter.setOnClickListener {
-      val bottomSheetDialogFragment = BottomSheetSearchFragment()
+      val bottomSheetDialogFragment = BottomSheetSearchFragment(this)
       bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
     }
   }
@@ -194,5 +198,9 @@ class SearchFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  override fun passData(data: Any) {
+    showToastShort(requireActivity(), data.toString())
   }
 }
