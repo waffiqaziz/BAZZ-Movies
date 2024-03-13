@@ -53,8 +53,6 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.show()
 
     setupSearchView(searchViewModel)
-    setupFab()
-    setupFilter()
     return root
   }
 
@@ -112,9 +110,6 @@ class SearchFragment : Fragment() {
             // hide virtual keyboard when submitted
             searchView.clearFocus()
 
-            // show fab
-            binding.fabFilter.visibility = View.VISIBLE
-
             return true
           }
 
@@ -165,30 +160,6 @@ class SearchFragment : Fragment() {
         }
       }
     }
-  }
-
-  private fun setupFilter() {
-    binding.fabFilter.setOnClickListener {
-      val bottomSheetDialogFragment = BottomSheetSearchFragment()
-      bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
-    }
-  }
-
-  private fun setupFab() {
-    binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-      override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-
-        // if the recycler view is scroll down hide the FAB
-        if (dy > 5 && binding.fabFilter.isShown) binding.fabFilter.hide()
-
-        // if the recycler view is scroll up show the FAB
-        if (dy < -5 && !binding.fabFilter.isShown) binding.fabFilter.show()
-
-        // recycler view at the first time fab always shown
-        if (!recyclerView.canScrollVertically(-1)) binding.fabFilter.show()
-      }
-    })
   }
 
   override fun onDestroyView() {

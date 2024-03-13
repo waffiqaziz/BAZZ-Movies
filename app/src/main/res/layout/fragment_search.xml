@@ -38,21 +38,7 @@
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="invisible" />
 
-
   </androidx.constraintlayout.widget.ConstraintLayout>
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab_filter"
-    style="@style/MyFAB"
-    android:layout_gravity="end|bottom"
-    android:layout_marginHorizontal="@dimen/fab_margin"
-    android:layout_marginTop="@dimen/fab_margin"
-    android:layout_marginBottom="@dimen/margin_bottom_for_fab"
-    android:contentDescription="@string/sort_filter"
-    android:visibility="invisible"
-    app:rippleColor="@color/yellow_alpha_80"
-    app:srcCompat="@drawable/ic_filter"
-    tools:visibility="visible" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
