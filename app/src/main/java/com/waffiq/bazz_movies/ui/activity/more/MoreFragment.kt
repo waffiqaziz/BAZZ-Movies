@@ -88,12 +88,6 @@ class MoreFragment : Fragment() {
   }
 
   private fun btnAction() {
-    binding.btnRate.setOnClickListener { toastStillOnDevelopment(requireContext()) }
-    binding.btnLanguage.setOnClickListener { toastStillOnDevelopment(requireContext()) }
-    binding.btnDarkMode.setOnClickListener {
-      binding.cbDarkMode.isChecked = !binding.cbDarkMode.isChecked
-      toastStillOnDevelopment(requireContext())
-    }
     binding.btnFaq.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FAQ_LINK)))
     }

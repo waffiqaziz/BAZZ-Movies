@@ -24,11 +24,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.data
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -37,7 +37,6 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.checkInternet
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
@@ -239,10 +238,6 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun animationFadeOut() {
-    val animation = animFadeOutLong(requireContext())
-    binding.backgroundDimMovie.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-
     Handler(Looper.getMainLooper()).post {
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE
