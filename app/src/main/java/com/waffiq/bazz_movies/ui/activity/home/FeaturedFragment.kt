@@ -19,7 +19,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
@@ -79,7 +79,7 @@ class FeaturedFragment : Fragment() {
       //.load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(ic_bazz_placeholder_search)
-      .transition(DrawableTransitionOptions.withCrossFade())
+      .transition(withCrossFade())
       .error(ic_broken_image)
       .into(binding.imgMainFeatured)
   }

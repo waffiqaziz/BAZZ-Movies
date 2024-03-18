@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
@@ -90,7 +90,7 @@ class SearchAdapter :
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_broken_image)
       .transform(CenterCrop())
-      .transition(DrawableTransitionOptions.withCrossFade())
+      .transition(withCrossFade())
       .into(binding.ivPicture)
 
     binding.tvTitle.text = data.name
@@ -105,7 +105,7 @@ class SearchAdapter :
       .load(
         TMDB_IMG_LINK_BACKDROP_W300 + (data.backdropPath ?: data.posterPath)
       )
-      .transition(DrawableTransitionOptions.withCrossFade())
+      .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_broken_image)
       .into(binding.ivPicture)
@@ -124,14 +124,14 @@ class SearchAdapter :
         oldItem: ResultsItemSearch,
         newItem: ResultsItemSearch
       ): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }
 
       override fun areContentsTheSame(
         oldItem: ResultsItemSearch,
         newItem: ResultsItemSearch
       ): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }
     }
   }

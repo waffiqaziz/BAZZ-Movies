@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
@@ -41,7 +41,7 @@ class TvAdapter :
         .load(TMDB_IMG_LINK_POSTER_W185 + tv.posterPath) // URL movie poster
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
-        .transition(DrawableTransitionOptions.withCrossFade())
+        .transition(withCrossFade())
         .error(ic_broken_image)
         .into(binding.imgPoster)
 
