@@ -44,6 +44,8 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -352,6 +354,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
+      insertDBObserver()
       val fav = viewModel.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
       if (fav.isWatchlist != null) {
         if (fav.isWatchlist) { // movie is on watchlist
@@ -364,6 +367,17 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
+  }
+
+  private fun insertDBObserver() {
+    viewModel.localDatabaseResult.observe(viewLifecycleOwner) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Error -> showToastShort(requireActivity(), result.message)
+          else -> {}
+        }
+      }
+    }
   }
 
   private fun showSnackBarFavUserLogin(title: String, fav: Favorite, position: Int) {

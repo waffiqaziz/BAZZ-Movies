@@ -44,6 +44,8 @@ import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
+import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -302,6 +304,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
+      insertDBObserver()
       val fav = viewModel.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
       if (fav.isFavorite != null) {
         if (fav.isFavorite) { // movie is on favorite
@@ -314,6 +317,17 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       }
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
+  }
+
+  private fun insertDBObserver() {
+    viewModel.localDatabaseResult.observe(viewLifecycleOwner) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Error -> Helper.showToastShort(requireContext(), result.message)
+          else -> {}
+        }
+      }
+    }
   }
 
   private fun showSnackBarFavUserLogin(title: String, fav: Watchlist, position: Int) {

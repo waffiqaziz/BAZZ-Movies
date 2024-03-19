@@ -77,11 +77,13 @@ import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
-import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistFalse
-import com.waffiq.bazz_movies.utils.Helper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.utils.Helper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistFalse
+import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistTrue
+import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistFalse
+import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -393,6 +395,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun btnListener() {
+    insertDBObserver()
     binding.apply {
       btnBack.setOnClickListener { finish() }
 
@@ -465,7 +468,17 @@ class DetailMovieActivity : AppCompatActivity() {
       imdbViewGroup.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
       tmdbViewGroup.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
       metascoreViewGroup.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+    }
+  }
 
+  private fun insertDBObserver() {
+    detailViewModel.localDatabaseResult.observe(this) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Error -> Helper.showToastShort(this, result.message)
+          else -> {}
+        }
+      }
     }
   }
 

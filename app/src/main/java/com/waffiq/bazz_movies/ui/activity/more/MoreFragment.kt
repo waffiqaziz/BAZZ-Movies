@@ -43,14 +43,14 @@ import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.Helper.toastStillOnDevelopment
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class MoreFragment : Fragment() {
 
   private var _binding: FragmentMoreBinding? = null
-  private val binding get() = _binding?: error(getString(binding_error))
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var authViewModel: AuthenticationViewModel
   private lateinit var moreViewModel: MoreViewModel
@@ -126,13 +126,24 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutGuestMode() {
+    moreViewModel.deleteAllResult.observe(viewLifecycleOwner) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Success -> showToastShort(
+            requireActivity(),
+            getString(all_data_deleted)
+          )
+          is LocalDatabaseResult.Error -> showToastShort(requireActivity(), result.message)
+        }
+      }
+    }
+
     val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
     builder
       .setMessage(getString(warning_signOut_guest_mode))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
         moreViewModel.deleteAll() // delete all user data  (watchlist and favorite)
-        showToastShort(requireActivity(), getString(all_data_deleted))
         dialog.dismiss()
         removePrefUserData() // remove preference user data
       }
@@ -141,7 +152,7 @@ class MoreFragment : Fragment() {
       }
 
     val dialog: AlertDialog = builder.create()
-    if (! requireActivity().isFinishing) {
+    if (!requireActivity().isFinishing) {
       dialog.show()
     }
   }

@@ -43,6 +43,8 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -51,7 +53,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   private var _binding: FragmentMyFavoriteMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var favViewModelMovie: MyFavoriteViewModel
+  private lateinit var viewModelFav: MyFavoriteViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
 
   private val adapterDB = FavoriteAdapterDB()
@@ -74,7 +76,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     viewModelAuth = ViewModelProvider(this, factoryAuth)[AuthenticationViewModel::class.java]
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    favViewModelMovie = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
+    viewModelFav = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
 
     checkUser()
     return root
@@ -282,15 +284,15 @@ class MyFavoriteMoviesFragment : Fragment() {
     // check if item is in watchlist or not
     if (fav.isWatchlist != null) {
       if (isWantToDelete) {
-        if (fav.isWatchlist) favViewModelMovie.updateToRemoveFromFavoriteDB(fav)
-        else favViewModelMovie.delFromFavoriteDB(fav)
+        if (fav.isWatchlist) viewModelFav.updateToRemoveFromFavoriteDB(fav)
+        else viewModelFav.delFromFavoriteDB(fav)
         if (fav.title != null) showSnackBarUndoGuest(fav.title)
       } else { // add to watchlist action
         if (fav.isWatchlist) showSnackBarNoAction(
           "<b>${fav.title}</b> " + getString(already_watchlist)
         )
         else {
-          favViewModelMovie.updateToWatchlistDB(fav)
+          viewModelFav.updateToWatchlistDB(fav)
           showSnackBarNoAction("<b>${fav.title}</b> " + getString(added_to_watchlist))
         }
       }
@@ -305,7 +307,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     )
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      favViewModelMovie.postFavorite(user, favoriteMode)
+      viewModelFav.postFavorite(user, favoriteMode)
     }
     showSnackBarFavUserLogin(title, favoriteMode, position)
   }
@@ -318,12 +320,12 @@ class MyFavoriteMoviesFragment : Fragment() {
     )
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      favViewModelMovie.getStated(user.token, mediaId)
-      favViewModelMovie.getStated().observe(viewLifecycleOwner) {
+      viewModelFav.getStated(user.token, mediaId)
+      viewModelFav.getStated().observe(viewLifecycleOwner) {
         if (it != null) {
           if (!it.watchlist) {
             showSnackBarNoAction("<b>$mediaTitle</b> " + getString(added_to_watchlist))
-            favViewModelMovie.postWatchlist(user, watchlistMode)
+            viewModelFav.postWatchlist(user, watchlistMode)
           } else showSnackBarNoAction("<b>$mediaTitle</b> " + getString(already_watchlist))
         }
       }
@@ -339,18 +341,30 @@ class MyFavoriteMoviesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      val fav = favViewModelMovie.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
+      insertDBObserver()
+      val fav = viewModelFav.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
       if (fav.isWatchlist != null) {
         if (fav.isWatchlist) { // movie is on watchlist
-          if (isWantToDelete) favViewModelMovie.updateToFavoriteDB(fav)
-          else favViewModelMovie.updateToRemoveFromWatchlistDB(fav)
+          if (isWantToDelete) viewModelFav.updateToFavoriteDB(fav)
+          else viewModelFav.updateToRemoveFromWatchlistDB(fav)
         } else { // movie is not on watchlist
-          if (isWantToDelete) favViewModelMovie.insertToDB(fav.copy(isFavorite = true))
-          else favViewModelMovie.insertToDB(fav.copy(isWatchlist = true))
+          if (isWantToDelete) viewModelFav.insertToDB(fav.copy(isFavorite = true))
+          else viewModelFav.insertToDB(fav.copy(isWatchlist = true))
         }
       }
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
+  }
+
+  private fun insertDBObserver() {
+    viewModelFav.localDatabaseResult.observe(viewLifecycleOwner) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Error -> Helper.showToastShort(requireActivity(), result.message)
+          else -> {}
+        }
+      }
+    }
   }
 
   private fun showSnackBarFavUserLogin(title: String, fav: Favorite, position: Int) {
@@ -363,7 +377,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
       viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-        favViewModelMovie.postFavorite(user, fav.copy(favorite = true))
+        viewModelFav.postFavorite(user, fav.copy(favorite = true))
       }
       adapterPaging.notifyItemInserted(position)
     }.setAnchorView(binding.guideSnackbar)
@@ -402,7 +416,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         loadState.source.refresh is LoadState.Loading // show progressbar
     }
 
-    favViewModelMovie.getFavoriteMovies(userToken)
+    viewModelFav.getFavoriteMovies(userToken)
       .observe(viewLifecycleOwner) {
         adapterPaging.submitData(lifecycle, it)
       }
@@ -414,7 +428,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
     )
 
-    favViewModelMovie.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
+    viewModelFav.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavMovies.visibility = View.VISIBLE

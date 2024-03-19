@@ -20,4 +20,8 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
   fun getLoading() = movieRepository.isLoading
 
   fun getSnackbar() = movieRepository.snackBarText
+
+  companion object {
+    const val TAG = "PersonMovieViewModel"
+  }
 }

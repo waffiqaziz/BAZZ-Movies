@@ -1,16 +1,24 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
+
+  private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
+  val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
   /**
    * Function for database
@@ -19,7 +27,17 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
   fun undoDeleteDB() = movieRepository.undoDB
 
-  fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
+  fun insertToDB(fav: FavoriteDB) {
+    movieRepository.insertToDB(fav) { resultCode ->
+      val result = when (resultCode) {
+        LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
+        LocalDataSourceInterface.ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
+        LocalDataSourceInterface.SUCCESS -> LocalDatabaseResult.Success
+        else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+      }
+      _localDatabaseResult.postValue(Event(result))
+    }
+  }
   fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
   fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
   fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)

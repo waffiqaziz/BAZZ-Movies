@@ -9,24 +9,15 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import com.waffiq.bazz_movies.R.string.feature_not_ready
 import com.waffiq.bazz_movies.R.string.no_connection
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.TimeZone
 
 object Helper {
-
-  fun toastStillOnDevelopment(context: Context) {
-    Toast.makeText(context, context.getString(feature_not_ready), Toast.LENGTH_SHORT)
-      .show()
-  }
-
   fun showToastShort(context: Context, text: String) {
     Toast.makeText(
       context, HtmlCompat.fromHtml(
@@ -132,43 +123,6 @@ object Helper {
     knownForItem.forEach { temp = temp + it.title + ", " }
     temp = temp.dropLast(2)
     return temp
-  }
-
-  private fun mapResponsesToEntitiesFavoriteDB(
-    isFavorite: Boolean,
-    isWatchlist: Boolean,
-    input: ResultItem
-  ): FavoriteDB {
-    return FavoriteDB(
-      mediaId = input.id ?: error("No ID For Database"),
-      mediaType = input.mediaType,
-      title = input.name ?: input.originalName ?: input.title ?: input.originalTitle,
-      releaseDate = input.releaseDate ?: input.firstAirDate,
-      rating = input.voteAverage,
-      backDrop = input.backdropPath,
-      poster = input.posterPath,
-      genre = iterateGenre(input.genreIds ?: listOf()),
-      popularity = input.popularity,
-      overview = input.overview,
-      isFavorite = isFavorite,
-      isWatchlist = isWatchlist
-    )
-  }
-
-  fun favTrueWatchlistTrue(data: ResultItem): FavoriteDB {
-    return mapResponsesToEntitiesFavoriteDB(isFavorite = true, isWatchlist = true, input = data)
-  }
-
-  fun favTrueWatchlistFalse(data: ResultItem): FavoriteDB {
-    return mapResponsesToEntitiesFavoriteDB(isFavorite = true, isWatchlist = false, input = data)
-  }
-
-  fun favFalseWatchlistTrue(data: ResultItem): FavoriteDB {
-    return mapResponsesToEntitiesFavoriteDB(isFavorite = false, isWatchlist = true, input = data)
-  }
-
-  fun favFalseWatchlistFalse(data: ResultItem): FavoriteDB {
-    return mapResponsesToEntitiesFavoriteDB(isFavorite = false, isWatchlist = false, input = data)
   }
 
   fun dateFormatter(date: String): String? {

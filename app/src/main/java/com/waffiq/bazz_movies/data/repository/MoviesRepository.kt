@@ -3,31 +3,13 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.local.LocalDataSource
+import com.waffiq.bazz_movies.data.local.datasource.LocalDataSource
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
-import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
-import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
-import com.waffiq.bazz_movies.data.paging.MultiTrendingDayPagingSource
-import com.waffiq.bazz_movies.data.paging.MultiTrendingWeekPagingSource
-import com.waffiq.bazz_movies.data.paging.OnTvPagingSource
-import com.waffiq.bazz_movies.data.paging.PlayingNowMoviesPagingSource
-import com.waffiq.bazz_movies.data.paging.PopularMoviePagingSource
-import com.waffiq.bazz_movies.data.paging.PopularTvPagingSource
-import com.waffiq.bazz_movies.data.paging.RecommendationMoviePagingSource
-import com.waffiq.bazz_movies.data.paging.RecommendationTvPagingSource
-import com.waffiq.bazz_movies.data.paging.SearchPagingSource
-import com.waffiq.bazz_movies.data.paging.TopRatedMoviePagingSource
-import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
-import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
-import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
-import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
+import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastCombinedItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
@@ -49,7 +31,6 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
-import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.AppExecutors
 import com.waffiq.bazz_movies.utils.Event
 import kotlinx.coroutines.flow.Flow
@@ -60,8 +41,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MoviesRepository(
-  private val tmdbApiService: TMDBApiService,
   private val localDataSource: LocalDataSource,
+  private val movieDataSource: MovieDataSource,
   private val appExecutors: AppExecutors
 ) {
 
@@ -83,6 +64,7 @@ class MoviesRepository(
 
   private var _linkVideoTv = MutableLiveData<String>()
   val linkVideoTv: LiveData<String> = _linkVideoTv
+
 
   private val _externalId = MutableLiveData<ExternalIdResponse>()
   val externalId: LiveData<ExternalIdResponse> get() = _externalId
@@ -151,124 +133,56 @@ class MoviesRepository(
 
 
   // paging
-  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { TopRatedMoviePagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTopRatedMovies()
 
-  fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { PopularMoviePagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPopularMovies()
 
-  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { FavoriteMoviePagingSource(sessionId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingFavoriteMovies(sessionId)
 
-  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { FavoriteTvPagingSource(sessionId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingFavoriteTv(sessionId)
 
-  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { WatchlistTvPagingSource(sessionId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingWatchlistTv(sessionId)
 
-  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { WatchlistMoviePagingSource(sessionId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingWatchlistMovies(sessionId)
 
-  fun getPagingPopularTv(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { PopularTvPagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPopularTv()
 
-  fun getPagingOnTv(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { OnTvPagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingOnTv()
 
-  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { AiringTodayTvPagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingAiringTodayTv()
 
-  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { MultiTrendingWeekPagingSource(region, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTrendingWeek(region)
 
-  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { MultiTrendingDayPagingSource(region, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTrendingDay(region)
 
-  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { RecommendationMoviePagingSource(movieId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingMovieRecommendation(movieId)
 
-  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { RecommendationTvPagingSource(tvId, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTvRecommendation(tvId)
 
-  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 20),
-      pagingSourceFactory = { UpcomingMoviesPagingSource(region, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingUpcomingMovies(region)
 
-  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 20),
-      pagingSourceFactory = { PlayingNowMoviesPagingSource(region, tmdbApiService) }
-    ).flow
-  }
+  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPlayingNowMovies(region)
 
-  fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> {
-    return Pager(
-      config = PagingConfig(pageSize = 5),
-      pagingSourceFactory = { TopRatedTvPagingSource(tmdbApiService) }
-    ).flow
-  }
+  fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTopRatedTv()
 
-  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> {
-    return Pager(
-      config = PagingConfig(pageSize = 20),
-      pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
-    ).flow
-  }
+  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
+    movieDataSource.getPagingSearch(query)
 
 
   // detail movie from OMDb API
@@ -771,7 +685,6 @@ class MoviesRepository(
     })
   }
 
-
   // person
   fun getDetailPerson(id: Int) {
     val client = TMDBApiConfig
@@ -785,8 +698,6 @@ class MoviesRepository(
       ) {
         if (response.isSuccessful) _detailPerson.value = response.body()
         else {
-          Log.e(TAG, "onFailure: ${response.message()}")
-
           // get message error
           Log.e(TAG, "onFailure: ${response.message()}")
           val jsonObject = JSONTokener(response.errorBody()?.string()).nextValue() as JSONObject
@@ -908,7 +819,12 @@ class MoviesRepository(
   fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
 
-  fun insertToDB(fav: FavoriteDB) = appExecutors.diskIO().execute { localDataSource.insert(fav) }
+  fun insertToDB(fav: FavoriteDB, callback: (Int) -> Unit) {
+    appExecutors.diskIO().execute {
+      val resultCode = localDataSource.insert(fav)
+      callback.invoke(resultCode)
+    }
+  }
 
   fun deleteFromDB(fav: FavoriteDB) {
     appExecutors.diskIO().execute {
@@ -918,7 +834,12 @@ class MoviesRepository(
     _undoDB.value = Event(fav)
   }
 
-  fun deleteAll() = appExecutors.diskIO().execute { localDataSource.deleteALl() }
+  fun deleteAll(callback: (Int) -> Unit) {
+    appExecutors.diskIO().execute {
+      val resultCode = localDataSource.deleteAll()
+      callback.invoke(resultCode)
+    }
+  }
 
   fun isFavoriteDB(id: Int, mediaType: String) {
     appExecutors.diskIO().execute {
@@ -1001,12 +922,12 @@ class MoviesRepository(
     private var instance: MoviesRepository? = null
 
     fun getInstance(
-      tmdbApiService: TMDBApiService,
       localData: LocalDataSource,
+      movieDataSource: MovieDataSource,
       appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(tmdbApiService, localData, appExecutors)
+        instance ?: MoviesRepository(localData, movieDataSource, appExecutors)
       }
   }
 }

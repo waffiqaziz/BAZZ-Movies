@@ -24,13 +24,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
-import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
-import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
-import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
@@ -43,6 +36,16 @@ import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
+import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
+import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
+import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -302,6 +305,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
+      insertDBObserver()
       val fav = viewModel.undoDeleteDB().value?.getContentIfNotHandled() as FavoriteDB
       if (fav.isFavorite != null) {
         if (fav.isFavorite) { // movie is on favorite
@@ -314,6 +318,17 @@ class MyWatchlistMoviesFragment : Fragment() {
       }
     }.setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()
+  }
+
+  private fun insertDBObserver() {
+    viewModel.localDatabaseResult.observe(viewLifecycleOwner) {
+      it.getContentIfNotHandled()?.let { result ->
+        when (result) {
+          is LocalDatabaseResult.Error -> showToastShort(requireContext(), result.message)
+          else -> {}
+        }
+      }
+    }
   }
 
   private fun showSnackBarFavUserLogin(title: String, fav: Watchlist, position: Int) {

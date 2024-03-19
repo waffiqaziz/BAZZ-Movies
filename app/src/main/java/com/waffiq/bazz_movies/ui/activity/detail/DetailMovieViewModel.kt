@@ -1,18 +1,28 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
+import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
+import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
 class DetailMovieViewModel(
   private val movieRepository: MoviesRepository,
 ) : ViewModel() {
+
+  private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
+  val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
   // Show Data
   fun detailMovie(id: Int) = movieRepository.getDetailMovie(id)
@@ -55,7 +65,18 @@ class DetailMovieViewModel(
   fun isWatchlistDB(id: Int, mediaType: String) = movieRepository.isWatchlistDB(id, mediaType)
   fun isWatchlistDB() = movieRepository.isWatchlist
 
-  fun insertToDB(fav: FavoriteDB) = movieRepository.insertToDB(fav)
+  fun insertToDB(fav: FavoriteDB) {
+    movieRepository.insertToDB(fav) { resultCode ->
+      val result = when (resultCode) {
+        ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
+        ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
+        SUCCESS -> LocalDatabaseResult.Success
+        else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+      }
+      _localDatabaseResult.postValue(Event(result))
+    }
+  }
+
   fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
   fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
