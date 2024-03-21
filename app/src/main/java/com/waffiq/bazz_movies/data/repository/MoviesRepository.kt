@@ -31,7 +31,6 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
-import com.waffiq.bazz_movies.utils.AppExecutors
 import com.waffiq.bazz_movies.utils.Event
 import kotlinx.coroutines.flow.Flow
 import org.json.JSONObject
@@ -42,8 +41,7 @@ import retrofit2.Response
 
 class MoviesRepository(
   private val localDataSource: LocalDataSource,
-  private val movieDataSource: MovieDataSource,
-  private val appExecutors: AppExecutors
+  private val movieDataSource: MovieDataSource
 ) {
 
   // detail
@@ -122,8 +120,6 @@ class MoviesRepository(
   private val _snackBarText = MutableLiveData<Event<String>>()
   val snackBarText: LiveData<Event<String>> get() = _snackBarText
 
-  private val _snackBarTextInt = MutableLiveData<Event<Int>>()
-  val snackBarTextInt: LiveData<Event<Int>> get() = _snackBarTextInt
 
   private val _isLoading = MutableLiveData<Boolean>()
   val isLoading: LiveData<Boolean> = _isLoading
@@ -808,108 +804,90 @@ class MoviesRepository(
 
 
   // database function
-  fun getFavoriteMoviesFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteMovies
+  val favoriteMoviesFromDB: Flow<List<FavoriteDB>> = localDataSource.getFavoriteMovies
 
-  fun getWatchlistMovieFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistMovies
+  val watchlistMovieFromDB: Flow<List<FavoriteDB>> = localDataSource.getWatchlistMovies
 
-  fun getWatchlistTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getWatchlistTv
+  val watchlistTvFromDB: Flow<List<FavoriteDB>> = localDataSource.getWatchlistTv
 
-  fun getFavoriteTvFromDB(): LiveData<List<FavoriteDB>> = localDataSource.getFavoriteTv
+  val favoriteTvFromDB: Flow<List<FavoriteDB>> = localDataSource.getFavoriteTv
 
-  fun getFavoriteDB(name: String): LiveData<List<FavoriteDB>> =
+  fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>> =
     localDataSource.getSpecificFavorite(name)
 
-  fun insertToDB(fav: FavoriteDB, callback: (Int) -> Unit) {
-    appExecutors.diskIO().execute {
-      val resultCode = localDataSource.insert(fav)
-      callback.invoke(resultCode)
-    }
+  suspend fun insertToDB(fav: FavoriteDB, callback: (Int) -> Unit) {
+    val resultCode = localDataSource.insert(fav)
+    callback.invoke(resultCode)
   }
 
-  fun deleteFromDB(fav: FavoriteDB) {
-    appExecutors.diskIO().execute {
-      if (fav.mediaType != null)
-        localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
-    }
+  suspend fun deleteFromDB(fav: FavoriteDB) {
+    if (fav.mediaType != null)
+      localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
     _undoDB.value = Event(fav)
   }
 
-  fun deleteAll(callback: (Int) -> Unit) {
-    appExecutors.diskIO().execute {
-      val resultCode = localDataSource.deleteAll()
-      callback.invoke(resultCode)
-    }
+  suspend fun deleteAll(callback: (Int) -> Unit) {
+    val resultCode = localDataSource.deleteAll()
+    callback.invoke(resultCode)
   }
 
-  fun isFavoriteDB(id: Int, mediaType: String) {
-    appExecutors.diskIO().execute {
-      _isFavorite.postValue(localDataSource.isFavorite(id, mediaType))
-    }
+  suspend fun isFavoriteDB(id: Int, mediaType: String) {
+    _isFavorite.postValue(localDataSource.isFavorite(id, mediaType))
   }
 
-  fun isWatchlistDB(id: Int, mediaType: String) {
-    appExecutors.diskIO().execute {
-      _isWatchlist.postValue(localDataSource.isWatchlist(id, mediaType))
-    }
+  suspend fun isWatchlistDB(id: Int, mediaType: String) {
+    _isWatchlist.postValue(localDataSource.isWatchlist(id, mediaType))
   }
 
-  fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
+  suspend fun updateFavoriteDB(isDelete: Boolean, fav: FavoriteDB) {
     // update set is_favorite = false, (for movie that want to delete, but already on watchlist)
     if (isDelete) {
       _undoDB.value = Event(fav)
 
       if (fav.isWatchlist != null && fav.mediaType != null) {
-        appExecutors.diskIO().execute {
-          localDataSource.update(
-            isFavorite = false,
-            isWatchlist = fav.isWatchlist,
-            id = fav.mediaId,
-            mediaType = fav.mediaType
-          )
-        }
+        localDataSource.update(
+          isFavorite = false,
+          isWatchlist = fav.isWatchlist,
+          id = fav.mediaId,
+          mediaType = fav.mediaType
+        )
       } else Log.e(TAG, "favDB: $fav")
     } else {  // update set is_favorite = true, (for movie that already on watchlist)
       _undoDB.value = Event(fav)
 
       if (fav.isWatchlist != null && fav.mediaType != null) {
-        appExecutors.diskIO().execute {
-          localDataSource.update(
-            isFavorite = true,
-            isWatchlist = fav.isWatchlist,
-            id = fav.mediaId,
-            mediaType = fav.mediaType
-          )
-        }
+        localDataSource.update(
+          isFavorite = true,
+          isWatchlist = fav.isWatchlist,
+          id = fav.mediaId,
+          mediaType = fav.mediaType
+        )
       } else Log.e(TAG, "favDB: $fav")
     }
   }
 
-  fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
+  suspend fun updateWatchlistDB(isDelete: Boolean, fav: FavoriteDB) {
     if (isDelete) { // update set is_watchlist = false
       _undoDB.value = Event(fav)
 
       if (fav.isFavorite != null && fav.mediaType != null) {
-        appExecutors.diskIO().execute {
-          localDataSource.update(
-            isFavorite = fav.isFavorite,
-            isWatchlist = false,
-            id = fav.mediaId,
-            mediaType = fav.mediaType
-          )
-        }
+        localDataSource.update(
+          isFavorite = fav.isFavorite,
+          isWatchlist = false,
+          id = fav.mediaId,
+          mediaType = fav.mediaType
+        )
       } else Log.e(TAG, "favDB: $fav")
     } else { // update set is_watchlist = true
       _undoDB.value = Event(fav)
 
       if (fav.isFavorite != null && fav.mediaType != null) {
-        appExecutors.diskIO().execute {
-          localDataSource.update(
-            isFavorite = fav.isFavorite,
-            isWatchlist = true,
-            id = fav.mediaId,
-            mediaType = fav.mediaType
-          )
-        }
+        localDataSource.update(
+          isFavorite = fav.isFavorite,
+          isWatchlist = true,
+          id = fav.mediaId,
+          mediaType = fav.mediaType
+        )
       } else Log.e(TAG, "favDB: $fav")
     }
   }
@@ -924,10 +902,9 @@ class MoviesRepository(
     fun getInstance(
       localData: LocalDataSource,
       movieDataSource: MovieDataSource,
-      appExecutors: AppExecutors
     ): MoviesRepository =
       instance ?: synchronized(this) {
-        instance ?: MoviesRepository(localData, movieDataSource, appExecutors)
+        instance ?: MoviesRepository(localData, movieDataSource)
       }
   }
 }

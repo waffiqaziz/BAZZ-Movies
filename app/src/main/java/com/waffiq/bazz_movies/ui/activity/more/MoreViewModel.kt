@@ -16,9 +16,11 @@ class MoreViewModel(private val movieRepository: MoviesRepository) : ViewModel()
   val deleteAllResult: LiveData<Event<LocalDatabaseResult>> get() = _deleteAllResult
 
   fun deleteAll() {
-    movieRepository.deleteAll { resultCode ->
-      if (resultCode == SUCCESS) _deleteAllResult.postValue(Event(LocalDatabaseResult.Success))
-      else _deleteAllResult.postValue(Event(LocalDatabaseResult.Error("Failed to delete all items")))
+    viewModelScope.launch {
+      movieRepository.deleteAll { resultCode ->
+        if (resultCode == SUCCESS) _deleteAllResult.postValue(Event(LocalDatabaseResult.Success))
+        else _deleteAllResult.postValue(Event(LocalDatabaseResult.Error("Failed to delete all items")))
+      }
     }
   }
 }

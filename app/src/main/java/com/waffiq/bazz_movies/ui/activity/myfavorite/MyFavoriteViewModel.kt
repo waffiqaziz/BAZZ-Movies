@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
@@ -14,6 +15,7 @@ import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
@@ -23,26 +25,41 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   /**
    * Function for database
    */
-  val getFavoriteTvFromDB = movieRepository.getFavoriteTvFromDB()
-  val getFavoriteMoviesFromDB = movieRepository.getFavoriteMoviesFromDB()
+  val favoriteTvFromDB =
+    movieRepository.favoriteTvFromDB.asLiveData().distinctUntilChanged()
+  val favoriteMoviesFromDB =
+    movieRepository.favoriteMoviesFromDB.asLiveData().distinctUntilChanged()
+
   fun undoDeleteDB() = movieRepository.undoDB
 
   fun insertToDB(fav: FavoriteDB) {
-    movieRepository.insertToDB(fav) { resultCode ->
-      val result = when (resultCode) {
-        LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
-        LocalDataSourceInterface.ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
-        LocalDataSourceInterface.SUCCESS -> LocalDatabaseResult.Success
-        else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+    viewModelScope.launch {
+      movieRepository.insertToDB(fav) { resultCode ->
+        val result = when (resultCode) {
+          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
+          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
+          LocalDataSourceInterface.SUCCESS -> LocalDatabaseResult.Success
+          else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+        }
+        _localDatabaseResult.postValue(Event(result))
       }
-      _localDatabaseResult.postValue(Event(result))
     }
   }
-  fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
-  fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
-  fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
-  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
-  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
+
+  fun delFromFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+
+  fun updateToFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateFavoriteDB(false, fav) }
+
+  fun updateToWatchlistDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateWatchlistDB(false, fav) }
+
+  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateWatchlistDB(true, fav) }
+
+  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateFavoriteDB(true, fav) }
 
   // fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
 

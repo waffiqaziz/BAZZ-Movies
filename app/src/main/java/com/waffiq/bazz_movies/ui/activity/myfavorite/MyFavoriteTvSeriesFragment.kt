@@ -270,7 +270,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private fun setDataGuestUser() {
     binding.rvFavTv.adapter = adapterDB
 
-    viewModel.getFavoriteTvFromDB.observe(viewLifecycleOwner) {
+    viewModel.favoriteTvFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavTv.visibility = View.VISIBLE

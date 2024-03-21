@@ -1,20 +1,20 @@
 package com.waffiq.bazz_movies.data.local.datasource
 
-import androidx.lifecycle.LiveData
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSourceInterface {
-  val getFavoriteMovies: LiveData<List<FavoriteDB>>
-  val getFavoriteTv: LiveData<List<FavoriteDB>>
-  val getWatchlistMovies: LiveData<List<FavoriteDB>>
-  val getWatchlistTv: LiveData<List<FavoriteDB>>
-  fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>>
-  fun insert(favoriteDBList: FavoriteDB): Int
-  fun deleteItemFromDB(mediaId: Int, mediaType: String): Int
-  fun deleteAll(): Int
-  fun isFavorite(id: Int, mediaType: String): Boolean
-  fun isWatchlist(id: Int, mediaType: String): Boolean
-  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
+  val getFavoriteMovies: Flow<List<FavoriteDB>>
+  val getFavoriteTv: Flow<List<FavoriteDB>>
+  val getWatchlistMovies: Flow<List<FavoriteDB>>
+  val getWatchlistTv: Flow<List<FavoriteDB>>
+  fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>>
+  suspend fun insert(favoriteDBList: FavoriteDB): Int
+  suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): Int
+  suspend fun deleteAll(): Int
+  suspend fun isFavorite(id: Int, mediaType: String): Boolean
+  suspend fun isWatchlist(id: Int, mediaType: String): Boolean
+  suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
 
   // Define error codes
   companion object {

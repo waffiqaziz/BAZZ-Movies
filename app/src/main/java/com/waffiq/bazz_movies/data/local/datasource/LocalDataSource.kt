@@ -1,14 +1,15 @@
 package com.waffiq.bazz_movies.data.local.datasource
 
 import android.database.sqlite.SQLiteConstraintException
-import androidx.lifecycle.LiveData
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
+import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) : LocalDataSourceInterface {
+class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) :
+  LocalDataSourceInterface {
 
   override val getFavoriteMovies = favoriteDao.getFavoriteMovies()
 
@@ -18,10 +19,10 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   override val getWatchlistTv = favoriteDao.getWatchlistTv()
 
-  override fun getSpecificFavorite(name: String): LiveData<List<FavoriteDB>> =
+  override fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>> =
     favoriteDao.getSearchFavorite(name)
 
-  override fun insert(favoriteDBList: FavoriteDB): Int {
+  override suspend fun insert(favoriteDBList: FavoriteDB): Int {
     return try {
       favoriteDao.insert(favoriteDBList)
       SUCCESS
@@ -32,10 +33,10 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     }
   }
 
-  override fun deleteItemFromDB(mediaId : Int, mediaType: String) =
+  override suspend fun deleteItemFromDB(mediaId: Int, mediaType: String) =
     favoriteDao.deleteItem(mediaId, mediaType)
 
-  override fun deleteAll(): Int {
+  override suspend fun deleteAll(): Int {
     return try {
       favoriteDao.deleteALl()
       SUCCESS
@@ -44,11 +45,11 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     }
   }
 
-  override fun isFavorite(id: Int, mediaType: String) = favoriteDao.isFavorite(id, mediaType)
+  override suspend fun isFavorite(id: Int, mediaType: String) = favoriteDao.isFavorite(id, mediaType)
 
-  override fun isWatchlist(id: Int, mediaType: String) = favoriteDao.isWatchlist(id, mediaType)
+  override suspend fun isWatchlist(id: Int, mediaType: String) = favoriteDao.isWatchlist(id, mediaType)
 
-  override fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String) =
+  override suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String) =
     favoriteDao.update(isFavorite, isWatchlist, id, mediaType)
 
   companion object {

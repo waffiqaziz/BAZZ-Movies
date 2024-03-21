@@ -428,7 +428,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
     )
 
-    viewModelFav.getFavoriteMoviesFromDB.observe(viewLifecycleOwner) {
+    viewModelFav.favoriteMoviesFromDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavMovies.visibility = View.VISIBLE

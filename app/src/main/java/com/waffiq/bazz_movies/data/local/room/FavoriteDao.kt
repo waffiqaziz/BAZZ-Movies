@@ -1,46 +1,46 @@
 package com.waffiq.bazz_movies.data.local.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
 
   @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'tv'")
-  fun getFavoriteTv(): LiveData<List<FavoriteDB>>
+  fun getFavoriteTv(): Flow<List<FavoriteDB>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'movie'")
-  fun getFavoriteMovies(): LiveData<List<FavoriteDB>>
+  fun getFavoriteMovies(): Flow<List<FavoriteDB>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'movie'")
-  fun getWatchlistMovies(): LiveData<List<FavoriteDB>>
+  fun getWatchlistMovies(): Flow<List<FavoriteDB>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
-  fun getWatchlistTv(): LiveData<List<FavoriteDB>>
+  fun getWatchlistTv(): Flow<List<FavoriteDB>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE title LIKE '%' || :name || '%'")
-  fun getSearchFavorite(name: String): LiveData<List<FavoriteDB>>
+  fun getSearchFavorite(name: String): Flow<List<FavoriteDB>>
 
   @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE mediaId = :id and is_favorited = 1 and mediaType = :mediaType)")
-  fun isFavorite(id: Int, mediaType: String): Boolean
+  suspend fun isFavorite(id: Int, mediaType: String): Boolean
 
   @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE mediaId = :id and is_watchlist = 1 and mediaType = :mediaType)")
-  fun isWatchlist(id: Int, mediaType: String): Boolean
+  suspend fun isWatchlist(id: Int, mediaType: String): Boolean
 
   @Query("DELETE FROM $TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
-  fun deleteItem(mediaId : Int, mediaType: String) : Int // delete from table
+  suspend fun deleteItem(mediaId : Int, mediaType: String) : Int // delete from table
 
   @Query("DELETE FROM $TABLE_NAME")
-  fun deleteALl() : Int
+  suspend fun deleteALl() : Int
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
-  fun insert(favoriteDB: FavoriteDB)
+  suspend fun insert(favoriteDB: FavoriteDB)
 
   @Query("UPDATE $TABLE_NAME SET is_favorited = :isFavorite, is_watchlist = :isWatchlist WHERE mediaType = :mediaType and mediaId = :id")
-  fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
+  suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
 }

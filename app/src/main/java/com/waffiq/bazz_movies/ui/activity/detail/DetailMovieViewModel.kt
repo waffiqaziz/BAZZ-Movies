@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
   private val movieRepository: MoviesRepository,
@@ -61,27 +62,42 @@ class DetailMovieViewModel(
 
   // Local DB Function
   fun isFavoriteDB() = movieRepository.isFavorite
-  fun isFavoriteDB(id: Int, mediaType: String) = movieRepository.isFavoriteDB(id, mediaType)
-  fun isWatchlistDB(id: Int, mediaType: String) = movieRepository.isWatchlistDB(id, mediaType)
+  fun isFavoriteDB(id: Int, mediaType: String) =
+    viewModelScope.launch { movieRepository.isFavoriteDB(id, mediaType) }
+
   fun isWatchlistDB() = movieRepository.isWatchlist
+  fun isWatchlistDB(id: Int, mediaType: String) =
+    viewModelScope.launch { movieRepository.isWatchlistDB(id, mediaType) }
 
   fun insertToDB(fav: FavoriteDB) {
-    movieRepository.insertToDB(fav) { resultCode ->
-      val result = when (resultCode) {
-        ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
-        ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
-        SUCCESS -> LocalDatabaseResult.Success
-        else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+    viewModelScope.launch {
+      movieRepository.insertToDB(fav) { resultCode ->
+        val result = when (resultCode) {
+          ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
+          ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
+          SUCCESS -> LocalDatabaseResult.Success
+          else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+        }
+        _localDatabaseResult.postValue(Event(result))
       }
-      _localDatabaseResult.postValue(Event(result))
     }
   }
 
-  fun updateToFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(false, fav)
-  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) = movieRepository.updateFavoriteDB(true, fav)
-  fun updateToWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(false, fav)
-  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) = movieRepository.updateWatchlistDB(true, fav)
-  fun delFromFavoriteDB(fav: FavoriteDB) = movieRepository.deleteFromDB(fav)
+  fun updateToFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateFavoriteDB(false, fav) }
+
+  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateFavoriteDB(true, fav) }
+
+  fun updateToWatchlistDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateWatchlistDB(false, fav) }
+
+  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.updateWatchlistDB(true, fav) }
+
+  fun delFromFavoriteDB(fav: FavoriteDB) =
+    viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+
 
   // favorite & watchlist TMDB
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =

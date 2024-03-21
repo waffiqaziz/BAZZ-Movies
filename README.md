@@ -5,7 +5,6 @@ Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate y
 
 ## Table of Contents (Optional)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Credits](#credits)
 - [Features](#features)
 
