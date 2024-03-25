@@ -372,7 +372,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/summary"
+          android:text="@string/overview"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/divider_score" />
 

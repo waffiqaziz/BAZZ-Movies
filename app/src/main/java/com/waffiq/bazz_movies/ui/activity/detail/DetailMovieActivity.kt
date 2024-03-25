@@ -33,29 +33,31 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.color.gray_100
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark
-import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
+import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
+import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_hearth
-import com.waffiq.bazz_movies.R.string.not_available
-import com.waffiq.bazz_movies.R.string.yt_not_installed
-import com.waffiq.bazz_movies.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
+import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.id.btn_no
+import com.waffiq.bazz_movies.R.id.btn_yes
+import com.waffiq.bazz_movies.R.id.rating_bar_action
+import com.waffiq.bazz_movies.R.layout.dialog_rating
 import com.waffiq.bazz_movies.R.string.added_to_favorite
+import com.waffiq.bazz_movies.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
+import com.waffiq.bazz_movies.R.string.no_overview
+import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.R.string.not_available_full
-import com.waffiq.bazz_movies.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.R.string.status_
-import com.waffiq.bazz_movies.R.id.rating_bar_action
-import com.waffiq.bazz_movies.R.id.btn_yes
-import com.waffiq.bazz_movies.R.id.btn_no
-import com.waffiq.bazz_movies.R.layout.dialog_rating
-import com.waffiq.bazz_movies.R.color.red_matte
-import com.waffiq.bazz_movies.R.font.gothic
-import com.waffiq.bazz_movies.R.color.gray_100
+import com.waffiq.bazz_movies.R.string.unknown_error
+import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.Rate
 import com.waffiq.bazz_movies.data.local.model.Watchlist
@@ -72,18 +74,18 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
+import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistFalse
+import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistTrue
+import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistFalse
+import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
-import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistFalse
-import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistTrue
-import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.RemoteResponse
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -103,8 +105,11 @@ class DetailMovieActivity : AppCompatActivity() {
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    showLoading(true)
+
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
+    detailViewModel.loadingState.observe(this) { showLoading(it) }
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     authViewModel = ViewModelProvider(this, factory2)[AuthenticationViewModel::class.java]
@@ -114,7 +119,6 @@ class DetailMovieActivity : AppCompatActivity() {
     showDetailData()
     btnListener()
   }
-
 
   private fun checkUser() {
     authViewModel.getUser().observe(this) {
@@ -170,7 +174,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
-    detailViewModel.getLoading().observe(this) { showLoading(it) }
+    // detailViewModel.getLoading().observe(this) { showLoading(it) }
     detailViewModel.getSnackBarText().observe(this) { showSnackBarWarning(it) }
 
     // shows backdrop
@@ -190,16 +194,18 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.apply {
       dataExtra.apply {
         val year = dateFormatter((firstAirDate ?: releaseDate ?: "")) ?: ""
-        if (year.isEmpty()) tvYearReleased.text = getString(not_available)
-        else tvYearReleased.text = year
+        tvYearReleased.text = year.ifEmpty { getString(not_available) }
 
         tvMediaType.text = mediaType?.uppercase()
-        tvOverview.text = overview
+        if (overview != null) {
+          if (overview.isEmpty() || overview.isBlank()) tvOverview.text = getString(no_overview)
+          else tvOverview.text = overview
+        } else tvOverview.text = getString(no_overview)
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
       }
     }
 
-    // show tmdb scor e
+    // show tmdb score
     binding.tvScoreTmdb.text = if (dataExtra.voteAverage == 0.0F) getString(not_available)
     else dataExtra.voteAverage.toString()
 
@@ -234,32 +240,38 @@ class DetailMovieActivity : AppCompatActivity() {
     //show more detail data based media type
     if (dataExtra.mediaType == "movie") {
 
-      // shows directors
-      dataExtra.id?.let { detailViewModel.getAllCreditMovies(it) }
-      detailViewModel.getCreditDirectorMovies().observe(this) { crew ->
-        createTable(detailCrew(crew))
-      }
+      // shows crew and cast
+      dataExtra.id?.let { detailViewModel.getMovieCredits(it) }
+      detailViewModel.movieTvCreditsResult.observe(this) { response ->
+        when (response) {
+          is RemoteResponse.Success -> {
+            createTable(detailCrew(response.data.crew))
+            adapterCast.setCast(response.data.cast)
+            if (adapterCast.itemCount <= 0) {
+              binding.rvCast.isVisible = false
+              binding.tvCastHeader.isVisible = false
+            } else {
+              binding.rvCast.isVisible = true
+              binding.tvCastHeader.isVisible = true
+            }
+          }
 
-      // show or hide cast
-      detailViewModel.getCreditsCastMovies().observe(this) {
-        adapterCast.setCast(it)
-        if (adapterCast.itemCount <= 0) {
-          binding.rvCast.isVisible = false
-          binding.tvCastHeader.isVisible = false
-        } else {
-          binding.rvCast.isVisible = true
-          binding.tvCastHeader.isVisible = true
+          is RemoteResponse.Error ->
+            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+
+          is RemoteResponse.Loading -> showLoading(true)
+          else -> showSnackBarWarning(Event(getString(unknown_error)))
         }
       }
 
       // show score, genres, backdrop, trailer
       dataExtra.id?.let { detailViewModel.detailMovie(it) }
-      detailViewModel.detailMovie().observe(this) { movie ->
+      detailViewModel.detailMovie.observe(this) { movie ->
 
         // show genre
         val temp = movie.genres?.map { it?.name }
-        val tempID =  movie.genres?.map { it?.id ?: 0 }
-        if(tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
+        val tempID = movie.genres?.map { it?.id ?: 0 }
+        if (tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
@@ -267,15 +279,35 @@ class DetailMovieActivity : AppCompatActivity() {
 
         // show OMDb detail (score)
         movie.imdbId?.let { imdbId -> detailViewModel.getScoreOMDb(imdbId) }
-        detailViewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
+        detailViewModel.omdbResult.observe(this) { response ->
+          when (response) {
+            is RemoteResponse.Success -> showDetailOMDb(response.data)
+            is RemoteResponse.Error ->
+              showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+
+            is RemoteResponse.Loading -> showLoading(true)
+            else -> showSnackBarWarning(Event(getString(unknown_error)))
+          }
+        }
 
         // trailer
         movie.id?.let { detailViewModel.getLinkMovie(it) }
-        detailViewModel.getLinkMovie().observe(this) {
-          if (it.isNullOrEmpty()) hideTrailer(true)
-          else {
-            hideTrailer(false)
-            btnTrailer(it)
+        detailViewModel.linkVideo.observe(this) { response ->
+          when (response) {
+            is RemoteResponse.Success -> {
+              if (response.data.isEmpty()) hideTrailer(true)
+              else {
+                hideTrailer(false)
+                btnTrailer(response.data)
+              }
+            }
+
+            is RemoteResponse.Error ->
+              showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+
+            is RemoteResponse.Loading -> showLoading(true)
+            is RemoteResponse.Empty -> hideTrailer(true)
+            else -> showSnackBarWarning(Event(getString(unknown_error)))
           }
         }
 
@@ -287,7 +319,7 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         // age rate
-        detailViewModel.ageRatingMovie().observe(this) {
+        detailViewModel.ageRating.observe(this) {
           binding.tvAgeRating.text =
             if (it.isNotEmpty() && it.isNotBlank()) it else getString(not_available)
         }
@@ -296,43 +328,109 @@ class DetailMovieActivity : AppCompatActivity() {
 
     } else if (dataExtra.mediaType == "tv") {
 
-      // show directors
-      dataExtra.id?.let { detailViewModel.getAllCreditTv(it) }
-      detailViewModel.getCreditDirectorTv().observe(this) { createTable(detailCrew(it)) }
+      // show crew & cast
+      dataExtra.id?.let { detailViewModel.getTvCredits(it) }
+      detailViewModel.movieTvCreditsResult.observe(this) { response ->
+        when (response) {
+          is RemoteResponse.Success -> {
+            createTable(detailCrew(response.data.crew))
+            adapterCast.setCast(response.data.cast)
+            if (adapterCast.itemCount <= 0) {
+              binding.rvCast.isVisible = false
+              binding.tvCastHeader.isVisible = false
+            } else {
+              binding.rvCast.isVisible = true
+              binding.tvCastHeader.isVisible = true
+            }
+          }
 
-      // show or hide cast
-      detailViewModel.getCreditsCastTv().observe(this) {
-        adapterCast.setCast(it)
-        if (adapterCast.itemCount <= 0) {
-          binding.rvCast.isVisible = false
-          binding.tvCastHeader.isVisible = false
-        } else {
-          binding.rvCast.isVisible = true
-          binding.tvCastHeader.isVisible = true
+          is RemoteResponse.Error ->
+            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+
+          is RemoteResponse.Loading -> showLoading(true)
+          else -> showSnackBarWarning(Event(getString(unknown_error)))
         }
       }
 
       // show score
       dataExtra.id?.let { detailViewModel.externalId(it) }
-      detailViewModel.externalId().observe(this) { externalId ->
+      detailViewModel.externalTvId.observe(this) { response ->
+        when (response) {
+          is RemoteResponse.Success -> {
+            if (response.data.imdbId != null) {
+              detailViewModel.getScoreOMDb(response.data.imdbId)
+              detailViewModel.omdbResult.observe(this) { responseOMDb ->
+                when (responseOMDb) {
+                  is RemoteResponse.Success -> showDetailOMDb(responseOMDb.data)
+                  is RemoteResponse.Error ->
+                    showSnackBarWarning(
+                      Event(
+                        responseOMDb.exception.message ?: getString(unknown_error)
+                      )
+                    )
 
-        if (externalId.imdbId.isNullOrEmpty()) {
-          binding.tvScoreImdb.text = getString(not_available)
-          binding.tvScoreMetascore.text = getString(not_available)
-        } else {
-          detailViewModel.getScoreOMDb(externalId.imdbId)
-          detailViewModel.detailOMDb().observe(this) { showDetailOMDb(it) }
+                  is RemoteResponse.Loading -> showLoading(true)
+                  else -> showSnackBarWarning(Event(getString(unknown_error)))
+                }
+              }
 
-          //trailer
-          dataExtra.id?.let { detailViewModel.getLinkTv(it) }
-          detailViewModel.getLinkTv().observe(this) {
-            if (it.isNullOrEmpty()) hideTrailer(true)
-            else {
-              hideTrailer(false)
-              btnTrailer(it)
+
+              detailViewModel.getScoreOMDb(response.data.imdbId)
+              detailViewModel.omdbResult.observe(this) { responseScore ->
+                when (responseScore) {
+                  is RemoteResponse.Success -> showDetailOMDb(responseScore.data)
+                  is RemoteResponse.Error ->
+                    showSnackBarWarning(
+                      Event(
+                        responseScore.exception.message ?: getString(
+                          unknown_error
+                        )
+                      )
+                    )
+
+                  is RemoteResponse.Loading -> showLoading(true)
+                  else -> showSnackBarWarning(Event(getString(unknown_error)))
+                }
+              }
             }
           }
+
+          is RemoteResponse.Error -> {
+            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+            binding.tvScoreImdb.text = getString(not_available)
+            binding.tvScoreMetascore.text = getString(not_available)
+          }
+
+          is RemoteResponse.Loading -> showLoading(true)
+          is RemoteResponse.Empty -> {
+            binding.tvScoreImdb.text = getString(not_available)
+            binding.tvScoreMetascore.text = getString(not_available)
+          }
+
+          else -> showSnackBarWarning(Event(getString(unknown_error)))
         }
+
+        // trailer
+        dataExtra.id?.let { detailViewModel.getLinkTv(it) }
+        detailViewModel.linkVideo.observe(this) { responseLink ->
+          when (responseLink) {
+            is RemoteResponse.Success -> {
+              if (responseLink.data.isEmpty()) hideTrailer(true)
+              else {
+                hideTrailer(false)
+                btnTrailer(responseLink.data)
+              }
+            }
+
+            is RemoteResponse.Empty -> hideTrailer(true)
+            is RemoteResponse.Loading -> showLoading(true)
+            is RemoteResponse.Error ->
+              showSnackBarWarning(Event(responseLink.exception.message ?: getString(unknown_error)))
+
+            else -> showSnackBarWarning(Event(getString(unknown_error)))
+          }
+        }
+
       }
 
       // recommendation tv
@@ -342,26 +440,26 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      //show genres & age rate
+      // show genres & age rate
       dataExtra.id?.let { detailViewModel.detailTv(it) }
-      detailViewModel.detailTv().observe(this) { tv ->
+      detailViewModel.detailTv.observe(this) { tv ->
         val temp = tv.genres?.map { it?.name }
-        val tempID =  tv.genres?.map { it?.id ?: 0 }
-        if(tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
+        val tempID = tv.genres?.map { it?.id ?: 0 }
+        if (tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
         binding.tvDuration.text = getString(status_, tv.status)
 
-
-        detailViewModel.ageRatingTv().observe(this) {
-          binding.tvAgeRating.text = it ?: getString(not_available)
+        detailViewModel.ageRating.observe(this) {
+          binding.tvAgeRating.text =
+            if (it.isNotEmpty() && it.isNotBlank()) it else getString(not_available)
         }
       }
     }
 
     // show production country
-    detailViewModel.getProductionCountry().observe(this) {
+    detailViewModel.productionCountry.observe(this) {
       binding.tvYearReleased.append(" ($it)")
     }
   }
@@ -475,7 +573,7 @@ class DetailMovieActivity : AppCompatActivity() {
     detailViewModel.localDatabaseResult.observe(this) {
       it.getContentIfNotHandled()?.let { result ->
         when (result) {
-          is LocalDatabaseResult.Error -> Helper.showToastShort(this, result.message)
+          is LocalDatabaseResult.Error -> showToastShort(this, result.message)
           else -> {}
         }
       }
@@ -720,7 +818,6 @@ class DetailMovieActivity : AppCompatActivity() {
     textView.setTextColor(ActivityCompat.getColor(this, gray_100))
     return textView
   }
-
 
   companion object {
     const val EXTRA_MOVIE = "MOVIE"

@@ -20,12 +20,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.R.string.clear_query
-import com.waffiq.bazz_movies.R.menu.search_menu
-import com.waffiq.bazz_movies.R.id.action_search
-import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.drawable.ic_cross
+import com.waffiq.bazz_movies.R.drawable.ic_search
+import com.waffiq.bazz_movies.R.id.action_search
+import com.waffiq.bazz_movies.R.menu.search_menu
+import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter

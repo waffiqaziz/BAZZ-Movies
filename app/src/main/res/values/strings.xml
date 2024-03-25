@@ -14,6 +14,7 @@
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>
   <string name="no_connection">No internet connection</string>
+  <string name="unknown_error">Unknown error</string>
 
   <string name="login_as_guest_successful">Login as Guest Successful</string>
   <string name="login_successful">Login Successful</string>
@@ -91,7 +92,8 @@
   <!-- DETAIL MOVIE/TV -->
   <string name="yt_not_installed">Youtube App Not Installed</string>
   <string name="_divider">|</string>
-  <string name="summary">Summary</string>
+  <string name="overview">Overview</string>
+  <string name="no_overview">Theres no overview translated in English</string>
   <string name="watch_trailer">Watch Trailer</string>
   <string name="cast">Cast</string>
   <string name="as">as</string>

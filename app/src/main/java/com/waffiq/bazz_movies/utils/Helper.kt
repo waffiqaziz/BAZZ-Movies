@@ -224,7 +224,7 @@ object Helper {
       it.job == "Story"
     }.map { it.name }.toString().dropLast(1).substring(1)
 
-    val writing = crew.map { it }.filter {
+    val writer = crew.map { it }.filter {
       it.job == "Writer"
     }.map { it.name }.toString().dropLast(1).substring(1)
 
@@ -264,9 +264,9 @@ object Helper {
       job.add("Characters")
       name.add(characters)
     }
-    if (writing.isNotEmpty()) {
-      job.add("Writing")
-      name.add(writing)
+    if (writer.isNotEmpty()) {
+      job.add("Writer")
+      name.add(writer)
     }
     if (author.isNotEmpty()) {
       job.add("Author")

@@ -1,8 +1,15 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.utils.RemoteResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MovieDataSourceInterface {
@@ -25,4 +32,13 @@ interface MovieDataSourceInterface {
   fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>
   fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>>
+
+  suspend fun getDetailOMDb(imdbId: String) : RemoteResponse<OMDbDetailsResponse>
+  suspend fun getCreditMovies(movieId: Int): RemoteResponse<MovieTvCreditsResponse>
+  suspend fun getCreditTv(tvId: Int): RemoteResponse<MovieTvCreditsResponse>
+  suspend fun getVideoMovies(movieId: Int): RemoteResponse<VideoResponse>
+  suspend fun getVideoTv(tvId: Int): Flow<RemoteResponse<VideoResponse>>
+  suspend fun getDetailMovie(id: Int): Flow<RemoteResponse<DetailMovieResponse>>
+  suspend fun getDetailTv(id: Int): Flow<RemoteResponse<DetailTvResponse>>
+  suspend fun getExternalTvId(id: Int): Flow<RemoteResponse<ExternalIdResponse>>
 }

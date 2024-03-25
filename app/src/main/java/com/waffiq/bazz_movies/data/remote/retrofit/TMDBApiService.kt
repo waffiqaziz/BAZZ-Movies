@@ -22,6 +22,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -165,39 +166,39 @@ interface TMDBApiService {
   ): MultiSearchResponse
 
   @GET("3/movie/{movieId}/credits?api_key=$API_KEY&language=en-US")
-  fun getCreditMovies(
+  suspend fun getCreditMovies(
     @Path("movieId") movieId: Int
-  ): Call<MovieTvCreditsResponse>
+  ): Response<MovieTvCreditsResponse>
 
   @GET("3/tv/{tvId}/credits?api_key=$API_KEY&language=en-US")
-  fun getCreditTv(
+  suspend fun getCreditTv(
     @Path("tvId") tvId: Int
-  ): Call<MovieTvCreditsResponse>
+  ): Response<MovieTvCreditsResponse>
 
   @GET("3/movie/{movieId}?api_key=$API_KEY&language=en-US&append_to_response=release_dates")
-  fun getDetailMovie(
+  suspend fun getDetailMovie(
     @Path("movieId") movieId: Int
-  ): Call<DetailMovieResponse>
+  ): Response<DetailMovieResponse>
 
   @GET("3/tv/{tvId}?api_key=$API_KEY&language=en-US&append_to_response=content_ratings")
-  fun getDetailTv(
+  suspend fun getDetailTv(
     @Path("tvId") tvId: Int
-  ): Call<DetailTvResponse>
+  ): Response<DetailTvResponse>
 
   @GET("3/movie/{id}/videos?api_key=$API_KEY&language=en-US")
-  fun getVideoMovies(
+  suspend fun getVideoMovies(
     @Path("id") id: Int
-  ): Call<VideoResponse>
+  ): Response<VideoResponse>
 
   @GET("3/tv/{id}/videos?api_key=$API_KEY&language=en-US")
-  fun getVideoTv(
+  suspend fun getVideoTv(
     @Path("id") id: Int
-  ): Call<VideoResponse>
+  ): Response<VideoResponse>
 
   @GET("3/tv/{tvId}/external_ids?api_key=$API_KEY&language=en-US")
-  fun getExternalId(
+  suspend fun getExternalId(
     @Path("tvId") tvId: Int
-  ): Call<ExternalIdResponse>
+  ): Response<ExternalIdResponse>
 
   @GET("3/person/{personId}?api_key=$API_KEY&language=en-US")
   fun getDetailPerson(

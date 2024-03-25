@@ -20,12 +20,26 @@ import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
 import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
+import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
+import com.waffiq.bazz_movies.utils.RemoteResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-class MovieDataSource private constructor(private val tmdbApiService: TMDBApiService) :
+class RemoteDataSource private constructor(
+  private val tmdbApiService: TMDBApiService,
+  private val omDbApiService: OMDbApiService
+) :
   MovieDataSourceInterface {
 
   override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
@@ -147,15 +161,116 @@ class MovieDataSource private constructor(private val tmdbApiService: TMDBApiSer
     ).flow
   }
 
+  override suspend fun getCreditMovies(movieId: Int): RemoteResponse<MovieTvCreditsResponse> {
+    return try {
+      RemoteResponse.Loading
+      val response = tmdbApiService.getCreditMovies(movieId)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) RemoteResponse.Success(responseBody)
+        else RemoteResponse.Error(Exception("Empty response body"))
+      } else RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}"))
+    } catch (e: Exception) {
+      RemoteResponse.Error(e)
+    }
+  }
+
+  override suspend fun getCreditTv(tvId: Int): RemoteResponse<MovieTvCreditsResponse> {
+    return try {
+      RemoteResponse.Loading
+      val response = tmdbApiService.getCreditTv(tvId)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) RemoteResponse.Success(responseBody)
+        else RemoteResponse.Error(Exception("Empty response body"))
+      } else RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}"))
+    } catch (e: Exception) {
+      RemoteResponse.Error(e)
+    }
+  }
+
+  override suspend fun getDetailOMDb(imdbId: String): RemoteResponse<OMDbDetailsResponse> {
+    return try {
+      RemoteResponse.Loading
+      val response = omDbApiService.getMovieDetailOMDb(imdbId)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) RemoteResponse.Success(responseBody)
+        else RemoteResponse.Error(Exception("Empty response body"))
+      } else RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}"))
+    } catch (e: Exception) {
+      RemoteResponse.Error(e)
+    }
+  }
+
+  override suspend fun getVideoMovies(movieId: Int): RemoteResponse<VideoResponse> {
+    return try {
+      RemoteResponse.Loading
+      val response = tmdbApiService.getVideoMovies(movieId)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) RemoteResponse.Success(responseBody)
+        else RemoteResponse.Error(Exception("Empty response body"))
+      } else RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}"))
+    } catch (e: Exception) {
+      RemoteResponse.Error(e)
+    }
+  }
+
+  override suspend fun getVideoTv(tvId: Int): Flow<RemoteResponse<VideoResponse>> = flow {
+    emit(RemoteResponse.Loading)
+    val response = tmdbApiService.getVideoTv(tvId)
+    if (response.isSuccessful) {
+      val responseBody = response.body()
+      if (responseBody != null) emit(RemoteResponse.Success(responseBody))
+      else emit(RemoteResponse.Error(Exception("Empty response body")))
+    } else emit(RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}")))
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getDetailMovie(id: Int): Flow<RemoteResponse<DetailMovieResponse>> = flow {
+    emit(RemoteResponse.Loading)
+    val response = tmdbApiService.getDetailMovie(id)
+    if (response.isSuccessful) {
+      val responseBody = response.body()
+      if (responseBody != null) emit(RemoteResponse.Success(responseBody))
+      else emit(RemoteResponse.Error(Exception("Empty response body")))
+    } else emit(RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}")))
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getDetailTv(id: Int): Flow<RemoteResponse<DetailTvResponse>> = flow {
+    emit(RemoteResponse.Loading)
+    val response = tmdbApiService.getDetailTv(id)
+    if (response.isSuccessful) {
+      val responseBody = response.body()
+      if (responseBody != null) emit(RemoteResponse.Success(responseBody))
+      else emit(RemoteResponse.Error(Exception("Empty response body")))
+    } else emit(RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}")))
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getExternalTvId(id: Int): Flow<RemoteResponse<ExternalIdResponse>> = flow {
+    emit(RemoteResponse.Loading)
+    val response = tmdbApiService.getExternalId(id)
+    if (response.isSuccessful) {
+      val responseBody = response.body()
+      if (responseBody != null) emit(RemoteResponse.Success(responseBody))
+      else emit(RemoteResponse.Error(Exception("Empty response body")))
+    } else emit(RemoteResponse.Error(Exception("Unsuccessful response: ${response.code()}")))
+  }.flowOn(Dispatchers.IO)
+
   companion object {
-    const val TAG = "MovieDataSource"
+    const val TAG = "RemoteDataSource"
 
     @Volatile
-    private var instance: MovieDataSource? = null
+    private var instance: RemoteDataSource? = null
 
-    fun getInstance(service: TMDBApiService): MovieDataSource =
+    fun getInstance(
+      tmdbApiService: TMDBApiService,
+      omDbApiService: OMDbApiService
+    ): RemoteDataSource =
       instance ?: synchronized(this) {
-        instance ?: MovieDataSource(service)
+        instance ?: RemoteDataSource(
+          tmdbApiService, omDbApiService
+        )
       }
   }
 }
