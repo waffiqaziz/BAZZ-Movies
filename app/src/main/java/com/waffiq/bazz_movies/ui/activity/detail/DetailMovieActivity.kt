@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -85,7 +86,7 @@ import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
-import com.waffiq.bazz_movies.utils.RemoteResponse
+import com.waffiq.bazz_movies.utils.Status
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -242,25 +243,15 @@ class DetailMovieActivity : AppCompatActivity() {
 
       // shows crew and cast
       dataExtra.id?.let { detailViewModel.getMovieCredits(it) }
-      detailViewModel.movieTvCreditsResult.observe(this) { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
-            createTable(detailCrew(response.data.crew))
-            adapterCast.setCast(response.data.cast)
-            if (adapterCast.itemCount <= 0) {
-              binding.rvCast.isVisible = false
-              binding.tvCastHeader.isVisible = false
-            } else {
-              binding.rvCast.isVisible = true
-              binding.tvCastHeader.isVisible = true
-            }
-          }
-
-          is RemoteResponse.Error ->
-            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
-
-          is RemoteResponse.Loading -> showLoading(true)
-          else -> showSnackBarWarning(Event(getString(unknown_error)))
+      detailViewModel.movieTvCreditsResult.observe(this) {
+        createTable(detailCrew(it.crew))
+        adapterCast.setCast(it.cast)
+        if (adapterCast.itemCount <= 0) {
+          binding.rvCast.isVisible = false
+          binding.tvCastHeader.isVisible = false
+        } else {
+          binding.rvCast.isVisible = true
+          binding.tvCastHeader.isVisible = true
         }
       }
 
@@ -278,36 +269,22 @@ class DetailMovieActivity : AppCompatActivity() {
         binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
 
         // show OMDb detail (score)
-        movie.imdbId?.let { imdbId -> detailViewModel.getScoreOMDb(imdbId) }
-        detailViewModel.omdbResult.observe(this) { response ->
-          when (response) {
-            is RemoteResponse.Success -> showDetailOMDb(response.data)
-            is RemoteResponse.Error ->
-              showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
-
-            is RemoteResponse.Loading -> showLoading(true)
-            else -> showSnackBarWarning(Event(getString(unknown_error)))
+        if(movie.imdbId != null) {
+          detailViewModel.getScoreOMDb(movie.imdbId)
+          detailViewModel.omdbResult.observe(this) {
+            showDetailOMDb(it)
           }
         }
+        else showLoading(false)
 
         // trailer
         movie.id?.let { detailViewModel.getLinkMovie(it) }
-        detailViewModel.linkVideo.observe(this) { response ->
-          when (response) {
-            is RemoteResponse.Success -> {
-              if (response.data.isEmpty()) hideTrailer(true)
-              else {
-                hideTrailer(false)
-                btnTrailer(response.data)
-              }
-            }
-
-            is RemoteResponse.Error ->
-              showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
-
-            is RemoteResponse.Loading -> showLoading(true)
-            is RemoteResponse.Empty -> hideTrailer(true)
-            else -> showSnackBarWarning(Event(getString(unknown_error)))
+        detailViewModel.linkVideo.observe(this) {
+          if (it.isEmpty() || it.isBlank()) {
+            hideTrailer(true)
+          } else {
+            hideTrailer(false)
+            btnTrailer(it)
           }
         }
 
@@ -330,104 +307,48 @@ class DetailMovieActivity : AppCompatActivity() {
 
       // show crew & cast
       dataExtra.id?.let { detailViewModel.getTvCredits(it) }
-      detailViewModel.movieTvCreditsResult.observe(this) { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
-            createTable(detailCrew(response.data.crew))
-            adapterCast.setCast(response.data.cast)
-            if (adapterCast.itemCount <= 0) {
-              binding.rvCast.isVisible = false
-              binding.tvCastHeader.isVisible = false
-            } else {
-              binding.rvCast.isVisible = true
-              binding.tvCastHeader.isVisible = true
-            }
-          }
-
-          is RemoteResponse.Error ->
-            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
-
-          is RemoteResponse.Loading -> showLoading(true)
-          else -> showSnackBarWarning(Event(getString(unknown_error)))
+      detailViewModel.movieTvCreditsResult.observe(this) {
+        createTable(detailCrew(it.crew))
+        adapterCast.setCast(it.cast)
+        if (adapterCast.itemCount <= 0) {
+          binding.rvCast.isVisible = false
+          binding.tvCastHeader.isVisible = false
+        } else {
+          binding.rvCast.isVisible = true
+          binding.tvCastHeader.isVisible = true
         }
       }
 
       // show score
       dataExtra.id?.let { detailViewModel.externalId(it) }
       detailViewModel.externalTvId.observe(this) { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
-            if (response.data.imdbId != null) {
+        when (response.status) {
+          Status.SUCCESS -> {
+            if (response.data?.imdbId != null) {
               detailViewModel.getScoreOMDb(response.data.imdbId)
-              detailViewModel.omdbResult.observe(this) { responseOMDb ->
-                when (responseOMDb) {
-                  is RemoteResponse.Success -> showDetailOMDb(responseOMDb.data)
-                  is RemoteResponse.Error ->
-                    showSnackBarWarning(
-                      Event(
-                        responseOMDb.exception.message ?: getString(unknown_error)
-                      )
-                    )
-
-                  is RemoteResponse.Loading -> showLoading(true)
-                  else -> showSnackBarWarning(Event(getString(unknown_error)))
-                }
+              detailViewModel.omdbResult.observe(this) {
+                showDetailOMDb(it)
               }
-
-
-              detailViewModel.getScoreOMDb(response.data.imdbId)
-              detailViewModel.omdbResult.observe(this) { responseScore ->
-                when (responseScore) {
-                  is RemoteResponse.Success -> showDetailOMDb(responseScore.data)
-                  is RemoteResponse.Error ->
-                    showSnackBarWarning(
-                      Event(
-                        responseScore.exception.message ?: getString(
-                          unknown_error
-                        )
-                      )
-                    )
-
-                  is RemoteResponse.Loading -> showLoading(true)
-                  else -> showSnackBarWarning(Event(getString(unknown_error)))
-                }
-              }
-            }
+            } else showLoading(false)
           }
 
-          is RemoteResponse.Error -> {
-            showSnackBarWarning(Event(response.exception.message ?: getString(unknown_error)))
+          Status.ERROR -> {
+            showSnackBarWarning(Event(response.message ?: getString(unknown_error)))
             binding.tvScoreImdb.text = getString(not_available)
             binding.tvScoreMetascore.text = getString(not_available)
           }
 
-          is RemoteResponse.Loading -> showLoading(true)
-          is RemoteResponse.Empty -> {
-            binding.tvScoreImdb.text = getString(not_available)
-            binding.tvScoreMetascore.text = getString(not_available)
-          }
-
-          else -> showSnackBarWarning(Event(getString(unknown_error)))
+          Status.LOADING -> {}
         }
 
         // trailer
         dataExtra.id?.let { detailViewModel.getLinkTv(it) }
-        detailViewModel.linkVideo.observe(this) { responseLink ->
-          when (responseLink) {
-            is RemoteResponse.Success -> {
-              if (responseLink.data.isEmpty()) hideTrailer(true)
-              else {
-                hideTrailer(false)
-                btnTrailer(responseLink.data)
-              }
-            }
-
-            is RemoteResponse.Empty -> hideTrailer(true)
-            is RemoteResponse.Loading -> showLoading(true)
-            is RemoteResponse.Error ->
-              showSnackBarWarning(Event(responseLink.exception.message ?: getString(unknown_error)))
-
-            else -> showSnackBarWarning(Event(getString(unknown_error)))
+        detailViewModel.linkVideo.observe(this) {
+          if (it.isEmpty() || it.isBlank()) {
+            hideTrailer(true)
+          } else {
+            hideTrailer(false)
+            btnTrailer(it)
           }
         }
 
@@ -459,7 +380,8 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     // show production country
-    detailViewModel.productionCountry.observe(this) {
+    detailViewModel.productionCountry.observe(this)
+    {
       binding.tvYearReleased.append(" ($it)")
     }
   }

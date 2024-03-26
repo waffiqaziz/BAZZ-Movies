@@ -21,7 +21,8 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
-import com.waffiq.bazz_movies.utils.RemoteResponse
+import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -31,17 +32,17 @@ class DetailMovieViewModel(
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
-  private val _movieTvCreditsResult = MutableLiveData<RemoteResponse<MovieTvCreditsResponse>>()
-  val movieTvCreditsResult: LiveData<RemoteResponse<MovieTvCreditsResponse>> get() = _movieTvCreditsResult
+  private val _movieTvCreditsResult = MutableLiveData<MovieTvCreditsResponse>()
+  val movieTvCreditsResult: LiveData<MovieTvCreditsResponse> get() = _movieTvCreditsResult
 
-  private val _omdbResult = MutableLiveData<RemoteResponse<OMDbDetailsResponse>>()
-  val omdbResult: LiveData<RemoteResponse<OMDbDetailsResponse>> get() = _omdbResult
+  private val _omdbResult = MutableLiveData<OMDbDetailsResponse>()
+  val omdbResult: LiveData<OMDbDetailsResponse> get() = _omdbResult
 
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
 
-  private var _linkVideo = MutableLiveData<RemoteResponse<String>>()
-  val linkVideo: LiveData<RemoteResponse<String>> = _linkVideo
+  private var _linkVideo = MutableLiveData<String>()
+  val linkVideo: LiveData<String> = _linkVideo
 
   private val _detailMovie = MutableLiveData<DetailMovieResponse>()
   val detailMovie: LiveData<DetailMovieResponse> get() = _detailMovie
@@ -55,19 +56,19 @@ class DetailMovieViewModel(
   private val _ageRating = MutableLiveData<String>()
   val ageRating: LiveData<String> get() = _ageRating
 
-  private val _externalTvId = MutableLiveData<RemoteResponse<ExternalIdResponse>>()
-  val externalTvId: LiveData<RemoteResponse<ExternalIdResponse>> get() = _externalTvId
+  private val _externalTvId = MutableLiveData<NetworkResult<ExternalIdResponse>>()
+  val externalTvId: LiveData<NetworkResult<ExternalIdResponse>> get() = _externalTvId
 
   // Show Data
   fun detailMovie(id: Int) {
     viewModelScope.launch {
       movieRepository.getDetailMovie(id).collect { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
-            _detailMovie.value = response.data
+        when (response.status) {
+          Status.SUCCESS -> {
+            response.data.let { _detailMovie.value = it }
             var productionCountry: String
             try {
-              productionCountry = response.data.productionCountries?.get(0)?.iso31661.toString()
+              productionCountry = response.data?.productionCountries?.get(0)?.iso31661.toString()
               _productionCountry.value = productionCountry
             } catch (e: IndexOutOfBoundsException) {
               _productionCountry.value = "N/A"
@@ -76,7 +77,7 @@ class DetailMovieViewModel(
             try {
               if (productionCountry.isEmpty()) _ageRating.value = "N/A"
               else {
-                _ageRating.value = response.data.releaseDates?.results?.filter {
+                _ageRating.value = response.data?.releaseDates?.results?.filter {
                   it?.iso31661 == "US" || it?.iso31661 == productionCountry
                 }?.map {
                   it?.releaseDateValue?.get(0)?.certification
@@ -88,9 +89,8 @@ class DetailMovieViewModel(
             }
           }
 
-          is RemoteResponse.Loading -> RemoteResponse.Loading
-          is RemoteResponse.Error -> RemoteResponse.Error(Exception("Failed to fetch details movie. Please try again later."))
-          else -> _linkVideo.value = RemoteResponse.Error(Exception("Unknown Error"))
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
         }
       }
     }
@@ -98,107 +98,76 @@ class DetailMovieViewModel(
 
   fun getMovieCredits(movieId: Int) {
     viewModelScope.launch {
-      try {
-        when (val result = movieRepository.getCreditMovies(movieId)) {
-          is RemoteResponse.Success -> _movieTvCreditsResult.value =
-            RemoteResponse.Success(result.data)
-
-          is RemoteResponse.Error -> {
-            _movieTvCreditsResult.value =
-              RemoteResponse.Error(Exception("Failed to fetch movie credits. Please try again later."))
-            _loadingState.value = false
+      movieRepository.getCreditMovies(movieId).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> {
+            val responseData = response.data
+            responseData.let { _movieTvCreditsResult.value = it }
           }
 
-          is RemoteResponse.Loading -> {
-            _movieTvCreditsResult.value = RemoteResponse.Loading
-            _loadingState.value = true
-          }
-
-          else -> {
-            RemoteResponse.Error(Exception("Unknown Error"))
-            _loadingState.value = false
-          }
+          Status.ERROR -> _loadingState.value = false
+          Status.LOADING -> {}
         }
-      } catch (e: Exception) {
-        _movieTvCreditsResult.value = RemoteResponse.Error(e)
-        _loadingState.value = false
       }
     }
   }
 
   fun getLinkMovie(movieId: Int) {
     viewModelScope.launch {
-      try {
-        when (val result = movieRepository.getVideoMovies(movieId)) {
-          is RemoteResponse.Success -> {
-            try { //select best trailer
-              val link = result.data.results.filter {
-                it.official == true && it.type.equals("Trailer")
-              }.map { it.key }[0].toString().replace("[", "").replace("]", "")
+      movieRepository.getVideoMovies(movieId).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> {
+            try {
+              if (response.data != null) {
+                var link = response.data.results.filter {
+                  it.official == true && it.type.equals("Trailer")
+                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
 
-              if (link.isBlank() || link.isEmpty())
-                _linkVideo.value =
-                  RemoteResponse.Success(result.data.results.filter { it.official == true }
-                    .map { it.key }[0].toString().replace("[", "").replace("]", ""))
-              else
-                _linkVideo.value = RemoteResponse.Success(link)
-
-            } catch (e: IndexOutOfBoundsException) {
-              _linkVideo.value =
-                RemoteResponse.Empty
-              _loadingState.value = false
+                if (link.isBlank() || link.isEmpty()) {
+                  link =
+                    response.data.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                      .replace("]", "")
+                  _linkVideo.value = link
+                } else _linkVideo.value = link
+              } else _linkVideo.value = ""
+            } catch (e: NullPointerException) {
+              _linkVideo.value = ""
             }
           }
 
-          is RemoteResponse.Error -> {
-            _linkVideo.value =
-              RemoteResponse.Error(Exception("Failed to fetch movie credits. Please try again later."))
-            _loadingState.value = false
-          }
-
-          is RemoteResponse.Loading -> {
-            _linkVideo.value = RemoteResponse.Loading
-            _loadingState.value = true
-          }
-
-          else -> {
-            RemoteResponse.Error(Exception("Unknown Error"))
-            _loadingState.value = false
-          }
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
         }
-      } catch (e: Exception) {
-        _movieTvCreditsResult.value = RemoteResponse.Error(e)
-        _loadingState.value = false
       }
     }
-
   }
 
   fun detailTv(id: Int) {
     viewModelScope.launch {
       movieRepository.getDetailTv(id).collect { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
-            _detailTv.value = response.data
-            try { // get age rating
-              val productionCountry = response.data.productionCountries?.get(0)?.iso31661
-              _productionCountry.value = productionCountry ?: "N/A"
-              _ageRating.value = response.data.contentRatings?.results?.filter {
-                it?.iso31661 == "US" || it?.iso31661 == productionCountry
-              }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-                .replace(" ", "").replace(",", ", ")
-            } catch (e: NullPointerException) {
-              _ageRating.value = "N/A"
-              _productionCountry.value = "N/A"
-            } catch (e: IndexOutOfBoundsException) {
-              _ageRating.value = "N/A"
-              _productionCountry.value = "N/A"
+        when (response.status) {
+          Status.SUCCESS -> {
+            if (response.data != null) {
+              response.data.let { _detailTv.value = it }
+              try { // get age rating
+                val productionCountry = response.data.productionCountries?.get(0)?.iso31661
+                _productionCountry.value = productionCountry ?: "N/A"
+                _ageRating.value = response.data.contentRatings?.results?.filter {
+                  it?.iso31661 == "US" || it?.iso31661 == productionCountry
+                }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
+                  .replace(" ", "").replace(",", ", ")
+              } catch (e: NullPointerException) {
+                _ageRating.value = "N/A"
+                _productionCountry.value = "N/A"
+              } catch (e: IndexOutOfBoundsException) {
+                _ageRating.value = "N/A"
+                _productionCountry.value = "N/A"
+              }
             }
           }
 
-          is RemoteResponse.Loading -> RemoteResponse.Loading
-          is RemoteResponse.Error -> RemoteResponse.Error(Exception("Failed to fetch details movie. Please try again later."))
-          else -> _linkVideo.value = RemoteResponse.Error(Exception("Unknown Error"))
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
         }
       }
     }
@@ -207,43 +176,23 @@ class DetailMovieViewModel(
   fun externalId(id: Int) {
     viewModelScope.launch {
       movieRepository.getExternalTvId(id).collect { response ->
-        when (response) {
-          is RemoteResponse.Success -> _externalTvId.value = RemoteResponse.Success(response.data)
-          is RemoteResponse.Loading -> RemoteResponse.Loading
-          is RemoteResponse.Empty -> RemoteResponse.Empty
-          is RemoteResponse.Error -> RemoteResponse.Error(Exception("Failed to fetch details movie. Please try again later."))
+        when (response.status) {
+          Status.SUCCESS -> _externalTvId.value = response
+          Status.LOADING -> {}
+          Status.ERROR -> _externalTvId.value = response
         }
       }
     }
-
   }
 
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
-      try {
-        when (val result = movieRepository.getCreditTv(tvId)) {
-          is RemoteResponse.Success -> _movieTvCreditsResult.value =
-            RemoteResponse.Success(result.data)
-
-          is RemoteResponse.Error -> {
-            _movieTvCreditsResult.value =
-              RemoteResponse.Error(Exception("Failed to fetch credits. Please try again later."))
-            _loadingState.value = false
-          }
-
-          is RemoteResponse.Loading -> {
-            _movieTvCreditsResult.value = RemoteResponse.Loading
-            _loadingState.value = true
-          }
-
-          else -> {
-            RemoteResponse.Error(Exception("Unknown Error"))
-            _loadingState.value = false
-          }
+      movieRepository.getCreditTv(tvId).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> response.data.let { _movieTvCreditsResult.value = it }
+          Status.ERROR -> _loadingState.value = false
+          Status.LOADING -> {}
         }
-      } catch (e: Exception) {
-        _movieTvCreditsResult.value = RemoteResponse.Error(e)
-        _loadingState.value = false
       }
     }
   }
@@ -251,27 +200,29 @@ class DetailMovieViewModel(
   fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
       movieRepository.getVideoTv(tvId).collect { response ->
-        when (response) {
-          is RemoteResponse.Success -> {
+        when (response.status) {
+          Status.SUCCESS -> {
             try {
-              var link = response.data.results.filter {
-                it.official == true && it.type.equals("Trailer")
-              }.map { it.key }.firstOrNull()?.toString()?.replace("[", "")?.replace("]", "")
+              val responseData = response.data
+              if (responseData != null) {
+                var link = responseData.results.filter {
+                  it.official == true && it.type.equals("Trailer")
+                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
 
-              if (link.isNullOrBlank()) {
-                link = response.data.results.filter { it.official == false }
-                  .map { it.key }.firstOrNull()?.toString()?.replace("[", "")?.replace("]", "")
-                if (link != null) _linkVideo.value = RemoteResponse.Success(link)
-                else _linkVideo.value = RemoteResponse.Empty
-              } else _linkVideo.value = RemoteResponse.Success(link)
-            } catch (e: Exception) {
-              _linkVideo.value = RemoteResponse.Error(e)
+                if (link.isBlank() || link.isEmpty()) {
+                  link =
+                    responseData.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                      .replace("]", "")
+                  _linkVideo.value = link
+                } else _linkVideo.value = link
+              } else _linkVideo.value = ""
+            } catch (e: NullPointerException) {
+              _linkVideo.value = ""
             }
           }
 
-          is RemoteResponse.Loading -> RemoteResponse.Loading
-          is RemoteResponse.Error -> RemoteResponse.Error(Exception("Failed to fetch video link. Please try again later."))
-          else -> _linkVideo.value = RemoteResponse.Error(Exception("Unknown Error"))
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
         }
       }
     }
@@ -279,33 +230,16 @@ class DetailMovieViewModel(
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
-      try {
-        when (val result = movieRepository.getDetailOMDb(imdbId)) {
-          is RemoteResponse.Success -> {
-            _omdbResult.value =
-              RemoteResponse.Success(result.data)
+      movieRepository.getDetailOMDb(imdbId).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> {
+            response.data.let { _omdbResult.value = it }
             _loadingState.value = false
           }
 
-          is RemoteResponse.Error -> {
-            _omdbResult.value =
-              RemoteResponse.Error(Exception("Failed to fetch rating score. Please try again later."))
-            _loadingState.value = false
-          }
-
-          is RemoteResponse.Loading -> {
-            _omdbResult.value = RemoteResponse.Loading
-            _loadingState.value = true
-          }
-
-          else -> {
-            RemoteResponse.Error(Exception("Unknown Error"))
-            _loadingState.value = false
-          }
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
         }
-      } catch (e: Exception) {
-        _omdbResult.value = RemoteResponse.Error(e)
-        _loadingState.value = false
       }
     }
   }
