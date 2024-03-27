@@ -35,8 +35,10 @@ class FavoriteTvAdapter :
 
   inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
+    lateinit var data: ResultItem
 
     fun bind(resultItem: ResultItem) {
+      data = resultItem
       binding.ivPicture.contentDescription =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
 

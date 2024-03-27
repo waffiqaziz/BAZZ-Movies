@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -175,7 +174,6 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
-    // detailViewModel.getLoading().observe(this) { showLoading(it) }
     detailViewModel.getSnackBarText().observe(this) { showSnackBarWarning(it) }
 
     // shows backdrop
@@ -542,7 +540,7 @@ class DetailMovieActivity : AppCompatActivity() {
     if (isLogin) { //user
       authViewModel.getUser().observe(this) { user ->
         getStated(user.token)
-        detailViewModel.getStated().observe(this) {
+        detailViewModel.stated.observe(this) {
           if (it != null) {
             favorite = it.favorite
             watchlist = it.watchlist
@@ -554,12 +552,12 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     } else { //guest user
       dataExtra.id?.let { detailViewModel.isFavoriteDB(it, dataExtra.mediaType.toString()) }
-      detailViewModel.isFavoriteDB().observe(this) {
+      detailViewModel.isFavorite.observe(this) {
         changeBtnFavoriteBG(it)
         favorite = it
       }
       dataExtra.id?.let { detailViewModel.isWatchlistDB(it, dataExtra.mediaType.toString()) }
-      detailViewModel.isWatchlistDB().observe(this) {
+      detailViewModel.isWatchlist.observe(this) {
         changeBtnWatchlistBG(it)
         watchlist = it
       }

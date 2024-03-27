@@ -64,6 +64,7 @@ class PersonActivity : AppCompatActivity() {
     val factory = ViewModelFactory.getInstance(this)
     personMovieViewModel = ViewModelProvider(this, factory)[PersonMovieViewModel::class.java]
 
+    showLoading(true)
     getDataExtra()
     showData()
     btnListener()
@@ -103,7 +104,7 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun showData() {
-    personMovieViewModel.getLoading().observe(this) { showLoading(it) }
+    personMovieViewModel.loadingState.observe(this) { showLoading(it) }
     personMovieViewModel.getSnackbar().observe(this) { showSnackBarWarning(it) }
 
     // setup recycle view and adapter
@@ -128,7 +129,7 @@ class PersonActivity : AppCompatActivity() {
 
     // set button click social media
     dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
-    personMovieViewModel.getExternalIDPerson().observe(this) { externalID ->
+    personMovieViewModel.externalIdPerson.observe(this) { externalID ->
 
       // show or hide social media
       if (!externalID.instagramId.isNullOrEmpty()) {
@@ -197,17 +198,17 @@ class PersonActivity : AppCompatActivity() {
 
     // show known for
     dataExtra.id?.let { personMovieViewModel.getKnownFor(it) }
-    personMovieViewModel.getKnownFor().observe(this) { adapterKnownFor.setCast(it) }
+    personMovieViewModel.knownFor.observe(this) { adapterKnownFor.setCast(it) }
 
     // show picture
     dataExtra.id?.let { personMovieViewModel.getImagePerson(it) }
-    personMovieViewModel.getImagePerson().observe(this) {
+    personMovieViewModel.imagePerson.observe(this) {
       adapterImage.setImage(it)
     }
 
     // show detail person
     dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
-    personMovieViewModel.getDetailPerson().observe(this) {
+    personMovieViewModel.detailPerson.observe(this) {
       if (it.birthday != null)
         if (it.birthday.isNotBlank() && it.birthday.isNotEmpty()) binding.tvBiography.text =
           it.biography

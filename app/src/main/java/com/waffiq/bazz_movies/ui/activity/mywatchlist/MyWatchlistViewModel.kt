@@ -12,15 +12,23 @@ import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.launch
 
 class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
+
+  private val _stated = MutableLiveData<StatedResponse?>()
+  val stated: LiveData<StatedResponse?> get() = _stated
+
+  private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
+  val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
 
   /**
    * Function for database
@@ -29,8 +37,6 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     movieRepository.watchlistMovieFromDB.asLiveData().distinctUntilChanged()
   val getWatchlistTvSeriesDB =
     movieRepository.watchlistTvFromDB.asLiveData().distinctUntilChanged()
-
-  fun undoDeleteDB() = movieRepository.undoDB
 
   fun insertToDB(fav: FavoriteDB) {
     viewModelScope.launch {
@@ -46,20 +52,26 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     }
   }
 
-  fun delFromFavoriteDB(fav: FavoriteDB) =
+  fun delFromFavoriteDB(fav: FavoriteDB) {
     viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+    _undoDB.value = Event(fav)
+  }
 
   fun updateToFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteDB(false, fav) }
+    viewModelScope.launch { movieRepository.updateFavoriteItemDB(false, fav) }
 
   fun updateToWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistDB(false, fav) }
+    viewModelScope.launch { movieRepository.updateWatchlistItemDB(false, fav) }
 
-  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistDB(true, fav) }
+  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) {
+    viewModelScope.launch { movieRepository.updateWatchlistItemDB(true, fav) }
+    _undoDB.value = Event(fav)
+  }
 
-  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteDB(true, fav) }
+  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) {
+    viewModelScope.launch { movieRepository.updateFavoriteItemDB(true, fav) }
+    _undoDB.value = Event(fav)
+  }
 
   /**
    * Function for remote
@@ -76,6 +88,27 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
   fun postWatchlist(user: UserModel, data: Watchlist) =
     movieRepository.postWatchlist(user.token, data, user.userId)
 
-  fun getStated(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
-  fun getStated() = movieRepository.stated
+  fun getStatedMovie(sessionId: String, id: Int) {
+    viewModelScope.launch {
+      movieRepository.getStatedMovie(sessionId, id).collect{response ->
+        when(response.status){
+          Status.SUCCESS -> _stated.value = response.data
+          Status.LOADING -> {}
+          Status.ERROR -> {}
+        }
+      }
+    }
+  }
+
+  fun getStatedTv(sessionId: String, id: Int) {
+    viewModelScope.launch {
+      movieRepository.getStatedTv(sessionId, id).collect{response ->
+        when(response.status){
+          Status.SUCCESS -> _stated.value = response.data
+          Status.LOADING -> {}
+          Status.ERROR -> {}
+        }
+      }
+    }
+  }
 }

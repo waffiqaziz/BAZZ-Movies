@@ -21,12 +21,17 @@ import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
@@ -41,6 +46,7 @@ class RemoteDataSource private constructor(
   private val omDbApiService: OMDbApiService
 ) : MovieDataSourceInterface {
 
+  // region PAGING FUNCTION
   override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
@@ -159,13 +165,16 @@ class RemoteDataSource private constructor(
       pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
     ).flow
   }
+  // endregion PAGING FUNCTION
 
-  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> = flow {
-    emit(NetworkResult.loading())
-    emit(safeApiCall {
-      tmdbApiService.getCreditMovies(movieId)
-    })
-  }.flowOn(Dispatchers.IO)
+  // region DETAIL
+  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCall {
+        tmdbApiService.getCreditMovies(movieId)
+      })
+    }.flowOn(Dispatchers.IO)
 
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> = flow {
     emit(NetworkResult.loading())
@@ -174,12 +183,13 @@ class RemoteDataSource private constructor(
     })
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> = flow {
-    emit(NetworkResult.loading())
-    emit(safeApiCall {
-      omDbApiService.getMovieDetailOMDb(imdbId)
-    })
-  }.flowOn(Dispatchers.IO)
+  override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCall {
+        omDbApiService.getMovieDetailOMDb(imdbId)
+      })
+    }.flowOn(Dispatchers.IO)
 
   override suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<VideoResponse>> = flow {
     emit(NetworkResult.loading())
@@ -215,6 +225,59 @@ class RemoteDataSource private constructor(
       tmdbApiService.getExternalId(id)
     })
   }.flowOn(Dispatchers.IO)
+
+  override suspend fun getStatedMovie(
+    sessionId: String,
+    id: Int
+  ): Flow<NetworkResult<StatedResponse>> = flow {
+    emit(NetworkResult.loading())
+    emit(safeApiCall {
+      tmdbApiService.getStatedMovie(id, sessionId)
+    })
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getStatedTv(
+    sessionId: String,
+    id: Int
+  ): Flow<NetworkResult<StatedResponse>> = flow {
+    emit(NetworkResult.loading())
+    emit(safeApiCall {
+      tmdbApiService.getStatedTv(id, sessionId)
+    })
+  }.flowOn(Dispatchers.IO)
+  // endregion DETAIL
+
+  // region PERSON
+  override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>> = flow {
+    emit(NetworkResult.loading())
+    emit(safeApiCall {
+      tmdbApiService.getDetailPerson(id)
+    })
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>> = flow {
+    emit(NetworkResult.loading())
+    emit(safeApiCall {
+      tmdbApiService.getImagePerson(id)
+    })
+  }.flowOn(Dispatchers.IO)
+
+  override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCall {
+        tmdbApiService.getKnownForPersonCombinedMovieTv(id)
+      })
+    }.flowOn(Dispatchers.IO)
+
+  override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCall {
+        tmdbApiService.getExternalIdPerson(id)
+      })
+    }.flowOn(Dispatchers.IO)
+  // endregion PERSON
 
   companion object {
     const val TAG = "RemoteDataSource"

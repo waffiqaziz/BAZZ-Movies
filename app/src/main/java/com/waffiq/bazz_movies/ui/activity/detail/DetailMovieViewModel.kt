@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
@@ -29,8 +30,18 @@ class DetailMovieViewModel(
   private val movieRepository: MoviesRepository,
 ) : ViewModel() {
 
+  // region OBSERVABLES
+  private val _isFavorite = MutableLiveData<Boolean>()
+  val isFavorite: LiveData<Boolean> = _isFavorite
+
+  private val _isWatchlist = MutableLiveData<Boolean>()
+  val isWatchlist: LiveData<Boolean> = _isWatchlist
+
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
+
+  private val _stated = MutableLiveData<StatedResponse>()
+  val stated: LiveData<StatedResponse> get() = _stated
 
   private val _movieTvCreditsResult = MutableLiveData<MovieTvCreditsResponse>()
   val movieTvCreditsResult: LiveData<MovieTvCreditsResponse> get() = _movieTvCreditsResult
@@ -58,8 +69,39 @@ class DetailMovieViewModel(
 
   private val _externalTvId = MutableLiveData<NetworkResult<ExternalIdResponse>>()
   val externalTvId: LiveData<NetworkResult<ExternalIdResponse>> get() = _externalTvId
+  // endregion OBSERVABLES
 
-  // Show Data
+  // region MOVIE
+  fun getLinkMovie(movieId: Int) {
+    viewModelScope.launch {
+      movieRepository.getVideoMovies(movieId).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> {
+            try {
+              if (response.data != null) {
+                var link = response.data.results.filter {
+                  it.official == true && it.type.equals("Trailer")
+                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
+
+                if (link.isBlank() || link.isEmpty()) {
+                  link =
+                    response.data.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                      .replace("]", "")
+                  _linkVideo.value = link
+                } else _linkVideo.value = link
+              } else _linkVideo.value = ""
+            } catch (e: NullPointerException) {
+              _linkVideo.value = ""
+            }
+          }
+
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
+        }
+      }
+    }
+  }
+
   fun detailMovie(id: Int) {
     viewModelScope.launch {
       movieRepository.getDetailMovie(id).collect { response ->
@@ -112,20 +154,38 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getLinkMovie(movieId: Int) {
+  fun getRecommendationMovie(movieId: Int) =
+    movieRepository.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope).asLiveData()
+
+  fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoMovies(movieId).collect { response ->
+      movieRepository.getStatedMovie(sessionId, id).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> response.data.let { _stated.value = it }
+          Status.LOADING -> {}
+          Status.ERROR -> _loadingState.value = false
+        }
+      }
+    }
+  }
+  // endregion MOVIE
+
+  // region TV-SERIES
+  fun getLinkTv(tvId: Int) {
+    viewModelScope.launch {
+      movieRepository.getVideoTv(tvId).collect { response ->
         when (response.status) {
           Status.SUCCESS -> {
             try {
-              if (response.data != null) {
-                var link = response.data.results.filter {
+              val responseData = response.data
+              if (responseData != null) {
+                var link = responseData.results.filter {
                   it.official == true && it.type.equals("Trailer")
                 }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
 
                 if (link.isBlank() || link.isEmpty()) {
                   link =
-                    response.data.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                    responseData.results.map { it.key }.firstOrNull().toString().replace("[", "")
                       .replace("]", "")
                   _linkVideo.value = link
                 } else _linkVideo.value = link
@@ -173,18 +233,6 @@ class DetailMovieViewModel(
     }
   }
 
-  fun externalId(id: Int) {
-    viewModelScope.launch {
-      movieRepository.getExternalTvId(id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> _externalTvId.value = response
-          Status.LOADING -> {}
-          Status.ERROR -> _externalTvId.value = response
-        }
-      }
-    }
-  }
-
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
       movieRepository.getCreditTv(tvId).collect { response ->
@@ -197,36 +245,33 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getLinkTv(tvId: Int) {
+  fun externalId(id: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoTv(tvId).collect { response ->
+      movieRepository.getExternalTvId(id).collect { response ->
         when (response.status) {
-          Status.SUCCESS -> {
-            try {
-              val responseData = response.data
-              if (responseData != null) {
-                var link = responseData.results.filter {
-                  it.official == true && it.type.equals("Trailer")
-                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
+          Status.SUCCESS -> _externalTvId.value = response
+          Status.LOADING -> {}
+          Status.ERROR -> _externalTvId.value = response
+        }
+      }
+    }
+  }
 
-                if (link.isBlank() || link.isEmpty()) {
-                  link =
-                    responseData.results.map { it.key }.firstOrNull().toString().replace("[", "")
-                      .replace("]", "")
-                  _linkVideo.value = link
-                } else _linkVideo.value = link
-              } else _linkVideo.value = ""
-            } catch (e: NullPointerException) {
-              _linkVideo.value = ""
-            }
-          }
+  fun getRecommendationTv(tvId: Int) =
+    movieRepository.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
 
+  fun getStatedTv(sessionId: String, id: Int) {
+    viewModelScope.launch {
+      movieRepository.getStatedTv(sessionId, id).collect { response ->
+        when (response.status) {
+          Status.SUCCESS -> response.data.let { _stated.value = it }
           Status.LOADING -> {}
           Status.ERROR -> _loadingState.value = false
         }
       }
     }
   }
+  // endregion TV-SERIES
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
@@ -244,25 +289,14 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getRecommendationMovie(movieId: Int) =
-    movieRepository.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope).asLiveData()
+  // region DB FUNCTION
+  fun isFavoriteDB(id: Int, mediaType: String) {
+    viewModelScope.launch { _isFavorite.value = movieRepository.isFavoriteDB(id, mediaType) }
+  }
 
-  fun getRecommendationTv(tvId: Int) =
-    movieRepository.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
-
-  fun getStatedMovie(sessionId: String, id: Int) = movieRepository.getStatedMovie(sessionId, id)
-  fun getStatedTv(sessionId: String, id: Int) = movieRepository.getStatedTv(sessionId, id)
-  fun getStated() = movieRepository.stated
-
-
-  // Local DB Function
-  fun isFavoriteDB() = movieRepository.isFavorite
-  fun isFavoriteDB(id: Int, mediaType: String) =
-    viewModelScope.launch { movieRepository.isFavoriteDB(id, mediaType) }
-
-  fun isWatchlistDB() = movieRepository.isWatchlist
-  fun isWatchlistDB(id: Int, mediaType: String) =
-    viewModelScope.launch { movieRepository.isWatchlistDB(id, mediaType) }
+  fun isWatchlistDB(id: Int, mediaType: String) {
+    viewModelScope.launch { _isWatchlist.value = movieRepository.isWatchlistDB(id, mediaType) }
+  }
 
   fun insertToDB(fav: FavoriteDB) {
     viewModelScope.launch {
@@ -279,34 +313,35 @@ class DetailMovieViewModel(
   }
 
   fun updateToFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteDB(false, fav) }
+    viewModelScope.launch { movieRepository.updateFavoriteItemDB(false, fav) }
 
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteDB(true, fav) }
+    viewModelScope.launch { movieRepository.updateFavoriteItemDB(true, fav) }
 
   fun updateToWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistDB(false, fav) }
+    viewModelScope.launch { movieRepository.updateWatchlistItemDB(false, fav) }
 
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistDB(true, fav) }
+    viewModelScope.launch { movieRepository.updateWatchlistItemDB(true, fav) }
 
   fun delFromFavoriteDB(fav: FavoriteDB) =
     viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+  // endregion DB FUNCTION
 
-
-  // favorite & watchlist TMDB
+  // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
     movieRepository.postFavorite(sessionId, data, userId)
 
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
     movieRepository.postWatchlist(sessionId, data, userId)
 
-  // add rating
   fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
     movieRepository.postMovieRate(sessionId, data, movieId)
 
   fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
     movieRepository.postTvRate(sessionId, data, tvId)
+  // endregion POST FAVORITE, WATCHLIST, RATE
 
   fun getSnackBarText() = movieRepository.snackBarText
 }
+

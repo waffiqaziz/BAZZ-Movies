@@ -32,6 +32,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBApiService {
+
+  /**
+   * AUTHENTICATION
+   */
+  // region
   @GET("3/authentication/token/new?api_key=$API_KEY")
   fun createToken(): Call<AuthenticationResponse>
 
@@ -51,7 +56,12 @@ interface TMDBApiService {
   fun getAccountDetails(
     @Query("session_id") sessionId: String,
   ): Call<AccountDetailsResponse>
+  // endregion
 
+  /**
+   * LIST FUNCTION FOR PAGING
+   */
+  // region
   @GET("3/movie/top_rated?api_key=$API_KEY&language=en-US")
   suspend fun getTopRatedMovies(
     @Query("page") page: Int
@@ -141,23 +151,23 @@ interface TMDBApiService {
     @Query("session_id") sessionId: String,
     @Query("page") page: Int,
   ): MovieTvResponse
+  // endregion
 
+  /**
+   * DETAIL PAGE
+   */
+  // region
   @GET("3/movie/{movieId}/account_states?api_key=$API_KEY")
-  fun getStatedMovie(
+  suspend fun getStatedMovie(
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String
-  ): Call<StatedResponse>
+  ): Response<StatedResponse>
 
   @GET("3/tv/{tvId}/account_states?api_key=$API_KEY")
-  fun getStatedTv(
+  suspend fun getStatedTv(
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String
-  ): Call<StatedResponse>
-
-//  @GET("3/genre/movie/list?api_key=$API_KEY")
-//  fun getMovieGenres(
-//    @Query("language") language: String = "en"
-//  ): Call<GenresResponse>
+  ): Response<StatedResponse>
 
   @GET("3/search/multi?api_key=$API_KEY&include_adult=false")
   suspend fun search(
@@ -199,27 +209,37 @@ interface TMDBApiService {
   suspend fun getExternalId(
     @Path("tvId") tvId: Int
   ): Response<ExternalIdResponse>
+  // endregion
 
+  /**
+   * PERSON
+   */
+  // region
   @GET("3/person/{personId}?api_key=$API_KEY&language=en-US")
-  fun getDetailPerson(
+  suspend fun getDetailPerson(
     @Path("personId") personId: Int
-  ): Call<DetailPersonResponse>
+  ): Response<DetailPersonResponse>
 
   @GET("3/person/{personId}/images?api_key=$API_KEY&language=en-US")
-  fun getImagePerson(
+  suspend fun getImagePerson(
     @Path("personId") personId: Int
-  ): Call<ImagePersonResponse>
+  ): Response<ImagePersonResponse>
 
   @GET("3/person/{personId}/external_ids?api_key=$API_KEY")
-  fun getExternalIdPerson(
+  suspend fun getExternalIdPerson(
     @Path("personId") personId: Int
-  ): Call<ExternalIDPersonResponse>
+  ): Response<ExternalIDPersonResponse>
 
   @GET("3/person/{personId}/combined_credits?api_key=$API_KEY&language=en-US")
-  fun getKnownForPersonCombinedMovieTv(
+  suspend fun getKnownForPersonCombinedMovieTv(
     @Path("personId") personId: Int
-  ): Call<CombinedCreditResponse>
+  ): Response<CombinedCreditResponse>
+  // endregion
 
+  /**
+   * POST FAVORITE & WATCHLIST
+   */
+  // region
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
   fun postFavoriteTMDB(
@@ -257,4 +277,6 @@ interface TMDBApiService {
   fun delSession(
     @Query("session_id") sessionId: String
   ): Call<PostRateResponse>
+  // endregion
+
 }

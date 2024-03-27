@@ -3,12 +3,17 @@ package com.waffiq.bazz_movies.data.remote.datasource
 import android.util.Log
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +21,7 @@ import retrofit2.Response
 
 interface MovieDataSourceInterface {
 
+  // CALL FUNCTION
   suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
     try {
       val response = apiCall.invoke()
@@ -31,8 +37,7 @@ interface MovieDataSourceInterface {
     }
   }
 
-
-  // paging
+  // PAGING
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>>
   fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>>
@@ -51,6 +56,7 @@ interface MovieDataSourceInterface {
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>
   fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>>
 
+  // DETAIL PAGE
   suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
   suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>>
   suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>>
@@ -59,4 +65,12 @@ interface MovieDataSourceInterface {
   suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovieResponse>>
   suspend fun getDetailTv(id: Int): Flow<NetworkResult<DetailTvResponse>>
   suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>>
+  suspend fun getStatedMovie(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
+  suspend fun getStatedTv(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
+
+  // PERSON
+  suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>>
+  suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>>
+  suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
+  suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
 }
