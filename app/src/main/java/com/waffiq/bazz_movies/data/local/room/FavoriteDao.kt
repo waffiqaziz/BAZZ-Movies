@@ -23,9 +23,6 @@ interface FavoriteDao {
   @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
   fun getWatchlistTv(): Flow<List<FavoriteDB>>
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE title LIKE '%' || :name || '%'")
-  fun getSearchFavorite(name: String): Flow<List<FavoriteDB>>
-
   @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE mediaId = :id and is_favorited = 1 and mediaType = :mediaType)")
   suspend fun isFavorite(id: Int, mediaType: String): Boolean
 

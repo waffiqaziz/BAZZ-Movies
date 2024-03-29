@@ -266,9 +266,6 @@ class MoviesRepository(
 
   val favoriteTvFromDB: Flow<List<FavoriteDB>> = localDataSource.getFavoriteTv
 
-  fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>> =
-    localDataSource.getSpecificFavorite(name)
-
   suspend fun insertToDB(fav: FavoriteDB, callback: (Int) -> Unit) {
     val resultCode = localDataSource.insert(fav)
     callback.invoke(resultCode)

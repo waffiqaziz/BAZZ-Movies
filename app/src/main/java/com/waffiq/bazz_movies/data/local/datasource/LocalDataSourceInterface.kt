@@ -8,7 +8,6 @@ interface LocalDataSourceInterface {
   val getFavoriteTv: Flow<List<FavoriteDB>>
   val getWatchlistMovies: Flow<List<FavoriteDB>>
   val getWatchlistTv: Flow<List<FavoriteDB>>
-  fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>>
   suspend fun insert(favoriteDBList: FavoriteDB): Int
   suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): Int
   suspend fun deleteAll(): Int

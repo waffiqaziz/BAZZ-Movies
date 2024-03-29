@@ -19,9 +19,6 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   override val getWatchlistTv = favoriteDao.getWatchlistTv()
 
-  override fun getSpecificFavorite(name: String): Flow<List<FavoriteDB>> =
-    favoriteDao.getSearchFavorite(name)
-
   override suspend fun insert(favoriteDBList: FavoriteDB): Int {
     return try {
       favoriteDao.insert(favoriteDBList)
