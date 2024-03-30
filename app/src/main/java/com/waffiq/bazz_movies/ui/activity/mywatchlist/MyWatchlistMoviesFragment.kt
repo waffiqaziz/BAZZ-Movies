@@ -31,7 +31,6 @@ import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.string.added_to_favorite
 import com.waffiq.bazz_movies.R.string.already_favorite
 import com.waffiq.bazz_movies.R.string.binding_error
-import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
@@ -281,8 +280,8 @@ class MyWatchlistMoviesFragment : Fragment() {
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       viewModel.getStatedMovie(user.token, movieId)
-      viewModel.stated.observe(viewLifecycleOwner) {
-        if (it != null) {
+      viewModel.stated.observe(viewLifecycleOwner) {event->
+        event.getContentIfNotHandled()?.let {
           if (!it.favorite) {
             viewModel.postFavorite(user, favoriteMode)
             showSnackBarUserLogin(title, favoriteMode, null, position)

@@ -279,8 +279,8 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       viewModel.getStatedTv(user.token, tvId)
-      viewModel.stated.observe(viewLifecycleOwner) {
-        if (it != null) {
+      viewModel.stated.observe(viewLifecycleOwner) { event ->
+        event.getContentIfNotHandled()?.let {
           if (!it.favorite) {
             viewModel.postFavorite(user, favoriteMode)
             showSnackBarUserLogin(title, favoriteMode, null, position)

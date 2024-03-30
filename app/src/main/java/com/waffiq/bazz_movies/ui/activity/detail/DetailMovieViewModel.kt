@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -290,16 +291,18 @@ class DetailMovieViewModel(
   }
 
   // region DB FUNCTION
-  fun isFavoriteDB(id: Int, mediaType: String) {
-    viewModelScope.launch { _isFavorite.value = movieRepository.isFavoriteDB(id, mediaType) }
-  }
+  fun isFavoriteDB(id: Int, mediaType: String) =
+    viewModelScope.launch(Dispatchers.IO) {
+      _isFavorite.value = movieRepository.isFavoriteDB(id, mediaType)
+    }
 
-  fun isWatchlistDB(id: Int, mediaType: String) {
-    viewModelScope.launch { _isWatchlist.value = movieRepository.isWatchlistDB(id, mediaType) }
-  }
+  fun isWatchlistDB(id: Int, mediaType: String) =
+    viewModelScope.launch(Dispatchers.IO) {
+      _isWatchlist.value = movieRepository.isWatchlistDB(id, mediaType)
+    }
 
   fun insertToDB(fav: FavoriteDB) {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
           ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
@@ -313,35 +316,39 @@ class DetailMovieViewModel(
   }
 
   fun updateToFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(false, fav) }
 
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateFavoriteItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
 
   fun updateToWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(false, fav) }
 
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.updateWatchlistItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(true, fav) }
 
   fun delFromFavoriteDB(fav: FavoriteDB) =
-    viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.deleteFromDB(fav) }
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
-    movieRepository.postFavorite(sessionId, data, userId)
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.postFavorite(sessionId, data, userId) }
 
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
-    movieRepository.postWatchlist(sessionId, data, userId)
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.postWatchlist(sessionId, data, userId) }
 
   fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
-    movieRepository.postMovieRate(sessionId, data, movieId)
+    viewModelScope.launch(Dispatchers.IO) {
+      movieRepository.postMovieRate(
+        sessionId,
+        data,
+        movieId
+      )
+    }
 
   fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
-    movieRepository.postTvRate(sessionId, data, tvId)
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.postTvRate(sessionId, data, tvId) }
   // endregion POST FAVORITE, WATCHLIST, RATE
-
-  fun getSnackBarText() = movieRepository.snackBarText
 }
 

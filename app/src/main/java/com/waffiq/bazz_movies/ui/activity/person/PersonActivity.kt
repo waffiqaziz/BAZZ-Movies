@@ -105,7 +105,6 @@ class PersonActivity : AppCompatActivity() {
 
   private fun showData() {
     personMovieViewModel.loadingState.observe(this) { showLoading(it) }
-    personMovieViewModel.getSnackbar().observe(this) { showSnackBarWarning(it) }
 
     // setup recycle view and adapter
     val adapterKnownFor = KnownForAdapter()

@@ -1,7 +1,9 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
-import android.util.Log
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.Rate
+import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
@@ -11,13 +13,19 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import okio.IOException
+import retrofit2.HttpException
 import retrofit2.Response
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 interface MovieDataSourceInterface {
 
@@ -31,8 +39,15 @@ interface MovieDataSourceInterface {
       return if (response?.code() == 404) NetworkResult.error("Bad Request")
       else if (!errorBody.isNullOrEmpty()) NetworkResult.error(errorBody)
       else NetworkResult.error("Error in fetching data")
+    } catch (e: HttpException) {
+      return NetworkResult.error(e.message ?: "Something went wrong")
+    } catch (e: SocketTimeoutException) {
+      return NetworkResult.error("Connection timed out. Please try again.")
+    } catch (e: UnknownHostException) {
+      return NetworkResult.error("Unable to resolve server hostname. Please check your internet connection.\"")
+    } catch (e: IOException) {
+      return NetworkResult.error("Please check your network connection")
     } catch (e: Exception) {
-      println(e.message)
       throw RuntimeException(e)
     }
   }
@@ -73,4 +88,20 @@ interface MovieDataSourceInterface {
   suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>>
   suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
   suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
+
+  // POST
+  suspend fun postFavorite(
+    sessionId: String,
+    fav: Favorite,
+    userId: Int
+  ): NetworkResult<PostResponse>
+
+  suspend fun postWatchlist(
+    sessionId: String,
+    wtc: Watchlist,
+    userId: Int
+  ): NetworkResult<PostResponse>
+
+  suspend fun postTvRate(sessionId: String, data: Rate, tvId: Int): NetworkResult<PostRateResponse>
+  suspend fun postMovieRate(sessionId: String, data: Rate, movieId: Int): NetworkResult<PostRateResponse>
 }

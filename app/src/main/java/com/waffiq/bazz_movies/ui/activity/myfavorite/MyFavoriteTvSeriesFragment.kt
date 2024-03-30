@@ -305,7 +305,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
   }
 
-  private fun postToRemoveFavTMDB(title: String, movieId: Int, position: Int) {
+  private fun postToRemoveFavTMDB(title: String, movieId: Int, pos: Int) {
     val favoriteMode = Favorite(
       mediaType = "movie",
       mediaId = movieId,
@@ -315,7 +315,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
       viewModelFav.postFavorite(user, favoriteMode)
     }
-    showSnackBarUserLogin(title, favoriteMode, null, position)
+    showSnackBarUserLogin(title, favoriteMode, null, pos)
   }
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int, position: Int) {
@@ -326,9 +326,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     )
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      viewModelFav.getStatedTv(user.token, movieId)
-      viewModelFav.stated.observe(viewLifecycleOwner) {
-        if (it != null) {
+      viewModelFav.getStatedTv(user.token, movieId, title)
+      viewModelFav.stated.observe(viewLifecycleOwner) { event ->
+        event.getContentIfNotHandled()?.let {
           if (!it.watchlist) {
             viewModelFav.postWatchlist(user, watchlistMode)
             showSnackBarUserLogin(title, null, watchlistMode, position)

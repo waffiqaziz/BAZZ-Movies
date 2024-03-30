@@ -35,6 +35,7 @@ import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.data.local.model.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteMoviesBinding
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
@@ -43,6 +44,7 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
@@ -55,6 +57,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private lateinit var viewModelFav: MyFavoriteViewModel
   private lateinit var viewModelAuth: AuthenticationViewModel
+  private lateinit var userModel: UserModel
 
   private val adapterDB = FavoriteAdapterDB()
   private val adapterPaging = FavoriteMovieAdapter()
@@ -78,6 +81,10 @@ class MyFavoriteMoviesFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModelFav = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
 
+    viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
+      showSnackBarAlready(it)
+    }
+
     checkUser()
     return root
   }
@@ -88,6 +95,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
     viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+      userModel = user
       if (user.token != "NaN") { //user login then show data from TMDb
         initAction(isLogin = true)
         setDataUserLoginProgressBarEmptyView(user.token)
@@ -122,7 +130,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         if (isLogin) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
-          val position = viewHolder.absoluteAdapterPosition
+          val position = viewHolder.bindingAdapterPosition
 
           adapterPaging.notifyItemChanged(position)
           binding.rvFavMovies.adapter?.notifyItemChanged(position)
@@ -246,9 +254,8 @@ class MyFavoriteMoviesFragment : Fragment() {
         else viewModelFav.delFromFavoriteDB(fav)
         fav.title?.let { showSnackBarUndoGuest(it) }
       } else { // add to watchlist action
-        if (fav.isWatchlist) showSnackBarNoAction(
-          "<b>${fav.title}</b> " + getString(already_watchlist)
-        )
+        if (fav.isWatchlist)
+          showSnackBarAlready(Event(fav.title.toString()))
         else {
           viewModelFav.updateToWatchlistDB(fav)
           fav.title?.let { showSnackBarUndoGuest(it) }
@@ -319,20 +326,17 @@ class MyFavoriteMoviesFragment : Fragment() {
   }
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int, position: Int) {
-    val watchlistMode = Watchlist(
-      mediaType = "movie",
-      mediaId = movieId,
-      watchlist = true
-    )
-
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
-      viewModelFav.getStatedMovie(user.token, movieId)
-      viewModelFav.stated.observe(viewLifecycleOwner) {
-        if (it != null) {
-          if (!it.watchlist) {
-            viewModelFav.postWatchlist(user, watchlistMode)
-            showSnackBarUserLogin(title, null, watchlistMode, position)
-          } else showSnackBarNoAction("<b>$title</b> " + getString(already_watchlist))
+    viewModelFav.getStatedMovie(userModel.token, movieId, title)
+    viewModelFav.stated.observe(viewLifecycleOwner) { event ->
+      event.getContentIfNotHandled()?.let {
+        if (!it.watchlist) {
+          val watchlistMode = Watchlist(
+            mediaType = "movie",
+            mediaId = movieId,
+            watchlist = true
+          )
+          viewModelFav.postWatchlist(userModel, watchlistMode)
+          showSnackBarUserLogin(title, null, watchlistMode, position)
         }
       }
     }
@@ -399,10 +403,13 @@ class MyFavoriteMoviesFragment : Fragment() {
     mSnackbar?.show()
   }
 
-  private fun showSnackBarNoAction(message: String) {
+  private fun showSnackBarAlready(eventMessage: Event<String>) {
+    val result = eventMessage.getContentIfNotHandled() ?: return
     mSnackbar = Snackbar.make(
       binding.root,
-      HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY),
+      HtmlCompat.fromHtml(
+          "<b>${result}</b> " + getString(already_watchlist), HtmlCompat.FROM_HTML_MODE_LEGACY
+      ),
       Snackbar.LENGTH_SHORT
     ).setAnchorView(binding.guideSnackbar)
     mSnackbar?.show()

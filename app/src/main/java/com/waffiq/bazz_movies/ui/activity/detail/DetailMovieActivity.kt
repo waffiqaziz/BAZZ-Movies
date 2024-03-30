@@ -174,8 +174,6 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
-    detailViewModel.getSnackBarText().observe(this) { showSnackBarWarning(it) }
-
     // shows backdrop
     Glide.with(binding.ivPicture).load(
       if (dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
@@ -203,10 +201,6 @@ class DetailMovieActivity : AppCompatActivity() {
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
       }
     }
-
-    // show tmdb score
-    binding.tvScoreTmdb.text = if (dataExtra.voteAverage == 0.0F) getString(not_available)
-    else dataExtra.voteAverage.toString()
 
     // setup rv cast
     binding.rvCast.layoutManager =
@@ -266,14 +260,18 @@ class DetailMovieActivity : AppCompatActivity() {
         // show runtime
         binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
 
+        // show TMDb score
+        binding.tvScoreTmdb.text =
+          if (movie.voteAverage == 0.0 || movie.voteAverage == null) getString(not_available)
+          else movie.voteAverage.toString()
+
         // show OMDb detail (score)
-        if(movie.imdbId != null) {
+        if (movie.imdbId != null) {
           detailViewModel.getScoreOMDb(movie.imdbId)
           detailViewModel.omdbResult.observe(this) {
             showDetailOMDb(it)
           }
-        }
-        else showLoading(false)
+        } else showLoading(false)
 
         // trailer
         movie.id?.let { detailViewModel.getLinkMovie(it) }
@@ -317,7 +315,6 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      // show score
       dataExtra.id?.let { detailViewModel.externalId(it) }
       detailViewModel.externalTvId.observe(this) { response ->
         when (response.status) {
@@ -503,24 +500,24 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) { // for favorite
       favorite = !state
-      val favoriteMode = Favorite(
+      val fav = Favorite(
         dataExtra.mediaType,
         dataExtra.id,
         !state
       )
       authViewModel.getUser().observe(this) { user ->
-        detailViewModel.postFavorite(user.token, favoriteMode, user.userId)
+        detailViewModel.postFavorite(user.token, fav, user.userId)
       }
 
     } else { // for watchlist
       watchlist = !state
-      val unWatchlistModel = Watchlist(
+      val wtc = Watchlist(
         dataExtra.mediaType,
         dataExtra.id,
         !state
       )
       authViewModel.getUser().observe(this) { user ->
-        detailViewModel.postWatchlist(user.token, unWatchlistModel, user.userId)
+        detailViewModel.postWatchlist(user.token, wtc, user.userId)
       }
     }
   }

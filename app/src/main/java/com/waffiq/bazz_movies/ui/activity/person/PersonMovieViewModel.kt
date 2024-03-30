@@ -81,8 +81,6 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
     }
   }
 
-  fun getSnackbar() = movieRepository.snackBarText
-
   companion object {
     const val TAG = "PersonMovieViewModel"
   }

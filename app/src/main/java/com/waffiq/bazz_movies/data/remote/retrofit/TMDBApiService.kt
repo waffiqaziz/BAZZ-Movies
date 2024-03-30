@@ -242,35 +242,35 @@ interface TMDBApiService {
   // region
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
-  fun postFavoriteTMDB(
+  suspend fun postFavoriteTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
     @Body data: Favorite
-  ): Call<PostResponse>
+  ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/watchlist?api_key=$API_KEY")
-  fun postWatchlistTMDB(
+  suspend fun postWatchlistTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
     @Body data: Watchlist
-  ): Call<PostResponse>
+  ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/movie/{movieId}/rating?api_key=$API_KEY")
-  fun postMovieRate(
+  suspend fun postMovieRate(
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String,
     @Body data: Rate
-  ): Call<PostRateResponse>
+  ): Response<PostRateResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/tv/{tvId}/rating?api_key=$API_KEY")
-  fun postTvRate(
+  suspend fun postTvRate(
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
     @Body data: Rate
-  ): Call<PostRateResponse>
+  ): Response<PostRateResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @DELETE("3/authentication/session?api_key=$API_KEY")

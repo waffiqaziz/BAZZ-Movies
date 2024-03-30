@@ -19,7 +19,7 @@ class MoreViewModel(private val movieRepository: MoviesRepository) : ViewModel()
     viewModelScope.launch {
       movieRepository.deleteAll { resultCode ->
         if (resultCode == SUCCESS) _deleteAllResult.postValue(Event(LocalDatabaseResult.Success))
-        else _deleteAllResult.postValue(Event(LocalDatabaseResult.Error("Failed to delete all items")))
+        else _deleteAllResult.postValue(Event(LocalDatabaseResult.Error("Failed to delete all data items")))
       }
     }
   }

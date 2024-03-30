@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 import com.waffiq.bazz_movies.utils.Status
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
@@ -24,22 +25,27 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
-  private val _stated = MutableLiveData<StatedResponse?>()
-  val stated: LiveData<StatedResponse?> get() = _stated
+  private val _stated = MutableLiveData<Event<StatedResponse?>>()
+  val stated: LiveData<Event<StatedResponse?>> get() = _stated
 
   private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
   val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
 
-  /**
-   * Function for database
-   */
+  private val _snackBarAlready = MutableLiveData<Event<String>>()
+  val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
+
+  private val _snackBarL = MutableLiveData<Event<SnackBarLoginData>>()
+  val snackBarL: LiveData<Event<SnackBarLoginData>> = _snackBarL
+
+
+  // region LOCAL DATABASE
   val favoriteTvFromDB =
     movieRepository.favoriteTvFromDB.asLiveData().distinctUntilChanged()
   val favoriteMoviesFromDB =
     movieRepository.favoriteMoviesFromDB.asLiveData().distinctUntilChanged()
 
   fun insertToDB(fav: FavoriteDB) {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
           LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
@@ -53,35 +59,33 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   }
 
   fun delFromFavoriteDB(fav: FavoriteDB) {
-    viewModelScope.launch { movieRepository.deleteFromDB(fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.deleteFromDB(fav) }
     _undoDB.value = Event(fav)
   }
 
   fun updateToFavoriteDB(fav: FavoriteDB) {
-    viewModelScope.launch { movieRepository.updateFavoriteItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(false, fav) }
     _undoDB.value = Event(fav)
   }
 
-  fun updateToWatchlistDB(fav: FavoriteDB)  {
-    viewModelScope.launch { movieRepository.updateWatchlistItemDB(false, fav) }
+  fun updateToWatchlistDB(fav: FavoriteDB) {
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(false, fav) }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) {
-    viewModelScope.launch { movieRepository.updateWatchlistItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(true, fav) }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) {
-    viewModelScope.launch { movieRepository.updateFavoriteItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
     _undoDB.value = Event(fav)
   }
-
   // fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
+  // endregion LOCAL DATABASE
 
-  /**
-   * Function for remote
-   */
+  // region NETWORK
   fun getFavoriteMovies(sessionId: String) =
     movieRepository.getPagingFavoriteMovies(sessionId).cachedIn(viewModelScope).asLiveData()
 
@@ -89,16 +93,21 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
 
   fun postFavorite(user: UserModel, data: Favorite) =
-    movieRepository.postFavorite(user.token, data, user.userId)
+    viewModelScope.launch { movieRepository.postFavorite(user.token, data, user.userId) }
 
   fun postWatchlist(user: UserModel, data: Watchlist) =
-    movieRepository.postWatchlist(user.token, data, user.userId)
+    viewModelScope.launch { movieRepository.postWatchlist(user.token, data, user.userId) }
 
-  fun getStatedMovie(sessionId: String, id: Int) {
+  fun getStatedMovie(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
       movieRepository.getStatedMovie(sessionId, id).collect { response ->
         when (response.status) {
-          Status.SUCCESS -> _stated.value = response.data
+          Status.SUCCESS -> {
+            if (response.data?.watchlist == true)
+              _snackBarAlready.value = Event(title)
+            else _stated.value = Event(response.data)
+          }
+
           Status.LOADING -> {}
           Status.ERROR -> {}
         }
@@ -106,16 +115,29 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     }
   }
 
-  fun getStatedTv(sessionId: String, id: Int) {
+  fun getStatedTv(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
       movieRepository.getStatedTv(sessionId, id).collect { response ->
         when (response.status) {
-          Status.SUCCESS -> _stated.value = response.data
-          Status.LOADING -> {}
+          Status.SUCCESS -> {
+            if (response.data?.watchlist == true)
+              _snackBarAlready.value = Event(title)
+            else _stated.value = Event(response.data)
+          }
+
           Status.ERROR -> {}
+          Status.LOADING -> {}
         }
       }
     }
   }
+  // endregion NETWORK
+
+  data class SnackBarLoginData(
+    val favorite: Favorite?,
+    val watchlist: Watchlist?,
+    val title: String,
+    val position: Int?
+  )
 }
 

@@ -3,6 +3,9 @@ package com.waffiq.bazz_movies.data.remote.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.local.model.Rate
+import com.waffiq.bazz_movies.data.local.model.Watchlist
 import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
@@ -29,6 +32,8 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
@@ -40,6 +45,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okio.IOException
 
 class RemoteDataSource private constructor(
   private val tmdbApiService: TMDBApiService,
@@ -51,119 +57,119 @@ class RemoteDataSource private constructor(
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { TopRatedMoviePagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { MultiTrendingWeekPagingSource(region, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { MultiTrendingDayPagingSource(region, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PopularMoviePagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { FavoriteMoviePagingSource(sessionId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { FavoriteTvPagingSource(sessionId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { WatchlistTvPagingSource(sessionId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { WatchlistMoviePagingSource(sessionId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PopularTvPagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { OnTvPagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { AiringTodayTvPagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { RecommendationMoviePagingSource(movieId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { RecommendationTvPagingSource(tvId, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { UpcomingMoviesPagingSource(region, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PlayingNowMoviesPagingSource(region, tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { TopRatedTvPagingSource(tmdbApiService) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
 
   override fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
-    ).flow
+    ).flow.flowOn(Dispatchers.IO)
   }
   // endregion PAGING FUNCTION
 
@@ -277,6 +283,108 @@ class RemoteDataSource private constructor(
         tmdbApiService.getExternalIdPerson(id)
       })
     }.flowOn(Dispatchers.IO)
+
+  override suspend  fun postFavorite(
+    sessionId: String,
+    fav: Favorite,
+    userId: Int
+  ): NetworkResult<PostResponse> {
+    return try {
+      val response = tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) {
+          NetworkResult.success(responseBody)
+        } else {
+          NetworkResult.error("Error in fetching data")
+        }
+      } else {
+        val errorMessage = response.message() ?: "Unknown error"
+        NetworkResult.error(errorMessage)
+      }
+    } catch (e: IOException) {
+      NetworkResult.error("Please check your network connection")
+    } catch (e: Exception) {
+      NetworkResult.error("Something went wrong")
+    }
+  }
+
+  override suspend fun postWatchlist(
+    sessionId: String,
+    wtc: Watchlist,
+    userId: Int
+  ): NetworkResult<PostResponse> {
+    return try {
+      val response = tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) {
+          NetworkResult.success(responseBody)
+        } else {
+          NetworkResult.error("Error in fetching data")
+        }
+      } else {
+        val errorMessage = response.message() ?: "Unknown error"
+        NetworkResult.error(errorMessage)
+      }
+    } catch (e: IOException) {
+      NetworkResult.error("Please check your network connection")
+    } catch (e: Exception) {
+      NetworkResult.error("Something went wrong")
+    }
+  }
+
+  override suspend fun postTvRate(
+    sessionId: String,
+    data: Rate,
+    tvId: Int
+  ): NetworkResult<PostRateResponse> {
+    return try {
+      val response = tmdbApiService.postTvRate(tvId, sessionId, data)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) {
+          NetworkResult.success(responseBody)
+        } else {
+          NetworkResult.error("Error in fetching data")
+        }
+      } else {
+        val errorMessage = response.message() ?: "Unknown error"
+        NetworkResult.error(errorMessage)
+      }
+    } catch (e: IOException) {
+      NetworkResult.error("Please check your network connection")
+    } catch (e: Exception) {
+      NetworkResult.error("Something went wrong")
+    }
+  }
+
+  override suspend fun postMovieRate(
+    sessionId: String,
+    data: Rate,
+    movieId: Int
+  ): NetworkResult<PostRateResponse> {
+    return try {
+      val response = tmdbApiService.postMovieRate(movieId, sessionId, data)
+      if (response.isSuccessful) {
+        val responseBody = response.body()
+        if (responseBody != null) {
+          NetworkResult.success(responseBody)
+        } else {
+          NetworkResult.error("Error in fetching data")
+        }
+      } else {
+        val errorMessage = response.message() ?: "Unknown error"
+        NetworkResult.error(errorMessage)
+      }
+    } catch (e: IOException) {
+      NetworkResult.error("Please check your network connection")
+    } catch (e: Exception) {
+      NetworkResult.error("Something went wrong")
+    }
+  }
+
+
   // endregion PERSON
 
   companion object {

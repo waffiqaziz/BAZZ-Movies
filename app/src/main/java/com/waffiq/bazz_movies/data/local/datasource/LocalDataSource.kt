@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Com
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
-import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) :
   LocalDataSourceInterface {
