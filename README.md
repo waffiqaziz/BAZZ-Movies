@@ -12,18 +12,14 @@ Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate y
 - Ensure Android Studio is installed.
 - Clone the project.
 - Build the project using the "Make project" option or by pressing Ctrl + F9.
-- Create or edit your gradle.properties file, adding API key in string format.
+- Create or edit gradle.properties file, and add API key in string format.
 ```kotlin  
-API_KEY= "YOUR_TMDB_API_KEY"  
-API_KEY_IMDB_API_LIB= "YOUR_IMDB_API_LIB_API_KEY"  
-API_KEY_OMDb= "YOUR_OBDb_API_KEY"  
+API_KEY= "TMDB_API_KEY"  
+API_KEY_OMDb= "OBDb_API_KEY"  
 ```
 ## Credits
 - [TMDB API](https://www.themoviedb.org/)
 - [OMDb API](https://www.omdbapi.com/)
-- [IMDb-API by Tuhin Kanti Pal](https://github.com/tuhinpal/imdb-api)
-- [IMDbApiLib by Haddad Dadban](https://github.com/IMDb-API/IMDbApiLib) Not Free Anymore
-- [mcgqlapi by Jarrod Thibodeau](https://mcgqlapi.com/)
 - [ExpandableTextView](https://github.com/glailton/ExpandableTextView)
 - [glide](https://bumptech.github.io/glide/)
 - [Century Gothic Font](https://www.fontshmonts.com/text-fonts/century-gothic/)
@@ -36,8 +32,9 @@ API_KEY_OMDb= "YOUR_OBDb_API_KEY"
 ## Features
 - Integrated with TMDB account
 - Save favorites and watchlist on local
+- Swipe action for easy to organize between favorite and watchlist
 - Guest session (no need login)
-- Search movies, tv-series, and person
+- Search movies, tv-series, and actors
 
 
 **This project uses the TMDB API but not endorsed or certified by TMDB.**

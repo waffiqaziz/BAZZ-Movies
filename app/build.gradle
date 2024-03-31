@@ -20,7 +20,6 @@ android {
 
     // API KEY inside gradle.properties
     buildConfigField("String", "API_KEY", API_KEY)
-    buildConfigField("String", "API_KEY_IMDB_API_LIB", API_KEY_IMDB_API_LIB)
     buildConfigField("String", "API_KEY_OMDb", API_KEY_OMDb)
 
     // BASE URL
@@ -45,6 +44,7 @@ android {
   }
   buildFeatures {
     viewBinding = true
+    buildConfig true
   }
   namespace 'com.waffiq.bazz_movies'
 }
@@ -97,7 +97,7 @@ dependencies {
 
   // glide
   implementation 'com.github.bumptech.glide:glide:4.16.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+  ksp 'com.github.bumptech.glide:compiler:4.16.0'
 
   // ExpandableTextView
   implementation 'io.github.glailton.expandabletextview:expandabletextview:1.0.4'
