@@ -73,15 +73,19 @@ class LoginActivity : AppCompatActivity() {
   private fun showPassword() {
     binding.apply {
       btnEye.setOnClickListener {
+        // save last cursor position
+        val selectionStart = edPass.selectionStart
+        val selectionEnd = edPass.selectionEnd
+
         // if not clicked yet, then hide password
         if (edPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
-          // password visible hide it
           edPass.transformationMethod = PasswordTransformationMethod.getInstance()
           btnEye.setImageResource(ic_eye_off)
-        } else {
+        } else { // show password
           edPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
           btnEye.setImageResource(ic_eye)
         }
+        edPass.setSelection(selectionStart, selectionEnd) // set cursor at last position
       }
     }
   }
