@@ -57,15 +57,11 @@
     app:layout_constraintBottom_toTopOf="@+id/ed_username"
     app:layout_constraintStart_toStartOf="parent" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_forget_password"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="6dp"
-    android:fontFamily="@font/gothic"
-    android:padding="14dp"
+    style="@style/MyTransparentButton"
+    android:layout_marginEnd="4dp"
     android:text="@string/forget_password"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="@+id/img_bazz_logo"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@+id/img_bazz_logo" />
@@ -140,29 +136,21 @@
     app:layout_constraintStart_toStartOf="parent"
     tools:ignore="DuplicateSpeakableTextCheck" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_guest"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="24dp"
-    android:fontFamily="@font/gothic"
-    android:padding="14dp"
+    style="@style/MyTransparentButton"
+    android:layout_marginBottom="20dp"
     android:text="@string/guest_session"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
     app:layout_constraintStart_toStartOf="@+id/btn_login" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_joinTMDB"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="50dp"
-    android:fontFamily="@font/gothic"
+    style="@style/MyTransparentButton"
+    android:layout_marginBottom="32dp"
     android:gravity="center"
-    android:padding="14dp"
     android:text="@string/join_tmdb"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />

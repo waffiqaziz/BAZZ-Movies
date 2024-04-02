@@ -3,9 +3,9 @@ package com.waffiq.bazz_movies.data.remote.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.local.model.Favorite
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
@@ -47,7 +47,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 
-class RemoteDataSource private constructor(
+class MovieDataSource private constructor(
   private val tmdbApiService: TMDBApiService,
   private val omDbApiService: OMDbApiService
 ) : MovieDataSourceInterface {
@@ -284,7 +284,7 @@ class RemoteDataSource private constructor(
       })
     }.flowOn(Dispatchers.IO)
 
-  override suspend  fun postFavorite(
+  override suspend fun postFavorite(
     sessionId: String,
     fav: Favorite,
     userId: Int
@@ -293,11 +293,8 @@ class RemoteDataSource private constructor(
       val response = tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
       if (response.isSuccessful) {
         val responseBody = response.body()
-        if (responseBody != null) {
-          NetworkResult.success(responseBody)
-        } else {
-          NetworkResult.error("Error in fetching data")
-        }
+        if (responseBody != null) NetworkResult.success(responseBody)
+        else NetworkResult.error("Error in fetching data")
       } else {
         val errorMessage = response.message() ?: "Unknown error"
         NetworkResult.error(errorMessage)
@@ -318,11 +315,8 @@ class RemoteDataSource private constructor(
       val response = tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
       if (response.isSuccessful) {
         val responseBody = response.body()
-        if (responseBody != null) {
-          NetworkResult.success(responseBody)
-        } else {
-          NetworkResult.error("Error in fetching data")
-        }
+        if (responseBody != null) NetworkResult.success(responseBody)
+        else NetworkResult.error("Error in fetching data")
       } else {
         val errorMessage = response.message() ?: "Unknown error"
         NetworkResult.error(errorMessage)
@@ -343,11 +337,8 @@ class RemoteDataSource private constructor(
       val response = tmdbApiService.postTvRate(tvId, sessionId, data)
       if (response.isSuccessful) {
         val responseBody = response.body()
-        if (responseBody != null) {
-          NetworkResult.success(responseBody)
-        } else {
-          NetworkResult.error("Error in fetching data")
-        }
+        if (responseBody != null) NetworkResult.success(responseBody)
+        else NetworkResult.error("Error in fetching data")
       } else {
         val errorMessage = response.message() ?: "Unknown error"
         NetworkResult.error(errorMessage)
@@ -368,11 +359,8 @@ class RemoteDataSource private constructor(
       val response = tmdbApiService.postMovieRate(movieId, sessionId, data)
       if (response.isSuccessful) {
         val responseBody = response.body()
-        if (responseBody != null) {
-          NetworkResult.success(responseBody)
-        } else {
-          NetworkResult.error("Error in fetching data")
-        }
+        if (responseBody != null) NetworkResult.success(responseBody)
+        else NetworkResult.error("Error in fetching data")
       } else {
         val errorMessage = response.message() ?: "Unknown error"
         NetworkResult.error(errorMessage)
@@ -388,19 +376,19 @@ class RemoteDataSource private constructor(
   // endregion PERSON
 
   companion object {
-    const val TAG = "RemoteDataSource"
+    const val TAG = "MovieDataSource"
 
     @Volatile
-    private var instance: RemoteDataSource? = null
+    private var instance: MovieDataSource? = null
 
+    @JvmStatic
     fun getInstance(
       tmdbApiService: TMDBApiService,
       omDbApiService: OMDbApiService
-    ): RemoteDataSource =
-      instance ?: synchronized(this) {
-        instance ?: RemoteDataSource(
-          tmdbApiService, omDbApiService
-        )
-      }
+    ): MovieDataSource = instance ?: synchronized(this) {
+      instance ?: MovieDataSource(
+        tmdbApiService, omDbApiService
+      )
+    }
   }
 }

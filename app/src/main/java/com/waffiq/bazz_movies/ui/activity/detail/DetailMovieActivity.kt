@@ -58,9 +58,9 @@ import com.waffiq.bazz_movies.R.string.not_available_full
 import com.waffiq.bazz_movies.R.string.status_
 import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
-import com.waffiq.bazz_movies.data.local.model.Favorite
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
@@ -73,7 +73,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
-import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_TRAILER
+import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistFalse
 import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistFalse
@@ -121,7 +121,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun checkUser() {
-    authViewModel.getUser().observe(this) {
+    authViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
 
       // hide user score if login as guest
@@ -174,6 +174,9 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
+    // error handling
+    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
+
     // shows backdrop
     Glide.with(binding.ivPicture).load(
       if (dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
@@ -397,7 +400,7 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.ibPlay.setOnClickListener {
       try {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("$YOUTUBE_LINK_TRAILER$link")
+        intent.data = Uri.parse("$YOUTUBE_LINK_VIDEO$link")
         startActivity(intent)
       } catch (e: Exception) {
         Snackbar.make(
@@ -505,7 +508,7 @@ class DetailMovieActivity : AppCompatActivity() {
         dataExtra.id,
         !state
       )
-      authViewModel.getUser().observe(this) { user ->
+      authViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postFavorite(user.token, fav, user.userId)
       }
 
@@ -516,7 +519,7 @@ class DetailMovieActivity : AppCompatActivity() {
         dataExtra.id,
         !state
       )
-      authViewModel.getUser().observe(this) { user ->
+      authViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postWatchlist(user.token, wtc, user.userId)
       }
     }
@@ -535,7 +538,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun isFavoriteWatchlist(isLogin: Boolean) {
     if (isLogin) { //user
-      authViewModel.getUser().observe(this) { user ->
+      authViewModel.getUserPref().observe(this) { user ->
         getStated(user.token)
         detailViewModel.stated.observe(this) {
           if (it != null) {
@@ -637,7 +640,7 @@ class DetailMovieActivity : AppCompatActivity() {
     buttonYesAlert.setOnClickListener {
       showToastShort(this, "Rating: ${ratingBar.rating * 2}")
       val rate = Rate(value = ratingBar.rating * 2)
-      authViewModel.getUser().observe(this) { user ->
+      authViewModel.getUserPref().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
           dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, rate, it1) }
         else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, rate, it1) }
@@ -665,7 +668,6 @@ class DetailMovieActivity : AppCompatActivity() {
     snackbarView.setBackgroundColor(ContextCompat.getColor(this, red_matte))
     snackBar.show()
   }
-
 
   private fun hideTrailer(hide: Boolean) {
     binding.ibPlay.isVisible = !hide

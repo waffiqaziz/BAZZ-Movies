@@ -104,6 +104,8 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun showData() {
+    // error and loading handle
+    personMovieViewModel.errorState.observe(this) { showSnackBarWarning(it) }
     personMovieViewModel.loadingState.observe(this) { showLoading(it) }
 
     // setup recycle view and adapter
@@ -130,51 +132,57 @@ class PersonActivity : AppCompatActivity() {
     dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
     personMovieViewModel.externalIdPerson.observe(this) { externalID ->
 
-      // show or hide social media
-      if (!externalID.instagramId.isNullOrEmpty()) {
-        binding.ivInstagram.visibility = View.VISIBLE
-        binding.ivInstagram.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_LINK + externalID.instagramId))
-          )
-        }
-      } else binding.ivInstagram.visibility = View.GONE
+      if (!externalID.instagramId.isNullOrEmpty() || !externalID.twitterId.isNullOrEmpty() || !externalID.facebookId.isNullOrEmpty() ||
+        !externalID.tiktokId.isNullOrEmpty() || !externalID.youtubeId.isNullOrEmpty()
+      ) {
+        binding.viewGroupSocialMedia.visibility = View.VISIBLE
 
-      if (!externalID.twitterId.isNullOrEmpty()) {
-        binding.ivX.visibility = View.VISIBLE
-        binding.ivX.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(X_LINK + externalID.twitterId))
-          )
-        }
-      } else binding.ivX.visibility = View.GONE
+        // show or hide social media
+        if (!externalID.instagramId.isNullOrEmpty()) {
+          binding.ivInstagram.visibility = View.VISIBLE
+          binding.ivInstagram.setOnClickListener {
+            startActivity(
+              Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_LINK + externalID.instagramId))
+            )
+          }
+        } else binding.ivInstagram.visibility = View.GONE
 
-      if (!externalID.facebookId.isNullOrEmpty()) {
-        binding.ivFacebook.visibility = View.VISIBLE
-        binding.ivFacebook.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_LINK + externalID.facebookId))
-          )
-        }
-      } else binding.ivFacebook.visibility = View.GONE
+        if (!externalID.twitterId.isNullOrEmpty()) {
+          binding.ivX.visibility = View.VISIBLE
+          binding.ivX.setOnClickListener {
+            startActivity(
+              Intent(Intent.ACTION_VIEW, Uri.parse(X_LINK + externalID.twitterId))
+            )
+          }
+        } else binding.ivX.visibility = View.GONE
 
-      if (!externalID.tiktokId.isNullOrEmpty()) {
-        binding.ivTiktok.visibility = View.VISIBLE
-        binding.ivTiktok.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(TIKTOK_PERSON_LINK + externalID.tiktokId))
-          )
-        }
-      } else binding.ivTiktok.visibility = View.GONE
+        if (!externalID.facebookId.isNullOrEmpty()) {
+          binding.ivFacebook.visibility = View.VISIBLE
+          binding.ivFacebook.setOnClickListener {
+            startActivity(
+              Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_LINK + externalID.facebookId))
+            )
+          }
+        } else binding.ivFacebook.visibility = View.GONE
 
-      if (!externalID.youtubeId.isNullOrEmpty()) {
-        binding.ivYoutube.visibility = View.VISIBLE
-        binding.ivYoutube.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_CHANNEL_LINK + externalID.youtubeId))
-          )
-        }
-      } else binding.ivYoutube.visibility = View.GONE
+        if (!externalID.tiktokId.isNullOrEmpty()) {
+          binding.ivTiktok.visibility = View.VISIBLE
+          binding.ivTiktok.setOnClickListener {
+            startActivity(
+              Intent(Intent.ACTION_VIEW, Uri.parse(TIKTOK_PERSON_LINK + externalID.tiktokId))
+            )
+          }
+        } else binding.ivTiktok.visibility = View.GONE
+
+        if (!externalID.youtubeId.isNullOrEmpty()) {
+          binding.ivYoutube.visibility = View.VISIBLE
+          binding.ivYoutube.setOnClickListener {
+            startActivity(
+              Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_CHANNEL_LINK + externalID.youtubeId))
+            )
+          }
+        } else binding.ivYoutube.visibility = View.GONE
+      } else binding.viewGroupSocialMedia.visibility = View.GONE
 
       if (!externalID.imdbId.isNullOrEmpty()) {
         binding.ivImdb.visibility = View.VISIBLE

@@ -13,15 +13,14 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Helper.checkInternet
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 
 class TvSeriesFragment : Fragment() {
 
@@ -40,7 +39,6 @@ class TvSeriesFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-    showSnackBarNoAction(checkInternet(requireContext()))
     setData()
 
     return root
@@ -100,7 +98,6 @@ class TvSeriesFragment : Fragment() {
       topRatedAdapter.refresh()
       popularAdapter.refresh()
       onTvAdapter.refresh()
-      showSnackBarNoAction(checkInternet(requireContext()))
       binding.swipeRefresh.isRefreshing = false
     }
   }
@@ -118,7 +115,10 @@ class TvSeriesFragment : Fragment() {
         loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
         else -> null
       }
-      errorState?.let { showToastShort(requireActivity(), it.error.toString()) }
+      errorState?.let {
+        val errorMessage = pagingErrorHandling(it.error)
+        showSnackBarNoAction(errorMessage)
+      }
     }
   }
 

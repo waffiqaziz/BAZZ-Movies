@@ -1,17 +1,17 @@
 package com.waffiq.bazz_movies.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import com.waffiq.bazz_movies.R.string.no_connection
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
+import okio.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
@@ -284,23 +284,13 @@ object Helper {
     return job to name
   }
 
-  private fun isInternetConnectionAvailable(context: Context): Boolean {
-    val result: Boolean
-    val connectivityManager =
-      context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkCapabilities = connectivityManager.activeNetwork ?: return false
-    val actNw =
-      connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-    result = when {
-      actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-      actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-      actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-      else -> false
-    }
-    return result
-  }
 
-  fun checkInternet(context: Context): String {
-    return if (!isInternetConnectionAvailable(context)) context.getString(no_connection) else ""
+  fun pagingErrorHandling(error: Throwable): String {
+    return when (error) {
+      is SocketTimeoutException -> "Connection timed out. Please try again."
+      is UnknownHostException -> "Unable to resolve server hostname. Please check your internet connection."
+      is IOException -> "Please check your network connection"
+      else -> "Something went wrong"
+    }
   }
 }

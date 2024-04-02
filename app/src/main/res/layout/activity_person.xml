@@ -94,9 +94,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
+          android:visibility="gone"
           app:layout_constraintEnd_toEndOf="@+id/tv_Name"
           app:layout_constraintStart_toStartOf="@+id/tv_Name"
-          app:layout_constraintTop_toBottomOf="@+id/tv_Name">
+          app:layout_constraintTop_toBottomOf="@+id/tv_Name"
+          tools:visibility="visible">
 
           <ImageView
             android:id="@+id/iv_instagram"
@@ -168,13 +170,17 @@
             android:id="@+id/iv_imdb"
             style="@style/MySocialMediaButton"
             android:contentDescription="@string/open_actor_actress_imdb_page"
-            android:src="@drawable/ic_imdb" />
+            android:src="@drawable/ic_imdb"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
           <ImageView
             android:id="@+id/iv_wikidata"
             style="@style/MySocialMediaButton"
             android:contentDescription="@string/open_actor_actress_wikidata_page"
-            android:src="@drawable/ic_wikidata" />
+            android:src="@drawable/ic_wikidata"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
           <View
             android:id="@+id/divider1"
@@ -187,7 +193,9 @@
             android:id="@+id/iv_link"
             style="@style/MySocialMediaButton"
             android:contentDescription="@string/open_actor_actress_home_page"
-            android:src="@drawable/ic_link" />
+            android:src="@drawable/ic_link"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         </LinearLayout>
 

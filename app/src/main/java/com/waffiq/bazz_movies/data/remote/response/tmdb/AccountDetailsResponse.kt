@@ -44,5 +44,5 @@ data class Gravatar(
 data class Tmdb(
 
 	@field:SerializedName("avatar_path")
-	val avatarPath: Any? = null
+	val avatarPath: String? = null
 )

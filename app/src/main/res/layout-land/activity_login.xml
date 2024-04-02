@@ -7,16 +7,39 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.LoginActivity">
 
-  <ImageView
-    android:id="@+id/img_poster"
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:adjustViewBounds="true"
-    android:background="@color/black"
-    android:contentDescription="@string/poster"
-    android:src="@drawable/bg_login"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:orientation="horizontal">
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+  </LinearLayout>
+
 
   <ImageView
     android:id="@+id/img_bazz_logo"
@@ -46,7 +69,6 @@
     android:id="@+id/textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
     android:contentDescription="@string/text_login"
     android:fontFamily="@font/gothicb"
     android:text="@string/login"
@@ -55,15 +77,11 @@
     app:layout_constraintBottom_toTopOf="@+id/ed_username"
     app:layout_constraintStart_toStartOf="@+id/ed_username" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_forget_password"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/MyTransparentButton"
     android:layout_marginEnd="@dimen/default_margin_parent_20"
-    android:fontFamily="@font/gothic"
-    android:padding="14dp"
     android:text="@string/forget_password"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="@+id/img_bazz_logo"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@+id/img_bazz_logo" />
@@ -72,7 +90,6 @@
     android:id="@+id/ed_username"
     android:layout_width="450dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:autofillHints="emailAddress"
     android:fontFamily="@font/gothic"
     android:hint="@string/username"
@@ -91,7 +108,6 @@
     android:id="@+id/ed_pass"
     android:layout_width="450dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:autofillHints="password"
     android:fontFamily="@font/gothic"
     android:hint="@string/password"
@@ -103,7 +119,7 @@
     android:textCursorDrawable="@drawable/cursor_color"
     app:layout_constraintBottom_toTopOf="@+id/btn_login"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="@+id/img_poster"
+    app:layout_constraintStart_toStartOf="parent"
     tools:ignore="LabelFor,DuplicateSpeakableTextCheck" />
 
   <ImageView
@@ -132,28 +148,20 @@
     app:layout_constraintStart_toStartOf="parent"
     tools:ignore="DuplicateSpeakableTextCheck" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_guest"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:fontFamily="@font/gothic"
-    android:padding="14dp"
+    style="@style/MyTransparentButton"
     android:text="@string/guest_session"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
     app:layout_constraintStart_toStartOf="@+id/btn_login" />
 
-  <TextView
+  <Button
     android:id="@+id/tv_joinTMDB"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:fontFamily="@font/gothic"
+    style="@style/MyTransparentButton"
+    android:layout_marginBottom="8dp"
     android:gravity="center"
-    android:padding="14dp"
     android:text="@string/join_tmdb"
-    android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
     app:layout_constraintStart_toStartOf="@+id/btn_login" />

@@ -8,10 +8,10 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
@@ -91,9 +91,9 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedMovie(sessionId, id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> _stated.value = Event(response.data)
+      movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> _stated.value = Event(networkResult.data)
           Status.LOADING -> {}
           Status.ERROR -> {}
         }
@@ -103,9 +103,9 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedTv(sessionId, id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> _stated.value = Event(response.data)
+      movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> _stated.value = Event(networkResult.data)
           Status.LOADING -> {}
           Status.ERROR -> {}
         }

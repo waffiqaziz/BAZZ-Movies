@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -18,7 +19,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.font.gothic
 import com.waffiq.bazz_movies.R.string.sign_out_success
 import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
@@ -29,7 +33,7 @@ import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.local.model.SessionID
+import com.waffiq.bazz_movies.data.remote.SessionID
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
@@ -37,6 +41,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
@@ -44,6 +49,7 @@ import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.Status
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -68,7 +74,7 @@ class MoreFragment : Fragment() {
     val factory = ViewModelUserFactory.getInstance(pref)
     authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
     moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
-    moreViewModelUser.getSnackBarText().observe(viewLifecycleOwner) { showSnackBar(it) }
+    moreViewModelUser.errorState.observe(viewLifecycleOwner) { showSnackBar(it) }
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
     moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
@@ -79,7 +85,27 @@ class MoreFragment : Fragment() {
     setTypeface()
     setData()
     btnAction()
+    signOutStateObserver()
     return root
+  }
+
+  private fun signOutStateObserver() {
+    moreViewModelUser.signOutState.observe(viewLifecycleOwner) { result ->
+      when (result.status) {
+        Status.SUCCESS -> {
+          if (result.data?.success == true) {
+            showToastShort(requireContext(), getString(sign_out_success))
+            removePrefUserData() // remove preference user data
+          }
+        }
+
+        Status.LOADING -> {}
+        Status.ERROR -> {
+          showSnackBar(Event(result.message.toString()))
+        }
+      }
+
+    }
   }
 
   private fun setTypeface() {
@@ -107,15 +133,12 @@ class MoreFragment : Fragment() {
     }
 
     binding.btnSignout.setOnClickListener {
-      authViewModel.getUser().observe(viewLifecycleOwner) { user ->
+      authViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
         // sign out for guest account
         if (user.token == "NaN" || user.token.isEmpty()) {
           dialogSignOutGuestMode()
         } else { // sign out for login account
-          Log.e("More Fragment", "token login")
           moreViewModelUser.deleteSession(SessionID(user.token)) // revoke session for login user
-          removePrefUserData() // remove preference user data
-          showToastShort(requireContext(), getString(sign_out_success))
         }
       }
     }
@@ -133,6 +156,7 @@ class MoreFragment : Fragment() {
             requireActivity(),
             getString(all_data_deleted)
           )
+
           is LocalDatabaseResult.Error -> showToastShort(requireActivity(), result.message)
         }
       }
@@ -164,20 +188,24 @@ class MoreFragment : Fragment() {
   }
 
   private fun setData() {
-
-    authViewModel.getUser().observe(viewLifecycleOwner) {
+    authViewModel.getUserPref().observe(viewLifecycleOwner) {
       binding.apply {
         tvFullName.text = it.name
         tvUsername.text = it.username
+        val link = if (!it.gravatarHast.isNullOrEmpty()) {
+          "$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200"
+        } else if (!it.tmdbAvatar.isNullOrEmpty()) {
+          "$TMDB_IMG_LINK_AVATAR${it.tmdbAvatar}" + ".png"
+        } else GRAVATAR_LINK
 
         Glide.with(binding.imgAvatar)
-          .load("$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200")
+          .load(link)
+          .transform(CenterCrop())
+          .transition(withCrossFade())
           .placeholder(ic_launcher)
           .error(ic_broken_image)
           .into(binding.imgAvatar)
       }
-
-
     }
 
     // check if user already have countryCode
@@ -185,7 +213,7 @@ class MoreFragment : Fragment() {
 
       if (userCountry.equals("NaN")) { // if not yet, then set country
         moreViewModelUser.getCountryCode()
-        moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
+        moreViewModelUser.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
           if (countryCode.isNotEmpty()) {
             moreViewModelUser.saveUserRegion(countryCode)
@@ -198,11 +226,15 @@ class MoreFragment : Fragment() {
 
   private fun showSnackBar(eventMessage: Event<String>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
-    Snackbar.make(
+    val snackBar = Snackbar.make(
       binding.constraintLayout,
       message,
       Snackbar.LENGTH_SHORT
-    ).show()
+    ).setAnchorView(binding.guideSnackbar)
+
+    val snackbarView = snackBar.view
+    snackbarView.setBackgroundColor(ContextCompat.getColor(requireActivity(), red_matte))
+    snackBar.show()
   }
 
   override fun onDestroyView() {

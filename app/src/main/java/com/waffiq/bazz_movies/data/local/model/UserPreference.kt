@@ -20,12 +20,13 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
       it[REGION_KEY] = user.region
       it[TOKEN_KEY] = user.token
       it[STATE_KEY] = user.isLogin
-      it[GRAVATAR_KEY] = user.gravatarHast
+      it[GRAVATAR_KEY] = user.gravatarHast ?: ""
+      it[TMDB_AVATAR_KEY] = user.tmdbAvatar ?: ""
     }
   }
 
-  fun getUser(): Flow<UserModel> {
-    return dataStore.data.map {
+  fun getUser(): Flow<UserModel> =
+    dataStore.data.map {
       UserModel(
         it[USERID_KEY] ?: 0,
         it[NAME_KEY] ?: "",
@@ -34,18 +35,16 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         it[REGION_KEY] ?: "",
         it[TOKEN_KEY] ?: "",
         it[STATE_KEY] ?: false,
-        it[GRAVATAR_KEY] ?: ""
+        it[GRAVATAR_KEY] ?: "",
+        it[TMDB_AVATAR_KEY] ?: ""
       )
     }
-  }
 
   suspend fun saveRegion(region: String) {
     dataStore.edit { it[REGION_KEY] = region }
   }
 
-  fun getRegion(): Flow<String> {
-    return dataStore.data.map { it[REGION_KEY] ?: "" }
-  }
+  fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY] ?: "" }
 
   suspend fun removeUserData() { // remove all data from datastore
     dataStore.edit {
@@ -56,6 +55,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
       it[TOKEN_KEY] = ""
       it[PASSWORD_KEY] = ""
       it[GRAVATAR_KEY] = ""
+      it[TMDB_AVATAR_KEY] = ""
       it[STATE_KEY] = false
     }
   }
@@ -72,6 +72,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
     private val REGION_KEY = stringPreferencesKey("region")
     private val STATE_KEY = booleanPreferencesKey("state")
     private val GRAVATAR_KEY = stringPreferencesKey("gravatar")
+    private val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
 
     fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
       return INSTANCE ?: synchronized(this) {

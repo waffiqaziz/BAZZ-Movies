@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.local.model
+package com.waffiq.bazz_movies.data.remote
 
 import com.google.gson.annotations.SerializedName
 

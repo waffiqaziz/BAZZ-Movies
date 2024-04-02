@@ -40,9 +40,9 @@ import com.waffiq.bazz_movies.R.string.already_favorite
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.R.string.undo
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 
@@ -87,7 +87,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     binding.rvWatchlistTv.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show favorite data from TMDB API
         initAction(isLogin = true)
         setDataUserLoginProgressBarEmptyView(user.token)
@@ -264,7 +264,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       watchlist = false
     )
 
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
       viewModel.postWatchlist(user, watchlistMode)
     }
     showSnackBarUserLogin(title, null, watchlistMode, position)
@@ -277,7 +277,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       favorite = true
     )
 
-    viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
       viewModel.getStatedTv(user.token, tvId)
       viewModel.stated.observe(viewLifecycleOwner) { event ->
         event.getContentIfNotHandled()?.let {
@@ -336,12 +336,12 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
       if (wtc != null) {
-        viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+        viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
           viewModel.postWatchlist(user, wtc.copy(watchlist = true))
         }
         adapterPaging.notifyItemInserted(pos)
       } else if (fav != null) {
-        viewModelAuth.getUser().observe(viewLifecycleOwner) { user ->
+        viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
           viewModel.postFavorite(user, fav.copy(favorite = true))
         }
       }

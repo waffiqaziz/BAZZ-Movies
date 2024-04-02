@@ -25,7 +25,6 @@ import com.waffiq.bazz_movies.R.string.nan
 import com.waffiq.bazz_movies.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.R.string.guest_user
-import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.R.string.login_successful
 import com.waffiq.bazz_movies.R.font.gothic
@@ -45,7 +44,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class LoginActivity : AppCompatActivity() {
   private lateinit var binding: ActivityLoginBinding
   private lateinit var authenticationViewModel: AuthenticationViewModel
-  private lateinit var user: UserModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -91,16 +89,6 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun btnListener() {
-    user = UserModel(
-      userId = 0,
-      name = getString(nan),
-      username = getString(nan),
-      password = getString(nan),
-      region = getString(nan),
-      token = getString(nan),
-      isLogin = false,
-      gravatarHast = getString(nan)
-    )
 
     // login as user
     binding.btnLogin.setOnClickListener {
@@ -134,10 +122,19 @@ class LoginActivity : AppCompatActivity() {
 
     // login as guest
     binding.tvGuest.setOnClickListener {
-      user.name = resources.getString(guest_user)
-      user.username = resources.getString(no_data)
-      user.isLogin = true
-      authenticationViewModel.saveUser(user)
+      val guestUser = UserModel(
+        userId = 0,
+        name = resources.getString(guest_user),
+        username = resources.getString(guest_user),
+        password = getString(nan),
+        region = getString(nan),
+        token = getString(nan),
+        isLogin = true,
+        gravatarHast = null,
+        tmdbAvatar = null
+      )
+
+      authenticationViewModel.saveUser(guestUser)
       goToMainActivity(isGuest = true)
     }
   }
@@ -161,11 +158,10 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun loginAsUserRegistered() {
-    user.username = binding.edUsername.text.toString()
-    user.password = binding.edPass.text.toString()
-    user.isLogin = true
+    val username = binding.edUsername.text.toString()
+    val password = binding.edPass.text.toString()
 
-    authenticationViewModel.getLoading().observe(this) { showLoading(it) }
+    authenticationViewModel.loadingState.observe(this) { showLoading(it) }
 
     /**
      * to login follow this step
@@ -176,31 +172,39 @@ class LoginActivity : AppCompatActivity() {
 
     // 1. create request token
     authenticationViewModel.createToken()
-    authenticationViewModel.getToken().observe(this) { token ->
+    authenticationViewModel.token.observe(this) { token ->
 
       // 2. Get the user to authorize the request token
-      authenticationViewModel.login(user.username, user.password, token)
-      authenticationViewModel.getTokenVerified().observe(this) { tokenVerified ->
+      authenticationViewModel.login(username, password, token)
+      authenticationViewModel.tokenVerified.observe(this) { tokenVerified ->
 
         // 3. create a new session with authorized token
         authenticationViewModel.createSession(tokenVerified)
-        authenticationViewModel.getSessionId().observe(this) { sessionId ->
+        authenticationViewModel.sessionId.observe(this) { sessionId ->
 
-          user.token = sessionId
           authenticationViewModel.getUserDetail(sessionId)
-          authenticationViewModel.getDataUserDetail().observe(this) {
-            user.gravatarHast = it.gravatarHast
-            user.name = it.name
-            user.userId = it.userId
+          authenticationViewModel.userModel.observe(this) { dataUser ->
 
-            authenticationViewModel.saveUser(user)
+            val userLoginModel = UserModel(
+              userId = dataUser.userId,
+              name = dataUser.name,
+              username = dataUser.username,
+              password = getString(nan),
+              region = getString(nan),
+              token = sessionId,
+              isLogin = true,
+              gravatarHast = dataUser.gravatarHast,
+              tmdbAvatar = dataUser.tmdbAvatar
+            )
+
+            authenticationViewModel.saveUser(userLoginModel)
             goToMainActivity(isGuest = false)
           }
         }
       }
     }
 
-    authenticationViewModel.getSnackBarText().observe(this) { showSnackBar(it) }
+    authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
   }
 
   private fun showSnackBar(eventMessage: Event<String>) {

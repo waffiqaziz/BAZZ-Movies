@@ -9,10 +9,10 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
@@ -53,6 +53,9 @@ class DetailMovieViewModel(
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
 
+  private val _errorState = MutableLiveData<Event<String>>()
+  val errorState: LiveData<Event<String>> get() = _errorState
+
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
@@ -75,18 +78,19 @@ class DetailMovieViewModel(
   // region MOVIE
   fun getLinkMovie(movieId: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoMovies(movieId).collect { response ->
-        when (response.status) {
+      movieRepository.getVideoMovies(movieId).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
             try {
-              if (response.data != null) {
-                var link = response.data.results.filter {
+              if (networkResult.data != null) {
+                var link = networkResult.data.results.filter {
                   it.official == true && it.type.equals("Trailer")
                 }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
 
                 if (link.isBlank() || link.isEmpty()) {
                   link =
-                    response.data.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                    networkResult.data.results.map { it.key }.firstOrNull().toString()
+                      .replace("[", "")
                       .replace("]", "")
                   _linkVideo.value = link
                 } else _linkVideo.value = link
@@ -97,7 +101,10 @@ class DetailMovieViewModel(
           }
 
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -105,13 +112,14 @@ class DetailMovieViewModel(
 
   fun detailMovie(id: Int) {
     viewModelScope.launch {
-      movieRepository.getDetailMovie(id).collect { response ->
-        when (response.status) {
+      movieRepository.getDetailMovie(id).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            response.data.let { _detailMovie.value = it }
+            networkResult.data.let { _detailMovie.value = it }
             var productionCountry: String
             try {
-              productionCountry = response.data?.productionCountries?.get(0)?.iso31661.toString()
+              productionCountry =
+                networkResult.data?.productionCountries?.get(0)?.iso31661.toString()
               _productionCountry.value = productionCountry
             } catch (e: IndexOutOfBoundsException) {
               _productionCountry.value = "N/A"
@@ -120,7 +128,7 @@ class DetailMovieViewModel(
             try {
               if (productionCountry.isEmpty()) _ageRating.value = "N/A"
               else {
-                _ageRating.value = response.data?.releaseDates?.results?.filter {
+                _ageRating.value = networkResult.data?.releaseDates?.results?.filter {
                   it?.iso31661 == "US" || it?.iso31661 == productionCountry
                 }?.map {
                   it?.releaseDateValue?.get(0)?.certification
@@ -133,7 +141,10 @@ class DetailMovieViewModel(
           }
 
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -141,15 +152,18 @@ class DetailMovieViewModel(
 
   fun getMovieCredits(movieId: Int) {
     viewModelScope.launch {
-      movieRepository.getCreditMovies(movieId).collect { response ->
-        when (response.status) {
+      movieRepository.getCreditMovies(movieId).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            val responseData = response.data
+            val responseData = networkResult.data
             responseData.let { _movieTvCreditsResult.value = it }
           }
 
-          Status.ERROR -> _loadingState.value = false
           Status.LOADING -> {}
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -160,11 +174,14 @@ class DetailMovieViewModel(
 
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedMovie(sessionId, id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> response.data.let { _stated.value = it }
+      movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> networkResult.data.let { _stated.value = it }
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -174,11 +191,11 @@ class DetailMovieViewModel(
   // region TV-SERIES
   fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoTv(tvId).collect { response ->
-        when (response.status) {
+      movieRepository.getVideoTv(tvId).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
             try {
-              val responseData = response.data
+              val responseData = networkResult.data
               if (responseData != null) {
                 var link = responseData.results.filter {
                   it.official == true && it.type.equals("Trailer")
@@ -186,7 +203,8 @@ class DetailMovieViewModel(
 
                 if (link.isBlank() || link.isEmpty()) {
                   link =
-                    responseData.results.map { it.key }.firstOrNull().toString().replace("[", "")
+                    responseData.results.map { it.key }.firstOrNull().toString()
+                      .replace("[", "")
                       .replace("]", "")
                   _linkVideo.value = link
                 } else _linkVideo.value = link
@@ -197,7 +215,10 @@ class DetailMovieViewModel(
           }
 
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -205,15 +226,15 @@ class DetailMovieViewModel(
 
   fun detailTv(id: Int) {
     viewModelScope.launch {
-      movieRepository.getDetailTv(id).collect { response ->
-        when (response.status) {
+      movieRepository.getDetailTv(id).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            if (response.data != null) {
-              response.data.let { _detailTv.value = it }
+            if (networkResult.data != null) {
+              networkResult.data.let { _detailTv.value = it }
               try { // get age rating
-                val productionCountry = response.data.productionCountries?.get(0)?.iso31661
+                val productionCountry = networkResult.data.productionCountries?.get(0)?.iso31661
                 _productionCountry.value = productionCountry ?: "N/A"
-                _ageRating.value = response.data.contentRatings?.results?.filter {
+                _ageRating.value = networkResult.data.contentRatings?.results?.filter {
                   it?.iso31661 == "US" || it?.iso31661 == productionCountry
                 }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
                   .replace(" ", "").replace(",", ", ")
@@ -228,7 +249,10 @@ class DetailMovieViewModel(
           }
 
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -236,11 +260,14 @@ class DetailMovieViewModel(
 
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
-      movieRepository.getCreditTv(tvId).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> response.data.let { _movieTvCreditsResult.value = it }
-          Status.ERROR -> _loadingState.value = false
+      movieRepository.getCreditTv(tvId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> networkResult.data.let { _movieTvCreditsResult.value = it }
           Status.LOADING -> {}
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -248,11 +275,14 @@ class DetailMovieViewModel(
 
   fun externalId(id: Int) {
     viewModelScope.launch {
-      movieRepository.getExternalTvId(id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> _externalTvId.value = response
+      movieRepository.getExternalTvId(id).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> _externalTvId.value = networkResult
           Status.LOADING -> {}
-          Status.ERROR -> _externalTvId.value = response
+          Status.ERROR -> {
+            _externalTvId.value = networkResult
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -263,11 +293,14 @@ class DetailMovieViewModel(
 
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedTv(sessionId, id).collect { response ->
-        when (response.status) {
-          Status.SUCCESS -> response.data.let { _stated.value = it }
+      movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> networkResult.data.let { _stated.value = it }
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -276,30 +309,35 @@ class DetailMovieViewModel(
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
-      movieRepository.getDetailOMDb(imdbId).collect { response ->
-        when (response.status) {
+      movieRepository.getDetailOMDb(imdbId).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            response.data.let { _omdbResult.value = it }
+            networkResult.data.let { _omdbResult.value = it }
             _loadingState.value = false
           }
 
           Status.LOADING -> {}
-          Status.ERROR -> _loadingState.value = false
+          Status.ERROR -> {
+            _loadingState.value = false
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
   }
 
   // region DB FUNCTION
-  fun isFavoriteDB(id: Int, mediaType: String) =
+  fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch(Dispatchers.IO) {
-      _isFavorite.value = movieRepository.isFavoriteDB(id, mediaType)
+      _isFavorite.postValue(movieRepository.isFavoriteDB(id, mediaType))
     }
+  }
 
-  fun isWatchlistDB(id: Int, mediaType: String) =
+  fun isWatchlistDB(id: Int, mediaType: String) {
     viewModelScope.launch(Dispatchers.IO) {
-      _isWatchlist.value = movieRepository.isWatchlistDB(id, mediaType)
+      _isWatchlist.postValue(movieRepository.isWatchlistDB(id, mediaType))
     }
+  }
 
   fun insertToDB(fav: FavoriteDB) {
     viewModelScope.launch(Dispatchers.IO) {
@@ -340,11 +378,7 @@ class DetailMovieViewModel(
 
   fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
     viewModelScope.launch(Dispatchers.IO) {
-      movieRepository.postMovieRate(
-        sessionId,
-        data,
-        movieId
-      )
+      movieRepository.postMovieRate(sessionId, data, movieId)
     }
 
   fun postTvRate(sessionId: String, data: Rate, tvId: Int) =

@@ -38,7 +38,7 @@ class SplashScreenActivity : AppCompatActivity() {
     //add splash screen with fade transition 2 second
     binding.imgLogo.animate().setDuration(DELAY_TIME_SPLASH_SCREEN).alpha(1f).withEndAction {
 
-      authenticationViewModel.getUser().observe(this) {
+      authenticationViewModel.getUserPref().observe(this) {
         if (it.isLogin) gotoMainActivity(true)
         else gotoMainActivity(false)
       }

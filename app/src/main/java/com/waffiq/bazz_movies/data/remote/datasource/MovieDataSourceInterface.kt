@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.local.model.Favorite
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse

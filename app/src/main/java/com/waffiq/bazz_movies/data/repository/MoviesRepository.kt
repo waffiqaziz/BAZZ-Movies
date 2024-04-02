@@ -3,117 +3,117 @@ package com.waffiq.bazz_movies.data.repository
 import android.util.Log
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSource
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
-import com.waffiq.bazz_movies.data.remote.datasource.RemoteDataSource
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import kotlinx.coroutines.flow.Flow
 
 class MoviesRepository(
   private val localDataSource: LocalDataSource,
-  private val remoteDataSource: RemoteDataSource
+  private val movieDataSource: MovieDataSource
 ) {
   // region PAGING FUNCTION
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingTopRatedMovies()
+    movieDataSource.getPagingTopRatedMovies()
 
   fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingPopularMovies()
+    movieDataSource.getPagingPopularMovies()
 
   fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingFavoriteMovies(sessionId)
+    movieDataSource.getPagingFavoriteMovies(sessionId)
 
   fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingFavoriteTv(sessionId)
+    movieDataSource.getPagingFavoriteTv(sessionId)
 
   fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingWatchlistMovies(sessionId)
+    movieDataSource.getPagingWatchlistMovies(sessionId)
 
   fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingWatchlistTv(sessionId)
+    movieDataSource.getPagingWatchlistTv(sessionId)
 
   fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingPopularTv()
+    movieDataSource.getPagingPopularTv()
 
   fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingOnTv()
+    movieDataSource.getPagingOnTv()
 
   fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingAiringTodayTv()
+    movieDataSource.getPagingAiringTodayTv()
 
   fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingTrendingWeek(region)
+    movieDataSource.getPagingTrendingWeek(region)
 
   fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingTrendingDay(region)
+    movieDataSource.getPagingTrendingDay(region)
 
   fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingMovieRecommendation(movieId)
+    movieDataSource.getPagingMovieRecommendation(movieId)
 
   fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingTvRecommendation(tvId)
+    movieDataSource.getPagingTvRecommendation(tvId)
 
   fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingUpcomingMovies(region)
+    movieDataSource.getPagingUpcomingMovies(region)
 
   fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingPlayingNowMovies(region)
+    movieDataSource.getPagingPlayingNowMovies(region)
 
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
-    remoteDataSource.getPagingTopRatedTv()
+    movieDataSource.getPagingTopRatedTv()
 
   fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
-    remoteDataSource.getPagingSearch(query)
+    movieDataSource.getPagingSearch(query)
   // endregion PAGING FUNCTION
 
   // region DETAIL
-  suspend fun getDetailOMDb(imdbId: String) = remoteDataSource.getDetailOMDb(imdbId)
+  suspend fun getDetailOMDb(imdbId: String) = movieDataSource.getDetailOMDb(imdbId)
 
-  suspend fun getDetailMovie(id: Int) = remoteDataSource.getDetailMovie(id)
+  suspend fun getDetailMovie(id: Int) = movieDataSource.getDetailMovie(id)
 
-  suspend fun getDetailTv(tvId: Int) = remoteDataSource.getDetailTv(tvId)
+  suspend fun getDetailTv(tvId: Int) = movieDataSource.getDetailTv(tvId)
 
-  suspend fun getExternalTvId(tvId: Int) = remoteDataSource.getExternalTvId(tvId)
+  suspend fun getExternalTvId(tvId: Int) = movieDataSource.getExternalTvId(tvId)
 
-  suspend fun getVideoMovies(movieId: Int) = remoteDataSource.getVideoMovies(movieId)
+  suspend fun getVideoMovies(movieId: Int) = movieDataSource.getVideoMovies(movieId)
 
-  suspend fun getVideoTv(tvId: Int) = remoteDataSource.getVideoTv(tvId)
+  suspend fun getVideoTv(tvId: Int) = movieDataSource.getVideoTv(tvId)
 
-  suspend fun getCreditMovies(movieId: Int) = remoteDataSource.getCreditMovies(movieId)
+  suspend fun getCreditMovies(movieId: Int) = movieDataSource.getCreditMovies(movieId)
 
-  suspend fun getCreditTv(tvId: Int) = remoteDataSource.getCreditTv(tvId)
+  suspend fun getCreditTv(tvId: Int) = movieDataSource.getCreditTv(tvId)
 
   suspend fun getStatedMovie(sessionId: String, id: Int) =
-    remoteDataSource.getStatedMovie(sessionId, id)
+    movieDataSource.getStatedMovie(sessionId, id)
 
-  suspend fun getStatedTv(sessionId: String, id: Int) = remoteDataSource.getStatedTv(sessionId, id)
+  suspend fun getStatedTv(sessionId: String, id: Int) = movieDataSource.getStatedTv(sessionId, id)
   // endregion DETAIL
 
   // region POST FAVORITE AND WATCHLIST
   suspend fun postFavorite(sessionId: String, fav: Favorite, userId: Int) =
-    remoteDataSource.postFavorite(sessionId, fav, userId)
+    movieDataSource.postFavorite(sessionId, fav, userId)
 
   suspend fun postWatchlist(sessionId: String, wtc: Watchlist, userId: Int) =
-    remoteDataSource.postWatchlist(sessionId, wtc, userId)
+    movieDataSource.postWatchlist(sessionId, wtc, userId)
 
   suspend fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
-    remoteDataSource.postMovieRate(sessionId, data, movieId)
+    movieDataSource.postMovieRate(sessionId, data, movieId)
 
   suspend fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
-    remoteDataSource.postTvRate(sessionId, data, tvId)
+    movieDataSource.postTvRate(sessionId, data, tvId)
   // endregion POST FAVORITE AND WATCHLIST
 
   // region PERSON
-  suspend fun getDetailPerson(id: Int) = remoteDataSource.getDetailPerson(id)
+  suspend fun getDetailPerson(id: Int) = movieDataSource.getDetailPerson(id)
 
-  suspend fun getKnownForPerson(id: Int) = remoteDataSource.getKnownForPerson(id)
+  suspend fun getKnownForPerson(id: Int) = movieDataSource.getKnownForPerson(id)
 
-  suspend fun getImagePerson(id: Int) = remoteDataSource.getImagePerson(id)
+  suspend fun getImagePerson(id: Int) = movieDataSource.getImagePerson(id)
 
-  suspend fun getExternalIDPerson(id: Int) = remoteDataSource.getExternalIDPerson(id)
+  suspend fun getExternalIDPerson(id: Int) = movieDataSource.getExternalIDPerson(id)
   // endregion PERSON
 
   // region DATABASE
@@ -191,16 +191,5 @@ class MoviesRepository(
 
   companion object {
     private const val TAG = "MoviesRepository "
-
-    @Volatile
-    private var instance: MoviesRepository? = null
-
-    fun getInstance(
-      localData: LocalDataSource,
-      remoteDataSource: RemoteDataSource,
-    ): MoviesRepository =
-      instance ?: synchronized(this) {
-        instance ?: MoviesRepository(localData, remoteDataSource)
-      }
   }
 }

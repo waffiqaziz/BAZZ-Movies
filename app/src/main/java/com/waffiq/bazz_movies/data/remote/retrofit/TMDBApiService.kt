@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.waffiq.bazz_movies.BuildConfig.API_KEY
-import com.waffiq.bazz_movies.data.local.model.Favorite
-import com.waffiq.bazz_movies.data.local.model.Rate
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
@@ -21,7 +21,6 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -33,35 +32,29 @@ import retrofit2.http.Query
 
 interface TMDBApiService {
 
-  /**
-   * AUTHENTICATION
-   */
-  // region
+  // region AUTHENTICATION
   @GET("3/authentication/token/new?api_key=$API_KEY")
-  fun createToken(): Call<AuthenticationResponse>
+  suspend fun createToken(): Response<AuthenticationResponse>
 
   @POST("3/authentication/token/validate_with_login?api_key=$API_KEY")
-  fun login(
+  suspend fun login(
     @Query("username") username: String,
     @Query("password") pass: String,
     @Query("request_token") requestToken: String,
-  ): Call<AuthenticationResponse>
+  ): Response<AuthenticationResponse>
 
   @GET("3/authentication/session/new?api_key=$API_KEY")
-  fun createSessionLogin(
+  suspend fun createSessionLogin(
     @Query("request_token") requestToken: String,
-  ): Call<CreateSessionResponse>
+  ): Response<CreateSessionResponse>
 
   @GET("3/account?api_key=$API_KEY")
-  fun getAccountDetails(
+  suspend fun getAccountDetails(
     @Query("session_id") sessionId: String,
-  ): Call<AccountDetailsResponse>
+  ): Response<AccountDetailsResponse>
   // endregion
 
-  /**
-   * LIST FUNCTION FOR PAGING
-   */
-  // region
+  // region PAGING
   @GET("3/movie/top_rated?api_key=$API_KEY&language=en-US")
   suspend fun getTopRatedMovies(
     @Query("page") page: Int
@@ -153,10 +146,7 @@ interface TMDBApiService {
   ): MovieTvResponse
   // endregion
 
-  /**
-   * DETAIL PAGE
-   */
-  // region
+  // region DETAIL PAGE
   @GET("3/movie/{movieId}/account_states?api_key=$API_KEY")
   suspend fun getStatedMovie(
     @Path("movieId") movieId: Int,
@@ -211,10 +201,7 @@ interface TMDBApiService {
   ): Response<ExternalIdResponse>
   // endregion
 
-  /**
-   * PERSON
-   */
-  // region
+  // region PERSON
   @GET("3/person/{personId}?api_key=$API_KEY&language=en-US")
   suspend fun getDetailPerson(
     @Path("personId") personId: Int
@@ -236,10 +223,7 @@ interface TMDBApiService {
   ): Response<CombinedCreditResponse>
   // endregion
 
-  /**
-   * POST FAVORITE & WATCHLIST
-   */
-  // region
+  // region POST FAVORITE & WATCHLIST
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/favorite?api_key=$API_KEY")
   suspend fun postFavoriteTMDB(
@@ -274,9 +258,9 @@ interface TMDBApiService {
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @DELETE("3/authentication/session?api_key=$API_KEY")
-  fun delSession(
+  suspend fun delSession(
     @Query("session_id") sessionId: String
-  ): Call<PostRateResponse>
+  ): Response<PostRateResponse>
   // endregion
 
 }

@@ -8,10 +8,10 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
-import com.waffiq.bazz_movies.data.local.model.Favorite
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
-import com.waffiq.bazz_movies.data.local.model.Watchlist
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
@@ -100,12 +100,12 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
 
   fun getStatedMovie(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
-      movieRepository.getStatedMovie(sessionId, id).collect { response ->
-        when (response.status) {
+      movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            if (response.data?.watchlist == true)
+            if (networkResult.data?.watchlist == true)
               _snackBarAlready.value = Event(title)
-            else _stated.value = Event(response.data)
+            else _stated.value = Event(networkResult.data)
           }
 
           Status.LOADING -> {}
@@ -117,12 +117,12 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
 
   fun getStatedTv(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
-      movieRepository.getStatedTv(sessionId, id).collect { response ->
-        when (response.status) {
+      movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
+        when (networkResult.status) {
           Status.SUCCESS -> {
-            if (response.data?.watchlist == true)
+            if (networkResult.data?.watchlist == true)
               _snackBarAlready.value = Event(title)
-            else _stated.value = Event(response.data)
+            else _stated.value = Event(networkResult.data)
           }
 
           Status.ERROR -> {}

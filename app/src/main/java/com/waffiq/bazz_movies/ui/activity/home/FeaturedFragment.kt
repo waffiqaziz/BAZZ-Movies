@@ -37,7 +37,7 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.utils.Helper.checkInternet
+import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import java.util.Locale
@@ -66,7 +66,6 @@ class FeaturedFragment : Fragment() {
     val factory2 = ViewModelUserFactory.getInstance(pref)
     moreViewModelUser = ViewModelProvider(this, factory2)[MoreViewModelUser::class.java]
 
-    showSnackBarNoAction(checkInternet(requireContext()))
     setRegion()
     showMainPicture()
     hideActionBar()
@@ -91,7 +90,7 @@ class FeaturedFragment : Fragment() {
       // if user didn't have region, then get region from Country API
       if (userRegion.equals("NaN")) {
         moreViewModelUser.getCountryCode()
-        moreViewModelUser.countryCode().observe(viewLifecycleOwner) { countryCode ->
+        moreViewModelUser.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
           if (countryCode.isNotEmpty()) { // if success
             setData(countryCode)
@@ -195,14 +194,12 @@ class FeaturedFragment : Fragment() {
         if (!binding.tvUpcomingMovie.text.contains(getString(data)))
           binding.tvUpcomingMovie.append(" (" + getString(no_data) + ")")
       } else binding.rvUpcoming.visibility = View.VISIBLE
-
     }
 
     binding.swipeRefresh.setOnRefreshListener {
       adapterTrending.refresh()
       adapterPlayingNow.refresh()
       adapterUpcoming.refresh()
-      showSnackBarNoAction(checkInternet(requireContext()))
       binding.swipeRefresh.isRefreshing = false
     }
   }
@@ -220,7 +217,10 @@ class FeaturedFragment : Fragment() {
         loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
         else -> null
       }
-      errorState?.let { showToastShort(requireActivity(), it.error.toString()) }
+      errorState?.let {
+        val errorMessage = pagingErrorHandling(it.error)
+        showSnackBarNoAction(errorMessage)
+      }
     }
   }
 
