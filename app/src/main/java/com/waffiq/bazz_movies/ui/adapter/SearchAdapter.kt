@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
@@ -107,11 +108,16 @@ class SearchAdapter :
       )
       .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)
-      .error(ic_broken_image)
+      .error(ic_backdrop_error)
       .into(binding.ivPicture)
-    binding.tvYearReleased.text = data.releaseDate ?: data.firstAirDate
+    binding.tvYearReleased.text = data.releaseDate
+      ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+      ?: data.firstAirDate
+        ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+        ?: "N/A"
+
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
-    binding.tvGenre.text = if (data.genreIds?.isEmpty() == true) "NaN" else data.genreIds?.let {
+    binding.tvGenre.text = if (data.genreIds?.isEmpty() == true) "N/A" else data.genreIds?.let {
       iterateGenre(
         it
       )

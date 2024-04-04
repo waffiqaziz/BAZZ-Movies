@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
@@ -46,15 +46,15 @@ class FavoriteMovieAdapter :
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
-        .error(ic_broken_image)
+        .error(ic_poster_error)
         .into(binding.ivPicture)
 
       binding.tvTitle.text =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
         dateFormatter(it)
-      }
-      binding.tvGenre.text = resultItem.genreIds?.let { iterateGenre(it) }
+      } ?: run { "N/A" }
+      binding.tvGenre.text = resultItem.genreIds?.let { iterateGenre(it) } ?: run { "N/A" }
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")

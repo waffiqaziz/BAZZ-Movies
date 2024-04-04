@@ -184,11 +184,8 @@ class MovieFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    lateinit var snackBar: Snackbar
-    activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
-      snackBar = Snackbar.make(contentView, message, Snackbar.LENGTH_SHORT)
-        .setAnchorView(binding.guideSnackbar)
-    }
+    val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+      .setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackBar.view
     snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))

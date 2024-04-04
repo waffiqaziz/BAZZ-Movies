@@ -43,7 +43,22 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           tools:layout_height="250dp"
-          tools:src="@color/red_matte" />
+          tools:src="@drawable/ic_backdrop_error_filled" />
+
+        <TextView
+          android:id="@+id/tv_backdrop_not_found"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:fontFamily="@font/gothici"
+          android:text="@string/backdrop_not_found"
+          android:textColor="@color/gray_100"
+          android:textSize="10sp"
+          android:visibility="gone"
+          app:layout_constraintBottom_toTopOf="@+id/iv_poster"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          tools:visibility="visible" />
 
         <ImageButton
           android:id="@+id/ib_play"

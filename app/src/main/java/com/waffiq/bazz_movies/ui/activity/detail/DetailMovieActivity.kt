@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -35,11 +36,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.color.red_matte
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.R.font.gothic
@@ -181,14 +183,18 @@ class DetailMovieActivity : AppCompatActivity() {
     Glide.with(binding.ivPicture).load(
       if (dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
       else TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-    ).placeholder(ic_bazz_logo).error(ic_broken_image).into(binding.ivPicture)
+    ).placeholder(ic_bazz_placeholder_search)
+      .error(ic_backdrop_error_filled)
+      .into(binding.ivPicture)
 
     //shows poster
     Glide.with(binding.ivPoster)
       .load(TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath) // URL movie poster
       .placeholder(ic_bazz_placeholder_poster)
-      .error(ic_broken_image)
+      .error(ic_poster_error)
       .into(binding.ivPoster)
+    if (dataExtra.posterPath.isNullOrEmpty()) binding.tvBackdropNotFound.visibility = View.VISIBLE
+    else binding.tvBackdropNotFound.visibility = View.GONE
 
     // show data(year, overview, title)
     binding.apply {
@@ -279,9 +285,8 @@ class DetailMovieActivity : AppCompatActivity() {
         // trailer
         movie.id?.let { detailViewModel.getLinkMovie(it) }
         detailViewModel.linkVideo.observe(this) {
-          if (it.isEmpty() || it.isBlank()) {
-            hideTrailer(true)
-          } else {
+          if (it.isNullOrEmpty() || it.isBlank()) hideTrailer(true)
+          else {
             hideTrailer(false)
             btnTrailer(it)
           }
@@ -342,9 +347,8 @@ class DetailMovieActivity : AppCompatActivity() {
         // trailer
         dataExtra.id?.let { detailViewModel.getLinkTv(it) }
         detailViewModel.linkVideo.observe(this) {
-          if (it.isEmpty() || it.isBlank()) {
-            hideTrailer(true)
-          } else {
+          if (it.isNullOrEmpty() || it.isBlank()) hideTrailer(true)
+          else {
             hideTrailer(false)
             btnTrailer(it)
           }
@@ -365,7 +369,13 @@ class DetailMovieActivity : AppCompatActivity() {
         val temp = tv.genres?.map { it?.name }
         val tempID = tv.genres?.map { it?.id ?: 0 }
         if (tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
-        if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
+        if (!temp.isNullOrEmpty()) binding.tvGenre.text = temp.joinToString(separator = ", ")
+        else binding.tvGenre.text = getString(not_available)
+
+        // tmdb score
+        binding.tvScoreTmdb.text =
+          if (tv.voteAverage == 0.0 || tv.voteAverage == null) getString(not_available)
+          else tv.voteAverage.toString()
 
         // show runtime
         binding.tvDuration.text = getString(status_, tv.status)

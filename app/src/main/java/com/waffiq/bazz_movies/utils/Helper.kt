@@ -3,10 +3,13 @@ package com.waffiq.bazz_movies.utils
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
 import okio.IOException
@@ -130,7 +133,7 @@ object Helper {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
       val newDate = formatter.parse(date)
       DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
-    } else date
+    } else null
   }
 
   fun getAgeBirth(date: String): Int {
@@ -284,13 +287,36 @@ object Helper {
     return job to name
   }
 
-
   fun pagingErrorHandling(error: Throwable): String {
     return when (error) {
       is SocketTimeoutException -> "Connection timed out. Please try again."
       is UnknownHostException -> "Unable to resolve server hostname. Please check your internet connection."
       is IOException -> "Please check your network connection"
       else -> "Something went wrong"
+    }
+  }
+
+  fun combinedLoadStatesHandle2(
+    loadState: CombinedLoadStates,
+    progressBar: View
+  ): String {
+    if (loadState.refresh is LoadState.Loading ||
+      loadState.append is LoadState.Loading
+    ) {
+      progressBar.visibility = View.VISIBLE
+      return ""
+    } else {
+      progressBar.visibility = View.INVISIBLE
+
+      val errorState = when { // If theres an error, show a toast
+        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+        else -> null
+      }
+      errorState?.let {
+        return pagingErrorHandling(it.error)
+      } ?: run { return "" }
     }
   }
 }

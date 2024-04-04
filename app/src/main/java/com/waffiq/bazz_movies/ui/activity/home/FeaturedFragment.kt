@@ -37,6 +37,7 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
@@ -225,12 +226,8 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun showSnackBarNoAction(message: String) {
-    lateinit var snackbar: Snackbar
-
-    activity?.findViewById<View>(android.R.id.content)?.let { contentView ->
-      snackbar = Snackbar.make(contentView, message, Snackbar.LENGTH_SHORT)
-        .setAnchorView(binding.guideSnackbar)
-    }
+    val snackbar: Snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+      .setAnchorView(binding.guideSnackbar)
 
     val snackbarView = snackbar.view
     snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
@@ -238,6 +235,10 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun animationFadeOut() {
+    val animation = animFadeOutLong(requireContext())
+    binding.backgroundDimMovie.startAnimation(animation)
+    binding.progressBar.startAnimation(animation)
+
     Handler(Looper.getMainLooper()).post {
       binding.backgroundDimMovie.visibility = View.GONE
       binding.progressBar.visibility = View.GONE

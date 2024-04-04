@@ -83,18 +83,26 @@ class DetailMovieViewModel(
           Status.SUCCESS -> {
             try {
               if (networkResult.data != null) {
-                var link = networkResult.data.results.filter {
-                  it.official == true && it.type.equals("Trailer")
-                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
+                var link = networkResult.data.results
+                  .filter { it.official == true && it.type.equals("Trailer") }
+                  .map { it.key }
+                  .firstOrNull()
 
-                if (link.isBlank() || link.isEmpty()) {
-                  link =
-                    networkResult.data.results.map { it.key }.firstOrNull().toString()
-                      .replace("[", "")
-                      .replace("]", "")
-                  _linkVideo.value = link
-                } else _linkVideo.value = link
-              } else _linkVideo.value = ""
+                link = link?.trim() ?: ""
+
+                if (link.isBlank()) {
+                  link = networkResult.data.results
+                    .map { it.key }
+                    .firstOrNull()
+                    ?.trim()
+                    ?: ""
+                }
+
+                @Suppress("USELESS_ELVIS")
+                _linkVideo.value = link ?: ""
+              } else {
+                _linkVideo.value = ""
+              }
             } catch (e: NullPointerException) {
               _linkVideo.value = ""
             }
@@ -195,20 +203,27 @@ class DetailMovieViewModel(
         when (networkResult.status) {
           Status.SUCCESS -> {
             try {
-              val responseData = networkResult.data
-              if (responseData != null) {
-                var link = responseData.results.filter {
-                  it.official == true && it.type.equals("Trailer")
-                }.map { it.key }.firstOrNull().toString().replace("[", "").replace("]", "")
+              if (networkResult.data != null) {
+                var link = networkResult.data.results
+                  .filter { it.official == true && it.type.equals("Trailer") }
+                  .map { it.key }
+                  .firstOrNull()
 
-                if (link.isBlank() || link.isEmpty()) {
-                  link =
-                    responseData.results.map { it.key }.firstOrNull().toString()
-                      .replace("[", "")
-                      .replace("]", "")
-                  _linkVideo.value = link
-                } else _linkVideo.value = link
-              } else _linkVideo.value = ""
+                link = link?.trim() ?: ""
+
+                if (link.isBlank()) {
+                  link = networkResult.data.results
+                    .map { it.key }
+                    .firstOrNull()
+                    ?.trim()
+                    ?: ""
+                }
+
+                @Suppress("USELESS_ELVIS")
+                _linkVideo.value = link ?: ""
+              } else {
+                _linkVideo.value = ""
+              }
             } catch (e: NullPointerException) {
               _linkVideo.value = ""
             }
