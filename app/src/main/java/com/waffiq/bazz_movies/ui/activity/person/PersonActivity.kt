@@ -24,7 +24,7 @@ import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
-import com.waffiq.bazz_movies.R.id.view_page_dialog
+import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
 import com.waffiq.bazz_movies.R.string.no_biography
 import com.waffiq.bazz_movies.R.string.no_data
@@ -250,7 +250,7 @@ class PersonActivity : AppCompatActivity() {
     )
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // set background transparent
 
-    val viewPager: ViewPager2 = dialog.findViewById(view_page_dialog)
+    val viewPager: ViewPager2 = dialog.findViewById(view_pager_dialog)
     viewPager.adapter = ImagePagerAdapter(imageUrls)
     viewPager.setCurrentItem(position, false)
 

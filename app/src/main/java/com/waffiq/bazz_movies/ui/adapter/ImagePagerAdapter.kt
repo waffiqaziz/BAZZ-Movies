@@ -26,7 +26,6 @@ class ImagePagerAdapter(private val images: List<String>) :
     Glide.with(holder.imageView.context)
       .load(imageUrl)
       .placeholder(ic_bazz_placeholder_poster)
-      .transform(CenterCrop())
       .transition(withCrossFade())
       .error(ic_broken_image)
       .into(holder.imageView)
