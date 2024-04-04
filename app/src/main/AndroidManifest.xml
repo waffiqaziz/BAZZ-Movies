@@ -18,19 +18,23 @@
     tools:targetApi="34">
     <activity
       android:name=".ui.activity.AboutActivity"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
       android:name=".ui.activity.person.PersonActivity"
       android:exported="false"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name=".ui.activity.detail.DetailMovieActivity"
       android:exported="false"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name=".ui.activity.MainActivity"
       android:exported="false"
       android:label="@string/title_activity"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     <activity
       android:name=".ui.activity.LoginActivity"
