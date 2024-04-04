@@ -6,24 +6,25 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_fav_movies"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    android:paddingHorizontal="@dimen/default_margin_parent_20"
-    android:visibility="invisible"
-    tools:listitem="@layout/item_mulmed"
-    tools:visibility="visible" />
+    android:layout_height="match_parent">
 
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:visibility="visible" />
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_fav_movies"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      android:visibility="invisible"
+      tools:listitem="@layout/item_mulmed"
+      tools:visibility="visible"
+      android:scrollbarStyle="outsideOverlay"
+      android:paddingBottom="100dp"
+      android:clipToPadding="false"/>
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
     android:id="@+id/illustration_no_data_view"
@@ -34,6 +35,15 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:visibility="invisible" />
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="@style/MyProgressBar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
 
   <androidx.constraintlayout.widget.Guideline
     android:id="@+id/guide_snackbar"

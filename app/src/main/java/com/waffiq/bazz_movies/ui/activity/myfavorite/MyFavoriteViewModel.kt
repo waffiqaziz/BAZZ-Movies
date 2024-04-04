@@ -25,8 +25,8 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
-  private val _stated = MutableLiveData<Event<StatedResponse?>>()
-  val stated: LiveData<Event<StatedResponse?>> get() = _stated
+  private val _stated = MutableLiveData<StatedResponse?>()
+  val stated: LiveData<StatedResponse?> get() = _stated.distinctUntilChanged()
 
   private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
   val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
@@ -34,9 +34,8 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  private val _snackBarL = MutableLiveData<Event<SnackBarLoginData>>()
-  val snackBarL: LiveData<Event<SnackBarLoginData>> = _snackBarL
-
+  private val _snackBarAdded = MutableLiveData<Event<SnackBarLoginData>>()
+  val snackBarAdded: LiveData<Event<SnackBarLoginData>> = _snackBarAdded
 
   // region LOCAL DATABASE
   val favoriteTvFromDB =
@@ -82,7 +81,6 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
     _undoDB.value = Event(fav)
   }
-  // fun searchFavorite(name: String) = movieRepository.getFavoriteDB(name)
   // endregion LOCAL DATABASE
 
   // region NETWORK
@@ -92,11 +90,33 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   fun getFavoriteTvSeries(sessionId: String) =
     movieRepository.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
 
-  fun postFavorite(user: UserModel, data: Favorite) =
-    viewModelScope.launch { movieRepository.postFavorite(user.token, data, user.userId) }
+  fun postFavorite(user: UserModel, data: Favorite, title: String, position: Int) =
+    viewModelScope.launch {
+      val result = movieRepository.postFavorite(user.token, data, user.userId)
+      when (result.status) {
+        Status.SUCCESS -> {
+          if (result.data?.statusCode == 1) _snackBarAdded.value =
+            Event(SnackBarLoginData(title, data, null, position))
+        }
 
-  fun postWatchlist(user: UserModel, data: Watchlist) =
-    viewModelScope.launch { movieRepository.postWatchlist(user.token, data, user.userId) }
+        Status.ERROR -> {}
+        Status.LOADING -> {}
+      }
+    }
+
+  fun postWatchlist(user: UserModel, data: Watchlist,title: String, position: Int) =
+    viewModelScope.launch {
+      val result = movieRepository.postWatchlist(user.token, data, user.userId)
+      when (result.status) {
+        Status.SUCCESS -> {
+          if (result.data?.statusCode == 1) _snackBarAdded.value =
+            Event(SnackBarLoginData(title, null, data, position))
+        }
+
+        Status.ERROR -> {}
+        Status.LOADING -> {}
+      }
+    }
 
   fun getStatedMovie(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
@@ -105,7 +125,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
           Status.SUCCESS -> {
             if (networkResult.data?.watchlist == true)
               _snackBarAlready.value = Event(title)
-            else _stated.value = Event(networkResult.data)
+            else _stated.value = networkResult.data
           }
 
           Status.LOADING -> {}
@@ -122,7 +142,7 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
           Status.SUCCESS -> {
             if (networkResult.data?.watchlist == true)
               _snackBarAlready.value = Event(title)
-            else _stated.value = Event(networkResult.data)
+            else _stated.value = networkResult.data
           }
 
           Status.ERROR -> {}
@@ -134,10 +154,10 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   // endregion NETWORK
 
   data class SnackBarLoginData(
+    val title: String,
     val favorite: Favorite?,
     val watchlist: Watchlist?,
-    val title: String,
-    val position: Int?
+    val position: Int
   )
 }
 

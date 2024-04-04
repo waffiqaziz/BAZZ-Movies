@@ -6,13 +6,20 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_fav_tv"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    android:paddingHorizontal="@dimen/default_margin_parent_20"
-    tools:listitem="@layout/item_result" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_fav_tv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      tools:listitem="@layout/item_result" />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
     android:id="@+id/illustration_no_data_view"

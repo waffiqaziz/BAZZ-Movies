@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteViewModel
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalDatabaseResult
 import com.waffiq.bazz_movies.utils.Status
@@ -25,18 +26,22 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
   private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
   val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
 
-  private val _stated = MutableLiveData<Event<StatedResponse?>>()
-  val stated: LiveData<Event<StatedResponse?>> get() = _stated
+  private val _stated = MutableLiveData<StatedResponse?>()
+  val stated: LiveData<StatedResponse?> get() = _stated
 
   private val _undoDB = MutableLiveData<Event<FavoriteDB>>()
   val undoDB: LiveData<Event<FavoriteDB>> = _undoDB
 
-  /**
-   * Function for database
-   */
-  val getWatchlistMoviesDB =
+  private val _snackBarAlready = MutableLiveData<Event<String>>()
+  val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
+
+  private val _snackBarAdded = MutableLiveData<Event<MyFavoriteViewModel.SnackBarLoginData>>()
+  val snackBarAdded: LiveData<Event<MyFavoriteViewModel.SnackBarLoginData>> = _snackBarAdded
+
+  // region LOCAL DATABASE
+  val watchlistMoviesDB =
     movieRepository.watchlistMovieFromDB.asLiveData().distinctUntilChanged()
-  val getWatchlistTvSeriesDB =
+  val watchlistTvSeriesDB =
     movieRepository.watchlistTvFromDB.asLiveData().distinctUntilChanged()
 
   fun insertToDB(fav: FavoriteDB) {
@@ -73,27 +78,53 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
     _undoDB.value = Event(fav)
   }
+  // endregion LOCAL DATABASE
 
-  /**
-   * Function for remote
-   */
-  fun getWatchlistMovies(sessionId: String) =
+  // region NETWORK
+  fun watchlistMovies(sessionId: String) =
     movieRepository.getPagingWatchlistMovies(sessionId).cachedIn(viewModelScope).asLiveData()
 
-  fun getWatchlistTvSeries(sessionId: String) =
+  fun watchlistTvSeries(sessionId: String) =
     movieRepository.getPagingWatchlistTv(sessionId).cachedIn(viewModelScope).asLiveData()
 
-  fun postFavorite(user: UserModel, data: Favorite) =
-    viewModelScope.launch { movieRepository.postFavorite(user.token, data, user.userId) }
+  fun postFavorite(user: UserModel, data: Favorite, title: String, position: Int) =
+    viewModelScope.launch {
+      val result = movieRepository.postFavorite(user.token, data, user.userId)
+      when (result.status) {
+        Status.SUCCESS -> {
+          if (result.data?.statusCode == 1) _snackBarAdded.value =
+            Event(MyFavoriteViewModel.SnackBarLoginData(title, data, null, position))
+        }
 
-  fun postWatchlist(user: UserModel, data: Watchlist) =
-    viewModelScope.launch { movieRepository.postWatchlist(user.token, data, user.userId) }
+        Status.ERROR -> {}
+        Status.LOADING -> {}
+      }
+    }
 
-  fun getStatedMovie(sessionId: String, id: Int) {
+  fun postWatchlist(user: UserModel, data: Watchlist, title: String, position: Int) =
+    viewModelScope.launch {
+      val result = movieRepository.postWatchlist(user.token, data, user.userId)
+      when (result.status) {
+        Status.SUCCESS -> {
+          if (result.data?.statusCode == 1) _snackBarAdded.value =
+            Event(MyFavoriteViewModel.SnackBarLoginData(title, null, data, position))
+        }
+
+        Status.ERROR -> {}
+        Status.LOADING -> {}
+      }
+    }
+
+  fun getStatedMovie(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
       movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _stated.value = Event(networkResult.data)
+          Status.SUCCESS -> {
+            if (networkResult.data?.watchlist == true)
+              _snackBarAlready.value = Event(title)
+            else _stated.value = networkResult.data
+          }
+
           Status.LOADING -> {}
           Status.ERROR -> {}
         }
@@ -101,15 +132,21 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     }
   }
 
-  fun getStatedTv(sessionId: String, id: Int) {
+  fun getStatedTv(sessionId: String, id: Int, title: String) {
     viewModelScope.launch {
       movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _stated.value = Event(networkResult.data)
+          Status.SUCCESS -> {
+            if (networkResult.data?.watchlist == true)
+              _snackBarAlready.value = Event(title)
+            else _stated.value = networkResult.data
+          }
+
           Status.LOADING -> {}
           Status.ERROR -> {}
         }
       }
     }
   }
+  // endregion NETWORK
 }

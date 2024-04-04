@@ -6,14 +6,21 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.mywatchlist.MyWatchlistTvSeriesFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_watchlist_tv"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    android:paddingHorizontal="@dimen/default_margin_parent_20"
-    android:paddingBottom="50dp"
-    tools:listitem="@layout/item_result" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_watchlist_tv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
+      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      android:paddingBottom="50dp"
+      tools:listitem="@layout/item_result" />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
     android:id="@+id/illustration_no_data_view"
