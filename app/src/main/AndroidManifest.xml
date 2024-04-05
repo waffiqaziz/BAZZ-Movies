@@ -16,37 +16,36 @@
     android:theme="@style/Base.Theme.BAZZ_movies"
     android:usesCleartextTraffic="true"
     tools:targetApi="34">
+
     <activity
       android:name=".ui.activity.AboutActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
       android:name=".ui.activity.person.PersonActivity"
-      android:exported="false"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+      android:exported="false"
       android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name=".ui.activity.detail.DetailMovieActivity"
-      android:exported="false"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+      android:exported="false"
       android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
     <activity
       android:name=".ui.activity.MainActivity"
       android:exported="false"
       android:label="@string/title_activity"
-      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false"
       android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
     <activity
-      android:name=".ui.activity.SplashScreenActivity"
+      android:name=".ui.activity.RoutingActivity"
       android:exported="true"
-      android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar">
+      android:theme="@style/SplashScreenTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>

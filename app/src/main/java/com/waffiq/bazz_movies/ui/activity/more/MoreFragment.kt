@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,7 @@ import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.SessionID
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
-import com.waffiq.bazz_movies.ui.activity.SplashScreenActivity
+import com.waffiq.bazz_movies.ui.activity.RoutingActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
@@ -184,7 +183,7 @@ class MoreFragment : Fragment() {
   private fun removePrefUserData() {
     authViewModel.removeUserData()
     activity?.finish()
-    startActivity(Intent(activity, SplashScreenActivity::class.java))
+    startActivity(Intent(activity, RoutingActivity::class.java))
   }
 
   private fun setData() {

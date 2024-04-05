@@ -1,14 +1,11 @@
 package com.waffiq.bazz_movies.ui.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.waffiq.bazz_movies.R.layout.custom_action_bar_title
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
-import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -51,16 +48,5 @@ class MainActivity : AppCompatActivity() {
     )
     setupActionBarWithNavController(navController, appBarConfiguration)
     */
-
-    // custom action bar
-    @SuppressLint("InflateParams")
-    val actionBarTitleView = layoutInflater.inflate(custom_action_bar_title, null)
-    supportActionBar?.apply {
-      setDisplayShowCustomEnabled(true)
-      setDisplayShowHomeEnabled(true)
-      setIcon(ic_launcher)
-      customView = actionBarTitleView
-      title = null // Hide the default title
-    }
   }
 }

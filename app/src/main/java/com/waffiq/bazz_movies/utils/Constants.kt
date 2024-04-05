@@ -7,7 +7,6 @@ import com.waffiq.bazz_movies.R.string.tv_series
 object Constants {
   const val TABLE_NAME = "favorite"
   const val INITIAL_PAGE_INDEX = 1
-  const val DELAY_TIME_SPLASH_SCREEN = 2000L
   const val NUM_TABS = 2
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
