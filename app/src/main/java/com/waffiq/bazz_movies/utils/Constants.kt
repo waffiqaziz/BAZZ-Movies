@@ -10,10 +10,10 @@ object Constants {
   const val NUM_TABS = 2
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
-  const val TMDB_IMG_LINK_BACKDROP_W300 = "http://image.tmdb.org/t/p/w300/"
-  const val TMDB_IMG_LINK_BACKDROP_W780 = "http://image.tmdb.org/t/p/w780/"
-  const val TMDB_IMG_LINK_POSTER_W185 = "http://image.tmdb.org/t/p/w185/"
-  const val TMDB_IMG_LINK_POSTER_W500 = "http://image.tmdb.org/t/p/w500/"
+  const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300/"
+  const val TMDB_IMG_LINK_BACKDROP_W780 = "https://image.tmdb.org/t/p/w780/"
+  const val TMDB_IMG_LINK_POSTER_W185 = "https://image.tmdb.org/t/p/w185/"
+  const val TMDB_IMG_LINK_POSTER_W500 = "https://image.tmdb.org/t/p/w500/"
   const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200/"
   const val YOUTUBE_LINK_VIDEO = "https://www.youtube.com/watch?v="
   const val GRAVATAR_LINK = "https://secure.gravatar.com/avatar/"
@@ -40,5 +40,5 @@ object Constants {
 
 
   val tabHomeHeadingArray = intArrayOf(featured, movies, tv_series)
-  val tabMoviesTvHeadingArray = intArrayOf( movies, tv_series)
+  val tabMoviesTvHeadingArray = intArrayOf(movies, tv_series)
 }

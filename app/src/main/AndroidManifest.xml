@@ -14,7 +14,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Base.Theme.BAZZ_movies"
-    android:usesCleartextTraffic="true"
+    android:usesCleartextTraffic="false"
     tools:targetApi="34">
 
     <activity

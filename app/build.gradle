@@ -24,7 +24,7 @@ android {
 
     // BASE URL
     buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'
-    buildConfigField "String", "OMDb_API_URL", '"http://www.omdbapi.com/"'
+    buildConfigField "String", "OMDb_API_URL", '"https://www.omdbapi.com/"'
   }
 
   buildTypes {
