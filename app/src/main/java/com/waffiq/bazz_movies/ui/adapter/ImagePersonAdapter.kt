@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -35,6 +36,12 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
+    holder.itemView.startAnimation(
+      AnimationUtils.loadAnimation(
+        holder.itemView.context,
+        android.R.anim.fade_in
+      )
+    )
 
     // on click listener to open image inside dialog
     holder.itemView.setOnClickListener {

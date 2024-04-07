@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,12 @@ class SearchAdapter :
     val data = getItem(position)
     if (data != null) {
       holder.bind(data)
+      holder.itemView.startAnimation(
+        AnimationUtils.loadAnimation(
+          holder.itemView.context,
+          android.R.anim.fade_in
+        )
+      )
     }
   }
 
