@@ -192,6 +192,7 @@
   <string name="open_actor_actress_wikidata_page">open actor/actress Wikidata page</string>
   <string name="open_actor_actress_home_page">open actor/actress home page</string>
   <string name="binding_error">Binding should not be accessed before onCreateView() or after onDestroyView()</string>
+  <string name="tab_selection">tab selection</string>
 
 
 </resources>

@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="80dp">
+            android:paddingBottom="?attr/actionBarSize">
 
             <TextView
               android:id="@+id/tv_popular"
@@ -128,7 +128,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintGuide_percent="0.91"
+    app:layout_constraintGuide_percent="0.85"
     app:layout_constraintStart_toStartOf="parent" />
 
   <View

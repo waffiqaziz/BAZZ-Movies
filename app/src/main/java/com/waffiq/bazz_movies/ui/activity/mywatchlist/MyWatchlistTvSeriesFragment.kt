@@ -19,7 +19,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,9 +43,9 @@ import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.LocalResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -129,26 +128,26 @@ class MyWatchlistTvSeriesFragment : Fragment() {
           val fav = (viewHolder as FavoriteTvAdapter.ViewHolder).data
           val position = viewHolder.absoluteAdapterPosition
 
-          adapterPaging.notifyItemChanged(position)
-          binding.rvWatchlistTv.adapter?.notifyItemChanged(position)
-
           // swipe action
           if (direction == ItemTouchHelper.START) { // swipe left, action add to favorite
             isWantToDelete = false
-            if (fav.id != null && fav.title != null)
-              postToAddFavoriteTMDB(fav.title, fav.id, position)
+            if (fav.id != null && fav.name != null){
+              postToAddFavoriteTMDB(fav.name, fav.id, position)
+              adapterPaging.notifyItemChanged(position)
+            }
           } else { // swipe right, action to delete
             isWantToDelete = true
-            if (fav.id != null && fav.title != null)
-              postToRemoveWatchlistTMDB(fav.title, fav.id, position)
-            adapterPaging.notifyItemRemoved(position)
+            if (fav.id != null && fav.name != null){
+              postToRemoveWatchlistTMDB(fav.name, fav.id, position)
+              adapterDB.notifyItemChanged(position)
+              adapterPaging.notifyItemRemoved(position)
+            }
           }
         } else {
           val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
           val position = viewHolder.bindingAdapterPosition
 
           // swipe action
-          binding.rvWatchlistTv.adapter?.notifyItemChanged(position)
           if (direction == ItemTouchHelper.START) { // swipe left, action add to favorite
             isWantToDelete = false
             performSwipeGuestUser(false, fav, position)
@@ -274,10 +273,6 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
   private fun setDataGuestUserProgressBarEmptyView() {
     binding.rvWatchlistTv.adapter = adapterDB
-    binding.rvWatchlistTv.addItemDecoration(
-      DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-    )
-
     viewModel.watchlistTvSeriesDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
@@ -294,37 +289,32 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     viewModel.snackBarAlready.observe(viewLifecycleOwner) { showSnackBarAlready(it) }
     viewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
-      event?.getContentIfNotHandled().let {
-        if (it != null) {
-          showSnackBarUserLogin(it.title, it.favorite, it.watchlist, it.position)
-        }
+      event.getContentIfNotHandled()?.let {
+        showSnackBarUserLogin(it.title, it.favorite, it.watchlist, it.position)
       }
     }
     adapterPaging.addLoadStateListener {
-      showSnackBarWarning(Event(combinedLoadStatesHandle2(it, binding.progressBar)))
+      // error handle
+      combinedLoadStatesHandle2(it)?.let { errorMessage -> showSnackBarWarning(Event(errorMessage)) }
+
+      // show or hide view
+      if (it.source.refresh is LoadState.NotLoading
+        && it.append.endOfPaginationReached
+        && adapterPaging.itemCount < 1
+      ) { // show empty view
+        binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
+      } else { // hide empty view
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
+      }
+
+      binding.progressBar.isVisible =
+        it.source.refresh is LoadState.Loading // show progressbar
     }
     binding.rvWatchlistTv.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter {
         adapterPaging.retry()
       }
     )
-
-    // show or hide view
-    adapterPaging.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapterPaging.itemCount < 1
-      ) {
-        // show empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
-      } else {
-        //  hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
-      }
-
-      binding.progressBar.isVisible =
-        loadState.source.refresh is LoadState.Loading // show progressbar
-    }
 
     viewModel.watchlistTvSeries(userToken)
       .observe(viewLifecycleOwner) {
@@ -393,10 +383,10 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   }
 
   private fun insertDBObserver() {
-    viewModel.localDatabaseResult.observe(viewLifecycleOwner) {
+    viewModel.localResult.observe(viewLifecycleOwner) {
       it.getContentIfNotHandled()?.let { result ->
         when (result) {
-          is LocalDatabaseResult.Error -> showToastShort(requireContext(), result.message)
+          is LocalResult.Error -> showToastShort(requireContext(), result.message)
           else -> {}
         }
       }

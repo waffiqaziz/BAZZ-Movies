@@ -15,9 +15,10 @@
       android:id="@+id/rv_fav_tv"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="8dp"
-      android:paddingHorizontal="@dimen/default_margin_parent_20"
-      tools:listitem="@layout/item_result" />
+      android:clipToPadding="false"
+      android:paddingTop="10dp"
+      android:paddingBottom="?attr/actionBarSize"
+      tools:listitem="@layout/item_mulmed" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -45,7 +46,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintGuide_end="70dp"
+    app:layout_constraintGuide_end="?attr/actionBarSize"
     app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

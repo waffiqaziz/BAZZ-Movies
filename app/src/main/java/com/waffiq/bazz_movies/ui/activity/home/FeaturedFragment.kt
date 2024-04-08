@@ -38,8 +38,8 @@ import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.Helper.getLocation
+import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import java.util.Locale
 
@@ -76,7 +76,6 @@ class FeaturedFragment : Fragment() {
 
   private fun showMainPicture() {
     Glide.with(binding.imgMainFeatured)
-      //.load("http://image.tmdb.org/t/p/w500/" + data.backdropPath) // URL movie poster
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(ic_bazz_placeholder_search)
       .transition(withCrossFade())

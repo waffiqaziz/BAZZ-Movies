@@ -15,15 +15,15 @@ import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
-  private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
-  val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
+  private val _localResult = MutableLiveData<Event<LocalResult>>()
+  val localResult: LiveData<Event<LocalResult>> get() = _localResult
 
   private val _stated = MutableLiveData<StatedResponse?>()
   val stated: LiveData<StatedResponse?> get() = _stated.distinctUntilChanged()
@@ -47,18 +47,20 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
-          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
-          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
-          LocalDataSourceInterface.SUCCESS -> LocalDatabaseResult.Success
-          else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
+          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
+          LocalDataSourceInterface.SUCCESS -> LocalResult.Success
+          else -> LocalResult.Error("Unknown result code: $resultCode")
         }
-        _localDatabaseResult.postValue(Event(result))
+        _localResult.postValue(Event(result))
       }
     }
   }
 
   fun delFromFavoriteDB(fav: FavoriteDB) {
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.deleteFromDB(fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      val result = movieRepository.deleteFromDB(fav)
+    }
     _undoDB.value = Event(fav)
   }
 

@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.Dispatchers
@@ -38,8 +38,8 @@ class DetailMovieViewModel(
   private val _isWatchlist = MutableLiveData<Boolean>()
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 
-  private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
-  val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
+  private val _localResult = MutableLiveData<Event<LocalResult>>()
+  val localResult: LiveData<Event<LocalResult>> get() = _localResult
 
   private val _stated = MutableLiveData<StatedResponse>()
   val stated: LiveData<StatedResponse> get() = _stated
@@ -358,12 +358,12 @@ class DetailMovieViewModel(
     viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
-          ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
-          ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
-          SUCCESS -> LocalDatabaseResult.Success
-          else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+          ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
+          ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
+          SUCCESS -> LocalResult.Success
+          else -> LocalResult.Error("Unknown result code: $resultCode")
         }
-        _localDatabaseResult.postValue(Event(result))
+        _localResult.postValue(Event(result))
       }
     }
   }

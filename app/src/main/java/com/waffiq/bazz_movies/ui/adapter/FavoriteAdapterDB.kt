@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.ui.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -36,6 +37,12 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listItemDB[position])
+    holder.itemView.startAnimation(
+      AnimationUtils.loadAnimation(
+        holder.itemView.context,
+        android.R.anim.fade_in
+      )
+    )
   }
 
   override fun getItemCount() = listItemDB.size
@@ -60,7 +67,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       binding.tvTitle.text = fav.title
       binding.tvGenre.text = fav.genre
-      binding.tvYearReleased.text = fav.releaseDate?.let { dateFormatter(it) } ?: run { "N/A" }
+      binding.tvYearReleased.text = fav.releaseDate?.let { dateFormatter(it) } ?: "N/A"
 
       val resultItem = ResultItem(
         backdropPath = fav.backDrop,

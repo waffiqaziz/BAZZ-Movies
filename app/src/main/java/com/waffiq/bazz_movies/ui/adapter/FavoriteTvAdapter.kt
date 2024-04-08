@@ -93,7 +93,7 @@ class FavoriteTvAdapter :
         oldItem: ResultItem,
         newItem: ResultItem
       ): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
       }
     }
   }

@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -19,11 +18,13 @@ import android.widget.RatingBar
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
@@ -85,8 +86,7 @@ import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -101,6 +101,8 @@ class DetailMovieActivity : AppCompatActivity() {
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item favorite or not
   private var isLogin = false // is login as user or not
+
+  private var toast: Toast? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -500,10 +502,10 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun insertDBObserver() {
-    detailViewModel.localDatabaseResult.observe(this) {
+    detailViewModel.localResult.observe(this) {
       it.getContentIfNotHandled()?.let { result ->
         when (result) {
-          is LocalDatabaseResult.Error -> showToastShort(this, result.message)
+          is LocalResult.Error -> showToast(result.message)
           else -> {}
         }
       }
@@ -593,24 +595,23 @@ class DetailMovieActivity : AppCompatActivity() {
 
   // toast, snackbar, dialog
   private fun showToastAddedFavorite() {
-    showToastShort(
-      this, "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
+    showToast(
+      "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         added_to_favorite
       )
     )
   }
 
   private fun showToastAddedWatchlist() {
-    showToastShort(
-      this, "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
+    showToast(
+      "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         added_to_watchlist
       )
     )
   }
 
   private fun showToastRemoveFromFavorite() {
-    showToastShort(
-      this,
+    showToast(
       "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         deleted_from_favorite
       )
@@ -618,8 +619,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showToastRemoveFromWatchlist() {
-    showToastShort(
-      this,
+    showToast(
       "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
         deleted_from_watchlist
       )
@@ -648,7 +648,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val buttonYesAlert = dialogView.findViewById(btn_yes) as Button
     buttonYesAlert.setOnClickListener {
-      showToastShort(this, "Rating: ${ratingBar.rating * 2}")
+      showToast("Rating: ${ratingBar.rating * 2}")
       val rate = Rate(value = ratingBar.rating * 2)
       authViewModel.getUserPref().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
@@ -746,6 +746,23 @@ class DetailMovieActivity : AppCompatActivity() {
     textView.setPadding(0, 7, 24, 7)
     textView.setTextColor(ActivityCompat.getColor(this, gray_100))
     return textView
+  }
+
+  private fun showToast(text: String) {
+    // cancel toast is there's available
+    toast?.cancel()
+
+    toast = Toast.makeText(
+      this, HtmlCompat.fromHtml(
+        text, HtmlCompat.FROM_HTML_MODE_LEGACY
+      ), Toast.LENGTH_SHORT
+    )
+    toast?.show()
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    toast?.cancel()
   }
 
   companion object {

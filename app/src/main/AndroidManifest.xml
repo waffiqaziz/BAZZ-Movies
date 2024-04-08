@@ -24,13 +24,11 @@
     <activity
       android:name=".ui.activity.person.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-      android:exported="false"
-      android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
+      android:exported="false" />
     <activity
       android:name=".ui.activity.detail.DetailMovieActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-      android:exported="false"
-      android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
+      android:exported="false" />
     <activity
       android:name=".ui.activity.MainActivity"
       android:exported="false"
@@ -38,8 +36,7 @@
       android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     <activity
       android:name=".ui.activity.LoginActivity"
-      android:exported="false"
-      android:theme="@style/Base.Theme.BAZZ_movies.NoActionBar" />
+      android:exported="false" />
     <activity
       android:name=".ui.activity.RoutingActivity"
       android:exported="true"

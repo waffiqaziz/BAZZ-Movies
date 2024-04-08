@@ -49,7 +49,9 @@ class SearchFragment : Fragment() {
     val factory = ViewModelFactory.getInstance(requireContext())
     searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
 
-    (activity as AppCompatActivity).supportActionBar?.show()
+    // setup toolbar as action bar
+    (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+    (activity as AppCompatActivity).supportActionBar?.title = null
 
     setupSearchView(searchViewModel)
     return root

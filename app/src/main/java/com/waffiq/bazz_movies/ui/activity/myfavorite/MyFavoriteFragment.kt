@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.myfavorite
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.MyFavoriteViewPagerAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Constants.tabMoviesTvHeadingArray
-import com.waffiq.bazz_movies.R.string.binding_error
 
 class MyFavoriteFragment : Fragment() {
 
@@ -41,7 +40,6 @@ class MyFavoriteFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.show()
 
     setupTabLayoutViewPager()
-    hideActionBar()
     return root
   }
 
@@ -56,13 +54,6 @@ class MyFavoriteFragment : Fragment() {
     TabLayoutMediator(tabLayout, viewpager) { tab, position ->
       tab.text = requireActivity().getString(tabMoviesTvHeadingArray[position])
     }.attach()
-  }
-
-  private fun hideActionBar() {
-    // disable action bar
-    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      (activity as AppCompatActivity).supportActionBar?.hide()
-    }
   }
 
   override fun onDestroyView() {

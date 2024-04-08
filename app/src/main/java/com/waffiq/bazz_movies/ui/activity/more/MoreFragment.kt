@@ -47,7 +47,7 @@ import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -151,12 +151,12 @@ class MoreFragment : Fragment() {
     moreViewModel.deleteAllResult.observe(viewLifecycleOwner) {
       it.getContentIfNotHandled()?.let { result ->
         when (result) {
-          is LocalDatabaseResult.Success -> showToastShort(
+          is LocalResult.Success -> showToastShort(
             requireActivity(),
             getString(all_data_deleted)
           )
 
-          is LocalDatabaseResult.Error -> showToastShort(requireActivity(), result.message)
+          is LocalResult.Error -> showToastShort(requireActivity(), result.message)
         }
       }
     }
@@ -172,12 +172,12 @@ class MoreFragment : Fragment() {
       }
       .setNegativeButton(getString(no)) { dialog, _ ->
         dialog.dismiss()
+        dialog.cancel()
       }
 
     val dialog: AlertDialog = builder.create()
-    if (!requireActivity().isFinishing) {
-      dialog.show()
-    }
+    if (!requireActivity().isFinishing) dialog.show()
+    else dialog.cancel()
   }
 
   private fun removePrefUserData() {

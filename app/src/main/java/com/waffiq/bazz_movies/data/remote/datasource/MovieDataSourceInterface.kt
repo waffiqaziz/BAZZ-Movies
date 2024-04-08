@@ -32,7 +32,7 @@ interface MovieDataSourceInterface {
   // CALL FUNCTION
   suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
     try {
-      val response = apiCall.invoke()
+      val response = apiCall()
       if (response != null && response.isSuccessful) return NetworkResult.success(response.body())
 
       val errorBody = response?.errorBody()?.string()
@@ -48,7 +48,7 @@ interface MovieDataSourceInterface {
     } catch (e: IOException) {
       return NetworkResult.error("Please check your network connection")
     } catch (e: Exception) {
-      throw RuntimeException(e)
+      return NetworkResult.error(e.toString())
     }
   }
 

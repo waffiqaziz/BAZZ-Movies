@@ -16,15 +16,15 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteViewModel
 import com.waffiq.bazz_movies.utils.Event
-import com.waffiq.bazz_movies.utils.LocalDatabaseResult
+import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
 
-  private val _localDatabaseResult = MutableLiveData<Event<LocalDatabaseResult>>()
-  val localDatabaseResult: LiveData<Event<LocalDatabaseResult>> get() = _localDatabaseResult
+  private val _localResult = MutableLiveData<Event<LocalResult>>()
+  val localResult: LiveData<Event<LocalResult>> get() = _localResult
 
   private val _stated = MutableLiveData<StatedResponse?>()
   val stated: LiveData<StatedResponse?> get() = _stated
@@ -48,12 +48,12 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
-          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalDatabaseResult.Error("Duplicate entry")
-          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalDatabaseResult.Error("Unknown error")
-          LocalDataSourceInterface.SUCCESS -> LocalDatabaseResult.Success
-          else -> LocalDatabaseResult.Error("Unknown result code: $resultCode")
+          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
+          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
+          LocalDataSourceInterface.SUCCESS -> LocalResult.Success
+          else -> LocalResult.Error("Unknown result code: $resultCode")
         }
-        _localDatabaseResult.postValue(Event(result))
+        _localResult.postValue(Event(result))
       }
     }
   }
@@ -63,11 +63,15 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
     _undoDB.value = Event(fav)
   }
 
-  fun updateToFavoriteDB(fav: FavoriteDB) =
+  fun updateToFavoriteDB(fav: FavoriteDB) {
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(false, fav) }
+    _undoDB.value = Event(fav)
+  }
 
-  fun updateToWatchlistDB(fav: FavoriteDB) =
+  fun updateToWatchlistDB(fav: FavoriteDB) {
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(false, fav) }
+    _undoDB.value = Event(fav)
+  }
 
   fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) {
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(true, fav) }
@@ -120,7 +124,7 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
       movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (networkResult.data?.watchlist == true)
+            if (networkResult.data?.favorite == true)
               _snackBarAlready.value = Event(title)
             else _stated.value = networkResult.data
           }
@@ -137,7 +141,7 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
       movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (networkResult.data?.watchlist == true)
+            if (networkResult.data?.favorite == true)
               _snackBarAlready.value = Event(title)
             else _stated.value = networkResult.data
           }
