@@ -19,16 +19,16 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.drawable.ic_eye_off
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_eye
-import com.waffiq.bazz_movies.R.string.nan
-import com.waffiq.bazz_movies.R.string.please_enter_a_password
-import com.waffiq.bazz_movies.R.string.please_enter_a_username
+import com.waffiq.bazz_movies.R.drawable.ic_eye_off
+import com.waffiq.bazz_movies.R.font.gothic
 import com.waffiq.bazz_movies.R.string.guest_user
 import com.waffiq.bazz_movies.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.R.string.login_successful
-import com.waffiq.bazz_movies.R.font.gothic
-import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.string.nan
+import com.waffiq.bazz_movies.R.string.please_enter_a_password
+import com.waffiq.bazz_movies.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
@@ -141,7 +141,7 @@ class LoginActivity : AppCompatActivity() {
 
 
   private fun goToMainActivity(isGuest: Boolean) {
-    startActivity(Intent(this, MainActivity::class.java))
+    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
       overrideActivityTransition(
         OVERRIDE_TRANSITION_OPEN,
@@ -154,7 +154,8 @@ class LoginActivity : AppCompatActivity() {
     }
     if (isGuest) showToastShort(this, getString(login_as_guest_successful))
     else showToastShort(this, getString(login_successful))
-    finish()
+
+    finishAffinity()
   }
 
   private fun loginAsUserRegistered() {

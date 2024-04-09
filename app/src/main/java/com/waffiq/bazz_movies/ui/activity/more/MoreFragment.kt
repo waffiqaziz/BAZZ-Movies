@@ -182,8 +182,8 @@ class MoreFragment : Fragment() {
 
   private fun removePrefUserData() {
     authViewModel.removeUserData()
-    activity?.finish()
     startActivity(Intent(activity, RoutingActivity::class.java))
+    activity?.finishAffinity()
   }
 
   private fun setData() {
