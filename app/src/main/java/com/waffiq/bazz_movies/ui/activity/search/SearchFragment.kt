@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.R
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -19,7 +21,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
@@ -29,6 +33,7 @@ import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+
 
 class SearchFragment : Fragment() {
 
@@ -74,12 +79,10 @@ class SearchFragment : Fragment() {
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
         && adapter.itemCount < 1
-      ) {
-        /// show empty view
+      ) { // show empty view
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
         binding.illustrationSearchView.containerSearch.isVisible = false
-      } else {
-        ///  hide empty view
+      } else { //  hide empty view
         binding.illustrationSearchView.containerSearch.isVisible = false
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
