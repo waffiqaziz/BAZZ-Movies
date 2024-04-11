@@ -128,14 +128,8 @@ class DetailMovieActivity : AppCompatActivity() {
     authViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
 
-      // hide user score if login as guest
-      if (isLogin) { // show all score if login
-        binding.yourScoreViewGroup.isGone = false
-        binding.spaceRight.isGone = false
-      } else { // hide it if guest user
-        binding.yourScoreViewGroup.isGone = true
-        binding.spaceRight.isGone = true
-      }
+      // shor or hide user score
+      binding.yourScoreViewGroup.isGone = !isLogin
 
       // check movie or tv is favorite watchlist
       isFavoriteWatchlist(isLogin)

@@ -1,109 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.detail.DetailMovieActivity"
-  tools:targetApi="o">
+  tools:context=".ui.activity.detail.DetailMovieActivity">
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh"
+  <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@null">
 
-    <androidx.core.widget.NestedScrollView
-      android:id="@+id/nested_scroll_view"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.0">
+    <com.google.android.material.appbar.MaterialToolbar
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-          android:id="@+id/iv_picture"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:adjustViewBounds="true"
-          android:contentDescription="@string/poster"
-          android:foreground="@drawable/bg_gradient_shape"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:layout_height="250dp"
-          tools:src="@drawable/ic_backdrop_error_filled" />
-
-        <TextView
-          android:id="@+id/tv_backdrop_not_found"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:fontFamily="@font/gothici"
-          android:text="@string/backdrop_not_found"
-          android:textColor="@color/gray_100"
-          android:textSize="10sp"
-          android:visibility="gone"
-          app:layout_constraintBottom_toTopOf="@+id/iv_poster"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          tools:visibility="visible" />
-
-        <ImageButton
-          android:id="@+id/ib_play"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="@drawable/ic_play"
-          android:contentDescription="@string/watch_trailer"
-          android:visibility="gone"
-          app:layout_constraintBottom_toBottomOf="@+id/iv_picture"
-          app:layout_constraintEnd_toEndOf="@+id/iv_picture"
-          app:layout_constraintStart_toStartOf="@+id/iv_picture"
-          app:layout_constraintTop_toTopOf="@+id/iv_picture"
-          tools:visibility="visible" />
-
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
         <ImageButton
           android:id="@+id/btn_back"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="5dp"
-          android:layout_marginTop="5dp"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
           android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
+          android:foreground="?attr/selectableItemBackgroundBorderless"
           android:minWidth="48dp"
           android:minHeight="48dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
           app:srcCompat="@drawable/ic_left_icon" />
 
         <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          android:layout_marginEnd="5dp"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentEnd="true"
           android:background="@drawable/bg_button_group"
           android:orientation="horizontal"
-          android:paddingHorizontal="5dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="parent">
+          android:paddingHorizontal="5dp">
 
           <ImageButton
             android:id="@+id/btn_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00000000"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@string/add_to_favorite"
             android:focusable="true"
@@ -119,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:background="#00000000"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@string/add_to_watchlist"
             android:focusable="true"
@@ -132,139 +77,212 @@
 
         </LinearLayout>
 
-        <ImageView
-          android:id="@+id/iv_poster"
-          android:layout_width="120dp"
-          android:layout_height="180dp"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="-40dp"
-          android:contentDescription="@string/poster"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/iv_picture"
-          tools:layout_width="120dp"
-          tools:src="@drawable/ic_bazz_placeholder_poster" />
 
-        <TextView
-          android:id="@+id/tv_title"
-          style="@style/TextHeader1"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:layout_marginBottom="8dp"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintBottom_toTopOf="@+id/tv_year_released"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toEndOf="@+id/iv_poster"
-          tools:text="The Silence" />
+      </RelativeLayout>
 
-        <TextView
-          android:id="@+id/tv_mediaType"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="4dp"
-          app:layout_constraintBottom_toTopOf="@+id/tv_genre"
-          app:layout_constraintStart_toStartOf="@+id/tv_title"
-          tools:text="MOVIE" />
 
-        <TextView
-          android:id="@+id/tv_year_released"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginBottom="4dp"
-          app:layout_constraintBottom_toTopOf="@+id/tv_genre"
-          app:layout_constraintStart_toEndOf="@+id/divider1"
-          tools:text="2020" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
-        <TextView
-          android:id="@+id/divider1"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:text="@string/_divider"
-          android:textColor="@color/gray_400"
-          app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
-          app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
+  </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-          android:id="@+id/divider2"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:text="@string/_divider"
-          android:textColor="@color/gray_400"
-          app:layout_constraintStart_toEndOf="@+id/tv_year_released"
-          app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <TextView
-          android:id="@+id/tv_age_rating"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:ellipsize="end"
-          android:maxLines="1"
-          android:text="@string/not_available"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toEndOf="@+id/divider2"
-          app:layout_constraintTop_toTopOf="@+id/tv_year_released"
-          tools:text="PG-A" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipe_refresh"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
-        <TextView
-          android:id="@+id/tv_genre"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:layout_marginBottom="4dp"
-          android:ellipsize="end"
-          android:maxLines="2"
-          android:text="@string/not_available"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintBottom_toTopOf="@+id/tv_duration"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
-          tools:text="Action, Drama, &amp; Family" />
+      <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-          android:id="@+id/tv_duration"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:ellipsize="end"
-          android:maxLines="2"
-          android:text="@string/not_available"
-          app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
-          app:layout_constraintStart_toStartOf="@+id/tv_genre"
-          tools:text="1H 22m" />
-
-        <LinearLayout
-          android:id="@+id/score_container"
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:orientation="horizontal"
-          app:layout_constraintTop_toBottomOf="@+id/iv_poster">
+          android:paddingBottom="40dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
 
-          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
+          <ImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/poster"
+            android:foreground="@drawable/bg_gradient_shape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="250dp"
+            tools:src="@drawable/ic_backdrop_error_filled" />
+
+          <TextView
+            android:id="@+id/tv_backdrop_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/gothici"
+            android:text="@string/backdrop_not_found"
+            android:textColor="@color/gray_100"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/iv_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+
+          <ImageButton
+            android:id="@+id/ib_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_play"
+            android:contentDescription="@string/watch_trailer"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_picture"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture"
+            app:layout_constraintStart_toStartOf="@+id/iv_picture"
+            app:layout_constraintTop_toTopOf="@+id/iv_picture"
+            tools:visibility="visible" />
+
+          <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="@dimen/default_margin_parent_20"
+            android:layout_marginTop="-40dp"
+            android:contentDescription="@string/poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_picture"
+            tools:layout_width="120dp"
+            tools:src="@drawable/ic_bazz_placeholder_poster" />
+
+          <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextHeader1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:layout_marginBottom="8dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/tv_year_released"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            tools:text="The Silence" />
+
+          <TextView
+            android:id="@+id/tv_mediaType"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_genre"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="MOVIE" />
+
+          <TextView
+            android:id="@+id/tv_year_released"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_genre"
+            app:layout_constraintStart_toEndOf="@+id/divider1"
+            tools:text="2020" />
+
+          <TextView
+            android:id="@+id/divider1"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/_divider"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
+
+          <TextView
+            android:id="@+id/divider2"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/_divider"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+            app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
+
+          <TextView
+            android:id="@+id/tv_age_rating"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/not_available"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/divider2"
+            app:layout_constraintTop_toTopOf="@+id/tv_year_released"
+            tools:text="PG-A" />
+
+          <TextView
+            android:id="@+id/tv_genre"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/not_available"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/tv_duration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
+            tools:text="Action, Drama, &amp; Family" />
+
+          <TextView
+            android:id="@+id/tv_duration"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/not_available"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintStart_toStartOf="@+id/tv_genre"
+            tools:text="1H 22m" />
 
           <LinearLayout
             android:id="@+id/imdb_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/metascore_viewGroup"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_poster">
 
             <TextView
               android:id="@+id/tv_score_imdb"
@@ -282,14 +300,16 @@
 
           </LinearLayout>
 
-          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
-
           <LinearLayout
             android:id="@+id/metascore_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/tmdb_viewGroup"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imdb_viewGroup"
+            app:layout_constraintTop_toTopOf="@+id/imdb_viewGroup">
 
             <TextView
               android:id="@+id/tv_score_metascore"
@@ -314,14 +334,16 @@
 
           </LinearLayout>
 
-          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
-
           <LinearLayout
             android:id="@+id/tmdb_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/your_score_viewGroup"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/metascore_viewGroup"
+            app:layout_constraintTop_toTopOf="@+id/metascore_viewGroup">
 
             <TextView
               android:id="@+id/tv_score_tmdb"
@@ -336,15 +358,17 @@
 
           </LinearLayout>
 
-          <androidx.legacy.widget.Space style="@style/MySpaceDetailPage" />
-
           <LinearLayout
             android:id="@+id/your_score_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/rating"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tmdb_viewGroup"
+            app:layout_constraintTop_toTopOf="@+id/tmdb_viewGroup">
 
             <TextView
               android:id="@+id/tv_score_your_score"
@@ -361,137 +385,134 @@
 
           </LinearLayout>
 
-          <androidx.legacy.widget.Space
-            android:id="@+id/space_right"
+
+          <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_score"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/yellow_alpha_80"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imdb_viewGroup" />
+
+          <TextView
+            android:id="@+id/tv_summary_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_parent_20"
+            android:layout_marginTop="16dp"
+            android:text="@string/overview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_score" />
+
+          <io.github.glailton.expandabletextview.ExpandableTextView
+            android:id="@+id/tv_overview"
+            style="@style/TextBody"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+            android:layout_marginTop="8dp"
+            android:justificationMode="inter_word"
+            app:collapsedLines="3"
+            app:ellipsizeTextColor="@color/yellow"
+            app:expandType="layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_summary_header"
+            app:readLessText="@string/less_more"
+            app:readMoreText="@string/read_more"
+            app:textMode="line"
+            tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
 
-        </LinearLayout>
+          <FrameLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/tv_overview"
+            app:layout_constraintTop_toBottomOf="@+id/tv_overview"
+            tools:background="@color/yellow"
+            tools:layout_height="100dp" />
 
-        <com.google.android.material.divider.MaterialDivider
-          android:id="@+id/divider_score"
-          android:layout_width="match_parent"
-          android:layout_height="1.5dp"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="8dp"
-          app:dividerColor="@color/yellow_alpha_80"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/score_container" />
+          <TextView
+            android:id="@+id/tv_cast_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/cast"
+            app:layout_constraintStart_toStartOf="@+id/tv_overview"
+            app:layout_constraintTop_toBottomOf="@+id/table" />
 
-        <TextView
-          android:id="@+id/tv_summary_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp"
-          android:text="@string/overview"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/divider_score" />
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_cast"
+            tools:orientation="horizontal" />
 
-        <io.github.glailton.expandabletextview.ExpandableTextView
-          android:id="@+id/tv_overview"
-          style="@style/TextBody"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="8dp"
-          android:justificationMode="inter_word"
-          app:collapsedLines="3"
-          app:ellipsizeTextColor="@color/yellow"
-          app:expandType="layout"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_summary_header"
-          app:readLessText="@string/less_more"
-          app:readMoreText="@string/read_more"
-          app:textMode="line"
-          tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
+          <TextView
+            android:id="@+id/tv_recommendation_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/recommendation"
+            app:layout_constraintStart_toStartOf="@+id/tv_cast_header"
+            app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
 
-        <FrameLayout
-          android:id="@+id/table"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="8dp"
-          android:orientation="horizontal"
-          app:layout_constraintStart_toStartOf="@+id/tv_overview"
-          app:layout_constraintTop_toBottomOf="@+id/tv_overview"
-          tools:background="@color/yellow"
-          tools:layout_height="100dp" />
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recommendation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_trending"
+            tools:orientation="horizontal" />
 
-        <TextView
-          android:id="@+id/tv_cast_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="@string/cast"
-          app:layout_constraintStart_toStartOf="@+id/tv_overview"
-          app:layout_constraintTop_toBottomOf="@+id/table" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_cast"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="8dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
-          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_cast"
-          tools:orientation="horizontal" />
+      </androidx.core.widget.NestedScrollView>
 
-        <TextView
-          android:id="@+id/tv_recommendation_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="@string/recommendation"
-          app:layout_constraintStart_toStartOf="@+id/tv_cast_header"
-          app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_recommendation"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="8dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
-          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
-          tools:orientation="horizontal" />
+    <View
+      android:id="@+id/background_dim_movie"
+      style="@style/MyDimStyle"
+      android:visibility="visible"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="gone" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+      android:id="@+id/progress_bar"
+      style="@style/MyProgressBar"
+      app:indicatorColor="@color/yellow"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible" />
 
-    </androidx.core.widget.NestedScrollView>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-  <View
-    android:id="@+id/background_dim_movie"
-    style="@style/MyDimStyle"
-    android:visibility="visible"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:visibility="gone" />
 
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
-    app:indicatorColor="@color/yellow"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:visibility="visible" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
