@@ -46,13 +46,6 @@
 
   <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog" />
 
-  <style name="MyChip" parent="Widget.MaterialComponents.Chip.Filter">
-    <item name="chipBackgroundColor">@color/bg_chip</item>
-    <item name="chipStrokeColor">@color/gray_900</item>
-    <item name="android:textColor">@color/gray_900</item>
-    <item name="chipIconTint">@color/gray_900</item>
-  </style>
-
   <style name="MyResetButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
     <item name="fontFamily">@font/gothicb</item>
     <item name="android:layout_width">match_parent</item>

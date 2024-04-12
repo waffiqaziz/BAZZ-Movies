@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -21,14 +20,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
-import com.waffiq.bazz_movies.ui.activity.MainActivity
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
