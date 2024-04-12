@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -10,16 +10,16 @@
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
       android:background="?attr/colorPrimary"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-      app:layout_scrollFlags="scroll|enterAlways"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+      android:fitsSystemWindows="true"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
       <ImageView
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
       android:background="?attr/colorPrimary"
       android:contentDescription="@string/tab_selection"
       app:tabIndicatorColor="@color/yellow"
-      app:tabRippleColor="@color/white"
+      app:tabRippleColor="@color/gray_300"
       app:tabSelectedTextColor="@color/yellow"
       app:tabTextAppearance="@style/TextTabLayoutStyle"
       app:tabTextColor="@color/white">
@@ -51,11 +51,13 @@
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:tabTextAppearance="@style/TextTabLayoutStyle"
         tools:text="@string/movies" />
 
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:tabTextAppearance="@style/TextTabLayoutStyle"
         tools:text="@string/tv_series" />
 
     </com.google.android.material.tabs.TabLayout>
@@ -66,7 +68,8 @@
     android:id="@+id/view_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

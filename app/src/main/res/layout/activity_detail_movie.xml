@@ -77,9 +77,7 @@
 
         </LinearLayout>
 
-
       </RelativeLayout>
-
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -514,5 +512,3 @@
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-

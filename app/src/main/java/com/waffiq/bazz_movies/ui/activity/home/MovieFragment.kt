@@ -145,9 +145,7 @@ class MovieFragment : Fragment() {
   }
 
   private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading ||
-      loadState.append is LoadState.Loading
-    )
+    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
       showLoading(true) // show ProgressBar
     else {
       showLoading(false) // hide ProgressBar

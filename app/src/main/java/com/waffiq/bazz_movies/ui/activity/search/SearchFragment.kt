@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
-import android.R
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.R.drawable.ic_cross
@@ -30,6 +28,7 @@ import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.ui.activity.MainActivity
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
@@ -69,9 +68,7 @@ class SearchFragment : Fragment() {
     val adapter = SearchAdapter()
 
     binding.rvSearch.adapter = adapter.withLoadStateFooter(
-      footer = LoadingStateAdapter {
-        adapter.retry()
-      }
+      footer = LoadingStateAdapter { adapter.retry() }
     )
 
     // show or hide view

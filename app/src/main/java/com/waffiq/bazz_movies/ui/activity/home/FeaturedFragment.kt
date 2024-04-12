@@ -1,14 +1,12 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -69,7 +67,6 @@ class FeaturedFragment : Fragment() {
 
     setRegion()
     showMainPicture()
-    hideActionBar()
 
     return root
   }
@@ -205,9 +202,8 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading ||
-      loadState.append is LoadState.Loading
-    ) showLoading(true) // show ProgressBar
+    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
+      showLoading(true) // show ProgressBar
     else {
       showLoading(false) // hide ProgressBar
 
@@ -249,18 +245,6 @@ class FeaturedFragment : Fragment() {
       binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
     } else animationFadeOut()
-  }
-
-  private fun hideActionBar() {
-    // disable action bar
-    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideActionBar()
   }
 
   override fun onDestroyView() {

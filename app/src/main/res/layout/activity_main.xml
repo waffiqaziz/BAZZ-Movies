@@ -23,6 +23,7 @@
     app:itemIconTint="@color/bottom_nav_color"
     app:itemRippleColor="@color/gray_300"
     app:itemTextColor="@color/bottom_nav_color"
+    app:layout_dodgeInsetEdges="bottom"
     app:menu="@menu/bottom_nav_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

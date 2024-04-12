@@ -20,6 +20,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentEnd="true"
     android:layout_marginEnd="@dimen/default_margin_parent_20"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
     android:background="@drawable/bg_back_button_alpha_05"
     android:contentDescription="@string/close"
     android:padding="12dp"
