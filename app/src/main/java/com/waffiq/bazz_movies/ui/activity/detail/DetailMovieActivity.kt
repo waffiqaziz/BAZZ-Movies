@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -27,6 +29,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -34,8 +37,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.gray_100
+import com.waffiq.bazz_movies.R.color.gray
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
@@ -118,10 +123,31 @@ class DetailMovieActivity : AppCompatActivity() {
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     authViewModel = ViewModelProvider(this, factory2)[AuthenticationViewModel::class.java]
 
+    binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+      val maxScroll = binding.nestedScrollView.getChildAt(0).height - binding.nestedScrollView.height
+      val percentage = scrollY.toFloat() / maxScroll.toFloat()
+
+      val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
+      val toColor = ContextCompat.getColor(this, gray) // Change this to your desired color
+
+      animateColorChange(binding.appBarLayout, fromColor, toColor, percentage)
+    })
+
     checkUser()
     getDataExtra()
     showDetailData()
     btnListener()
+  }
+
+  private fun animateColorChange(appBarLayout: AppBarLayout, fromColor: Int, toColor: Int, percentage: Float) {
+    // Calculate the adjusted progress based on the percentage scrolled
+    val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
+
+    // Calculate the interpolated color based on the adjusted progress
+    val interpolatedColor = ArgbEvaluator().evaluate(adjustedProgress, fromColor, toColor) as Int
+
+    // Set the interpolated color as the background color of the AppBarLayout
+    appBarLayout.setBackgroundColor(interpolatedColor)
   }
 
   private fun checkUser() {
@@ -692,7 +718,10 @@ class DetailMovieActivity : AppCompatActivity() {
     if (isLoading) {
       binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
-    } else animFadeOut()
+    } else {
+      binding.appBarLayout.visibility = View.VISIBLE
+      animFadeOut()
+    }
   }
 
 

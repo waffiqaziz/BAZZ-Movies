@@ -7,19 +7,25 @@
   tools:context=".ui.activity.detail.DetailMovieActivity">
 
   <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@null">
+    android:background="@null"
+    android:translationZ="0.1dp"
+    android:visibility="gone"
+    app:elevation="0dp"
+    tools:visibility="visible">
 
     <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      app:contentInsetLeft="0dp"
+      app:contentInsetStart="0dp">
 
       <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageButton
@@ -28,6 +34,7 @@
           android:layout_height="wrap_content"
           android:layout_alignParentStart="true"
           android:layout_alignParentTop="true"
+          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
           android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -40,6 +47,7 @@
           android:layout_height="wrap_content"
           android:layout_alignParentTop="true"
           android:layout_alignParentEnd="true"
+          android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:background="@drawable/bg_button_group"
           android:orientation="horizontal"
           android:paddingHorizontal="5dp">
@@ -63,7 +71,6 @@
             android:id="@+id/btn_watchlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@string/add_to_watchlist"
