@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/cv_poster"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:elevation="0dp"
   android:layout_marginEnd="8dp"
+  android:elevation="0dp"
+  app:cardBackgroundColor="@android:color/transparent"
   tools:layout_gravity="center">
 
   <ImageView
-    android:background="@android:color/transparent"
     android:id="@+id/img_poster"
     android:layout_width="100dp"
     android:layout_height="150dp"
-    tools:background="@drawable/ic_bazz_placeholder_poster"
-    android:contentDescription="@string/picture" />
+    android:contentDescription="@string/picture"
+    tools:background="@drawable/ic_bazz_placeholder_poster" />
 
 </androidx.cardview.widget.CardView>

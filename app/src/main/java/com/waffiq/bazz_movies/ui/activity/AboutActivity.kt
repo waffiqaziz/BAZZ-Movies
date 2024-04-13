@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.R.layout.custom_action_bar_title
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
 import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.utils.Constants.BAZZ_MOVIES_LINK
 
 class AboutActivity : AppCompatActivity() {
 
@@ -35,6 +36,10 @@ class AboutActivity : AppCompatActivity() {
     // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_MAIN)))
+    }
+
+    binding.btnAboutUs.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(BAZZ_MOVIES_LINK)))
     }
   }
 }

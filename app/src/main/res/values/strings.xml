@@ -70,7 +70,7 @@
   <string name="open_help">open help</string>
   <string name="open_about_us">open about us</string>
   <string name="about">About</string>
-  <string name="about_text">I\'m the sole developer behind the BAZZ Movies app that transforms how you manage your movie collection. Driven by my passion for movies and technology, I embarked on a journey to create an intuitive solution for fellow cinephiles. With my app, you can effortlessly organize, discover, and enjoy your favorite films anytime, anywhere. Join me on this cinematic adventure, and let\'s elevate your movie experience together!</string>
+  <string name="about_text">I created BAZZ Movies app for movie lovers. It helps you easily manage, discover, and enjoy your favorite films anywhere. Join me to elevate your movie experience!</string>
   <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but not endorsed or certified by TMDB.</string>
   <string name="change_language">change language</string>
   <string name="language">Language</string>
@@ -193,6 +193,7 @@
   <string name="open_actor_actress_home_page">open actor/actress home page</string>
   <string name="binding_error">Binding should not be accessed before onCreateView() or after onDestroyView()</string>
   <string name="tab_selection">tab selection</string>
+  <string name="about_us"><u>About Us</u></string>
 
 
 </resources>

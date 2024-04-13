@@ -37,10 +37,10 @@
           android:layout_height="50dp"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:contentDescription="@string/image_profile"
-          tools:src="@drawable/ic_bazz"
           app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          app:layout_constraintTop_toTopOf="parent"
+          tools:src="@drawable/ic_bazz" />
 
         <LinearLayout
           android:id="@+id/linearLayout"
@@ -168,6 +168,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
+          android:background="?attr/selectableItemBackground"
           android:paddingVertical="12dp"
           android:text="@string/terms_amp_condition"
           app:layout_constraintStart_toStartOf="parent"
@@ -179,6 +180,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
+          android:background="?attr/selectableItemBackground"
           android:paddingVertical="12dp"
           android:text="@string/privacy_amp_policy"
           app:layout_constraintStart_toStartOf="parent"

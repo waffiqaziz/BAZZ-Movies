@@ -7,16 +7,48 @@
   tools:context=".ui.activity.AboutActivity"
   tools:targetApi="o">
 
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/bazz"
+        android:src="@mipmap/ic_launcher" />
+
+      <include
+        android:id="@+id/tv_title"
+        layout="@layout/custom_action_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
   <TextView
     android:id="@+id/tv_about_header"
     style="@style/TextHeader1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+    android:layout_marginTop="8dp"
     android:text="@string/about"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toBottomOf="@+id/app_bar" />
 
   <TextView
     android:id="@+id/tv_tmdb_endorse"
@@ -55,6 +87,16 @@
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/iv_tmdb_logo" />
+
+  <Button
+    android:id="@+id/btn_about_us"
+    style="@style/MyTransparentButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:text="@string/about_us"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_about_text" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab"

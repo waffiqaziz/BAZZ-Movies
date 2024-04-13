@@ -37,6 +37,7 @@ object Constants {
   const val FAQ_LINK =
     "https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing"
   const val TMDB_LINK_MAIN = "https://www.themoviedb.org/"
+  const val BAZZ_MOVIES_LINK = "https://waffiqaziz.github.io/bazzmovies"
 
 
   val tabHomeHeadingArray = intArrayOf(featured, movies, tv_series)
