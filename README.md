@@ -22,7 +22,8 @@ API_KEY_OMDb= "OBDb_API_KEY"
 - [OMDb API](https://www.omdbapi.com/)
 - [ExpandableTextView](https://github.com/glailton/ExpandableTextView)
 - [glide](https://bumptech.github.io/glide/)
-- [Century Gothic Font](https://www.fontshmonts.com/text-fonts/century-gothic/)
+- [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans)
+- [Paradroid Font](https://www.myfonts.com/collections/paradroid-font-the-northern-block)
 - [Country API](https://country.is/)
 - [Country Code Picker (CCP)](https://github.com/hbb20/CountryCodePickerProject)
 

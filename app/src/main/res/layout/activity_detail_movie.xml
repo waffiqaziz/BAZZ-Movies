@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/gothici"
+            android:fontFamily="@font/nunito_sans_italic"
             android:text="@string/backdrop_not_found"
             android:textColor="@color/gray_100"
             android:textSize="10sp"

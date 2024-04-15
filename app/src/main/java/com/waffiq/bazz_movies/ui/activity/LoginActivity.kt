@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
-import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.R.string.guest_user
 import com.waffiq.bazz_movies.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.R.string.login_successful
@@ -233,7 +233,7 @@ class LoginActivity : AppCompatActivity() {
 
   private fun applyFontFamily(text: String): SpannableStringBuilder {
     val spannableStringBuilder = SpannableStringBuilder(text)
-    val typeface = ResourcesCompat.getFont(this, gothic)
+    val typeface = ResourcesCompat.getFont(this, nunito_sans_regular)
     val customTypefaceSpan = typeface?.let { CustomTypefaceSpan(it) }
     spannableStringBuilder.setSpan(
       customTypefaceSpan,

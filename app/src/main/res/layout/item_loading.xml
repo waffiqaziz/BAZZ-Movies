@@ -7,7 +7,7 @@
   android:padding="8dp">
 
   <TextView
-    android:fontFamily="@font/gothic"
+    android:fontFamily="@font/nunito_sans_regular"
     android:id="@+id/error_msg"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -79,7 +79,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="11dp"
-    android:fontFamily="@font/gothicb"
+    android:fontFamily="@font/nunito_sans_bold"
     android:textColor="@color/yellow"
     android:textSize="16sp"
     app:layout_constraintBottom_toBottomOf="@+id/bg_item"
