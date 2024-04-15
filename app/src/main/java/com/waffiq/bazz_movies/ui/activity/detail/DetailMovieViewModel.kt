@@ -9,8 +9,8 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
-import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.remote.Rate
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse

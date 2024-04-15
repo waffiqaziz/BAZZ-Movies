@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 

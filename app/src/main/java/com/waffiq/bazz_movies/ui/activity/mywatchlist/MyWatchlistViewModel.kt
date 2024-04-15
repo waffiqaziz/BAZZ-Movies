@@ -8,9 +8,9 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
-import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
+import com.waffiq.bazz_movies.data.remote.Favorite
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository

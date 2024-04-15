@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.waffiq.bazz_movies.R.layout.custom_action_bar_title
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
-import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.utils.Constants.BAZZ_MOVIES_LINK
+import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_MAIN
 
 class AboutActivity : AppCompatActivity() {
 

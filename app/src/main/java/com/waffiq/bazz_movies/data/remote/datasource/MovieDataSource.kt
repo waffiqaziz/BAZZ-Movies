@@ -3,9 +3,6 @@ package com.waffiq.bazz_movies.data.remote.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.paging.AiringTodayTvPagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.FavoriteTvPagingSource
@@ -23,6 +20,9 @@ import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
 import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
+import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.Rate
+import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse

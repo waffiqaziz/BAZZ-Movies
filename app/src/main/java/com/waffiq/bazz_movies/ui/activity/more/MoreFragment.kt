@@ -22,16 +22,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
-import com.waffiq.bazz_movies.R.font.gothic
-import com.waffiq.bazz_movies.R.string.sign_out_success
-import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
-import com.waffiq.bazz_movies.R.string.all_data_deleted
-import com.waffiq.bazz_movies.R.string.yes
-import com.waffiq.bazz_movies.R.string.no
-import com.waffiq.bazz_movies.R.string.binding_error
-import com.waffiq.bazz_movies.R.string.warning
-import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.font.nunito_sans_regular
+import com.waffiq.bazz_movies.R.mipmap.ic_launcher
+import com.waffiq.bazz_movies.R.string.all_data_deleted
+import com.waffiq.bazz_movies.R.string.binding_error
+import com.waffiq.bazz_movies.R.string.no
+import com.waffiq.bazz_movies.R.string.sign_out_success
+import com.waffiq.bazz_movies.R.string.warning
+import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
+import com.waffiq.bazz_movies.R.string.yes
 import com.waffiq.bazz_movies.data.remote.SessionID
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
@@ -39,12 +39,12 @@ import com.waffiq.bazz_movies.ui.activity.RoutingActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.Constants.FORM_HELPER
+import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
 import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
+import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalResult
@@ -108,7 +108,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun setTypeface() {
-    val typeFace = ResourcesCompat.getFont(requireContext(), gothic) as Typeface
+    val typeFace = ResourcesCompat.getFont(requireContext(), nunito_sans_regular) as Typeface
     binding.btnCountryPicker.setTypeFace(typeFace)
   }
 
