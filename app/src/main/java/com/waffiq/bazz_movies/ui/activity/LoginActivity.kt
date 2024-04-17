@@ -52,6 +52,8 @@ class LoginActivity : AppCompatActivity() {
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+    authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
+    authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
 
     showPassword()
     openTMDB()
@@ -65,6 +67,15 @@ class LoginActivity : AppCompatActivity() {
 
     binding.tvForgetPassword.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_FORGET_PASSWORD)))
+    }
+  }
+
+  private fun getDetailUser(loginState: Boolean) {
+    if (loginState) {
+      authenticationViewModel.userModel.observe(this) { dataUser ->
+        authenticationViewModel.saveUser(dataUser)
+        goToMainActivity(isGuest = false)
+      }
     }
   }
 
@@ -165,65 +176,32 @@ class LoginActivity : AppCompatActivity() {
     authenticationViewModel.loadingState.observe(this) { showLoading(it) }
 
     /**
-     * to login follow this step
+     *  login steps
      * 1. Create a new request token
      * 2. Get the user to authorize the request token
      * 3. Create a new session id with the authorized request token
      */
-
-    // 1. create request token
-    authenticationViewModel.createToken()
-    authenticationViewModel.token.observe(this) { token ->
-
-      // 2. Get the user to authorize the request token
-      authenticationViewModel.login(username, password, token)
-      authenticationViewModel.tokenVerified.observe(this) { tokenVerified ->
-
-        // 3. create a new session with authorized token
-        authenticationViewModel.createSession(tokenVerified)
-        authenticationViewModel.sessionId.observe(this) { sessionId ->
-
-          authenticationViewModel.getUserDetail(sessionId)
-          authenticationViewModel.userModel.observe(this) { dataUser ->
-
-            val userLoginModel = UserModel(
-              userId = dataUser.userId,
-              name = dataUser.name,
-              username = dataUser.username,
-              password = getString(nan),
-              region = getString(nan),
-              token = sessionId,
-              isLogin = true,
-              gravatarHast = dataUser.gravatarHast,
-              tmdbAvatar = dataUser.tmdbAvatar
-            )
-
-            authenticationViewModel.saveUser(userLoginModel)
-            goToMainActivity(isGuest = false)
-          }
-        }
-      }
-    }
-
-    authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
+    authenticationViewModel.userLogin(username, password)
   }
 
   private fun showSnackBar(eventMessage: Event<String>) {
     val message = eventMessage.getContentIfNotHandled() ?: return
-    val snackBar = Snackbar.make(
-      binding.constraintLayout,
-      message,
-      Snackbar.LENGTH_SHORT
-    )
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(
-      ContextCompat.getColor(
-        this,
-        red_matte
+    if (message.isNotEmpty()) {
+      val snackBar = Snackbar.make(
+        binding.constraintLayout,
+        message,
+        Snackbar.LENGTH_SHORT
       )
-    )
-    snackBar.show()
+
+      val snackbarView = snackBar.view
+      snackbarView.setBackgroundColor(
+        ContextCompat.getColor(
+          this,
+          red_matte
+        )
+      )
+      snackBar.show()
+    }
   }
 
   private fun showLoading(isLoading: Boolean) {

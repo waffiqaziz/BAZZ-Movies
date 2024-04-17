@@ -92,7 +92,7 @@
     android:layout_height="wrap_content"
     android:autofillHints="emailAddress"
     android:fontFamily="@font/nunito_sans_regular"
-    android:hint="@string/username"
+    android:hint="@string/username_email"
     android:inputType="textEmailAddress"
     android:minHeight="48dp"
     android:textColor="@color/white"

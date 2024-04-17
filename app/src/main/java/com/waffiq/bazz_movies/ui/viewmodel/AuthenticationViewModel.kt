@@ -9,22 +9,12 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.repository.UserRepository
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.Status
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-  private var _token = MutableLiveData<String>()
-  val token: LiveData<String> get() = _token
-
-  private var _sessionId = MutableLiveData<String>()
-  val sessionId: LiveData<String> get() = _sessionId
-
   private val _userModel = MutableLiveData<UserModel>()
   val userModel: LiveData<UserModel> get() = _userModel
-
-  private var _tokenVerified = MutableLiveData<String>()
-  val tokenVerified: LiveData<String> get() = _tokenVerified
 
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
@@ -32,74 +22,91 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
   private val _errorState = MutableLiveData<Event<String>>()
   val errorState: LiveData<Event<String>> get() = _errorState
 
+  private val _loginState = MutableLiveData<Boolean>()
+  val loginState: LiveData<Boolean> get() = _loginState
+
   fun getUserPref() = userRepository.getUser().asLiveData()
 
-  fun createToken() {
+  fun userLogin(username: String, password: String) {
+    _loginState.value = false
     viewModelScope.launch {
-      userRepository.createToken().collect { result ->
-        when (result.status) {
+
+      // 1. Create a new request token
+      userRepository.createToken().collect { resultCreateToken ->
+        when (resultCreateToken.status) {
           Status.SUCCESS -> {
-            result.data.let {
-              if (it?.success == true) {
-                _token.value = it.requestToken
-              }
-            }
+            if (resultCreateToken.data?.success == true && resultCreateToken.data.requestToken != null) {
+              login(username, password, resultCreateToken.data.requestToken)
+            } else _loginState.value = false
           }
 
           Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
+            _loginState.value = false
             _loadingState.value = false
             _errorState.value =
-              Event(result.message ?: "Something went wrong. Please try again later.")
+              Event(resultCreateToken.message ?: "Something went wrong. Please try again later.")
           }
         }
       }
     }
   }
 
-  fun login(username: String, password: String, token: String) {
-    viewModelScope.launch(Dispatchers.IO) {
-      val result = userRepository.login(username, password, token)
-      when (result.status) {
-        Status.SUCCESS -> {
-          if (result.data?.success == true)
-            _tokenVerified.postValue(result.data.requestToken)
-        }
+  //  2. authorize the request token
+  private fun login(username: String, password: String, requestToken: String) {
+    viewModelScope.launch {
+      userRepository.login(username, password, requestToken).collect { resultLogin ->
+        when (resultLogin.status) {
+          Status.SUCCESS -> {
+            resultLogin.data?.requestToken.let { token ->
+              if (token != null) createSession(token)
+              else _loginState.value = false
+            }
+          }
 
-        Status.LOADING -> _loadingState.postValue(true)
-        Status.ERROR -> {
-          _loadingState.postValue(false)
-          _errorState.postValue(
-            Event(result.message ?: "Something went wrong. Please try again later.")
-          )
+          Status.LOADING -> _loadingState.postValue(true)
+          Status.ERROR -> {
+            _loginState.value = false
+            _loadingState.value = false
+            _errorState.value =
+              Event(
+                resultLogin.message ?: "Something went wrong. Please try again later."
+              )
+          }
         }
       }
     }
   }
 
-  fun createSession(token: String) =
+  // 3. Create a new session id with the authorized request token
+  private fun createSession(token: String) {
     viewModelScope.launch {
       userRepository.createSessionLogin(token).collect { result ->
         when (result.status) {
           Status.SUCCESS -> {
             result.data.let {
               if (it?.success == true) {
-                _sessionId.value = it.sessionId
-              }
+                getUserDetail(it.sessionId)
+              } else _loginState.value = false
             }
           }
 
           Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
+            _loginState.value = false
             _loadingState.value = false
             _errorState.value =
-              Event(result.message ?: "Something went wrong. Please try again later.")
+              Event(
+                result.message
+                  ?: "Something went wrong. Please try again later."
+              )
           }
         }
       }
     }
+  }
 
-  fun getUserDetail(sessionId: String) =
+  private fun getUserDetail(sessionId: String) {
     viewModelScope.launch {
       userRepository.getUserDetail(sessionId).collect { result ->
         when (result.status) {
@@ -111,17 +118,19 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
                 username = result.data.username.toString(),
                 password = "NaN",
                 region = "NaN",
-                token = "NaN",
+                token = sessionId,
                 isLogin = true,
                 gravatarHast = result.data.avatar?.gravatar?.hash,
                 tmdbAvatar = result.data.avatar?.tmdb?.avatarPath
               )
-            }
+              _loginState.value = true
+            } else _loginState.value = false
             _loadingState.value = false
           }
 
           Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
+            _loginState.value = false
             _loadingState.value = false
             _errorState.value =
               Event(result.message ?: "Something went wrong. Please try again later.")
@@ -129,6 +138,7 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
         }
       }
     }
+  }
 
   fun saveUser(userModel: UserModel) {
     viewModelScope.launch { userRepository.saveUser(userModel) }

@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import okio.IOException
 
 class UserDataSource(
   private val tmdbApiService: TMDBApiService,
@@ -59,26 +58,13 @@ class UserDataSource(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun login(
-    username: String,
-    pass: String,
-    token: String
-  ): NetworkResult<AuthenticationResponse> {
-    return try {
-      val response = tmdbApiService.login(username, pass, token)
-      if (response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) NetworkResult.success(responseBody)
-        else NetworkResult.error("Error in fetching data")
-      } else {
-        val errorMessage = response.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error("Something went wrong")
-    }
-  }
+    username: String, pass: String, token: String
+  ): Flow<NetworkResult<AuthenticationResponse>> = flow {
+    emit(NetworkResult.loading())
+    emit(safeApiCallLogin {
+      tmdbApiService.login(username, pass, token)
+    })
+  }.flowOn(Dispatchers.IO)
 
   companion object {
     const val TAG = "UserDataSource"

@@ -4,7 +4,7 @@
   <string name="login">Login</string>
   <string name="text_login">text login</string>
   <string name="button_login">button login</string>
-  <string name="username">Username</string>
+  <string name="username_email">Username or email</string>
   <string name="password">Password</string>
   <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
@@ -13,7 +13,6 @@
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>
-  <string name="no_connection">No internet connection</string>
   <string name="unknown_error">Unknown error</string>
 
   <string name="login_as_guest_successful">Login as Guest Successful</string>
@@ -30,8 +29,6 @@
   <!-- FEATURED -->
   <string name="movies">Movies</string>
   <string name="tv_series">TV Series</string>
-  <string name="person">Person</string>
-  <string name="multi_search">Multi Search</string>
   <string name="trending_now">Trending now</string>
   <string name="today">Today</string>
   <string name="this_week">This Week</string>
@@ -50,9 +47,6 @@
   <!-- MORE -->
   <string name="guest_user">Guest User</string>
   <string name="image_profile">Image Profile</string>
-  <string name="dark_mode">Dark Mode</string>
-  <string name="rate_us">Rate us on PlayStore</string>
-  <string name="rate_bazz_movies_on_play_store">rate BAZZ Movies on play store</string>
   <string name="faq">FAQ</string>
   <string name="suggestion">Suggestion</string>
   <string name="open_suggestion">open suggestion</string>
@@ -60,7 +54,6 @@
   <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
   <string name="sign_out">Sign Out</string>
   <string name="sign_out_success">Sign Out Success</string>
-  <string name="feature_not_ready">Feature still on Development</string>
   <string name="yes">Yes</string>
   <string name="no">No</string>
   <string name="warning">Warning</string>
@@ -72,8 +65,6 @@
   <string name="about">About</string>
   <string name="about_text">I created BAZZ Movies app for movie lovers. It helps you easily manage, discover, and enjoy your favorite films anywhere. Join me to elevate your movie experience!</string>
   <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but not endorsed or certified by TMDB.</string>
-  <string name="change_language">change language</string>
-  <string name="language">Language</string>
 
   <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
@@ -120,10 +111,7 @@
   <string name="added_to_favorite">has been added to favorite</string>
   <string name="added_to_watchlist">has been added to watchlist</string>
   <string name="deleted_from_favorite">has been deleted from favorite</string>
-  <string name="deleted_from_favorite2">Item has been deleted from favorite</string>
   <string name="deleted_from_watchlist">has been deleted from watchlist</string>
-  <string name="deleted_from_watchlist2">Item has been deleted from watchlist</string>
-  <string name="action_not_successful">Action not successful</string>
 
   <string name="no_data">No Data</string>
   <string name="add_to_favorite">add to favorite</string>
@@ -145,44 +133,8 @@
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
   <string name="actress_photo">actress photo</string>
-
   <string name="close">close</string>
 
-  <!-- Bottom sheet search, sort, filter -->
-  <string name="sort_filter">Sort &amp; Filter</string>
-  <string name="type_search">Search by</string>
-  <string name="filter_by_genre">Filter by genre</string>
-  <string name="action">action</string>
-  <string name="adventure">adventure</string>
-  <string name="animation">animation</string>
-  <string name="comedy">comedy</string>
-  <string name="crime">crime</string>
-  <string name="documentary">documentary</string>
-  <string name="drama">drama</string>
-  <string name="family">family</string>
-  <string name="fantasy">fantasy</string>
-  <string name="history">history</string>
-  <string name="horror">horror</string>
-  <string name="music">music</string>
-  <string name="mystery">mystery</string>
-  <string name="romance">romance</string>
-  <string name="science_fiction">sci-fi</string>
-  <string name="thriller">thriller</string>
-  <string name="tv_movie">tv movie</string>
-  <string name="war">war</string>
-  <string name="western">western</string>
-  <string name="reset">Reset</string>
-  <string name="apply">Apply</string>
-  <string name="maximum_selected_genres_reached">Maximum selected genres reached</string>
-  <string name="kids">kids</string>
-  <string name="mistery">mistery</string>
-  <string name="news">news</string>
-  <string name="reality">reality</string>
-  <string name="soap">soap</string>
-  <string name="talk">talk</string>
-  <string name="war_politic"><![CDATA[war & politic]]></string>
-  <string name="action_n_adventure"><![CDATA[action & adventure]]></string>
-  <string name="sci_fi_n_fantasy"><![CDATA[sci-fi & fantasy]]></string>
   <string name="open_actor_actress_instagram_page">open actor/actress Instagram page</string>
   <string name="open_actor_x_account">open actor/actress X account</string>
   <string name="open_actor_actress_facebook_page">open actor/actress Facebook page</string>

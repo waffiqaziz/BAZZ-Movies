@@ -140,7 +140,7 @@
             android:fontFamily="@font/nunito_sans_italic"
             android:text="@string/backdrop_not_found"
             android:textColor="@color/gray_100"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/iv_poster"
             app:layout_constraintEnd_toEndOf="parent"

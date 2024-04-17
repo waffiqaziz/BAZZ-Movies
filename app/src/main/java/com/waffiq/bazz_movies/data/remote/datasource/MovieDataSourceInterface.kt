@@ -44,7 +44,7 @@ interface MovieDataSourceInterface {
     } catch (e: SocketTimeoutException) {
       return NetworkResult.error("Connection timed out. Please try again.")
     } catch (e: UnknownHostException) {
-      return NetworkResult.error("Unable to resolve server hostname. Please check your internet connection.\"")
+      return NetworkResult.error("Unable to resolve server hostname. Please check your internet connection.")
     } catch (e: IOException) {
       return NetworkResult.error("Please check your network connection")
     } catch (e: Exception) {

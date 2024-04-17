@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.remote.SessionID
 import com.waffiq.bazz_movies.data.remote.datasource.UserDataSource
-import kotlinx.coroutines.flow.Flow
 
 class UserRepository(
   private val pref: UserPreference,
@@ -25,9 +24,9 @@ class UserRepository(
 
   suspend fun getUserDetail(sessionId: String) = userDataSource.getUserDetail(sessionId)
 
-  fun getUser(): Flow<UserModel> = pref.getUser()
+  fun getUser() = pref.getUser()
 
-  fun getUserRegion(): Flow<String> = pref.getRegion()
+  fun getUserRegion() = pref.getRegion()
 
   suspend fun getCountryCode() = userDataSource.getCountryCode()
 
