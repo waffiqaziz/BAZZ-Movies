@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
 import android.animation.ArgbEvaluator
-import android.animation.ValueAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -39,18 +38,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.color.gray
+import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
-import com.waffiq.bazz_movies.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
-import com.waffiq.bazz_movies.R.font.gothic
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.R.id.btn_no
 import com.waffiq.bazz_movies.R.id.btn_yes
 import com.waffiq.bazz_movies.R.id.rating_bar_action
@@ -123,23 +122,31 @@ class DetailMovieActivity : AppCompatActivity() {
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     authViewModel = ViewModelProvider(this, factory2)[AuthenticationViewModel::class.java]
 
-    binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-      val maxScroll = binding.nestedScrollView.getChildAt(0).height - binding.nestedScrollView.height
-      val percentage = scrollY.toFloat() / maxScroll.toFloat()
-
-      val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
-      val toColor = ContextCompat.getColor(this, gray) // Change this to your desired color
-
-      animateColorChange(binding.appBarLayout, fromColor, toColor, percentage)
-    })
-
+    scrollActionBarBehavior()
     checkUser()
     getDataExtra()
     showDetailData()
     btnListener()
   }
 
-  private fun animateColorChange(appBarLayout: AppBarLayout, fromColor: Int, toColor: Int, percentage: Float) {
+  private fun scrollActionBarBehavior() {
+    val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
+    val toColor = ContextCompat.getColor(this, gray)
+    binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+      val maxScroll =
+        binding.nestedScrollView.getChildAt(0).height - binding.nestedScrollView.height
+      animateColorChange(
+        binding.appBarLayout,
+        fromColor,
+        toColor,
+        percentage = scrollY.toFloat() / maxScroll.toFloat()
+      )
+    })
+  }
+
+  private fun animateColorChange(
+    appBarLayout: AppBarLayout, fromColor: Int, toColor: Int, percentage: Float
+  ) {
     // Calculate the adjusted progress based on the percentage scrolled
     val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
 
@@ -222,7 +229,11 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.apply {
       dataExtra.apply {
         val year = dateFormatter((firstAirDate ?: releaseDate ?: "")) ?: ""
-        tvYearReleased.text = year.ifEmpty { getString(not_available) }
+        if (year.isEmpty()) {
+          detailViewModel.detailMovie.observe(this@DetailMovieActivity) {
+            tvYearReleased.text = it.status ?: getString(not_available)
+          }
+        }
 
         tvMediaType.text = mediaType?.uppercase()
         if (overview != null) {
@@ -763,7 +774,7 @@ class DetailMovieActivity : AppCompatActivity() {
       TableRow.LayoutParams.WRAP_CONTENT,
       TableRow.LayoutParams.WRAP_CONTENT
     )
-    textView.typeface = ResourcesCompat.getFont(this, gothic)
+    textView.typeface = ResourcesCompat.getFont(this, nunito_sans_regular)
     textView.gravity = Gravity.START
     textView.textSize = 14F
     textView.setPadding(0, 7, 24, 7)

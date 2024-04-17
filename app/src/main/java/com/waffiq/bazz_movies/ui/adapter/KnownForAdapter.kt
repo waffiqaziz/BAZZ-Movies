@@ -61,8 +61,8 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
         .error(ic_broken_image)
         .into(binding.imgCastPhoto)
 
-      binding.tvCastName.text = cast.title
-      binding.tvCastCharacter.text = cast.character
+      binding.tvCastName.text = cast.name ?: cast.title ?: cast.originalName ?: cast.originalTitle
+      binding.tvCastCharacter.text = cast.character ?: "N/A"
 
       val resultItem = ResultItem(
         overview = cast.overview,
