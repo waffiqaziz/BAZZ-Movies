@@ -20,6 +20,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
@@ -29,6 +31,8 @@ import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
 
 
 class SearchFragment : Fragment() {
@@ -38,6 +42,8 @@ class SearchFragment : Fragment() {
 
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var closeButton: View
+
+  private var mSnackbar: Snackbar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -80,6 +86,8 @@ class SearchFragment : Fragment() {
         binding.illustrationSearchView.containerSearch.isVisible = false
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
+
+      combinedLoadStatesHandle2(loadState)?.let { errorMessage -> showSnackBarWarning(Event(errorMessage)) }
     }
 
     //setup searchView
@@ -160,8 +168,20 @@ class SearchFragment : Fragment() {
     }
   }
 
+  private fun showSnackBarWarning(eventMessage: Event<String>) {
+    val message = eventMessage.getContentIfNotHandled() ?: return
+    mSnackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+      .setAnchorView(binding.guideSnackbar)
+
+    val snackbarView = mSnackbar?.view
+    snackbarView?.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
+    if (message.isNotEmpty()) mSnackbar?.show()
+  }
+
+
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+    mSnackbar?.dismiss()
   }
 }
