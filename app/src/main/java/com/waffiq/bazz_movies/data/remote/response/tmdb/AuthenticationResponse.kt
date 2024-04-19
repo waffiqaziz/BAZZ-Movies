@@ -8,10 +8,10 @@ data class AuthenticationResponse(
   val success: Boolean,
 
   @field:SerializedName("expire_at")
-  val expireAt: String,
+  val expireAt: String? = null,
 
   @field:SerializedName("request_token")
-  val requestToken: String
+  val requestToken: String? = null
 )
 
 data class CreateSessionResponse(

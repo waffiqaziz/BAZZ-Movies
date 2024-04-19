@@ -4,7 +4,7 @@
   <string name="login">Login</string>
   <string name="text_login">text login</string>
   <string name="button_login">button login</string>
-  <string name="username_email">Username or email</string>
+  <string name="username">Username</string>
   <string name="password">Password</string>
   <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
