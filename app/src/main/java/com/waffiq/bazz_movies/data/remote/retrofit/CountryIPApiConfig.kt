@@ -2,17 +2,16 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.waffiq.bazz_movies.utils.Constants.COUNTRY_API_LINK
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class CountryIPApiConfig {
   fun getApiService(): CountryIPApiService {
-    val loggingInterceptor =
-      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+//    val loggingInterceptor =
+//      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     val client = OkHttpClient.Builder()
-      .addInterceptor(loggingInterceptor)
+//      .addInterceptor(loggingInterceptor)
       .connectTimeout(30, TimeUnit.SECONDS)
       .readTimeout(30, TimeUnit.SECONDS)
       .writeTimeout(30, TimeUnit.SECONDS)
@@ -26,11 +25,11 @@ class CountryIPApiConfig {
   }
 
   companion object {
-    fun getApiService(): CountryIPApiService {
-      val loggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun   getApiService(): CountryIPApiService {
+//      val loggingInterceptor =
+//        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
       val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
+//        .addInterceptor(loggingInterceptor)
         .build()
       val retrofit = Retrofit.Builder()
         .baseUrl(COUNTRY_API_LINK)
