@@ -8,7 +8,7 @@
     <TextView
       android:id="@+id/tv_header_no_data"
       style="@style/TextHeader1"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="100dp"
       android:text="@string/no_data_found"
@@ -25,7 +25,7 @@
       android:layout_height="wrap_content"
       android:text="@string/no_data_explanation"
       app:layout_constraintEnd_toEndOf="parent"
-      android:textAlignment="center"
+      android:gravity="center"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/tv_header_no_data" />
 

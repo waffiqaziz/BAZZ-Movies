@@ -59,6 +59,7 @@ class SearchFragment : Fragment() {
     // setup toolbar as action bar
     (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
     (activity as AppCompatActivity).supportActionBar?.title = null
+    binding.appBarLayout.setExpanded(true,true)
 
     setupSearchView(searchViewModel)
     return root
@@ -183,5 +184,10 @@ class SearchFragment : Fragment() {
     super.onDestroyView()
     _binding = null
     mSnackbar?.dismiss()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    binding.appBarLayout.setExpanded(true,true)
   }
 }

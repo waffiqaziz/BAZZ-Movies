@@ -5,39 +5,40 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/tv_header_noResult"
-      style="@style/TextHeader1"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="100dp"
-      android:text="@string/sorry_no_result"
-      android:textAlignment="center"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+  <TextView
+    android:id="@+id/tv_header_noResult"
+    style="@style/TextHeader1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="100dp"
+    android:text="@string/sorry_no_result"
+    android:textAlignment="center"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-      android:id="@+id/tv_no_data"
-      style="@style/TextDivider"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/no_result_explanation"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:textAlignment="center"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tv_header_noResult" />
+  <TextView
+    android:id="@+id/tv_no_data"
+    style="@style/TextDivider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/no_result_explanation"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_header_noResult" />
 
-    <ImageView
-      android:id="@+id/iv_illustration_no_data"
-      android:layout_width="300dp"
-      android:layout_height="300dp"
-      android:layout_marginBottom="16dp"
-      android:contentDescription="@string/search_illustration"
-      android:src="@drawable/ic_no_found"
-      app:layout_constraintBottom_toBottomOf="@+id/tv_no_data"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+  <ImageView
+    android:id="@+id/iv_illustration_no_data"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_marginBottom="16dp"
+    android:contentDescription="@string/search_illustration"
+    android:src="@drawable/ic_no_found"
+    app:layout_constraintBottom_toBottomOf="@+id/tv_no_data"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.522"
+    app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
