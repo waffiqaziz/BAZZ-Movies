@@ -1,7 +1,7 @@
 # BAZZ Movies
 
 ## Mobile App Movie Catalog
-Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate your personal watchlist with ease, ensuring you never miss a cinematic gem. Explore detailed information about each film and effortlessly add them to your favorites or watchlist, transforming the way you enjoy movies on the go.
+Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate your personal watchlist with ease, ensuring you never miss a cinematic gem. Explore detailed information about each film and effortlessly add them to your favorites or watchlist, transforming the way you enjoy movies on the go. Get it exclusively on [Play Store](https://play.google.com/store/apps/details?id=com.bazz.bazz_movies)
 
 ## Table of Contents (Optional)
 - [Installation](#installation)
@@ -11,12 +11,14 @@ Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate y
 ## Installation
 - Ensure Android Studio is installed.
 - Clone the project.
-- Build the project using the "Make project" option or by pressing Ctrl + F9.
-- Create or edit gradle.properties file, and add API key in string format.
+- **Optional** add `google-service.json` file from [Firebase Crashlytic](https://firebase.google.com/docs/crashlytics) on ./app root folder.
+- Create or edit `gradle.properties` file, and add API key in string format.
 ```kotlin  
 API_KEY= "TMDB_API_KEY"  
 API_KEY_OMDb= "OBDb_API_KEY"  
 ```
+- Build the project using the "Make project" option or by pressing Ctrl + F9.
+
 ## Credits
 - [TMDB API](https://www.themoviedb.org/)
 - [OMDb API](https://www.omdbapi.com/)
@@ -38,4 +40,4 @@ API_KEY_OMDb= "OBDb_API_KEY"
 - Search movies, tv-series, and actors
 
 
-**This project uses the TMDB API but not endorsed or certified by TMDB.**
+*This project uses the TMDB API but not endorsed or certified by TMDB.*
