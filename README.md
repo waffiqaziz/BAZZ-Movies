@@ -22,12 +22,15 @@ API_KEY_OMDb= "OBDb_API_KEY"
 ## Credits
 - [TMDB API](https://www.themoviedb.org/)
 - [OMDb API](https://www.omdbapi.com/)
+- [Country API](https://country.is/)
 - [ExpandableTextView](https://github.com/glailton/ExpandableTextView)
+- [Country Code Picker (CCP)](https://github.com/hbb20/CountryCodePickerProject)
 - [glide](https://bumptech.github.io/glide/)
+- [okhttp](https://github.com/square/okhttp)
+- [Retrofit](https://github.com/square/retrofit)
+- [Moshi](https://github.com/square/moshi)
 - [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans)
 - [Paradroid Font](https://www.myfonts.com/collections/paradroid-font-the-northern-block)
-- [Country API](https://country.is/)
-- [Country Code Picker (CCP)](https://github.com/hbb20/CountryCodePickerProject)
 
 ## Badges
 ![Kotlin](https://img.shields.io/badge/Kotlin-100%25-green)

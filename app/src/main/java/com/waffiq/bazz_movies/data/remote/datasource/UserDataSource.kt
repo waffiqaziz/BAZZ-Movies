@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import com.waffiq.bazz_movies.data.remote.SessionID
-import com.waffiq.bazz_movies.data.remote.response.CountyAPIResponse
+import com.waffiq.bazz_movies.data.remote.response.CountryIPResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
@@ -50,7 +50,7 @@ class UserDataSource(
       })
     }.flowOn(Dispatchers.IO)
 
-  override suspend fun getCountryCode(): Flow<NetworkResult<CountyAPIResponse>> = flow {
+  override suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = flow {
     emit(NetworkResult.loading())
     emit(safeApiCall {
       countryIPApiService.getIP()

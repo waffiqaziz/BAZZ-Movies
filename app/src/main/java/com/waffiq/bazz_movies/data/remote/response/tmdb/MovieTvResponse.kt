@@ -1,79 +1,82 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
+@JsonClass(generateAdapter = false)
 data class MovieTvResponse(
 
-	@SerializedName("page")
+	@Json(name="page")
 	val page: Int,
 
-	@SerializedName("total_pages")
+	@Json(name="total_pages")
 	val totalPages: Int,
 
-	@SerializedName("results")
+	@Json(name="results")
 	val results: List<ResultItem>,
 
-	@SerializedName("total_results")
+	@Json(name="total_results")
 	val totalResults: Int
 )
 
 @Parcelize
+@JsonClass(generateAdapter = false)
 data class ResultItem(
 
-	@SerializedName("first_air_date")
+	@Json(name="first_air_date")
 	val firstAirDate: String? = null,
 
-	@SerializedName("overview")
+	@Json(name="overview")
 	val overview: String? = null,
 
-	@SerializedName("original_language")
+	@Json(name="original_language")
 	val originalLanguage: String? = null,
 
-	@SerializedName("genre_ids")
+	@Json(name="genre_ids")
 	val genreIds: List<Int>? = null,
 
-	@SerializedName("poster_path")
+	@Json(name="poster_path")
 	val posterPath: String? = null,
 
-	@SerializedName("backdrop_path")
+	@Json(name="backdrop_path")
 	val backdropPath: String? = null,
 
-	@SerializedName("media_type")
+	@Json(name="media_type")
 	val mediaType: String? = null,
 
-	@SerializedName("original_name")
+	@Json(name="original_name")
 	val originalName: String? = null,
 
-	@SerializedName("popularity")
+	@Json(name="popularity")
 	val popularity: Double? = null,
 
-	@SerializedName("vote_average")
+	@Json(name="vote_average")
 	val voteAverage: Float? = null,
 
-	@SerializedName("name")
+	@Json(name="name")
 	val name: String? = null,
 
-	@SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@SerializedName("adult")
+	@Json(name="adult")
 	val adult: Boolean? = null,
 
-	@SerializedName("vote_count")
+	@Json(name="vote_count")
 	val voteCount: Int? = null,
 
-	@SerializedName("original_title")
+	@Json(name="original_title")
 	val originalTitle: String? = null,
 
-	@SerializedName("video")
+	@Json(name="video")
 	val video: Boolean? = null,
 
-	@SerializedName("title")
+	@Json(name="title")
 	val title: String? = null,
 
-	@SerializedName("release_date")
+	@Json(name="release_date")
 	val releaseDate: String? = null
 ): Parcelable
 

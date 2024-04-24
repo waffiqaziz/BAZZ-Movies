@@ -1,45 +1,48 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class VideoResponse(
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("results")
+	@Json(name="results")
 	val results: List<VideoItem>
 )
 
+@JsonClass(generateAdapter = false)
 data class VideoItem(
 
-	@field:SerializedName("site")
+	@Json(name="site")
 	val site: String? = null,
 
-	@field:SerializedName("size")
+	@Json(name="size")
 	val size: Int? = null,
 
-	@field:SerializedName("iso_3166_1")
+	@Json(name="iso_3166_1")
 	val iso31661: String? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String,
 
-	@field:SerializedName("official")
+	@Json(name="official")
 	val official: Boolean? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: String? = null,
 
-	@field:SerializedName("published_at")
+	@Json(name="published_at")
 	val publishedAt: String? = null,
 
-	@field:SerializedName("type")
+	@Json(name="type")
 	val type: String? = null,
 
-	@field:SerializedName("iso_639_1")
+	@Json(name="iso_639_1")
 	val iso6391: String? = null,
 
-	@field:SerializedName("key")
+	@Json(name="key")
 	val key: String? = null
 )

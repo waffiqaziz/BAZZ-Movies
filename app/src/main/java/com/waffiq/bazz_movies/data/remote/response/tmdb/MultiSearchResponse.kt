@@ -1,148 +1,152 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class MultiSearchResponse(
 
-	@field:SerializedName("page")
+	@Json(name="page")
 	val page: Int? = null,
 
-	@field:SerializedName("total_pages")
+	@Json(name="total_pages")
 	val totalPages: Int? = null,
 
-	@field:SerializedName("results")
+	@Json(name="results")
 	val results: List<ResultsItemSearch>? = null,
 
-	@field:SerializedName("total_results")
+	@Json(name="total_results")
 	val totalResults: Int? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class ResultsItemSearch(
 
-	@field:SerializedName("media_type")
+	@Json(name="media_type")
 	val mediaType: String? = null,
 
-	@field:SerializedName("known_for")
+	@Json(name="known_for")
 	val knownFor: List<KnownForItem>? = null,
 
-	@field:SerializedName("known_for_department")
+	@Json(name="known_for_department")
 	val knownForDepartment: String? = null,
 
-	@field:SerializedName("popularity")
+	@Json(name="popularity")
 	val popularity: Double? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String? = null,
 
-	@field:SerializedName("profile_path")
+	@Json(name="profile_path")
 	val profilePath: String? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("adult")
+	@Json(name="adult")
 	val adult: Boolean? = null,
 
-	@field:SerializedName("overview")
+	@Json(name="overview")
 	val overview: String? = null,
 
-	@field:SerializedName("original_language")
+	@Json(name="original_language")
 	val originalLanguage: String? = null,
 
-	@field:SerializedName("original_title")
+	@Json(name="original_title")
 	val originalTitle: String? = null,
 
-	@field:SerializedName("video")
+	@Json(name="video")
 	val video: Boolean? = null,
 
-	@field:SerializedName("title")
+	@Json(name="title")
 	val title: String? = null,
 
-	@field:SerializedName("genre_ids")
+	@Json(name="genre_ids")
 	val genreIds: List<Int>? = null,
 
-	@field:SerializedName("poster_path")
+	@Json(name="poster_path")
 	val posterPath: String? = null,
 
-	@field:SerializedName("backdrop_path")
+	@Json(name="backdrop_path")
 	val backdropPath: String? = null,
 
-	@field:SerializedName("release_date")
+	@Json(name="release_date")
 	val releaseDate: String? = null,
 
-	@field:SerializedName("vote_average")
+	@Json(name="vote_average")
 	val voteAverage: Double? = null,
 
-	@field:SerializedName("vote_count")
+	@Json(name="vote_count")
 	val voteCount: Double? = null,
 
-	@field:SerializedName("first_air_date")
+	@Json(name="first_air_date")
 	val firstAirDate: String? = null,
 
-	@field:SerializedName("origin_country")
+	@Json(name="origin_country")
 	val originCountry: List<String?>? = null,
 
-	@field:SerializedName("original_name")
+	@Json(name="original_name")
 	val originalName: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class KnownForItem(
 
-	@field:SerializedName("overview")
+	@Json(name="overview")
 	val overview: String? = null,
 
-	@field:SerializedName("original_language")
+	@Json(name="original_language")
 	val originalLanguage: String? = null,
 
-	@field:SerializedName("original_title")
+	@Json(name="original_title")
 	val originalTitle: String? = null,
 
-	@field:SerializedName("video")
+	@Json(name="video")
 	val video: Boolean? = null,
 
-	@field:SerializedName("title")
+	@Json(name="title")
 	val title: String? = null,
 
-	@field:SerializedName("genre_ids")
+	@Json(name="genre_ids")
 	val genreIds: List<Int?>? = null,
 
-	@field:SerializedName("poster_path")
+	@Json(name="poster_path")
 	val posterPath: String? = null,
 
-	@field:SerializedName("backdrop_path")
+	@Json(name="backdrop_path")
 	val backdropPath: String? = null,
 
-	@field:SerializedName("release_date")
+	@Json(name="release_date")
 	val releaseDate: String? = null,
 
-	@field:SerializedName("media_type")
+	@Json(name="media_type")
 	val mediaType: String? = null,
 
-	@field:SerializedName("popularity")
+	@Json(name="popularity")
 	val popularity: Double? = null,
 
-	@field:SerializedName("vote_average")
+	@Json(name="vote_average")
 	val voteAverage: Double? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("adult")
+	@Json(name="adult")
 	val adult: Boolean? = null,
 
-	@field:SerializedName("vote_count")
+	@Json(name="vote_count")
 	val voteCount: Int? = null,
 
-	@field:SerializedName("first_air_date")
+	@Json(name="first_air_date")
 	val firstAirDate: String? = null,
 
-	@field:SerializedName("origin_country")
+	@Json(name="origin_country")
 	val originCountry: List<String?>? = null,
 
-	@field:SerializedName("original_name")
+	@Json(name="original_name")
 	val originalName: String? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String? = null
 )
 

@@ -1,48 +1,53 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class AccountDetailsResponse(
 
-	@field:SerializedName("include_adult")
+	@Json(name="include_adult")
 	val includeAdult: Boolean? = null,
 
-	@field:SerializedName("iso_3166_1")
+	@Json(name="iso_3166_1")
 	val iso31661: String? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String? = null,
 
-	@field:SerializedName("avatar")
+	@Json(name="avatar")
 	val avatar: Avatar? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("iso_639_1")
+	@Json(name="iso_639_1")
 	val iso6391: String? = null,
 
-	@field:SerializedName("username")
+	@Json(name="username")
 	val username: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class Avatar(
 
-	@field:SerializedName("tmdb")
+	@Json(name="tmdb")
 	val tmdb: Tmdb? = null,
 
-	@field:SerializedName("gravatar")
+	@Json(name="gravatar")
 	val gravatar: Gravatar? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class Gravatar(
 
-	@field:SerializedName("hash")
+	@Json(name="hash")
 	val hash: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class Tmdb(
 
-	@field:SerializedName("avatar_path")
+	@Json(name="avatar_path")
 	val avatarPath: String? = null
 )

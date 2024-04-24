@@ -1,23 +1,26 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class AuthenticationResponse(
 
-  @field:SerializedName("success")
+  @Json(name="success")
   val success: Boolean,
 
-  @field:SerializedName("expire_at")
+  @Json(name="expire_at")
   val expireAt: String? = null,
 
-  @field:SerializedName("request_token")
+  @Json(name="request_token")
   val requestToken: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class CreateSessionResponse(
-  @field:SerializedName("success")
+  @Json(name="success")
   val success: Boolean,
 
-  @field:SerializedName("session_id")
+  @Json(name="session_id")
   val sessionId: String,
 )

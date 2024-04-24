@@ -1,23 +1,28 @@
 package com.waffiq.bazz_movies.data.remote
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class Favorite(
-  @SerializedName("media_type") val mediaType: String?,
-  @SerializedName("media_id") val mediaId: Int?,
-  @SerializedName("favorite") val favorite: Boolean?,
+  @Json(name="media_type") val mediaType: String?,
+  @Json(name="media_id") val mediaId: Int?,
+  @Json(name="favorite") val favorite: Boolean?,
 )
 
+@JsonClass(generateAdapter = false)
 data class Watchlist(
-  @SerializedName("media_type") val mediaType: String?,
-  @SerializedName("media_id") val mediaId: Int?,
-  @SerializedName("watchlist") val watchlist: Boolean?,
+  @Json(name="media_type") val mediaType: String?,
+  @Json(name="media_id") val mediaId: Int?,
+  @Json(name="watchlist") val watchlist: Boolean?,
 )
 
+@JsonClass(generateAdapter = false)
 data class Rate(
-  @SerializedName("value") val value: Any,
+  @Json(name="value") val value: Any,
 )
 
+@JsonClass(generateAdapter = false)
 data class SessionID(
-  @SerializedName("session_id") val sessionID: String,
+  @Json(name="session_id") val sessionID: String,
 )

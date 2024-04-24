@@ -1,37 +1,41 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class StatedResponse(
-  @field:SerializedName("id")
+  @Json(name="id")
   val id: Int? = null,
 
-  @field:SerializedName("favorite")
+  @Json(name="favorite")
   val favorite: Boolean,
 
-  @field:SerializedName("rated")
+  @Json(name="rated")
   val rated: Any? = null,
 
-  @field:SerializedName("watchlist")
+  @Json(name="watchlist")
   val watchlist: Boolean,
 )
 
+@JsonClass(generateAdapter = false)
 data class PostResponse(
-  @field:SerializedName("status_code")
+  @Json(name="status_code")
   val statusCode: Int? = null,
 
-  @field:SerializedName("status_message")
+  @Json(name="status_message")
   val statusMessage: String? = null,
 )
 
+@JsonClass(generateAdapter = false)
 data class PostRateResponse(
-  @field:SerializedName("success")
+  @Json(name="success")
   val success: Boolean? = null,
 
-  @field:SerializedName("status_code")
+  @Json(name="status_code")
   val statusCode: Int? = null,
 
-  @field:SerializedName("status_message")
+  @Json(name="status_message")
   val statusMessage: String? = null,
 )
 

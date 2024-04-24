@@ -1,148 +1,155 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = false)
 data class DetailMovieResponse(
 
-  @field:SerializedName("original_language")
+  @Json(name="original_language")
   val originalLanguage: String? = null,
 
-  @field:SerializedName("imdb_id")
+  @Json(name="imdb_id")
   val imdbId: String? = null,
 
-  @field:SerializedName("video")
+  @Json(name="video")
   val video: Boolean? = null,
 
-  @field:SerializedName("title")
+  @Json(name="title")
   val title: String? = null,
 
-  @field:SerializedName("backdrop_path")
+  @Json(name="backdrop_path")
   val backdropPath: String? = null,
 
-  @field:SerializedName("revenue")
+  @Json(name="revenue")
   val revenue: Long? = null,
 
-  @field:SerializedName("genres")
+  @Json(name="genres")
   val genres: List<GenresItem?>? = null,
 
-  @field:SerializedName("popularity")
+  @Json(name="popularity")
   val popularity: Double? = null,
 
-  @field:SerializedName("release_dates")
+  @Json(name="release_dates")
   val releaseDates: ReleaseDates? = null,
 
-  @field:SerializedName("production_countries")
+  @Json(name="production_countries")
   val productionCountries: List<ProductionCountriesItem?>? = null,
 
-  @field:SerializedName("id")
+  @Json(name="id")
   val id: Int? = null,
 
-  @field:SerializedName("vote_count")
+  @Json(name="vote_count")
   val voteCount: Int? = null,
 
-  @field:SerializedName("budget")
+  @Json(name="budget")
   val budget: Int? = null,
 
-  @field:SerializedName("overview")
+  @Json(name="overview")
   val overview: String? = null,
 
-  @field:SerializedName("original_title")
+  @Json(name="original_title")
   val originalTitle: String? = null,
 
-  @field:SerializedName("runtime")
+  @Json(name="runtime")
   val runtime: Int? = null,
 
-  @field:SerializedName("poster_path")
+  @Json(name="poster_path")
   val posterPath: String? = null,
 
-  @field:SerializedName("spoken_languages")
+  @Json(name="spoken_languages")
   val spokenLanguages: List<SpokenLanguagesItem?>? = null,
 
-  @field:SerializedName("production_companies")
+  @Json(name="production_companies")
   val productionCompanies: List<ProductionCompaniesItem?>? = null,
 
-  @field:SerializedName("release_date")
+  @Json(name="release_date")
   val releaseDate: String? = null,
 
-  @field:SerializedName("vote_average")
+  @Json(name="vote_average")
   val voteAverage: Double? = null,
 
-  @field:SerializedName("belongs_to_collection")
+  @Json(name="belongs_to_collection")
   val belongsToCollection: BelongsToCollection? = null,
 
-  @field:SerializedName("tagline")
+  @Json(name="tagline")
   val tagline: String? = null,
 
-  @field:SerializedName("adult")
+  @Json(name="adult")
   val adult: Boolean? = null,
 
-  @field:SerializedName("homepage")
+  @Json(name="homepage")
   val homepage: String? = null,
 
-  @field:SerializedName("status")
+  @Json(name="status")
   val status: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class ReleaseDates(
-  @field:SerializedName("results")
+  @Json(name="results")
   val results: List<ReleaseDatesItem?>? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class ReleaseDatesItem(
-  @field:SerializedName("iso_3166_1")
+  @Json(name="iso_3166_1")
   val iso31661: String? = null,
 
-  @field:SerializedName("release_dates")
+  @Json(name="release_dates")
   val releaseDateValue: List<ReleaseDatesItemValue>? = null,
 )
 
+@JsonClass(generateAdapter = false)
 data class ReleaseDatesItemValue(
-  @field:SerializedName("descriptors")
+  @Json(name="descriptors")
   val descriptors: List<Any?>? = null,
 
-  @field:SerializedName("note")
+  @Json(name="note")
   val note: String? = null,
 
-  @field:SerializedName("type")
+  @Json(name="type")
   val type: Int? = null,
 
-  @field:SerializedName("iso_639_1")
+  @Json(name="iso_639_1")
   val iso6391: String? = null,
 
-  @field:SerializedName("certification")
+  @Json(name="certification")
   val certification: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class ProductionCountriesItem(
 
-  @field:SerializedName("iso_3166_1")
+  @Json(name="iso_3166_1")
   val iso31661: String? = null,
 
-  @field:SerializedName("name")
+  @Json(name="name")
   val name: String? = null,
 
-  @field:SerializedName("type")
+  @Json(name="type")
   val type: Int? = null,
 
-  @field:SerializedName("iso_639_1")
+  @Json(name="iso_639_1")
   val iso6391: String? = null,
 
-  @field:SerializedName("certification")
+  @Json(name="certification")
   val certification: String? = null
 )
 
+@JsonClass(generateAdapter = false)
 data class BelongsToCollection(
 
-  @field:SerializedName("backdrop_path")
+  @Json(name="backdrop_path")
   val backdropPath: String? = null,
 
-  @field:SerializedName("name")
+  @Json(name="name")
   val name: String? = null,
 
-  @field:SerializedName("id")
+  @Json(name="id")
   val id: Int? = null,
 
-  @field:SerializedName("poster_path")
+  @Json(name="poster_path")
   val posterPath: String? = null
 )
 

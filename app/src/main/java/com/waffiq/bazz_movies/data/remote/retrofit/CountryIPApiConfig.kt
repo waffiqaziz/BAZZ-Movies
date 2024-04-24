@@ -1,15 +1,21 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.waffiq.bazz_movies.utils.Constants.COUNTRY_API_LINK
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class CountryIPApiConfig {
   fun getApiService(): CountryIPApiService {
 //    val loggingInterceptor =
 //      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    val moshi = Moshi.Builder()
+      .add(KotlinJsonAdapterFactory())
+      .build()
+
     val client = OkHttpClient.Builder()
 //      .addInterceptor(loggingInterceptor)
       .connectTimeout(30, TimeUnit.SECONDS)
@@ -18,7 +24,7 @@ class CountryIPApiConfig {
       .build()
     val retrofit = Retrofit.Builder()
       .baseUrl(COUNTRY_API_LINK)
-      .addConverterFactory(GsonConverterFactory.create())
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
       .client(client)
       .build()
     return retrofit.create(CountryIPApiService::class.java)
@@ -28,12 +34,15 @@ class CountryIPApiConfig {
     fun   getApiService(): CountryIPApiService {
 //      val loggingInterceptor =
 //        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+      val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
       val client = OkHttpClient.Builder()
 //        .addInterceptor(loggingInterceptor)
         .build()
       val retrofit = Retrofit.Builder()
         .baseUrl(COUNTRY_API_LINK)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(client)
         .build()
       return retrofit.create(CountryIPApiService::class.java)

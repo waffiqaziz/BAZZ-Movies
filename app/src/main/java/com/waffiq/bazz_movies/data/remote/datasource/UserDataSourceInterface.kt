@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import com.waffiq.bazz_movies.data.remote.SessionID
-import com.waffiq.bazz_movies.data.remote.response.CountyAPIResponse
+import com.waffiq.bazz_movies.data.remote.response.CountryIPResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
@@ -86,7 +86,7 @@ interface UserDataSourceInterface {
   suspend fun deleteSession(data: SessionID): Flow<NetworkResult<PostRateResponse>>
   suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSessionResponse>>
   suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
-  suspend fun getCountryCode(): Flow<NetworkResult<CountyAPIResponse>>
+  suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>>
   suspend fun login(
     username: String,
     pass: String,

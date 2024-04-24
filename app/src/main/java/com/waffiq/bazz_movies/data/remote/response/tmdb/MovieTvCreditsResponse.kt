@@ -1,93 +1,97 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
+@JsonClass(generateAdapter = false)
 data class MovieTvCreditsResponse(
 
-	@field:SerializedName("cast")
+	@Json(name="cast")
 	val cast: List<CastItem>,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("crew")
+	@Json(name="crew")
 	val crew: List<CrewItem>
 )
 
 @Parcelize
+@JsonClass(generateAdapter = false)
 data class CastItem(
 
-	@field:SerializedName("cast_id")
+	@Json(name="cast_id")
 	val castId: Int? = null,
 
-	@field:SerializedName("character")
+	@Json(name="character")
 	val character: String? = null,
 
-	@field:SerializedName("gender")
+	@Json(name="gender")
 	val gender: Int? = null,
 
-	@field:SerializedName("credit_id")
+	@Json(name="credit_id")
 	val creditId: String? = null,
 
-	@field:SerializedName("known_for_department")
+	@Json(name="known_for_department")
 	val knownForDepartment: String? = null,
 
-	@field:SerializedName("original_name")
+	@Json(name="original_name")
 	val originalName: String? = null,
 
-	@field:SerializedName("popularity")
+	@Json(name="popularity")
 	val popularity: Double? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String? = null,
 
-	@field:SerializedName("profile_path")
+	@Json(name="profile_path")
 	val profilePath: String? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("adult")
+	@Json(name="adult")
 	val adult: Boolean? = null,
 
-	@field:SerializedName("order")
+	@Json(name="order")
 	val order: Int? = null
 ): Parcelable
 
+@JsonClass(generateAdapter = false)
 data class CrewItem(
 
-	@field:SerializedName("gender")
+	@Json(name="gender")
 	val gender: Int? = null,
 
-	@field:SerializedName("credit_id")
+	@Json(name="credit_id")
 	val creditId: String? = null,
 
-	@field:SerializedName("known_for_department")
+	@Json(name="known_for_department")
 	val knownForDepartment: String? = null,
 
-	@field:SerializedName("original_name")
+	@Json(name="original_name")
 	val originalName: String? = null,
 
-	@field:SerializedName("popularity")
+	@Json(name="popularity")
 	val popularity: Double? = null,
 
-	@field:SerializedName("name")
+	@Json(name="name")
 	val name: String? = null,
 
-	@field:SerializedName("profile_path")
+	@Json(name="profile_path")
 	val profilePath: String? = null,
 
-	@field:SerializedName("id")
+	@Json(name="id")
 	val id: Int? = null,
 
-	@field:SerializedName("adult")
+	@Json(name="adult")
 	val adult: Boolean? = null,
 
-	@field:SerializedName("department")
+	@Json(name="department")
 	val department: String? = null,
 
-	@field:SerializedName("job")
+	@Json(name="job")
 	val job: String? = null
 )

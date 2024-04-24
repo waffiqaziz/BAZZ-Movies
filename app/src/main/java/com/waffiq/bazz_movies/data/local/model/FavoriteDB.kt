@@ -4,7 +4,8 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
 import kotlinx.parcelize.Parcelize
 
@@ -13,6 +14,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 @Entity(tableName = TABLE_NAME)
+@JsonClass(generateAdapter = false)
 data class FavoriteDB(
 
   @PrimaryKey(autoGenerate = true)
@@ -20,51 +22,51 @@ data class FavoriteDB(
   val id: Int = 0,
 
   @ColumnInfo(name = "mediaId")
-  @field:SerializedName("mediaId")
+  @Json(name = "mediaId")
   val mediaId: Int,
 
   @ColumnInfo(name = "mediaType")
-  @field:SerializedName("mediaType")
+  @Json(name = "mediaType")
   val mediaType: String? = null,
 
   @ColumnInfo(name = "genre")
-  @field:SerializedName("genre")
+  @Json(name = "genre")
   val genre: String? = null,
 
   @ColumnInfo(name = "backDrop")
-  @field:SerializedName("backDrop")
+  @Json(name = "backDrop")
   val backDrop: String? = null,
 
   @ColumnInfo(name = "poster")
-  @field:SerializedName("poster")
+  @Json(name = "poster")
   val poster: String? = null,
 
   @ColumnInfo(name = "overview")
-  @field:SerializedName("overview")
+  @Json(name = "overview")
   val overview: String? = null,
 
   @ColumnInfo(name = "title")
-  @field:SerializedName("title")
+  @Json(name = "title")
   val title: String? = null,
 
   @ColumnInfo(name = "releaseDate")
-  @field:SerializedName("releaseDate")
+  @Json(name = "releaseDate")
   val releaseDate: String? = null,
 
   @ColumnInfo(name = "popularity")
-  @field:SerializedName("popularity")
+  @Json(name = "popularity")
   val popularity: Double? = null,
 
   @ColumnInfo(name = "rating")
-  @field:SerializedName("rating")
+  @Json(name = "rating")
   val rating: Float? = null,
 
   @ColumnInfo(name = "is_favorited")
-  @field:SerializedName("is_favorited")
+  @Json(name = "is_favorited")
   val isFavorite: Boolean? = null,
 
   @ColumnInfo(name = "is_watchlist")
-  @field:SerializedName("is_watchlist")
+  @Json(name = "is_watchlist")
   val isWatchlist: Boolean? = null
 
-): Parcelable
+) : Parcelable
