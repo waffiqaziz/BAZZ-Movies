@@ -13,6 +13,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -54,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
     authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
     authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
+    binding.progressBar.isVisible = false
 
     showPassword()
     openTMDB()

@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.waffiq.bazz_movies.BuildConfig.API_KEY
 import com.waffiq.bazz_movies.BuildConfig.TMDB_API_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -19,6 +20,7 @@ class TMDBApiConfig {
       .connectTimeout(30, TimeUnit.SECONDS)
       .readTimeout(30, TimeUnit.SECONDS)
       .writeTimeout(30, TimeUnit.SECONDS)
+      .addInterceptor(ApiKeyInterceptorTMDB(API_KEY))
 //      .addInterceptor(loggingInterceptor)
       .build()
     val retrofit = Retrofit.Builder()
@@ -38,6 +40,7 @@ class TMDBApiConfig {
         .build()
       val client = OkHttpClient.Builder()
 //        .addInterceptor(loggingInterceptor)
+        .addInterceptor(ApiKeyInterceptorTMDB(API_KEY))
         .build()
       val retrofit = Retrofit.Builder()
         .baseUrl(TMDB_API_URL)
