@@ -1,5 +1,7 @@
 <resources>
-  <string name="app_name">BAZZ Movies</string>
+  <string name="app_name_release">BAZZ Movies</string>
+  <string name="app_name_debug">BAZZ Movies Debug</string>
+  <string name="bazz">BAZZ Movies</string>
   <string name="join_tmdb">Don\'t Have Account? Join TMDB</string>
   <string name="login">Login</string>
   <string name="text_login">text login</string>
@@ -9,7 +11,6 @@
   <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
-  <string name="bazz">BAZZ Movies</string>
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="poster">Poster</string>
   <string name="retry">Retry</string>

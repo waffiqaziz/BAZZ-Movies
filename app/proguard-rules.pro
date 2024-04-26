@@ -43,7 +43,7 @@
 -keep class com.waffiq.bazz_movies.data.local.model.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.tmdb.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.response.CountryIPResponse
+-keep class com.waffiq.bazz_movies.data.remote.response.CountryIPResponse { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult
 
 -keepattributes Signature
@@ -173,10 +173,10 @@
 
 
 ##---------------Begin: proguard configuration for Firebase crashlytics  ----------
--keep class com.google.android.gms.** { *; }
--keep class com.google.firebase.** { *; }
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
+#-keep class com.google.android.gms.** { *; }
+#-keep class com.google.firebase.** { *; }
+#-keep class com.crashlytics.** { *; }
+#-dontwarn com.crashlytics.**
 ##---------------End: proguard configuration for Firebase crashlytics  ----------
 
 ##---------------Begin: proguard configuration for Others  ----------
