@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.SnackBarLoginData
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
@@ -154,12 +155,5 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
     }
   }
   // endregion NETWORK
-
-  data class SnackBarLoginData(
-    val title: String,
-    val favorite: Favorite?,
-    val watchlist: Watchlist?,
-    val position: Int
-  )
 }
 

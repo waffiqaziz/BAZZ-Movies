@@ -56,6 +56,9 @@ class DetailMovieViewModel(
   private val _errorState = MutableLiveData<Event<String>>()
   val errorState: LiveData<Event<String>> get() = _errorState
 
+  private val _rateState = MutableLiveData<Event<Boolean>>()
+  val rateState: LiveData<Event<Boolean>> get() = _rateState
+
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
@@ -391,13 +394,39 @@ class DetailMovieViewModel(
   fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.postWatchlist(sessionId, data, userId) }
 
-  fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
-    viewModelScope.launch(Dispatchers.IO) {
-      movieRepository.postMovieRate(sessionId, data, movieId)
-    }
+  fun postMovieRate(sessionId: String, data: Rate, movieId: Int) {
+    viewModelScope.launch {
+      val networkResult = movieRepository.postMovieRate(sessionId, data, movieId)
+      when (networkResult.status) {
+        Status.SUCCESS -> {
+          _rateState.value = Event(true)
+        }
 
-  fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.postTvRate(sessionId, data, tvId) }
+        Status.LOADING -> {}
+        Status.ERROR -> {
+          _rateState.value = Event(false)
+          _errorState.value = Event(networkResult.message.toString())
+        }
+      }
+    }
+  }
+
+  fun postTvRate(sessionId: String, data: Rate, tvId: Int) {
+    viewModelScope.launch {
+      val networkResult = movieRepository.postTvRate(sessionId, data, tvId)
+      when (networkResult.status) {
+        Status.SUCCESS -> {
+          _rateState.value = Event(true)
+        }
+
+        Status.LOADING -> {}
+        Status.ERROR -> {
+          _rateState.value = Event(false)
+          _errorState.value = Event(networkResult.message.toString())
+        }
+      }
+    }
+  }
   // endregion POST FAVORITE, WATCHLIST, RATE
 }
 

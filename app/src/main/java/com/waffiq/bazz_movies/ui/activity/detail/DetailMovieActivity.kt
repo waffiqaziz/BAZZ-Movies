@@ -62,6 +62,7 @@ import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.R.string.no_overview
 import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.R.string.not_available_full
+import com.waffiq.bazz_movies.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.R.string.status_
 import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
@@ -160,6 +161,13 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun checkUser() {
     authViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
+
+      // rate handling for user login
+      if (isLogin) detailViewModel.rateState.observe(this) { eventResult ->
+        eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
+          if (isRateSuccessful) showToast(getString(rating_added_successfully))
+        }
+      }
 
       // shor or hide user score
       binding.yourScoreViewGroup.isGone = !isLogin
@@ -304,7 +312,11 @@ class DetailMovieActivity : AppCompatActivity() {
 
         // show TMDb score
         binding.tvScoreTmdb.text =
-          if (movie.voteAverage == 0.0 || movie.voteAverage == null) getString(not_available)
+          if (movie.voteAverage == 0.0
+            || movie.voteAverage == null
+            || movie.voteAverage.toString().isEmpty()
+            || movie.voteAverage.toString().isBlank()
+          ) getString(not_available)
           else movie.voteAverage.toString()
 
         // show OMDb detail (score)
@@ -386,7 +398,6 @@ class DetailMovieActivity : AppCompatActivity() {
             btnTrailer(it)
           }
         }
-
       }
 
       // recommendation tv
@@ -677,17 +688,32 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
 
+    authViewModel.getUserPref().observe(this) { user ->
+      getStated(user.token)
+      detailViewModel.stated.observe(this) {
+        if (it != null) {
+          ratingBar.rating = it.rated
+            .toString()
+            .replace("{value=", "").replace("}", "")
+            .toFloat() / 2
+        }
+      }
+    }
+
     val buttonYesAlert = dialogView.findViewById(btn_yes) as Button
     buttonYesAlert.setOnClickListener {
-      showToast("Rating: ${ratingBar.rating * 2}")
       val rate = Rate(value = ratingBar.rating * 2)
       authViewModel.getUserPref().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
           dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, rate, it1) }
         else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, rate, it1) }
+      }
 
-        // change rating
-        binding.tvScoreYourScore.text = rate.value.toString()
+      // change rating
+      detailViewModel.rateState.observe(this) { eventResult ->
+        eventResult.peekContent().let { isRateSuccessful ->
+          if (isRateSuccessful) binding.tvScoreYourScore.text = rate.value.toString()
+        }
       }
       dialog.dismiss()
     }

@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.SnackBarLoginData
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
@@ -35,8 +36,8 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  private val _snackBarAdded = MutableLiveData<Event<MyFavoriteViewModel.SnackBarLoginData>>()
-  val snackBarAdded: LiveData<Event<MyFavoriteViewModel.SnackBarLoginData>> = _snackBarAdded
+  private val _snackBarAdded = MutableLiveData<Event<SnackBarLoginData>>()
+  val snackBarAdded: LiveData<Event<SnackBarLoginData>> = _snackBarAdded
 
   // region LOCAL DATABASE
   val watchlistMoviesDB =
@@ -97,7 +98,7 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
       when (result.status) {
         Status.SUCCESS -> {
           if (result.data?.statusCode == 1) _snackBarAdded.value =
-            Event(MyFavoriteViewModel.SnackBarLoginData(title, data, null, position))
+            Event(SnackBarLoginData(title, data, null, position))
         }
 
         Status.ERROR -> {}
@@ -111,7 +112,7 @@ class MyWatchlistViewModel(private val movieRepository: MoviesRepository) : View
       when (result.status) {
         Status.SUCCESS -> {
           if (result.data?.statusCode == 1) _snackBarAdded.value =
-            Event(MyFavoriteViewModel.SnackBarLoginData(title, null, data, position))
+            Event(SnackBarLoginData(title, null, data, position))
         }
 
         Status.ERROR -> {}

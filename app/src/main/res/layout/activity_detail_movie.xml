@@ -354,6 +354,7 @@
               android:id="@+id/tv_score_tmdb"
               style="@style/TextScore"
               android:layout_gravity="center"
+              android:text="@string/not_available"
               tools:text="8.5" />
 
             <TextView
@@ -367,6 +368,7 @@
             android:id="@+id/your_score_viewGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/rating"
             android:orientation="vertical"
             android:paddingBottom="10dp"
@@ -381,6 +383,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
+              android:text="@string/not_available"
               tools:text="8.5" />
 
             <TextView
