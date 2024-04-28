@@ -19,10 +19,17 @@ data class Watchlist(
 
 @JsonClass(generateAdapter = false)
 data class Rate(
-  @Json(name="value") val value: Any,
+  @Json(name = "value") val value: Any,
 )
 
 @JsonClass(generateAdapter = false)
 data class SessionID(
-  @Json(name="session_id") val sessionID: String,
+  @Json(name = "session_id") val sessionID: String,
+)
+
+data class PostModelState(
+  val isSuccess: Boolean,
+  val isDelete: Boolean,
+  val isFavorite: Boolean,
+  val isWatchlist: Boolean
 )

@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Com
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.PostModelState
 import com.waffiq.bazz_movies.data.remote.Rate
 import com.waffiq.bazz_movies.data.remote.Watchlist
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
@@ -58,6 +59,9 @@ class DetailMovieViewModel(
 
   private val _rateState = MutableLiveData<Event<Boolean>>()
   val rateState: LiveData<Event<Boolean>> get() = _rateState
+
+  private val _postModelState = MutableLiveData<Event<PostModelState>>()
+  val postModelState: LiveData<Event<PostModelState>> get() = _postModelState
 
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
@@ -388,11 +392,76 @@ class DetailMovieViewModel(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: Favorite, userId: Int) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.postFavorite(sessionId, data, userId) }
+  fun postFavorite(sessionId: String, data: Favorite, userId: Int) {
+    viewModelScope.launch {
+      val networkResult = movieRepository.postFavorite(sessionId, data, userId)
+      when (networkResult.status) {
+        Status.SUCCESS -> {
+          if (data.favorite != null) {
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = true,
+                isDelete = !data.favorite,
+                isFavorite = true,
+                isWatchlist = false
+              )
+            )
+          }
+          else _errorState.value = Event("Favorite is null")
+        }
 
-  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.postWatchlist(sessionId, data, userId) }
+        Status.LOADING -> {}
+        Status.ERROR -> {
+          if (data.favorite != null) {
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = false,
+                isDelete = !data.favorite,
+                isFavorite = true,
+                isWatchlist = false
+              )
+            )
+          }
+          _errorState.value = Event(networkResult.message.toString())
+        }
+      }
+    }
+  }
+
+  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) {
+    viewModelScope.launch {
+      val networkResult = movieRepository.postWatchlist(sessionId, data, userId)
+      when (networkResult.status) {
+        Status.SUCCESS -> {
+          if(data.watchlist != null) {
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = true,
+                isDelete = !data.watchlist,
+                isFavorite = true,
+                isWatchlist = true
+              )
+            )
+          } else _errorState.value = Event("Watchlist is Null")
+        }
+
+        Status.LOADING -> {}
+        Status.ERROR -> {
+          if(data.watchlist != null) {
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = false,
+                isDelete = !data.watchlist,
+                isFavorite = true,
+                isWatchlist = true
+              )
+            )
+          }
+          _errorState.value = Event(networkResult.message.toString())
+        }
+      }
+    }
+  }
 
   fun postMovieRate(sessionId: String, data: Rate, movieId: Int) {
     viewModelScope.launch {

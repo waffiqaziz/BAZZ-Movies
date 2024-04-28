@@ -44,7 +44,9 @@
 -keep class com.waffiq.bazz_movies.data.remote.response.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.tmdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.CountryIPResponse { *; }
--keep class com.waffiq.bazz_movies.utils.NetworkResult
+-keep class com.waffiq.bazz_movies.data.remote.SnackBarLoginData { *; }
+-keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
+-keep class com.waffiq.bazz_movies.data.remote.PostModelState { *; }
 
 -keepattributes Signature
 -keepattributes *Annotation*

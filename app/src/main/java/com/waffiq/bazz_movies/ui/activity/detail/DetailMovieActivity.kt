@@ -114,11 +114,11 @@ class DetailMovieActivity : AppCompatActivity() {
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    showLoading(true)
+    showLoadingDim(true)
 
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
-    detailViewModel.loadingState.observe(this) { showLoading(it) }
+    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     authViewModel = ViewModelProvider(this, factory2)[AuthenticationViewModel::class.java]
@@ -162,10 +162,30 @@ class DetailMovieActivity : AppCompatActivity() {
     authViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
 
-      // rate handling for user login
-      if (isLogin) detailViewModel.rateState.observe(this) { eventResult ->
-        eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
-          if (isRateSuccessful) showToast(getString(rating_added_successfully))
+      // rate handling, add favorite and watchlist for user login
+      if (isLogin) {
+        detailViewModel.rateState.observe(this) { eventResult ->
+          eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
+            if (isRateSuccessful) showToast(getString(rating_added_successfully))
+          }
+        }
+        detailViewModel.postModelState.observe(this) { eventResult ->
+          eventResult.getContentIfNotHandled()?.let { postModelState ->
+
+            if (postModelState.isSuccess) {
+              if (!postModelState.isDelete) { // adding handle
+                if (postModelState.isWatchlist) showToastAddedWatchlist()
+                else showToastAddedFavorite()
+              } else { // remove handle
+                if (postModelState.isFavorite) showToastRemoveFromFavorite()
+                else showToastRemoveFromWatchlist()
+              }
+
+              authViewModel.getUserPref().observe(this) { user ->
+                getStated(user.token)
+              }
+            }
+          }
         }
       }
 
@@ -325,7 +345,7 @@ class DetailMovieActivity : AppCompatActivity() {
           detailViewModel.omdbResult.observe(this) {
             showDetailOMDb(it)
           }
-        } else showLoading(false)
+        } else showLoadingDim(false)
 
         // trailer
         movie.id?.let { detailViewModel.getLinkMovie(it) }
@@ -377,7 +397,7 @@ class DetailMovieActivity : AppCompatActivity() {
               detailViewModel.omdbResult.observe(this) {
                 showDetailOMDb(it)
               }
-            } else showLoading(false)
+            } else showLoadingDim(false)
           }
 
           Status.ERROR -> {
@@ -492,14 +512,8 @@ class DetailMovieActivity : AppCompatActivity() {
           }
           changeBtnFavoriteBG(favorite)
         } else { // user login
-          if (favorite) {
-            postDataToTMDB(isModeFavorite = true, state = true)
-            showToastRemoveFromFavorite()
-          } else {
-            postDataToTMDB(isModeFavorite = true, state = false)
-            showToastAddedFavorite()
-          }
-          changeBtnFavoriteBG(favorite)
+          if (favorite) postDataToTMDB(isModeFavorite = true, state = true)
+          else postDataToTMDB(isModeFavorite = true, state = false)
         }
       }
 
@@ -524,14 +538,8 @@ class DetailMovieActivity : AppCompatActivity() {
           }
           changeBtnWatchlistBG(watchlist)
         } else { // user login
-          if (watchlist) {  // if movies is on favorite, then post watchlist as false (remove from watchlist)
-            postDataToTMDB(isModeFavorite = false, state = true)
-            showToastRemoveFromWatchlist()
-          } else {
-            postDataToTMDB(isModeFavorite = false, state = false)
-            showToastAddedWatchlist()
-          }
-          changeBtnWatchlistBG(watchlist)
+          if (watchlist) postDataToTMDB(isModeFavorite = false, state = true)
+          else postDataToTMDB(isModeFavorite = false, state = false)
         }
       }
 
@@ -600,8 +608,8 @@ class DetailMovieActivity : AppCompatActivity() {
             watchlist = it.watchlist
             showRatingUserLogin(it)
           }
-          changeBtnFavoriteBG(favorite)
-          changeBtnWatchlistBG(watchlist)
+          changeBtnFavoriteBG(it.favorite)
+          changeBtnWatchlistBG(it.watchlist)
         }
       }
     } else { //guest user
@@ -751,7 +759,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }, DELAY_TIME)
   }
 
-  private fun showLoading(isLoading: Boolean) {
+  private fun showLoadingDim(isLoading: Boolean) {
     if (isLoading) {
       binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
