@@ -1,6 +1,10 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -14,6 +18,7 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.Window
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TableLayout
@@ -626,20 +631,106 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun changeBtnWatchlistBG(boolean: Boolean) {
-    // if watchlist
-    if (boolean) binding.btnWatchlist.setImageResource(ic_bookmark_selected)
+  private fun changeBtnWatchlistBG(isActivated: Boolean) {
+    val fromResWTC = if (isActivated) ic_bookmark else ic_bookmark_selected
+    val toResWTC = if (isActivated) ic_bookmark_selected else ic_bookmark
 
-    //if not watchlist
-    else binding.btnWatchlist.setImageResource(ic_bookmark)
+    val fromScale = if (isActivated) 0.8f else 1.0f
+    val toScale = if (isActivated) 1.0f else 0.8f
+
+    binding.btnWatchlist.setImageResource(fromResWTC)
+
+    val scaleXAnimator = ObjectAnimator.ofFloat(
+      binding.btnWatchlist,
+      View.SCALE_X,
+      fromScale,
+      toScale
+    ).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val scaleYAnimator = ObjectAnimator.ofFloat(
+      binding.btnWatchlist,
+      View.SCALE_Y,
+      fromScale,
+      toScale
+    ).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val alphaAnimator = ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 1f, 0f).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val set = AnimatorSet().apply {
+      playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator)
+    }
+
+    set.addListener(object : AnimatorListenerAdapter() {
+      override fun onAnimationEnd(animation: Animator) {
+        binding.btnWatchlist.setImageResource(toResWTC)
+        ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 0f, 1f).apply {
+          duration = 200
+          interpolator = AccelerateDecelerateInterpolator()
+        }.start()
+      }
+    })
+
+    set.start()
   }
 
-  private fun changeBtnFavoriteBG(boolean: Boolean) {
-    // if favorite
-    if (boolean) binding.btnFavorite.setImageResource(ic_hearth_selected)
+  private fun changeBtnFavoriteBG(isActivated: Boolean) {
+    val fromResFAV = if (isActivated) ic_hearth else ic_hearth_selected
+    val toResFAV = if (isActivated) ic_hearth_selected else ic_hearth
 
-    //if not favorite
-    else binding.btnFavorite.setImageResource(ic_hearth)
+    val fromScale = if (isActivated) 0.8f else 1.0f
+    val toScale = if (isActivated) 1.0f else 0.8f
+
+    binding.btnFavorite.setImageResource(fromResFAV)
+
+    val scaleXAnimator = ObjectAnimator.ofFloat(
+      binding.btnFavorite,
+      View.SCALE_X,
+      fromScale,
+      toScale
+    ).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val scaleYAnimator = ObjectAnimator.ofFloat(
+      binding.btnFavorite,
+      View.SCALE_Y,
+      fromScale,
+      toScale
+    ).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val alphaAnimator = ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 1f, 0f).apply {
+      duration = 200
+      interpolator = AccelerateDecelerateInterpolator()
+    }
+
+    val set = AnimatorSet().apply {
+      playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator)
+    }
+
+    set.addListener(object : AnimatorListenerAdapter() {
+      override fun onAnimationEnd(animation: Animator) {
+        binding.btnFavorite.setImageResource(toResFAV)
+        ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 0f, 1f).apply {
+          duration = 200
+          interpolator = AccelerateDecelerateInterpolator()
+        }.start()
+      }
+    })
+
+    set.start()
   }
 
 

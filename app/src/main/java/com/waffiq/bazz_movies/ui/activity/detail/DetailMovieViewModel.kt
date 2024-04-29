@@ -406,8 +406,7 @@ class DetailMovieViewModel(
                 isWatchlist = false
               )
             )
-          }
-          else _errorState.value = Event("Favorite is null")
+          } else _errorState.value = Event("Favorite is null")
         }
 
         Status.LOADING -> {}
@@ -433,7 +432,7 @@ class DetailMovieViewModel(
       val networkResult = movieRepository.postWatchlist(sessionId, data, userId)
       when (networkResult.status) {
         Status.SUCCESS -> {
-          if(data.watchlist != null) {
+          if (data.watchlist != null) {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = true,
@@ -447,7 +446,7 @@ class DetailMovieViewModel(
 
         Status.LOADING -> {}
         Status.ERROR -> {
-          if(data.watchlist != null) {
+          if (data.watchlist != null) {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = false,
