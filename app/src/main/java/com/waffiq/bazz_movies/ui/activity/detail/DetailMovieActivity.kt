@@ -632,6 +632,14 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun changeBtnWatchlistBG(isActivated: Boolean) {
+    if (isActivated && binding.btnWatchlist.drawable.constantState == ActivityCompat.getDrawable(this,ic_bookmark_selected)?.constantState) {
+      return
+    }
+
+    if(!isActivated && binding.btnWatchlist.drawable.constantState == ActivityCompat.getDrawable(this,ic_bookmark)?.constantState) {
+      return
+    }
+
     val fromResWTC = if (isActivated) ic_bookmark else ic_bookmark_selected
     val toResWTC = if (isActivated) ic_bookmark_selected else ic_bookmark
 
@@ -683,6 +691,14 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun changeBtnFavoriteBG(isActivated: Boolean) {
+    if (isActivated && binding.btnFavorite.drawable.constantState == ActivityCompat.getDrawable(this,ic_hearth_selected)?.constantState) {
+      return
+    }
+
+    if(!isActivated && binding.btnFavorite.drawable.constantState == ActivityCompat.getDrawable(this,ic_hearth)?.constantState) {
+      return
+    }
+
     val fromResFAV = if (isActivated) ic_hearth else ic_hearth_selected
     val toResFAV = if (isActivated) ic_hearth_selected else ic_hearth
 
