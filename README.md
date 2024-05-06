@@ -12,10 +12,10 @@ Elevate your movie experience with BAZZ Movies. Discover, favorite, and curate y
 - Ensure Android Studio is installed.
 - Clone the project.
 - **Optional** add `google-service.json` file from [Firebase Crashlytic](https://firebase.google.com/docs/crashlytics) on ./app root folder.
-- Create or edit `gradle.properties` file, and add API key in string format.
+- Create or edit `local.properties` file, and add API key without any sign.
 ```kotlin  
-API_KEY= "TMDB_API_KEY"  
-API_KEY_OMDb= "OBDb_API_KEY"  
+API_KEY= {TMDB_API_KEY}  
+API_KEY_OMDb= {OBDb_API_KEY}  
 ```
 - Build the project using the "Make project" option or by pressing Ctrl + F9.
 

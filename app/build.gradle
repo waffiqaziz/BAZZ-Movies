@@ -21,9 +21,12 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-    // API KEY inside gradle.properties
-    buildConfigField("String", "API_KEY", API_KEY)
-    buildConfigField("String", "API_KEY_OMDb", API_KEY_OMDb)
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+    // API KEY inside local.properties
+    buildConfigField "String", "API_KEY", "\"${properties.getProperty("API_KEY")}\""
+    buildConfigField "String", "API_KEY_OMDb", "\"${properties.getProperty("API_KEY_OMDb")}\""
 
     // BASE URL
     buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'
