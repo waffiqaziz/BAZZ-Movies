@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteConstraintException
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
 
 class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) :
@@ -18,9 +18,9 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
 
   override val getWatchlistTv = favoriteDao.getWatchlistTv()
 
-  override suspend fun insert(favoriteDBList: FavoriteDB): Int {
+  override suspend fun insert(favoriteEntityList: FavoriteEntity): Int {
     return try {
-      favoriteDao.insert(favoriteDBList)
+      favoriteDao.insert(favoriteEntityList)
       SUCCESS
     } catch (e: SQLiteConstraintException) {
       ERROR_DUPLICATE_ENTRY

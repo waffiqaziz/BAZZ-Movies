@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
@@ -228,7 +228,7 @@ interface TMDBApiService {
   suspend fun postFavoriteTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: Favorite
+    @Body data: FavoritePostModel
   ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -236,7 +236,7 @@ interface TMDBApiService {
   suspend fun postWatchlistTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: Watchlist
+    @Body data: WatchlistPostModel
   ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -244,7 +244,7 @@ interface TMDBApiService {
   suspend fun postMovieRate(
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: Rate
+    @Body data: RatePostModel
   ): Response<PostRateResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -252,7 +252,7 @@ interface TMDBApiService {
   suspend fun postTvRate(
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: Rate
+    @Body data: RatePostModel
   ): Response<PostRateResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -261,5 +261,4 @@ interface TMDBApiService {
     @Query("session_id") sessionId: String
   ): Response<PostRateResponse>
   // endregion
-
 }

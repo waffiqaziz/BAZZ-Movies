@@ -1,14 +1,14 @@
 package com.waffiq.bazz_movies.data.local.datasource
 
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSourceInterface {
-  val getFavoriteMovies: Flow<List<FavoriteDB>>
-  val getFavoriteTv: Flow<List<FavoriteDB>>
-  val getWatchlistMovies: Flow<List<FavoriteDB>>
-  val getWatchlistTv: Flow<List<FavoriteDB>>
-  suspend fun insert(favoriteDBList: FavoriteDB): Int
+  val getFavoriteMovies: Flow<List<FavoriteEntity>>
+  val getFavoriteTv: Flow<List<FavoriteEntity>>
+  val getWatchlistMovies: Flow<List<FavoriteEntity>>
+  val getWatchlistTv: Flow<List<FavoriteEntity>>
+  suspend fun insert(favoriteEntityList: FavoriteEntity): Int
   suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): Int
   suspend fun deleteAll(): Int
   suspend fun isFavorite(id: Int, mediaType: String): Boolean

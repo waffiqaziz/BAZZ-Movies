@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -19,9 +19,9 @@ import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
-  private val listItemDB = ArrayList<FavoriteDB>()
+  private val listItemDB = ArrayList<Favorite>()
 
-  fun setFavorite(itemStory: List<FavoriteDB>) {
+  fun setFavorite(itemStory: List<Favorite>) {
     val diffCallback = DiffCallback(this.listItemDB, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -49,16 +49,16 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    lateinit var data: FavoriteDB
+    lateinit var data: Favorite
 
-    fun bind(fav: FavoriteDB) {
+    fun bind(fav: Favorite) {
       data = fav
       binding.ivPicture.contentDescription = fav.title
 
       Glide.with(binding.ivPicture)
         .load(
-          if (fav.backDrop != null) TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
-          else if (fav.poster != null) TMDB_IMG_LINK_POSTER_W185 + fav.poster
+          if (fav.backDrop != "N/A") TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
+          else if (fav.poster != "N/A") TMDB_IMG_LINK_POSTER_W185 + fav.poster
           else ic_backdrop_error
         )
         .placeholder(ic_bazz_placeholder_search)
@@ -89,8 +89,8 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
   }
 
   inner class DiffCallback(
-    private val oldList: List<FavoriteDB>,
-    private val newList: List<FavoriteDB>
+    private val oldList: List<Favorite>,
+    private val newList: List<Favorite>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

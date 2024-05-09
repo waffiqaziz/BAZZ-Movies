@@ -11,16 +11,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemResponse
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 
 class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
-  private val listCast = ArrayList<CastItem>()
+  private val listCast = ArrayList<CastItemResponse>()
 
-  fun setCast(itemStory: List<CastItem>) {
+  fun setCast(itemStory: List<CastItemResponse>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -49,7 +49,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
   inner class ViewHolder(private var binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(cast: CastItem) {
+    fun bind(cast: CastItemResponse) {
       binding.imgCastPhoto.contentDescription = cast.name
 
       with(binding) {
@@ -74,8 +74,8 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
   }
 
   inner class DiffCallback(
-    private val oldList: List<CastItem>,
-    private val newList: List<CastItem>
+    private val oldList: List<CastItemResponse>,
+    private val newList: List<CastItemResponse>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

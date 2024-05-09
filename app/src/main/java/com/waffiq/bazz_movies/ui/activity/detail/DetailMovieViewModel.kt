@@ -9,11 +9,10 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.remote.Favorite
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.PostModelState
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
@@ -21,6 +20,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -361,7 +361,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun insertToDB(fav: FavoriteDB) {
+  fun insertToDB(fav: Favorite) {
     viewModelScope.launch(Dispatchers.IO) {
       movieRepository.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
@@ -375,24 +375,24 @@ class DetailMovieViewModel(
     }
   }
 
-  fun updateToFavoriteDB(fav: FavoriteDB) =
+  fun updateToFavoriteDB(fav: Favorite) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(false, fav) }
 
-  fun updateToRemoveFromFavoriteDB(fav: FavoriteDB) =
+  fun updateToRemoveFromFavoriteDB(fav: Favorite) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
 
-  fun updateToWatchlistDB(fav: FavoriteDB) =
+  fun updateToWatchlistDB(fav: Favorite) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(false, fav) }
 
-  fun updateToRemoveFromWatchlistDB(fav: FavoriteDB) =
+  fun updateToRemoveFromWatchlistDB(fav: Favorite) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(true, fav) }
 
-  fun delFromFavoriteDB(fav: FavoriteDB) =
+  fun delFromFavoriteDB(fav: Favorite) =
     viewModelScope.launch(Dispatchers.IO) { movieRepository.deleteFromDB(fav) }
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: Favorite, userId: Int) {
+  fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
     viewModelScope.launch {
       val networkResult = movieRepository.postFavorite(sessionId, data, userId)
       when (networkResult.status) {
@@ -406,7 +406,7 @@ class DetailMovieViewModel(
                 isWatchlist = false
               )
             )
-          } else _errorState.value = Event("Favorite is null")
+          } else _errorState.value = Event("FavoritePostModel is null")
         }
 
         Status.LOADING -> {}
@@ -427,7 +427,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun postWatchlist(sessionId: String, data: Watchlist, userId: Int) {
+  fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
     viewModelScope.launch {
       val networkResult = movieRepository.postWatchlist(sessionId, data, userId)
       when (networkResult.status) {
@@ -441,7 +441,7 @@ class DetailMovieViewModel(
                 isWatchlist = true
               )
             )
-          } else _errorState.value = Event("Watchlist is Null")
+          } else _errorState.value = Event("WatchlistPostModel is Null")
         }
 
         Status.LOADING -> {}
@@ -462,7 +462,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun postMovieRate(sessionId: String, data: Rate, movieId: Int) {
+  fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
     viewModelScope.launch {
       val networkResult = movieRepository.postMovieRate(sessionId, data, movieId)
       when (networkResult.status) {
@@ -479,7 +479,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun postTvRate(sessionId: String, data: Rate, tvId: Int) {
+  fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
     viewModelScope.launch {
       val networkResult = movieRepository.postTvRate(sessionId, data, tvId)
       when (networkResult.status) {

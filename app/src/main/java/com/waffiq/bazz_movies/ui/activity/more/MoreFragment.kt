@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.R.string.sign_out_success
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.R.string.yes
-import com.waffiq.bazz_movies.data.remote.SessionID
+import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.RoutingActivity
@@ -137,7 +137,7 @@ class MoreFragment : Fragment() {
         if (user.token == "NaN" || user.token.isEmpty()) {
           dialogSignOutGuestMode()
         } else { // sign out for login account
-          moreViewModelUser.deleteSession(SessionID(user.token)) // revoke session for login user
+          moreViewModelUser.deleteSession(SessionIDPostModel(user.token)) // revoke session for login user
         }
       }
     }
@@ -166,7 +166,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(warning_signOut_guest_mode))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
-        moreViewModel.deleteAll() // delete all user data  (watchlist and favorite)
+        moreViewModel.deleteAll() // delete all user data  (watchlistPostModel and favoritePostModel)
         dialog.dismiss()
         removePrefUserData() // remove preference user data
       }

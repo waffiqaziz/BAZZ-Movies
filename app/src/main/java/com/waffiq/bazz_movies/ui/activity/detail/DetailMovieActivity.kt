@@ -71,9 +71,9 @@ import com.waffiq.bazz_movies.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.R.string.status_
 import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
@@ -109,7 +109,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var authViewModel: AuthenticationViewModel
 
   private var favorite = false // is item favorite or not
-  private var watchlist = false // is item favorite or not
+  private var watchlist = false // is item watchlist or not
   private var isLogin = false // is login as user or not
 
   private var toast: Toast? = null
@@ -570,7 +570,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) { // for favorite
       favorite = !state
-      val fav = Favorite(
+      val fav = FavoritePostModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -581,7 +581,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     } else { // for watchlist
       watchlist = !state
-      val wtc = Watchlist(
+      val wtc = WatchlistPostModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -604,7 +604,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun isFavoriteWatchlist(isLogin: Boolean) {
-    if (isLogin) { //user
+    if (isLogin) { // user
       authViewModel.getUserPref().observe(this) { user ->
         getStated(user.token)
         detailViewModel.stated.observe(this) {
@@ -817,17 +817,17 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val buttonYesAlert = dialogView.findViewById(btn_yes) as Button
     buttonYesAlert.setOnClickListener {
-      val rate = Rate(value = ratingBar.rating * 2)
+      val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
       authViewModel.getUserPref().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
-          dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, rate, it1) }
-        else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, rate, it1) }
+          dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, ratePostModel, it1) }
+        else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, ratePostModel, it1) }
       }
 
       // change rating
       detailViewModel.rateState.observe(this) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
-          if (isRateSuccessful) binding.tvScoreYourScore.text = rate.value.toString()
+          if (isRateSuccessful) binding.tvScoreYourScore.text = ratePostModel.value.toString()
         }
       }
       dialog.dismiss()

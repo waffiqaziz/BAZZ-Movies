@@ -29,7 +29,7 @@ import com.waffiq.bazz_movies.R.layout.dialog_image
 import com.waffiq.bazz_movies.R.string.no_biography
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.years_old
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
@@ -53,7 +53,7 @@ import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
 class PersonActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityPersonBinding
-  private lateinit var dataExtra: CastItem
+  private lateinit var dataExtra: CastItemResponse
   private lateinit var personMovieViewModel: PersonMovieViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,7 @@ class PersonActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_PERSON)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_PERSON, CastItem::class.java) ?: error("No DataExtra")
+        intent.getParcelableExtra(EXTRA_PERSON, CastItemResponse::class.java) ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")
         intent.getParcelableExtra(EXTRA_PERSON) ?: error("No DataExtra")

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
-import com.waffiq.bazz_movies.data.remote.SessionID
+import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
 import com.waffiq.bazz_movies.data.remote.response.CountryIPResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
@@ -26,7 +26,7 @@ class UserDataSource(
     })
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun deleteSession(data: SessionID): Flow<NetworkResult<PostRateResponse>> =
+  override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<PostRateResponse>> =
     flow {
       emit(NetworkResult.loading())
       emit(safeApiCall {

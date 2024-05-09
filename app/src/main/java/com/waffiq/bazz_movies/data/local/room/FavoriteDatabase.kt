@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
+import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 
 @Database(
-  entities = [FavoriteDB::class],
+  entities = [FavoriteEntity::class],
   version = 1,
   exportSchema = false
 )

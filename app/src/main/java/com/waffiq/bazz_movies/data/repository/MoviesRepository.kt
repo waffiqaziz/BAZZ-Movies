@@ -1,16 +1,18 @@
 package com.waffiq.bazz_movies.data.repository
 
-import android.util.Log
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSource
-import com.waffiq.bazz_movies.data.local.model.FavoriteDB
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.utils.DataMapper.mapDomainToEntityFavorite
+import com.waffiq.bazz_movies.utils.DataMapper.mapEntitiesToDomainFavorite
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MoviesRepository(
   private val localDataSource: LocalDataSource,
@@ -93,16 +95,16 @@ class MoviesRepository(
   // endregion DETAIL
 
   // region POST FAVORITE AND WATCHLIST
-  suspend fun postFavorite(sessionId: String, fav: Favorite, userId: Int) =
+  suspend fun postFavorite(sessionId: String, fav: FavoritePostModel, userId: Int) =
     movieDataSource.postFavorite(sessionId, fav, userId)
 
-  suspend fun postWatchlist(sessionId: String, wtc: Watchlist, userId: Int) =
+  suspend fun postWatchlist(sessionId: String, wtc: WatchlistPostModel, userId: Int) =
     movieDataSource.postWatchlist(sessionId, wtc, userId)
 
-  suspend fun postMovieRate(sessionId: String, data: Rate, movieId: Int) =
+  suspend fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) =
     movieDataSource.postMovieRate(sessionId, data, movieId)
 
-  suspend fun postTvRate(sessionId: String, data: Rate, tvId: Int) =
+  suspend fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) =
     movieDataSource.postTvRate(sessionId, data, tvId)
   // endregion POST FAVORITE AND WATCHLIST
 
@@ -117,22 +119,33 @@ class MoviesRepository(
   // endregion PERSON
 
   // region DATABASE
-  val favoriteMoviesFromDB: Flow<List<FavoriteDB>> = localDataSource.getFavoriteMovies
+  val favoriteMoviesFromDB: Flow<List<Favorite>> =
+    localDataSource.getFavoriteMovies.map { list ->
+      mapEntitiesToDomainFavorite(list)
+    }
 
-  val watchlistMovieFromDB: Flow<List<FavoriteDB>> = localDataSource.getWatchlistMovies
+  val watchlistMovieFromDB: Flow<List<Favorite>> =
+    localDataSource.getWatchlistMovies.map { list ->
+      mapEntitiesToDomainFavorite(list)
+    }
 
-  val watchlistTvFromDB: Flow<List<FavoriteDB>> = localDataSource.getWatchlistTv
+  val watchlistTvFromDB: Flow<List<Favorite>> =
+    localDataSource.getWatchlistTv.map { list ->
+      mapEntitiesToDomainFavorite(list)
+    }
 
-  val favoriteTvFromDB: Flow<List<FavoriteDB>> = localDataSource.getFavoriteTv
+  val favoriteTvFromDB: Flow<List<Favorite>> =
+    localDataSource.getFavoriteTv.map { list ->
+      mapEntitiesToDomainFavorite(list)
+    }
 
-  suspend fun insertToDB(fav: FavoriteDB, callback: (Int) -> Unit) {
-    val resultCode = localDataSource.insert(fav)
+  suspend fun insertToDB(fav: Favorite, callback: (Int) -> Unit) {
+    val resultCode = localDataSource.insert(mapDomainToEntityFavorite(fav))
     callback.invoke(resultCode)
   }
 
-  suspend fun deleteFromDB(fav: FavoriteDB) {
-    if (fav.mediaType != null)
-      localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
+  suspend fun deleteFromDB(fav: Favorite) {
+    localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
   }
 
   suspend fun deleteAll(callback: (Int) -> Unit) {
@@ -144,47 +157,39 @@ class MoviesRepository(
 
   suspend fun isWatchlistDB(id: Int, mediaType: String) = localDataSource.isWatchlist(id, mediaType)
 
-  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: FavoriteDB) {
+  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite) {
     if (isDelete) { // update set is_favorite = false (item on favorite to delete)
-      if (fav.isWatchlist != null && fav.mediaType != null) {
-        localDataSource.update(
-          isFavorite = false,
-          isWatchlist = fav.isWatchlist,
-          id = fav.mediaId,
-          mediaType = fav.mediaType
-        )
-      } else Log.e(TAG, "favDB: $fav")
+      localDataSource.update(
+        isFavorite = false,
+        isWatchlist = fav.isWatchlist,
+        id = fav.mediaId,
+        mediaType = fav.mediaType
+      )
     } else {  // update set is_favorite = true (add favorite item already on watchlist)
-      if (fav.isWatchlist != null && fav.mediaType != null) {
-        localDataSource.update(
-          isFavorite = true,
-          isWatchlist = fav.isWatchlist,
-          id = fav.mediaId,
-          mediaType = fav.mediaType
-        )
-      } else Log.e(TAG, "favDB: $fav")
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = fav.isWatchlist,
+        id = fav.mediaId,
+        mediaType = fav.mediaType
+      )
     }
   }
 
-  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: FavoriteDB) {
+  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite) {
     if (isDelete) { // update set is_watchlist = false (item on watchlist to delete)
-      if (fav.isFavorite != null && fav.mediaType != null) {
-        localDataSource.update(
-          isFavorite = fav.isFavorite,
-          isWatchlist = false,
-          id = fav.mediaId,
-          mediaType = fav.mediaType
-        )
-      } else Log.e(TAG, "favDB: $fav")
+      localDataSource.update(
+        isFavorite = fav.isFavorite,
+        isWatchlist = false,
+        id = fav.mediaId,
+        mediaType = fav.mediaType
+      )
     } else { // update set is_watchlist = true (add watchlist item already on favorite)
-      if (fav.isFavorite != null && fav.mediaType != null) {
-        localDataSource.update(
-          isFavorite = fav.isFavorite,
-          isWatchlist = true,
-          id = fav.mediaId,
-          mediaType = fav.mediaType
-        )
-      } else Log.e(TAG, "favDB: $fav")
+      localDataSource.update(
+        isFavorite = fav.isFavorite,
+        isWatchlist = true,
+        id = fav.mediaId,
+        mediaType = fav.mediaType
+      )
     }
   }
   // endregion DATABASE

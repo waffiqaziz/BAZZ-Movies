@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.data.repository
 
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
-import com.waffiq.bazz_movies.data.remote.SessionID
+import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.UserDataSource
 
 class UserRepository(
@@ -14,7 +14,7 @@ class UserRepository(
 
   suspend fun createToken() = userDataSource.createToken()
 
-  suspend fun deleteSession(data: SessionID) = userDataSource.deleteSession(data)
+  suspend fun deleteSession(data: SessionIDPostModel) = userDataSource.deleteSession(data)
 
   suspend fun saveUser(userModel: UserModel) = pref.saveUser(userModel)
 

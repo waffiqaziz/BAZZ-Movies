@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = TABLE_NAME)
 @JsonClass(generateAdapter = false)
-data class FavoriteDB(
+data class FavoriteEntity(
 
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "id")
@@ -27,46 +27,46 @@ data class FavoriteDB(
 
   @ColumnInfo(name = "mediaType")
   @Json(name = "mediaType")
-  val mediaType: String? = null,
+  val mediaType: String,
 
   @ColumnInfo(name = "genre")
   @Json(name = "genre")
-  val genre: String? = null,
+  val genre: String,
 
   @ColumnInfo(name = "backDrop")
   @Json(name = "backDrop")
-  val backDrop: String? = null,
+  val backDrop: String,
 
   @ColumnInfo(name = "poster")
   @Json(name = "poster")
-  val poster: String? = null,
+  val poster: String,
 
   @ColumnInfo(name = "overview")
   @Json(name = "overview")
-  val overview: String? = null,
+  val overview: String,
 
   @ColumnInfo(name = "title")
   @Json(name = "title")
-  val title: String? = null,
+  val title: String,
 
   @ColumnInfo(name = "releaseDate")
   @Json(name = "releaseDate")
-  val releaseDate: String? = null,
+  val releaseDate: String,
 
   @ColumnInfo(name = "popularity")
   @Json(name = "popularity")
-  val popularity: Double? = null,
+  val popularity: Double,
 
   @ColumnInfo(name = "rating")
   @Json(name = "rating")
-  val rating: Float? = null,
+  val rating: Float,
 
   @ColumnInfo(name = "is_favorited")
   @Json(name = "is_favorited")
-  val isFavorite: Boolean? = null,
+  val isFavorite: Boolean,
 
   @ColumnInfo(name = "is_watchlist")
   @Json(name = "is_watchlist")
-  val isWatchlist: Boolean? = null
+  val isWatchlist: Boolean
 
 ) : Parcelable

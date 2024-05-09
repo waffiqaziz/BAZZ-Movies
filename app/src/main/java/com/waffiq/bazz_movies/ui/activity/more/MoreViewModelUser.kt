@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.data.remote.SessionID
+import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.repository.UserRepository
 import com.waffiq.bazz_movies.utils.Event
@@ -31,7 +31,7 @@ class MoreViewModelUser(private val userRepository: UserRepository) : ViewModel(
     }
   }
 
-  fun deleteSession(data: SessionID) =
+  fun deleteSession(data: SessionIDPostModel) =
     viewModelScope.launch {
       userRepository.deleteSession(data).collect { networkResult ->
         _signOutState.value = networkResult

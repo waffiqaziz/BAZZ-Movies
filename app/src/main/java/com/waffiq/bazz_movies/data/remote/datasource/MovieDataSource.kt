@@ -20,9 +20,9 @@ import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
 import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
@@ -286,7 +286,7 @@ class MovieDataSource private constructor(
 
   override suspend fun postFavorite(
     sessionId: String,
-    fav: Favorite,
+    fav: FavoritePostModel,
     userId: Int
   ): NetworkResult<PostResponse> {
     return try {
@@ -308,7 +308,7 @@ class MovieDataSource private constructor(
 
   override suspend fun postWatchlist(
     sessionId: String,
-    wtc: Watchlist,
+    wtc: WatchlistPostModel,
     userId: Int
   ): NetworkResult<PostResponse> {
     return try {
@@ -330,7 +330,7 @@ class MovieDataSource private constructor(
 
   override suspend fun postTvRate(
     sessionId: String,
-    data: Rate,
+    data: RatePostModel,
     tvId: Int
   ): NetworkResult<PostRateResponse> {
     return try {
@@ -352,7 +352,7 @@ class MovieDataSource private constructor(
 
   override suspend fun postMovieRate(
     sessionId: String,
-    data: Rate,
+    data: RatePostModel,
     movieId: Int
   ): NetworkResult<PostRateResponse> {
     return try {

@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.remote.Favorite
-import com.waffiq.bazz_movies.data.remote.Rate
-import com.waffiq.bazz_movies.data.remote.Watchlist
+import com.waffiq.bazz_movies.data.remote.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.RatePostModel
+import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
@@ -92,16 +92,16 @@ interface MovieDataSourceInterface {
   // POST
   suspend fun postFavorite(
     sessionId: String,
-    fav: Favorite,
+    fav: FavoritePostModel,
     userId: Int
   ): NetworkResult<PostResponse>
 
   suspend fun postWatchlist(
     sessionId: String,
-    wtc: Watchlist,
+    wtc: WatchlistPostModel,
     userId: Int
   ): NetworkResult<PostResponse>
 
-  suspend fun postTvRate(sessionId: String, data: Rate, tvId: Int): NetworkResult<PostRateResponse>
-  suspend fun postMovieRate(sessionId: String, data: Rate, movieId: Int): NetworkResult<PostRateResponse>
+  suspend fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int): NetworkResult<PostRateResponse>
+  suspend fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int): NetworkResult<PostRateResponse>
 }
