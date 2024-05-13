@@ -4,6 +4,11 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.UserDataSource
+import com.waffiq.bazz_movies.utils.DataMapper.toCountryIP
+import com.waffiq.bazz_movies.utils.DataMapper.toImagePerson
+import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.Status
+import kotlinx.coroutines.flow.map
 
 class UserRepository(
   private val pref: UserPreference,
@@ -28,7 +33,13 @@ class UserRepository(
 
   fun getUserRegion() = pref.getRegion()
 
-  suspend fun getCountryCode() = userDataSource.getCountryCode()
+  suspend fun getCountryCode() = userDataSource.getCountryCode().map {networkResult ->
+    when (networkResult.status) {
+      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toCountryIP())
+      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+      Status.LOADING -> NetworkResult.loading()
+    }
+  }
 
   suspend fun removeUserData() = pref.removeUserData()
 

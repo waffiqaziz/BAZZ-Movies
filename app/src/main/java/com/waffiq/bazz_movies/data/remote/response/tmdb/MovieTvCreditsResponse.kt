@@ -9,18 +9,18 @@ import kotlinx.parcelize.Parcelize
 data class MovieTvCreditsResponse(
 
 	@Json(name="cast")
-	val cast: List<CastItemResponse>,
+	val cast: List<MovieTvCastItemResponse>,
 
 	@Json(name="id")
 	val id: Int? = null,
 
 	@Json(name="crew")
-	val crew: List<CrewItemResponse>
+	val crew: List<MovieTvCrewItemResponse>
 )
 
 @Parcelize
 @JsonClass(generateAdapter = false)
-data class CastItemResponse(
+data class MovieTvCastItemResponse(
 
 	@Json(name="cast_id")
 	val castId: Int? = null,
@@ -60,7 +60,7 @@ data class CastItemResponse(
 ): Parcelable
 
 @JsonClass(generateAdapter = false)
-data class CrewItemResponse(
+data class MovieTvCrewItemResponse(
 
 	@Json(name="gender")
 	val gender: Int? = null,

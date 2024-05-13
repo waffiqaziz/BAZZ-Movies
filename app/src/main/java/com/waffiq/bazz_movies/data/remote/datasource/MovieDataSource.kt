@@ -34,7 +34,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
@@ -53,112 +53,112 @@ class MovieDataSource private constructor(
 ) : MovieDataSourceInterface {
 
   // region PAGING FUNCTION
-  override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> {
+  override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { TopRatedMoviePagingSource(tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { MultiTrendingWeekPagingSource(region, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { MultiTrendingDayPagingSource(region, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> {
+  override fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PopularMoviePagingSource(tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { FavoriteMoviePagingSource(sessionId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { FavoriteTvPagingSource(sessionId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { WatchlistTvPagingSource(sessionId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { WatchlistMoviePagingSource(sessionId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> {
+  override fun getPagingPopularTv(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PopularTvPagingSource(tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingOnTv(): Flow<PagingData<ResultItem>> {
+  override fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { OnTvPagingSource(tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> {
+  override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { AiringTodayTvPagingSource(tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> {
+  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { RecommendationMoviePagingSource(movieId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> {
+  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { RecommendationTvPagingSource(tvId, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { UpcomingMoviesPagingSource(region, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> {
+  override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { PlayingNowMoviesPagingSource(region, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> {
+  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = 5),
       pagingSourceFactory = { TopRatedTvPagingSource(tmdbApiService) }

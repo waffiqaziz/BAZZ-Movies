@@ -15,7 +15,7 @@ data class MovieTvResponse(
 	val totalPages: Int,
 
 	@Json(name="results")
-	val results: List<ResultItem>,
+	val results: List<ResultItemResponse>,
 
 	@Json(name="total_results")
 	val totalResults: Int
@@ -23,7 +23,7 @@ data class MovieTvResponse(
 
 @Parcelize
 @JsonClass(generateAdapter = false)
-data class ResultItem(
+data class ResultItemResponse(
 
 	@Json(name="first_air_date")
 	val firstAirDate: String? = null,

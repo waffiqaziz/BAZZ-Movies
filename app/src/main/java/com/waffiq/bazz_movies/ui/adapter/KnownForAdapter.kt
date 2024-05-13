@@ -11,17 +11,17 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastCombinedItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
+import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
-  private val listCast = ArrayList<CastCombinedItem>()
+  private val listCast = ArrayList<CastItem>()
 
-  fun setCast(itemStory: List<CastCombinedItem>) {
+  fun setCast(itemStory: List<CastItem>) {
     val diffCallback = DiffCallback(this.listCast, itemStory)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -50,7 +50,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
   inner class ViewHolder(private var binding: ItemPlayForBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(cast: CastCombinedItem) {
+    fun bind(cast: CastItem) {
       binding.imgCastPhoto.contentDescription = cast.title
 
       Glide.with(binding.imgCastPhoto)
@@ -64,7 +64,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       binding.tvCastName.text = cast.name ?: cast.title ?: cast.originalName ?: cast.originalTitle
       binding.tvCastCharacter.text = cast.character ?: "N/A"
 
-      val resultItem = ResultItem(
+      val resultItemResponse = ResultItemResponse(
         overview = cast.overview,
         title = cast.title,
         name = cast.name,
@@ -85,7 +85,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       // OnClickListener
       binding.container.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItemResponse)
         it.context.startActivity(intent)
       }
 
@@ -93,8 +93,8 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
   }
 
   inner class DiffCallback(
-    private val oldList: List<CastCombinedItem>,
-    private val newList: List<CastCombinedItem>
+    private val oldList: List<CastItem>,
+    private val newList: List<CastItem>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

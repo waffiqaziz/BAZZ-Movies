@@ -12,9 +12,9 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.SnackBarLoginData
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
@@ -26,8 +26,8 @@ class MyFavoriteViewModel(private val movieRepository: MoviesRepository) : ViewM
   private val _localResult = MutableLiveData<Event<LocalResult>>()
   val localResult: LiveData<Event<LocalResult>> get() = _localResult
 
-  private val _stated = MutableLiveData<StatedResponse?>()
-  val stated: LiveData<StatedResponse?> get() = _stated.distinctUntilChanged()
+  private val _stated = MutableLiveData<Stated?>()
+  val stated: LiveData<Stated?> get() = _stated.distinctUntilChanged()
 
   private val _undoDB = MutableLiveData<Event<Favorite>>()
   val undoDB: LiveData<Event<Favorite>> = _undoDB

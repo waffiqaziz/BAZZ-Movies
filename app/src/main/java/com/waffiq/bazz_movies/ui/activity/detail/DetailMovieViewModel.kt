@@ -13,14 +13,14 @@ import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.PostModelState
 import com.waffiq.bazz_movies.data.remote.RatePostModel
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.Stated
+import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
+import com.waffiq.bazz_movies.domain.model.detail.DetailTv
+import com.waffiq.bazz_movies.domain.model.detail.ExternalTvID
+import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
+import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.utils.Event
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -42,14 +42,14 @@ class DetailMovieViewModel(
   private val _localResult = MutableLiveData<Event<LocalResult>>()
   val localResult: LiveData<Event<LocalResult>> get() = _localResult
 
-  private val _stated = MutableLiveData<StatedResponse>()
-  val stated: LiveData<StatedResponse> get() = _stated
+  private val _stated = MutableLiveData<Stated>()
+  val stated: LiveData<Stated> get() = _stated
 
-  private val _movieTvCreditsResult = MutableLiveData<MovieTvCreditsResponse>()
-  val movieTvCreditsResult: LiveData<MovieTvCreditsResponse> get() = _movieTvCreditsResult
+  private val _movieTvCreditsResult = MutableLiveData<MovieTvCredits>()
+  val movieTvCreditsResult: LiveData<MovieTvCredits> get() = _movieTvCreditsResult
 
-  private val _omdbResult = MutableLiveData<OMDbDetailsResponse>()
-  val omdbResult: LiveData<OMDbDetailsResponse> get() = _omdbResult
+  private val _omdbResult = MutableLiveData<OMDbDetails>()
+  val omdbResult: LiveData<OMDbDetails> get() = _omdbResult
 
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
@@ -66,11 +66,11 @@ class DetailMovieViewModel(
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
-  private val _detailMovie = MutableLiveData<DetailMovieResponse>()
-  val detailMovie: LiveData<DetailMovieResponse> get() = _detailMovie
+  private val _detailMovie = MutableLiveData<DetailMovie>()
+  val detailMovie: LiveData<DetailMovie> get() = _detailMovie
 
-  private val _detailTv = MutableLiveData<DetailTvResponse>()
-  val detailTv: LiveData<DetailTvResponse> get() = _detailTv
+  private val _detailTv = MutableLiveData<DetailTv>()
+  val detailTv: LiveData<DetailTv> get() = _detailTv
 
   private val _productionCountry = MutableLiveData<String>()
   val productionCountry: LiveData<String> get() = _productionCountry
@@ -78,8 +78,8 @@ class DetailMovieViewModel(
   private val _ageRating = MutableLiveData<String>()
   val ageRating: LiveData<String> get() = _ageRating
 
-  private val _externalTvId = MutableLiveData<NetworkResult<ExternalIdResponse>>()
-  val externalTvId: LiveData<NetworkResult<ExternalIdResponse>> get() = _externalTvId
+  private val _externalTvId = MutableLiveData<NetworkResult<ExternalTvID>>()
+  val externalTvId: LiveData<NetworkResult<ExternalTvID>> get() = _externalTvId
   // endregion OBSERVABLES
 
   // region MOVIE
@@ -302,7 +302,6 @@ class DetailMovieViewModel(
           Status.SUCCESS -> _externalTvId.value = networkResult
           Status.LOADING -> {}
           Status.ERROR -> {
-            _externalTvId.value = networkResult
             _errorState.value = Event(networkResult.message.toString())
           }
         }

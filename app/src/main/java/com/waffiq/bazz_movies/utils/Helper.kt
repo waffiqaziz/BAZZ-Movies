@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CrewItemResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCrewItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
 import okio.IOException
 import java.net.SocketTimeoutException
@@ -214,7 +214,7 @@ object Helper {
     }
   }
 
-  fun detailCrew(crew: List<CrewItemResponse>): Pair<MutableList<String>, MutableList<String>> {
+  fun detailCrew(crew: List<MovieTvCrewItemResponse>): Pair<MutableList<String>, MutableList<String>> {
     val job: MutableList<String> = ArrayList()
     val name: MutableList<String> = ArrayList()
 

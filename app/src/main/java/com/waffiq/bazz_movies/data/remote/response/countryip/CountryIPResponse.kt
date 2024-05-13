@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.remote.response
+package com.waffiq.bazz_movies.data.remote.response.countryip
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

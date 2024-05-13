@@ -56,14 +56,14 @@ data class DetailPersonResponse(
 data class ImagePersonResponse(
 
 	@Json(name="profiles")
-	val profiles: List<ProfilesItem>? = null,
+	val profiles: List<ProfilesItemResponse>? = null,
 
 	@Json(name="id")
 	val id: Int? = null
 )
 
 @JsonClass(generateAdapter = false)
-data class ProfilesItem(
+data class ProfilesItemResponse(
 
 	@Json(name="aspect_ratio")
 	val aspectRatio: Any? = null,
@@ -91,17 +91,17 @@ data class ProfilesItem(
 data class CombinedCreditResponse(
 
 	@Json(name="cast")
-	val cast: List<CastCombinedItem>? = null,
+	val cast: List<CastItemResponse>? = null,
 
 	@Json(name="id")
 	val id: Int? = null,
 
 	@Json(name="crew")
-	val crew: List<CrewCombinedItem>? = null
+	val crew: List<CrewItemResponse>? = null
 )
 
 @JsonClass(generateAdapter = false)
-data class CrewCombinedItem(
+data class CrewItemResponse(
 
 	@Json(name="overview")
 	val overview: String? = null,
@@ -159,7 +159,7 @@ data class CrewCombinedItem(
 )
 
 @JsonClass(generateAdapter = false)
-data class CastCombinedItem(
+data class CastItemResponse(
 
 	@Json(name="first_air_date")
 	val firstAirDate: String? = null,

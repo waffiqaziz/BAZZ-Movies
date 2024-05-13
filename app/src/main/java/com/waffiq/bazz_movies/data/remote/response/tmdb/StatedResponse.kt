@@ -6,13 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = false)
 data class StatedResponse(
   @Json(name="id")
-  val id: Int? = null,
+  val id: Int,
 
   @Json(name="favorite")
   val favorite: Boolean,
 
   @Json(name="rated")
-  val rated: Any? = null,
+  val rated: Boolean,
 
   @Json(name="watchlist")
   val watchlist: Boolean,

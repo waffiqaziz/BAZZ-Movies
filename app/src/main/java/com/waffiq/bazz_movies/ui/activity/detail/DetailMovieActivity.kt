@@ -74,10 +74,10 @@ import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.RatePostModel
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.domain.model.Stated
+import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
@@ -104,7 +104,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class DetailMovieActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityDetailMovieBinding
-  private lateinit var dataExtra: ResultItem
+  private lateinit var dataExtra: ResultItemResponse
   private lateinit var detailViewModel: DetailMovieViewModel
   private lateinit var authViewModel: AuthenticationViewModel
 
@@ -206,7 +206,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_MOVIE)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java) ?: error("No DataExtra")
+        intent.getParcelableExtra(EXTRA_MOVIE, ResultItemResponse::class.java) ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")
         intent.getParcelableExtra(EXTRA_MOVIE) ?: error("No DataExtra")
@@ -470,8 +470,8 @@ class DetailMovieActivity : AppCompatActivity() {
     else dataExtra.id?.let { detailViewModel.getStatedTv(token, it) }
   }
 
-  private fun showRatingUserLogin(state: StatedResponse) {
-    binding.tvScoreYourScore.text = if (state.rated == false) getString(not_available)
+  private fun showRatingUserLogin(state: Stated) {
+    binding.tvScoreYourScore.text = if (!state.rated) getString(not_available)
     else state.rated.toString().replace("{value=", "").replace("}", "")
   }
 
@@ -594,7 +594,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
 
   // show score from OMDb API
-  private fun showDetailOMDb(data: OMDbDetailsResponse) {
+  private fun showDetailOMDb(data: OMDbDetails) {
     binding.apply {
       tvScoreImdb.text =
         if (data.imdbRating.isNullOrEmpty() || data.imdbRating.isBlank()) getString(not_available) else data.imdbRating

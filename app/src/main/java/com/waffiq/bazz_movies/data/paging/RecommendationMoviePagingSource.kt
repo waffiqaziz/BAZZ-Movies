@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
@@ -11,9 +11,9 @@ import java.io.IOException
 class RecommendationMoviePagingSource(
   private val movieId: Int,
   private val apiService: TMDBApiService
-) : PagingSource<Int, ResultItem>() {
+) : PagingSource<Int, ResultItemResponse>() {
 
-  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItem> {
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItemResponse> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
       val responseData = apiService.getRecommendedMovie(movieId, position).results
@@ -30,7 +30,7 @@ class RecommendationMoviePagingSource(
     }
   }
 
-  override fun getRefreshKey(state: PagingState<Int, ResultItem>): Int? {
+  override fun getRefreshKey(state: PagingState<Int, ResultItemResponse>): Int? {
     return state.anchorPosition?.let { anchorPosition ->
       val anchorPage = state.closestPageToPosition(anchorPosition)
       anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

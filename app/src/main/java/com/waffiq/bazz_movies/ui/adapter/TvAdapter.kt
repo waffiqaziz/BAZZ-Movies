@@ -12,13 +12,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class TvAdapter :
-  PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<ResultItemResponse, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,7 +41,7 @@ class TvAdapter :
   inner class ViewHolder(private var binding: ItemTrendingBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(tv: ResultItem) {
+    fun bind(tv: ResultItemResponse) {
       binding.imgPoster.contentDescription = tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
 
       Glide.with(binding.imgPoster)
@@ -62,17 +62,17 @@ class TvAdapter :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItemResponse>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: ResultItemResponse,
+        newItem: ResultItemResponse
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: ResultItemResponse,
+        newItem: ResultItemResponse
       ): Boolean {
         return oldItem == newItem
       }

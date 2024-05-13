@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CastItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCastItemResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
@@ -53,7 +53,7 @@ class SearchAdapter :
       if (data.mediaType == "person") {
         showDataPerson(binding, data)
         binding.containerResult.setOnClickListener {
-          val person = CastItemResponse(
+          val person = MovieTvCastItemResponse(
             id = data.id,
             profilePath = data.profilePath,
             name = data.name,
@@ -67,7 +67,7 @@ class SearchAdapter :
         showDataMovieTv(binding, data)
         binding.containerResult.setOnClickListener {
           val intent = Intent(it.context, DetailMovieActivity::class.java)
-          val resultItem = ResultItem(
+          val resultItemResponse = ResultItemResponse(
             posterPath = data.posterPath,
             backdropPath = data.backdropPath,
             firstAirDate = data.firstAirDate,
@@ -81,7 +81,7 @@ class SearchAdapter :
             genreIds = data.genreIds,
             id = data.id
           )
-          intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+          intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItemResponse)
           it.context.startActivity(intent)
         }
       }

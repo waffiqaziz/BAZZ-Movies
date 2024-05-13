@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
@@ -53,22 +53,22 @@ interface MovieDataSourceInterface {
   }
 
   // PAGING
-  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>>
-  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingPopularMovies(): Flow<PagingData<ResultItem>>
-  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>>
-  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>>
-  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>>
-  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>>
-  fun getPagingPopularTv(): Flow<PagingData<ResultItem>>
-  fun getPagingOnTv(): Flow<PagingData<ResultItem>>
-  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>>
-  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>>
-  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>>
-  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>
+  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingPopularTv(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>>
+  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>>
+  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>>
+  fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>>
   fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>>
 
   // DETAIL PAGE

@@ -10,11 +10,11 @@ data class VideoResponse(
 	val id: Int? = null,
 
 	@Json(name="results")
-	val results: List<VideoItem>
+	val results: List<VideoItemResponse>
 )
 
 @JsonClass(generateAdapter = false)
-data class VideoItem(
+data class VideoItemResponse(
 
 	@Json(name="site")
 	val site: String? = null,

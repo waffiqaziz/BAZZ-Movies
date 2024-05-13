@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
-import com.waffiq.bazz_movies.data.remote.response.CountryIPResponse
+import com.waffiq.bazz_movies.data.remote.response.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse

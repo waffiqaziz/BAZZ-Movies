@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
@@ -69,7 +69,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
       binding.tvGenre.text = fav.genre
       binding.tvYearReleased.text = fav.releaseDate?.let { dateFormatter(it) } ?: "N/A"
 
-      val resultItem = ResultItem(
+      val resultItemResponse = ResultItemResponse(
         backdropPath = fav.backDrop,
         posterPath = fav.poster,
         releaseDate = fav.releaseDate,
@@ -82,7 +82,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       binding.containerResult.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItemResponse)
         it.context.startActivity(intent)
       }
     }

@@ -43,7 +43,7 @@
 -keep class com.waffiq.bazz_movies.data.local.model.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.response.tmdb.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.response.CountryIPResponse { *; }
+-keep class com.waffiq.bazz_movies.data.remote.response.countryip.CountryIPResponse { *; }
 -keep class com.waffiq.bazz_movies.data.remote.SnackBarLoginData { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
 -keep class com.waffiq.bazz_movies.data.remote.PostModelState { *; }
@@ -54,6 +54,7 @@
 -keep class com.waffiq.bazz_movies.data.local.model.UserModel { *; }
 -keep class com.waffiq.bazz_movies.data.local.model.FavoriteEntity { *; }
 -keep class com.waffiq.bazz_movies.domain.model.Favorite { *; }
+-keep class com.waffiq.bazz_movies.domain.model.** { *; }
 
 -keepattributes Signature
 -keepattributes *Annotation*

@@ -22,7 +22,7 @@ data class OMDbDetailsResponse(
 	val imdbVotes: String? = null,
 
 	@Json(name="Ratings")
-	val ratings: List<RatingsItem?>? = null,
+	val ratings: List<RatingsItemResponse>? = null,
 
 	@Json(name="Runtime")
 	val runtime: String? = null,
@@ -83,7 +83,7 @@ data class OMDbDetailsResponse(
 )
 
 @JsonClass(generateAdapter = false)
-data class RatingsItem(
+data class RatingsItemResponse(
 
 	@Json(name="Value")
 	val value: String? = null,

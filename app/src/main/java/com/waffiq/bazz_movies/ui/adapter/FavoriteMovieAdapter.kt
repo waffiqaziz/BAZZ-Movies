@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItem
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 import java.text.DecimalFormat
 
 class FavoriteMovieAdapter :
-  PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<ResultItemResponse, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,15 +43,15 @@ class FavoriteMovieAdapter :
 
   inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    lateinit var data: ResultItem
+    lateinit var data: ResultItemResponse
 
-    fun bind(resultItem: ResultItem) {
-      data = resultItem
+    fun bind(resultItemResponse: ResultItemResponse) {
+      data = resultItemResponse
       binding.ivPicture.contentDescription =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+        resultItemResponse.name ?: resultItemResponse.title ?: resultItemResponse.originalTitle ?: resultItemResponse.originalName
 
       Glide.with(binding.ivPicture)
-        .load(TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath) // URL movie poster
+        .load(TMDB_IMG_LINK_POSTER_W185 + resultItemResponse.posterPath) // URL movie poster
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
@@ -59,39 +59,39 @@ class FavoriteMovieAdapter :
         .into(binding.ivPicture)
 
       binding.tvTitle.text =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
+        resultItemResponse.name ?: resultItemResponse.title ?: resultItemResponse.originalTitle ?: resultItemResponse.originalName
+      binding.tvYearReleased.text = (resultItemResponse.firstAirDate ?: resultItemResponse.releaseDate)?.let {
         dateFormatter(it)
       } ?: "N/A"
-      binding.tvGenre.text = resultItem.genreIds?.let { iterateGenre(it) } ?: "N/A"
-      binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
+      binding.tvGenre.text = resultItemResponse.genreIds?.let { iterateGenre(it) } ?: "N/A"
+      binding.ratingBar.rating = (resultItemResponse.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")
-      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
+      (df.format((resultItemResponse.voteAverage ?: 0F)).toString() + "/10").also {
         binding.tvRating.text = it
       }
 
       // OnClickListener
       binding.container.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem.copy(mediaType = "movie"))
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItemResponse.copy(mediaType = "movie"))
         it.context.startActivity(intent)
       }
     }
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItemResponse>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: ResultItemResponse,
+        newItem: ResultItemResponse
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: ResultItemResponse,
+        newItem: ResultItemResponse
       ): Boolean {
         return oldItem.id == newItem.id
       }
