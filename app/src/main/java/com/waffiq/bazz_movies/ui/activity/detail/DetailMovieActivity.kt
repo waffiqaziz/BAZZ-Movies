@@ -206,7 +206,8 @@ class DetailMovieActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_MOVIE)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_MOVIE, ResultItemResponse::class.java) ?: error("No DataExtra")
+        intent.getParcelableExtra(EXTRA_MOVIE, ResultItemResponse::class.java)
+          ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")
         intent.getParcelableExtra(EXTRA_MOVIE) ?: error("No DataExtra")
@@ -603,6 +604,8 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
+
+  // check if favorite or watchlist
   private fun isFavoriteWatchlist(isLogin: Boolean) {
     if (isLogin) { // user
       authViewModel.getUserPref().observe(this) { user ->
@@ -631,45 +634,37 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
+
+  // favorite & watchlist button transform
   private fun changeBtnWatchlistBG(isActivated: Boolean) {
-    if (isActivated && binding.btnWatchlist.drawable.constantState == ActivityCompat.getDrawable(this,ic_bookmark_selected)?.constantState) {
+    if (isActivated && binding.btnWatchlist.drawable.constantState ==
+      ActivityCompat.getDrawable(this, ic_bookmark_selected)?.constantState
+    ) {
       return
     }
 
-    if(!isActivated && binding.btnWatchlist.drawable.constantState == ActivityCompat.getDrawable(this,ic_bookmark)?.constantState) {
+    if (!isActivated && binding.btnWatchlist.drawable.constantState ==
+      ActivityCompat.getDrawable(this, ic_bookmark)?.constantState
+    ) {
       return
     }
 
-    val fromResWTC = if (isActivated) ic_bookmark else ic_bookmark_selected
-    val toResWTC = if (isActivated) ic_bookmark_selected else ic_bookmark
+    val toRes = if (isActivated) ic_bookmark_selected else ic_bookmark
+    val scaleXAnimator =
+      ObjectAnimator.ofFloat(binding.btnWatchlist, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
+        duration = 300
+        interpolator = AccelerateDecelerateInterpolator()
+      }
 
-    val fromScale = if (isActivated) 0.8f else 1.0f
-    val toScale = if (isActivated) 1.0f else 0.8f
-
-    binding.btnWatchlist.setImageResource(fromResWTC)
-
-    val scaleXAnimator = ObjectAnimator.ofFloat(
-      binding.btnWatchlist,
-      View.SCALE_X,
-      fromScale,
-      toScale
-    ).apply {
-      duration = 200
-      interpolator = AccelerateDecelerateInterpolator()
-    }
-
-    val scaleYAnimator = ObjectAnimator.ofFloat(
-      binding.btnWatchlist,
-      View.SCALE_Y,
-      fromScale,
-      toScale
-    ).apply {
-      duration = 200
-      interpolator = AccelerateDecelerateInterpolator()
-    }
+    val scaleYAnimator =
+      ObjectAnimator.ofFloat(binding.btnWatchlist, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
+        duration = 300
+        interpolator = AccelerateDecelerateInterpolator()
+      }
 
     val alphaAnimator = ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 1f, 0f).apply {
-      duration = 200
+      duration = 150
+      startDelay = 150 // Delay the alpha animation for smooth transition
       interpolator = AccelerateDecelerateInterpolator()
     }
 
@@ -679,9 +674,9 @@ class DetailMovieActivity : AppCompatActivity() {
 
     set.addListener(object : AnimatorListenerAdapter() {
       override fun onAnimationEnd(animation: Animator) {
-        binding.btnWatchlist.setImageResource(toResWTC)
+        binding.btnWatchlist.setImageResource(toRes)
         ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 0f, 1f).apply {
-          duration = 200
+          duration = 150
           interpolator = AccelerateDecelerateInterpolator()
         }.start()
       }
@@ -691,44 +686,34 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun changeBtnFavoriteBG(isActivated: Boolean) {
-    if (isActivated && binding.btnFavorite.drawable.constantState == ActivityCompat.getDrawable(this,ic_hearth_selected)?.constantState) {
+    if (isActivated && binding.btnFavorite.drawable.constantState ==
+      ActivityCompat.getDrawable(this, ic_hearth_selected)?.constantState
+    ) {
       return
     }
 
-    if(!isActivated && binding.btnFavorite.drawable.constantState == ActivityCompat.getDrawable(this,ic_hearth)?.constantState) {
+    if (!isActivated && binding.btnFavorite.drawable.constantState ==
+      ActivityCompat.getDrawable(this, ic_hearth)?.constantState
+    ) {
       return
     }
 
-    val fromResFAV = if (isActivated) ic_hearth else ic_hearth_selected
-    val toResFAV = if (isActivated) ic_hearth_selected else ic_hearth
+    val toRes = if (isActivated) ic_hearth_selected else ic_hearth
+    val scaleXAnimator =
+      ObjectAnimator.ofFloat(binding.btnFavorite, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
+        duration = 300
+        interpolator = AccelerateDecelerateInterpolator()
+      }
 
-    val fromScale = if (isActivated) 0.8f else 1.0f
-    val toScale = if (isActivated) 1.0f else 0.8f
-
-    binding.btnFavorite.setImageResource(fromResFAV)
-
-    val scaleXAnimator = ObjectAnimator.ofFloat(
-      binding.btnFavorite,
-      View.SCALE_X,
-      fromScale,
-      toScale
-    ).apply {
-      duration = 200
-      interpolator = AccelerateDecelerateInterpolator()
-    }
-
-    val scaleYAnimator = ObjectAnimator.ofFloat(
-      binding.btnFavorite,
-      View.SCALE_Y,
-      fromScale,
-      toScale
-    ).apply {
-      duration = 200
-      interpolator = AccelerateDecelerateInterpolator()
-    }
+    val scaleYAnimator =
+      ObjectAnimator.ofFloat(binding.btnFavorite, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
+        duration = 300
+        interpolator = AccelerateDecelerateInterpolator()
+      }
 
     val alphaAnimator = ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 1f, 0f).apply {
-      duration = 200
+      duration = 150
+      startDelay = 150 // Delay the alpha animation for smooth transition
       interpolator = AccelerateDecelerateInterpolator()
     }
 
@@ -738,9 +723,9 @@ class DetailMovieActivity : AppCompatActivity() {
 
     set.addListener(object : AnimatorListenerAdapter() {
       override fun onAnimationEnd(animation: Animator) {
-        binding.btnFavorite.setImageResource(toResFAV)
+        binding.btnFavorite.setImageResource(toRes)
         ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 0f, 1f).apply {
-          duration = 200
+          duration = 150
           interpolator = AccelerateDecelerateInterpolator()
         }.start()
       }
@@ -750,7 +735,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
 
-  // toast, snackbar, dialog
+  // toast, snackbar, dialog, trailer
   private fun showToastAddedFavorite() {
     showToast(
       "<b>${dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.name}</b> " + getString(
