@@ -13,14 +13,14 @@ data class MultiSearchResponse(
 	val totalPages: Int? = null,
 
 	@Json(name="results")
-	val results: List<ResultsItemSearch>? = null,
+	val results: List<ResultsItemSearchResponse>? = null,
 
 	@Json(name="total_results")
 	val totalResults: Int? = null
 )
 
 @JsonClass(generateAdapter = false)
-data class ResultsItemSearch(
+data class ResultsItemSearchResponse(
 
 	@Json(name="media_type")
 	val mediaType: String? = null,

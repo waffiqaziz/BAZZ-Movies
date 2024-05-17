@@ -74,8 +74,8 @@ import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.RatePostModel
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
@@ -104,7 +104,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class DetailMovieActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityDetailMovieBinding
-  private lateinit var dataExtra: ResultItemResponse
+  private lateinit var dataExtra: ResultItem
   private lateinit var detailViewModel: DetailMovieViewModel
   private lateinit var authViewModel: AuthenticationViewModel
 
@@ -206,7 +206,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_MOVIE)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_MOVIE, ResultItemResponse::class.java)
+        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java)
           ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")

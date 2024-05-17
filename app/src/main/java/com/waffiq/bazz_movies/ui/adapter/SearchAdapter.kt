@@ -14,9 +14,9 @@ import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCastItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
@@ -24,7 +24,7 @@ import com.waffiq.bazz_movies.utils.Helper.getKnownFor
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 
 class SearchAdapter :
-  PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<ResultsItemSearchResponse, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
@@ -48,7 +48,7 @@ class SearchAdapter :
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(data: ResultsItemSearch) {
+    fun bind(data: ResultsItemSearchResponse) {
 
       if (data.mediaType == "person") {
         showDataPerson(binding, data)
@@ -67,7 +67,7 @@ class SearchAdapter :
         showDataMovieTv(binding, data)
         binding.containerResult.setOnClickListener {
           val intent = Intent(it.context, DetailMovieActivity::class.java)
-          val resultItemResponse = ResultItemResponse(
+          val resultItemResponse = ResultItem(
             posterPath = data.posterPath,
             backdropPath = data.backdropPath,
             firstAirDate = data.firstAirDate,
@@ -88,7 +88,7 @@ class SearchAdapter :
     }
   }
 
-  private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+  private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearchResponse) {
     binding.ivPicture.contentDescription =
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -106,7 +106,7 @@ class SearchAdapter :
     binding.tvGenre.text = data.knownFor?.let { getKnownFor(it) }
   }
 
-  private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+  private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearchResponse) {
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -132,17 +132,17 @@ class SearchAdapter :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultsItemSearch>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultsItemSearchResponse>() {
       override fun areItemsTheSame(
-        oldItem: ResultsItemSearch,
-        newItem: ResultsItemSearch
+        oldItem: ResultsItemSearchResponse,
+        newItem: ResultsItemSearchResponse
       ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultsItemSearch,
-        newItem: ResultsItemSearch
+        oldItem: ResultsItemSearchResponse,
+        newItem: ResultsItemSearchResponse
       ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }

@@ -16,11 +16,12 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.domain.model.CountryIP
-import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.DetailTv
@@ -33,6 +34,7 @@ import com.waffiq.bazz_movies.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.domain.model.person.CombinedCreditPerson
 import com.waffiq.bazz_movies.domain.model.person.CrewItem
+import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
@@ -42,7 +44,7 @@ object DataMapper {
   private fun mapResponsesToDomainFavorite(
     isFavorite: Boolean,
     isWatchlist: Boolean,
-    input: ResultItemResponse
+    input: ResultItem
   ): Favorite {
     return Favorite(
       id = 0,
@@ -61,19 +63,19 @@ object DataMapper {
     )
   }
 
-  fun favTrueWatchlistTrue(data: ResultItemResponse): Favorite {
+  fun favTrueWatchlistTrue(data: ResultItem): Favorite {
     return mapResponsesToDomainFavorite(isFavorite = true, isWatchlist = true, input = data)
   }
 
-  fun favTrueWatchlistFalse(data: ResultItemResponse): Favorite {
+  fun favTrueWatchlistFalse(data: ResultItem): Favorite {
     return mapResponsesToDomainFavorite(isFavorite = true, isWatchlist = false, input = data)
   }
 
-  fun favFalseWatchlistTrue(data: ResultItemResponse): Favorite {
+  fun favFalseWatchlistTrue(data: ResultItem): Favorite {
     return mapResponsesToDomainFavorite(isFavorite = false, isWatchlist = true, input = data)
   }
 
-  fun favFalseWatchlistFalse(data: ResultItemResponse): Favorite {
+  fun favFalseWatchlistFalse(data: ResultItem): Favorite {
     return mapResponsesToDomainFavorite(isFavorite = false, isWatchlist = false, input = data)
   }
 
@@ -371,10 +373,33 @@ object DataMapper {
     crew = crew
   )
 
-  fun com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse.toStated() = Stated(
+  fun StatedResponse.toStated() = Stated(
     id = id,
     favorite = favorite,
     rated = rated,
     watchlist = watchlist
   )
+
+  fun mapResultItemResponseToResultItem(response: ResultItemResponse): ResultItem {
+    return ResultItem(
+      firstAirDate = response.firstAirDate,
+      overview = response.overview,
+      originalLanguage = response.originalLanguage,
+      genreIds = response.genreIds,
+      posterPath = response.posterPath,
+      backdropPath = response.backdropPath,
+      mediaType = response.mediaType,
+      originalName = response.originalName,
+      popularity = response.popularity,
+      voteAverage = response.voteAverage,
+      name = response.name,
+      id = response.id,
+      adult = response.adult,
+      voteCount = response.voteCount,
+      originalTitle = response.originalTitle,
+      video = response.video,
+      title = response.title,
+      releaseDate = response.releaseDate,
+    )
+  }
 }

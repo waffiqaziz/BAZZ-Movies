@@ -12,13 +12,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class MovieHomeAdapter :
-  PagingDataAdapter<ResultItemResponse, MovieHomeAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<ResultItem, MovieHomeAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,7 +41,7 @@ class MovieHomeAdapter :
   inner class ViewHolder(private var binding: ItemTrendingBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: ResultItemResponse) {
+    fun bind(movie: ResultItem) {
       binding.imgPoster.contentDescription =
         movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
 
@@ -63,17 +63,17 @@ class MovieHomeAdapter :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItemResponse>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultItemResponse,
-        newItem: ResultItemResponse
+        oldItem: ResultItem,
+        newItem: ResultItem
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItemResponse,
-        newItem: ResultItemResponse
+        oldItem: ResultItem,
+        newItem: ResultItem
       ): Boolean {
         return oldItem == newItem
       }

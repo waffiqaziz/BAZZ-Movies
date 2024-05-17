@@ -11,8 +11,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -64,7 +64,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       binding.tvCastName.text = cast.name ?: cast.title ?: cast.originalName ?: cast.originalTitle
       binding.tvCastCharacter.text = cast.character ?: "N/A"
 
-      val resultItemResponse = ResultItemResponse(
+      val resultItemResponse = ResultItem(
         overview = cast.overview,
         title = cast.title,
         name = cast.name,

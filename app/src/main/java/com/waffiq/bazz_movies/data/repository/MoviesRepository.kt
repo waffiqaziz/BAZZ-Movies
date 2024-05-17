@@ -1,15 +1,30 @@
 package com.waffiq.bazz_movies.data.repository
 
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSource
 import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.RatePostModel
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.ResultItem
+import com.waffiq.bazz_movies.domain.model.Stated
+import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
+import com.waffiq.bazz_movies.domain.model.detail.DetailTv
+import com.waffiq.bazz_movies.domain.model.detail.ExternalTvID
+import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
+import com.waffiq.bazz_movies.domain.model.detail.Video
+import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.domain.model.person.CombinedCreditPerson
+import com.waffiq.bazz_movies.domain.model.person.DetailPerson
+import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
+import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.utils.DataMapper.mapEntitiesToDomainFavorite
+import com.waffiq.bazz_movies.utils.DataMapper.mapResultItemResponseToResultItem
 import com.waffiq.bazz_movies.utils.DataMapper.toCombinedCredit
 import com.waffiq.bazz_movies.utils.DataMapper.toDetailMovie
 import com.waffiq.bazz_movies.utils.DataMapper.toDetailPerson
@@ -32,60 +47,125 @@ class MoviesRepository(
   private val movieDataSource: MovieDataSource
 ) {
   // region PAGING FUNCTION
-  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingTopRatedMovies()
+  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTopRatedMovies().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingPopularMovies()
 
-  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingFavoriteMovies(sessionId)
+  fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPopularMovies().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingFavoriteTv(sessionId)
+  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingFavoriteMovies(sessionId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingWatchlistMovies(sessionId)
+  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingFavoriteTv(sessionId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingWatchlistTv(sessionId)
+  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingWatchlistMovies(sessionId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingPopularTv(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingPopularTv()
+  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingWatchlistTv(sessionId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingOnTv()
+  fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPopularTv().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingAiringTodayTv()
+  fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingOnTv().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingTrendingWeek(region)
+  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingAiringTodayTv().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingTrendingDay(region)
+  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTrendingWeek(region).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingMovieRecommendation(movieId)
+  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTrendingDay(region).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingTvRecommendation(tvId)
+  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingUpcomingMovies(region)
+  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingPlayingNowMovies(region)
+  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingUpcomingMovies(region).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>> =
-    movieDataSource.getPagingTopRatedTv()
+  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPlayingNowMovies(region).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
 
-  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
+  fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingTopRatedTv().map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemResponseToResultItem(response)
+      }
+    }
+
+  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>> =
     movieDataSource.getPagingSearch(query)
   // endregion PAGING FUNCTION
 
   // region DETAIL
-  suspend fun getDetailOMDb(imdbId: String) =
+  suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetails>> =
     movieDataSource.getDetailOMDb(imdbId).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toOMDbDetails())
@@ -94,23 +174,25 @@ class MoviesRepository(
       }
     }
 
-  suspend fun getDetailMovie(id: Int) = movieDataSource.getDetailMovie(id).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailMovie())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovie>> =
+    movieDataSource.getDetailMovie(id).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailMovie())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getDetailTv(tvId: Int) = movieDataSource.getDetailTv(tvId).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailTv())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getDetailTv(tvId: Int): Flow<NetworkResult<DetailTv>> =
+    movieDataSource.getDetailTv(tvId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailTv())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getExternalTvId(tvId: Int) =
+  suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>> =
     movieDataSource.getExternalTvId(tvId).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toExternalTvID())
@@ -119,7 +201,7 @@ class MoviesRepository(
       }
     }
 
-  suspend fun getVideoMovies(movieId: Int) =
+  suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<Video>> =
     movieDataSource.getVideoMovies(movieId).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
@@ -128,31 +210,34 @@ class MoviesRepository(
       }
     }
 
-  suspend fun getVideoTv(tvId: Int) = movieDataSource.getVideoTv(tvId).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<Video>> =
+    movieDataSource.getVideoTv(tvId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getCreditMovies(movieId: Int) = movieDataSource.getCreditMovies(movieId).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
+    movieDataSource.getCreditMovies(movieId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getCreditTv(tvId: Int) = movieDataSource.getCreditTv(tvId).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
+    movieDataSource.getCreditTv(tvId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getStatedMovie(sessionId: String, id: Int) =
+  suspend fun getStatedMovie(sessionId: String, id: Int): Flow<NetworkResult<Stated>> =
     movieDataSource.getStatedMovie(sessionId, id).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toStated())
@@ -161,39 +246,53 @@ class MoviesRepository(
       }
     }
 
-  suspend fun getStatedTv(sessionId: String, id: Int) = movieDataSource.getStatedTv(sessionId, id).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toStated())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getStatedTv(sessionId: String, id: Int): Flow<NetworkResult<Stated>> =
+    movieDataSource.getStatedTv(sessionId, id).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toStated())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
   // endregion DETAIL
 
   // region POST FAVORITE AND WATCHLIST
-  suspend fun postFavorite(sessionId: String, fav: FavoritePostModel, userId: Int) =
-    movieDataSource.postFavorite(sessionId, fav, userId)
+  suspend fun postFavorite(
+    sessionId: String,
+    fav: FavoritePostModel,
+    userId: Int
+  ): NetworkResult<PostResponse> = movieDataSource.postFavorite(sessionId, fav, userId)
 
-  suspend fun postWatchlist(sessionId: String, wtc: WatchlistPostModel, userId: Int) =
-    movieDataSource.postWatchlist(sessionId, wtc, userId)
+  suspend fun postWatchlist(
+    sessionId: String,
+    wtc: WatchlistPostModel,
+    userId: Int
+  ): NetworkResult<PostResponse> = movieDataSource.postWatchlist(sessionId, wtc, userId)
 
-  suspend fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) =
-    movieDataSource.postMovieRate(sessionId, data, movieId)
+  suspend fun postMovieRate(
+    sessionId: String,
+    data: RatePostModel,
+    movieId: Int
+  ): NetworkResult<PostRateResponse> = movieDataSource.postMovieRate(sessionId, data, movieId)
 
-  suspend fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) =
-    movieDataSource.postTvRate(sessionId, data, tvId)
+  suspend fun postTvRate(
+    sessionId: String,
+    data: RatePostModel,
+    tvId: Int
+  ): NetworkResult<PostRateResponse> = movieDataSource.postTvRate(sessionId, data, tvId)
   // endregion POST FAVORITE AND WATCHLIST
 
   // region PERSON
-  suspend fun getDetailPerson(id: Int) = movieDataSource.getDetailPerson(id).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailPerson())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
+    movieDataSource.getDetailPerson(id).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailPerson())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getKnownForPerson(id: Int) =
+  suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditPerson>> =
     movieDataSource.getKnownForPerson(id).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toCombinedCredit())
@@ -202,15 +301,16 @@ class MoviesRepository(
       }
     }
 
-  suspend fun getImagePerson(id: Int) = movieDataSource.getImagePerson(id).map { networkResult ->
-    when (networkResult.status) {
-      Status.SUCCESS -> NetworkResult.success(networkResult.data?.toImagePerson())
-      Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePerson>> =
+    movieDataSource.getImagePerson(id).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toImagePerson())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
-  suspend fun getExternalIDPerson(id: Int) =
+  suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPerson>> =
     movieDataSource.getExternalIDPerson(id).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toExternalIDPerson())
@@ -255,9 +355,10 @@ class MoviesRepository(
     callback.invoke(resultCode)
   }
 
-  suspend fun isFavoriteDB(id: Int, mediaType: String) = localDataSource.isFavorite(id, mediaType)
+  suspend fun isFavoriteDB(id: Int, mediaType: String): Boolean =
+    localDataSource.isFavorite(id, mediaType)
 
-  suspend fun isWatchlistDB(id: Int, mediaType: String) =
+  suspend fun isWatchlistDB(id: Int, mediaType: String): Boolean =
     localDataSource.isWatchlist(id, mediaType)
 
   suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite) {

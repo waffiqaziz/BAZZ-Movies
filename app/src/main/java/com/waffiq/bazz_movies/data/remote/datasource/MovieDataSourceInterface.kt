@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearch
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -69,7 +69,7 @@ interface MovieDataSourceInterface {
   fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>>
-  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>>
+  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>>
 
   // DETAIL PAGE
   suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
