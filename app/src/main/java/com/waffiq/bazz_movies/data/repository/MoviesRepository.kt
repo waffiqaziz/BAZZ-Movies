@@ -7,11 +7,9 @@ import com.waffiq.bazz_movies.data.remote.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.RatePostModel
 import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
+import com.waffiq.bazz_movies.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.DetailTv
@@ -23,18 +21,23 @@ import com.waffiq.bazz_movies.domain.model.person.CombinedCreditPerson
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
+import com.waffiq.bazz_movies.domain.model.post.Post
+import com.waffiq.bazz_movies.domain.model.post.PostRate
 import com.waffiq.bazz_movies.utils.DataMapper.mapEntitiesToDomainFavorite
 import com.waffiq.bazz_movies.utils.DataMapper.mapResultItemResponseToResultItem
+import com.waffiq.bazz_movies.utils.DataMapper.mapResultItemSearchResponseToResultItemSearch
 import com.waffiq.bazz_movies.utils.DataMapper.toCombinedCredit
 import com.waffiq.bazz_movies.utils.DataMapper.toDetailMovie
 import com.waffiq.bazz_movies.utils.DataMapper.toDetailPerson
 import com.waffiq.bazz_movies.utils.DataMapper.toDetailTv
-import com.waffiq.bazz_movies.utils.DataMapper.toExternalTvID
 import com.waffiq.bazz_movies.utils.DataMapper.toExternalIDPerson
+import com.waffiq.bazz_movies.utils.DataMapper.toExternalTvID
 import com.waffiq.bazz_movies.utils.DataMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.utils.DataMapper.toImagePerson
 import com.waffiq.bazz_movies.utils.DataMapper.toMovieTvCredits
 import com.waffiq.bazz_movies.utils.DataMapper.toOMDbDetails
+import com.waffiq.bazz_movies.utils.DataMapper.toPost
+import com.waffiq.bazz_movies.utils.DataMapper.toPostRate
 import com.waffiq.bazz_movies.utils.DataMapper.toStated
 import com.waffiq.bazz_movies.utils.DataMapper.toVideo
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -160,8 +163,12 @@ class MoviesRepository(
       }
     }
 
-  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>> =
-    movieDataSource.getPagingSearch(query)
+  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
+    movieDataSource.getPagingSearch(query).map { pagingData ->
+      pagingData.map { response ->
+        mapResultItemSearchResponseToResultItemSearch(response)
+      }
+    }
   // endregion PAGING FUNCTION
 
   // region DETAIL
@@ -261,26 +268,54 @@ class MoviesRepository(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostResponse> = movieDataSource.postFavorite(sessionId, fav, userId)
+  ): NetworkResult<Post> {
+    val result = movieDataSource.postFavorite(sessionId, fav, userId)
+    return when (result.status) {
+      Status.SUCCESS -> NetworkResult.success(result.data?.toPost())
+      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
+      Status.LOADING -> NetworkResult.loading()
+    }
+  }
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostResponse> = movieDataSource.postWatchlist(sessionId, wtc, userId)
+  ): NetworkResult<Post> {
+    val result = movieDataSource.postWatchlist(sessionId, wtc, userId)
+    return when (result.status) {
+      Status.SUCCESS -> NetworkResult.success(result.data?.toPost())
+      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
+      Status.LOADING -> NetworkResult.loading()
+    }
+  }
 
   suspend fun postMovieRate(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<PostRateResponse> = movieDataSource.postMovieRate(sessionId, data, movieId)
+  ): NetworkResult<PostRate> {
+    val result = movieDataSource.postMovieRate(sessionId, data, movieId)
+    return when (result.status) {
+      Status.SUCCESS -> NetworkResult.success(result.data?.toPostRate())
+      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
+      Status.LOADING -> NetworkResult.loading()
+    }
+  }
 
   suspend fun postTvRate(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<PostRateResponse> = movieDataSource.postTvRate(sessionId, data, tvId)
-  // endregion POST FAVORITE AND WATCHLIST
+  ): NetworkResult<PostRate> {
+    val result = movieDataSource.postTvRate(sessionId, data, tvId)
+    return when (result.status) {
+      Status.SUCCESS -> NetworkResult.success(result.data?.toPostRate())
+      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
+      Status.LOADING -> NetworkResult.loading()
+    }
+  }
+// endregion POST FAVORITE AND WATCHLIST
 
   // region PERSON
   suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
@@ -318,7 +353,7 @@ class MoviesRepository(
         Status.LOADING -> NetworkResult.loading()
       }
     }
-  // endregion PERSON
+// endregion PERSON
 
   // region DATABASE
   val favoriteMoviesFromDB: Flow<List<Favorite>> =
@@ -396,7 +431,7 @@ class MoviesRepository(
       )
     }
   }
-  // endregion DATABASE
+// endregion DATABASE
 
   companion object {
     private const val TAG = "MoviesRepository "

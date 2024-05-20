@@ -14,14 +14,18 @@ import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ProfilesItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoItemResponse
 import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
 import com.waffiq.bazz_movies.domain.model.CountryIP
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
+import com.waffiq.bazz_movies.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.DetailTv
@@ -38,6 +42,8 @@ import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
+import com.waffiq.bazz_movies.domain.model.post.Post
+import com.waffiq.bazz_movies.domain.model.post.PostRate
 
 object DataMapper {
 
@@ -380,26 +386,61 @@ object DataMapper {
     watchlist = watchlist
   )
 
-  fun mapResultItemResponseToResultItem(response: ResultItemResponse): ResultItem {
-    return ResultItem(
-      firstAirDate = response.firstAirDate,
-      overview = response.overview,
-      originalLanguage = response.originalLanguage,
-      genreIds = response.genreIds,
-      posterPath = response.posterPath,
-      backdropPath = response.backdropPath,
+  fun mapResultItemResponseToResultItem(response: ResultItemResponse): ResultItem = ResultItem(
+    firstAirDate = response.firstAirDate,
+    overview = response.overview,
+    originalLanguage = response.originalLanguage,
+    genreIds = response.genreIds,
+    posterPath = response.posterPath,
+    backdropPath = response.backdropPath,
+    mediaType = response.mediaType,
+    originalName = response.originalName,
+    popularity = response.popularity,
+    voteAverage = response.voteAverage,
+    name = response.name,
+    id = response.id,
+    adult = response.adult,
+    voteCount = response.voteCount,
+    originalTitle = response.originalTitle,
+    video = response.video,
+    title = response.title,
+    releaseDate = response.releaseDate
+  )
+
+  fun mapResultItemSearchResponseToResultItemSearch(response: ResultsItemSearchResponse): ResultsItemSearch =
+    ResultsItemSearch(
       mediaType = response.mediaType,
-      originalName = response.originalName,
+      knownFor = response.knownFor,
+      knownForDepartment = response.knownForDepartment,
       popularity = response.popularity,
-      voteAverage = response.voteAverage,
       name = response.name,
+      profilePath = response.profilePath,
       id = response.id,
       adult = response.adult,
-      voteCount = response.voteCount,
+      overview = response.overview,
+      originalLanguage = response.originalLanguage,
       originalTitle = response.originalTitle,
       video = response.video,
       title = response.title,
+      genreIds = response.genreIds,
+      posterPath = response.posterPath,
+      backdropPath = response.backdropPath,
       releaseDate = response.releaseDate,
+      voteAverage = response.voteAverage,
+      voteCount = response.voteCount,
+      firstAirDate = response.firstAirDate,
+      originCountry = response.originCountry,
+      originalName = response.originalName
     )
-  }
+
+  fun PostResponse.toPost() = Post(
+    statusCode = statusCode,
+    statusMessage = statusMessage
+  )
+
+  fun PostRateResponse.toPostRate() = PostRate(
+    success = success,
+    statusCode = statusCode,
+    statusMessage = statusMessage
+  )
 }

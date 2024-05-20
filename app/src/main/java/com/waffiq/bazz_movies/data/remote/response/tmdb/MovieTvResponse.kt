@@ -1,9 +1,7 @@
 package com.waffiq.bazz_movies.data.remote.response.tmdb
 
-import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 
 @JsonClass(generateAdapter = false)
 data class MovieTvResponse(
@@ -21,7 +19,6 @@ data class MovieTvResponse(
 	val totalResults: Int
 )
 
-@Parcelize
 @JsonClass(generateAdapter = false)
 data class ResultItemResponse(
 
@@ -78,5 +75,5 @@ data class ResultItemResponse(
 
 	@Json(name="release_date")
 	val releaseDate: String? = null
-): Parcelable
+)
 

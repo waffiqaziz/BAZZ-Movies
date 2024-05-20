@@ -135,6 +135,7 @@ class DetailMovieActivity : AppCompatActivity() {
     btnListener()
   }
 
+  // region SCROLL BEHAVIOR
   private fun scrollActionBarBehavior() {
     val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
     val toColor = ContextCompat.getColor(this, gray)
@@ -162,6 +163,7 @@ class DetailMovieActivity : AppCompatActivity() {
     // Set the interpolated color as the background color of the AppBarLayout
     appBarLayout.setBackgroundColor(interpolatedColor)
   }
+  // endregion SCROLL BEHAVIOR
 
   private fun checkUser() {
     authViewModel.getUserPref().observe(this) {
@@ -217,10 +219,9 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.swipeRefresh.setOnRefreshListener {
       val i = Intent(this, DetailMovieActivity::class.java)
       i.putExtra(EXTRA_MOVIE, dataExtra)
-      activityTransition()
       binding.swipeRefresh.isRefreshing = false
-      startActivity(i)
       activityTransition()
+      startActivity(i)
       finish()
     }
   }
@@ -472,7 +473,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showRatingUserLogin(state: Stated) {
-    binding.tvScoreYourScore.text = if (!state.rated) getString(not_available)
+    binding.tvScoreYourScore.text = if (state.rated.toString() == "false") getString(not_available)
     else state.rated.toString().replace("{value=", "").replace("}", "")
   }
 
