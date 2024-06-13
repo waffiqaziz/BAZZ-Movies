@@ -1,25 +1,25 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.RatePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.tmdb.AccountDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.AuthenticationResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CreateSessionResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MultiSearchResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AccountDetailsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AuthenticationResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.MovieTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.MultiSearchResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -229,7 +229,7 @@ interface TMDBApiService {
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
     @Body data: FavoritePostModel
-  ): Response<PostResponse>
+  ): Response<PostFavoriteWatchlistResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/account/{accountId}/watchlist")
@@ -237,7 +237,7 @@ interface TMDBApiService {
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
     @Body data: WatchlistPostModel
-  ): Response<PostResponse>
+  ): Response<PostFavoriteWatchlistResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/movie/{movieId}/rating")
@@ -245,7 +245,7 @@ interface TMDBApiService {
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String,
     @Body data: RatePostModel
-  ): Response<PostRateResponse>
+  ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @POST("3/tv/{tvId}/rating")
@@ -253,12 +253,12 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
     @Body data: RatePostModel
-  ): Response<PostRateResponse>
+  ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @DELETE("3/authentication/session")
   suspend fun delSession(
     @Query("session_id") sessionId: String
-  ): Response<PostRateResponse>
+  ): Response<PostResponse>
   // endregion
 }

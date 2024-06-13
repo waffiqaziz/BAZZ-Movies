@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCrewItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.KnownForItem
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
+import com.waffiq.bazz_movies.domain.model.search.KnownForItem
 import okio.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -120,9 +120,9 @@ object Helper {
     return temp
   }
 
-  fun getKnownFor(knownForItem: List<KnownForItem>): String {
+  fun getKnownFor(knownForItemResponse: List<KnownForItem>): String {
     var temp = ""
-    knownForItem.forEach { temp = temp + it.title + ", " }
+    knownForItemResponse.forEach { temp = temp + it.title + ", " }
     temp = temp.dropLast(2)
     return temp
   }

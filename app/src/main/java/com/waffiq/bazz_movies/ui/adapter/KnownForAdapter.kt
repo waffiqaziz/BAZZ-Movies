@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
@@ -73,7 +73,7 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
         mediaType = cast.mediaType,
         firstAirDate = cast.releaseDate,
         releaseDate = cast.releaseDate,
-        genreIds = cast.genreIds,
+        listGenreIds = cast.listGenreIds,
         id = cast.id,
         popularity = cast.popularity,
         voteAverage = cast.voteAverage,

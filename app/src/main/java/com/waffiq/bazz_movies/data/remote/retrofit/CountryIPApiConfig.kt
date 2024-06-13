@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.waffiq.bazz_movies.utils.Constants.COUNTRY_API_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.COUNTRY_API_LINK
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

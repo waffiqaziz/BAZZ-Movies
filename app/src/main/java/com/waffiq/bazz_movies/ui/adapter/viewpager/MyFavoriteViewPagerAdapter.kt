@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteMoviesFragment
 import com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteTvSeriesFragment
-import com.waffiq.bazz_movies.utils.Constants.NUM_TABS
+import com.waffiq.bazz_movies.utils.common.Constants.NUM_TABS
 
 class MyFavoriteViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
   FragmentStateAdapter(fragmentManager, lifecycle) {

@@ -32,20 +32,20 @@ import com.waffiq.bazz_movies.R.string.already_watchlist
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.undo
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteMoviesBinding
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalResult
+import com.waffiq.bazz_movies.utils.common.Event
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -55,7 +55,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewModelFav: MyFavoriteViewModel
-  private lateinit var viewModelAuth: AuthenticationViewModel
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
 
   private val adapterDB = FavoriteAdapterDB()
   private val adapterPaging = FavoriteMovieAdapter()
@@ -73,9 +73,9 @@ class MyFavoriteMoviesFragment : Fragment() {
     val root: View = binding.root
 
     val pref = requireContext().dataStore
-    val factoryAuth = ViewModelUserFactory.getInstance(pref)
-    viewModelAuth =
-      ViewModelProvider(this, factoryAuth)[AuthenticationViewModel::class.java]
+    val factoryUser = ViewModelUserFactory.getInstance(pref)
+    userPreferenceViewModel =
+      ViewModelProvider(this, factoryUser)[UserPreferenceViewModel::class.java]
 
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModelFav =
@@ -90,7 +90,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     binding.rvFavMovies.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show data from TMDb
         initAction(isLogin = true)
         setupRefresh(true)
@@ -327,26 +327,25 @@ class MyFavoriteMoviesFragment : Fragment() {
       favorite = false
     )
 
-    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.postFavorite(user, favoritePostModelMode, title, position)
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      viewModelFav.postFavorite(user.token, user.userId, favoritePostModelMode, title, position)
     }
     showSnackBarUserLogin(title, favoritePostModelMode, null, position)
   }
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int, position: Int) {
-    viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       viewModelFav.getStatedMovie(user.token, movieId, title)
     }
     viewModelFav.stated.observe(viewLifecycleOwner) {
       if (it != null) {
         if (!it.watchlist) {
-          val watchlistPostModelMode = WatchlistPostModel(
-            mediaType = "movie",
-            mediaId = movieId,
-            watchlist = true
-          )
-          viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postWatchlist(user, watchlistPostModelMode, title, position)
+          val watchlistPostModelMode =
+            WatchlistPostModel(mediaType = "movie", mediaId = movieId, watchlist = true)
+          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+            viewModelFav.postWatchlist(
+              user.token, user.userId, watchlistPostModelMode, title, position
+            )
           }
         } else {
           /* handled by snackbarAlready.observe */
@@ -389,7 +388,12 @@ class MyFavoriteMoviesFragment : Fragment() {
     }
   }
 
-  private fun showSnackBarUserLogin(title: String, fav: FavoritePostModel?, wtc: WatchlistPostModel?, pos: Int) {
+  private fun showSnackBarUserLogin(
+    title: String,
+    fav: FavoritePostModel?,
+    wtc: WatchlistPostModel?,
+    pos: Int
+  ) {
     if (isWantToDelete && fav != null || !isWantToDelete && wtc != null) {
       mSnackbar = Snackbar.make(
         binding.root,
@@ -403,15 +407,19 @@ class MyFavoriteMoviesFragment : Fragment() {
         Snackbar.LENGTH_LONG
       ).setAction(getString(undo)) {
         if (fav != null) { // undo remove from favorite
-          viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postFavorite(user, fav.copy(favorite = true), title, pos)
+          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+            viewModelFav.postFavorite(
+              user.token, user.userId, fav.copy(favorite = true), title, pos
+            )
           }
           isWantToDelete = !isWantToDelete // to prevent show same snackbar when undo is triggered
           adapterPaging.notifyItemInserted(pos)
           binding.rvFavMovies.scrollToPosition(pos)
         } else if (wtc != null) { // undo add to watchlist
-          viewModelAuth.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postWatchlist(user, wtc.copy(watchlist = false), title, pos)
+          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+            viewModelFav.postWatchlist(
+              user.token, user.userId, wtc.copy(watchlist = false), title, pos
+            )
           }
         }
       }.setAnchorView(binding.guideSnackbar)

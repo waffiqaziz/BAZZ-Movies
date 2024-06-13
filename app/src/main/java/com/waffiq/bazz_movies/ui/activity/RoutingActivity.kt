@@ -12,13 +12,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.waffiq.bazz_movies.R.color.gray_900
-import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class RoutingActivity : AppCompatActivity() {
-  private lateinit var authenticationViewModel: AuthenticationViewModel
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
   private lateinit var splashScreen: SplashScreen
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +30,8 @@ class RoutingActivity : AppCompatActivity() {
     window.navigationBarColor = ContextCompat.getColor(this, gray_900)
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
-    authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
-    authenticationViewModel.getUserPref().observe(this) {
+    userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
+    userPreferenceViewModel.getUserPref().observe(this) {
       if (it.isLogin) gotoMainActivity(true)
       else gotoMainActivity(false)
     }

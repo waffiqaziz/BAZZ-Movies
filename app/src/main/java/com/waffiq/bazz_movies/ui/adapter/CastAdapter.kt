@@ -11,10 +11,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCastItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 
 class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 

@@ -32,9 +32,11 @@ import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
@@ -48,8 +50,9 @@ class FeaturedFragment : Fragment() {
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var homeViewModel: HomeViewModel
-  private lateinit var moreViewModelUser: MoreViewModelUser
+  private lateinit var movieViewModel: MovieViewModel
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private lateinit var regionViewModel: RegionViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -59,11 +62,12 @@ class FeaturedFragment : Fragment() {
     val root: View = binding.root
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    movieViewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
 
     val pref = requireContext().dataStore
     val factory2 = ViewModelUserFactory.getInstance(pref)
-    moreViewModelUser = ViewModelProvider(this, factory2)[MoreViewModelUser::class.java]
+    userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
+    regionViewModel = ViewModelProvider(this, factory2)[RegionViewModel::class.java]
 
     setRegion()
     showMainPicture()
@@ -82,20 +86,20 @@ class FeaturedFragment : Fragment() {
 
   private fun setRegion() {
     // check if user already have region
-    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) { userRegion ->
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userRegion ->
 
       // if user didn't have region, then get region from Country API
       if (userRegion.equals("NaN")) {
-        moreViewModelUser.getCountryCode()
-        moreViewModelUser.countryCode.observe(viewLifecycleOwner) { countryCode ->
+        regionViewModel.getCountryCode()
+        regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
           if (countryCode.isNotEmpty()) { // if success
             setData(countryCode)
-            moreViewModelUser.saveUserRegion(countryCode)
+            userPreferenceViewModel.saveRegionPref(countryCode)
           } else { // if null, then set region using SIM Card and default phone configuration
             val region = getLocation(requireContext())
             setData(region)
-            moreViewModelUser.saveUserRegion(region)
+            userPreferenceViewModel.saveRegionPref(region)
           }
         }
       } else setData(userRegion) // user already have region
@@ -132,21 +136,21 @@ class FeaturedFragment : Fragment() {
 
     // trending week, default will be week
     if (binding.rbThisWeek.isChecked) {
-      homeViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
+      movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
         adapterTrending.submitData(lifecycle, it)
       }
     }
 
     // handle movie trending based on switch button
     binding.rbToday.setOnClickListener {
-      homeViewModel.getTrendingDay(region).observe(viewLifecycleOwner) {
+      movieViewModel.getTrendingDay(region).observe(viewLifecycleOwner) {
         adapterTrending.submitData(lifecycle, it)
       }
       adapterTrending.retry()
       adapterTrending.refresh()
     }
     binding.rbThisWeek.setOnClickListener {
-      homeViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
+      movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
         adapterTrending.submitData(lifecycle, it)
       }
       adapterTrending.retry()
@@ -154,10 +158,10 @@ class FeaturedFragment : Fragment() {
     }
 
     // get movie upcoming and playing now on cinema
-    homeViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
+    movieViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
       adapterUpcoming.submitData(lifecycle, it)
     }
-    homeViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
+    movieViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
       adapterPlayingNow.submitData(lifecycle, it)
     }
 

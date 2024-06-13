@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentHomeBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.HomeViewPagerAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Constants.tabHomeHeadingArray
+import com.waffiq.bazz_movies.utils.common.Constants.tabHomeHeadingArray
 
 class HomeFragment : Fragment() {
 
@@ -24,8 +22,6 @@ class HomeFragment : Fragment() {
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout
 
-  private lateinit var homeViewModel: HomeViewModel
-
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -33,9 +29,6 @@ class HomeFragment : Fragment() {
   ): View {
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
     val root: View = binding.root
-
-    val factory = ViewModelFactory.getInstance(requireContext())
-    homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
     (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
     (activity as AppCompatActivity).supportActionBar?.title = null

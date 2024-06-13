@@ -18,7 +18,7 @@ import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 
@@ -27,7 +27,7 @@ class TvSeriesFragment : Fragment() {
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewModel: HomeViewModel
+  private lateinit var tvSeriesViewModel: TvSeriesViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,7 @@ class TvSeriesFragment : Fragment() {
     val root: View = binding.root
 
     val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    tvSeriesViewModel = ViewModelProvider(this, factory)[TvSeriesViewModel::class.java]
 
     setData()
 
@@ -80,15 +80,15 @@ class TvSeriesFragment : Fragment() {
     }
 
     // get data movie popular, airing today, on tv, and top rated
-    viewModel.getPopularTv()
+    tvSeriesViewModel.getPopularTv()
       .observe(viewLifecycleOwner) { popularAdapter.submitData(lifecycle, it) }
-    viewModel.getAiringTodayTv().observe(viewLifecycleOwner) {
+    tvSeriesViewModel.getAiringTodayTv().observe(viewLifecycleOwner) {
       nowPlayingAdapter.submitData(lifecycle, it)
     }
-    viewModel.getOnTv().observe(viewLifecycleOwner) {
+    tvSeriesViewModel.getOnTv().observe(viewLifecycleOwner) {
       onTvAdapter.submitData(lifecycle, it)
     }
-    viewModel.getTopRatedTv().observe(viewLifecycleOwner) {
+    tvSeriesViewModel.getTopRatedTv().observe(viewLifecycleOwner) {
       topRatedAdapter.submitData(lifecycle, it)
     }
 

@@ -71,9 +71,9 @@ import com.waffiq.bazz_movies.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.R.string.status_
 import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.RatePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
@@ -81,23 +81,23 @@ import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
-import com.waffiq.bazz_movies.utils.Constants.YOUTUBE_LINK_VIDEO
-import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistFalse
-import com.waffiq.bazz_movies.utils.DataMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.utils.DataMapper.favTrueWatchlistTrue
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
+import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistFalse
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -106,7 +106,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
   private lateinit var detailViewModel: DetailMovieViewModel
-  private lateinit var authViewModel: AuthenticationViewModel
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
@@ -126,7 +126,7 @@ class DetailMovieActivity : AppCompatActivity() {
     detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
-    authViewModel = ViewModelProvider(this, factory2)[AuthenticationViewModel::class.java]
+    userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     scrollActionBarBehavior()
     checkUser()
@@ -166,7 +166,7 @@ class DetailMovieActivity : AppCompatActivity() {
   // endregion SCROLL BEHAVIOR
 
   private fun checkUser() {
-    authViewModel.getUserPref().observe(this) {
+    userPreferenceViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
 
       // rate handling, add favorite and watchlist for user login
@@ -188,7 +188,7 @@ class DetailMovieActivity : AppCompatActivity() {
                 else showToastRemoveFromWatchlist()
               }
 
-              authViewModel.getUserPref().observe(this) { user ->
+              userPreferenceViewModel.getUserPref().observe(this) { user ->
                 getStated(user.token)
               }
             }
@@ -329,9 +329,9 @@ class DetailMovieActivity : AppCompatActivity() {
       detailViewModel.detailMovie.observe(this) { movie ->
 
         // show genre
-        val temp = movie.genres?.map { it?.name }
-        val tempID = movie.genres?.map { it?.id ?: 0 }
-        if (tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
+        val temp = movie.listGenres?.map { it.name }
+        val tempID = movie.listGenres?.map { it.id ?: 0 }
+        if (tempID != null) dataExtra = dataExtra.copy(listGenreIds = tempID)
         if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
 
         // show runtime
@@ -437,9 +437,9 @@ class DetailMovieActivity : AppCompatActivity() {
       // show genres & age rate
       dataExtra.id?.let { detailViewModel.detailTv(it) }
       detailViewModel.detailTv.observe(this) { tv ->
-        val temp = tv.genres?.map { it?.name }
-        val tempID = tv.genres?.map { it?.id ?: 0 }
-        if (tempID != null) dataExtra = dataExtra.copy(genreIds = tempID)
+        val temp = tv.listGenres?.map { it?.name }
+        val tempID = tv.listGenres?.map { it?.id ?: 0 }
+        if (tempID != null) dataExtra = dataExtra.copy(listGenreIds = tempID)
         if (!temp.isNullOrEmpty()) binding.tvGenre.text = temp.joinToString(separator = ", ")
         else binding.tvGenre.text = getString(not_available)
 
@@ -577,7 +577,7 @@ class DetailMovieActivity : AppCompatActivity() {
         dataExtra.id,
         !state
       )
-      authViewModel.getUserPref().observe(this) { user ->
+      userPreferenceViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postFavorite(user.token, fav, user.userId)
       }
 
@@ -588,7 +588,7 @@ class DetailMovieActivity : AppCompatActivity() {
         dataExtra.id,
         !state
       )
-      authViewModel.getUserPref().observe(this) { user ->
+      userPreferenceViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postWatchlist(user.token, wtc, user.userId)
       }
     }
@@ -609,7 +609,7 @@ class DetailMovieActivity : AppCompatActivity() {
   // check if favorite or watchlist
   private fun isFavoriteWatchlist(isLogin: Boolean) {
     if (isLogin) { // user
-      authViewModel.getUserPref().observe(this) { user ->
+      userPreferenceViewModel.getUserPref().observe(this) { user ->
         getStated(user.token)
         detailViewModel.stated.observe(this) {
           if (it != null) {
@@ -789,7 +789,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
 
-    authViewModel.getUserPref().observe(this) { user ->
+    userPreferenceViewModel.getUserPref().observe(this) { user ->
       getStated(user.token)
       detailViewModel.stated.observe(this) {
         if (it != null) {
@@ -804,7 +804,7 @@ class DetailMovieActivity : AppCompatActivity() {
     val buttonYesAlert = dialogView.findViewById(btn_yes) as Button
     buttonYesAlert.setOnClickListener {
       val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
-      authViewModel.getUserPref().observe(this) { user ->
+      userPreferenceViewModel.getUserPref().observe(this) { user ->
         if (dataExtra.mediaType.equals("movie"))
           dataExtra.id?.let { it1 -> detailViewModel.postMovieRate(user.token, ratePostModel, it1) }
         else dataExtra.id?.let { it1 -> detailViewModel.postTvRate(user.token, ratePostModel, it1) }

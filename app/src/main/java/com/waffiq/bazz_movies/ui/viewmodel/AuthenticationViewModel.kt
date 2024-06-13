@@ -3,15 +3,16 @@ package com.waffiq.bazz_movies.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
-import com.waffiq.bazz_movies.data.repository.UserRepository
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 
-class AuthenticationViewModel(private val userRepository: UserRepository) : ViewModel() {
+class AuthenticationViewModel(
+  private val authTMDbAccountUseCase: AuthTMDbAccountUseCase,
+) : ViewModel() {
 
   private val _userModel = MutableLiveData<UserModel>()
   val userModel: LiveData<UserModel> get() = _userModel
@@ -25,14 +26,11 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
   private val _loginState = MutableLiveData<Boolean>()
   val loginState: LiveData<Boolean> get() = _loginState
 
-  fun getUserPref() = userRepository.getUser().asLiveData()
-
+  // 1. Create a new request token
   fun userLogin(username: String, password: String) {
     _loginState.value = false
     viewModelScope.launch {
-
-      // 1. Create a new request token
-      userRepository.createToken().collect { resultCreateToken ->
+      authTMDbAccountUseCase.createToken().collect { resultCreateToken ->
         when (resultCreateToken.status) {
           Status.SUCCESS -> {
             if (resultCreateToken.data?.success == true && resultCreateToken.data.requestToken != null) {
@@ -52,10 +50,10 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
     }
   }
 
-  //  2. authorize the request token
+  // 2. authorize the request token
   private fun login(username: String, password: String, requestToken: String) {
     viewModelScope.launch {
-      userRepository.login(username, password, requestToken).collect { resultLogin ->
+      authTMDbAccountUseCase.login(username, password, requestToken).collect { resultLogin ->
         when (resultLogin.status) {
           Status.SUCCESS -> {
             resultLogin.data?.requestToken.let { token ->
@@ -81,7 +79,7 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
   // 3. Create a new session id with the authorized request token
   private fun createSession(token: String) {
     viewModelScope.launch {
-      userRepository.createSessionLogin(token).collect { result ->
+      authTMDbAccountUseCase.createSessionLogin(token).collect { result ->
         when (result.status) {
           Status.SUCCESS -> {
             result.data.let {
@@ -108,7 +106,7 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
 
   private fun getUserDetail(sessionId: String) {
     viewModelScope.launch {
-      userRepository.getUserDetail(sessionId).collect { result ->
+      authTMDbAccountUseCase.getUserDetail(sessionId).collect { result ->
         when (result.status) {
           Status.SUCCESS -> {
             if (result.data != null) {
@@ -120,8 +118,8 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
                 region = "NaN",
                 token = sessionId,
                 isLogin = true,
-                gravatarHast = result.data.avatar?.gravatar?.hash,
-                tmdbAvatar = result.data.avatar?.tmdb?.avatarPath
+                gravatarHast = result.data.avatarItem?.gravatar?.hash,
+                tmdbAvatar = result.data.avatarItem?.avatarTMDb?.avatarPath
               )
               _loginState.value = true
             } else _loginState.value = false
@@ -138,13 +136,5 @@ class AuthenticationViewModel(private val userRepository: UserRepository) : View
         }
       }
     }
-  }
-
-  fun saveUser(userModel: UserModel) {
-    viewModelScope.launch { userRepository.saveUser(userModel) }
-  }
-
-  fun removeUserData() {
-    viewModelScope.launch { userRepository.removeUserData() }
   }
 }

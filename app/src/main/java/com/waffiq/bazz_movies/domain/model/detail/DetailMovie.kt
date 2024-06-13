@@ -1,12 +1,5 @@
 package com.waffiq.bazz_movies.domain.model.detail
 
-import com.waffiq.bazz_movies.data.remote.response.tmdb.BelongsToCollection
-import com.waffiq.bazz_movies.data.remote.response.tmdb.GenresItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ProductionCompaniesItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ProductionCountriesItem
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ReleaseDates
-import com.waffiq.bazz_movies.data.remote.response.tmdb.SpokenLanguagesItem
-
 data class DetailMovie(
   val originalLanguage: String? = null,
   val imdbId: String? = null,
@@ -14,10 +7,10 @@ data class DetailMovie(
   val title: String? = null,
   val backdropPath: String? = null,
   val revenue: Long? = null,
-  val genres: List<GenresItem?>? = null,
+  val listGenres: List<GenresItem>? = null,
   val popularity: Double? = null,
   val releaseDates: ReleaseDates? = null,
-  val productionCountries: List<ProductionCountriesItem?>? = null,
+  val listProductionCountriesItem: List<ProductionCountriesItem?>? = null,
   val id: Int? = null,
   val voteCount: Int? = null,
   val budget: Int? = null,
@@ -25,8 +18,8 @@ data class DetailMovie(
   val originalTitle: String? = null,
   val runtime: Int? = null,
   val posterPath: String? = null,
-  val spokenLanguages: List<SpokenLanguagesItem?>? = null,
-  val productionCompanies: List<ProductionCompaniesItem?>? = null,
+  val listSpokenLanguagesItem: List<SpokenLanguagesItem?>? = null,
+  val listProductionCompaniesItem: List<ProductionCompaniesItem?>? = null,
   val releaseDate: String? = null,
   val voteAverage: Double? = null,
   val belongsToCollection: BelongsToCollection? = null,

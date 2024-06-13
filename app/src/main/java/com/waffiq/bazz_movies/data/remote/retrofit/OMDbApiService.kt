@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.data.remote.retrofit
 
-import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.responses.omdb.OMDbDetailsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

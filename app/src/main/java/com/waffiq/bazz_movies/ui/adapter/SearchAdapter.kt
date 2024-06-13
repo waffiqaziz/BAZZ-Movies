@@ -13,13 +13,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCastItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
-import com.waffiq.bazz_movies.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.Helper.getKnownFor
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 
@@ -78,7 +78,7 @@ class SearchAdapter :
             originalTitle = data.originalTitle,
             originalName = data.originalName,
             mediaType = data.mediaType,
-            genreIds = data.genreIds,
+            listGenreIds = data.listGenreIds,
             id = data.id
           )
           intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
@@ -103,7 +103,7 @@ class SearchAdapter :
 
     binding.tvTitle.text = data.name
     binding.tvYearReleased.text = data.knownForDepartment
-    binding.tvGenre.text = data.knownFor?.let { getKnownFor(it) }
+    binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
@@ -124,7 +124,7 @@ class SearchAdapter :
         ?: "N/A"
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
-    binding.tvGenre.text = if (data.genreIds?.isEmpty() == true) "N/A" else data.genreIds?.let {
+    binding.tvGenre.text = if (data.listGenreIds?.isEmpty() == true) "N/A" else data.listGenreIds?.let {
       iterateGenre(
         it
       )

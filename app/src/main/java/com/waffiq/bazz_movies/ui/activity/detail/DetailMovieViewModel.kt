@@ -5,23 +5,31 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.PostModelState
-import com.waffiq.bazz_movies.data.remote.RatePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.utils.helper.PostModelState
+import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
-import com.waffiq.bazz_movies.domain.model.detail.DetailTv
-import com.waffiq.bazz_movies.domain.model.detail.ExternalTvID
+import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
+import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_detail_tv.GetDetailTvUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedMovieUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
+import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
@@ -29,7 +37,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
-  private val movieRepository: MoviesRepository,
+  private val getDetailMovieUseCase: GetDetailMovieUseCase,
+  private val getDetailTvUseCase: GetDetailTvUseCase,
+  private val localDatabaseUseCase: LocalDatabaseUseCase,
+  private val postMethodUseCase: PostMethodUseCase,
+  private val getDetailOMDbUseCase: GetDetailOMDbUseCase,
+  private val getStatedMovieUseCase: GetStatedMovieUseCase,
+  private val getStatedTvUseCase: GetStatedTvUseCase
 ) : ViewModel() {
 
   // region OBSERVABLES
@@ -85,7 +99,7 @@ class DetailMovieViewModel(
   // region MOVIE
   fun getLinkMovie(movieId: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoMovies(movieId).collect { networkResult ->
+      getDetailMovieUseCase.getVideoMovies(movieId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             try {
@@ -127,14 +141,14 @@ class DetailMovieViewModel(
 
   fun detailMovie(id: Int) {
     viewModelScope.launch {
-      movieRepository.getDetailMovie(id).collect { networkResult ->
+      getDetailMovieUseCase.getDetailMovie(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             networkResult.data.let { _detailMovie.value = it }
             var productionCountry: String
             try {
               productionCountry =
-                networkResult.data?.productionCountries?.get(0)?.iso31661.toString()
+                networkResult.data?.listProductionCountriesItem?.get(0)?.iso31661.toString()
               _productionCountry.value = productionCountry
             } catch (e: IndexOutOfBoundsException) {
               _productionCountry.value = "N/A"
@@ -143,10 +157,10 @@ class DetailMovieViewModel(
             try {
               if (productionCountry.isEmpty()) _ageRating.value = "N/A"
               else {
-                _ageRating.value = networkResult.data?.releaseDates?.results?.filter {
+                _ageRating.value = networkResult.data?.releaseDates?.listReleaseDatesItem?.filter {
                   it?.iso31661 == "US" || it?.iso31661 == productionCountry
                 }?.map {
-                  it?.releaseDateValue?.get(0)?.certification
+                  it?.listReleaseDatesitemValue?.get(0)?.certification
                 }.toString().replace("[", "").replace("]", "")
                   .replace(" ", "").replace(",", ", ")
               }
@@ -167,7 +181,7 @@ class DetailMovieViewModel(
 
   fun getMovieCredits(movieId: Int) {
     viewModelScope.launch {
-      movieRepository.getCreditMovies(movieId).collect { networkResult ->
+      getDetailMovieUseCase.getCreditMovies(movieId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             val responseData = networkResult.data
@@ -184,12 +198,13 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getRecommendationMovie(movieId: Int) =
-    movieRepository.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope).asLiveData()
+  fun getRecommendationMovie(movieId: Int): LiveData<PagingData<ResultItem>> =
+    getDetailMovieUseCase.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope)
+      .asLiveData()
 
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedMovie(sessionId, id).collect { networkResult ->
+      getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _stated.value = it }
           Status.LOADING -> {}
@@ -206,7 +221,7 @@ class DetailMovieViewModel(
   // region TV-SERIES
   fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
-      movieRepository.getVideoTv(tvId).collect { networkResult ->
+      getDetailTvUseCase.getVideoTv(tvId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             try {
@@ -248,18 +263,19 @@ class DetailMovieViewModel(
 
   fun detailTv(id: Int) {
     viewModelScope.launch {
-      movieRepository.getDetailTv(id).collect { networkResult ->
+      getDetailTvUseCase.getDetailTv(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             if (networkResult.data != null) {
               networkResult.data.let { _detailTv.value = it }
               try { // get age rating
-                val productionCountry = networkResult.data.productionCountries?.get(0)?.iso31661
+                val productionCountry = networkResult.data.listProductionCountriesItem?.get(0)?.iso31661
                 _productionCountry.value = productionCountry ?: "N/A"
-                _ageRating.value = networkResult.data.contentRatings?.results?.filter {
-                  it?.iso31661 == "US" || it?.iso31661 == productionCountry
-                }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-                  .replace(" ", "").replace(",", ", ")
+                _ageRating.value =
+                  networkResult.data.contentRatingsResponse?.contentRatingsItemResponse?.filter {
+                    it?.iso31661 == "US" || it?.iso31661 == productionCountry
+                  }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
+                    .replace(" ", "").replace(",", ", ")
               } catch (e: NullPointerException) {
                 _ageRating.value = "N/A"
                 _productionCountry.value = "N/A"
@@ -282,7 +298,7 @@ class DetailMovieViewModel(
 
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
-      movieRepository.getCreditTv(tvId).collect { networkResult ->
+      getDetailTvUseCase.getCreditTv(tvId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _movieTvCreditsResult.value = it }
           Status.LOADING -> {}
@@ -297,7 +313,7 @@ class DetailMovieViewModel(
 
   fun externalId(id: Int) {
     viewModelScope.launch {
-      movieRepository.getExternalTvId(id).collect { networkResult ->
+      getDetailTvUseCase.getExternalTvId(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> _externalTvId.value = networkResult
           Status.LOADING -> {}
@@ -309,12 +325,12 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getRecommendationTv(tvId: Int) =
-    movieRepository.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
+  fun getRecommendationTv(tvId: Int): LiveData<PagingData<ResultItem>> =
+    getDetailTvUseCase.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
 
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
-      movieRepository.getStatedTv(sessionId, id).collect { networkResult ->
+      getStatedTvUseCase.getStatedTv(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _stated.value = it }
           Status.LOADING -> {}
@@ -330,7 +346,7 @@ class DetailMovieViewModel(
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
-      movieRepository.getDetailOMDb(imdbId).collect { networkResult ->
+      getDetailOMDbUseCase.getDetailOMDb(imdbId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             networkResult.data.let { _omdbResult.value = it }
@@ -350,19 +366,19 @@ class DetailMovieViewModel(
   // region DB FUNCTION
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch(Dispatchers.IO) {
-      _isFavorite.postValue(movieRepository.isFavoriteDB(id, mediaType))
+      _isFavorite.postValue(localDatabaseUseCase.isFavoriteDB(id, mediaType))
     }
   }
 
   fun isWatchlistDB(id: Int, mediaType: String) {
     viewModelScope.launch(Dispatchers.IO) {
-      _isWatchlist.postValue(movieRepository.isWatchlistDB(id, mediaType))
+      _isWatchlist.postValue(localDatabaseUseCase.isWatchlistDB(id, mediaType))
     }
   }
 
   fun insertToDB(fav: Favorite) {
     viewModelScope.launch(Dispatchers.IO) {
-      movieRepository.insertToDB(fav) { resultCode ->
+      localDatabaseUseCase.insertToDB(fav) { resultCode ->
         val result = when (resultCode) {
           ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
           ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
@@ -375,25 +391,25 @@ class DetailMovieViewModel(
   }
 
   fun updateToFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(false, fav) }
 
   fun updateToRemoveFromFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateFavoriteItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(true, fav) }
 
   fun updateToWatchlistDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(false, fav) }
 
   fun updateToRemoveFromWatchlistDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.updateWatchlistItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(true, fav) }
 
   fun delFromFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { movieRepository.deleteFromDB(fav) }
+    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.deleteFromDB(fav) }
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
     viewModelScope.launch {
-      val networkResult = movieRepository.postFavorite(sessionId, data, userId)
+      val networkResult = postMethodUseCase.postFavorite(sessionId, data, userId)
       when (networkResult.status) {
         Status.SUCCESS -> {
           if (data.favorite != null) {
@@ -428,7 +444,7 @@ class DetailMovieViewModel(
 
   fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
     viewModelScope.launch {
-      val networkResult = movieRepository.postWatchlist(sessionId, data, userId)
+      val networkResult = postMethodUseCase.postWatchlist(sessionId, data, userId)
       when (networkResult.status) {
         Status.SUCCESS -> {
           if (data.watchlist != null) {
@@ -463,7 +479,7 @@ class DetailMovieViewModel(
 
   fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
     viewModelScope.launch {
-      val networkResult = movieRepository.postMovieRate(sessionId, data, movieId)
+      val networkResult = postMethodUseCase.postMovieRate(sessionId, data, movieId)
       when (networkResult.status) {
         Status.SUCCESS -> {
           _rateState.value = Event(true)
@@ -480,7 +496,7 @@ class DetailMovieViewModel(
 
   fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
     viewModelScope.launch {
-      val networkResult = movieRepository.postTvRate(sessionId, data, tvId)
+      val networkResult = postMethodUseCase.postTvRate(sessionId, data, tvId)
       when (networkResult.status) {
         Status.SUCCESS -> {
           _rateState.value = Event(true)

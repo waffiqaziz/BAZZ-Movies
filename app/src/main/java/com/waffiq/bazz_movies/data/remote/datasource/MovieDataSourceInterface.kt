@@ -1,24 +1,24 @@
 package com.waffiq.bazz_movies.data.remote.datasource
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.RatePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.responses.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
 import com.waffiq.bazz_movies.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import okio.IOException
@@ -94,14 +94,14 @@ interface MovieDataSourceInterface {
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostResponse>
+  ): NetworkResult<PostFavoriteWatchlistResponse>
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostResponse>
+  ): NetworkResult<PostFavoriteWatchlistResponse>
 
-  suspend fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int): NetworkResult<PostRateResponse>
-  suspend fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int): NetworkResult<PostRateResponse>
+  suspend fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int): NetworkResult<PostResponse>
+  suspend fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int): NetworkResult<PostResponse>
 }

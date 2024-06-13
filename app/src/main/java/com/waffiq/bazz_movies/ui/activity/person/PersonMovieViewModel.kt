@@ -4,16 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.launch
 
-class PersonMovieViewModel(private val movieRepository: MoviesRepository) : ViewModel() {
+class PersonMovieViewModel(
+  private val getDetailPersonUseCase: GetDetailPersonUseCase
+) : ViewModel() {
 
   private val _detailPerson = MutableLiveData<DetailPerson>()
   val detailPerson: LiveData<DetailPerson> get() = _detailPerson
@@ -35,7 +37,7 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getDetailPerson(id: Int) {
     viewModelScope.launch {
-      movieRepository.getDetailPerson((id)).collect { networkResult ->
+      getDetailPersonUseCase.getDetailPerson((id)).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             _loadingState.value = false
@@ -54,7 +56,7 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getKnownFor(id: Int) {
     viewModelScope.launch {
-      movieRepository.getKnownForPerson(id).collect { networkResult ->
+      getDetailPersonUseCase.getKnownForPerson(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _knownFor.value = it?.cast ?: emptyList() }
           Status.LOADING -> {}
@@ -69,7 +71,7 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getImagePerson(id: Int) {
     viewModelScope.launch {
-      movieRepository.getImagePerson((id)).collect { networkResult ->
+      getDetailPersonUseCase.getImagePerson((id)).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _imagePerson.value = it?.profiles ?: emptyList() }
           Status.LOADING -> {}
@@ -84,7 +86,7 @@ class PersonMovieViewModel(private val movieRepository: MoviesRepository) : View
 
   fun getExternalIDPerson(id: Int) {
     viewModelScope.launch {
-      movieRepository.getExternalIDPerson(id).collect { networkResult ->
+      getDetailPersonUseCase.getExternalIDPerson(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> networkResult.data.let { _externalIdPerson.value = it }
           Status.LOADING -> {}

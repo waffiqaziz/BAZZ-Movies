@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
-import com.waffiq.bazz_movies.utils.Constants.INITIAL_PAGE_INDEX
+import com.waffiq.bazz_movies.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 

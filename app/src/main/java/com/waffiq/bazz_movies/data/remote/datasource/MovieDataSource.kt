@@ -20,24 +20,24 @@ import com.waffiq.bazz_movies.data.paging.TopRatedTvPagingSource
 import com.waffiq.bazz_movies.data.paging.UpcomingMoviesPagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistMoviePagingSource
 import com.waffiq.bazz_movies.data.paging.WatchlistTvPagingSource
-import com.waffiq.bazz_movies.data.remote.FavoritePostModel
-import com.waffiq.bazz_movies.data.remote.RatePostModel
-import com.waffiq.bazz_movies.data.remote.WatchlistPostModel
-import com.waffiq.bazz_movies.data.remote.response.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.CombinedCreditResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ImagePersonResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostRateResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.PostResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.StatedResponse
-import com.waffiq.bazz_movies.data.remote.response.tmdb.VideoResponse
+import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.responses.omdb.OMDbDetailsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -288,7 +288,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostResponse> {
+  ): NetworkResult<PostFavoriteWatchlistResponse> {
     return try {
       val response = tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
       if (response.isSuccessful) {
@@ -310,7 +310,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostResponse> {
+  ): NetworkResult<PostFavoriteWatchlistResponse> {
     return try {
       val response = tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
       if (response.isSuccessful) {
@@ -332,7 +332,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<PostRateResponse> {
+  ): NetworkResult<PostResponse> {
     return try {
       val response = tmdbApiService.postTvRate(tvId, sessionId, data)
       if (response.isSuccessful) {
@@ -354,7 +354,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<PostRateResponse> {
+  ): NetworkResult<PostResponse> {
     return try {
       val response = tmdbApiService.postMovieRate(movieId, sessionId, data)
       if (response.isSuccessful) {

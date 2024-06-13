@@ -8,7 +8,7 @@ data class ResultItem(
   val firstAirDate: String? = null,
   val overview: String? = null,
   val originalLanguage: String? = null,
-  val genreIds: List<Int>? = null,
+  val listGenreIds: List<Int>? = null,
   val posterPath: String? = null,
   val backdropPath: String? = null,
   val mediaType: String? = null,

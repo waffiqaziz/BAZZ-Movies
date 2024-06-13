@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 
 class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
   RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>() {

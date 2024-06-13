@@ -32,23 +32,25 @@ import com.waffiq.bazz_movies.R.string.sign_out_success
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.R.string.yes
-import com.waffiq.bazz_movies.data.remote.SessionIDPostModel
+import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.RoutingActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.FAQ_LINK
-import com.waffiq.bazz_movies.utils.Constants.FORM_HELPER
-import com.waffiq.bazz_movies.utils.Constants.GRAVATAR_LINK
-import com.waffiq.bazz_movies.utils.Constants.PRIVACY_POLICY_LINK
-import com.waffiq.bazz_movies.utils.Constants.TERMS_CONDITIONS_LINK
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_AVATAR
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
+import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.PRIVACY_POLICY_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.TERMS_CONDITIONS_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
+import com.waffiq.bazz_movies.utils.common.Event
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -58,8 +60,10 @@ class MoreFragment : Fragment() {
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var authViewModel: AuthenticationViewModel
-  private lateinit var moreViewModel: MoreViewModel
+  private lateinit var moreViewModelLocal: MoreViewModelLocal
   private lateinit var moreViewModelUser: MoreViewModelUser
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private lateinit var regionViewModel: RegionViewModel
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -73,10 +77,14 @@ class MoreFragment : Fragment() {
     val factory = ViewModelUserFactory.getInstance(pref)
     authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
     moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
+    userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
+    regionViewModel = ViewModelProvider(this, factory)[RegionViewModel::class.java]
+
+
     moreViewModelUser.errorState.observe(viewLifecycleOwner) { showSnackBar(it) }
 
     val factory2 = ViewModelFactory.getInstance(requireContext())
-    moreViewModel = ViewModelProvider(this, factory2)[MoreViewModel::class.java]
+    moreViewModelLocal = ViewModelProvider(this, factory2)[MoreViewModelLocal::class.java]
 
     // hide action bar
     (activity as AppCompatActivity).supportActionBar?.hide()
@@ -132,7 +140,7 @@ class MoreFragment : Fragment() {
     }
 
     binding.btnSignout.setOnClickListener {
-      authViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
         // sign out for guest account
         if (user.token == "NaN" || user.token.isEmpty()) {
           dialogSignOutGuestMode()
@@ -143,12 +151,12 @@ class MoreFragment : Fragment() {
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
     binding.btnCountryPicker.setOnCountryChangeListener {
-      moreViewModelUser.saveUserRegion(binding.btnCountryPicker.selectedCountryNameCode)
+      userPreferenceViewModel.saveRegionPref(binding.btnCountryPicker.selectedCountryNameCode)
     }
   }
 
   private fun dialogSignOutGuestMode() {
-    moreViewModel.deleteAllResult.observe(viewLifecycleOwner) {
+    moreViewModelLocal.deleteAllResult.observe(viewLifecycleOwner) {
       it.getContentIfNotHandled()?.let { result ->
         when (result) {
           is LocalResult.Success -> showToastShort(
@@ -166,7 +174,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(warning_signOut_guest_mode))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
-        moreViewModel.deleteAll() // delete all user data  (watchlistPostModel and favoritePostModel)
+        moreViewModelLocal.deleteAll() // delete all user data  (watchlistPostModel and favoritePostModel)
         dialog.dismiss()
         removePrefUserData() // remove preference user data
       }
@@ -181,13 +189,13 @@ class MoreFragment : Fragment() {
   }
 
   private fun removePrefUserData() {
-    authViewModel.removeUserData()
+    userPreferenceViewModel.removeUserDataPref()
     startActivity(Intent(activity, RoutingActivity::class.java))
     activity?.finishAffinity()
   }
 
   private fun setData() {
-    authViewModel.getUserPref().observe(viewLifecycleOwner) {
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) {
       binding.apply {
         tvFullName.text = it.name
         tvUsername.text = it.username
@@ -208,14 +216,14 @@ class MoreFragment : Fragment() {
     }
 
     // check if user already have countryCode
-    moreViewModelUser.getUserRegion().observe(viewLifecycleOwner) { userCountry ->
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userCountry ->
 
       if (userCountry.equals("NaN")) { // if not yet, then set country
-        moreViewModelUser.getCountryCode()
-        moreViewModelUser.countryCode.observe(viewLifecycleOwner) { countryCode ->
+        regionViewModel.getCountryCode()
+        regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
           if (countryCode.isNotEmpty()) {
-            moreViewModelUser.saveUserRegion(countryCode)
+            userPreferenceViewModel.saveRegionPref(countryCode)
             binding.btnCountryPicker.setCountryForNameCode(countryCode)
           }
         }

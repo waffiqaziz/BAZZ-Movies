@@ -41,16 +41,16 @@
 
 # Application classes that will be serialized/deserialized over Moshi
 -keep class com.waffiq.bazz_movies.data.local.model.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.response.omdb.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.response.tmdb.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.response.countryip.CountryIPResponse { *; }
+-keep class com.waffiq.bazz_movies.data.remote.responses.omdb.** { *; }
+-keep class com.waffiq.bazz_movies.data.remote.responses.tmdb.** { *; }
+-keep class com.waffiq.bazz_movies.data.remote.responses.countryip.CountryIPResponse { *; }
 -keep class com.waffiq.bazz_movies.data.remote.SnackBarLoginData { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
--keep class com.waffiq.bazz_movies.data.remote.PostModelState { *; }
--keep class com.waffiq.bazz_movies.data.remote.FavoritePostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.RatePostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.WatchlistPostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.SessionIDPostModel { *; }
+-keep class com.waffiq.bazz_movies.utils.helper.PostModelState { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.RatePostModel { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel { *; }
 -keep class com.waffiq.bazz_movies.data.local.model.UserModel { *; }
 -keep class com.waffiq.bazz_movies.data.local.model.FavoriteEntity { *; }
 -keep class com.waffiq.bazz_movies.domain.model.Favorite { *; }

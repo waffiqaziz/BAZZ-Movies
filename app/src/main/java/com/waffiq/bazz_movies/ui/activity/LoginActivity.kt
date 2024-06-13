@@ -33,11 +33,12 @@ import com.waffiq.bazz_movies.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_FORGET_PASSWORD
-import com.waffiq.bazz_movies.utils.Constants.TMDB_LINK_SIGNUP
+import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.CustomTypefaceSpan
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -45,6 +46,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class LoginActivity : AppCompatActivity() {
   private lateinit var binding: ActivityLoginBinding
   private lateinit var authenticationViewModel: AuthenticationViewModel
+  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -53,6 +55,8 @@ class LoginActivity : AppCompatActivity() {
 
     val factory = ViewModelUserFactory.getInstance(dataStore)
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
+    userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
+
     authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
     authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
     binding.progressBar.isVisible = false
@@ -75,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
   private fun getDetailUser(loginState: Boolean) {
     if (loginState) {
       authenticationViewModel.userModel.observe(this) { dataUser ->
-        authenticationViewModel.saveUser(dataUser)
+        userPreferenceViewModel.saveUserPref(dataUser)
         goToMainActivity(isGuest = false)
       }
     }
@@ -130,7 +134,6 @@ class LoginActivity : AppCompatActivity() {
         && binding.edPass.text.isNotEmpty()
         && binding.edPass.text.isNotBlank()
       ) loginAsUserRegistered()
-
     }
 
     // login as guest
@@ -147,7 +150,7 @@ class LoginActivity : AppCompatActivity() {
         tmdbAvatar = null
       )
 
-      authenticationViewModel.saveUser(guestUser)
+      userPreferenceViewModel.saveUserPref(guestUser)
       goToMainActivity(isGuest = true)
     }
   }

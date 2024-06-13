@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class TvAdapter :
   PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {

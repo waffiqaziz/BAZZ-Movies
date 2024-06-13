@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
-import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
+import com.waffiq.bazz_movies.utils.common.Constants.TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 
 @Dao

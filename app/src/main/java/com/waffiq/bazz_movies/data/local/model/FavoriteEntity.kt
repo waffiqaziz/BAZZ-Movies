@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.data.local.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.waffiq.bazz_movies.utils.Constants.TABLE_NAME
+import com.waffiq.bazz_movies.utils.common.Constants.TABLE_NAME
 
 /**
  * Model table for favorite and watchlist

@@ -30,10 +30,9 @@ import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
-import com.waffiq.bazz_movies.ui.viewmodel.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Event
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
-
 
 class SearchFragment : Fragment() {
 
