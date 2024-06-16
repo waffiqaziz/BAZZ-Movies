@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.paging
+package com.waffiq.bazz_movies.data.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -8,12 +8,12 @@ import com.waffiq.bazz_movies.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class AiringTodayTvPagingSource(private val apiService: TMDBApiService) : PagingSource<Int, ResultItemResponse>() {
+class MultiTrendingDayPagingSource(private val locale : String, private val apiService: TMDBApiService) : PagingSource<Int, ResultItemResponse>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItemResponse> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
-      val responseData = apiService.getTvAiringToday(position).results
+      val responseData = apiService.getTrendingDay(locale, position).results
 
       LoadResult.Page(
         data = responseData,

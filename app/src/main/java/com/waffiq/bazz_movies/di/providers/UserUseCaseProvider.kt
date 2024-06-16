@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.di
+package com.waffiq.bazz_movies.di.providers
 
 
 import androidx.datastore.core.DataStore
@@ -37,7 +37,7 @@ object UserUseCaseProvider {
     return UserPrefInteractor(repository)
   }
 
-  fun provideGetRegion(dataStore: DataStore<Preferences>): GetRegionUseCase{
+  fun provideGetRegionUseCase(dataStore: DataStore<Preferences>): GetRegionUseCase{
     val repository = provideUserRepository(dataStore)
     return GetRegionInteractor(repository)
   }

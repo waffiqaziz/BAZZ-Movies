@@ -1,15 +1,11 @@
-package com.waffiq.bazz_movies.di
+package com.waffiq.bazz_movies.di.modules
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.waffiq.bazz_movies.data.repository.MoviesRepository
 import com.waffiq.bazz_movies.data.repository.UserRepository
-import com.waffiq.bazz_movies.di.MovieUseCaseProvider.provideListMoviesUseCase
-import com.waffiq.bazz_movies.di.MovieUseCaseProvider.provideDetailOMDbUseCase
-import com.waffiq.bazz_movies.di.MovieUseCaseProvider.provideDetailMovieUseCase
-import com.waffiq.bazz_movies.di.MovieUseCaseProvider.provideStatedMovieUseCase
-import com.waffiq.bazz_movies.di.MovieUseCaseProvider.provideListTvUseCase
+import com.waffiq.bazz_movies.di.providers.MovieUseCaseProvider
+import com.waffiq.bazz_movies.di.providers.UserUseCaseProvider
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
@@ -25,31 +21,24 @@ import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.domain.usecase.multi_search.MultiSearchUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefUseCase
 
 object Injection {
 
-  fun provideUseCaseProvider(context: Context) = MovieUseCaseProvider
-
-  fun provideMovieRepository(context: Context): MoviesRepository =
-    MovieUseCaseProvider.provideMovieRepository(context)
-
-  fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository =
-    UserUseCaseProvider.provideUserRepository(dataStore)
-
-  fun provideGetDetailOMDb(context: Context): GetDetailOMDbUseCase =
-    provideDetailOMDbUseCase(context)
+  fun provideGetDetailOMDbUseCase(context: Context): GetDetailOMDbUseCase =
+    MovieUseCaseProvider.provideDetailOMDbUseCase(context)
 
   // region MOVIE
   fun provideGetListMoviesUseCase(context: Context): GetListMoviesUseCase =
-    provideListMoviesUseCase(context)
+    MovieUseCaseProvider.provideListMoviesUseCase(context)
 
   fun provideGetDetailMovieUseCase(context: Context): GetDetailMovieUseCase =
-    provideDetailMovieUseCase(context)
+    MovieUseCaseProvider.provideDetailMovieUseCase(context)
 
   fun provideGetStatedMovieUseCase(context: Context): GetStatedMovieUseCase =
-    provideStatedMovieUseCase(context)
+    MovieUseCaseProvider.provideStatedMovieUseCase(context)
 
   fun provideGetFavoriteMovieUseCase(context: Context): GetFavoriteMovieUseCase =
     MovieUseCaseProvider.provideFavoriteMovieUseCase(context)
@@ -60,7 +49,7 @@ object Injection {
 
   // region TV
   fun provideGetListTvUseCase(context: Context): GetListTvUseCase =
-    provideListTvUseCase(context)
+    MovieUseCaseProvider.provideListTvUseCase(context)
 
   fun provideGetDetailTvUseCase(context: Context): GetDetailTvUseCase =
     MovieUseCaseProvider.provideDetailTvUseCase(context)
@@ -75,13 +64,10 @@ object Injection {
     MovieUseCaseProvider.provideWatchlistTvUseCase(context)
   // endregion TV
 
-  // region FAVORITE
-
-  // endregion FAVORITE
-
-  // region WATCHLIST
-
-  // endregion WATCHLIST
+  // region MULTI SEARCH
+  fun provideGetMultiSearchUseCase(context: Context): MultiSearchUseCase =
+    MovieUseCaseProvider.provideMultiSearchUseCase(context)
+  // endregion MULTI SEARCH
 
   // region PERSON
   fun provideGetDetailPersonUseCase(context: Context): GetDetailPersonUseCase =
@@ -99,14 +85,16 @@ object Injection {
   // endregion LOCAL DATABASE
 
   // region USER
+  fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository =
+    UserUseCaseProvider.provideUserRepository(dataStore)
+
   fun provideAuthTMDbAccountUseCase(dataStore: DataStore<Preferences>): AuthTMDbAccountUseCase =
     UserUseCaseProvider.provideAuthTMDbAccountUseCase(dataStore)
 
   fun provideUserPrefUseCase(dataStore: DataStore<Preferences>): UserPrefUseCase =
     UserUseCaseProvider.provideUserPrefUseCase(dataStore)
 
-  fun provideGetRegion(dataStore: DataStore<Preferences>): GetRegionUseCase =
-    UserUseCaseProvider.provideGetRegion(dataStore)
+  fun provideGetRegionUseCase(dataStore: DataStore<Preferences>): GetRegionUseCase =
+    UserUseCaseProvider.provideGetRegionUseCase(dataStore)
   // endregion USER
-
 }

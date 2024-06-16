@@ -1,18 +1,12 @@
-package com.waffiq.bazz_movies.di
+package com.waffiq.bazz_movies.di.providers
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSource
-import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.data.local.room.FavoriteDatabase
 import com.waffiq.bazz_movies.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.data.remote.datasource.UserDataSource
-import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiConfig
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiConfig
 import com.waffiq.bazz_movies.data.repository.MoviesRepository
-import com.waffiq.bazz_movies.data.repository.UserRepository
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieInteractor
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbInteractor
@@ -39,12 +33,13 @@ import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvInterac
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseInteractor
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.domain.usecase.multi_search.MultiSearchInteractor
+import com.waffiq.bazz_movies.domain.usecase.multi_search.MultiSearchUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodInteractor
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 
 object MovieUseCaseProvider {
-
-  fun provideMovieRepository(context: Context): MoviesRepository {
+  private fun provideMovieRepository(context: Context): MoviesRepository {
     val database = FavoriteDatabase.getInstance(context)
     val movieDataSource = MovieDataSource.getInstance(
       TMDBApiConfig.getApiService(),
@@ -120,6 +115,13 @@ object MovieUseCaseProvider {
   // region WATCHLIST
 
   // endregion WATCHLIST
+
+  // region SEARCH
+  fun provideMultiSearchUseCase(context: Context): MultiSearchUseCase {
+    val repository = provideMovieRepository(context)
+    return MultiSearchInteractor(repository)
+  }
+  // endregion SEARCH
 
   // region PERSON
   fun provideDetailPersonUseCase(context: Context): GetDetailPersonUseCase {

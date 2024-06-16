@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.paging
+package com.waffiq.bazz_movies.data.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -8,12 +8,12 @@ import com.waffiq.bazz_movies.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class WatchlistTvPagingSource(private val sessionId: String, private val apiService: TMDBApiService) : PagingSource<Int, ResultItemResponse>() {
+class PopularMoviePagingSource(private val apiService: TMDBApiService) : PagingSource<Int, ResultItemResponse>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItemResponse> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
-      val responseData = apiService.getWatchlistTv(sessionId, position).results
+      val responseData = apiService.getPopularMovies(position).results
 
       LoadResult.Page(
         data = responseData,

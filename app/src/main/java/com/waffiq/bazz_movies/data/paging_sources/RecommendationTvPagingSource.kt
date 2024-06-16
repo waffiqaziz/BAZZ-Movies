@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.paging
+package com.waffiq.bazz_movies.data.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
