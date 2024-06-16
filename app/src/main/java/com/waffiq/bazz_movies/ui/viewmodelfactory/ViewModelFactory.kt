@@ -3,21 +3,21 @@ package com.waffiq.bazz_movies.ui.viewmodelfactory
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.waffiq.bazz_movies.data.repository.MoviesRepository
-import com.waffiq.bazz_movies.di.Injection
+import com.waffiq.bazz_movies.di.modules.Injection
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.domain.usecase.get_detail_tv.GetDetailTvUseCase
-import com.waffiq.bazz_movies.domain.usecase.get_list_movies.GetListMoviesUseCase
-import com.waffiq.bazz_movies.domain.usecase.get_list_tv.GetListTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_detail_tv.GetDetailTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_favorite.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_favorite.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_list_movies.GetListMoviesUseCase
+import com.waffiq.bazz_movies.domain.usecase.get_list_tv.GetListTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.domain.usecase.multi_search.MultiSearchUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieViewModel
 import com.waffiq.bazz_movies.ui.activity.home.MovieViewModel
@@ -29,7 +29,6 @@ import com.waffiq.bazz_movies.ui.activity.person.PersonMovieViewModel
 import com.waffiq.bazz_movies.ui.activity.search.SearchViewModel
 
 class ViewModelFactory(
-  private val moviesRepository: MoviesRepository,
   private val getListMoviesUseCase: GetListMoviesUseCase,
   private val getListTvUseCase: GetListTvUseCase,
   private val getDetailMovieUseCase: GetDetailMovieUseCase,
@@ -44,6 +43,7 @@ class ViewModelFactory(
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
   private val getWatchlistMovieUseCase: GetWatchlistMovieUseCase,
   private val getWatchlistTvUseCase: GetWatchlistTvUseCase,
+  private val getMultiSearchUseCase: MultiSearchUseCase
 ) : ViewModelProvider.NewInstanceFactory() {
 
   companion object {
@@ -53,7 +53,6 @@ class ViewModelFactory(
     fun getInstance(context: Context): ViewModelFactory =
       instance ?: synchronized(this) {
         instance ?: ViewModelFactory(
-          Injection.provideMovieRepository(context),
           Injection.provideGetListMoviesUseCase(context),
           Injection.provideGetListTvUseCase(context),
           Injection.provideGetDetailMovieUseCase(context),
@@ -61,13 +60,14 @@ class ViewModelFactory(
           Injection.provideLocalDatabaseUseCase(context),
           Injection.providePostMethodUseCase(context),
           Injection.provideGetDetailPersonUseCase(context),
-          Injection.provideGetDetailOMDb(context),
+          Injection.provideGetDetailOMDbUseCase(context),
           Injection.provideGetStatedMovieUseCase(context),
           Injection.provideGetStatedTvUseCase(context),
           Injection.provideGetFavoriteMovieUseCase(context),
           Injection.provideGetFavoriteTvUseCase(context),
           Injection.provideGetWatchlistMovieUseCase(context),
-          Injection.provideGetWatchlistTvUseCase(context)
+          Injection.provideGetWatchlistTvUseCase(context),
+          Injection.provideGetMultiSearchUseCase(context)
         )
       }
   }
@@ -84,7 +84,7 @@ class ViewModelFactory(
       }
 
       modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
-        SearchViewModel(moviesRepository) as T
+        SearchViewModel(getMultiSearchUseCase) as T
       }
 
       modelClass.isAssignableFrom(DetailMovieViewModel::class.java) -> {

@@ -10,7 +10,9 @@ import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.LocalResult
 import kotlinx.coroutines.launch
 
-class MoreViewModelLocal(private val localDatabaseUseCase: LocalDatabaseUseCase) : ViewModel() {
+class MoreViewModelLocal(
+  private val localDatabaseUseCase: LocalDatabaseUseCase
+) : ViewModel() {
 
   private val _deleteAllResult = MutableLiveData<Event<LocalResult>>()
   val deleteAllResult: LiveData<Event<LocalResult>> get() = _deleteAllResult

@@ -11,7 +11,9 @@ import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 
-class MoreViewModelUser(private val authTMDbAccountUseCase: AuthTMDbAccountUseCase) : ViewModel() {
+class MoreViewModelUser(
+  private val authTMDbAccountUseCase: AuthTMDbAccountUseCase
+) : ViewModel() {
 
   private val _signOutState = MutableLiveData<NetworkResult<Post>>()
   val signOutState: LiveData<NetworkResult<Post>> get() = _signOutState
