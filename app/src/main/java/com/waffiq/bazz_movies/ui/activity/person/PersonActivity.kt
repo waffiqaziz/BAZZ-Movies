@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_no_profile2
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
@@ -74,7 +75,8 @@ class PersonActivity : AppCompatActivity() {
     // check if intent hasExtra
     if (intent.hasExtra(EXTRA_PERSON)) {
       dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItemResponse::class.java) ?: error("No DataExtra")
+        intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItemResponse::class.java)
+          ?: error("No DataExtra")
       } else {
         @Suppress("DEPRECATION")
         intent.getParcelableExtra(EXTRA_PERSON) ?: error("No DataExtra")
@@ -123,12 +125,15 @@ class PersonActivity : AppCompatActivity() {
 
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName
     Glide.with(binding.ivPicture)
-      .load(TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath)
+      .load(
+        if (!dataExtra.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
+        else ic_no_profile2
+      )
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_broken_image)
       .into(binding.ivPicture)
 
-    // set button click social media
+    // social media
     dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
     personMovieViewModel.externalIdPerson.observe(this) { externalID ->
 

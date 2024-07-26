@@ -244,38 +244,38 @@ class DetailMovieActivity : AppCompatActivity() {
     detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
 
     // shows backdrop
-    Glide.with(binding.ivPicture).load(
-      if (dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-      else TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-    ).placeholder(ic_bazz_placeholder_search)
+    Glide.with(binding.ivPictureBackdrop)
+      .load(
+        if (!dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+        else if (!dataExtra.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+        else ic_backdrop_error_filled,
+      ).placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error_filled)
-      .into(binding.ivPicture)
+      .into(binding.ivPictureBackdrop)
 
-    //shows poster
+    // shows poster
     Glide.with(binding.ivPoster)
-      .load(TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath) // URL movie poster
+      .load(
+        if (dataExtra.posterPath != null) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+        else ic_poster_error
+      )
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_poster_error)
       .into(binding.ivPoster)
+
     if (dataExtra.posterPath.isNullOrEmpty()) binding.tvBackdropNotFound.visibility = View.VISIBLE
     else binding.tvBackdropNotFound.visibility = View.GONE
 
-    // show data(year, overview, title)
+    // show data (title, released year, media type, and overview)
     binding.apply {
       dataExtra.apply {
-        val year = dateFormatter((firstAirDate ?: releaseDate ?: "")) ?: ""
-        if (year.isEmpty()) {
-          detailViewModel.detailMovie.observe(this@DetailMovieActivity) {
-            tvYearReleased.text = it.status ?: getString(not_available)
-          }
-        }
-
-        tvMediaType.text = mediaType?.uppercase()
-        if (overview != null) {
-          if (overview.isEmpty() || overview.isBlank()) tvOverview.text = getString(no_overview)
-          else tvOverview.text = overview
-        } else tvOverview.text = getString(no_overview)
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
+        tvMediaType.text = mediaType?.uppercase()
+        tvYearReleased.text =
+          dateFormatter(releaseDate.toString().ifEmpty { firstAirDate.toString() })
+        tvOverview.text =
+          if (!overview.isNullOrEmpty() && overview.isNotBlank()) overview
+          else getString(no_overview)
       }
     }
 
@@ -324,8 +324,14 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      // show score, genres, backdrop, trailer
-      dataExtra.id?.let { detailViewModel.detailMovie(it) }
+      // get detail movie
+      userPreferenceViewModel.getUserPref().observe(this) { user ->
+        dataExtra.id?.let { detailViewModel.detailMovie(it, user.region) }
+      }
+
+      // show TMDb score
+      detailViewModel.tmdbScore.observe(this) { binding.tvScoreTmdb.text = it }
+
       detailViewModel.detailMovie.observe(this) { movie ->
 
         // show genre
@@ -336,15 +342,6 @@ class DetailMovieActivity : AppCompatActivity() {
 
         // show runtime
         binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
-
-        // show TMDb score
-        binding.tvScoreTmdb.text =
-          if (movie.voteAverage == 0.0
-            || movie.voteAverage == null
-            || movie.voteAverage.toString().isEmpty()
-            || movie.voteAverage.toString().isBlank()
-          ) getString(not_available)
-          else movie.voteAverage.toString()
 
         // show OMDb detail (score)
         if (movie.imdbId != null) {
@@ -792,7 +789,7 @@ class DetailMovieActivity : AppCompatActivity() {
     userPreferenceViewModel.getUserPref().observe(this) { user ->
       getStated(user.token)
       detailViewModel.stated.observe(this) {
-        if (it != null) {
+        if (it != null && it.rated == true) {
           ratingBar.rating = it.rated
             .toString()
             .replace("{value=", "").replace("}", "")

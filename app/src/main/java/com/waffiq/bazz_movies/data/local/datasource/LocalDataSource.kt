@@ -6,17 +6,18 @@ import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Com
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) :
   LocalDataSourceInterface {
 
-  override val getFavoriteMovies = favoriteDao.getFavoriteMovies()
+  override val getFavoriteMovies: Flow<List<FavoriteEntity>> = favoriteDao.getFavoriteMovies()
 
-  override val getFavoriteTv = favoriteDao.getFavoriteTv()
+  override val getFavoriteTv: Flow<List<FavoriteEntity>> = favoriteDao.getFavoriteTv()
 
-  override val getWatchlistMovies = favoriteDao.getWatchlistMovies()
+  override val getWatchlistMovies: Flow<List<FavoriteEntity>> = favoriteDao.getWatchlistMovies()
 
-  override val getWatchlistTv = favoriteDao.getWatchlistTv()
+  override val getWatchlistTv: Flow<List<FavoriteEntity>> = favoriteDao.getWatchlistTv()
 
   override suspend fun insert(favoriteEntityList: FavoriteEntity): Int {
     return try {
@@ -29,7 +30,7 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     }
   }
 
-  override suspend fun deleteItemFromDB(mediaId: Int, mediaType: String) =
+  override suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): Int =
     favoriteDao.deleteItem(mediaId, mediaType)
 
   override suspend fun deleteAll(): Int {
@@ -41,12 +42,18 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     }
   }
 
-  override suspend fun isFavorite(id: Int, mediaType: String) = favoriteDao.isFavorite(id, mediaType)
+  override suspend fun isFavorite(id: Int, mediaType: String): Boolean =
+    favoriteDao.isFavorite(id, mediaType)
 
-  override suspend fun isWatchlist(id: Int, mediaType: String) = favoriteDao.isWatchlist(id, mediaType)
+  override suspend fun isWatchlist(id: Int, mediaType: String): Boolean =
+    favoriteDao.isWatchlist(id, mediaType)
 
-  override suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String) =
-    favoriteDao.update(isFavorite, isWatchlist, id, mediaType)
+  override suspend fun update(
+    isFavorite: Boolean,
+    isWatchlist: Boolean,
+    id: Int,
+    mediaType: String
+  ): Int = favoriteDao.update(isFavorite, isWatchlist, id, mediaType)
 
   companion object {
     private var instance: LocalDataSource? = null

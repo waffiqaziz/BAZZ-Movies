@@ -24,20 +24,20 @@ import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.NetworkResult
@@ -45,7 +45,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import okio.IOException
 
 class MovieDataSource private constructor(
   private val tmdbApiService: TMDBApiService,
@@ -288,91 +287,50 @@ class MovieDataSource private constructor(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlistResponse> {
-    return try {
-      val response = tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
-      if (response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) NetworkResult.success(responseBody)
-        else NetworkResult.error("Error in fetching data")
-      } else {
-        val errorMessage = response.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error("Something went wrong")
-    }
-  }
+  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCallPost {
+        tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
+      })
+    }.flowOn(Dispatchers.IO)
+
 
   override suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlistResponse> {
-    return try {
-      val response = tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
-      if (response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) NetworkResult.success(responseBody)
-        else NetworkResult.error("Error in fetching data")
-      } else {
-        val errorMessage = response.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error("Something went wrong")
-    }
-  }
+  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCallPost {
+        tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
+      })
+    }.flowOn(Dispatchers.IO)
 
   override suspend fun postTvRate(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<PostResponse> {
-    return try {
-      val response = tmdbApiService.postTvRate(tvId, sessionId, data)
-      if (response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) NetworkResult.success(responseBody)
-        else NetworkResult.error("Error in fetching data")
-      } else {
-        val errorMessage = response.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error("Something went wrong")
-    }
-  }
+  ): Flow<NetworkResult<PostResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCallPost {
+        tmdbApiService.postTvRate(tvId, sessionId, data)
+      })
+    }.flowOn(Dispatchers.IO)
 
   override suspend fun postMovieRate(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<PostResponse> {
-    return try {
-      val response = tmdbApiService.postMovieRate(movieId, sessionId, data)
-      if (response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) NetworkResult.success(responseBody)
-        else NetworkResult.error("Error in fetching data")
-      } else {
-        val errorMessage = response.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error("Something went wrong")
-    }
-  }
-
-
+  ): Flow<NetworkResult<PostResponse>> =
+    flow {
+      emit(NetworkResult.loading())
+      emit(safeApiCallPost {
+        tmdbApiService.postMovieRate(movieId, sessionId, data)
+      })
+    }.flowOn(Dispatchers.IO)
   // endregion PERSON
 
   companion object {

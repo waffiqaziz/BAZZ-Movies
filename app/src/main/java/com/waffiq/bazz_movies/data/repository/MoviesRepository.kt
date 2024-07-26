@@ -272,53 +272,53 @@ class MoviesRepository(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist> {
-    val result = movieDataSource.postFavorite(sessionId, fav, userId)
-    return when (result.status) {
-      Status.SUCCESS -> NetworkResult.success(result.data?.toPostFavoriteWatchlist())
-      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  ): Flow<NetworkResult<PostFavoriteWatchlist>> =
+    movieDataSource.postFavorite(sessionId, fav, userId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPostFavoriteWatchlist())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
   override suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist> {
-    val result = movieDataSource.postWatchlist(sessionId, wtc, userId)
-    return when (result.status) {
-      Status.SUCCESS -> NetworkResult.success(result.data?.toPostFavoriteWatchlist())
-      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  ): Flow<NetworkResult<PostFavoriteWatchlist>> =
+    movieDataSource.postWatchlist(sessionId, wtc, userId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPostFavoriteWatchlist())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
   override suspend fun postMovieRate(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<Post> {
-    val result = movieDataSource.postMovieRate(sessionId, data, movieId)
-    return when (result.status) {
-      Status.SUCCESS -> NetworkResult.success(result.data?.toPost())
-      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  ): Flow<NetworkResult<Post>> =
+    movieDataSource.postMovieRate(sessionId, data, movieId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPost())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 
   override suspend fun postTvRate(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<Post> {
-    val result = movieDataSource.postTvRate(sessionId, data, tvId)
-    return when (result.status) {
-      Status.SUCCESS -> NetworkResult.success(result.data?.toPost())
-      Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
-      Status.LOADING -> NetworkResult.loading()
+  ): Flow<NetworkResult<Post>> =
+    movieDataSource.postTvRate(sessionId, data, tvId).map { networkResult ->
+      when (networkResult.status) {
+        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPost())
+        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
+        Status.LOADING -> NetworkResult.loading()
+      }
     }
-  }
 // endregion POST FAVORITE AND WATCHLIST
 
   // region PERSON
@@ -441,3 +441,5 @@ class MoviesRepository(
     private const val TAG = "MoviesRepository "
   }
 }
+
+

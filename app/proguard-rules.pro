@@ -44,7 +44,8 @@
 -keep class com.waffiq.bazz_movies.data.remote.responses.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.responses.tmdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.responses.countryip.CountryIPResponse { *; }
--keep class com.waffiq.bazz_movies.data.remote.SnackBarLoginData { *; }
+-keep class com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
 -keep class com.waffiq.bazz_movies.utils.helper.PostModelState { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel { *; }

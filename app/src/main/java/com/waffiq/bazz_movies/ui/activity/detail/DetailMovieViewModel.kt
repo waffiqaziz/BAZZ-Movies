@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
@@ -34,6 +35,7 @@ import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -92,6 +94,9 @@ class DetailMovieViewModel(
   private val _ageRating = MutableLiveData<String>()
   val ageRating: LiveData<String> get() = _ageRating
 
+  private val _tmdbScore = MutableLiveData<String>()
+  val tmdbScore: LiveData<String> get() = _tmdbScore
+
   private val _externalTvId = MutableLiveData<NetworkResult<ExternalTvID>>()
   val externalTvId: LiveData<NetworkResult<ExternalTvID>> get() = _externalTvId
   // endregion OBSERVABLES
@@ -139,12 +144,14 @@ class DetailMovieViewModel(
     }
   }
 
-  fun detailMovie(id: Int) {
+  fun detailMovie(id: Int, region: String) {
     viewModelScope.launch {
       getDetailMovieUseCase.getDetailMovie(id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
             networkResult.data.let { _detailMovie.value = it }
+
+            // production country
             var productionCountry: String
             try {
               productionCountry =
@@ -154,19 +161,34 @@ class DetailMovieViewModel(
               _productionCountry.value = "N/A"
               productionCountry = ""
             }
+
+            // age rating
             try {
-              if (productionCountry.isEmpty()) _ageRating.value = "N/A"
-              else {
-                _ageRating.value = networkResult.data?.releaseDates?.listReleaseDatesItem?.filter {
-                  it?.iso31661 == "US" || it?.iso31661 == productionCountry
-                }?.map {
-                  it?.listReleaseDatesitemValue?.get(0)?.certification
-                }.toString().replace("[", "").replace("]", "")
-                  .replace(" ", "").replace(",", ", ")
-              }
+              _ageRating.value =
+                if (region == "N/A" && productionCountry.isEmpty()) "N/A"
+                else {
+                  networkResult.data?.releaseDates?.listReleaseDatesItem?.filter {
+                    if (region != "N/A") it?.iso31661 == region
+                    else if (productionCountry.isNotEmpty()) it?.iso31661 == productionCountry
+                    else it?.iso31661 == "US"
+                  }?.map {
+                    it?.listReleaseDatesitemValue?.get(0)?.certification
+                  }.toString().replace("[", "").replace("]", "")
+                    .replace(" ", "").replace(",", ", ")
+                }
             } catch (e: NullPointerException) {
               _ageRating.value = "N/A"
             }
+
+            // tmdb score
+            _tmdbScore.value = if (networkResult.data?.voteAverage == 0.0
+              || networkResult.data?.voteAverage == null
+              || networkResult.data.voteAverage.toString().isEmpty()
+              || networkResult.data.voteAverage.toString().isBlank()
+            ) ""
+            else networkResult.data.voteAverage.toString()
+
+
           }
 
           Status.LOADING -> {}
@@ -269,7 +291,8 @@ class DetailMovieViewModel(
             if (networkResult.data != null) {
               networkResult.data.let { _detailTv.value = it }
               try { // get age rating
-                val productionCountry = networkResult.data.listProductionCountriesItem?.get(0)?.iso31661
+                val productionCountry =
+                  networkResult.data.listProductionCountriesItem?.get(0)?.iso31661
                 _productionCountry.value = productionCountry ?: "N/A"
                 _ageRating.value =
                   networkResult.data.contentRatingsResponse?.contentRatingsItemResponse?.filter {
@@ -409,34 +432,35 @@ class DetailMovieViewModel(
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
     viewModelScope.launch {
-      val networkResult = postMethodUseCase.postFavorite(sessionId, data, userId)
-      when (networkResult.status) {
-        Status.SUCCESS -> {
-          if (data.favorite != null) {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = !data.favorite,
-                isFavorite = true,
-                isWatchlist = false
+      postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> {
+            if (data.favorite != null) {
+              _postModelState.value = Event(
+                PostModelState(
+                  isSuccess = true,
+                  isDelete = !data.favorite,
+                  isFavorite = true,
+                  isWatchlist = false
+                )
               )
-            )
-          } else _errorState.value = Event("FavoritePostModel is null")
-        }
-
-        Status.LOADING -> {}
-        Status.ERROR -> {
-          if (data.favorite != null) {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = false,
-                isDelete = !data.favorite,
-                isFavorite = true,
-                isWatchlist = false
-              )
-            )
+            } else _errorState.value = Event("Data is null")
           }
-          _errorState.value = Event(networkResult.message.toString())
+
+          Status.LOADING -> {}
+          Status.ERROR -> {
+            if (data.favorite != null) {
+              _postModelState.value = Event(
+                PostModelState(
+                  isSuccess = false,
+                  isDelete = !data.favorite,
+                  isFavorite = true,
+                  isWatchlist = false
+                )
+              )
+            }
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -444,34 +468,35 @@ class DetailMovieViewModel(
 
   fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
     viewModelScope.launch {
-      val networkResult = postMethodUseCase.postWatchlist(sessionId, data, userId)
-      when (networkResult.status) {
-        Status.SUCCESS -> {
-          if (data.watchlist != null) {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = !data.watchlist,
-                isFavorite = true,
-                isWatchlist = true
+      postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> {
+            if (data.watchlist != null) {
+              _postModelState.value = Event(
+                PostModelState(
+                  isSuccess = true,
+                  isDelete = !data.watchlist,
+                  isFavorite = true,
+                  isWatchlist = true
+                )
               )
-            )
-          } else _errorState.value = Event("WatchlistPostModel is Null")
-        }
-
-        Status.LOADING -> {}
-        Status.ERROR -> {
-          if (data.watchlist != null) {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = false,
-                isDelete = !data.watchlist,
-                isFavorite = true,
-                isWatchlist = true
-              )
-            )
+            } else _errorState.value = Event("WatchlistPostModel is Null")
           }
-          _errorState.value = Event(networkResult.message.toString())
+
+          Status.LOADING -> {}
+          Status.ERROR -> {
+            if (data.watchlist != null) {
+              _postModelState.value = Event(
+                PostModelState(
+                  isSuccess = false,
+                  isDelete = !data.watchlist,
+                  isFavorite = true,
+                  isWatchlist = true
+                )
+              )
+            }
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -479,16 +504,17 @@ class DetailMovieViewModel(
 
   fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
     viewModelScope.launch {
-      val networkResult = postMethodUseCase.postMovieRate(sessionId, data, movieId)
-      when (networkResult.status) {
-        Status.SUCCESS -> {
-          _rateState.value = Event(true)
-        }
+      postMethodUseCase.postMovieRate(sessionId, data, movieId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> {
+            _rateState.value = Event(true)
+          }
 
-        Status.LOADING -> {}
-        Status.ERROR -> {
-          _rateState.value = Event(false)
-          _errorState.value = Event(networkResult.message.toString())
+          Status.LOADING -> {}
+          Status.ERROR -> {
+            _rateState.value = Event(false)
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
@@ -496,20 +522,20 @@ class DetailMovieViewModel(
 
   fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
     viewModelScope.launch {
-      val networkResult = postMethodUseCase.postTvRate(sessionId, data, tvId)
-      when (networkResult.status) {
-        Status.SUCCESS -> {
-          _rateState.value = Event(true)
-        }
+      postMethodUseCase.postTvRate(sessionId, data, tvId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> {
+            _rateState.value = Event(true)
+          }
 
-        Status.LOADING -> {}
-        Status.ERROR -> {
-          _rateState.value = Event(false)
-          _errorState.value = Event(networkResult.message.toString())
+          Status.LOADING -> {}
+          Status.ERROR -> {
+            _rateState.value = Event(false)
+            _errorState.value = Event(networkResult.message.toString())
+          }
         }
       }
     }
   }
   // endregion POST FAVORITE, WATCHLIST, RATE
 }
-

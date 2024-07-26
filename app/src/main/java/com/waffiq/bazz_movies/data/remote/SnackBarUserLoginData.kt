@@ -3,9 +3,9 @@ package com.waffiq.bazz_movies.data.remote
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 
-data class SnackBarLoginData(
-  val title: String,
+data class SnackBarUserLoginData(
+  val isSuccess: Boolean,
+  val title: String, // also as message error
   val favoritePostModel: FavoritePostModel?,
-  val watchlistPostModel: WatchlistPostModel?,
-  val position: Int
+  val watchlistPostModel: WatchlistPostModel?
 )

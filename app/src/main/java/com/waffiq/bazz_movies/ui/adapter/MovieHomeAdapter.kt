@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
@@ -46,11 +46,14 @@ class MovieHomeAdapter :
         movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
 
       Glide.with(binding.imgPoster)
-        .load(TMDB_IMG_LINK_POSTER_W185 + movie.posterPath) // URL movie poster
+        .load(
+          if (!movie.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + movie.posterPath
+          else ic_poster_error
+        )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
-        .error(ic_broken_image)
+        .error(ic_poster_error)
         .into(binding.imgPoster)
 
       // image OnClickListener

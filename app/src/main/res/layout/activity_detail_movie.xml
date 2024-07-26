@@ -37,10 +37,10 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
-          android:foreground="?attr/selectableItemBackgroundBorderless"
+          android:foreground="?actionBarItemBackground"
           android:minWidth="48dp"
           android:minHeight="48dp"
-          app:srcCompat="@drawable/ic_left_icon" />
+          android:src="@drawable/ic_left_icon" />
 
         <LinearLayout
           android:layout_width="wrap_content"
@@ -57,12 +57,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
             android:contentDescription="@string/add_to_favorite"
-            android:focusable="true"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:scaleType="centerInside"
             android:src="@drawable/ic_hearth"
             app:layout_constraintEnd_toStartOf="@+id/btn_watchlist"
             app:layout_constraintTop_toTopOf="@+id/btn_back" />
@@ -72,12 +69,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
             android:contentDescription="@string/add_to_watchlist"
-            android:focusable="true"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:scaleType="centerInside"
             android:src="@drawable/ic_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btn_back" />
@@ -114,14 +108,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingBottom="40dp"
+          android:paddingBottom="60dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent">
 
           <ImageView
-            android:id="@+id/iv_picture"
+            android:id="@+id/iv_picture_backdrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -147,18 +141,32 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible" />
 
-          <ImageButton
-            android:id="@+id/ib_play"
+          <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_play"
-            android:contentDescription="@string/watch_trailer"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_picture"
-            app:layout_constraintEnd_toEndOf="@+id/iv_picture"
-            app:layout_constraintStart_toStartOf="@+id/iv_picture"
-            app:layout_constraintTop_toTopOf="@+id/iv_picture"
-            tools:visibility="visible" />
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="50dp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/iv_picture_backdrop"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture_backdrop"
+            app:layout_constraintStart_toStartOf="@+id/iv_picture_backdrop"
+            app:layout_constraintTop_toTopOf="@+id/iv_picture_backdrop">
+
+            <ImageButton
+              android:id="@+id/ib_play"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:padding="12dp"
+              android:src="@drawable/ic_play"
+              android:foreground="?attr/selectableItemBackgroundBorderless"
+              android:background="@android:color/transparent"
+              android:contentDescription="@string/watch_trailer"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+          </androidx.cardview.widget.CardView>
+
 
           <ImageView
             android:id="@+id/iv_poster"
@@ -168,7 +176,7 @@
             android:layout_marginTop="-40dp"
             android:contentDescription="@string/poster"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_picture"
+            app:layout_constraintTop_toBottomOf="@+id/iv_picture_backdrop"
             tools:layout_width="120dp"
             tools:src="@drawable/ic_bazz_placeholder_poster" />
 

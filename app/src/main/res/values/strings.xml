@@ -94,6 +94,7 @@
   <string name="rating">Rating</string>
   <string name="cancel">Cancel</string>
   <string name="submit">Submit</string>
+  <string name="item">Item</string>
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
   <string name="not_available">N/A</string>

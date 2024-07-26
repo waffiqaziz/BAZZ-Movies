@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.person.CastItem
@@ -54,11 +54,14 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
       binding.imgCastPhoto.contentDescription = cast.title
 
       Glide.with(binding.imgCastPhoto)
-        .load(TMDB_IMG_LINK_POSTER_W185 + cast.posterPath)
+        .load(
+          if (!cast.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + cast.posterPath
+          else ic_poster_error
+        )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
-        .error(ic_broken_image)
+        .error(ic_poster_error)
         .into(binding.imgCastPhoto)
 
       binding.tvCastName.text = cast.name ?: cast.title ?: cast.originalName ?: cast.originalTitle

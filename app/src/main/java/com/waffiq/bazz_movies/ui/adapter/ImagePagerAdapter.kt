@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemImageSliderBinding
 
 class ImagePagerAdapter(private val images: List<String>) :
@@ -42,7 +42,7 @@ class ImagePagerAdapter(private val images: List<String>) :
         .load(data)
         .placeholder(ic_bazz_placeholder_poster)
         .transition(withCrossFade())
-        .error(ic_broken_image)
+        .error(ic_poster_error)
         .into(binding.imageViewSlider)
     }
   }

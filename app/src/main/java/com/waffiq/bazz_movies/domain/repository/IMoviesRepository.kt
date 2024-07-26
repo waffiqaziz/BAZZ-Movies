@@ -88,25 +88,25 @@ interface IMoviesRepository {
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist>
+  ): Flow<NetworkResult<PostFavoriteWatchlist>>
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist>
+  ): Flow<NetworkResult<PostFavoriteWatchlist>>
 
   suspend fun postMovieRate(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<Post>
+  ): Flow<NetworkResult<Post>>
 
   suspend fun postTvRate(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<Post>
+  ): Flow<NetworkResult<Post>>
   // endregion POST FAVORITE AND WATCHLIST
 
   // region PERSON

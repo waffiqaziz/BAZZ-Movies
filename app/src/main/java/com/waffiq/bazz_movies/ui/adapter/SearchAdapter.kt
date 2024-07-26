@@ -12,7 +12,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
@@ -22,6 +21,7 @@ import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.Helper.getKnownFor
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 
 class SearchAdapter :
   PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -93,10 +93,11 @@ class SearchAdapter :
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
-        TMDB_IMG_LINK_BACKDROP_W300 + data.profilePath
+        if (!data.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + data.profilePath
+        else ic_backdrop_error
       )
       .placeholder(ic_bazz_placeholder_search)
-      .error(ic_broken_image)
+      .error(ic_backdrop_error)
       .transform(CenterCrop())
       .transition(withCrossFade())
       .into(binding.ivPicture)
@@ -111,7 +112,11 @@ class SearchAdapter :
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
-        TMDB_IMG_LINK_BACKDROP_W300 + (data.backdropPath ?: data.posterPath)
+        if (!data.backdropPath.isNullOrEmpty())
+          TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
+        else if (!data.posterPath.isNullOrEmpty())
+          TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
+        else ic_backdrop_error
       )
       .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)
@@ -124,11 +129,12 @@ class SearchAdapter :
         ?: "N/A"
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
-    binding.tvGenre.text = if (data.listGenreIds?.isEmpty() == true) "N/A" else data.listGenreIds?.let {
-      iterateGenre(
-        it
-      )
-    }
+    binding.tvGenre.text =
+      if (data.listGenreIds?.isEmpty() == true) "N/A" else data.listGenreIds?.let {
+        iterateGenre(
+          it
+        )
+      }
   }
 
   companion object {

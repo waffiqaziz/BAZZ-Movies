@@ -132,11 +132,12 @@
   </style>
 
   <style name="MySocialMediaButton">
-    <item name="android:padding">12dp</item>
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
+    <item name="android:padding">8dp</item>
+    <item name="android:layout_width">48dp</item>
+    <item name="android:layout_height">48dp</item>
     <item name="android:layout_gravity">center</item>
-    <item name="android:background">@drawable/bg_ripple_rounded</item>
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
   </style>
 
   <!-- Style for SearchView -->

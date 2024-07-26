@@ -8,7 +8,8 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
-import com.waffiq.bazz_movies.data.remote.SnackBarLoginData
+import com.waffiq.bazz_movies.data.local.model.UserModel
+import com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
@@ -46,8 +47,8 @@ class MyFavoriteViewModel(
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  private val _snackBarAdded = MutableLiveData<Event<SnackBarLoginData>>()
-  val snackBarAdded: LiveData<Event<SnackBarLoginData>> = _snackBarAdded
+  private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
+  val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
 
   // region LOCAL DATABASE
   val favoriteTvFromDB =
@@ -98,69 +99,119 @@ class MyFavoriteViewModel(
   // endregion LOCAL DATABASE
 
   // region NETWORK
-  fun getFavoriteMovies(sessionId: String) =
-    getFavoriteMovieUseCase.getPagingFavoriteMovies(sessionId).cachedIn(viewModelScope).asLiveData()
+  fun getFavoriteMovies(sesId: String) =
+    getFavoriteMovieUseCase.getPagingFavoriteMovies(sesId).cachedIn(viewModelScope).asLiveData()
 
-  fun getFavoriteTvSeries(sessionId: String) =
-    getFavoriteTvUseCase.getPagingFavoriteTv(sessionId).cachedIn(viewModelScope).asLiveData()
+  fun getFavoriteTvSeries(sesId: String) =
+    getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope).asLiveData()
 
-  fun postFavorite(sessionId: String, userId: Int, data: FavoritePostModel, title: String, position: Int) =
+  fun postFavorite(sesId: String, userId: Int, data: FavoritePostModel, title: String) {
     viewModelScope.launch {
-      val result = postMethodUseCase.postFavorite(sessionId, data, userId)
-      when (result.status) {
-        Status.SUCCESS -> {
-          if (result.data?.statusCode == 1) _snackBarAdded.value =
-            Event(SnackBarLoginData(title, data, null, position))
-        }
-
-        Status.ERROR -> {}
-        Status.LOADING -> {}
-      }
-    }
-
-  fun postWatchlist(sessionId: String, userId: Int, data: WatchlistPostModel, title: String, position: Int) =
-    viewModelScope.launch {
-      val result = postMethodUseCase.postWatchlist(sessionId, data, userId)
-      when (result.status) {
-        Status.SUCCESS -> {
-          if (result.data?.statusCode == 1) _snackBarAdded.value =
-            Event(SnackBarLoginData(title, null, data, position))
-        }
-
-        Status.ERROR -> {}
-        Status.LOADING -> {}
-      }
-    }
-
-  fun getStatedMovie(sessionId: String, id: Int, title: String) {
-    viewModelScope.launch {
-      getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { networkResult ->
+      postMethodUseCase.postFavorite(sesId, data, userId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            if (networkResult.data?.watchlist == true)
-              _snackBarAlready.value = Event(title)
-            else _stated.value = networkResult.data
-          }
+          Status.SUCCESS -> _snackBarAdded.value =
+            Event(SnackBarUserLoginData(true, title, data, null))
+
+          Status.ERROR -> _snackBarAdded.value =
+            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
 
           Status.LOADING -> {}
-          Status.ERROR -> {}
         }
       }
     }
   }
 
-  fun getStatedTv(sessionId: String, id: Int, title: String) {
+  fun postWatchlist(sesId: String, userId: Int, data: WatchlistPostModel, title: String) {
     viewModelScope.launch {
-      getStatedTvUseCase.getStatedTv(sessionId, id).collect { networkResult ->
+      postMethodUseCase.postWatchlist(sesId, data, userId).collect { networkResult ->
+        when (networkResult.status) {
+          Status.SUCCESS -> _snackBarAdded.value =
+            Event(SnackBarUserLoginData(true, title, null, data))
+
+          Status.ERROR -> _snackBarAdded.value =
+            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+
+          Status.LOADING -> {}
+        }
+      }
+    }
+  }
+
+  fun checkStatedThenPostFavorite(
+    mediaType: String,
+    user: UserModel,
+    id: Int,
+    title: String
+  ) {
+    viewModelScope.launch {
+      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (networkResult.data?.watchlist == true)
-              _snackBarAlready.value = Event(title)
-            else _stated.value = networkResult.data
+            if (networkResult.data?.watchlist == true) _snackBarAlready.value = Event(title)
+            else {
+              postFavorite(
+                user.token,
+                user.userId,
+                FavoritePostModel(mediaType, id, true),
+                title
+              )
+            }
           }
 
-          Status.ERROR -> {}
           Status.LOADING -> {}
+          Status.ERROR -> _snackBarAdded.value =
+            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+        }
+      }
+    }
+  }
+
+  fun checkStatedThenPostWatchlist(
+    mediaType: String,
+    user: UserModel,
+    id: Int,
+    title: String
+  ) {
+    viewModelScope.launch {
+      if (mediaType == "movie") {
+        getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
+          when (networkResult.status) {
+            Status.SUCCESS -> {
+              if (networkResult.data?.watchlist == true) _snackBarAlready.value = Event(title)
+              else {
+                postWatchlist(
+                  user.token,
+                  user.userId,
+                  WatchlistPostModel(mediaType, id, true),
+                  title
+                )
+              }
+            }
+
+            Status.LOADING -> {}
+            Status.ERROR -> _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+          }
+        }
+      } else {
+        getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
+          when (networkResult.status) {
+            Status.SUCCESS -> {
+              if (networkResult.data?.watchlist == true) _snackBarAlready.value = Event(title)
+              else {
+                postWatchlist(
+                  user.token,
+                  user.userId,
+                  WatchlistPostModel(mediaType, id, true),
+                  title
+                )
+              }
+            }
+
+            Status.LOADING -> {}
+            Status.ERROR -> _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+          }
         }
       }
     }

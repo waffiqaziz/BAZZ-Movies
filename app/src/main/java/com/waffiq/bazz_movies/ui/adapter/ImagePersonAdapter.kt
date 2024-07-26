@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -58,11 +58,14 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
 
     fun bind(cast: ProfilesItem) {
       Glide.with(binding.imgPoster)
-        .load(TMDB_IMG_LINK_POSTER_W185 + cast.filePath)
+        .load(
+          if (!cast.filePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + cast.filePath
+          else ic_poster_error
+        )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
-        .error(ic_broken_image)
+        .error(ic_poster_error)
         .into(binding.imgPoster)
     }
   }

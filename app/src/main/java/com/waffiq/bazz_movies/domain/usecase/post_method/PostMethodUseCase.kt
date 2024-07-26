@@ -6,29 +6,30 @@ import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.utils.NetworkResult
+import kotlinx.coroutines.flow.Flow
 
 interface PostMethodUseCase {
   suspend fun postFavorite(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist>
+  ): Flow<NetworkResult<PostFavoriteWatchlist>>
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int
-  ): NetworkResult<PostFavoriteWatchlist>
+  ): Flow<NetworkResult<PostFavoriteWatchlist>>
 
   suspend fun postMovieRate(
     sessionId: String,
     data: RatePostModel,
     movieId: Int
-  ): NetworkResult<Post>
+  ): Flow<NetworkResult<Post>>
 
   suspend fun postTvRate(
     sessionId: String,
     data: RatePostModel,
     tvId: Int
-  ): NetworkResult<Post>
+  ): Flow<NetworkResult<Post>>
 }

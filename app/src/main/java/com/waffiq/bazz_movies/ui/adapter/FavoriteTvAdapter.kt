@@ -51,7 +51,10 @@ class FavoriteTvAdapter :
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
 
       Glide.with(binding.ivPicture)
-        .load(TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath) // URL movie poster
+        .load(
+          if (!resultItem.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
+          else ic_poster_error
+        )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())

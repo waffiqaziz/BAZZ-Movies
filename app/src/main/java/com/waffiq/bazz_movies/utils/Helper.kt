@@ -3,20 +3,28 @@ package com.waffiq.bazz_movies.utils
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getString
 import androidx.core.text.HtmlCompat
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.search.KnownForItem
+import com.waffiq.bazz_movies.utils.common.Event
 import okio.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.TimeZone
 
 object Helper {
@@ -127,12 +135,14 @@ object Helper {
     return temp
   }
 
-  fun dateFormatter(date: String): String? {
-    return if (date.isNotEmpty()) {
+  fun dateFormatter(date: String?): String {
+    return try {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
       val newDate = formatter.parse(date)
       DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
-    } else null
+    } catch (e: DateTimeParseException) {
+      ""
+    }
   }
 
   fun getAgeBirth(date: String): Int {
@@ -297,7 +307,7 @@ object Helper {
 
   fun combinedLoadStatesHandle2(
     loadState: CombinedLoadStates
-  ): String? {
+  ): String {
     val errorState = when { // If theres an error, show a toast
       loadState.append is LoadState.Error -> loadState.append as LoadState.Error
       loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
@@ -306,7 +316,67 @@ object Helper {
     }
     errorState?.let {
       return pagingErrorHandling(it.error)
-    } ?: return null
+    } ?: return ""
   }
 
+  fun titleHandler(item: ResultItem): String {
+    return item.name ?: item.title ?: item.originalTitle ?: "Item"
+  }
+
+  fun snackBarWarning(
+    context: Context,
+    view: View,
+    guideView: View,
+    eventMessage: Event<String>
+  ): Snackbar? {
+    val message = eventMessage.getContentIfNotHandled() ?: return null
+    val mSnackbar = Snackbar.make(
+      view,
+      message.ifEmpty { getString(context, R.string.unknown_error) },
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(guideView)
+
+    val snackbarView = mSnackbar.view
+    snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
+    if (message.isNotEmpty()) mSnackbar.show()
+    return mSnackbar
+  }
+
+  fun snackBarAlreadyWatchlist(
+    context: Context,
+    view: View,
+    viewGuide :View,
+    eventMessage: Event<String>
+  ): Snackbar? {
+    val result = eventMessage.getContentIfNotHandled() ?: return null
+    val mSnackbar = Snackbar.make(
+      view,
+      HtmlCompat.fromHtml(
+        "<b>${result}</b> " + getString(context, R.string.already_watchlist),
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+      ),
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(viewGuide)
+    mSnackbar.show()
+    return mSnackbar
+  }
+
+  fun snackBarAlreadyFavorite(
+    context: Context,
+    view: View,
+    viewGuide :View,
+    eventMessage: Event<String>
+  ): Snackbar? {
+    val result = eventMessage.getContentIfNotHandled() ?: return null
+    val mSnackbar = Snackbar.make(
+      view,
+      HtmlCompat.fromHtml(
+        "<b>${result}</b> " + getString(context, R.string.already_favorite),
+        HtmlCompat.FROM_HTML_MODE_LEGACY
+      ),
+      Snackbar.LENGTH_SHORT
+    ).setAnchorView(viewGuide)
+    mSnackbar.show()
+    return mSnackbar
+  }
 }

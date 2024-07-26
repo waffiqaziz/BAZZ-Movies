@@ -42,10 +42,14 @@ class TvAdapter :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(tv: ResultItem) {
-      binding.imgPoster.contentDescription = tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
+      binding.imgPoster.contentDescription =
+        tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
 
       Glide.with(binding.imgPoster)
-        .load(TMDB_IMG_LINK_POSTER_W185 + tv.posterPath) // URL movie poster
+        .load(
+          if (!tv.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + tv.posterPath
+          else ic_broken_image
+        )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
