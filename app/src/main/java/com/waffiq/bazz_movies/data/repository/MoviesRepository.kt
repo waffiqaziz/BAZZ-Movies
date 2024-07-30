@@ -54,121 +54,87 @@ class MoviesRepository(
   // region PAGING FUNCTION
   override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTopRatedMovies().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingPopularMovies().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingFavoriteMovies(sessionId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingFavoriteTv(sessionId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingWatchlistMovies(sessionId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingWatchlistTv(sessionId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingPopularTv().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingOnTv().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingAiringTodayTv().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTrendingWeek(region).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTrendingDay(region).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingUpcomingMovies(region).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingPlayingNowMovies(region).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTopRatedTv().map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItem()
-      }
+      pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
     movieDataSource.getPagingSearch(query).map { pagingData ->
-      pagingData.map { response ->
-        response.toResultItemSearch()
-      }
+      pagingData.map { it.toResultItemSearch() }
     }
   // endregion PAGING FUNCTION
 

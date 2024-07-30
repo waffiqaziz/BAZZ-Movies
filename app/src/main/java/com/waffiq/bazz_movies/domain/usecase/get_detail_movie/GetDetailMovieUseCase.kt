@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.detail.Video
-import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 

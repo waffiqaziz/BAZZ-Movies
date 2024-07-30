@@ -7,21 +7,18 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
 import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.utils.helper.PostModelState
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
-import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
-import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
+import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
@@ -30,12 +27,11 @@ import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
-import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.LocalResult
-import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helper.PostModelState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -97,8 +93,8 @@ class DetailMovieViewModel(
   private val _tmdbScore = MutableLiveData<String>()
   val tmdbScore: LiveData<String> get() = _tmdbScore
 
-  private val _externalTvId = MutableLiveData<NetworkResult<ExternalTvID>>()
-  val externalTvId: LiveData<NetworkResult<ExternalTvID>> get() = _externalTvId
+  private val _tvImdbID = MutableLiveData<String>()
+  val tvImdbID: LiveData<String> get() = _tvImdbID
   // endregion OBSERVABLES
 
   // region MOVIE
@@ -338,7 +334,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       getDetailTvUseCase.getExternalTvId(id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _externalTvId.value = networkResult
+          Status.SUCCESS -> _tvImdbID.value = networkResult.data?.imdbId ?: ""
           Status.LOADING -> {}
           Status.ERROR -> {
             _errorState.value = Event(networkResult.message.toString())
@@ -445,9 +441,10 @@ class DetailMovieViewModel(
                 )
               )
             } else _errorState.value = Event("Data is null")
+            _loadingState.value = false
           }
 
-          Status.LOADING -> {}
+          Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
             if (data.favorite != null) {
               _postModelState.value = Event(
@@ -460,6 +457,7 @@ class DetailMovieViewModel(
               )
             }
             _errorState.value = Event(networkResult.message.toString())
+            _loadingState.value = false
           }
         }
       }
@@ -481,9 +479,10 @@ class DetailMovieViewModel(
                 )
               )
             } else _errorState.value = Event("WatchlistPostModel is Null")
+            _loadingState.value = false
           }
 
-          Status.LOADING -> {}
+          Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
             if (data.watchlist != null) {
               _postModelState.value = Event(
@@ -496,6 +495,7 @@ class DetailMovieViewModel(
               )
             }
             _errorState.value = Event(networkResult.message.toString())
+            _loadingState.value = false
           }
         }
       }
@@ -508,10 +508,12 @@ class DetailMovieViewModel(
         when (networkResult.status) {
           Status.SUCCESS -> {
             _rateState.value = Event(true)
+            _loadingState.value = false
           }
 
-          Status.LOADING -> {}
+          Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
+            _loadingState.value = false
             _rateState.value = Event(false)
             _errorState.value = Event(networkResult.message.toString())
           }
@@ -526,10 +528,12 @@ class DetailMovieViewModel(
         when (networkResult.status) {
           Status.SUCCESS -> {
             _rateState.value = Event(true)
+            _loadingState.value = false
           }
 
-          Status.LOADING -> {}
+          Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
+            _loadingState.value = false
             _rateState.value = Event(false)
             _errorState.value = Event(networkResult.message.toString())
           }

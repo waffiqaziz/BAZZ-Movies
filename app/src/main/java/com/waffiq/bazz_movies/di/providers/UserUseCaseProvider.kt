@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefInteractor
 import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefUseCase
 
 object UserUseCaseProvider {
-  fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {
+  private fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository {
     val pref = UserPreference.getInstance(dataStore)
     val userDataSource =
       UserDataSource.getInstance(
@@ -37,7 +37,7 @@ object UserUseCaseProvider {
     return UserPrefInteractor(repository)
   }
 
-  fun provideGetRegionUseCase(dataStore: DataStore<Preferences>): GetRegionUseCase{
+  fun provideGetRegionUseCase(dataStore: DataStore<Preferences>): GetRegionUseCase {
     val repository = provideUserRepository(dataStore)
     return GetRegionInteractor(repository)
   }

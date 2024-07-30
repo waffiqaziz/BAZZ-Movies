@@ -69,7 +69,6 @@ import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.R.string.not_available_full
 import com.waffiq.bazz_movies.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.R.string.status_
-import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
@@ -89,7 +88,6 @@ import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.LocalResult
-import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
@@ -393,24 +391,15 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       dataExtra.id?.let { detailViewModel.externalId(it) }
-      detailViewModel.externalTvId.observe(this) { response ->
-        when (response.status) {
-          Status.SUCCESS -> {
-            if (response.data?.imdbId != null) {
-              detailViewModel.getScoreOMDb(response.data.imdbId)
-              detailViewModel.omdbResult.observe(this) {
-                showDetailOMDb(it)
-              }
-            } else showLoadingDim(false)
+      detailViewModel.tvImdbID.observe(this) { imdb ->
+        if (imdb != null && imdb.isNotBlank() && imdb.isNotEmpty()) {
+          detailViewModel.getScoreOMDb(imdb)
+          detailViewModel.omdbResult.observe(this) {
+            showDetailOMDb(it)
           }
-
-          Status.ERROR -> {
-            showSnackBarWarning(Event(response.message ?: getString(unknown_error)))
-            binding.tvScoreImdb.text = getString(not_available)
-            binding.tvScoreMetascore.text = getString(not_available)
-          }
-
-          Status.LOADING -> {}
+        } else {
+          binding.tvScoreImdb.text = getString(not_available)
+          binding.tvScoreMetascore.text = getString(not_available)
         }
 
         // trailer

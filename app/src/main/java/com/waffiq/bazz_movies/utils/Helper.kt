@@ -36,6 +36,7 @@ object Helper {
     ).show()
   }
 
+  // region GENRE
   private fun getGenreName(int: Int): String {
     return when (int) {
 
@@ -127,6 +128,7 @@ object Helper {
     temp = temp.dropLast(2)
     return temp
   }
+  // endregion GENRE
 
   fun getKnownFor(knownForItemResponse: List<KnownForItem>): String {
     var temp = ""
@@ -145,6 +147,7 @@ object Helper {
     }
   }
 
+  // region AGE
   fun getAgeBirth(date: String): Int {
     val dateParts = date.split("-").toTypedArray()
     val year = dateParts[0].toInt()
@@ -170,6 +173,7 @@ object Helper {
       LocalDate.of(yearDeath, monthDeath, dayDeath)
     ).years
   }
+  // endregion AGE
 
   fun convertRuntime(t: Int): String {
     val hours: Int = t / 60

@@ -28,7 +28,6 @@ import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
-import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
@@ -36,11 +35,11 @@ import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.getLocation
 import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")

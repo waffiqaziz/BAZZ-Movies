@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account
 
-import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.domain.model.account.Authentication

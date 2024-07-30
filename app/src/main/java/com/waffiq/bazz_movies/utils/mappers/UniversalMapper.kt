@@ -25,5 +25,4 @@ object UniversalMapper {
     title = title,
     releaseDate = releaseDate
   )
-
 }

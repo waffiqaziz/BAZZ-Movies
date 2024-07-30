@@ -137,35 +137,6 @@ class MyFavoriteViewModel(
     }
   }
 
-  fun checkStatedThenPostFavorite(
-    mediaType: String,
-    user: UserModel,
-    id: Int,
-    title: String
-  ) {
-    viewModelScope.launch {
-      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
-            if (networkResult.data?.watchlist == true) _snackBarAlready.value = Event(title)
-            else {
-              postFavorite(
-                user.token,
-                user.userId,
-                FavoritePostModel(mediaType, id, true),
-                title
-              )
-            }
-          }
-
-          Status.LOADING -> {}
-          Status.ERROR -> _snackBarAdded.value =
-            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
-        }
-      }
-    }
-  }
-
   fun checkStatedThenPostWatchlist(
     mediaType: String,
     user: UserModel,

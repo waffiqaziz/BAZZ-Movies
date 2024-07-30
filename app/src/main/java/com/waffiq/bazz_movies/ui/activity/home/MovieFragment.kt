@@ -20,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
-import com.waffiq.bazz_movies.ui.activity.more.MoreViewModelUser
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel

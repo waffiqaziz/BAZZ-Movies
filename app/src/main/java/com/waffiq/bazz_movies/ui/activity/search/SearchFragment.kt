@@ -87,7 +87,7 @@ class SearchFragment : Fragment() {
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
 
-      combinedLoadStatesHandle2(loadState)?.let { errorMessage -> showSnackBarWarning(Event(errorMessage)) }
+      showSnackBarWarning(Event(combinedLoadStatesHandle2(loadState)))
     }
 
     //setup searchView

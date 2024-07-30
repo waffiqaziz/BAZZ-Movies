@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.mywatchlist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,7 +24,6 @@ import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MyWatchlistViewModel(

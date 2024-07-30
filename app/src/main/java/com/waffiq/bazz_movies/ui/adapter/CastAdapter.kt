@@ -7,7 +7,6 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
@@ -53,27 +52,25 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
     fun bind(cast: MovieTvCastItemResponse) {
       binding.imgCastPhoto.contentDescription = cast.name
 
-      with(binding) {
-        Glide.with(imgCastPhoto)
-          .load(
-            if (!cast.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
-            else ic_no_profile
-          )
-          .placeholder(ic_bazz_placeholder_poster)
+      Glide.with(binding.imgCastPhoto)
+        .load(
+          if (!cast.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
+          else ic_no_profile
+        )
+        .placeholder(ic_bazz_placeholder_poster)
 //          .transform(CenterCrop())
-          .transition(withCrossFade())
-          .error(ic_broken_image)
-          .into(imgCastPhoto)
+        .transition(withCrossFade())
+        .error(ic_broken_image)
+        .into(binding.imgCastPhoto)
 
-        tvCastName.text = cast.name ?: cast.originalName
-        tvCastCharacter.text = cast.character
+      binding.tvCastName.text = cast.name ?: cast.originalName
+      binding.tvCastCharacter.text = cast.character
 
-        // image OnClickListener
-        container.setOnClickListener {
-          val intent = Intent(it.context, PersonActivity::class.java)
-          intent.putExtra(PersonActivity.EXTRA_PERSON, cast)
-          it.context.startActivity(intent)
-        }
+      // image OnClickListener
+      binding.container.setOnClickListener {
+        val intent = Intent(it.context, PersonActivity::class.java)
+        intent.putExtra(PersonActivity.EXTRA_PERSON, cast)
+        it.context.startActivity(intent)
       }
     }
   }

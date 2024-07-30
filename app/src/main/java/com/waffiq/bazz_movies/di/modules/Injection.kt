@@ -85,9 +85,6 @@ object Injection {
   // endregion LOCAL DATABASE
 
   // region USER
-  fun provideUserRepository(dataStore: DataStore<Preferences>): UserRepository =
-    UserUseCaseProvider.provideUserRepository(dataStore)
-
   fun provideAuthTMDbAccountUseCase(dataStore: DataStore<Preferences>): AuthTMDbAccountUseCase =
     UserUseCaseProvider.provideAuthTMDbAccountUseCase(dataStore)
 

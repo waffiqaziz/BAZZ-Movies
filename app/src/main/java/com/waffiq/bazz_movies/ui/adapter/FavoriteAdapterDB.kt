@@ -67,7 +67,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       binding.tvTitle.text = fav.title
       binding.tvGenre.text = fav.genre
-      binding.tvYearReleased.text = dateFormatter(fav.releaseDate) ?: "N/A"
+      binding.tvYearReleased.text = dateFormatter(fav.releaseDate).ifEmpty { "N/A" }
 
       val resultItemResponse = ResultItem(
         backdropPath = fav.backDrop,
