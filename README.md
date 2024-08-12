@@ -20,18 +20,19 @@ API_KEY_OMDb= {OBDb_API_KEY}
 - Build the project using the "Make project" option or by pressing Ctrl + F9.
 
 ## Credits
-- [TMDB API](https://www.themoviedb.org/)
-- [OMDb API](https://www.omdbapi.com/)
-- [Country API](https://country.is/)
-- [ExpandableTextView](https://github.com/glailton/ExpandableTextView)
-- [Country Code Picker (CCP)](https://github.com/hbb20/CountryCodePickerProject)
-- [glide](https://bumptech.github.io/glide/)
-- [okhttp](https://github.com/square/okhttp)
-- [Retrofit](https://github.com/square/retrofit)
-- [Moshi](https://github.com/square/moshi)
-- [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans)
-- [Paradroid Font](https://www.myfonts.com/collections/paradroid-font-the-northern-block)
-
+This project makes use of third parties, which are licensed under their respective open source licenses
+- **[TMDB API]**(https://www.themoviedb.org/) - API service that provide movie, TV show or actor images and/or data.
+- **[OMDb API]**(https://www.omdbapi.com/) - RESTful web service to obtain movie information.
+- **[Country API]**(https://country.is/) - An open-source geolocation API that finds a user's country from their IP address.
+- **[ExpandableTextView]**(https://github.com/glailton/ExpandableTextView) - An expandable Android TextView written in Kotlin
+- **[Country Code Picker (CCP)]**(https://github.com/hbb20/CountryCodePickerProject) - 
+- **[glide]**(https://bumptech.github.io/glide/) - Fast and efficient image loading library for Android.
+- **[okhttp]**(https://github.com/square/okhttp) - HTTP client for the JVM, Android, and GraalVM.
+- **[Retrofit]**(https://github.com/square/retrofit) - A type-safe HTTP client for Android and the JVM
+- **[Moshi]**(https://github.com/square/moshi) - A modern JSON library for Kotlin and Java.
+- **[Nunito Sans]**(https://fonts.google.com/specimen/Nunito+Sans) - Designed by Vernon Adams, Jacques Le Bailly, Manvel Shmavonyan, Alexei Vanyashin
+- **[Paradroid Font]**(https://www.myfonts.com/collections/paradroid-font-the-northern-block) - A modern humanist sans-serif font created by The Northern Block
+  
 ## Badges
 ![Kotlin](https://img.shields.io/badge/Kotlin-100%25-green)
 
