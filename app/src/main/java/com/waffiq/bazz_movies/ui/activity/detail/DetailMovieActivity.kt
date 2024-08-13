@@ -111,6 +111,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private var isLogin = false // is login as user or not
 
   private var toast: Toast? = null
+  private var isBGShowed: Boolean = false // flag to show backgroundDim
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -121,7 +122,10 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
-    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
+    detailViewModel.loadingState.observe(this) {
+      if (it) isBGShowed = true
+      showLoadingDim(it)
+    }
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
@@ -829,7 +833,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun animFadeOut() {
     val animation = animFadeOutLong(this)
-    binding.backgroundDimMovie.startAnimation(animation)
+    if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).postDelayed({
@@ -840,7 +844,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun showLoadingDim(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimMovie.visibility = View.VISIBLE
+      if (!isBGShowed) binding.backgroundDimMovie.visibility = View.VISIBLE
       binding.progressBar.visibility = View.VISIBLE
     } else {
       binding.appBarLayout.visibility = View.VISIBLE
