@@ -8,6 +8,7 @@ object Constants {
   const val TABLE_NAME = "favorite"
   const val INITIAL_PAGE_INDEX = 1
   const val NUM_TABS = 2
+
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
   const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300/"
@@ -20,7 +21,7 @@ object Constants {
   const val COUNTRY_API_LINK = "https://api.country.is"
 
   const val INSTAGRAM_LINK = "https://www.instagram.com/"
-  const val X_LINK = "https://twitter.com/"
+  const val X_LINK = "https://x.com/"
   const val FACEBOOK_LINK = "https://www.facebook.com/"
   const val TIKTOK_PERSON_LINK = "https://www.tiktok.com/@"
   const val YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/"

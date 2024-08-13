@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.R.drawable.ic_no_profile2
+import com.waffiq.bazz_movies.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
@@ -127,7 +127,7 @@ class PersonActivity : AppCompatActivity() {
     Glide.with(binding.ivPicture)
       .load(
         if (!dataExtra.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
-        else ic_no_profile2
+        else ic_no_profile
       )
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_broken_image)

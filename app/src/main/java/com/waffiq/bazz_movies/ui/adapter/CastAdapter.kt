@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.R.drawable.ic_no_profile
+import com.waffiq.bazz_movies.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
@@ -55,7 +55,7 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
       Glide.with(binding.imgCastPhoto)
         .load(
           if (!cast.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
-          else ic_no_profile
+          else ic_no_profile_rounded
         )
         .placeholder(ic_bazz_placeholder_poster)
 //          .transform(CenterCrop())
