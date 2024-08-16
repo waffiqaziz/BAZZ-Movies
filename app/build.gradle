@@ -31,6 +31,11 @@ android {
     // BASE URL
     buildConfigField "String", "TMDB_API_URL", '"https://api.themoviedb.org/"'
     buildConfigField "String", "OMDb_API_URL", '"https://www.omdbapi.com/"'
+
+    // room database schema location for migration
+    ksp {
+      arg('room.schemaLocation', "$projectDir/schemas")
+    }
   }
 
   buildTypes {
@@ -81,10 +86,6 @@ dependencies {
   implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
   implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
-
-  // kotlin coroutines
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
   // splashscreen
   implementation "androidx.core:core-splashscreen:1.0.1"
