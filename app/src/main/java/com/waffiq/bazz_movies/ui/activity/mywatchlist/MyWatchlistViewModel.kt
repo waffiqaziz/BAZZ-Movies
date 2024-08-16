@@ -7,7 +7,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
@@ -20,9 +19,9 @@ import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistMovieUseC
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
-import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.result_state.DbResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -35,8 +34,8 @@ class MyWatchlistViewModel(
   private val getStatedTvUseCase: GetStatedTvUseCase
 ) : ViewModel() {
 
-  private val _localResult = MutableLiveData<Event<LocalResult>>()
-  val localResult: LiveData<Event<LocalResult>> get() = _localResult
+  private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()
+  val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
 
   private val _stated = MutableLiveData<Stated?>()
   val stated: LiveData<Stated?> get() = _stated
@@ -58,43 +57,45 @@ class MyWatchlistViewModel(
 
   fun insertToDB(fav: Favorite) {
     viewModelScope.launch(Dispatchers.IO) {
-      localDatabaseUseCase.insertToDB(fav) { resultCode ->
-        val result = when (resultCode) {
-          LocalDataSourceInterface.ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
-          LocalDataSourceInterface.ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
-          LocalDataSourceInterface.SUCCESS -> LocalResult.Success
-          else -> LocalResult.Error("Unknown result code: $resultCode")
-        }
-        _localResult.postValue(Event(result))
-      }
+      _dbResult.postValue(Event(localDatabaseUseCase.insertToDB(fav)))
     }
   }
 
   fun delFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.deleteFromDB(fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      _dbResult.postValue(Event(localDatabaseUseCase.deleteFromDB(fav)))
+    }
     _undoDB.value = Event(fav)
   }
 
   fun updateToFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(false, fav)))
+    }
     _undoDB.value = Event(fav)
   }
 
   fun updateToWatchlistDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(false, fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(false, fav)))
+    }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromWatchlistDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(true, fav)))
+    }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(true, fav) }
+    viewModelScope.launch(Dispatchers.IO) {
+      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(true, fav)))
+    }
     _undoDB.value = Event(fav)
   }
-  // endregion LOCAL DATABASE
+// endregion LOCAL DATABASE
 
   // region NETWORK
   fun watchlistMovies(sesId: String) =
@@ -140,7 +141,7 @@ class MyWatchlistViewModel(
     user: UserModel,
     id: Int,
     title: String
-  ){
+  ) {
     viewModelScope.launch {
       if (mediaType == "movie") {
         getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
@@ -162,7 +163,7 @@ class MyWatchlistViewModel(
               Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
           }
         }
-      }else{
+      } else {
         getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
           when (networkResult.status) {
             Status.SUCCESS -> {
@@ -185,5 +186,5 @@ class MyWatchlistViewModel(
       }
     }
   }
-  // endregion NETWORK
+// endregion NETWORK
 }

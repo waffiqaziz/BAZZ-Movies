@@ -7,9 +7,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_DUPLICATE_ENTRY
-import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.ERROR_UNKNOWN
-import com.waffiq.bazz_movies.data.local.datasource.LocalDataSourceInterface.Companion.SUCCESS
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
@@ -27,11 +24,10 @@ import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
-import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.helper.PostModelState
-import kotlinx.coroutines.Dispatchers
+import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.result_state.PostModelState
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -51,11 +47,8 @@ class DetailMovieViewModel(
   private val _isWatchlist = MutableLiveData<Boolean>()
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 
-  private val _localResult = MutableLiveData<Event<LocalResult>>()
-  val localResult: LiveData<Event<LocalResult>> get() = _localResult
-
-  private val _stated = MutableLiveData<Stated>()
-  val stated: LiveData<Stated> get() = _stated
+  private val _itemState = MutableLiveData<Stated>()
+  val itemState: LiveData<Stated> get() = _itemState
 
   private val _movieTvCreditsResult = MutableLiveData<MovieTvCredits>()
   val movieTvCreditsResult: LiveData<MovieTvCredits> get() = _movieTvCreditsResult
@@ -224,7 +217,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _stated.value = it }
+          Status.SUCCESS -> networkResult.data.let { _itemState.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -351,7 +344,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       getStatedTvUseCase.getStatedTv(sessionId, id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _stated.value = it }
+          Status.SUCCESS -> networkResult.data.let { _itemState.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -384,45 +377,66 @@ class DetailMovieViewModel(
 
   // region DB FUNCTION
   fun isFavoriteDB(id: Int, mediaType: String) {
-    viewModelScope.launch(Dispatchers.IO) {
-      _isFavorite.postValue(localDatabaseUseCase.isFavoriteDB(id, mediaType))
-    }
-  }
-
-  fun isWatchlistDB(id: Int, mediaType: String) {
-    viewModelScope.launch(Dispatchers.IO) {
-      _isWatchlist.postValue(localDatabaseUseCase.isWatchlistDB(id, mediaType))
-    }
-  }
-
-  fun insertToDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
-      localDatabaseUseCase.insertToDB(fav) { resultCode ->
-        val result = when (resultCode) {
-          ERROR_DUPLICATE_ENTRY -> LocalResult.Error("Duplicate entry")
-          ERROR_UNKNOWN -> LocalResult.Error("Unknown error")
-          SUCCESS -> LocalResult.Success
-          else -> LocalResult.Error("Unknown result code: $resultCode")
-        }
-        _localResult.postValue(Event(result))
+    viewModelScope.launch {
+      when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)){
+        is DbResult.Success -> result.data.let { _isFavorite.value = it  }
+        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
       }
     }
   }
 
-  fun updateToFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(false, fav) }
+  fun isWatchlistDB(id: Int, mediaType: String) {
+    viewModelScope.launch {
+      when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
+        is DbResult.Success -> result.data.let { _isWatchlist.value = it }
+        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      }
+    }
+  }
 
-  fun updateToRemoveFromFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateFavoriteItemDB(true, fav) }
+  fun insertToDB(fav: Favorite) {
+    viewModelScope.launch {
+      when (val result = localDatabaseUseCase.insertToDB(fav)) {
+        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+        else -> {}
+      }
+    }
+  }
 
-  fun updateToWatchlistDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(false, fav) }
+  fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
+    when (val result = localDatabaseUseCase.updateFavoriteItemDB(false, fav)) {
+      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      else -> {}
+    }
+  }
 
-  fun updateToRemoveFromWatchlistDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.updateWatchlistItemDB(true, fav) }
+  fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
+    when (val result = localDatabaseUseCase.updateFavoriteItemDB(true, fav)) {
+      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      else -> {}
+    }
+  }
 
-  fun delFromFavoriteDB(fav: Favorite) =
-    viewModelScope.launch(Dispatchers.IO) { localDatabaseUseCase.deleteFromDB(fav) }
+  fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
+    when (val result = localDatabaseUseCase.updateWatchlistItemDB(false, fav)) {
+      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      else -> {}
+    }
+  }
+
+  fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
+    when (val result = localDatabaseUseCase.updateWatchlistItemDB(true, fav)) {
+      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      else -> {}
+    }
+  }
+
+  fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
+    when (val result = localDatabaseUseCase.deleteFromDB(fav)) {
+      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      else -> {}
+    }
+  }
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE

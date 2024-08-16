@@ -1,6 +1,12 @@
 package com.waffiq.bazz_movies.data.local.datasource
 
+import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteDiskIOException
+import android.database.sqlite.SQLiteException
+import android.database.sqlite.SQLiteFullException
+import android.util.Log
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
+import com.waffiq.bazz_movies.utils.result_state.DbResult
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSourceInterface {
@@ -8,17 +14,40 @@ interface LocalDataSourceInterface {
   val getFavoriteTv: Flow<List<FavoriteEntity>>
   val getWatchlistMovies: Flow<List<FavoriteEntity>>
   val getWatchlistTv: Flow<List<FavoriteEntity>>
-  suspend fun insert(favoriteEntityList: FavoriteEntity): Int
-  suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): Int
-  suspend fun deleteAll(): Int
-  suspend fun isFavorite(id: Int, mediaType: String): Boolean
-  suspend fun isWatchlist(id: Int, mediaType: String): Boolean
-  suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
 
-  // Define error codes
-  companion object {
-    const val ERROR_DUPLICATE_ENTRY = -1
-    const val ERROR_UNKNOWN = -2
-    const val SUCCESS = 0
+  suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int> // use integer to save memory, i don't think it will more than 2.1 billion rows
+  suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): DbResult<Int>
+  suspend fun deleteAll(): DbResult<Int>
+  suspend fun isFavorite(id: Int, mediaType: String): DbResult<Boolean>
+  suspend fun isWatchlist(id: Int, mediaType: String): DbResult<Boolean>
+  suspend fun update(
+    isFavorite: Boolean,
+    isWatchlist: Boolean,
+    id: Int,
+    mediaType: String
+  ): DbResult<Int>
+
+  suspend fun <T> executeDbOperation(
+    operation: suspend () -> T
+  ): DbResult<T> {
+    return try {
+      val result = operation.invoke()
+      DbResult.Success(result) // Return the result if the operation is successful
+    } catch (e: SQLiteConstraintException) {
+      Log.e("DatabaseError", "Operation failed due to unique constraint violation: ${e.message}")
+      DbResult.Error("Unique constraint violation: ${e.message}")
+    } catch (e: SQLiteFullException) {
+      Log.e("DatabaseError", "Operation failed because the database is full: ${e.message}")
+      DbResult.Error("Database is full: ${e.message}")
+    } catch (e: SQLiteDiskIOException) {
+      Log.e("DatabaseError", "Operation failed due to disk IO issue: ${e.message}")
+      DbResult.Error("Disk IO issue: ${e.message}")
+    } catch (e: SQLiteException) {
+      Log.e("DatabaseError", "Operation failed due to SQLite exception: ${e.message}")
+      DbResult.Error("SQLite exception: ${e.message}")
+    } catch (e: Exception) {
+      Log.e("DatabaseError", "Operation failed due to unknown error: ${e.message}")
+      DbResult.Error("Unknown error: ${e.message}")
+    }
   }
 }

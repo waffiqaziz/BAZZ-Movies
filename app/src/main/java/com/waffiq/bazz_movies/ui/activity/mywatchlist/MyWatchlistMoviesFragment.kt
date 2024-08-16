@@ -41,13 +41,13 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.Helper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.utils.Helper.snackBarWarning
-import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
 import com.waffiq.bazz_movies.utils.Helper.titleHandler
-import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.result_state.DbResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -391,10 +391,10 @@ class MyWatchlistMoviesFragment : Fragment() {
   }
 
   private fun insertDBObserver() {
-    viewModel.localResult.observe(viewLifecycleOwner) {
-      it.getContentIfNotHandled()?.let { result ->
-        when (result) {
-          is LocalResult.Error -> showToastShort(requireContext(), result.message)
+    viewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
+      eventResult.getContentIfNotHandled().let {
+        when (it) {
+          is DbResult.Error -> showToastShort(requireContext(), it.errorMessage)
           else -> {}
         }
       }

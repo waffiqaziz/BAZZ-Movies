@@ -37,8 +37,6 @@
 # is used.
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
--keep,allowobfuscation,allowshrinking class com.waffiq.bazz_movies.utils.LocalResult
-
 # Application classes that will be serialized/deserialized over Moshi
 -keep class com.waffiq.bazz_movies.data.local.model.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.responses.omdb.** { *; }
@@ -47,7 +45,8 @@
 -keep class com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
--keep class com.waffiq.bazz_movies.utils.helper.PostModelState { *; }
+-keep class com.waffiq.bazz_movies.utils.result_state.PostModelState { *; }
+-keep class com.waffiq.bazz_movies.utils.result_state.DbResult { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.RatePostModel { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel { *; }
@@ -59,6 +58,16 @@
 
 -keepattributes Signature
 -keepattributes *Annotation*
+
+
+# LOG
+-assumenosideeffects class android.util.Log {
+  public static *** v(...);
+  public static *** d(...);
+  public static *** i(...);
+  public static *** w(...);
+  public static *** e(...);
+}
 
 
 ##---------------Begin: proguard configuration for Moshi  ----------

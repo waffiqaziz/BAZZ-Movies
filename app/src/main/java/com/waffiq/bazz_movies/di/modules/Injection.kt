@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.di.modules
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.waffiq.bazz_movies.data.repository.UserRepository
 import com.waffiq.bazz_movies.di.providers.MovieUseCaseProvider
 import com.waffiq.bazz_movies.di.providers.UserUseCaseProvider
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase

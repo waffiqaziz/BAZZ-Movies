@@ -42,7 +42,6 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
@@ -51,6 +50,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.result_state.DbResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -156,15 +156,16 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutGuestMode() {
-    moreViewModelLocal.deleteAllResult.observe(viewLifecycleOwner) {
-      it.getContentIfNotHandled()?.let { result ->
-        when (result) {
-          is LocalResult.Success -> showToastShort(
+    moreViewModelLocal.dbResult.observe(viewLifecycleOwner) { eventResult ->
+      eventResult.getContentIfNotHandled().let {
+        when (it) {
+          is DbResult.Success -> showToastShort(
             requireActivity(),
             getString(all_data_deleted)
           )
 
-          is LocalResult.Error -> showToastShort(requireActivity(), result.message)
+          is DbResult.Error -> showToastShort(requireActivity(), it.errorMessage)
+          else -> {}
         }
       }
     }

@@ -30,13 +30,13 @@ interface FavoriteDao {
   suspend fun isWatchlist(id: Int, mediaType: String): Boolean
 
   @Query("DELETE FROM $TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
-  suspend fun deleteItem(mediaId : Int, mediaType: String) : Int // delete from table
+  suspend fun deleteItem(mediaId: Int, mediaType: String): Int // delete from table
 
   @Query("DELETE FROM $TABLE_NAME")
-  suspend fun deleteALl() : Int
+  suspend fun deleteALl(): Int
 
-  @Insert(onConflict = OnConflictStrategy.IGNORE)
-  suspend fun insert(favoriteEntity: FavoriteEntity)
+  @Insert(onConflict = OnConflictStrategy.IGNORE) // used while a conflict occurs, returns -1, indicating the insertion was ignored.
+  suspend fun insert(favoriteEntity: FavoriteEntity): Long
 
   @Query("UPDATE $TABLE_NAME SET is_favorited = :isFavorite, is_watchlist = :isWatchlist WHERE mediaType = :mediaType and mediaId = :id")
   suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int

@@ -87,7 +87,6 @@ import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.convertRuntime
 import com.waffiq.bazz_movies.utils.Helper.dateFormatter
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
-import com.waffiq.bazz_movies.utils.LocalResult
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
@@ -126,15 +125,14 @@ class DetailMovieActivity : AppCompatActivity() {
       if (it) isBGShowed = true
       showLoadingDim(it)
     }
+    errorStateObserver()
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     scrollActionBarBehavior()
-    checkUser()
-    getDataExtra()
-    showDetailData()
-    btnListener()
+    loadData()
+    viewListener()
   }
 
   // region SCROLL BEHAVIOR
@@ -167,17 +165,24 @@ class DetailMovieActivity : AppCompatActivity() {
   }
   // endregion SCROLL BEHAVIOR
 
+  private fun loadData() {
+    checkUser()
+    getDataExtra()
+    showDetailData()
+  }
+
   private fun checkUser() {
     userPreferenceViewModel.getUserPref().observe(this) {
       isLogin = it.token != "NaN"
 
-      // rate handling, add favorite and watchlist for user login
+      // handler for rating, add favorite and watchlist for user login
       if (isLogin) {
         detailViewModel.rateState.observe(this) { eventResult ->
           eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
             if (isRateSuccessful) showToast(getString(rating_added_successfully))
           }
         }
+
         detailViewModel.postModelState.observe(this) { eventResult ->
           eventResult.getContentIfNotHandled()?.let { postModelState ->
 
@@ -217,34 +222,9 @@ class DetailMovieActivity : AppCompatActivity() {
         intent.getParcelableExtra(EXTRA_MOVIE) ?: error("No DataExtra")
       }
     } else finish()
-
-    binding.swipeRefresh.setOnRefreshListener {
-      val i = Intent(this, DetailMovieActivity::class.java)
-      i.putExtra(EXTRA_MOVIE, dataExtra)
-      binding.swipeRefresh.isRefreshing = false
-      activityTransition()
-      startActivity(i)
-      finish()
-    }
-  }
-
-  private fun activityTransition() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      overrideActivityTransition(
-        OVERRIDE_TRANSITION_OPEN,
-        android.R.anim.fade_in,
-        android.R.anim.fade_out
-      )
-    } else {
-      @Suppress("DEPRECATION")
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-    }
   }
 
   private fun showDetailData() {
-    // error handling
-    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
-
     // shows backdrop
     Glide.with(binding.ivPictureBackdrop)
       .load(
@@ -337,10 +317,9 @@ class DetailMovieActivity : AppCompatActivity() {
       detailViewModel.detailMovie.observe(this) { movie ->
 
         // show genre
-        val temp = movie.listGenres?.map { it.name }
-        val tempID = movie.listGenres?.map { it.id ?: 0 }
-        if (tempID != null) dataExtra = dataExtra.copy(listGenreIds = tempID)
-        if (temp != null) binding.tvGenre.text = temp.joinToString(separator = ", ")
+        binding.tvGenre.text = movie.listGenres?.map { it.name }?.joinToString(separator = ", ")
+          ?: getString(not_available)
+        dataExtra = dataExtra.copy(listGenreIds = movie.listGenres?.map { it.id ?: 0 })
 
         // show runtime
         binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
@@ -483,8 +462,13 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun btnListener() {
-    insertDBObserver()
+  private fun viewListener() {
+    // handle swipe refresh to reload data
+    binding.swipeRefresh.setOnRefreshListener {
+      loadData()
+      binding.swipeRefresh.isRefreshing = false
+    }
+
     binding.apply {
       btnBack.setOnClickListener { finish() }
 
@@ -548,17 +532,6 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun insertDBObserver() {
-    detailViewModel.localResult.observe(this) {
-      it.getContentIfNotHandled()?.let { result ->
-        when (result) {
-          is LocalResult.Error -> showToast(result.message)
-          else -> {}
-        }
-      }
-    }
-  }
-
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) { // for favorite
       favorite = !state
@@ -601,7 +574,7 @@ class DetailMovieActivity : AppCompatActivity() {
     if (isLogin) { // user
       userPreferenceViewModel.getUserPref().observe(this) { user ->
         getStated(user.token)
-        detailViewModel.stated.observe(this) {
+        detailViewModel.itemState.observe(this) {
           if (it != null) {
             favorite = it.favorite
             watchlist = it.watchlist
@@ -781,7 +754,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     userPreferenceViewModel.getUserPref().observe(this) { user ->
       getStated(user.token)
-      detailViewModel.stated.observe(this) {
+      detailViewModel.itemState.observe(this) {
         if (it != null && it.rated == true) {
           ratingBar.rating = it.rated
             .toString()
@@ -852,6 +825,9 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
+  private fun errorStateObserver() {
+    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
+  }
 
   // credits table
   private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {

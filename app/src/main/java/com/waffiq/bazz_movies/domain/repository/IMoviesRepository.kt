@@ -21,6 +21,7 @@ import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.result_state.DbResult
 import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {
@@ -128,18 +129,18 @@ interface IMoviesRepository {
 
   val favoriteTvFromDB: Flow<List<Favorite>>
 
-  suspend fun insertToDB(fav: Favorite, callback: (Int) -> Unit)
+  suspend fun insertToDB(fav: Favorite) : DbResult<Int>
 
-  suspend fun deleteFromDB(fav: Favorite)
+  suspend fun deleteFromDB(fav: Favorite) : DbResult<Int>
 
-  suspend fun deleteAll(callback: (Int) -> Unit)
+  suspend fun deleteAll() : DbResult<Int>
 
-  suspend fun isFavoriteDB(id: Int, mediaType: String): Boolean
+  suspend fun isFavoriteDB(id: Int, mediaType: String) : DbResult<Boolean>
 
-  suspend fun isWatchlistDB(id: Int, mediaType: String): Boolean
+  suspend fun isWatchlistDB(id: Int, mediaType: String) : DbResult<Boolean>
 
-  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite)
+  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite) : DbResult<Int>
 
-  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite)
+  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite) : DbResult<Int>
 // endregion DATABASE
 }
