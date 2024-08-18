@@ -12,8 +12,8 @@ object DatabaseMapper {
     isWatchlist: Boolean
   ) = Favorite(
     id = 0,
-    mediaId = id ?: error("No ID for FavoriteEntity"),
-    mediaType = mediaType ?: error("No Media Type for FavoriteEntity"),
+    mediaId = id,
+    mediaType = mediaType,
     title = name ?: originalName ?: title ?: originalTitle ?: "N/A",
     releaseDate = releaseDate ?: firstAirDate ?: "N/A",
     rating = voteAverage ?: 0.0f,
@@ -36,10 +36,6 @@ object DatabaseMapper {
 
   fun favFalseWatchlistTrue(data: ResultItem): Favorite {
     return data.toFavorite(isFavorite = false, isWatchlist = true)
-  }
-
-  fun favFalseWatchlistFalse(data: ResultItem): Favorite {
-    return data.toFavorite(isFavorite = false, isWatchlist = false)
   }
 
   fun FavoriteEntity.toFavorite() = Favorite(

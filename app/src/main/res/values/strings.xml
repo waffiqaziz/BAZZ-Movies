@@ -110,10 +110,16 @@
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
   <string name="already_favorite">already in favorite</string>
+
   <string name="added_to_favorite">has been added to favorite</string>
   <string name="added_to_watchlist">has been added to watchlist</string>
   <string name="deleted_from_favorite">has been deleted from favorite</string>
   <string name="deleted_from_watchlist">has been deleted from watchlist</string>
+
+  <string name="item_added_to_favorite">Item added to favorite.</string>
+  <string name="item_added_to_watchlist">Item added to watchlist.</string>
+  <string name="item_deleted_from_favorite">Item deleted from favorite</string>
+  <string name="item_deleted_from_watchlist">Item deleted from watchlist</string>
 
   <string name="no_data">No Data</string>
   <string name="add_to_favorite">add to favorite</string>

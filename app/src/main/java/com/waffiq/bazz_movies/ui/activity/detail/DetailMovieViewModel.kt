@@ -378,8 +378,8 @@ class DetailMovieViewModel(
   // region DB FUNCTION
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch {
-      when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)){
-        is DbResult.Success -> result.data.let { _isFavorite.value = it  }
+      when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
+        is DbResult.Success -> result.data.let { _isFavorite.value = it }
         is DbResult.Error -> _errorState.value = Event(result.errorMessage)
       }
     }
@@ -398,7 +398,17 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.insertToDB(fav)) {
         is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-        else -> {}
+        is DbResult.Success -> {
+          if (fav.isFavorite) _isFavorite.value = true
+          else if (fav.isWatchlist) _isWatchlist.value = true
+          _postModelState.value = Event(
+            PostModelState(
+              isSuccess = true,
+              isDelete = false,
+              isFavorite = fav.isFavorite,
+            )
+          )
+        }
       }
     }
   }
@@ -406,35 +416,81 @@ class DetailMovieViewModel(
   fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(false, fav)) {
       is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-      else -> {}
+      is DbResult.Success -> {
+        _isFavorite.value = true
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = false,
+            isFavorite = true
+          )
+        )
+      }
     }
   }
 
   fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(true, fav)) {
       is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-      else -> {}
+      is DbResult.Success -> {
+        _isFavorite.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = true,
+            isFavorite = true,
+          )
+        )
+      }
     }
   }
 
   fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(false, fav)) {
       is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-      else -> {}
+      is DbResult.Success -> {
+        _isWatchlist.value = true
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = false,
+            isFavorite = false
+          )
+        )
+      }
     }
   }
 
   fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(true, fav)) {
       is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-      else -> {}
+      is DbResult.Success -> {
+        _isWatchlist.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = true,
+            isFavorite = false
+          )
+        )
+      }
     }
   }
 
   fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.deleteFromDB(fav)) {
       is DbResult.Error -> _errorState.value = Event(result.errorMessage)
-      else -> {}
+      is DbResult.Success -> {
+        _isFavorite.value = false
+        _isWatchlist.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = true,
+            isFavorite = fav.isFavorite
+          )
+        )
+      }
     }
   }
   // endregion DB FUNCTION
@@ -445,31 +501,28 @@ class DetailMovieViewModel(
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (data.favorite != null) {
-              _postModelState.value = Event(
-                PostModelState(
-                  isSuccess = true,
-                  isDelete = !data.favorite,
-                  isFavorite = true,
-                  isWatchlist = false
-                )
+            if (data.mediaType == "movie") getStatedMovie(sessionId, data.mediaId)
+            else getStatedTv(sessionId, data.mediaId)
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = true,
+                isDelete = !data.favorite,
+                isFavorite = true,
               )
-            } else _errorState.value = Event("Data is null")
+            )
             _loadingState.value = false
           }
 
           Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
-            if (data.favorite != null) {
-              _postModelState.value = Event(
-                PostModelState(
-                  isSuccess = false,
-                  isDelete = !data.favorite,
-                  isFavorite = true,
-                  isWatchlist = false
-                )
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = false,
+                isDelete = !data.favorite,
+                isFavorite = true,
               )
-            }
+            )
+            data.favorite.let { _isFavorite.value = it }
             _errorState.value = Event(networkResult.message.toString())
             _loadingState.value = false
           }
@@ -483,31 +536,28 @@ class DetailMovieViewModel(
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (data.watchlist != null) {
-              _postModelState.value = Event(
-                PostModelState(
-                  isSuccess = true,
-                  isDelete = !data.watchlist,
-                  isFavorite = true,
-                  isWatchlist = true
-                )
+            if (data.mediaType == "movie") getStatedMovie(sessionId, data.mediaId)
+            else getStatedTv(sessionId, data.mediaId)
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = true,
+                isDelete = !data.watchlist,
+                isFavorite = false
               )
-            } else _errorState.value = Event("WatchlistPostModel is Null")
+            )
+            data.watchlist.let { _isWatchlist.value = it }
             _loadingState.value = false
           }
 
           Status.LOADING -> _loadingState.value = true
           Status.ERROR -> {
-            if (data.watchlist != null) {
-              _postModelState.value = Event(
-                PostModelState(
-                  isSuccess = false,
-                  isDelete = !data.watchlist,
-                  isFavorite = true,
-                  isWatchlist = true
-                )
+            _postModelState.value = Event(
+              PostModelState(
+                isSuccess = false,
+                isDelete = !data.watchlist,
+                isFavorite = false
               )
-            }
+            )
             _errorState.value = Event(networkResult.message.toString())
             _loadingState.value = false
           }

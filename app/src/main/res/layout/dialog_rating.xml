@@ -45,7 +45,7 @@
     app:layout_constraintTop_toBottomOf="@+id/bg_top" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_no"
+    android:id="@+id/btn_cancel"
     style="@style/customButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
     app:layout_constraintTop_toBottomOf="@+id/rating_bar_action" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/btn_yes"
+    android:id="@+id/btn_submit"
     style="@style/customButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -67,6 +67,6 @@
     android:padding="7dp"
     android:text="@string/submit"
     app:layout_constraintEnd_toEndOf="@+id/rating_bar_action"
-    app:layout_constraintTop_toTopOf="@+id/btn_no" />
+    app:layout_constraintTop_toTopOf="@+id/btn_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
