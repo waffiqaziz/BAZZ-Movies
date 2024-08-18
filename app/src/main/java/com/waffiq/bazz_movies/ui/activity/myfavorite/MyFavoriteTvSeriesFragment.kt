@@ -133,19 +133,14 @@ class MyFavoriteTvSeriesFragment : Fragment() {
           val position = viewHolder.absoluteAdapterPosition
 
           // swipe action
-          if (fav.id != null) {
-            if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
-              isWantToDelete = false
-              postToAddWatchlistTMDB(titleHandler(fav), fav.id)
-            } else { // swipe right, action to delete
-              isWantToDelete = true
-              postToRemoveFavTMDB(titleHandler(fav), fav.id)
-            }
-            adapterPaging.notifyItemChanged(position)
-          } else {
-            mSnackbar =
-              snackBarWarning(requireActivity(), binding.root, binding.guideSnackbar, Event(""))
+          if (direction == ItemTouchHelper.START) { // swipe left, action add to watchlist
+            isWantToDelete = false
+            postToAddWatchlistTMDB(titleHandler(fav), fav.id)
+          } else { // swipe right, action to delete
+            isWantToDelete = true
+            postToRemoveFavTMDB(titleHandler(fav), fav.id)
           }
+          adapterPaging.notifyItemChanged(position)
         } else {
           val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
           val position = viewHolder.bindingAdapterPosition
@@ -311,9 +306,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
               binding.guideSnackbar,
               Event(it.title)
             )
-          else  // add watchlist success
+          else // add to watchlist success
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
-        }
+        } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
       }
     }
     adapterPaging.addLoadStateListener {
@@ -391,7 +386,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   }
 
   private fun insertDBObserver() {
-    viewModelFav.dbResult.observe(viewLifecycleOwner) {eventResult ->
+    viewModelFav.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Error -> showToastShort(requireContext(), it.errorMessage)

@@ -22,7 +22,6 @@ import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.result_state.DbResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyWatchlistViewModel(
@@ -56,41 +55,41 @@ class MyWatchlistViewModel(
     localDatabaseUseCase.watchlistTvFromDB.asLiveData().distinctUntilChanged()
 
   fun insertToDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.insertToDB(fav)))
     }
   }
 
   fun delFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.deleteFromDB(fav)))
     }
     _undoDB.value = Event(fav)
   }
 
   fun updateToFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(false, fav)))
     }
     _undoDB.value = Event(fav)
   }
 
   fun updateToWatchlistDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(false, fav)))
     }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromWatchlistDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(true, fav)))
     }
     _undoDB.value = Event(fav)
   }
 
   fun updateToRemoveFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.launch {
       _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(true, fav)))
     }
     _undoDB.value = Event(fav)

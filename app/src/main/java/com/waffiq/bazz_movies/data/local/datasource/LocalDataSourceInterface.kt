@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteFullException
 import android.util.Log
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.utils.result_state.DbResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 interface LocalDataSourceInterface {
   val getFavoriteMovies: Flow<List<FavoriteEntity>>
@@ -31,7 +33,9 @@ interface LocalDataSourceInterface {
     operation: suspend () -> T
   ): DbResult<T> {
     return try {
-      val result = operation.invoke()
+      val result = withContext(Dispatchers.IO) { // Ensure operation runs on IO dispatcher
+        operation()
+      }
       DbResult.Success(result) // Return the result if the operation is successful
     } catch (e: SQLiteConstraintException) {
       Log.e("DatabaseError", "Operation failed due to unique constraint violation: ${e.message}")
