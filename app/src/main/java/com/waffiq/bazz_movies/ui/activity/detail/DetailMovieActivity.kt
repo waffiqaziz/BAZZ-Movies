@@ -315,7 +315,9 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       // show TMDb score
-      detailViewModel.tmdbScore.observe(this) { binding.tvScoreTmdb.text = it }
+      detailViewModel.tmdbScore.observe(this) {
+        binding.tvScoreTmdb.text = it.ifEmpty { getString(not_available) }
+      }
 
       detailViewModel.detailMovie.observe(this) { movie ->
 
@@ -430,9 +432,8 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     // show production country
-    detailViewModel.productionCountry.observe(this)
-    {
-      binding.tvYearReleased.append(" ($it)")
+    detailViewModel.productionCountry.observe(this) {
+      if (it != null) binding.tvCountry.text = it else binding.tvCountry.visibility = View.GONE
     }
   }
 

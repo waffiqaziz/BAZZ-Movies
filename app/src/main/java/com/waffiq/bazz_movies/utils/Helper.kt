@@ -383,4 +383,10 @@ object Helper {
     mSnackbar.show()
     return mSnackbar
   }
+
+  fun getDateTwoWeeksFromToday(): String {
+    val twoWeeksFromNow = LocalDate.now().plusWeeks(2)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return twoWeeksFromNow.format(formatter)
+  }
 }

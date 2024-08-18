@@ -108,10 +108,10 @@ class MovieDataSource private constructor(
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingPopularTv(): Flow<PagingData<ResultItemResponse>> {
+  override fun getPagingPopularTv(twoWeeksFromToday: String): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
-      pagingSourceFactory = { PopularTvPagingSource(tmdbApiService) }
+      pagingSourceFactory = { PopularTvPagingSource(twoWeeksFromToday, tmdbApiService) }
     ).flow.flowOn(Dispatchers.IO)
   }
 

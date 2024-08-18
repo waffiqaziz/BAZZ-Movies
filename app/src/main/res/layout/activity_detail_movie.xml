@@ -142,12 +142,13 @@
             tools:visibility="visible" />
 
           <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="50dp"
 
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_picture_backdrop"
             app:layout_constraintEnd_toEndOf="@+id/iv_picture_backdrop"
             app:layout_constraintStart_toStartOf="@+id/iv_picture_backdrop"
@@ -157,11 +158,11 @@
               android:id="@+id/ib_play"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:padding="12dp"
-              android:src="@drawable/ic_play"
-              android:foreground="?attr/selectableItemBackgroundBorderless"
               android:background="@android:color/transparent"
               android:contentDescription="@string/watch_trailer"
+              android:foreground="?attr/selectableItemBackgroundBorderless"
+              android:padding="12dp"
+              android:src="@drawable/ic_play"
               android:visibility="gone"
               tools:visibility="visible" />
 
@@ -200,7 +201,7 @@
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/margin_detail_info"
             app:layout_constraintBottom_toTopOf="@+id/tv_genre"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             tools:text="MOVIE" />
@@ -210,18 +211,27 @@
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_genre"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintStart_toEndOf="@+id/divider1"
-            tools:text="2020" />
+            tools:text="Jul 24, 2020" />
+
+          <TextView
+            android:id="@+id/tv_country"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+            tools:text="(US)" />
 
           <TextView
             android:id="@+id/divider1"
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/margin_detail_info"
             android:text="@string/_divider"
             android:textColor="@color/gray_400"
             app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
@@ -232,10 +242,10 @@
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/margin_detail_info"
             android:text="@string/_divider"
             android:textColor="@color/gray_400"
-            app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+            app:layout_constraintStart_toEndOf="@+id/tv_country"
             app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
 
           <TextView
@@ -243,7 +253,7 @@
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="@dimen/margin_detail_info"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:ellipsize="end"
             android:maxLines="1"
@@ -252,7 +262,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/divider2"
-            app:layout_constraintTop_toTopOf="@+id/tv_year_released"
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType"
             tools:text="PG-A" />
 
           <TextView
@@ -261,7 +271,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/margin_detail_info"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@string/not_available"

@@ -8,12 +8,13 @@ import com.waffiq.bazz_movies.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class PopularTvPagingSource(private val apiService: TMDBApiService) : PagingSource<Int, ResultItemResponse>() {
+class PopularTvPagingSource(private val twoWeeksFromToday : String, private val apiService: TMDBApiService) :
+  PagingSource<Int, ResultItemResponse>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultItemResponse> {
     return try {
       val position = params.key ?: INITIAL_PAGE_INDEX
-      val responseData = apiService.getPopularTv(position).results
+      val responseData = apiService.getPopularTv(position, twoWeeksFromToday).results
 
       LoadResult.Page(
         data = responseData,

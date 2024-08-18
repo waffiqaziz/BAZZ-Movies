@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.utils.Helper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavorite
@@ -84,9 +85,10 @@ class MoviesRepository(
     }
 
   override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularTv().map { pagingData ->
+    movieDataSource.getPagingPopularTv(getDateTwoWeeksFromToday()).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
+
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingOnTv().map { pagingData ->

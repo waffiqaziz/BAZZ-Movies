@@ -86,7 +86,7 @@ interface MovieDataSourceInterface {
   fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingPopularTv(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingPopularTv(twoWeeksFromToday: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>>
   fun getPagingAiringTodayTv(): Flow<PagingData<ResultItemResponse>>
   fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>>

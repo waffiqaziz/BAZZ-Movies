@@ -115,9 +115,10 @@ interface TMDBApiService {
     @Query("page") page: Int
   ): MovieTvResponse
 
-  @GET("3/tv/popular?language=en-US&sort_by=popularity.desc&watch_region=CA&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate|free|ads|rent|buy")
+  @GET("3/discover/tv?language=en-US&sort_by=popularity.desc&watch_region=CA&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate|free|ads|rent|buy")
   suspend fun getPopularTv(
-    @Query("page") page: Int
+    @Query("page") page: Int,
+    @Query("air_date.lte") dateTime: String
   ): MovieTvResponse
 
   @GET("3/account/{account_id}/favorite/movies?language=en-US&sort_by=created_at.asc")
