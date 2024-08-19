@@ -50,8 +50,8 @@ Several third-party libraries is used and licensed under their respective licens
 - Description: API service that provide movie, TV show or actor images and/or data. This application
   uses the TMDB API to fetch movie and TV show data.
 - Attribution: This project uses the TMDB APIs but is not endorsed, certified, or otherwise approved
-  by TMDB.
-  > > This project already provide attribution to TMDB, specifically using the TMDB logo
+  by [TMDB](https://www.themoviedb.org/).
+  > This project already provide attribution to [TMDB](https://www.themoviedb.org/), specifically using the [TMDB](https://www.themoviedb.org/) logo
   in [About Page](app/src/main/res/layout/activity_about.xml). Any changes are permitted as long as
   provide TMDB attributes.
 - Terms of Use: By using this project, you agree to comply with

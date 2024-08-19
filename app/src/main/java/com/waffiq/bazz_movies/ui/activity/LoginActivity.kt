@@ -118,12 +118,12 @@ class LoginActivity : AppCompatActivity() {
       if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank())
         binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
 
-      // add listener to shop again btn eye
+      // listener to show btn eye
       binding.edPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
       }
 
-      // add listener for auto fill in
+      // listener for autofill
       if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank())
         binding.edUsername.error = null
       if (binding.edPass.text.isNotEmpty() && binding.edPass.text.isNotBlank())
