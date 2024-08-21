@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
-import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
+import com.waffiq.bazz_movies.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
@@ -71,8 +71,8 @@ class DetailMovieViewModel(
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
-  private val _detailMovie = MutableLiveData<DetailMovie>()
-  val detailMovie: LiveData<DetailMovie> get() = _detailMovie
+  private val _detailMovie = MutableLiveData<DetailMovieTvUsed>()
+  val detailMovie: LiveData<DetailMovieTvUsed> get() = _detailMovie
 
   private val _detailTv = MutableLiveData<DetailTv>()
   val detailTv: LiveData<DetailTv> get() = _detailTv
@@ -91,38 +91,11 @@ class DetailMovieViewModel(
   // endregion OBSERVABLES
 
   // region MOVIE
-  fun getLinkMovie(movieId: Int) {
+  fun getLinkVideoMovie(movieId: Int) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getVideoMovies(movieId).collect { networkResult ->
+      getDetailMovieUseCase.getLinkVideoMovies(movieId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            try {
-              if (networkResult.data != null) {
-                var link = networkResult.data.results
-                  .filter { it.official == true && it.type.equals("Trailer") }
-                  .map { it.key }
-                  .firstOrNull()
-
-                link = link?.trim() ?: ""
-
-                if (link.isBlank()) {
-                  link = networkResult.data.results
-                    .map { it.key }
-                    .firstOrNull()
-                    ?.trim()
-                    ?: ""
-                }
-
-                @Suppress("USELESS_ELVIS")
-                _linkVideo.value = link ?: ""
-              } else {
-                _linkVideo.value = ""
-              }
-            } catch (e: NullPointerException) {
-              _linkVideo.value = ""
-            }
-          }
-
+          Status.SUCCESS -> _linkVideo.value = networkResult.data ?: ""
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -133,53 +106,11 @@ class DetailMovieViewModel(
     }
   }
 
-  fun detailMovie(id: Int, region: String) {
+  fun detailMovie(id: Int, userRegion: String) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getDetailMovie(id).collect { networkResult ->
+      getDetailMovieUseCase.getDetailMovie(id, userRegion).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            networkResult.data.let { _detailMovie.value = it }
-
-            // production country
-            var productionCountry: String
-            try {
-              productionCountry =
-                networkResult.data?.listProductionCountriesItem?.get(0)?.iso31661.toString()
-              _productionCountry.value = productionCountry
-            } catch (e: IndexOutOfBoundsException) {
-              _productionCountry.value = "N/A"
-              productionCountry = ""
-            }
-
-            // age rating
-            try {
-              _ageRating.value =
-                if (region == "N/A" && productionCountry.isEmpty()) "N/A"
-                else {
-                  networkResult.data?.releaseDates?.listReleaseDatesItem?.filter {
-                    if (region != "N/A") it?.iso31661 == region
-                    else if (productionCountry.isNotEmpty()) it?.iso31661 == productionCountry
-                    else it?.iso31661 == "US"
-                  }?.map {
-                    it?.listReleaseDatesitemValue?.get(0)?.certification
-                  }.toString().replace("[", "").replace("]", "")
-                    .replace(" ", "").replace(",", ", ")
-                }
-            } catch (e: NullPointerException) {
-              _ageRating.value = "N/A"
-            }
-
-            // tmdb score
-            _tmdbScore.value = if (networkResult.data?.voteAverage == 0.0
-              || networkResult.data?.voteAverage == null
-              || networkResult.data.voteAverage.toString().isEmpty()
-              || networkResult.data.voteAverage.toString().isBlank()
-            ) ""
-            else networkResult.data.voteAverage.toString()
-
-
-          }
-
+          Status.SUCCESS -> networkResult.data.let { _detailMovie.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -194,11 +125,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       getDetailMovieUseCase.getCreditMovies(movieId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            val responseData = networkResult.data
-            responseData.let { _movieTvCreditsResult.value = it }
-          }
-
+          Status.SUCCESS -> networkResult.data.let { _movieTvCreditsResult.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -232,36 +159,9 @@ class DetailMovieViewModel(
   // region TV-SERIES
   fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getVideoTv(tvId).collect { networkResult ->
+      getDetailTvUseCase.getTrailerLinkTv(tvId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            try {
-              if (networkResult.data != null) {
-                var link = networkResult.data.results
-                  .filter { it.official == true && it.type.equals("Trailer") }
-                  .map { it.key }
-                  .firstOrNull()
-
-                link = link?.trim() ?: ""
-
-                if (link.isBlank()) {
-                  link = networkResult.data.results
-                    .map { it.key }
-                    .firstOrNull()
-                    ?.trim()
-                    ?: ""
-                }
-
-                @Suppress("USELESS_ELVIS")
-                _linkVideo.value = link ?: ""
-              } else {
-                _linkVideo.value = ""
-              }
-            } catch (e: NullPointerException) {
-              _linkVideo.value = ""
-            }
-          }
-
+          Status.SUCCESS -> _linkVideo.value = networkResult.data ?: ""
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false

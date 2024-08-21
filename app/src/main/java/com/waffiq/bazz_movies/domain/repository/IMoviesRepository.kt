@@ -71,9 +71,9 @@ interface IMoviesRepository {
 
   suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>>
 
-  suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<Video>>
+  suspend fun getTrailerLinkMovie(movieId: Int): Flow<NetworkResult<Video>>
 
-  suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<Video>>
+  suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<Video>>
 
   suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>>
 

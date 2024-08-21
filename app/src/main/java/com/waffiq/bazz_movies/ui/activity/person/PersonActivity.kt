@@ -47,7 +47,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.dateFormatter
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
 import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
 
@@ -292,7 +292,7 @@ class PersonActivity : AppCompatActivity() {
 
       if (it.birthday != null)
         if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
-          val birthday = "${dateFormatter(it.birthday)} (${
+          val birthday = "${dateFormatterStandard(it.birthday)} (${
             getAgeBirth(it.birthday)
           } ${getString(years_old)}) \n${it.placeOfBirth}"
           binding.tvBorn.text = birthday
@@ -303,9 +303,9 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.isVisible = true
       binding.tvDeadHeader.isVisible = true
 
-      val birthDay = "${it.birthday?.let { dateFormatter(it) }} \n${it.placeOfBirth}"
+      val birthDay = "${it.birthday?.let { dateFormatterStandard(it) }} \n${it.placeOfBirth}"
       binding.tvBorn.text = birthDay
-      val deathDay = "${dateFormatter(it.deathday)} (${
+      val deathDay = "${dateFormatterStandard(it.deathday)} (${
         it.birthday?.let { birthday -> getAgeDeath(birthday, it.deathday) }
       } ${getString(years_old)})"
       binding.tvDeath.text = deathDay

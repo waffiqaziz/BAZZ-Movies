@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.utils.Helper.dateFormatter
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
@@ -67,7 +67,7 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       binding.tvTitle.text = fav.title
       binding.tvGenre.text = fav.genre
-      binding.tvYearReleased.text = dateFormatter(fav.releaseDate).ifEmpty { "N/A" }
+      binding.tvYearReleased.text = dateFormatterStandard(fav.releaseDate).ifEmpty { "N/A" }
 
       val resultItemResponse = ResultItem(
         backdropPath = fav.backDrop,

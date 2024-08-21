@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
 import com.waffiq.bazz_movies.domain.model.ResultItem
+import com.waffiq.bazz_movies.domain.model.detail.Video
 import com.waffiq.bazz_movies.domain.model.search.KnownForItem
 import com.waffiq.bazz_movies.utils.common.Event
 import okio.IOException
@@ -23,11 +24,13 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.time.LocalDate
 import java.time.Period
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.TimeZone
 
 object Helper {
+
   fun showToastShort(context: Context, text: String) {
     Toast.makeText(
       context, HtmlCompat.fromHtml(
@@ -35,6 +38,82 @@ object Helper {
       ), Toast.LENGTH_SHORT
     ).show()
   }
+
+  fun getKnownFor(knownForItemResponse: List<KnownForItem>): String {
+    var temp = ""
+    knownForItemResponse.forEach { temp = temp + it.title + ", " }
+    temp = temp.dropLast(2)
+    return temp
+  }
+
+  fun dateFormatterStandard(date: String?): String {
+    return try {
+      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+      val newDate = formatter.parse(date)
+      DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
+    } catch (e: DateTimeParseException) {
+      ""
+    }
+  }
+
+  fun dateFormatterISO8601(date: String?): String {
+    return try {
+      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+      val newDate = ZonedDateTime.parse(date, formatter)
+      DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
+    } catch (e: DateTimeParseException) {
+      ""
+    }
+  }
+
+  fun animFadeOutLong(context: Context): Animation {
+    val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
+    animation.duration = 750
+    return animation
+  }
+
+  // region LOCATION
+  private fun getNetworkLocation(context: Context): String {
+    val telMgr: TelephonyManager =
+      context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+    return when (telMgr.simState) {
+      TelephonyManager.SIM_STATE_ABSENT ->
+        TimeZone.getDefault().id.lowercase()
+
+      TelephonyManager.SIM_STATE_READY ->
+        telMgr.networkCountryIso.lowercase()
+
+      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> ""
+
+      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> ""
+
+      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> ""
+
+      TelephonyManager.SIM_STATE_NOT_READY -> ""
+
+      TelephonyManager.SIM_STATE_PERM_DISABLED -> ""
+
+      TelephonyManager.SIM_STATE_PIN_REQUIRED -> ""
+
+      TelephonyManager.SIM_STATE_PUK_REQUIRED -> ""
+
+      TelephonyManager.SIM_STATE_UNKNOWN -> ""
+
+      else -> ""
+    }
+  }
+
+  @Suppress("DEPRECATION")
+  fun getLocation(context: Context): String {
+
+    return getNetworkLocation(context).ifEmpty {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        context.resources.configuration.locales.get(0).country.toString().lowercase()
+      } else context.resources.configuration.locale.country.toString().lowercase()
+    }
+  }
+  // endregion LOCATION
 
   // region GENRE
   private fun getGenreName(int: Int): String {
@@ -133,102 +212,37 @@ object Helper {
   }
   // endregion GENRE
 
-  fun getKnownFor(knownForItemResponse: List<KnownForItem>): String {
-    var temp = ""
-    knownForItemResponse.forEach { temp = temp + it.title + ", " }
-    temp = temp.dropLast(2)
-    return temp
-  }
-
-  fun dateFormatter(date: String?): String {
-    return try {
-      val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-      val newDate = formatter.parse(date)
-      DateTimeFormatter.ofPattern("MMM dd, yyyy").format(newDate) // Feb 23, 2021
-    } catch (e: DateTimeParseException) {
-      ""
+  // region PAGING
+  fun pagingErrorHandling(error: Throwable): String {
+    return when (error) {
+      is SocketTimeoutException -> "Connection timed out. Please try again."
+      is UnknownHostException -> "Unable to resolve server hostname. Please check your internet connection."
+      is IOException -> "Please check your network connection"
+      else -> "Something went wrong"
     }
   }
 
-  // region AGE
-  fun getAgeBirth(date: String): Int {
-    val dateParts = date.split("-").toTypedArray()
-    val year = dateParts[0].toInt()
-    val month = dateParts[1].toInt()
-    val day = dateParts[2].toInt()
-
-    return Period.between(LocalDate.of(year, month, day), LocalDate.now()).years
+  fun combinedLoadStatesHandle2(
+    loadState: CombinedLoadStates
+  ): String {
+    val errorState = when { // If theres an error, show a toast
+      loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+      loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+      loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+      else -> null
+    }
+    errorState?.let {
+      return pagingErrorHandling(it.error)
+    } ?: return ""
   }
+  // endregion PAGING
 
-  fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
-    var dateParts = dateBirth.split("-").toTypedArray()
-    val yearBirth = dateParts[0].toInt()
-    val monthBirth = dateParts[1].toInt()
-    val dayBirth = dateParts[2].toInt()
 
-    dateParts = dateDeath.split("-").toTypedArray()
-    val yearDeath = dateParts[0].toInt()
-    val monthDeath = dateParts[1].toInt()
-    val dayDeath = dateParts[2].toInt()
-
-    return Period.between(
-      LocalDate.of(yearBirth, monthBirth, dayBirth),
-      LocalDate.of(yearDeath, monthDeath, dayDeath)
-    ).years
-  }
-  // endregion AGE
-
+  // region DETAIL MOVIE PAGE
   fun convertRuntime(t: Int): String {
     val hours: Int = t / 60
     val minutes: Int = t % 60
     return "${hours}h ${minutes}m"
-  }
-
-  fun animFadeOutLong(context: Context): Animation {
-    val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
-    animation.duration = 750
-    return animation
-  }
-
-  private fun getNetworkLocation(context: Context): String {
-    val telMgr: TelephonyManager =
-      context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-
-    return when (telMgr.simState) {
-      TelephonyManager.SIM_STATE_ABSENT ->
-        TimeZone.getDefault().id.lowercase()
-
-      TelephonyManager.SIM_STATE_READY ->
-        telMgr.networkCountryIso.lowercase()
-
-      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> ""
-
-      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> ""
-
-      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> ""
-
-      TelephonyManager.SIM_STATE_NOT_READY -> ""
-
-      TelephonyManager.SIM_STATE_PERM_DISABLED -> ""
-
-      TelephonyManager.SIM_STATE_PIN_REQUIRED -> ""
-
-      TelephonyManager.SIM_STATE_PUK_REQUIRED -> ""
-
-      TelephonyManager.SIM_STATE_UNKNOWN -> ""
-
-      else -> ""
-    }
-  }
-
-  @Suppress("DEPRECATION")
-  fun getLocation(context: Context): String {
-
-    return getNetworkLocation(context).ifEmpty {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        context.resources.configuration.locales.get(0).country.toString().lowercase()
-      } else context.resources.configuration.locale.country.toString().lowercase()
-    }
   }
 
   fun detailCrew(crew: List<MovieTvCrewItemResponse>): Pair<MutableList<String>, MutableList<String>> {
@@ -303,29 +317,44 @@ object Helper {
     return job to name
   }
 
-  fun pagingErrorHandling(error: Throwable): String {
-    return when (error) {
-      is SocketTimeoutException -> "Connection timed out. Please try again."
-      is UnknownHostException -> "Unable to resolve server hostname. Please check your internet connection."
-      is IOException -> "Please check your network connection"
-      else -> "Something went wrong"
-    }
+  fun transformLink(video: Video): String {
+    return video.results
+      .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) }
+      .map { it.key }.firstOrNull()?.trim()
+      ?: video.results.map { it.key }.firstOrNull()?.trim()
+      ?: ""
+  }
+  // endregion DETAIL MOVIE PAGE
+
+  // region PERSON PAGE
+  fun getAgeBirth(date: String): Int {
+    val dateParts = date.split("-").toTypedArray()
+    val year = dateParts[0].toInt()
+    val month = dateParts[1].toInt()
+    val day = dateParts[2].toInt()
+
+    return Period.between(LocalDate.of(year, month, day), LocalDate.now()).years
   }
 
-  fun combinedLoadStatesHandle2(
-    loadState: CombinedLoadStates
-  ): String {
-    val errorState = when { // If theres an error, show a toast
-      loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-      loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-      loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-      else -> null
-    }
-    errorState?.let {
-      return pagingErrorHandling(it.error)
-    } ?: return ""
-  }
+  fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
+    var dateParts = dateBirth.split("-").toTypedArray()
+    val yearBirth = dateParts[0].toInt()
+    val monthBirth = dateParts[1].toInt()
+    val dayBirth = dateParts[2].toInt()
 
+    dateParts = dateDeath.split("-").toTypedArray()
+    val yearDeath = dateParts[0].toInt()
+    val monthDeath = dateParts[1].toInt()
+    val dayDeath = dateParts[2].toInt()
+
+    return Period.between(
+      LocalDate.of(yearBirth, monthBirth, dayBirth),
+      LocalDate.of(yearDeath, monthDeath, dayDeath)
+    ).years
+  }
+  // endregion PERSON PAGE
+
+  // region FAVORITE WATCHLIST PAGE
   fun titleHandler(item: ResultItem): String {
     return item.name ?: item.title ?: item.originalTitle ?: "Item"
   }
@@ -352,7 +381,7 @@ object Helper {
   fun snackBarAlreadyWatchlist(
     context: Context,
     view: View,
-    viewGuide :View,
+    viewGuide: View,
     eventMessage: Event<String>
   ): Snackbar? {
     val result = eventMessage.getContentIfNotHandled() ?: return null
@@ -371,7 +400,7 @@ object Helper {
   fun snackBarAlreadyFavorite(
     context: Context,
     view: View,
-    viewGuide :View,
+    viewGuide: View,
     eventMessage: Event<String>
   ): Snackbar? {
     val result = eventMessage.getContentIfNotHandled() ?: return null
@@ -392,4 +421,5 @@ object Helper {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     return twoWeeksFromNow.format(formatter)
   }
+  // endregion FAVORITE WATCHLIST PAGE
 }

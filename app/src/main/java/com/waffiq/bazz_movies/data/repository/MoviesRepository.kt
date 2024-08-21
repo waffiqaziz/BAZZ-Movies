@@ -178,7 +178,7 @@ class MoviesRepository(
       }
     }
 
-  override suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<Video>> =
+  override suspend fun getTrailerLinkMovie(movieId: Int): Flow<NetworkResult<Video>> =
     movieDataSource.getVideoMovies(movieId).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
@@ -187,7 +187,7 @@ class MoviesRepository(
       }
     }
 
-  override suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<Video>> =
+  override suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<Video>> =
     movieDataSource.getVideoTv(tvId).map { networkResult ->
       when (networkResult.status) {
         Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())

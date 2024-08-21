@@ -84,8 +84,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.convertRuntime
-import com.waffiq.bazz_movies.utils.Helper.dateFormatter
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
@@ -257,7 +256,7 @@ class DetailMovieActivity : AppCompatActivity() {
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
         tvMediaType.text = mediaType.uppercase()
         tvYearReleased.text =
-          dateFormatter(releaseDate.toString().ifEmpty { firstAirDate.toString() })
+          dateFormatterStandard(releaseDate.toString().ifEmpty { firstAirDate.toString() })
         tvOverview.text =
           if (!overview.isNullOrEmpty() && overview.isNotBlank()) overview
           else getString(no_overview)
@@ -320,14 +319,21 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       detailViewModel.detailMovie.observe(this) { movie ->
+        // copy genre id
+        dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
 
-        // show genre
-        binding.tvGenre.text = movie.listGenres?.map { it.name }?.joinToString(separator = ", ")
-          ?: getString(not_available)
-        dataExtra = dataExtra.copy(listGenreIds = movie.listGenres?.map { it.id ?: 0 })
+        // show genre, duration, age rating, region release
+        binding.tvGenre.text = movie.genre
+        binding.tvDuration.text = movie.duration
+        binding.tvAgeRating.text = movie.ageRating
+        if (movie.releaseDateRegion.regionRelease.isNotEmpty())
+          binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
+        else binding.tvRegionRelease.visibility = View.GONE
 
-        // show runtime
-        binding.tvDuration.text = movie.runtime?.let { convertRuntime(it) }
+        // set date release based on user region
+        if (movie.releaseDateRegion.releaseDate.isNotEmpty())
+          binding.tvYearReleased.text = movie.releaseDateRegion.releaseDate
+        else binding.tvYearReleased.visibility = View.GONE
 
         // show OMDb detail (score)
         if (movie.imdbId != null) {
@@ -338,7 +344,7 @@ class DetailMovieActivity : AppCompatActivity() {
         } else showLoadingDim(false)
 
         // trailer
-        movie.id?.let { detailViewModel.getLinkMovie(it) }
+        detailViewModel.getLinkVideoMovie(movie.id)
         detailViewModel.linkVideo.observe(this) {
           if (it.isNullOrEmpty() || it.isBlank()) hideTrailer(true)
           else {
@@ -348,16 +354,8 @@ class DetailMovieActivity : AppCompatActivity() {
         }
 
         // recommendation movie
-        movie.id?.let { movieID ->
-          detailViewModel.getRecommendationMovie(movieID).observe(this) {
-            adapterRecommendation.submitData(lifecycle, it)
-          }
-        }
-
-        // age rate
-        detailViewModel.ageRating.observe(this) {
-          binding.tvAgeRating.text =
-            if (it.isNotEmpty() && it.isNotBlank()) it else getString(not_available)
+        detailViewModel.getRecommendationMovie(movie.id).observe(this) {
+          adapterRecommendation.submitData(lifecycle, it)
         }
       }
 
@@ -431,9 +429,10 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
 
-    // show production country
+    // show region release
     detailViewModel.productionCountry.observe(this) {
-      if (it != null) binding.tvCountry.text = it else binding.tvCountry.visibility = View.GONE
+      if (it != null) binding.tvRegionRelease.text = it else binding.tvRegionRelease.visibility =
+        View.GONE
     }
   }
 

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface GetDetailTvUseCase {
   suspend fun getDetailTv(tvId: Int): Flow<NetworkResult<DetailTv>>
   suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>>
-  suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<Video>>
+  suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<String>>
   suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>>
   suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<NetworkResult<Stated>>
   fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>>

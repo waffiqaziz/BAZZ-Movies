@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.utils.Helper.dateFormatter
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.iterateGenre
 import java.text.DecimalFormat
 
@@ -64,7 +64,7 @@ class FavoriteMovieAdapter :
       binding.tvTitle.text =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
-        dateFormatter(it)
+        dateFormatterStandard(it)
       } ?: "N/A"
       binding.tvGenre.text = resultItem.listGenreIds?.let { iterateGenre(it) } ?: "N/A"
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2

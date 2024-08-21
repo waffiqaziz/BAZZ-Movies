@@ -243,6 +243,7 @@ object DetailMovieTvMapper {
     type = type,
     iso6391 = iso6391,
     certification = certification,
+    releaseDate = releaseDate
   )
 
   private fun BelongsToCollectionResponse.toBelongsToCollection() = BelongsToCollection(

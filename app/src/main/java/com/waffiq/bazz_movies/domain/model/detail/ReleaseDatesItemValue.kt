@@ -5,5 +5,6 @@ data class ReleaseDatesItemValue(
   val note: String? = null,
   val type: Int? = null,
   val iso6391: String? = null,
-  val certification: String? = null
+  val certification: String? = null,
+  val releaseDate: String? = null,
 )

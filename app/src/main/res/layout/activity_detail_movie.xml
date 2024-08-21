@@ -211,13 +211,13 @@
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_detail_info"
+            android:layout_marginStart="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintStart_toEndOf="@+id/divider1"
             tools:text="Jul 24, 2020" />
 
           <TextView
-            android:id="@+id/tv_country"
+            android:id="@+id/tv_region_release"
             style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -245,8 +245,8 @@
             android:layout_marginStart="@dimen/margin_detail_info"
             android:text="@string/_divider"
             android:textColor="@color/gray_400"
-            app:layout_constraintStart_toEndOf="@+id/tv_country"
-            app:layout_constraintTop_toTopOf="@+id/tv_year_released" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/tv_region_release" />
 
           <TextView
             android:id="@+id/tv_age_rating"
@@ -259,10 +259,10 @@
             android:maxLines="1"
             android:text="@string/not_available"
             app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/divider2"
-            app:layout_constraintTop_toTopOf="@+id/tv_mediaType"
             tools:text="PG-A" />
 
           <TextView
