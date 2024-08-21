@@ -24,9 +24,9 @@ import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.Helper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.utils.mappers.DetailMovieTvMapper.toCombinedCredit

@@ -28,8 +28,8 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.FadeInItemAnimator
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.getLocation
-import com.waffiq.bazz_movies.utils.Helper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 

@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.domain.model.detail.ReleaseDateRegion
 import com.waffiq.bazz_movies.domain.model.detail.ReleaseDatesItem
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.utils.Helper
-import com.waffiq.bazz_movies.utils.Helper.convertRuntime
+import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.convertRuntime
 import com.waffiq.bazz_movies.utils.NetworkResult
 import com.waffiq.bazz_movies.utils.Status
 import kotlinx.coroutines.flow.Flow

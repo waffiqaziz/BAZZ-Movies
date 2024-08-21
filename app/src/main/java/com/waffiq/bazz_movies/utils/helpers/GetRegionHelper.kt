@@ -5,7 +5,7 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import java.util.TimeZone
 
-class GetRegionHelper {
+object GetRegionHelper {
   private fun getNetworkLocation(context: Context): String {
     val telMgr: TelephonyManager =
       context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager

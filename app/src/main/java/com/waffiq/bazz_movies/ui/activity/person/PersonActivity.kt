@@ -48,8 +48,8 @@ import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
-import com.waffiq.bazz_movies.utils.Helper.getAgeBirth
-import com.waffiq.bazz_movies.utils.Helper.getAgeDeath
+import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeBirth
+import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeDeath
 
 class PersonActivity : AppCompatActivity() {
 

@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.Helper.combinedLoadStatesHandle2
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.combinedLoadStatesHandle2
 
 class SearchFragment : Fragment() {
 

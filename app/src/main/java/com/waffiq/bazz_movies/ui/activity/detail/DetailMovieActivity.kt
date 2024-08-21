@@ -85,11 +85,11 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
-import com.waffiq.bazz_movies.utils.Helper.detailCrew
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.detailCrew
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
