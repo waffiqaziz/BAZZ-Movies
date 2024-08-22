@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.waffiq.bazz_movies.R.layout.custom_action_bar_title
+import com.waffiq.bazz_movies.R.id.action_bar_title
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
 import com.waffiq.bazz_movies.utils.common.Constants.BAZZ_MOVIES_LINK
@@ -21,8 +21,7 @@ class AboutActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     // setup action bar
-    @SuppressLint("InflateParams")
-    val actionBarTitleView = layoutInflater.inflate(custom_action_bar_title, null)
+    val actionBarTitleView = findViewById<View>(action_bar_title)
     supportActionBar?.apply {
       setDisplayShowCustomEnabled(true)
       setDisplayShowHomeEnabled(true)
