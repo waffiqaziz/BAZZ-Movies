@@ -32,7 +32,9 @@ import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.years_old
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
+import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
@@ -72,16 +74,18 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun getDataExtra() {
-    // check if intent hasExtra
-    if (intent.hasExtra(EXTRA_PERSON)) {
-      dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItemResponse::class.java)
-          ?: error("No DataExtra")
-      } else {
-        @Suppress("DEPRECATION")
-        intent.getParcelableExtra(EXTRA_PERSON) ?: error("No DataExtra")
-      }
-    } else finish()
+    // check if intent hasExtra for early return
+    if (!intent.hasExtra(DetailMovieActivity.EXTRA_MOVIE)) {
+      finish()
+      return
+    }
+
+    dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItemResponse::class.java)
+    } else {
+      @Suppress("DEPRECATION")
+      intent.getParcelableExtra(EXTRA_PERSON)
+    } ?: error("No DataExtra")
 
     binding.swipeRefresh.setOnRefreshListener {
       val i = Intent(this, PersonActivity::class.java)

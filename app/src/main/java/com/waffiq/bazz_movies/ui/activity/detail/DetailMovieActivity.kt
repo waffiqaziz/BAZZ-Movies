@@ -214,16 +214,18 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun getDataExtra() {
-    // check if intent hasExtra
-    if (intent.hasExtra(EXTRA_MOVIE)) {
-      dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java)
-          ?: error("No DataExtra")
-      } else {
-        @Suppress("DEPRECATION")
-        intent.getParcelableExtra(EXTRA_MOVIE) ?: error("No DataExtra")
-      }
-    } else finish()
+    // check if intent hasExtra for early return
+    if (!intent.hasExtra(EXTRA_MOVIE)) {
+      finish()
+      return
+    }
+
+    dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      intent.getParcelableExtra(EXTRA_MOVIE, ResultItem::class.java)
+    } else {
+      @Suppress("DEPRECATION")
+      intent.getParcelableExtra(EXTRA_MOVIE)
+    } ?: error("No DataExtra")
   }
 
   private fun showDetailData() {
