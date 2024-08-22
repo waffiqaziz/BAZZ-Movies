@@ -31,16 +31,26 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-          android:id="@+id/img_avatar"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
+        <androidx.cardview.widget.CardView
+          android:id="@+id/card_view"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
           android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:contentDescription="@string/image_profile"
+          app:cardCornerRadius="40dp"
           app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:src="@drawable/ic_bazz_logo" />
+          app:layout_constraintTop_toTopOf="parent">
+
+          <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/image_profile"
+            tools:src="@drawable/ic_bazz_logo" />
+
+        </androidx.cardview.widget.CardView>
+
 
         <LinearLayout
           android:id="@+id/linearLayout"
@@ -48,9 +58,9 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="16dp"
           android:orientation="vertical"
-          app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
-          app:layout_constraintStart_toEndOf="@+id/img_avatar"
-          app:layout_constraintTop_toTopOf="@+id/img_avatar">
+          app:layout_constraintBottom_toBottomOf="@+id/card_view"
+          app:layout_constraintStart_toEndOf="@+id/card_view"
+          app:layout_constraintTop_toTopOf="@+id/card_view">
 
           <TextView
             android:id="@+id/tv_fullName"
