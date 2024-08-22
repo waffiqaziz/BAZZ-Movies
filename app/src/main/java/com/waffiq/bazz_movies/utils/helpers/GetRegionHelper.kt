@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.utils.helpers
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
+import java.util.Locale
 import java.util.TimeZone
 
 object GetRegionHelper {
@@ -37,13 +38,17 @@ object GetRegionHelper {
     }
   }
 
-  @Suppress("DEPRECATION")
-  fun getLocation(context: Context): String {
 
+  fun getLocation(context: Context): String {
+    // Get network location or fallback to locale-based location
     return getNetworkLocation(context).ifEmpty {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        context.resources.configuration.locales.get(0).country.toString().lowercase()
-      } else context.resources.configuration.locale.country.toString().lowercase()
+      val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        context.resources.configuration.locales.get(0)
+      } else {
+        @Suppress("DEPRECATION")
+        context.resources.configuration.locale
+      }
+      locale.country.lowercase(Locale.getDefault())
     }
   }
 }
