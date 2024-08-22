@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.utils.helpers
 
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import com.waffiq.bazz_movies.utils.Helper
 import okio.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

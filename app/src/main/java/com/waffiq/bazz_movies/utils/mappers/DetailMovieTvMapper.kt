@@ -262,7 +262,7 @@ object DetailMovieTvMapper {
     listNetworksItem = networksResponse?.map { it?.toNetworksItem() },
     type = type,
     backdropPath = backdropPath,
-    listGenres = genres?.map { it?.toGenresItem() },
+    listGenres = genres?.map { it?.toGenresItem() ?: GenresItem() },
     popularity = popularity,
     listProductionCountriesItem = productionCountriesResponse?.map { it?.toProductionCountriesItem() },
     id = id,

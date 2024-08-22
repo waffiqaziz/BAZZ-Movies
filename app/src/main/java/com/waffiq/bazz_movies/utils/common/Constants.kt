@@ -8,6 +8,7 @@ object Constants {
   const val TABLE_NAME = "favorite"
   const val INITIAL_PAGE_INDEX = 1
   const val NUM_TABS = 2
+  const val SWIPE_THRESHOLD = 0.33f
 
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
@@ -32,7 +33,6 @@ object Constants {
     "https://www.freeprivacypolicy.com/live/e3b6a0d4-ea46-4a95-914b-4120b0e83e9c"
   const val PRIVACY_POLICY_LINK =
     "https://www.freeprivacypolicy.com/live/c2970550-3a80-4c6e-99bb-51d81bfcd628"
-  const val GMAIL_BAZZ_HELPER = "bazzmovies.help@gmail.com"
   const val FORM_HELPER =
     "https://docs.google.com/forms/d/e/1FAIpQLScHL8ElRS4bqSkA__lGX97AnuJ0unA1DRAryIrgc72kuWOg_g/viewform?usp=sf_link"
   const val FAQ_LINK =

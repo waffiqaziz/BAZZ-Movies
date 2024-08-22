@@ -313,19 +313,15 @@ class DetailMovieActivity : AppCompatActivity() {
         detailViewModel.detailMovie(dataExtra.id, user.region)
       }
 
-      // show TMDb score
-      detailViewModel.tmdbScore.observe(this) {
-        binding.tvScoreTmdb.text = it.ifEmpty { getString(not_available) }
-      }
-
-      detailViewModel.detailMovie.observe(this) { movie ->
+      detailViewModel.detailMovieTv.observe(this) { movie ->
         // copy genre id
         dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
 
         // show genre, duration, age rating, region release
         binding.tvGenre.text = movie.genre
         binding.tvDuration.text = movie.duration
-        binding.tvAgeRating.text = movie.ageRating
+        binding.tvScoreTmdb.text = movie.tmdbScore
+        binding.tvAgeRating.text = movie.ageRating ?: getString(not_available)
         if (movie.releaseDateRegion.regionRelease.isNotEmpty())
           binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
         else binding.tvRegionRelease.visibility = View.GONE
@@ -404,35 +400,19 @@ class DetailMovieActivity : AppCompatActivity() {
         adapterRecommendation.submitData(lifecycle, it)
       }
 
-
       // show genres & age rate
-      detailViewModel.detailTv(dataExtra.id)
-      detailViewModel.detailTv.observe(this) { tv ->
-        val temp = tv.listGenres?.map { it?.name }
-        val tempID = tv.listGenres?.map { it?.id ?: 0 }
-        if (tempID != null) dataExtra = dataExtra.copy(listGenreIds = tempID)
-        if (!temp.isNullOrEmpty()) binding.tvGenre.text = temp.joinToString(separator = ", ")
-        else binding.tvGenre.text = getString(not_available)
-
-        // tmdb score
-        binding.tvScoreTmdb.text =
-          if (tv.voteAverage == 0.0 || tv.voteAverage == null) getString(not_available)
-          else tv.voteAverage.toString()
-
-        // show runtime
-        binding.tvDuration.text = getString(status_, tv.status)
-
-        detailViewModel.ageRating.observe(this) {
-          binding.tvAgeRating.text =
-            if (it.isNotEmpty() && it.isNotBlank()) it else getString(not_available)
-        }
+      userPreferenceViewModel.getUserPref().observe(this) {
+        detailViewModel.detailTv(dataExtra.id, it.region)
       }
-    }
-
-    // show region release
-    detailViewModel.productionCountry.observe(this) {
-      if (it != null) binding.tvRegionRelease.text = it else binding.tvRegionRelease.visibility =
-        View.GONE
+      detailViewModel.detailMovieTv.observe(this) { tv ->
+        binding.tvGenre.text = tv.genre
+        binding.tvScoreTmdb.text = tv.tmdbScore
+        binding.tvDuration.text = getString(status_, tv.duration)
+        binding.tvAgeRating.text = tv.ageRating ?: getString(not_available)
+        if (tv.releaseDateRegion.regionRelease.isNotEmpty())
+          binding.tvRegionRelease.text = tv.releaseDateRegion.regionRelease
+        else binding.tvRegionRelease.visibility = View.GONE
+      }
     }
   }
 

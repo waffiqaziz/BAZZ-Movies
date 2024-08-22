@@ -15,7 +15,6 @@ import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
-import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
@@ -71,20 +70,8 @@ class DetailMovieViewModel(
   private var _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
-  private val _detailMovie = MutableLiveData<DetailMovieTvUsed>()
-  val detailMovie: LiveData<DetailMovieTvUsed> get() = _detailMovie
-
-  private val _detailTv = MutableLiveData<DetailTv>()
-  val detailTv: LiveData<DetailTv> get() = _detailTv
-
-  private val _productionCountry = MutableLiveData<String>()
-  val productionCountry: LiveData<String> get() = _productionCountry
-
-  private val _ageRating = MutableLiveData<String>()
-  val ageRating: LiveData<String> get() = _ageRating
-
-  private val _tmdbScore = MutableLiveData<String>()
-  val tmdbScore: LiveData<String> get() = _tmdbScore
+  private val _detailMovieTv = MutableLiveData<DetailMovieTvUsed>()
+  val detailMovieTv: LiveData<DetailMovieTvUsed> get() = _detailMovieTv
 
   private val _tvImdbID = MutableLiveData<String>()
   val tvImdbID: LiveData<String> get() = _tvImdbID
@@ -110,7 +97,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       getDetailMovieUseCase.getDetailMovie(id, userRegion).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _detailMovie.value = it }
+          Status.SUCCESS -> networkResult.data.let { _detailMovieTv.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
@@ -172,32 +159,11 @@ class DetailMovieViewModel(
     }
   }
 
-  fun detailTv(id: Int) {
+  fun detailTv(id: Int, userRegion: String) {
     viewModelScope.launch {
-      getDetailTvUseCase.getDetailTv(id).collect { networkResult ->
+      getDetailTvUseCase.getDetailTv(id, userRegion).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> {
-            if (networkResult.data != null) {
-              networkResult.data.let { _detailTv.value = it }
-              try { // get age rating
-                val productionCountry =
-                  networkResult.data.listProductionCountriesItem?.get(0)?.iso31661
-                _productionCountry.value = productionCountry ?: "N/A"
-                _ageRating.value =
-                  networkResult.data.contentRatingsResponse?.contentRatingsItemResponse?.filter {
-                    it?.iso31661 == "US" || it?.iso31661 == productionCountry
-                  }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-                    .replace(" ", "").replace(",", ", ")
-              } catch (e: NullPointerException) {
-                _ageRating.value = "N/A"
-                _productionCountry.value = "N/A"
-              } catch (e: IndexOutOfBoundsException) {
-                _ageRating.value = "N/A"
-                _productionCountry.value = "N/A"
-              }
-            }
-          }
-
+          Status.SUCCESS -> networkResult.data.let { _detailMovieTv.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false

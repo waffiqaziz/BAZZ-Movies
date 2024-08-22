@@ -1,4 +1,5 @@
 package com.waffiq.bazz_movies.utils
+
 import android.view.animation.AlphaAnimation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,44 +11,41 @@ class FadeInItemAnimator : DefaultItemAnimator() {
   private var currentRecyclerView: RecyclerView? = null
   private var pendingRecyclerViews: MutableList<RecyclerView> = mutableListOf()
 
-  override fun animateAdd(holder: RecyclerView.ViewHolder?): Boolean {
-    if (holder != null) {
-      val view = holder.itemView
-      val alphaAnimation = AlphaAnimation(0f, 1f).apply {
-        duration = 2000 // Adjust the duration as per your preference
-        fillAfter = true
-        setAnimationListener(object : android.view.animation.Animation.AnimationListener {
-          override fun onAnimationStart(animation: android.view.animation.Animation?) {
-            dispatchAddStarting(holder)
-          }
-
-          override fun onAnimationEnd(animation: android.view.animation.Animation?) {
-            dispatchAddFinished(holder)
-            if (currentRecyclerView == null) {
-              startNextAnimation()
-            }
-          }
-
-          override fun onAnimationRepeat(animation: android.view.animation.Animation?) {
-          }
-        })
-      }
-
-      // Start the animation immediately if there's no ongoing animation
-      if (currentRecyclerView == null) {
-        currentRecyclerView = holder.itemView.parent as? RecyclerView
-        view.startAnimation(alphaAnimation)
-      } else {
-        // Otherwise, queue the RecyclerView for animation
-        val recyclerView = holder.itemView.parent as? RecyclerView
-        if (recyclerView != null && recyclerView != currentRecyclerView) {
-          pendingRecyclerViews.add(recyclerView)
+  override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
+    val view = holder.itemView
+    val alphaAnimation = AlphaAnimation(0f, 1f).apply {
+      duration = 2000 // Adjust the duration as per your preference
+      fillAfter = true
+      setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+        override fun onAnimationStart(animation: android.view.animation.Animation?) {
+          dispatchAddStarting(holder)
         }
-      }
 
-      return true
+        override fun onAnimationEnd(animation: android.view.animation.Animation?) {
+          dispatchAddFinished(holder)
+          if (currentRecyclerView == null) {
+            startNextAnimation()
+          }
+        }
+
+        override fun onAnimationRepeat(animation: android.view.animation.Animation?) {
+        }
+      })
     }
-    return super.animateAdd(holder)
+
+    // Start the animation immediately if there's no ongoing animation
+    if (currentRecyclerView == null) {
+      currentRecyclerView = holder.itemView.parent as? RecyclerView
+      view.startAnimation(alphaAnimation)
+    } else {
+      // Otherwise, queue the RecyclerView for animation
+      val recyclerView = holder.itemView.parent as? RecyclerView
+      if (recyclerView != null && recyclerView != currentRecyclerView) {
+        pendingRecyclerViews.add(recyclerView)
+      }
+    }
+
+    return true
   }
 
   private fun startNextAnimation() {

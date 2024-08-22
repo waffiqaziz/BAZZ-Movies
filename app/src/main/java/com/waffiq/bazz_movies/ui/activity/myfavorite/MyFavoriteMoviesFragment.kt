@@ -2,9 +2,6 @@ package com.waffiq.bazz_movies.ui.activity.myfavorite
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -42,6 +39,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarWarning
@@ -107,8 +105,6 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun initAction(isLogin: Boolean) {
     val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-      private val clearPaint =
-        Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
       override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -164,48 +160,30 @@ class MyFavoriteMoviesFragment : Fragment() {
         val background = ColorDrawable()
         val itemView = viewHolder.itemView
         val itemHeight = itemView.bottom - itemView.top
-        val isCanceled = dX == 0f && !isCurrentlyActive
 
-        if (isCanceled) {
-          clearCanvas(
-            c,
-            itemView.right + dX,
-            itemView.top.toFloat(),
-            itemView.right.toFloat(),
-            itemView.bottom.toFloat()
-          )
-          super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-          return
-        }
-
-        if (dX > 0) { // swipe left to delete item
-          val editIcon =
+        if (dX > 0) { // swipe right to delete item
+          val deleteIcon =
             ContextCompat.getDrawable(requireContext(), ic_trash) ?: error("No icon Found")
-          val intrinsicWidth = editIcon.intrinsicWidth
-          val intrinsicHeight = editIcon.intrinsicHeight
+          val intrinsicWidth = deleteIcon.intrinsicWidth
+          val intrinsicHeight = deleteIcon.intrinsicHeight
 
-          // draw the red background
           background.color = ContextCompat.getColor(requireContext(), red_matte)
-          background.setBounds(itemView.left, itemView.top, dX.toInt() + 10, itemView.bottom)
+          background.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
           background.draw(c)
 
-          // calculate position of delete icon
           val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-          val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
-          val deleteIconLeft = itemView.left + deleteIconMargin
+          val deleteIconLeft = itemView.left + (itemHeight - intrinsicHeight) / 2
           val deleteIconRight = deleteIconLeft + intrinsicWidth
           val deleteIconBottom = deleteIconTop + intrinsicHeight
 
-          // Draw the delete icon
-          editIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-          editIcon.draw(c)
-        } else {  // swipe right to add to watchlist
+          deleteIcon.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+          deleteIcon.draw(c)
+        } else if (dX < 0) { // swipe left to add to watchlist
           val watchlistIcon =
             ContextCompat.getDrawable(requireContext(), ic_bookmark_dark) ?: error("No Icon Found")
           val intrinsicWidth = watchlistIcon.intrinsicWidth
           val intrinsicHeight = watchlistIcon.intrinsicHeight
 
-          // draw the delete background
           background.color = ContextCompat.getColor(requireContext(), yellow)
           background.setBounds(
             itemView.right + dX.toInt(),
@@ -215,14 +193,12 @@ class MyFavoriteMoviesFragment : Fragment() {
           )
           background.draw(c)
 
-          // calculate position of delete icon
           val watchlistIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-          val watchlistIconMargin = (itemHeight - intrinsicHeight) / 2
-          val watchlistIconLeft = itemView.right - watchlistIconMargin - intrinsicWidth
+          val watchlistIconLeft =
+            itemView.right - (itemHeight - intrinsicHeight) / 2 - intrinsicWidth
           val watchlistIconRight = watchlistIconLeft + intrinsicWidth
           val watchlistIconBottom = watchlistIconTop + intrinsicHeight
 
-          // draw the delete icon
           watchlistIcon.setBounds(
             watchlistIconLeft,
             watchlistIconTop,
@@ -235,8 +211,8 @@ class MyFavoriteMoviesFragment : Fragment() {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
       }
 
-      private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
-        c?.drawRect(left, top, right, bottom, clearPaint)
+      override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+        return Constants.SWIPE_THRESHOLD
       }
     })
 
