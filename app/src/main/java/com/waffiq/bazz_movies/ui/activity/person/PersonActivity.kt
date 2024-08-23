@@ -30,9 +30,9 @@ import com.waffiq.bazz_movies.R.layout.dialog_image
 import com.waffiq.bazz_movies.R.string.no_biography
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.years_old
+import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
-import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
@@ -75,7 +75,7 @@ class PersonActivity : AppCompatActivity() {
 
   private fun getDataExtra() {
     // check if intent hasExtra for early return
-    if (!intent.hasExtra(DetailMovieActivity.EXTRA_MOVIE)) {
+    if (!intent.hasExtra(EXTRA_PERSON)) {
       finish()
       return
     }
@@ -127,7 +127,7 @@ class PersonActivity : AppCompatActivity() {
       LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     binding.rvPhotos.adapter = adapterImage
 
-    binding.tvName.text = dataExtra.name ?: dataExtra.originalName
+    binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
     Glide.with(binding.ivPicture)
       .load(
         if (!dataExtra.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
