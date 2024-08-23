@@ -319,19 +319,28 @@ class DetailMovieActivity : AppCompatActivity() {
         // copy genre id
         dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
 
-        // show genre, duration, age rating, region release
-        binding.tvGenre.text = movie.genre
-        binding.tvDuration.text = movie.duration
-        binding.tvScoreTmdb.text = movie.tmdbScore
-        binding.tvAgeRating.text = movie.ageRating ?: getString(not_available)
-        if (movie.releaseDateRegion.regionRelease.isNotEmpty())
+        // show genre, duration, age rating
+        binding.tvGenre.text = movie.genre ?: getString(not_available)
+        binding.tvDuration.text = movie.duration ?: getString(not_available)
+        binding.tvScoreTmdb.text = movie.tmdbScore ?: getString(not_available)
+
+        // set age rating
+        if (!movie.ageRating.isNullOrEmpty()) {
+          showViewAgeRating(true)
+          binding.tvAgeRating.text = movie.ageRating
+        } else showViewAgeRating(false)
+
+        // set region release
+        if (movie.releaseDateRegion.regionRelease.isNotEmpty()) {
+          showViewRegionDate(true)
           binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
-        else binding.tvRegionRelease.visibility = View.GONE
+        } else showViewRegionDate(false)
 
         // set date release based on user region
-        if (movie.releaseDateRegion.releaseDate.isNotEmpty())
+        if (movie.releaseDateRegion.releaseDate.isNotEmpty()) {
+          showViewReleaseDate(true)
           binding.tvYearReleased.text = movie.releaseDateRegion.releaseDate
-        else binding.tvYearReleased.visibility = View.GONE
+        } else showViewReleaseDate(false)
 
         // show OMDb detail (score)
         if (movie.imdbId != null) {
@@ -407,10 +416,15 @@ class DetailMovieActivity : AppCompatActivity() {
         detailViewModel.detailTv(dataExtra.id, it.region)
       }
       detailViewModel.detailMovieTv.observe(this) { tv ->
-        binding.tvGenre.text = tv.genre
-        binding.tvScoreTmdb.text = tv.tmdbScore
-        binding.tvDuration.text = getString(status_, tv.duration)
-        binding.tvAgeRating.text = tv.ageRating ?: getString(not_available)
+        binding.tvGenre.text = tv.genre ?: getString(not_available)
+        binding.tvScoreTmdb.text = tv.tmdbScore ?: getString(not_available)
+        binding.tvDuration.text =
+          if (tv.duration.isNullOrEmpty()) getString(not_available)
+          else getString(status_, tv.duration)
+        if (!tv.ageRating.isNullOrEmpty()) {
+          showViewAgeRating(true)
+          binding.tvAgeRating.text = tv.ageRating
+        } else showViewAgeRating(false)
         if (tv.releaseDateRegion.regionRelease.isNotEmpty())
           binding.tvRegionRelease.text = tv.releaseDateRegion.regionRelease
         else binding.tvRegionRelease.visibility = View.GONE
@@ -675,7 +689,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
 
-  // toast, snackbar, dialog, trailer
+  // region toast, snackbar, dialog
   private fun showToastAddedFavorite() {
     showToast(getString(item_added_to_favorite))
   }
@@ -756,10 +770,25 @@ class DetailMovieActivity : AppCompatActivity() {
     snackBar.show()
   }
 
-  private fun hideTrailer(hide: Boolean) {
-    binding.ibPlay.isVisible = !hide
+  private fun errorStateObserver() {
+    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
   }
 
+  private fun showToast(text: String) {
+    // cancel toast is there's available
+    toast?.cancel()
+
+    toast = Toast.makeText(
+      this, HtmlCompat.fromHtml(
+        text, HtmlCompat.FROM_HTML_MODE_LEGACY
+      ), Toast.LENGTH_SHORT
+    )
+    toast?.show()
+  }
+  // endregion toast, snackbar, dialog
+
+
+  // region MOVIE VIEW HANDLER
   private fun animFadeOut() {
     val animation = animFadeOutLong(this)
     if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
@@ -781,11 +810,38 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun errorStateObserver() {
-    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
+  private fun hideTrailer(hide: Boolean) {
+    binding.ibPlay.isVisible = !hide
   }
 
-  // credits table
+  private fun showViewAgeRating(isShow: Boolean) {
+    if (isShow) {
+      binding.tvAgeRating.visibility = View.VISIBLE
+      binding.divider2.visibility = View.VISIBLE
+    } else {
+      binding.tvAgeRating.visibility = View.GONE
+      binding.divider2.visibility = View.GONE
+    }
+  }
+
+  private fun showViewRegionDate(isShow: Boolean) {
+    if (isShow) binding.tvRegionRelease.visibility = View.VISIBLE
+    else binding.tvRegionRelease.visibility = View.GONE
+  }
+
+  private fun showViewReleaseDate(isShow: Boolean) {
+    if (isShow) {
+      binding.tvYearReleased.visibility = View.VISIBLE
+      binding.divider1.visibility = View.VISIBLE
+    } else {
+      binding.tvYearReleased.visibility = View.GONE
+      binding.divider1.visibility = View.GONE
+    }
+  }
+  // endregion MOVIE VIEW HANDLER
+
+
+  // region TABLE
   private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {
     val (job, crewName) = pair
 
@@ -830,18 +886,8 @@ class DetailMovieActivity : AppCompatActivity() {
     textView.setTextColor(ActivityCompat.getColor(this, gray_100))
     return textView
   }
+  // endregion TABLE
 
-  private fun showToast(text: String) {
-    // cancel toast is there's available
-    toast?.cancel()
-
-    toast = Toast.makeText(
-      this, HtmlCompat.fromHtml(
-        text, HtmlCompat.FROM_HTML_MODE_LEGACY
-      ), Toast.LENGTH_SHORT
-    )
-    toast?.show()
-  }
 
   override fun onDestroy() {
     super.onDestroy()

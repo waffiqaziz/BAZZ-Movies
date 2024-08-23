@@ -18,6 +18,8 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesItemValueResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ContentRatingsItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.CreatedByItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.NetworksItemResponse
@@ -39,6 +41,8 @@ import com.waffiq.bazz_movies.domain.model.detail.ReleaseDatesItemValue
 import com.waffiq.bazz_movies.domain.model.detail.SpokenLanguagesItem
 import com.waffiq.bazz_movies.domain.model.detail.Video
 import com.waffiq.bazz_movies.domain.model.detail.VideoItem
+import com.waffiq.bazz_movies.domain.model.detail.tv.ContentRatings
+import com.waffiq.bazz_movies.domain.model.detail.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.CreatedByItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.domain.model.detail.tv.NetworksItem
@@ -283,13 +287,23 @@ object DetailMovieTvMapper {
     name = name,
     tagline = tagline,
     listEpisodeRunTime = episodeRunTime,
-    contentRatingsResponse = contentRatingsResponse,
+    contentRatings = contentRatingsResponse?.toContentRatings(),
     adult = adult,
     nextEpisodeToAir = nextEpisodeToAir,
     inProduction = inProduction,
     lastAirDate = lastAirDate,
     homepage = homepage,
     status = status,
+  )
+
+  private fun ContentRatingsResponse.toContentRatings() = ContentRatings(
+    contentRatingsItem = contentRatingsItemResponse?.map { it?.toContentRatingsItem() }
+  )
+
+  private fun ContentRatingsItemResponse.toContentRatingsItem() = ContentRatingsItem(
+    descriptors = descriptors,
+    iso31661 = iso31661,
+    rating = rating,
   )
 
   private fun NetworksItemResponse.toNetworksItem() = NetworksItem(

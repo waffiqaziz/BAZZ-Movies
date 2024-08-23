@@ -190,7 +190,7 @@
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:layout_marginBottom="8dp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toTopOf="@+id/tv_year_released"
+            app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/iv_poster"

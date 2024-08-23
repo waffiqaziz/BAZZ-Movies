@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.domain.model.detail.tv
 
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.domain.model.detail.GenresItem
 import com.waffiq.bazz_movies.domain.model.detail.ProductionCompaniesItem
 import com.waffiq.bazz_movies.domain.model.detail.ProductionCountriesItem
@@ -33,7 +32,7 @@ data class DetailTv(
   val name: String? = null,
   val tagline: String? = null,
   val listEpisodeRunTime: List<Int?>? = null,
-  val contentRatingsResponse: ContentRatingsResponse? = null,
+  val contentRatings: ContentRatings? = null,
   val adult: Boolean? = null,
   val nextEpisodeToAir: Any? = null,
   val inProduction: Boolean? = null,

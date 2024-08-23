@@ -6,7 +6,8 @@ import com.waffiq.bazz_movies.domain.model.detail.GenresItem
 import com.waffiq.bazz_movies.domain.model.detail.ReleaseDateRegion
 import com.waffiq.bazz_movies.domain.model.detail.ReleaseDatesItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
-import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterISO8601
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 
 object DetailPageHelper {
   private fun convertRuntime(t: Int): String {
@@ -87,6 +88,7 @@ object DetailPageHelper {
     return job to name
   }
 
+  // region CALCULATE AGE RATING MOVIE
   fun getAgeRating(
     data: DetailMovie?,
     userRegion: String,
@@ -96,17 +98,33 @@ object DetailPageHelper {
     val certification = getTransformAgeRatingMovie(data, userRegion)
 
     // if certification return empty, get age rating from US as default
-    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingMovie(data, "US")
+    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingMovie(data, "false")
   }
 
   private fun getTransformAgeRatingMovie(data: DetailMovie?, region: String): String {
-    return data?.releaseDates?.listReleaseDatesItem
-      ?.find { it?.iso31661 == region }
-      ?.listReleaseDatesitemValue
-      ?.find { it.certification?.isNotEmpty() == true }
-      ?.certification ?: ""
+    return if (region != "false") {
+      data?.releaseDates?.listReleaseDatesItem
+        ?.find { it?.iso31661 == region }
+        ?.let { regionItem ->
+          regionItem.listReleaseDatesitemValue
+            ?.find { it.certification?.isNotEmpty() == true }
+            ?.certification
+        } ?: ""
+
+    } else {
+      data?.releaseDates?.listReleaseDatesItem
+        ?.asSequence() // Convert to sequence for lazy evaluation
+        ?.flatMap {
+          it?.listReleaseDatesitemValue?.asSequence() ?: emptySequence()
+        } // Flatten the list of release dates
+        ?.find { it.certification?.isNotEmpty() == true } // Find the first non-null and non-empty certification
+        ?.certification ?: ""
+    }
   }
 
+  // endregion CALCULATE AGE RATING MOVIE
+
+  // region CALCULATE AGE RATING TV
   fun getAgeRating(
     data: DetailTv?,
     userRegion: String,
@@ -115,59 +133,92 @@ object DetailPageHelper {
     // get age rating based on region
     val certification = getTransformAgeRatingTv(data, userRegion)
 
-    // if certification return empty, get age rating from US as default
-    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingTv(data, "US")
+    // if certification return empty, get age rating from others
+    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingTv(data, "false")
   }
 
-  private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String {
-    return data?.contentRatingsResponse?.contentRatingsItemResponse?.filter {
-      it?.iso31661 == "US" || it?.iso31661 == region
-    }?.map { it?.rating }.toString().replace("[", "").replace("]", "")
-      .replace(" ", "").replace(",", ", ")
-  }
-
-  fun getReleaseDateRegion(data: DetailMovie?, userRegion: String): ReleaseDateRegion {
-    /* match between release date and region
-       Step 1. Check if release date and region is matching
-       Step 2. If matching return as should be, if not get release date based region US
-    */
-    val isMatch = matchRegionAndReleaseDate(data, userRegion)
-
-    return if (isMatch) {
-      ReleaseDateRegion(
-        regionRelease = userRegion,
-        releaseDate = Helper.dateFormatterISO8601(
-          getTransformReleaseDate(data?.releaseDates?.listReleaseDatesItem, userRegion)
-        )
-      )
+  private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String =
+    if (region != "false") {
+      data?.contentRatings?.contentRatingsItem
+        ?.filter { it?.iso31661 == "US" || it?.iso31661 == region } // Filter by US or specific region
+        ?.mapNotNull { contentRatingsItem -> // Map to ratings and exclude empty/null values
+          contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
+        }
+        ?.joinToString(separator = ", ") ?: ""
     } else {
-      ReleaseDateRegion(
-        regionRelease = "US",
-        releaseDate = Helper.dateFormatterISO8601(
-          getTransformReleaseDate(data?.releaseDates?.listReleaseDatesItem, "US")
-        )
+      data?.contentRatings?.contentRatingsItem
+        ?.mapNotNull { contentRatingsItem ->  // Map to ratings and exclude empty/null values
+          contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
+        }
+        ?.joinToString(separator = ", ") ?: ""
+    }
+  // endregion CALCULATE AGE RATING TV
+
+  // region GET REGION AND RELEASE DATE
+  fun getReleaseDateRegion(data: DetailMovie?, userRegion: String): ReleaseDateRegion {
+    // Step 1: Check if user region matches
+    val userRegionAndDate =
+      getMatchingRegionAndReleaseDate(data?.releaseDates?.listReleaseDatesItem, userRegion)
+
+    if (userRegionAndDate != null) {
+      return ReleaseDateRegion(
+        regionRelease = userRegionAndDate.first,
+        releaseDate = dateFormatterISO8601(userRegionAndDate.second)
       )
     }
+
+    // Step 2: Fallback to production country and its release date
+    val productionCountryRegionAndDate = ReleaseDateRegion(
+      regionRelease = data?.listProductionCountriesItem?.firstOrNull { !it?.iso31661.isNullOrEmpty() }?.iso31661
+        ?: "",
+      releaseDate = dateFormatterStandard(data?.releaseDate)
+    )
+
+    if (productionCountryRegionAndDate.releaseDate.isNotEmpty() && productionCountryRegionAndDate.regionRelease.isNotEmpty()) {
+      return productionCountryRegionAndDate
+    }
+
+    // Step 3: Fallback to any valid region and release date
+    val fallback = getAnyValidRegionAndReleaseDate(data?.releaseDates?.listReleaseDatesItem)
+    return ReleaseDateRegion(
+      regionRelease = fallback.first,
+      releaseDate = dateFormatterISO8601(fallback.second)
+    )
   }
 
-  private fun matchRegionAndReleaseDate(data: DetailMovie?, userRegion: String): Boolean {
-    val releaseDate =
-      getTransformReleaseDate(data?.releaseDates?.listReleaseDatesItem, userRegion).isNotEmpty()
-    val region =
-      getTransformRegion(data?.releaseDates?.listReleaseDatesItem, userRegion).isNotEmpty()
-
-    return releaseDate && region
+  private fun getMatchingRegionAndReleaseDate(
+    data: List<ReleaseDatesItem?>?,
+    region: String
+  ): Pair<String, String>? {
+    return data?.firstOrNull { isValidRegionAndReleaseDate(it, region) }
+      ?.let {
+        Pair(
+          it.iso31661 ?: "",
+          it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: ""
+        )
+      }
   }
 
-  private fun getTransformReleaseDate(data: List<ReleaseDatesItem?>?, region: String): String =
-    data?.find { it?.iso31661 == region }
-      ?.listReleaseDatesitemValue
-      ?.firstOrNull()
-      ?.releaseDate
-      ?: ""
+  private fun getAnyValidRegionAndReleaseDate(data: List<ReleaseDatesItem?>?): Pair<String, String> {
+    return data?.firstOrNull { isValidRegionAndReleaseDate(it) }
+      ?.let {
+        Pair(
+          it.iso31661 ?: "",
+          it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: ""
+        )
+      }
+      ?: Pair("", "")
+  }
 
-  private fun getTransformRegion(data: List<ReleaseDatesItem?>?, region: String): String =
-    data?.find { it?.iso31661 == region }?.iso31661 ?: ""
+  private fun isValidRegionAndReleaseDate(
+    item: ReleaseDatesItem?,
+    region: String? = null
+  ): Boolean {
+    return item?.iso31661 != null &&
+      (region == null || item.iso31661 == region) &&
+      item.listReleaseDatesitemValue?.any { !it.releaseDate.isNullOrEmpty() } == true
+  }
+  // endregion GET REGION AND RELEASE DATE
 
   fun getTransformGenreName(list: List<GenresItem>?): String? =
     list?.map { it.name }?.joinToString(separator = ", ")
