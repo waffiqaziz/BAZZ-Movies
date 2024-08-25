@@ -3,18 +3,19 @@ package com.waffiq.bazz_movies.ui.activity.detail
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.text.LineBreaker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Layout
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -33,7 +34,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -41,9 +41,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.gray
 import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
@@ -85,6 +83,8 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
+import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
+import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
@@ -93,6 +93,7 @@ import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.detailCrew
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
+
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -128,41 +129,19 @@ class DetailMovieActivity : AppCompatActivity() {
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
-    scrollActionBarBehavior()
+    @Suppress("WrongConstant")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      binding.tvOverview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      binding.tvOverview.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
+    }
+
+    transparentStatusBar(window)
+    scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
     loadData()
     favWatchlistHandler()
     viewListener()
   }
-
-  // region SCROLL BEHAVIOR
-  private fun scrollActionBarBehavior() {
-    val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
-    val toColor = ContextCompat.getColor(this, gray)
-    binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-      val maxScroll =
-        binding.nestedScrollView.getChildAt(0).height - binding.nestedScrollView.height
-      animateColorChange(
-        binding.appBarLayout,
-        fromColor,
-        toColor,
-        percentage = scrollY.toFloat() / maxScroll.toFloat()
-      )
-    })
-  }
-
-  private fun animateColorChange(
-    appBarLayout: AppBarLayout, fromColor: Int, toColor: Int, percentage: Float
-  ) {
-    // Calculate the adjusted progress based on the percentage scrolled
-    val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
-
-    // Calculate the interpolated color based on the adjusted progress
-    val interpolatedColor = ArgbEvaluator().evaluate(adjustedProgress, fromColor, toColor) as Int
-
-    // Set the interpolated color as the background color of the AppBarLayout
-    appBarLayout.setBackgroundColor(interpolatedColor)
-  }
-  // endregion SCROLL BEHAVIOR
 
   private fun favWatchlistHandler() {
     detailViewModel.postModelState.observe(this) { eventResult ->
@@ -178,8 +157,6 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
     }
-
-
   }
 
   private fun loadData() {
@@ -236,6 +213,7 @@ class DetailMovieActivity : AppCompatActivity() {
         else if (!dataExtra.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
         else ic_backdrop_error_filled,
       ).placeholder(ic_bazz_placeholder_search)
+      .optionalCenterCrop()
       .error(ic_backdrop_error_filled)
       .into(binding.ivPictureBackdrop)
 
@@ -252,7 +230,7 @@ class DetailMovieActivity : AppCompatActivity() {
     if (dataExtra.posterPath.isNullOrEmpty()) binding.tvBackdropNotFound.visibility = View.VISIBLE
     else binding.tvBackdropNotFound.visibility = View.GONE
 
-    // show data (title, released year, media type, and overview)
+    // show data (title, released year, media type, and overview) based DATA_EXTRA
     binding.apply {
       dataExtra.apply {
         tvTitle.text = name ?: title ?: originalTitle ?: originalName
@@ -319,7 +297,7 @@ class DetailMovieActivity : AppCompatActivity() {
         // copy genre id
         dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
 
-        // show genre, duration, age rating
+        // show genre, duration, tmdb score
         binding.tvGenre.text = movie.genre ?: getString(not_available)
         binding.tvDuration.text = movie.duration ?: getString(not_available)
         binding.tvScoreTmdb.text = movie.tmdbScore ?: getString(not_available)
@@ -332,9 +310,9 @@ class DetailMovieActivity : AppCompatActivity() {
 
         // set region release
         if (movie.releaseDateRegion.regionRelease.isNotEmpty()) {
-          showViewRegionDate(true)
+          showViewRegionReleaseDate(true)
           binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
-        } else showViewRegionDate(false)
+        } else showViewRegionReleaseDate(false)
 
         // set date release based on user region
         if (movie.releaseDateRegion.releaseDate.isNotEmpty()) {
@@ -416,18 +394,29 @@ class DetailMovieActivity : AppCompatActivity() {
         detailViewModel.detailTv(dataExtra.id, it.region)
       }
       detailViewModel.detailMovieTv.observe(this) { tv ->
+
+        // genre and tmdb score
         binding.tvGenre.text = tv.genre ?: getString(not_available)
         binding.tvScoreTmdb.text = tv.tmdbScore ?: getString(not_available)
+
+        // status
         binding.tvDuration.text =
           if (tv.duration.isNullOrEmpty()) getString(not_available)
           else getString(status_, tv.duration)
+
+        // age rating
         if (!tv.ageRating.isNullOrEmpty()) {
           showViewAgeRating(true)
           binding.tvAgeRating.text = tv.ageRating
         } else showViewAgeRating(false)
-        if (tv.releaseDateRegion.regionRelease.isNotEmpty())
-          binding.tvRegionRelease.text = tv.releaseDateRegion.regionRelease
-        else binding.tvRegionRelease.visibility = View.GONE
+
+        // release date
+        if (tv.releaseDateRegion.regionRelease.isNotEmpty()) {
+          showViewReleaseDate(true)
+          binding.tvYearReleased.text = tv.releaseDateRegion.regionRelease
+        } else showViewReleaseDate(false)
+
+        showViewRegionReleaseDate(false)
       }
     }
   }
@@ -824,7 +813,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun showViewRegionDate(isShow: Boolean) {
+  private fun showViewRegionReleaseDate(isShow: Boolean) {
     if (isShow) binding.tvRegionRelease.visibility = View.VISIBLE
     else binding.tvRegionRelease.visibility = View.GONE
   }

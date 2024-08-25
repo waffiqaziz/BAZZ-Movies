@@ -1,10 +1,19 @@
 package com.waffiq.bazz_movies.utils
 
+import android.animation.ArgbEvaluator
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
+import android.view.View
+import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.widget.NestedScrollView
+import com.google.android.material.appbar.AppBarLayout
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.domain.model.detail.Video
 import com.waffiq.bazz_movies.domain.model.search.KnownForItem
 import java.time.ZonedDateTime
@@ -158,4 +167,51 @@ object Helper {
     return temp
   }
   // endregion GENRE
+
+  @Suppress("DEPRECATION")
+  fun transparentStatusBar(window: Window) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      window.setDecorFitsSystemWindows(false)
+    } else {
+      // This flag is deprecated in API 30 (Android R), but necessary for older versions
+      window.decorView.systemUiVisibility =
+        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    }
+    window.statusBarColor = Color.TRANSPARENT
+  }
+
+  // region NESTED SCROLL VIEW BEHAVIOR
+  fun scrollActionBarBehavior(
+    context: Context,
+    appBarLayout: AppBarLayout,
+    nestedScrollView: NestedScrollView
+  ) {
+    val fromColor = ContextCompat.getColor(context, android.R.color.transparent)
+    val toColor = ContextCompat.getColor(context, R.color.gray)
+
+    nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+      val maxScroll =
+        nestedScrollView.getChildAt(0).height - nestedScrollView.height
+      animateColorChange(
+        appBarLayout,
+        fromColor,
+        toColor,
+        percentage = scrollY.toFloat() / maxScroll.toFloat()
+      )
+    })
+  }
+
+  private fun animateColorChange(
+    appBarLayout: AppBarLayout, fromColor: Int, toColor: Int, percentage: Float
+  ) {
+    // Calculate the adjusted progress based on the percentage scrolled
+    val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
+
+    // Calculate the interpolated color based on the adjusted progress
+    val interpolatedColor = ArgbEvaluator().evaluate(adjustedProgress, fromColor, toColor) as Int
+
+    // Set the interpolated color as the background color of the AppBarLayout
+    appBarLayout.setBackgroundColor(interpolatedColor)
+  }
+  // endregion NESTED SCROLL VIEW BEHAVIOR
 }

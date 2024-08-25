@@ -4,11 +4,13 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.text.LineBreaker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Layout
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
@@ -29,16 +31,19 @@ import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
 import com.waffiq.bazz_movies.R.string.no_biography
 import com.waffiq.bazz_movies.R.string.no_data
-import com.waffiq.bazz_movies.R.string.years_old
 import com.waffiq.bazz_movies.R.string.not_available
+import com.waffiq.bazz_movies.R.string.years_old
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
-import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
+import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
+import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
+import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.INSTAGRAM_LINK
@@ -48,8 +53,6 @@ import com.waffiq.bazz_movies.utils.common.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
-import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeBirth
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeDeath
 
@@ -67,6 +70,15 @@ class PersonActivity : AppCompatActivity() {
     val factory = ViewModelFactory.getInstance(this)
     personMovieViewModel = ViewModelProvider(this, factory)[PersonMovieViewModel::class.java]
 
+    @Suppress("WrongConstant")
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      binding.tvBiography.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      binding.tvBiography.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
+    }
+
+    transparentStatusBar(window)
+    scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollViewPerson)
     showLoading(true)
     getDataExtra()
     showData()

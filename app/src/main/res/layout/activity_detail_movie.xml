@@ -20,6 +20,7 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:fitsSystemWindows="true"
       app:contentInsetLeft="0dp"
       app:contentInsetStart="0dp">
 
@@ -117,13 +118,13 @@
           <ImageView
             android:id="@+id/iv_picture_backdrop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="270dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/poster"
+            android:fitsSystemWindows="false"
             android:foreground="@drawable/bg_gradient_shape"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_height="250dp"
             tools:src="@drawable/ic_backdrop_error_filled" />
 
           <TextView
@@ -147,7 +148,6 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="50dp"
-
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_picture_backdrop"
             app:layout_constraintEnd_toEndOf="@+id/iv_picture_backdrop"
@@ -441,7 +441,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
             android:layout_marginTop="8dp"
-            android:justificationMode="inter_word"
             app:collapsedLines="3"
             app:ellipsizeTextColor="@color/yellow"
             app:expandType="layout"
