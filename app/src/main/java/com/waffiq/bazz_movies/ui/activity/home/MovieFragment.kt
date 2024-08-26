@@ -7,7 +7,6 @@ import android.os.Looper.getMainLooper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -16,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -28,8 +25,10 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.FadeInItemAnimator
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -161,7 +160,12 @@ class MovieFragment : Fragment() {
       }
       errorState?.let {
         val errorMessage = pagingErrorHandling(it.error)
-        showSnackBarNoAction(errorMessage)
+        SnackBarManager.snackBarWarning(
+          requireContext(),
+          binding.root,
+          binding.guideSnackbar,
+          Event(errorMessage)
+        )
       }
     }
   }
@@ -184,14 +188,6 @@ class MovieFragment : Fragment() {
     } else animationFadeOut()
   }
 
-  private fun showSnackBarNoAction(message: String) {
-    val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-      .setAnchorView(binding.guideSnackbar)
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
-    if (message.isNotEmpty()) snackBar.show()
-  }
 
   override fun onDestroyView() {
     super.onDestroyView()

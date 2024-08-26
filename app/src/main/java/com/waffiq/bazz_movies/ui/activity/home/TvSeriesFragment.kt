@@ -20,7 +20,9 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 
 class TvSeriesFragment : Fragment() {
 
@@ -116,7 +118,12 @@ class TvSeriesFragment : Fragment() {
       }
       errorState?.let {
         val errorMessage = pagingErrorHandling(it.error)
-        showSnackBarNoAction(errorMessage)
+        SnackBarManager.snackBarWarning(
+          requireContext(),
+          binding.root,
+          binding.guideSnackbar,
+          Event(errorMessage)
+        )
       }
     }
   }

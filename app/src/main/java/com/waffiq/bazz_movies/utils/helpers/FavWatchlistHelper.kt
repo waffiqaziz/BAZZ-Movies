@@ -16,25 +16,6 @@ object FavWatchlistHelper {
     return item.name ?: item.title ?: item.originalTitle ?: "Item"
   }
 
-  fun snackBarWarning(
-    context: Context,
-    view: View,
-    guideView: View,
-    eventMessage: Event<String>
-  ): Snackbar? {
-    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() } ?: return null
-
-    if (view.isAttachedToWindow) {
-      val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-        .setAnchorView(guideView)
-
-      mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
-      mSnackbar.show()
-      return mSnackbar
-    }
-    return null
-  }
-
   fun snackBarAlreadyWatchlist(
     context: Context,
     view: View,

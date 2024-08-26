@@ -42,9 +42,9 @@ import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
-import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarWarning
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.combinedLoadStatesHandle2
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.result_state.DbResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
