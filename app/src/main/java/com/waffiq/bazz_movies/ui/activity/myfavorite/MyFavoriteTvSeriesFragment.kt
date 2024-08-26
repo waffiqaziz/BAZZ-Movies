@@ -255,12 +255,12 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavTv.visibility = View.VISIBLE
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       } else {
-        binding.rvFavTv.visibility = View.INVISIBLE
+        binding.rvFavTv.visibility = View.GONE
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
-      binding.progressBar.visibility = View.INVISIBLE
+      binding.progressBar.visibility = View.GONE
     }
   }
 
@@ -288,9 +288,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
     }
     adapterPaging.addLoadStateListener {
-      // error handle
       mSnackbar = snackBarWarning(
-        requireActivity(),
+        requireContext(),
         binding.root,
         binding.guideSnackbar,
         Event(combinedLoadStatesHandle2(it))
@@ -303,7 +302,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       ) { // show empty view
         binding.illustrationNoDataView.containerNoData.isVisible = true
       } else { // hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       }
 
       binding.progressBar.isVisible =

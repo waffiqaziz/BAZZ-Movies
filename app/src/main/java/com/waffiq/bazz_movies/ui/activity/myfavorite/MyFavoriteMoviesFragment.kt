@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -255,12 +256,12 @@ class MyFavoriteMoviesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavMovies.visibility = View.VISIBLE
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       } else {
-        binding.rvFavMovies.visibility = View.INVISIBLE
+        binding.rvFavMovies.visibility = View.GONE
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
-      binding.progressBar.visibility = View.INVISIBLE
+      binding.progressBar.visibility = View.GONE
     }
   }
 
@@ -275,22 +276,21 @@ class MyFavoriteMoviesFragment : Fragment() {
           if (it.isSuccess && isWantToDelete) { // remove item success
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
             adapterPagingRefresh()
-          } else if (!it.isSuccess)  // an error happen
+          } else if (!it.isSuccess) { // an error happen
             mSnackbar = snackBarWarning(
               requireActivity(),
               binding.root,
               binding.guideSnackbar,
               Event(it.title)
             )
-          else // add to watchlist success
+          } else // add to watchlist success
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
         } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
       }
     }
     adapterPaging.addLoadStateListener {
-      // error handle
       mSnackbar = snackBarWarning(
-        requireActivity(),
+        requireContext(),
         binding.root,
         binding.guideSnackbar,
         Event(combinedLoadStatesHandle2(it))
@@ -303,7 +303,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       ) { // show empty view
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       } else { //  hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       }
 
       binding.progressBar.isVisible =

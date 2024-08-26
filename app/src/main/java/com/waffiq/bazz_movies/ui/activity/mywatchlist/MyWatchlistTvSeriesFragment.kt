@@ -255,12 +255,12 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvWatchlistTv.visibility = View.VISIBLE
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       } else {
-        binding.rvWatchlistTv.visibility = View.INVISIBLE
+        binding.rvWatchlistTv.visibility = View.GONE
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
-      binding.progressBar.visibility = View.INVISIBLE
+      binding.progressBar.visibility = View.GONE
     }
   }
 
@@ -289,9 +289,8 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
     }
     adapterPaging.addLoadStateListener {
-      // error handle
       mSnackbar = snackBarWarning(
-        requireActivity(),
+        requireContext(),
         binding.root,
         binding.guideSnackbar,
         Event(combinedLoadStatesHandle2(it))

@@ -22,17 +22,17 @@ object FavWatchlistHelper {
     guideView: View,
     eventMessage: Event<String>
   ): Snackbar? {
-    val message = eventMessage.getContentIfNotHandled() ?: return null
-    val mSnackbar = Snackbar.make(
-      view,
-      message.ifEmpty { ContextCompat.getString(context, R.string.unknown_error) },
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(guideView)
+    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() } ?: return null
 
-    val snackbarView = mSnackbar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
-    if (message.isNotEmpty()) mSnackbar.show()
-    return mSnackbar
+    if (view.isAttachedToWindow) {
+      val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        .setAnchorView(guideView)
+
+      mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
+      mSnackbar.show()
+      return mSnackbar
+    }
+    return null
   }
 
   fun snackBarAlreadyWatchlist(

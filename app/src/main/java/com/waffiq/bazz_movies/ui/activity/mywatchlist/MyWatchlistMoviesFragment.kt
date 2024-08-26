@@ -255,12 +255,12 @@ class MyWatchlistMoviesFragment : Fragment() {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvWatchlistMovie.visibility = View.VISIBLE
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       } else {
-        binding.rvWatchlistMovie.visibility = View.INVISIBLE
+        binding.rvWatchlistMovie.visibility = View.GONE
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
-      binding.progressBar.visibility = View.INVISIBLE
+      binding.progressBar.visibility = View.GONE
     }
   }
 
@@ -288,9 +288,8 @@ class MyWatchlistMoviesFragment : Fragment() {
       }
     }
     adapterPaging.addLoadStateListener {
-      // error handle
       mSnackbar = snackBarWarning(
-        requireActivity(),
+        requireContext(),
         binding.root,
         binding.guideSnackbar,
         Event(combinedLoadStatesHandle2(it))
@@ -303,7 +302,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       ) { // show empty view
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       } else { // hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.INVISIBLE
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       }
 
       binding.progressBar.isVisible =
