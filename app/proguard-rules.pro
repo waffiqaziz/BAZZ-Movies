@@ -20,14 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--assumenosideeffects class android.util.Log {
-  public static *** v(...);
-  public static *** d(...);
-  public static *** i(...);
-  public static *** w(...);
-  public static *** e(...);
-}
-
 # Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
 -keep,allowobfuscation,allowshrinking class retrofit2.Response
@@ -37,23 +29,20 @@
 # is used.
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
-# Application classes that will be serialized/deserialized over Moshi
+
+# Keep all classes and members in the specified packages
 -keep class com.waffiq.bazz_movies.data.local.model.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.responses.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.responses.tmdb.** { *; }
--keep class com.waffiq.bazz_movies.data.remote.responses.countryip.CountryIPResponse { *; }
--keep class com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData { *; }
+-keep class com.waffiq.bazz_movies.data.remote.responses.countryip.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
+
+# Keep specific classes and their members
+-keep class com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData { *; }
 -keep class com.waffiq.bazz_movies.utils.NetworkResult { *; }
--keep class com.waffiq.bazz_movies.utils.result_state.PostModelState { *; }
--keep class com.waffiq.bazz_movies.utils.result_state.DbResult { *; }
--keep class com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.post_body.RatePostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel { *; }
--keep class com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel { *; }
--keep class com.waffiq.bazz_movies.data.local.model.UserModel { *; }
--keep class com.waffiq.bazz_movies.data.local.model.FavoriteEntity { *; }
--keep class com.waffiq.bazz_movies.domain.model.Favorite { *; }
+-keep class com.waffiq.bazz_movies.utils.result_state.** { *; }
+-keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
+-keep class com.waffiq.bazz_movies.data.local.model.** { *; }
 -keep class com.waffiq.bazz_movies.domain.model.** { *; }
 
 -keepattributes Signature
