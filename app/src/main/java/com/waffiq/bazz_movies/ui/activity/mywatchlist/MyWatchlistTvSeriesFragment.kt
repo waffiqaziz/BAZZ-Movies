@@ -289,6 +289,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
     }
     adapterPaging.addLoadStateListener {
+      mSnackbar?.dismiss()
       mSnackbar = snackBarWarning(
         requireContext(),
         binding.root,

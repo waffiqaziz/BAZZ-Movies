@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -289,6 +288,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       }
     }
     adapterPaging.addLoadStateListener {
+      mSnackbar?.dismiss()
       mSnackbar = snackBarWarning(
         requireContext(),
         binding.root,
