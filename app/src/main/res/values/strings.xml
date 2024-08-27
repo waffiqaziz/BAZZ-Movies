@@ -27,6 +27,10 @@
   <string name="title_my_watchlist">My Watchlist</string>
   <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
 
+  <string name="something_went_wrong">Something Went Wrong</string>
+  <string name="we_encountered_an_error_please_try_again">We encountered an error. Please try again.</string>
+  <string name="try_again">Try Again</string>
+
   <!-- FEATURED -->
   <string name="movies">Movies</string>
   <string name="tv_series">TV Series</string>
@@ -42,8 +46,8 @@
   <string name="airing_today">Airing Today</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
   <string name="on_tv">On Tv</string>
-  <string name="no_upcoming_movie">No Upcoming Movie in %1$s \n Please Consider Change Different Country</string>
-  <string name="no_movie_currently_playing">No Movie Currently Playing in %1$s \n Please Consider Change Different Country</string>
+  <string name="no_upcoming_movie">No upcoming movies are available in %1$s.\nPlease consider selecting a different country.</string>
+  <string name="no_movie_currently_playing">No movies are currently playing in %1$s.\nPlease consider selecting a different country.</string>
 
   <!-- MORE -->
   <string name="guest_user">Guest User</string>
@@ -59,7 +63,7 @@
   <string name="no">No</string>
   <string name="warning">Warning</string>
   <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
-  <string name="warning_signOut_guest_mode">Beware, you\'re login as guest mode. All data included favorite and watchlist will be deleted if you sign out, continue??</string>
+  <string name="warning_signOut_guest_mode">Warning: You are currently logged in as a guest. All data, including your favorites and watchlist, will be deleted if you sign out. Do you want to continue?</string>
   <string name="select_region">Select Region</string>
   <string name="open_help">open help</string>
   <string name="open_about_us">open about us</string>
@@ -155,6 +159,5 @@
   <string name="tab_selection">tab selection</string>
   <string name="about_us"><u>About Us</u></string>
   <string name="rating_added_successfully">Rating added successfully!</string>
-
 
 </resources>

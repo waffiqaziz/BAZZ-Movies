@@ -4,17 +4,22 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
@@ -109,101 +114,127 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData(region: String) {
-    // setup adapter
+    // Initialize adapters
     val adapterTrending = TrendingAdapter()
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
     adapterPlayingNow.addLoadStateListener { combinedLoadStatesHandle(it) } // show loading(progressbar)
 
-    // setup recyclerview
+    // Setup RecyclerViews
     binding.apply {
-      rvTrending.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvTrending.layoutManager = setupRecyclerView()
       rvTrending.adapter = adapterTrending.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterTrending.retry() }
       )
 
-      rvUpcoming.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvUpcoming.layoutManager = setupRecyclerView()
       rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterUpcoming.retry() }
       )
 
-      rvPlayingNow.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvPlayingNow.layoutManager = setupRecyclerView()
       rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterPlayingNow.retry() }
       )
     }
 
-    // trending week, default will be week
-    if (binding.rbThisWeek.isChecked) {
-      movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
-        adapterTrending.submitData(lifecycle, it)
-      }
+    // Observe ViewModel data and submit to adapters
+    observeTrendingMovies(region, adapterTrending)
+    observeUpcomingMovies(region, adapterUpcoming)
+    observePlayingNowMovies(region, adapterPlayingNow)
+
+    // Handle LoadState for RecyclerViews
+    handleLoadState(
+      adapterPlayingNow,
+      binding.rvPlayingNow,
+      binding.tvPlayingNow,
+      no_movie_currently_playing,
+      region
+    )
+    handleLoadState(
+      adapterUpcoming,
+      binding.rvUpcoming,
+      binding.tvUpcomingMovie,
+      no_upcoming_movie,
+      region
+    )
+
+    // Set up swipe-to-refresh
+    setupSwipeRefresh(adapterTrending, adapterPlayingNow, adapterUpcoming)
+
+    // Set up retry button
+    setupRetryButton(adapterTrending, adapterPlayingNow, adapterUpcoming)
+  }
+
+  private fun setupRecyclerView() =
+    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+  private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
+    movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
+      adapter.submitData(lifecycle, it)
     }
 
-    // handle movie trending based on switch button
     binding.rbToday.setOnClickListener {
-      movieViewModel.getTrendingDay(region).observe(viewLifecycleOwner) {
-        adapterTrending.submitData(lifecycle, it)
+      movieViewModel.getTrendingDay(region).distinctUntilChanged().observe(viewLifecycleOwner) {
+        Log.d("TrendingDay", "Data received: $it")
+        adapter.submitData(lifecycle, it)
       }
-      adapterTrending.retry()
-      adapterTrending.refresh()
     }
     binding.rbThisWeek.setOnClickListener {
-      movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
-        adapterTrending.submitData(lifecycle, it)
+      movieViewModel.getTrendingWeek(region).distinctUntilChanged().observe(viewLifecycleOwner) {
+        Log.d("TrendingWeek", "Data received: $it")
+        adapter.submitData(lifecycle, it)
       }
-      adapterTrending.retry()
-      adapterTrending.refresh()
     }
+  }
 
-    // get movie upcoming and playing now on cinema
+  private fun observeUpcomingMovies(region: String, adapter: MovieHomeAdapter) {
     movieViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
-      adapterUpcoming.submitData(lifecycle, it)
+      adapter.submitData(lifecycle, it)
     }
+  }
+
+  private fun observePlayingNowMovies(region: String, adapter: MovieHomeAdapter) {
     movieViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
-      adapterPlayingNow.submitData(lifecycle, it)
+      adapter.submitData(lifecycle, it)
     }
+  }
 
-    // check if there any movie that play on selected region, if not show info on toast and edit text
-    adapterPlayingNow.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapterPlayingNow.itemCount < 1
-      ) {
-        showToastShort(
-          requireContext(),
-          getString(no_movie_currently_playing, Locale("", region).displayCountry)
-        )
-        binding.rvPlayingNow.visibility = View.INVISIBLE
-        if (!binding.tvPlayingNow.text.contains(getString(data)))
-          binding.tvPlayingNow.append(" (" + getString(no_data) + ")")
-      } else binding.rvPlayingNow.visibility = View.VISIBLE
-    }
-
+  private fun handleLoadState(
+    adapter: MovieHomeAdapter,
+    recyclerView: RecyclerView,
+    textView: TextView,
+    noMoviesStringRes: Int,
+    region: String
+  ) {
     // check if there any upcoming movie on selected region, if not show info on toast and edit text
-    adapterUpcoming.addLoadStateListener { loadState ->
+    adapter.addLoadStateListener { loadState ->
       if (loadState.source.refresh is LoadState.NotLoading
         && loadState.append.endOfPaginationReached
-        && adapterUpcoming.itemCount < 1
+        && adapter.itemCount < 1
       ) {
         showToastShort(
           requireContext(),
-          getString(no_upcoming_movie, Locale("", region).displayCountry)
+          getString(noMoviesStringRes, Locale("", region).displayCountry)
         )
-        binding.rvUpcoming.visibility = View.INVISIBLE
-        if (!binding.tvUpcomingMovie.text.contains(getString(data)))
-          binding.tvUpcomingMovie.append(" (" + getString(no_data) + ")")
-      } else binding.rvUpcoming.visibility = View.VISIBLE
+        recyclerView.visibility = View.INVISIBLE
+        if (!textView.text.contains(getString(data))) {
+          textView.append(" (${getString(no_data)})")
+        }
+      }
     }
+  }
 
+  private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
     binding.swipeRefresh.setOnRefreshListener {
-      adapterTrending.refresh()
-      adapterPlayingNow.refresh()
-      adapterUpcoming.refresh()
+      adapters.forEach { it.refresh() }
       binding.swipeRefresh.isRefreshing = false
+    }
+  }
+
+  private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      adapters.forEach { it.refresh() }
     }
   }
 
@@ -220,14 +251,43 @@ class FeaturedFragment : Fragment() {
         else -> null
       }
       errorState?.let {
+        showView(false)
         mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,
           requireActivity().findViewById(nav_view),
           Event(pagingErrorHandling(it.error))
         )
+      } ?: run {
+        showView(true) // hide the error illustration if no error
       }
     }
+  }
+
+  private fun showView(isShow: Boolean) {
+    // Toggle visibility based on the flag
+    setMainContentVisibility(isShow)
+    setErrorIllustrationVisibility(!isShow)
+  }
+
+  private fun setMainContentVisibility(isVisible: Boolean) {
+    val visibility = if (isVisible) View.VISIBLE else View.GONE
+    binding.apply {
+      imgMainFeatured.visibility = visibility
+      tvTrending.visibility = visibility
+      toggle.visibility = visibility
+      rvTrending.visibility = visibility
+      tvUpcomingMovie.visibility = visibility
+      rvUpcoming.visibility = visibility
+      rvPlayingNow.visibility = visibility
+      tvPlayingNow.visibility = visibility
+    }
+  }
+
+  private fun setErrorIllustrationVisibility(isVisible: Boolean) {
+    val visibility = if (isVisible) View.VISIBLE else View.GONE
+    binding.illustrationError.icGeneralErrror.visibility = visibility
+    binding.illustrationError.root.visibility = visibility
   }
 
   private fun animationFadeOut() {
