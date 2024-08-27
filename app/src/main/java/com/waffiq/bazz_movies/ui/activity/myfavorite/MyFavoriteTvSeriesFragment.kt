@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.deleted_from_favorite
@@ -239,7 +240,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
           snackBarAlreadyFavorite(
             requireContext(),
             binding.root,
-            binding.guideSnackbar,
+            requireActivity().findViewById(nav_view),
             Event(fav.title)
           )
       } else {
@@ -267,7 +268,12 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
       mSnackbar =
-        snackBarAlreadyFavorite(requireActivity(), binding.root, binding.guideSnackbar, it)
+        snackBarAlreadyFavorite(
+          requireActivity(),
+          binding.root,
+          requireActivity().findViewById(nav_view),
+          it
+        )
     }
     viewModelFav.snackBarAdded.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
@@ -279,7 +285,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             mSnackbar = snackBarWarning(
               requireActivity(),
               binding.root,
-              binding.guideSnackbar,
+              requireActivity().findViewById(nav_view),
               Event(it.title)
             )
           else // add to watchlist success
@@ -292,7 +298,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       mSnackbar = snackBarWarning(
         requireContext(),
         binding.root,
-        binding.guideSnackbar,
+        requireActivity().findViewById(nav_view),
         Event(combinedLoadStatesHandle2(it))
       )
 
@@ -357,7 +363,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       } else { // undo add to watchlist
         viewModelFav.updateToRemoveFromWatchlistDB(fav)
       }
-    }.setAnchorView(binding.guideSnackbar)
+    }.setAnchorView(requireActivity().findViewById(nav_view))
     mSnackbar?.show()
   }
 
@@ -400,7 +406,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             viewModelFav.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
           }
         }
-      }.setAnchorView(binding.guideSnackbar)
+      }.setAnchorView(requireActivity().findViewById(nav_view))
       mSnackbar?.show()
     }
   }

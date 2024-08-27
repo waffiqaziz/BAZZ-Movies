@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -40,6 +42,8 @@ class MovieFragment : Fragment() {
   private lateinit var movieViewModel: MovieViewModel
   private lateinit var regionViewModel: RegionViewModel
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+
+  private var mSnackbar: Snackbar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -159,12 +163,11 @@ class MovieFragment : Fragment() {
         else -> null
       }
       errorState?.let {
-        val errorMessage = pagingErrorHandling(it.error)
-        SnackBarManager.snackBarWarning(
+        mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,
-          binding.guideSnackbar,
-          Event(errorMessage)
+          requireActivity().findViewById(nav_view),
+          Event(pagingErrorHandling(it.error))
         )
       }
     }
@@ -188,9 +191,9 @@ class MovieFragment : Fragment() {
     } else animationFadeOut()
   }
 
-
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+    mSnackbar?.dismiss()
   }
 }

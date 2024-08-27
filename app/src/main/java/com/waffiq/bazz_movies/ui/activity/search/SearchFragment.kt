@@ -21,10 +21,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
@@ -33,6 +33,7 @@ import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.combinedLoadStatesHandle2
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 
 class SearchFragment : Fragment() {
 
@@ -58,7 +59,7 @@ class SearchFragment : Fragment() {
     // setup toolbar as action bar
     (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
     (activity as AppCompatActivity).supportActionBar?.title = null
-    binding.appBarLayout.setExpanded(true,true)
+    binding.appBarLayout.setExpanded(true, true)
 
     setupSearchView(searchViewModel)
     return root
@@ -87,7 +88,12 @@ class SearchFragment : Fragment() {
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
 
-      showSnackBarWarning(Event(combinedLoadStatesHandle2(loadState)))
+      SnackBarManager.snackBarWarning(
+        requireContext(),
+        binding.root,
+        requireActivity().findViewById(nav_view),
+        Event(combinedLoadStatesHandle2(loadState))
+      )
     }
 
     //setup searchView
@@ -168,17 +174,6 @@ class SearchFragment : Fragment() {
     }
   }
 
-  private fun showSnackBarWarning(eventMessage: Event<String>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
-    mSnackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-      .setAnchorView(binding.guideSnackbar)
-
-    val snackbarView = mSnackbar?.view
-    snackbarView?.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
-    if (message.isNotEmpty()) mSnackbar?.show()
-  }
-
-
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
@@ -187,6 +182,6 @@ class SearchFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    binding.appBarLayout.setExpanded(true,true)
+    binding.appBarLayout.setExpanded(true, true)
   }
 }

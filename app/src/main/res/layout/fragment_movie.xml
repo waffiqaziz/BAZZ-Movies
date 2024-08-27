@@ -17,10 +17,6 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-      <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.core.widget.NestedScrollView
           android:id="@+id/nested_scroll_view"
           android:layout_width="match_parent"
@@ -116,20 +112,9 @@
 
         </androidx.core.widget.NestedScrollView>
 
-      </FrameLayout>
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-  <androidx.constraintlayout.widget.Guideline
-    android:id="@+id/guide_snackbar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintGuide_percent="0.85"
-    app:layout_constraintStart_toStartOf="parent" />
 
   <View
     android:id="@+id/background_dim_movie"

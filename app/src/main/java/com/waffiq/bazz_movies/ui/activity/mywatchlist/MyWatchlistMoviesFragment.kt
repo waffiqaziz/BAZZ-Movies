@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.added_to_favorite
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
@@ -239,7 +240,7 @@ class MyWatchlistMoviesFragment : Fragment() {
           snackBarAlreadyFavorite(
             requireActivity(),
             binding.root,
-            binding.guideSnackbar,
+            requireActivity().findViewById(nav_view),
             Event(fav.title)
           )
       } else {
@@ -267,7 +268,7 @@ class MyWatchlistMoviesFragment : Fragment() {
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     viewModel.snackBarAlready.observe(viewLifecycleOwner) {
       mSnackbar =
-        snackBarAlreadyFavorite(requireActivity(), binding.root, binding.guideSnackbar, it)
+        snackBarAlreadyFavorite(requireActivity(), binding.root, requireActivity().findViewById(nav_view), it)
     }
     viewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
@@ -279,7 +280,7 @@ class MyWatchlistMoviesFragment : Fragment() {
             mSnackbar = snackBarWarning(
               requireActivity(),
               binding.root,
-              binding.guideSnackbar,
+              requireActivity().findViewById(nav_view),
               Event(it.title)
             )
           else  // add to favorite success
@@ -288,11 +289,11 @@ class MyWatchlistMoviesFragment : Fragment() {
       }
     }
     adapterPaging.addLoadStateListener {
-      mSnackbar?.dismiss()
+      if (combinedLoadStatesHandle2(it).isNotEmpty()) mSnackbar?.dismiss()
       mSnackbar = snackBarWarning(
         requireContext(),
         binding.root,
-        binding.guideSnackbar,
+        requireActivity().findViewById(nav_view),
         Event(combinedLoadStatesHandle2(it))
       )
 
@@ -357,7 +358,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       } else { // undo add to watchlist
         viewModel.updateToRemoveFromFavoriteDB(fav)
       }
-    }.setAnchorView(binding.guideSnackbar)
+    }.setAnchorView(requireActivity().findViewById(nav_view))
     mSnackbar?.show()
   }
 
@@ -400,7 +401,7 @@ class MyWatchlistMoviesFragment : Fragment() {
             viewModel.postFavorite(user.token, user.userId, fav.copy(favorite = false), title)
           }
         }
-      }.setAnchorView(binding.guideSnackbar)
+      }.setAnchorView(requireActivity().findViewById(nav_view))
       mSnackbar?.show()
     }
   }

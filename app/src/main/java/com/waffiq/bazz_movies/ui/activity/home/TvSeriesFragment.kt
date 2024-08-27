@@ -6,14 +6,13 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -30,6 +29,8 @@ class TvSeriesFragment : Fragment() {
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var tvSeriesViewModel: TvSeriesViewModel
+
+  private var mSnackbar: Snackbar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -117,12 +118,11 @@ class TvSeriesFragment : Fragment() {
         else -> null
       }
       errorState?.let {
-        val errorMessage = pagingErrorHandling(it.error)
-        SnackBarManager.snackBarWarning(
+        mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,
-          binding.guideSnackbar,
-          Event(errorMessage)
+          requireActivity().findViewById(nav_view),
+          Event(pagingErrorHandling(it.error))
         )
       }
     }
@@ -146,17 +146,9 @@ class TvSeriesFragment : Fragment() {
     } else animationFadeOut()
   }
 
-  private fun showSnackBarNoAction(message: String) {
-    val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-      .setAnchorView(binding.guideSnackbar)
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(requireContext(), red_matte))
-    if (message.isNotEmpty()) snackBar.show()
-  }
-
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+    mSnackbar?.dismiss()
   }
 }

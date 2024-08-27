@@ -17,8 +17,10 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.data
 import com.waffiq.bazz_movies.R.string.no_data
@@ -51,6 +53,8 @@ class FeaturedFragment : Fragment() {
   private lateinit var movieViewModel: MovieViewModel
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
   private lateinit var regionViewModel: RegionViewModel
+
+  private var mSnackbar: Snackbar? = null
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -216,17 +220,15 @@ class FeaturedFragment : Fragment() {
         else -> null
       }
       errorState?.let {
-        val errorMessage = pagingErrorHandling(it.error)
-        SnackBarManager.snackBarWarning(
+        mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,
-          binding.guideSnackbar,
-          Event(errorMessage)
+          requireActivity().findViewById(nav_view),
+          Event(pagingErrorHandling(it.error))
         )
       }
     }
   }
-
 
   private fun animationFadeOut() {
     val animation = animFadeOutLong(requireContext())
@@ -249,5 +251,6 @@ class FeaturedFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+    mSnackbar?.dismiss()
   }
 }
