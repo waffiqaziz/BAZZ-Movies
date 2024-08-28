@@ -18,7 +18,6 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -40,6 +39,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Event
@@ -118,21 +118,25 @@ class FeaturedFragment : Fragment() {
     val adapterTrending = TrendingAdapter()
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
-    adapterPlayingNow.addLoadStateListener { combinedLoadStatesHandle(it) } // show loading(progressbar)
+
+    // show loading(progressbar)
+    adapterPlayingNow.addLoadStateListener {
+      combinedLoadStatesHandle(adapterPlayingNow, it)
+    }
 
     // Setup RecyclerViews
     binding.apply {
-      rvTrending.layoutManager = setupRecyclerView()
+      rvTrending.layoutManager = initLinearLayoutManager(requireContext())
       rvTrending.adapter = adapterTrending.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterTrending.retry() }
       )
 
-      rvUpcoming.layoutManager = setupRecyclerView()
+      rvUpcoming.layoutManager = initLinearLayoutManager(requireContext())
       rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterUpcoming.retry() }
       )
 
-      rvPlayingNow.layoutManager = setupRecyclerView()
+      rvPlayingNow.layoutManager = initLinearLayoutManager(requireContext())
       rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterPlayingNow.retry() }
       )
@@ -165,9 +169,6 @@ class FeaturedFragment : Fragment() {
     // Set up retry button
     setupRetryButton(adapterTrending, adapterPlayingNow, adapterUpcoming)
   }
-
-  private fun setupRecyclerView() =
-    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
   private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
     movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
@@ -238,7 +239,7 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
+  private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter, loadState: CombinedLoadStates) {
     if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
       showLoading(true) // show ProgressBar
     else {
@@ -251,7 +252,7 @@ class FeaturedFragment : Fragment() {
         else -> null
       }
       errorState?.let {
-        showView(false)
+        if (adapter.itemCount < 1) showView(false)
         mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,

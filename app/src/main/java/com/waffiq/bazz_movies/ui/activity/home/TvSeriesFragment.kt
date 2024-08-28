@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.paging.PagingDataAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
+import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
@@ -48,41 +49,41 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setData() {
-    // setup adapter
+    // Initialize adapters
     val popularAdapter = TvAdapter()
     val nowPlayingAdapter = TvAdapter()
     val onTvAdapter = TvAdapter()
     val topRatedAdapter = TvAdapter()
-    topRatedAdapter.addLoadStateListener { combinedLoadStatesHandle(it) } // show loading(progressbar)
 
-    // setup recyclerview
+    // show loading(progressbar)
+    topRatedAdapter.addLoadStateListener {
+      combinedLoadStatesHandle(topRatedAdapter, it)
+    }
+
+    // Setup RecyclerViews
     binding.apply {
-      rvPopular.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvPopular.layoutManager = initLinearLayoutManager(requireContext())
       rvPopular.adapter = popularAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { popularAdapter.retry() }
       )
 
-      rvNowPlaying.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-      rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
+      rvAiringToday.layoutManager = initLinearLayoutManager(requireContext())
+      rvAiringToday.adapter = nowPlayingAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
       )
 
-      rvUpcoming.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-      rvUpcoming.adapter = onTvAdapter.withLoadStateFooter(
+      rvOnTv.layoutManager = initLinearLayoutManager(requireContext())
+      rvOnTv.adapter = onTvAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { onTvAdapter.retry() }
       )
 
-      rvTopRated.layoutManager =
-        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+      rvTopRated.layoutManager = initLinearLayoutManager(requireContext())
       rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )
     }
 
-    // get data movie popular, airing today, on tv, and top rated
+    // Observe ViewModel data and submit to adapters
     tvSeriesViewModel.getPopularTv()
       .observe(viewLifecycleOwner) { popularAdapter.submitData(lifecycle, it) }
     tvSeriesViewModel.getAiringTodayTv().observe(viewLifecycleOwner) {
@@ -99,13 +100,19 @@ class TvSeriesFragment : Fragment() {
     binding.swipeRefresh.setOnRefreshListener {
       popularAdapter.refresh()
       topRatedAdapter.refresh()
-      popularAdapter.refresh()
+      nowPlayingAdapter.refresh()
       onTvAdapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
+
+    // Set up swipe-to-refresh
+    setupSwipeRefresh(popularAdapter, topRatedAdapter, nowPlayingAdapter, onTvAdapter)
+
+    // Set up retry button
+    setupRetryButton(popularAdapter, topRatedAdapter, nowPlayingAdapter, onTvAdapter)
   }
 
-  private fun combinedLoadStatesHandle(loadState: CombinedLoadStates) {
+  private fun combinedLoadStatesHandle(adapter: TvAdapter, loadState: CombinedLoadStates) {
     if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
       showLoading(true) // show ProgressBar
     else {
@@ -118,13 +125,55 @@ class TvSeriesFragment : Fragment() {
         else -> null
       }
       errorState?.let {
+        if (adapter.itemCount < 1) showView(false)
         mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),
           binding.root,
           requireActivity().findViewById(nav_view),
           Event(pagingErrorHandling(it.error))
         )
+      } ?: run {
+        showView(true) // hide the error illustration if no error
       }
+    }
+  }
+
+  private fun showView(isShow: Boolean) {
+    // Toggle visibility based on the flag
+    setMainContentVisibility(isShow)
+    setErrorIllustrationVisibility(!isShow)
+  }
+
+  private fun setMainContentVisibility(isVisible: Boolean) {
+    val visibility = if (isVisible) View.VISIBLE else View.GONE
+    binding.apply {
+      tvPopular.visibility = visibility
+      rvPopular.visibility = visibility
+      tvAiringToday.visibility = visibility
+      rvAiringToday.visibility = visibility
+      tvOnTv.visibility = visibility
+      rvOnTv.visibility = visibility
+      tvTopRated.visibility = visibility
+      rvTopRated.visibility = visibility
+    }
+  }
+
+  private fun setErrorIllustrationVisibility(isVisible: Boolean) {
+    val visibility = if (isVisible) View.VISIBLE else View.GONE
+    binding.illustrationError.icGeneralErrror.visibility = visibility
+    binding.illustrationError.root.visibility = visibility
+  }
+
+  private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
+    binding.swipeRefresh.setOnRefreshListener {
+      adapters.forEach { it.refresh() }
+      binding.swipeRefresh.isRefreshing = false
+    }
+  }
+
+  private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      adapters.forEach { it.refresh() }
     }
   }
 
