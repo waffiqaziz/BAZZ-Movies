@@ -63,7 +63,8 @@
   <string name="no">No</string>
   <string name="warning">Warning</string>
   <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
-  <string name="warning_signOut_guest_mode">Warning: You are currently logged in as a guest. All data, including your favorites and watchlist, will be deleted if you sign out. Do you want to continue?</string>
+  <string name="warning_signOut_guest_mode">You are currently logged in as a guest. All data, including your favorites and watchlist, will be deleted if you sign out. Do you want to continue?</string>
+  <string name="warning_signOut_logged_user">Signing out will end your session. Are you sure you want to continue?</string>
   <string name="select_region">Select Region</string>
   <string name="open_help">open help</string>
   <string name="open_about_us">open about us</string>

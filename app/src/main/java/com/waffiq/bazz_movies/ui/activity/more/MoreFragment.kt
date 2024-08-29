@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -21,9 +20,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
+import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.string.all_data_deleted
 import com.waffiq.bazz_movies.R.string.binding_error
@@ -31,6 +31,7 @@ import com.waffiq.bazz_movies.R.string.no
 import com.waffiq.bazz_movies.R.string.sign_out_success
 import com.waffiq.bazz_movies.R.string.warning
 import com.waffiq.bazz_movies.R.string.warning_signOut_guest_mode
+import com.waffiq.bazz_movies.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.R.string.yes
 import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
@@ -50,6 +51,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.result_state.DbResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -59,19 +61,16 @@ class MoreFragment : Fragment() {
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var authViewModel: AuthenticationViewModel
-  private lateinit var moreViewModelLocal: MoreViewModelLocal
+  private lateinit var authViewModel: AuthenticationViewModel // logged-in user
+  private lateinit var moreViewModelLocal: MoreViewModelLocal // guest user
   private lateinit var moreViewModelUser: MoreViewModelUser
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
   private lateinit var regionViewModel: RegionViewModel
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentMoreBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+  private var mSnackbar: Snackbar? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
     val pref = requireContext().dataStore
     val factory = ViewModelUserFactory.getInstance(pref)
@@ -79,21 +78,32 @@ class MoreFragment : Fragment() {
     moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
     userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
     regionViewModel = ViewModelProvider(this, factory)[RegionViewModel::class.java]
+  }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
-    moreViewModelUser.errorState.observe(viewLifecycleOwner) { showSnackBar(it) }
-
-    val factory2 = ViewModelFactory.getInstance(requireContext())
-    moreViewModelLocal = ViewModelProvider(this, factory2)[MoreViewModelLocal::class.java]
-
-    // hide action bar
-    (activity as AppCompatActivity).supportActionBar?.hide()
+    // initialize for guest user
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      if (user.token == "NaN" || user.token.isEmpty()) {
+        val factory = ViewModelFactory.getInstance(requireContext())
+        moreViewModelLocal = ViewModelProvider(this, factory)[MoreViewModelLocal::class.java]
+      } else signOutStateObserver()
+    }
 
     setTypeface()
     setData()
     btnAction()
-    signOutStateObserver()
-    return root
+  }
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentMoreBinding.inflate(inflater, container, false)
+    (activity as AppCompatActivity).supportActionBar?.hide() // hide action bar
+    return binding.root
   }
 
   private fun signOutStateObserver() {
@@ -106,9 +116,15 @@ class MoreFragment : Fragment() {
           }
         }
 
-        Status.LOADING -> {}
+        Status.LOADING -> binding.btnSignout.isEnabled = false
         Status.ERROR -> {
-          showSnackBar(Event(result.message.toString()))
+          buttonProgress(false)
+          mSnackbar = snackBarWarning(
+            requireContext(),
+            binding.constraintLayout,
+            requireActivity().findViewById(nav_view),
+            Event(result.message.toString())
+          )
         }
       }
 
@@ -141,18 +157,34 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        // sign out for guest account
-        if (user.token == "NaN" || user.token.isEmpty()) {
-          dialogSignOutGuestMode()
-        } else { // sign out for login account
-          moreViewModelUser.deleteSession(SessionIDPostModel(user.token)) // revoke session for login user
-        }
+        if (user.token == "NaN" || user.token.isEmpty()) dialogSignOutGuestMode()
+        else dialogSignOutLoggedIn(user.token)
       }
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
     binding.btnCountryPicker.setOnCountryChangeListener {
       userPreferenceViewModel.saveRegionPref(binding.btnCountryPicker.selectedCountryNameCode)
     }
+  }
+
+  private fun dialogSignOutLoggedIn(token: String) {
+    val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+    builder
+      .setMessage(getString(warning_signOut_logged_user))
+      .setTitle(getString(warning))
+      .setPositiveButton(getString(yes)) { dialog, _ ->
+        buttonProgress(true)
+        moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
+        dialog.dismiss()
+      }
+      .setNegativeButton(getString(no)) { dialog, _ ->
+        dialog.dismiss()
+        dialog.cancel()
+      }
+
+    val dialog: AlertDialog = builder.create()
+    if (!requireActivity().isFinishing) dialog.show()
+    else dialog.cancel()
   }
 
   private fun dialogSignOutGuestMode() {
@@ -164,7 +196,15 @@ class MoreFragment : Fragment() {
             getString(all_data_deleted)
           )
 
-          is DbResult.Error -> showToastShort(requireActivity(), it.errorMessage)
+          is DbResult.Error -> {
+            mSnackbar = snackBarWarning(
+              requireContext(),
+              binding.constraintLayout,
+              requireActivity().findViewById(nav_view),
+              Event(it.errorMessage)
+            )
+          }
+
           else -> {}
         }
       }
@@ -210,7 +250,7 @@ class MoreFragment : Fragment() {
           .load(link)
           .transform(CenterCrop())
           .transition(withCrossFade())
-          .placeholder(ic_launcher)
+          .placeholder(ic_bazz_logo)
           .error(ic_broken_image)
           .into(binding.imgAvatar)
       }
@@ -232,21 +272,20 @@ class MoreFragment : Fragment() {
     }
   }
 
-  private fun showSnackBar(eventMessage: Event<String>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
-    val snackBar = Snackbar.make(
-      binding.constraintLayout,
-      message,
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(binding.guideSnackbar)
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(requireActivity(), red_matte))
-    snackBar.show()
+  private fun buttonProgress(isLoading: Boolean) {
+    if (isLoading) {
+      binding.progressBar.visibility = View.VISIBLE
+      binding.btnSignout.isEnabled = true
+    } else {
+      binding.progressBar.visibility = View.GONE
+      binding.btnSignout.isEnabled = false
+    }
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+    mSnackbar?.dismiss()
+    moreViewModelUser.removeState()
   }
 }
