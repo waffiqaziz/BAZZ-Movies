@@ -21,8 +21,6 @@ class MyFavoriteFragment : Fragment() {
   private var _binding: FragmentMyFavoriteBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewModel: MyFavoriteViewModel
-
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout
 
@@ -32,15 +30,13 @@ class MyFavoriteFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentMyFavoriteBinding.inflate(inflater, container, false)
-    val root: View = binding.root
-
-    val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
-
     (activity as AppCompatActivity).supportActionBar?.show()
+    return binding.root
+  }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     setupTabLayoutViewPager()
-    return root
   }
 
   private fun setupTabLayoutViewPager() {

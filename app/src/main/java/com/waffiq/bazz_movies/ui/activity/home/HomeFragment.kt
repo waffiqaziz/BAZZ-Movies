@@ -28,21 +28,22 @@ class HomeFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
-    val root: View = binding.root
-
-    (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-    (activity as AppCompatActivity).supportActionBar?.title = null
-
-    setupTabLayoutViewPager()
-    return root
+    return binding.root
   }
 
-  private fun setupTabLayoutViewPager(){
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+    (activity as AppCompatActivity).supportActionBar?.title = null
+    setupTabLayoutViewPager()
+  }
+
+  private fun setupTabLayoutViewPager() {
     viewpager = binding.viewPager
     tabLayout = binding.tabs
     viewpager.isUserInputEnabled = false //disable swipe action between tabs
 
-    val adapter = HomeViewPagerAdapter(childFragmentManager,lifecycle)
+    val adapter = HomeViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewpager) { tab, position ->

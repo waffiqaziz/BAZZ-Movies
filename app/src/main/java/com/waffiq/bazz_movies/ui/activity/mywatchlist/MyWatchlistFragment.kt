@@ -20,8 +20,6 @@ class MyWatchlistFragment : Fragment() {
   private var _binding: FragmentMyWatchlistBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewModel: MyWatchlistViewModel
-
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout
 
@@ -29,13 +27,12 @@ class MyWatchlistFragment : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View {
     _binding = FragmentMyWatchlistBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    return binding.root
+  }
 
-    val factory = ViewModelFactory.getInstance(requireContext())
-    viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
-
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     setupView()
-    return root
   }
 
   private fun setupView() {
