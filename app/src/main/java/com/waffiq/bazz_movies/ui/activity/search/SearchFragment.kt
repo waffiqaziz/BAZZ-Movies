@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -32,7 +31,8 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.combinedLoadStatesHandle2
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 
 class SearchFragment : Fragment() {
@@ -88,12 +88,14 @@ class SearchFragment : Fragment() {
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }
 
-      SnackBarManager.snackBarWarning(
-        requireContext(),
-        binding.root,
-        requireActivity().findViewById(nav_view),
-        Event(combinedLoadStatesHandle2(loadState))
-      )
+      pagingErrorState(loadState)?.let {
+        mSnackbar = SnackBarManager.snackBarWarning(
+          requireContext(),
+          binding.root,
+          requireActivity().findViewById(nav_view),
+          Event(pagingErrorHandling(it.error))
+        )
+      }
     }
 
     //setup searchView
@@ -150,9 +152,9 @@ class SearchFragment : Fragment() {
       if (child is ImageView) {
         // Check if the child is the arrow icon
         backButton = child
-        // Set your custom drawable
-        val drawable: Drawable? = ContextCompat.getDrawable(requireActivity(), ic_search)
-        backButton.setImageDrawable(drawable)
+
+        // Set custom drawable
+        backButton.setImageDrawable(ContextCompat.getDrawable(requireActivity(), ic_search))
         break
       }
     }

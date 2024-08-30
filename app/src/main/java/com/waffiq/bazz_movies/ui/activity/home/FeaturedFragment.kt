@@ -44,6 +44,7 @@ import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 import java.util.Locale
@@ -245,13 +246,7 @@ class FeaturedFragment : Fragment() {
     else {
       showLoading(false) // hide ProgressBar
 
-      val errorState = when { // If theres an error, show a toast
-        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-        else -> null
-      }
-      errorState?.let {
+      pagingErrorState(loadState)?.let {
         if (adapter.itemCount < 1) showView(false)
         mSnackbar = SnackBarManager.snackBarWarning(
           requireContext(),

@@ -48,6 +48,17 @@ class MyWatchlistViewModel(
   private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
 
+  private val _isSnackbarShown = MutableLiveData<Boolean>()
+  val isSnackbarShown: LiveData<Boolean> get() = _isSnackbarShown
+
+  fun markSnackbarShown() {
+    _isSnackbarShown.value = true
+  }
+
+  fun clearSnackBar() {
+    _isSnackbarShown.value = false
+  }
+
   // region LOCAL DATABASE
   val watchlistMoviesDB =
     localDatabaseUseCase.watchlistMovieFromDB.asLiveData().distinctUntilChanged()
@@ -185,5 +196,5 @@ class MyWatchlistViewModel(
       }
     }
   }
-// endregion NETWORK
+  // endregion NETWORK
 }

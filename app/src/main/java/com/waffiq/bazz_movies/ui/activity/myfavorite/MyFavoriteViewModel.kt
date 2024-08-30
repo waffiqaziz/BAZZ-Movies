@@ -37,7 +37,7 @@ class MyFavoriteViewModel(
   val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
 
   private val _stated = MutableLiveData<Stated?>()
-  val stated: LiveData<Stated?> get() = _stated.distinctUntilChanged()
+  val stated: LiveData<Stated?> get() = _stated
 
   private val _undoDB = MutableLiveData<Event<Favorite>>()
   val undoDB: LiveData<Event<Favorite>> = _undoDB
@@ -47,6 +47,18 @@ class MyFavoriteViewModel(
 
   private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
+
+  private val _isSnackbarShown = MutableLiveData<Boolean>()
+  val isSnackbarShown: LiveData<Boolean> get() = _isSnackbarShown
+
+
+  fun markSnackbarShown() {
+    _isSnackbarShown.value = true
+  }
+
+  fun clearSnackBar() {
+    _isSnackbarShown.value = false
+  }
 
   // region LOCAL DATABASE
   val favoriteTvFromDB =
@@ -97,10 +109,10 @@ class MyFavoriteViewModel(
   // endregion LOCAL DATABASE
 
   // region NETWORK
-  fun getFavoriteMovies(sesId: String) =
+  fun favoriteMovies(sesId: String) =
     getFavoriteMovieUseCase.getPagingFavoriteMovies(sesId).cachedIn(viewModelScope).asLiveData()
 
-  fun getFavoriteTvSeries(sesId: String) =
+  fun favoriteTvSeries(sesId: String) =
     getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope).asLiveData()
 
   fun postFavorite(sesId: String, userId: Int, data: FavoritePostModel, title: String) {

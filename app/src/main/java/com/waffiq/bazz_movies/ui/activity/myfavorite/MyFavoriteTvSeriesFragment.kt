@@ -43,8 +43,10 @@ import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.SWIPE_THRESHOLD
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
+import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.combinedLoadStatesHandle2
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.result_state.DbResult
 
@@ -222,13 +224,139 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private fun setupRefresh(isLogin: Boolean) {
     binding.swipeRefresh.setOnRefreshListener {
-      if (isLogin) adapterPagingRefresh()
-      else adapterDB.notifyDataSetChanged()
+      if (isLogin) {
+        viewModelFav.clearSnackBar()
+        adapterPagingRefresh()
+      } else adapterDB.notifyDataSetChanged()
 
       binding.swipeRefresh.isRefreshing = false
     }
   }
 
+  // region LOG-IN USER
+  private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
+    viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
+      mSnackbar =
+        snackBarAlreadyWatchlist(
+          requireContext(),
+          binding.coordinatorLayout,
+          requireActivity().findViewById(nav_view),
+          it
+        )
+    }
+    viewModelFav.snackBarAdded.observe(viewLifecycleOwner) { event ->
+      event.getContentIfNotHandled()?.let {
+        if (!isUndo) {
+          if (it.isSuccess && isWantToDelete) {// remove item success
+            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
+            adapterPagingRefresh()
+          } else if (!it.isSuccess)  // an error happen
+            mSnackbar = snackBarWarning(
+              requireContext(),
+              binding.coordinatorLayout,
+              requireActivity().findViewById(nav_view),
+              Event(it.title)
+            )
+          else // add to watchlist success
+            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
+        } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
+      }
+    }
+    adapterPaging.addLoadStateListener { loadState ->
+      pagingErrorState(loadState)?.let {
+        if (viewModelFav.isSnackbarShown.value == false) {
+          mSnackbar = snackBarWarning(
+            requireContext(),
+            binding.coordinatorLayout,
+            requireActivity().findViewById(nav_view),
+            Event(pagingErrorHandling(it.error))
+          )
+          viewModelFav.markSnackbarShown()
+        }
+      }
+
+      // show/hide view
+      if (loadState.source.refresh is LoadState.NotLoading
+        && loadState.append.endOfPaginationReached
+        && adapterPaging.itemCount < 1
+      ) { // show empty view
+        binding.illustrationNoDataView.containerNoData.isVisible = true
+      } else { // hide empty view
+        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
+      }
+
+      binding.progressBar.isVisible =
+        loadState.source.refresh is LoadState.Loading // show progressbar
+    }
+    binding.rvFavTv.adapter = adapterPaging.withLoadStateFooter(
+      footer = LoadingStateAdapter { adapterPaging.retry() }
+    )
+
+    viewModelFav.favoriteTvSeries(userToken)
+      .observe(viewLifecycleOwner) {
+        adapterPaging.submitData(lifecycle, it)
+      }
+  }
+
+  private fun postToRemoveFavTMDB(title: String, tvId: Int) {
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      viewModelFav.postFavorite(
+        user.token, user.userId,
+        FavoritePostModel(
+          mediaType = "tv",
+          mediaId = tvId,
+          favorite = false
+        ), title
+      )
+    }
+  }
+
+  private fun postToAddWatchlistTMDB(title: String, tvId: Int) {
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      viewModelFav.checkStatedThenPostWatchlist("tv", user, tvId, title)
+    }
+  }
+
+  private fun showSnackBarUserLogin(
+    title: String,
+    fav: FavoritePostModel?,
+    wtc: WatchlistPostModel?
+  ) {
+    if (isWantToDelete && fav != null || !isWantToDelete && wtc != null) {
+      mSnackbar = Snackbar.make(
+        binding.coordinatorLayout,
+        HtmlCompat.fromHtml(
+          "<b>$title</b> " +
+            if (isWantToDelete && fav != null) getString(deleted_from_favorite)
+            else if (!isWantToDelete && wtc != null) getString(added_to_watchlist) else {
+            },
+          HtmlCompat.FROM_HTML_MODE_LEGACY
+        ),
+        Snackbar.LENGTH_LONG
+      ).setAction(getString(undo)) {
+        isUndo = true
+        if (fav != null) { // undo remove from favorite
+          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+            viewModelFav.postFavorite(user.token, user.userId, fav.copy(favorite = true), title)
+          }
+          isWantToDelete = !isWantToDelete // to prevent show same snackbar when undo is triggered
+        } else if (wtc != null) { // undo add to watchlist
+          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+            viewModelFav.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
+          }
+        }
+      }.setAnchorView(requireActivity().findViewById(nav_view))
+      mSnackbar?.show()
+    }
+  }
+
+  private fun adapterPagingRefresh() {
+    adapterPaging.retry()
+    adapterPaging.refresh()
+  }
+  // endregion LOG-IN USER
+
+  // region GUEST USER
   private fun performSwipeGuestUser(isWantToDelete: Boolean, fav: Favorite, pos: Int) {
     if (isWantToDelete) { // delete from favorite
       if (fav.isWatchlist) viewModelFav.updateToRemoveFromFavoriteDB(fav)
@@ -239,7 +367,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         mSnackbar =
           snackBarAlreadyFavorite(
             requireContext(),
-            binding.root,
+            binding.coordinatorLayout,
             requireActivity().findViewById(nav_view),
             Event(fav.title)
           )
@@ -265,88 +393,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     }
   }
 
-  private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
-    viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar =
-        snackBarAlreadyFavorite(
-          requireActivity(),
-          binding.root,
-          requireActivity().findViewById(nav_view),
-          it
-        )
-    }
-    viewModelFav.snackBarAdded.observe(viewLifecycleOwner) { event ->
-      event.getContentIfNotHandled()?.let {
-        if (!isUndo) {
-          if (it.isSuccess && isWantToDelete) {// remove item success
-            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
-            adapterPagingRefresh()
-          } else if (!it.isSuccess)  // an error happen
-            mSnackbar = snackBarWarning(
-              requireActivity(),
-              binding.root,
-              requireActivity().findViewById(nav_view),
-              Event(it.title)
-            )
-          else // add to watchlist success
-            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
-        } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
-      }
-    }
-    adapterPaging.addLoadStateListener {
-      mSnackbar?.dismiss()
-      mSnackbar = snackBarWarning(
-        requireContext(),
-        binding.root,
-        requireActivity().findViewById(nav_view),
-        Event(combinedLoadStatesHandle2(it))
-      )
-
-      // show/hide view
-      if (it.source.refresh is LoadState.NotLoading
-        && it.append.endOfPaginationReached
-        && adapterPaging.itemCount < 1
-      ) { // show empty view
-        binding.illustrationNoDataView.containerNoData.isVisible = true
-      } else { // hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
-      }
-
-      binding.progressBar.isVisible =
-        it.source.refresh is LoadState.Loading // show progressbar
-    }
-    binding.rvFavTv.adapter = adapterPaging.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterPaging.retry() }
-    )
-
-    viewModelFav.getFavoriteTvSeries(userToken)
-      .observe(viewLifecycleOwner) {
-        adapterPaging.submitData(lifecycle, it)
-      }
-  }
-
-  private fun postToRemoveFavTMDB(title: String, tvId: Int) {
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.postFavorite(
-        user.token, user.userId,
-        FavoritePostModel(
-          mediaType = "tv",
-          mediaId = tvId,
-          favorite = false
-        ), title
-      )
-    }
-  }
-
-  private fun postToAddWatchlistTMDB(title: String, tvId: Int) {
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkStatedThenPostWatchlist("tv", user, tvId, title)
-    }
-  }
-
   private fun showSnackBarUndoGuest(title: String, pos: Int) {
     mSnackbar = Snackbar.make(
-      binding.root,
+      binding.coordinatorLayout,
       HtmlCompat.fromHtml(
         "<b>$title</b> " +
           if (isWantToDelete) getString(deleted_from_favorite) else getString(added_to_watchlist),
@@ -377,48 +426,16 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       }
     }
   }
-
-  private fun showSnackBarUserLogin(
-    title: String,
-    fav: FavoritePostModel?,
-    wtc: WatchlistPostModel?
-  ) {
-    if (isWantToDelete && fav != null || !isWantToDelete && wtc != null) {
-      mSnackbar = Snackbar.make(
-        binding.root,
-        HtmlCompat.fromHtml(
-          "<b>$title</b> " +
-            if (isWantToDelete && fav != null) getString(deleted_from_favorite)
-            else if (!isWantToDelete && wtc != null) getString(added_to_watchlist) else {
-            },
-          HtmlCompat.FROM_HTML_MODE_LEGACY
-        ),
-        Snackbar.LENGTH_LONG
-      ).setAction(getString(undo)) {
-        isUndo = true
-        if (fav != null) { // undo remove from favorite
-          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postFavorite(user.token, user.userId, fav.copy(favorite = true), title)
-          }
-          isWantToDelete = !isWantToDelete // to prevent show same snackbar when undo is triggered
-        } else if (wtc != null) { // undo add to watchlist
-          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
-          }
-        }
-      }.setAnchorView(requireActivity().findViewById(nav_view))
-      mSnackbar?.show()
-    }
-  }
-
-  private fun adapterPagingRefresh() {
-    adapterPaging.retry()
-    adapterPaging.refresh()
-  }
+  // endregion GUEST USER
 
   override fun onResume() {
     super.onResume()
-    adapterPaging.refresh()
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      if (user.token != "NaN") {
+        viewModelFav.clearSnackBar()
+        adapterPaging.refresh()
+      }
+    }
   }
 
   override fun onDestroyView() {
