@@ -257,7 +257,6 @@
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/not_available"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"

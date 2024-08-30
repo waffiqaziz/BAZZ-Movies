@@ -13,8 +13,6 @@ import android.graphics.text.LineBreaker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Layout
 import android.view.Gravity
 import android.view.View
@@ -369,6 +367,7 @@ class DetailMovieActivity : AppCompatActivity() {
             showDetailOMDb(it)
           }
         } else {
+          showLoadingDim(false)
           binding.tvScoreImdb.text = getString(not_available)
           binding.tvScoreMetascore.text = getString(not_available)
         }
@@ -782,11 +781,8 @@ class DetailMovieActivity : AppCompatActivity() {
     val animation = animFadeOutLong(this)
     if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
-
-    Handler(Looper.getMainLooper()).postDelayed({
-      binding.backgroundDimMovie.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
-    }, DELAY_TIME)
+    binding.backgroundDimMovie.visibility = View.GONE
+    binding.progressBar.visibility = View.GONE
   }
 
   private fun showLoadingDim(isLoading: Boolean) {
@@ -885,6 +881,5 @@ class DetailMovieActivity : AppCompatActivity() {
 
   companion object {
     const val EXTRA_MOVIE = "MOVIE"
-    const val DELAY_TIME = 600L
   }
 }
