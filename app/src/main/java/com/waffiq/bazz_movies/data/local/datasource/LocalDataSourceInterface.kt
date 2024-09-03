@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteFullException
 import android.util.Log
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.utils.result_state.DbResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 interface LocalDataSourceInterface {
   val getFavoriteMovies: Flow<List<FavoriteEntity>>
@@ -33,24 +31,22 @@ interface LocalDataSourceInterface {
     operation: suspend () -> T
   ): DbResult<T> {
     return try {
-      val result = withContext(Dispatchers.IO) { // Ensure operation runs on IO dispatcher
-        operation()
-      }
-      DbResult.Success(result) // Return the result if the operation is successful
+      // Directly execute the Room operation
+      DbResult.Success(operation())
     } catch (e: SQLiteConstraintException) {
-      Log.e("DatabaseError", "Operation failed due to unique constraint violation: ${e.message}")
+      Log.e("DatabaseError", "Unique constraint violation: ${e.message}")
       DbResult.Error("Unique constraint violation: ${e.message}")
     } catch (e: SQLiteFullException) {
-      Log.e("DatabaseError", "Operation failed because the database is full: ${e.message}")
+      Log.e("DatabaseError", "Database is full: ${e.message}")
       DbResult.Error("Database is full: ${e.message}")
     } catch (e: SQLiteDiskIOException) {
-      Log.e("DatabaseError", "Operation failed due to disk IO issue: ${e.message}")
+      Log.e("DatabaseError", "Disk IO issue: ${e.message}")
       DbResult.Error("Disk IO issue: ${e.message}")
     } catch (e: SQLiteException) {
-      Log.e("DatabaseError", "Operation failed due to SQLite exception: ${e.message}")
+      Log.e("DatabaseError", "SQLite exception: ${e.message}")
       DbResult.Error("SQLite exception: ${e.message}")
     } catch (e: Exception) {
-      Log.e("DatabaseError", "Operation failed due to unknown error: ${e.message}")
+      Log.e("DatabaseError", "Unknown error: ${e.message}")
       DbResult.Error("Unknown error: ${e.message}")
     }
   }
