@@ -4,17 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
@@ -43,10 +43,13 @@ import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
+import kotlinx.coroutines.Job
 import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -61,6 +64,7 @@ class FeaturedFragment : Fragment() {
   private lateinit var regionViewModel: RegionViewModel
 
   private var mSnackbar: Snackbar? = null
+  private var currentJob: Job? = null
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -145,8 +149,8 @@ class FeaturedFragment : Fragment() {
 
     // Observe ViewModel data and submit to adapters
     observeTrendingMovies(region, adapterTrending)
-    observeUpcomingMovies(region, adapterUpcoming)
-    observePlayingNowMovies(region, adapterPlayingNow)
+    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, adapterUpcoming)
+    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, adapterPlayingNow)
 
     // Handle LoadState for RecyclerViews
     handleLoadState(
@@ -172,33 +176,15 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
-    movieViewModel.getTrendingWeek(region).observe(viewLifecycleOwner) {
-      adapter.submitData(lifecycle, it)
-    }
-
+    collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
     binding.rbToday.setOnClickListener {
-      movieViewModel.getTrendingDay(region).distinctUntilChanged().observe(viewLifecycleOwner) {
-        Log.d("TrendingDay", "Data received: $it")
-        adapter.submitData(lifecycle, it)
-      }
+      currentJob?.cancel()  // Cancel the previous job if it exists
+      collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
     }
     binding.rbThisWeek.setOnClickListener {
-      movieViewModel.getTrendingWeek(region).distinctUntilChanged().observe(viewLifecycleOwner) {
-        Log.d("TrendingWeek", "Data received: $it")
-        adapter.submitData(lifecycle, it)
-      }
-    }
-  }
-
-  private fun observeUpcomingMovies(region: String, adapter: MovieHomeAdapter) {
-    movieViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
-      adapter.submitData(lifecycle, it)
-    }
-  }
-
-  private fun observePlayingNowMovies(region: String, adapter: MovieHomeAdapter) {
-    movieViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
-      adapter.submitData(lifecycle, it)
+      currentJob?.cancel()  // Cancel the previous job if it exists
+      currentJob =
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
     }
   }
 
@@ -219,7 +205,7 @@ class FeaturedFragment : Fragment() {
           requireContext(),
           getString(noMoviesStringRes, Locale("", region).displayCountry)
         )
-        recyclerView.visibility = View.INVISIBLE
+        recyclerView.isGone = true
         if (!textView.text.contains(getString(data))) {
           textView.append(" (${getString(no_data)})")
         }
@@ -267,23 +253,21 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setMainContentVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
     binding.apply {
-      imgMainFeatured.visibility = visibility
-      tvTrending.visibility = visibility
-      toggle.visibility = visibility
-      rvTrending.visibility = visibility
-      tvUpcomingMovie.visibility = visibility
-      rvUpcoming.visibility = visibility
-      rvPlayingNow.visibility = visibility
-      tvPlayingNow.visibility = visibility
+      imgMainFeatured.isVisible = isVisible
+      tvTrending.isVisible = isVisible
+      toggle.isVisible = isVisible
+      rvTrending.isVisible = isVisible
+      tvUpcomingMovie.isVisible = isVisible
+      rvUpcoming.isVisible = isVisible
+      rvPlayingNow.isVisible = isVisible
+      tvPlayingNow.isVisible = isVisible
     }
   }
 
   private fun setErrorIllustrationVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
-    binding.illustrationError.icGeneralErrror.visibility = visibility
-    binding.illustrationError.root.visibility = visibility
+    binding.illustrationError.icGeneralErrror.isVisible = isVisible
+    binding.illustrationError.root.isVisible = isVisible
   }
 
   private fun animationFadeOut() {
@@ -292,15 +276,15 @@ class FeaturedFragment : Fragment() {
     binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).post {
-      binding.backgroundDimMovie.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimMovie.visibility = View.VISIBLE
-      binding.progressBar.visibility = View.VISIBLE
+      binding.backgroundDimMovie.isVisible = true
+      binding.progressBar.isVisible = true
     } else animationFadeOut()
   }
 

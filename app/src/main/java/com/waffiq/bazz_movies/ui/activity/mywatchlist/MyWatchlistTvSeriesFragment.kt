@@ -44,6 +44,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.SWIPE_THRESHOLD
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
@@ -291,10 +292,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       footer = LoadingStateAdapter { adapterPaging.retry() }
     )
 
-    viewModel.watchlistTvSeries(userToken)
-      .observe(viewLifecycleOwner) {
-        adapterPaging.submitData(lifecycle, it)
-      }
+    collectAndSubmitData(this, { viewModel.watchlistTvSeries(userToken) }, adapterPaging)
   }
 
   private fun postToRemoveWatchlistTMDB(title: String, tvId: Int) {

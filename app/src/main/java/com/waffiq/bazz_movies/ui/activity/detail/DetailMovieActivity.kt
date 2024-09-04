@@ -181,7 +181,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
 
       // shor or hide user score
-      binding.yourScoreViewGroup.isGone = !isLogin
+      binding.yourScoreViewGroup.isVisible = isLogin
 
       // check movie or tv is favorite watchlist
       isFavoriteWatchlist(isLogin)
@@ -225,8 +225,7 @@ class DetailMovieActivity : AppCompatActivity() {
       .error(ic_poster_error)
       .into(binding.ivPoster)
 
-    if (dataExtra.posterPath.isNullOrEmpty()) binding.tvBackdropNotFound.visibility = View.VISIBLE
-    else binding.tvBackdropNotFound.visibility = View.GONE
+    binding.tvBackdropNotFound.isVisible = dataExtra.posterPath.isNullOrEmpty()
 
     // show data (title, released year, media type, and overview) based DATA_EXTRA
     binding.apply {
@@ -781,16 +780,16 @@ class DetailMovieActivity : AppCompatActivity() {
     val animation = animFadeOutLong(this)
     if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
-    binding.backgroundDimMovie.visibility = View.GONE
-    binding.progressBar.visibility = View.GONE
+    binding.backgroundDimMovie.isGone = true
+    binding.progressBar.isGone = true
   }
 
   private fun showLoadingDim(isLoading: Boolean) {
     if (isLoading) {
-      if (!isBGShowed) binding.backgroundDimMovie.visibility = View.VISIBLE
-      binding.progressBar.visibility = View.VISIBLE
+      if (!isBGShowed) binding.backgroundDimMovie.isVisible = true
+      binding.progressBar.isVisible = true
     } else {
-      binding.appBarLayout.visibility = View.VISIBLE
+      binding.appBarLayout.isVisible = true
       animFadeOut()
     }
   }
@@ -800,28 +799,17 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showViewAgeRating(isShow: Boolean) {
-    if (isShow) {
-      binding.tvAgeRating.visibility = View.VISIBLE
-      binding.divider2.visibility = View.VISIBLE
-    } else {
-      binding.tvAgeRating.visibility = View.GONE
-      binding.divider2.visibility = View.GONE
-    }
+    binding.tvAgeRating.isVisible = isShow
+    binding.divider2.isVisible = isShow
   }
 
   private fun showViewRegionReleaseDate(isShow: Boolean) {
-    if (isShow) binding.tvRegionRelease.visibility = View.VISIBLE
-    else binding.tvRegionRelease.visibility = View.GONE
+    binding.tvRegionRelease.isVisible = isShow
   }
 
   private fun showViewReleaseDate(isShow: Boolean) {
-    if (isShow) {
-      binding.tvYearReleased.visibility = View.VISIBLE
-      binding.divider1.visibility = View.VISIBLE
-    } else {
-      binding.tvYearReleased.visibility = View.GONE
-      binding.divider1.visibility = View.GONE
-    }
+    binding.tvYearReleased.isVisible = isShow
+    binding.divider1.isVisible = isShow
   }
   // endregion MOVIE VIEW HANDLER
 

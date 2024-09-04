@@ -81,9 +81,11 @@ class SearchFragment : Fragment() {
         && loadState.append.endOfPaginationReached
         && adapter.itemCount < 1
       ) { // show empty view
+        binding.rvSearch.isVisible = false
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
         binding.illustrationSearchView.containerSearch.isVisible = false
       } else { //  hide empty view
+        binding.rvSearch.isVisible = true
         binding.illustrationSearchView.containerSearch.isVisible = false
         binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
       }

@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -33,6 +35,7 @@ import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
@@ -135,18 +138,10 @@ class MovieFragment : Fragment() {
     }
 
     // Observe ViewModel data and submit to adapters
-    movieViewModel.getPopularMovies().observe(viewLifecycleOwner) {
-      popularAdapter.submitData(lifecycle, it)
-    }
-    movieViewModel.getPlayingNowMovies(region).observe(viewLifecycleOwner) {
-      nowPlayingAdapter.submitData(lifecycle, it)
-    }
-    movieViewModel.getUpcomingMovies(region).observe(viewLifecycleOwner) {
-      upComingAdapter.submitData(lifecycle, it)
-    }
-    movieViewModel.getTopRatedMovies().observe(viewLifecycleOwner) {
-      topRatedAdapter.submitData(lifecycle, it)
-    }
+    collectAndSubmitData(this, { movieViewModel.getPopularMovies() }, popularAdapter)
+    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, nowPlayingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, upComingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getTopRatedMovies() }, topRatedAdapter)
 
     // Handle LoadState for RecyclerViews
     handleLoadState(
@@ -198,23 +193,21 @@ class MovieFragment : Fragment() {
   }
 
   private fun setMainContentVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
     binding.apply {
-      tvPopular.visibility = visibility
-      rvPopular.visibility = visibility
-      tvAiringToday.visibility = visibility
-      rvNowPlaying.visibility = visibility
-      tvUpcoming.visibility = visibility
-      rvUpcoming.visibility = visibility
-      tvTopRated.visibility = visibility
-      rvTopRated.visibility = visibility
+      tvPopular.isVisible = isVisible
+      rvPopular.isVisible = isVisible
+      tvAiringToday.isVisible = isVisible
+      rvNowPlaying.isVisible = isVisible
+      tvUpcoming.isVisible = isVisible
+      rvUpcoming.isVisible = isVisible
+      tvTopRated.isVisible = isVisible
+      rvTopRated.isVisible = isVisible
     }
   }
 
   private fun setErrorIllustrationVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
-    binding.illustrationError.icGeneralErrror.visibility = visibility
-    binding.illustrationError.root.visibility = visibility
+    binding.illustrationError.icGeneralErrror.isVisible = isVisible
+    binding.illustrationError.root.isVisible = isVisible
   }
 
   private fun handleLoadState(
@@ -234,7 +227,7 @@ class MovieFragment : Fragment() {
           requireContext(),
           getString(noMoviesStringRes, Locale("", region).displayCountry)
         )
-        recyclerView.visibility = View.INVISIBLE
+        recyclerView.isGone = true
         if (!textView.text.contains(getString(R.string.data))) {
           textView.append(" (${getString(R.string.no_data)})")
         }
@@ -261,15 +254,15 @@ class MovieFragment : Fragment() {
     binding.progressBar.startAnimation(animation)
 
     Handler(getMainLooper()).post {
-      binding.backgroundDimMovie.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimMovie.visibility = View.VISIBLE
-      binding.progressBar.visibility = View.VISIBLE
+      binding.backgroundDimMovie.isVisible = true
+      binding.progressBar.isVisible = true
     } else animationFadeOut()
   }
 

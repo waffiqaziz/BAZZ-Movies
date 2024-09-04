@@ -6,6 +6,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
@@ -21,7 +23,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
@@ -86,17 +88,10 @@ class TvSeriesFragment : Fragment() {
     }
 
     // Observe ViewModel data and submit to adapters
-    tvSeriesViewModel.getPopularTv()
-      .observe(viewLifecycleOwner) { popularAdapter.submitData(lifecycle, it) }
-    tvSeriesViewModel.getAiringTodayTv().observe(viewLifecycleOwner) {
-      nowPlayingAdapter.submitData(lifecycle, it)
-    }
-    tvSeriesViewModel.getOnTv().observe(viewLifecycleOwner) {
-      onTvAdapter.submitData(lifecycle, it)
-    }
-    tvSeriesViewModel.getTopRatedTv().observe(viewLifecycleOwner) {
-      topRatedAdapter.submitData(lifecycle, it)
-    }
+    collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv() }, popularAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv() }, nowPlayingAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getOnTv() }, onTvAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getTopRatedTv() }, topRatedAdapter)
 
     // refresh whe swipe down
     binding.swipeRefresh.setOnRefreshListener {
@@ -141,23 +136,21 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setMainContentVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
     binding.apply {
-      tvPopular.visibility = visibility
-      rvPopular.visibility = visibility
-      tvAiringToday.visibility = visibility
-      rvAiringToday.visibility = visibility
-      tvOnTv.visibility = visibility
-      rvOnTv.visibility = visibility
-      tvTopRated.visibility = visibility
-      rvTopRated.visibility = visibility
+      tvPopular.isVisible = isVisible
+      rvPopular.isVisible = isVisible
+      tvAiringToday.isVisible = isVisible
+      rvAiringToday.isVisible = isVisible
+      tvOnTv.isVisible = isVisible
+      rvOnTv.isVisible = isVisible
+      tvTopRated.isVisible = isVisible
+      rvTopRated.isVisible = isVisible
     }
   }
 
   private fun setErrorIllustrationVisibility(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
-    binding.illustrationError.icGeneralErrror.visibility = visibility
-    binding.illustrationError.root.visibility = visibility
+    binding.illustrationError.icGeneralErrror.isVisible = isVisible
+    binding.illustrationError.root.isVisible = isVisible
   }
 
   private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
@@ -179,15 +172,15 @@ class TvSeriesFragment : Fragment() {
     binding.progressBar.startAnimation(animation)
 
     Handler(Looper.getMainLooper()).post {
-      binding.backgroundDimMovie.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimMovie.visibility = View.VISIBLE
-      binding.progressBar.visibility = View.VISIBLE
+      binding.backgroundDimMovie.isVisible = true
+      binding.progressBar.isVisible = true
     } else animationFadeOut()
   }
 

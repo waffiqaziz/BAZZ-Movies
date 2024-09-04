@@ -45,6 +45,7 @@ import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
+import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
@@ -292,10 +293,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       footer = LoadingStateAdapter { adapterPaging.retry() }
     )
 
-    viewModelFav.favoriteTvSeries(userToken)
-      .observe(viewLifecycleOwner) {
-        adapterPaging.submitData(lifecycle, it)
-      }
+    collectAndSubmitData(this, { viewModelFav.favoriteTvSeries(userToken) }, adapterPaging)
   }
 
   private fun postToRemoveFavTMDB(title: String, tvId: Int) {

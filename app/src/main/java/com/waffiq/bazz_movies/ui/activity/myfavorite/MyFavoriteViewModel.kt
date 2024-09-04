@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
+import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.usecase.get_favorite.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_favorite.GetFavoriteTvUseCase
@@ -22,6 +24,7 @@ import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.result_state.DbResult
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class MyFavoriteViewModel(
@@ -109,11 +112,11 @@ class MyFavoriteViewModel(
   // endregion LOCAL DATABASE
 
   // region NETWORK
-  fun favoriteMovies(sesId: String) =
-    getFavoriteMovieUseCase.getPagingFavoriteMovies(sesId).cachedIn(viewModelScope).asLiveData()
+  fun favoriteMovies(sesId: String): Flow<PagingData<ResultItem>> =
+    getFavoriteMovieUseCase.getPagingFavoriteMovies(sesId).cachedIn(viewModelScope)
 
-  fun favoriteTvSeries(sesId: String) =
-    getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope).asLiveData()
+  fun favoriteTvSeries(sesId: String): Flow<PagingData<ResultItem>> =
+    getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope)
 
   fun postFavorite(sesId: String, userId: Int, data: FavoritePostModel, title: String) {
     viewModelScope.launch {
