@@ -10,7 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -20,6 +23,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
@@ -109,7 +114,7 @@ class MoreFragment : Fragment() {
     moreViewModelUser.signOutState.observe(viewLifecycleOwner) { result ->
       when (result.status) {
         Status.SUCCESS -> {
-          binding.btnSignout.isEnabled = true
+          progressIsVisible(false)
           if (result.data?.success == true) {
             showToastShort(requireContext(), getString(sign_out_success))
             removePrefUserData() // remove preference user data
@@ -119,6 +124,7 @@ class MoreFragment : Fragment() {
         Status.LOADING -> btnSignOutIsEnable(false)
         Status.ERROR -> {
           btnSignOutIsEnable(true)
+          progressIsVisible(false)
           mSnackbar = snackBarWarning(
             requireContext(),
             binding.constraintLayout,
@@ -174,6 +180,7 @@ class MoreFragment : Fragment() {
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
         btnSignOutIsEnable(false)
+        progressIsVisible(true)
         moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
         dialog.dismiss()
       }
@@ -191,12 +198,16 @@ class MoreFragment : Fragment() {
     moreViewModelLocal.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
-          is DbResult.Success -> showToastShort(
-            requireActivity(),
-            getString(all_data_deleted)
-          )
+          is DbResult.Success -> {
+            progressIsVisible(false)
+            showToastShort(
+              requireActivity(),
+              getString(all_data_deleted)
+            )
+          }
 
           is DbResult.Error -> {
+            progressIsVisible(false)
             mSnackbar = snackBarWarning(
               requireContext(),
               binding.constraintLayout,
@@ -231,7 +242,13 @@ class MoreFragment : Fragment() {
 
   private fun removePrefUserData() {
     userPreferenceViewModel.removeUserDataPref()
-    startActivity(Intent(activity, RoutingActivity::class.java))
+    val intent = Intent(activity, RoutingActivity::class.java)
+    val options = ActivityOptionsCompat.makeCustomAnimation(
+      requireContext(),
+      fade_in,
+      fade_out
+    )
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
     activity?.finishAffinity()
   }
 
@@ -276,9 +293,14 @@ class MoreFragment : Fragment() {
     binding.btnSignout.isEnabled = isEnable
   }
 
+  private fun progressIsVisible(isVisible: Boolean) {
+    binding.progressBar.isVisible = isVisible
+  }
+
   override fun onResume() {
     super.onResume()
     btnSignOutIsEnable(true)
+    progressIsVisible(false)
   }
 
   override fun onDestroyView() {
