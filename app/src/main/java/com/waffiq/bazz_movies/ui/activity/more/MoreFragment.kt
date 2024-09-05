@@ -24,7 +24,6 @@ import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.R.id.nav_view
-import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.R.string.all_data_deleted
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.no
@@ -110,15 +109,16 @@ class MoreFragment : Fragment() {
     moreViewModelUser.signOutState.observe(viewLifecycleOwner) { result ->
       when (result.status) {
         Status.SUCCESS -> {
+          binding.btnSignout.isEnabled = true
           if (result.data?.success == true) {
             showToastShort(requireContext(), getString(sign_out_success))
             removePrefUserData() // remove preference user data
           }
         }
 
-        Status.LOADING -> binding.btnSignout.isEnabled = false
+        Status.LOADING -> btnSignOutIsEnable(false)
         Status.ERROR -> {
-          buttonProgress(false)
+          btnSignOutIsEnable(true)
           mSnackbar = snackBarWarning(
             requireContext(),
             binding.constraintLayout,
@@ -173,7 +173,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(warning_signOut_logged_user))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
-        buttonProgress(true)
+        btnSignOutIsEnable(false)
         moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
         dialog.dismiss()
       }
@@ -272,14 +272,13 @@ class MoreFragment : Fragment() {
     }
   }
 
-  private fun buttonProgress(isLoading: Boolean) {
-    if (isLoading) {
-      binding.progressBar.visibility = View.VISIBLE
-      binding.btnSignout.isEnabled = true
-    } else {
-      binding.progressBar.visibility = View.GONE
-      binding.btnSignout.isEnabled = false
-    }
+  private fun btnSignOutIsEnable(isEnable: Boolean) {
+    binding.btnSignout.isEnabled = isEnable
+  }
+
+  override fun onResume() {
+    super.onResume()
+    btnSignOutIsEnable(true)
   }
 
   override fun onDestroyView() {
