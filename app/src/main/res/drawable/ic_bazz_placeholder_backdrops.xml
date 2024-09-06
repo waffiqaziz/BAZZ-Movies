@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <shape android:shape="rectangle">
+      <size android:width="400dp"/>
+      <solid android:color="@color/yellow" />
+    </shape>
+  </item>
+
+  <item
+    android:drawable="@drawable/splash_inset"
+    android:gravity="center" />
+</layer-list>

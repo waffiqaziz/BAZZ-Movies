@@ -41,9 +41,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark
@@ -131,11 +133,10 @@ class DetailMovieActivity : AppCompatActivity() {
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     @Suppress("WrongConstant")
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
       binding.tvOverview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
       binding.tvOverview.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
-    }
 
     transparentStatusBar(window)
     scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
@@ -212,10 +213,11 @@ class DetailMovieActivity : AppCompatActivity() {
       .load(
         if (!dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
         else if (!dataExtra.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        else ic_backdrop_error_filled,
-      ).placeholder(ic_bazz_placeholder_search)
+        else ic_backdrop_error_filled
+      ).placeholder(ic_bazz_placeholder_backdrops)
       .optionalCenterCrop()
       .error(ic_backdrop_error_filled)
+      .transition(withCrossFade())
       .into(binding.ivPictureBackdrop)
 
     // shows poster
@@ -226,6 +228,7 @@ class DetailMovieActivity : AppCompatActivity() {
       )
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_poster_error)
+      .transition(withCrossFade())
       .into(binding.ivPoster)
 
     binding.tvBackdropNotFound.isVisible = dataExtra.posterPath.isNullOrEmpty()
