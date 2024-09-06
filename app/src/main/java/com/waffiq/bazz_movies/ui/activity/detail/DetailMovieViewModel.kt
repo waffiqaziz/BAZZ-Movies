@@ -27,6 +27,8 @@ import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.result_state.DbResult
 import com.waffiq.bazz_movies.utils.result_state.PostModelState
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -58,8 +60,8 @@ class DetailMovieViewModel(
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
 
-  private val _errorState = MutableLiveData<Event<String>>()
-  val errorState: LiveData<Event<String>> get() = _errorState
+  private val _errorState = MutableSharedFlow<String>(replay = 0)
+  val errorState: SharedFlow<String> get() = _errorState
 
   private val _rateState = MutableLiveData<Event<Boolean>>()
   val rateState: LiveData<Event<Boolean>> get() = _rateState
@@ -86,7 +88,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -101,7 +103,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -116,7 +118,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -135,7 +137,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -152,7 +154,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -167,7 +169,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -182,7 +184,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -196,7 +198,7 @@ class DetailMovieViewModel(
           Status.SUCCESS -> _tvImdbID.value = networkResult.data?.imdbId ?: ""
           Status.LOADING -> {}
           Status.ERROR -> {
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -214,7 +216,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -234,7 +236,7 @@ class DetailMovieViewModel(
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -246,7 +248,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
         is DbResult.Success -> result.data.let { _isFavorite.value = it }
-        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+        is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
   }
@@ -255,7 +257,7 @@ class DetailMovieViewModel(
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
         is DbResult.Success -> result.data.let { _isWatchlist.value = it }
-        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+        is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
   }
@@ -263,7 +265,7 @@ class DetailMovieViewModel(
   fun insertToDB(fav: Favorite) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.insertToDB(fav)) {
-        is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+        is DbResult.Error -> _errorState.emit(result.errorMessage)
         is DbResult.Success -> {
           if (fav.isFavorite) _isFavorite.value = true
           else if (fav.isWatchlist) _isWatchlist.value = true
@@ -281,7 +283,7 @@ class DetailMovieViewModel(
 
   fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(false, fav)) {
-      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
         _isFavorite.value = true
         _postModelState.value = Event(
@@ -297,7 +299,7 @@ class DetailMovieViewModel(
 
   fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(true, fav)) {
-      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
         _isFavorite.value = false
         _postModelState.value = Event(
@@ -313,7 +315,7 @@ class DetailMovieViewModel(
 
   fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(false, fav)) {
-      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
         _isWatchlist.value = true
         _postModelState.value = Event(
@@ -329,7 +331,7 @@ class DetailMovieViewModel(
 
   fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(true, fav)) {
-      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
         _isWatchlist.value = false
         _postModelState.value = Event(
@@ -345,7 +347,7 @@ class DetailMovieViewModel(
 
   fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.deleteFromDB(fav)) {
-      is DbResult.Error -> _errorState.value = Event(result.errorMessage)
+      is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
         _isFavorite.value = false
         _isWatchlist.value = false
@@ -389,7 +391,7 @@ class DetailMovieViewModel(
               )
             )
             data.favorite.let { _isFavorite.value = it }
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
             _loadingState.value = false
           }
         }
@@ -424,7 +426,7 @@ class DetailMovieViewModel(
                 isFavorite = false
               )
             )
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
             _loadingState.value = false
           }
         }
@@ -445,7 +447,7 @@ class DetailMovieViewModel(
           Status.ERROR -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }
@@ -465,7 +467,7 @@ class DetailMovieViewModel(
           Status.ERROR -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.emit(networkResult.message.toString())
           }
         }
       }

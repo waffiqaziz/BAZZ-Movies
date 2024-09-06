@@ -12,14 +12,33 @@ object SnackBarManager {
   fun snackBarWarning(
     context: Context,
     view: View,
-    guideView: View,
+    guideView: View?,
     eventMessage: Event<String>
   ): Snackbar? {
     val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() } ?: return null
 
     if (view.isAttachedToWindow) {
       val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-        .setAnchorView(guideView)
+      if (guideView != null) mSnackbar.setAnchorView(guideView)
+
+      mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
+      mSnackbar.show()
+      return mSnackbar
+    }
+    return null
+  }
+
+  fun snackBarWarning(
+    context: Context,
+    view: View,
+    guideView: View?,
+    message: String?
+  ): Snackbar? {
+    if(message.isNullOrEmpty()) return null
+
+    if (view.isAttachedToWindow) {
+      val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+      if (guideView != null) mSnackbar.setAnchorView(guideView)
 
       mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
       mSnackbar.show()

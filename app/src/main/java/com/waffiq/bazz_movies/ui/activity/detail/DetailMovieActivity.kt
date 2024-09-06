@@ -27,7 +27,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
@@ -35,13 +34,15 @@ import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.gray_100
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
@@ -86,12 +87,14 @@ import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
-import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.detailCrew
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
-
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -437,7 +440,7 @@ class DetailMovieActivity : AppCompatActivity() {
         startActivity(intent)
       } catch (e: Exception) {
         Snackbar.make(
-          binding.constraintLayout,
+          binding.coordinatorLayout,
           yt_not_installed,
           Snackbar.LENGTH_LONG
         ).show()
@@ -744,21 +747,16 @@ class DetailMovieActivity : AppCompatActivity() {
     dialog.show()
   }
 
-  private fun showSnackBarWarning(eventMessage: Event<String>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
-    val snackBar = Snackbar.make(
-      binding.constraintLayout,
-      message,
-      Snackbar.LENGTH_SHORT
-    )
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(this, red_matte))
-    snackBar.show()
-  }
-
+  @OptIn(FlowPreview::class) // Allows using the debounce function
   private fun errorStateObserver() {
-    detailViewModel.errorState.observe(this) { showSnackBarWarning(it) }
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        detailViewModel.errorState.debounce(500)  // Prevent multiple emissions within 500ms
+          .collect { errorMessage ->
+            snackBarWarning(this@DetailMovieActivity, binding.coordinatorLayout, null, errorMessage)
+          }
+      }
+    }
   }
 
   private fun showToast(text: String) {
