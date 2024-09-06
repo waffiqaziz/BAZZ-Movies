@@ -38,12 +38,8 @@ class RoutingActivity : AppCompatActivity() {
   }
 
   private fun gotoMainActivity(boolean: Boolean) {
-    if (boolean) {
-      startActivity(Intent(this, MainActivity::class.java))
-      finish()
-    } else {
-      startActivity(Intent(this, LoginActivity::class.java))
-      finish()
-    }
+    if (boolean) startActivity(Intent(this, MainActivity::class.java))
+    else startActivity(Intent(this, LoginActivity::class.java))
+    finish()
   }
 }

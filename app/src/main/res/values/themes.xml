@@ -40,7 +40,7 @@
   <style name="SplashScreenTheme" parent="Theme.SplashScreen">
     <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
     <item name="windowSplashScreenBackground">@color/gray</item>
-    <item name="windowSplashScreenAnimationDuration">1000</item>
+    <item name="windowSplashScreenAnimationDuration">300</item>
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>
 
