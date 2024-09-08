@@ -17,13 +17,14 @@
     android:orientation="vertical"
     android:padding="5dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
       android:id="@+id/img_cast_photo"
       android:layout_width="100dp"
       android:layout_height="150dp"
       android:layout_gravity="center"
       android:adjustViewBounds="true"
       android:contentDescription="@string/picture"
+      app:shapeAppearanceOverlay="@style/roundedCornersImageView"
       tools:background="@tools:sample/avatars" />
 
     <TextView

@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.ui.activity.home
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -131,16 +130,19 @@ class FeaturedFragment : Fragment() {
 
     // Setup RecyclerViews
     binding.apply {
+      rvTrending.itemAnimator = DefaultItemAnimator()
       rvTrending.layoutManager = initLinearLayoutManager(requireContext())
       rvTrending.adapter = adapterTrending.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterTrending.retry() }
       )
 
+      rvUpcoming.itemAnimator = DefaultItemAnimator()
       rvUpcoming.layoutManager = initLinearLayoutManager(requireContext())
       rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterUpcoming.retry() }
       )
 
+      rvPlayingNow.itemAnimator = DefaultItemAnimator()
       rvPlayingNow.layoutManager = initLinearLayoutManager(requireContext())
       rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterPlayingNow.retry() }
@@ -274,11 +276,8 @@ class FeaturedFragment : Fragment() {
     val animation = animFadeOutLong(requireContext())
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
-
-    Handler(Looper.getMainLooper()).post {
-      binding.backgroundDimMovie.isGone = true
-      binding.progressBar.isGone = true
-    }
+    binding.backgroundDimMovie.isGone = true
+    binding.progressBar.isGone = true
   }
 
   private fun showLoading(isLoading: Boolean) {

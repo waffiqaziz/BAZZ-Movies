@@ -39,7 +39,6 @@
         android:minHeight="48dp"
         android:src="@drawable/ic_left_icon" />
 
-
     </com.google.android.material.appbar.MaterialToolbar>
   </com.google.android.material.appbar.AppBarLayout>
 
@@ -64,7 +63,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingBottom="40dp"
+          android:paddingBottom="@dimen/default_margin_parent_20"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +81,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
-
 
           <TextView
             android:id="@+id/tv_Name"

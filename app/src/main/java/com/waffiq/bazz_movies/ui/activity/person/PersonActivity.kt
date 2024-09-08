@@ -4,13 +4,11 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.text.LineBreaker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Layout
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
@@ -21,9 +19,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.red_matte
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
@@ -42,6 +41,7 @@ import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
+import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.FACEBOOK_LINK
@@ -70,13 +70,7 @@ class PersonActivity : AppCompatActivity() {
     val factory = ViewModelFactory.getInstance(this)
     personMovieViewModel = ViewModelProvider(this, factory)[PersonMovieViewModel::class.java]
 
-    @Suppress("WrongConstant")
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-      binding.tvBiography.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      binding.tvBiography.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
-    }
-
+    justifyTextView(binding.tvBiography)
     transparentStatusBar(window)
     scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollViewPerson)
     showLoading(true)
@@ -100,24 +94,8 @@ class PersonActivity : AppCompatActivity() {
     } ?: error("No DataExtra")
 
     binding.swipeRefresh.setOnRefreshListener {
-      val i = Intent(this, PersonActivity::class.java)
-      i.putExtra(EXTRA_PERSON, dataExtra)
-      activityTransition()
+      showData()
       binding.swipeRefresh.isRefreshing = false
-      startActivity(i)
-      activityTransition()
-      finish()
-    }
-  }
-
-  private fun activityTransition() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      overrideActivityTransition(
-        OVERRIDE_TRANSITION_OPEN, android.R.anim.fade_in, android.R.anim.fade_out
-      )
-    } else {
-      @Suppress("DEPRECATION")
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
   }
 
@@ -145,7 +123,8 @@ class PersonActivity : AppCompatActivity() {
         if (!dataExtra.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
         else ic_no_profile
       )
-      .placeholder(ic_bazz_placeholder_poster)
+      .placeholder(ic_bazz_logo)
+      .transition(withCrossFade())
       .error(ic_broken_image)
       .into(binding.ivPicture)
 
@@ -157,8 +136,6 @@ class PersonActivity : AppCompatActivity() {
         !externalID.tiktokId.isNullOrEmpty() || !externalID.youtubeId.isNullOrEmpty()
       ) {
         binding.viewGroupSocialMedia.visibility = View.VISIBLE
-
-        // show or hide social media
         if (!externalID.instagramId.isNullOrEmpty()) {
           binding.ivInstagram.visibility = View.VISIBLE
           binding.ivInstagram.setOnClickListener {
@@ -237,10 +214,8 @@ class PersonActivity : AppCompatActivity() {
     // show detail person
     dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
     personMovieViewModel.detailPerson.observe(this) {
-      if (it.birthday != null)
-        if (it.birthday.isNotBlank() && it.birthday.isNotEmpty()) binding.tvBiography.text =
-          it.biography
-        else binding.tvBiography.text = getString(no_biography)
+      if (!it.biography.isNullOrEmpty() && it.biography.isNotBlank())
+        binding.tvBiography.text = it.biography
       else binding.tvBiography.text = getString(no_biography)
       showBirthdate(it)
 
@@ -288,10 +263,8 @@ class PersonActivity : AppCompatActivity() {
     binding.backgroundDimPerson.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      binding.backgroundDimPerson.visibility = View.GONE
-      binding.progressBar.visibility = View.GONE
-    }, DELAY_TIME)
+    binding.backgroundDimPerson.visibility = View.GONE
+    binding.progressBar.visibility = View.GONE
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -306,14 +279,11 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.isVisible = false
       binding.tvDeadHeader.isVisible = false
 
-      if (it.birthday != null)
-        if (it.birthday.isNotEmpty() && it.birthday.isNotBlank()) {
-          val birthday = "${dateFormatterStandard(it.birthday)} (${
-            getAgeBirth(it.birthday)
-          } ${getString(years_old)}) \n${it.placeOfBirth}"
-          binding.tvBorn.text = birthday
-        } else binding.tvBorn.text = getString(no_data)
-      else binding.tvBorn.text = getString(no_data)
+      if (!it.birthday.isNullOrEmpty() && it.birthday.isNotBlank()) {
+        val birthday =
+          "${dateFormatterStandard(it.birthday)} (${getAgeBirth(it.birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
+        binding.tvBorn.text = birthday
+      } else binding.tvBorn.text = getString(no_data)
 
     } else {
       binding.tvDeath.isVisible = true
@@ -339,7 +309,6 @@ class PersonActivity : AppCompatActivity() {
 
   companion object {
     const val EXTRA_PERSON = "EXTRA_PERSON"
-    const val DELAY_TIME = 600L
     const val DELAY_CLICK_TIME = 800L
   }
 }

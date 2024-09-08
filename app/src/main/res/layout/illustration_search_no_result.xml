@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/container_search_no_result"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:gravity="center"
+  android:orientation="vertical">
+
+  <ImageView
+    android:id="@+id/iv_illustration_no_data"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:contentDescription="@string/search_illustration"
+    android:src="@drawable/ic_no_found" />
 
   <TextView
     android:id="@+id/tv_header_noResult"
     style="@style/TextHeader1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="100dp"
-    android:text="@string/sorry_no_result"
-    android:textAlignment="center"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_marginTop="-40dp"
+    android:text="@string/sorry_no_result" />
 
   <TextView
     android:id="@+id/tv_no_data"
@@ -24,21 +27,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:text="@string/no_result_explanation"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_header_noResult" />
+    android:text="@string/no_result_explanation" />
 
-  <ImageView
-    android:id="@+id/iv_illustration_no_data"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
-    android:layout_marginBottom="16dp"
-    android:contentDescription="@string/search_illustration"
-    android:src="@drawable/ic_no_found"
-    app:layout_constraintBottom_toBottomOf="@+id/tv_no_data"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.522"
-    app:layout_constraintStart_toStartOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

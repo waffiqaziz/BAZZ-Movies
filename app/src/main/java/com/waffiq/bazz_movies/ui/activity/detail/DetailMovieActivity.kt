@@ -9,11 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.text.LineBreaker
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.Layout
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -39,6 +37,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -47,7 +46,6 @@ import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.R.drawable.ic_hearth
@@ -84,6 +82,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
+import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
@@ -132,14 +131,9 @@ class DetailMovieActivity : AppCompatActivity() {
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
-    @Suppress("WrongConstant")
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-      binding.tvOverview.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-    else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-      binding.tvOverview.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
-
     transparentStatusBar(window)
     scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
+    justifyTextView(binding.tvOverview)
     loadData()
     favWatchlistHandler()
     viewListener()
@@ -193,8 +187,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun getDataExtra() {
-    // check if intent hasExtra for early return
-    if (!intent.hasExtra(EXTRA_MOVIE)) {
+    if (!intent.hasExtra(EXTRA_MOVIE)) { // check if intent hasExtra for early return
       finish()
       return
     }
@@ -211,11 +204,13 @@ class DetailMovieActivity : AppCompatActivity() {
     // shows backdrop
     Glide.with(binding.ivPictureBackdrop)
       .load(
-        if (!dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+        if (dataExtra.backdropPath == "N/A" || dataExtra.posterPath == "N/A") ic_backdrop_error_filled
+        else if (!dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
         else if (!dataExtra.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
         else ic_backdrop_error_filled
-      ).placeholder(ic_bazz_placeholder_backdrops)
-      .optionalCenterCrop()
+      )
+      .placeholder(ic_bazz_placeholder_backdrops)
+      .centerCrop()
       .error(ic_backdrop_error_filled)
       .transition(withCrossFade())
       .into(binding.ivPictureBackdrop)
@@ -223,7 +218,8 @@ class DetailMovieActivity : AppCompatActivity() {
     // shows poster
     Glide.with(binding.ivPoster)
       .load(
-        if (dataExtra.posterPath != null) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+        if (dataExtra.posterPath == "N/A") ic_poster_error
+        else if (dataExtra.posterPath != null) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
         else ic_poster_error
       )
       .placeholder(ic_bazz_placeholder_poster)
@@ -231,7 +227,8 @@ class DetailMovieActivity : AppCompatActivity() {
       .transition(withCrossFade())
       .into(binding.ivPoster)
 
-    binding.tvBackdropNotFound.isVisible = dataExtra.posterPath.isNullOrEmpty()
+    binding.tvBackdropNotFound.isVisible =
+      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == "N/A"
 
     // show data (title, released year, media type, and overview) based DATA_EXTRA
     binding.apply {
@@ -247,12 +244,14 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     // setup rv cast
+    binding.rvCast.itemAnimator = DefaultItemAnimator()
     binding.rvCast.layoutManager =
       LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     val adapterCast = CastAdapter()
     binding.rvCast.adapter = adapterCast
 
     // setup rv recommendation
+    binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
     binding.rvRecommendation.layoutManager =
       LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     val adapterRecommendation = TrendingAdapter()
@@ -455,7 +454,8 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.apply {
       // handle swipe refresh to reload data
       swipeRefresh.setOnRefreshListener {
-        loadData()
+        checkUser()
+        showDetailData()
         swipeRefresh.isRefreshing = false
       }
 

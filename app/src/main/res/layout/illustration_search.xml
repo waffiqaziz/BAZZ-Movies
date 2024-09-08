@@ -1,43 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/container_search"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:gravity="center"
+  android:orientation="vertical">
+
+  <ImageView
+    android:id="@+id/iv_search_illustration"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/search_illustration"
+    android:src="@drawable/ic_search_ilust" />
 
   <TextView
     android:id="@+id/tv_search_any_movies"
     style="@style/TextHeader1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="100dp"
+    android:layout_marginTop="@dimen/default_margin_parent_20"
     android:text="@string/search_any"
-    android:textAlignment="center"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:textAlignment="center" />
 
-    <TextView
-      android:id="@+id/tv_explore_tmdb"
-      style="@style/TextDivider"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/explore_our_libraries"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:gravity="center"
-      android:textAlignment="center"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tv_search_any_movies" />
+  <TextView
+    android:id="@+id/tv_explore_tmdb"
+    style="@style/TextDivider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/explore_our_libraries" />
 
-    <ImageView
-      android:id="@+id/iv_search_illustration"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:src="@drawable/ic_search_ilust"
-      app:layout_constraintBottom_toTopOf="@+id/tv_search_any_movies"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      android:contentDescription="@string/search_illustration" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

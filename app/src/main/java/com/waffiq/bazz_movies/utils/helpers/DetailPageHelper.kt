@@ -229,6 +229,7 @@ object DetailPageHelper {
   fun getTransformGenreIDs(list: List<GenresItem>?): List<Int>? =
     list?.map { it.id ?: 0 }
 
-  fun getTransformDuration(runtime: Int?): String? =
-    runtime?.let { convertRuntime(it) }
+  fun getTransformDuration(runtime: Int?): String? {
+    return if (runtime == 0 || runtime == null) null else convertRuntime(runtime)
+  }
 }

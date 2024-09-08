@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/container_result"
@@ -9,57 +9,51 @@
   android:paddingHorizontal="@dimen/default_margin_parent_20"
   android:paddingVertical="10dp">
 
-  <ImageView
+  <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/iv_picture"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:adjustViewBounds="true"
     android:contentDescription="@string/picture"
     android:scaleType="fitCenter"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
     tools:layout_height="100dp"
     tools:src="@color/red_matte" />
 
-
-  <TextView
-    android:id="@+id/tv_title"
-    style="@style/TextHeader1"
+  <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:maxLines="2"
-    android:textSize="16sp"
-    app:layout_constrainedWidth="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintStart_toEndOf="@+id/iv_picture"
-    app:layout_constraintTop_toTopOf="@+id/iv_picture"
-    tools:text="Avenger Endgame" />
+    android:layout_marginStart="8dp"
+    android:orientation="vertical">
 
-  <TextView
-    android:id="@+id/tv_year_released"
-    style="@style/TextDivider"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    app:layout_constraintStart_toStartOf="@+id/tv_title"
-    app:layout_constraintTop_toBottomOf="@+id/tv_title"
-    tools:text="2021" />
+    <TextView
+      android:id="@+id/tv_title"
+      style="@style/TextHeader3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="2"
+      app:layout_constrainedWidth="true"
+      tools:text="Avenger Endgame" />
 
-  <TextView
-    android:id="@+id/tv_genre"
-    style="@style/TextDivider"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    android:ellipsize="end"
-    android:maxLines="1"
-    app:layout_constrainedWidth="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintStart_toStartOf="@+id/tv_year_released"
-    app:layout_constraintTop_toBottomOf="@+id/tv_year_released"
-    tools:text="Action, Adventure, Superhero, MCU, Sci-fi" />
+    <TextView
+      android:id="@+id/tv_year_released"
+      style="@style/TextDivider"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      tools:text="2021" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/tv_genre"
+      style="@style/TextDivider"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      app:layout_constrainedWidth="true"
+      tools:text="Action, Adventure, Superhero, MCU, Sci-fi" />
+
+  </LinearLayout>
+</LinearLayout>

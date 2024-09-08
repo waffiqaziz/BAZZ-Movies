@@ -1,43 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/container_no_data"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:layout_marginTop="@dimen/margin_reduce_20"
+  android:gravity="center"
+  android:orientation="vertical">
 
-    <TextView
-      android:id="@+id/tv_header_no_data"
-      style="@style/TextHeader1"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="100dp"
-      android:text="@string/no_data_found"
-      android:textAlignment="center"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+  <ImageView
+    android:id="@+id/iv_illustration_no_data"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/no_data_illustration"
+    android:src="@drawable/ic_no_data" />
 
-    <TextView
-      android:id="@+id/tv_no_data"
-      style="@style/TextDivider"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/no_data_explanation"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:gravity="center"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/tv_header_no_data" />
+  <TextView
+    android:id="@+id/tv_header_no_data"
+    style="@style/TextHeader1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/default_margin_parent_20"
+    android:text="@string/no_data_found"
+    android:textAlignment="center" />
 
-    <ImageView
-      android:id="@+id/iv_illustration_no_data"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
-      android:contentDescription="@string/no_data_illustration"
-      android:src="@drawable/ic_no_data"
-      app:layout_constraintBottom_toTopOf="@+id/tv_header_no_data"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+  <TextView
+    android:id="@+id/tv_no_data"
+    style="@style/TextDivider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/no_data_explanation" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

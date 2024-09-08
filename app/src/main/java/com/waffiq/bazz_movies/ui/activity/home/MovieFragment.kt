@@ -127,7 +127,7 @@ class MovieFragment : Fragment() {
       )
 
       rvTopRated.layoutManager = initLinearLayoutManager(requireContext())
-      binding.rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
+      rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )
 
