@@ -17,7 +17,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_cross
@@ -34,6 +37,8 @@ import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
@@ -42,6 +47,9 @@ class SearchFragment : Fragment() {
 
   private lateinit var searchViewModel: SearchViewModel
   private lateinit var closeButton: View
+  private lateinit var searchView: SearchView
+
+  val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
 
@@ -61,71 +69,96 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
+    setupRecyclerView()
     setupSearchView(searchViewModel)
     return root
   }
 
-  private fun setupSearchView(searchViewModel: SearchViewModel) {
-    // setup recycleView
+  private fun setupRecyclerView() {
     binding.rvSearch.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-    val adapter = SearchAdapter()
+    binding.rvSearch.itemAnimator = DefaultItemAnimator()
+    binding.rvSearch.adapter =
+      adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() })
 
-    binding.rvSearch.adapter = adapter.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapter.retry() }
-    )
+    binding.swipeRefresh.setOnRefreshListener {
+      adapter.refresh()
+      binding.swipeRefresh.isRefreshing = false
+    }
+  }
 
+  private fun setupSearchView(searchViewModel: SearchViewModel) {
     // show or hide view
     adapter.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapter.itemCount < 1
-      ) { // show empty view
-        binding.rvSearch.isVisible = false
-        binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
-        binding.illustrationSearchView.containerSearch.isVisible = false
-      } else { //  hide empty view
-        binding.rvSearch.isVisible = true
-        binding.illustrationSearchView.containerSearch.isVisible = false
-        binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
-      }
+      when (loadState.source.refresh) {
+        is LoadState.Loading -> {
+          // Data is loading; keep showing the containerSearch
+          binding.progressBar.isVisible = true
+          binding.rvSearch.isVisible = true
+          binding.illustrationSearchView.containerSearch.isVisible = false
+          binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
+        }
 
-      pagingErrorState(loadState)?.let {
-        mSnackbar = SnackBarManager.snackBarWarning(
-          requireContext(),
-          binding.root,
-          requireActivity().findViewById(nav_view),
-          Event(pagingErrorHandling(it.error))
-        )
+        is LoadState.NotLoading -> {
+          binding.progressBar.isVisible = false
+          if (loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+            // No search results found; show empty view
+            binding.rvSearch.isVisible = false
+            binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
+            binding.illustrationSearchView.containerSearch.isVisible = false
+          } else {
+            // Data is loaded; show the results and hide the loading view
+            binding.rvSearch.isVisible = true
+            binding.illustrationSearchView.containerSearch.isVisible = false
+            binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
+          }
+        }
+
+        is LoadState.Error -> {
+          // Error occurred; handle error state and hide loading view
+          binding.progressBar.isVisible = false
+          binding.rvSearch.isVisible = false
+          binding.illustrationSearchView.containerSearch.isVisible = false
+          pagingErrorState(loadState)?.let {
+            mSnackbar = SnackBarManager.snackBarWarning(
+              requireContext(),
+              binding.root,
+              requireActivity().findViewById(nav_view),
+              Event(pagingErrorHandling(it.error))
+            )
+          }
+        }
+      }
+    }
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        searchViewModel.searchResults.collectLatest { resultItemSearch ->
+          adapter.submitData(lifecycle, resultItemSearch)
+        }
       }
     }
 
     //setup searchView
     val menuHost: MenuHost = requireActivity()
+    var lastQuery: String? = null
     menuHost.addMenuProvider(object : MenuProvider {
       override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(search_menu, menu)
 
-        val searchView = menu.findItem(action_search).actionView as SearchView
+        searchView = menu.findItem(action_search).actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         customizeSearchView(searchView)
 
         // search queryTextChange Listener
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-          override fun onQueryTextSubmit(query: String?): Boolean { //when user submit data
-
-            if (query != null) {
-              searchViewModel.search(query).observe(viewLifecycleOwner) { resultItemSearch ->
-                adapter.submitData(lifecycle, resultItemSearch)
-                adapter.addLoadStateListener {
-                  binding.progressBar.isVisible = it.source.refresh is LoadState.Loading
-                }
-              }
-            }
-            // hide virtual keyboard when submitted
+          override fun onQueryTextSubmit(query: String?): Boolean {
+            if (query != null && query != lastQuery) {
+              lastQuery = query
+              searchViewModel.search(query)
+            } else return true
             searchView.clearFocus()
-
             return true
           }
 
@@ -168,7 +201,7 @@ class SearchFragment : Fragment() {
         val child = view.getChildAt(i)
         if (child is ViewGroup) {
           traverseViewHierarchy(child)
-        } else if (child is View && child.contentDescription == "Clear query") {
+        } else if (child is View && child.contentDescription == getString(clear_query)) {
           closeButton = child
           val ivCloseButton = closeButton as ImageView
           ivCloseButton.contentDescription = getString(clear_query)
@@ -186,6 +219,7 @@ class SearchFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
+    binding.illustrationSearchView.containerSearch.isVisible = true
     binding.appBarLayout.setExpanded(true, true)
   }
 }

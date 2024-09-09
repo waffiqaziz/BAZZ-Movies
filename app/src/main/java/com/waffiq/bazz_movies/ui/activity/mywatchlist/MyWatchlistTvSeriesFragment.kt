@@ -16,6 +16,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -92,8 +93,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     // setup recyclerview
     binding.rvWatchlistTv.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    binding.rvWatchlistTv.itemAnimator = DefaultItemAnimator()
 
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show favorite data from TMDB API
         initAction(isLogin = true)
         setupRefresh(true)

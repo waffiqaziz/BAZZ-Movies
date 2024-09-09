@@ -21,7 +21,7 @@ object SnackBarManager {
       val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
       if (guideView != null) mSnackbar.setAnchorView(guideView)
 
-      mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
+      mSnackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
       mSnackbar.show()
       return mSnackbar
     }
@@ -34,13 +34,13 @@ object SnackBarManager {
     guideView: View?,
     message: String?
   ): Snackbar? {
-    if(message.isNullOrEmpty()) return null
+    if (message.isNullOrEmpty()) return null
 
     if (view.isAttachedToWindow) {
       val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
       if (guideView != null) mSnackbar.setAnchorView(guideView)
 
-      mSnackbar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.red_matte))
+      mSnackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
       mSnackbar.show()
       return mSnackbar
     }

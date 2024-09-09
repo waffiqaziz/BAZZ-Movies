@@ -1,14 +1,13 @@
 package com.waffiq.bazz_movies.domain.usecase.multi_search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
+import kotlinx.coroutines.flow.Flow
 
 class MultiSearchInteractor(
   private val multiSearchRespository: IMoviesRepository
 ) : MultiSearchUseCase {
-  override fun search(query: String): LiveData<PagingData<ResultsItemSearch>> =
-    multiSearchRespository.getPagingSearch(query).asLiveData()
+  override fun search(query: String): Flow<PagingData<ResultsItemSearch>> =
+    multiSearchRespository.getPagingSearch(query)
 }

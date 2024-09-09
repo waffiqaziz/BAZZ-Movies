@@ -62,7 +62,8 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
         .into(binding.imgCastPhoto)
 
       binding.tvCastName.text = cast.name ?: cast.originalName
-      binding.tvCastCharacter.text = cast.character
+      binding.tvCastCharacter.text =
+        if (!cast.character.isNullOrEmpty() && cast.character.isNotBlank()) cast.character else "TBA"
 
       // image OnClickListener
       binding.container.setOnClickListener {

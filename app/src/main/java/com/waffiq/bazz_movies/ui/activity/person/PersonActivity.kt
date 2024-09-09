@@ -13,15 +13,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_no_profile
@@ -52,9 +49,9 @@ import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_CHANNEL_LINK
-import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeBirth
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeDeath
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 
 class PersonActivity : AppCompatActivity() {
 
@@ -101,7 +98,9 @@ class PersonActivity : AppCompatActivity() {
 
   private fun showData() {
     // error and loading handle
-    personMovieViewModel.errorState.observe(this) { showSnackBarWarning(it) }
+    personMovieViewModel.errorState.observe(this) {
+      snackBarWarning(this, binding.coordinatorLayout, null, it)
+    }
     personMovieViewModel.loadingState.observe(this) { showLoading(it) }
 
     // setup recycle view and adapter
@@ -296,15 +295,6 @@ class PersonActivity : AppCompatActivity() {
       } ${getString(years_old)})"
       binding.tvDeath.text = deathDay
     }
-  }
-
-  private fun showSnackBarWarning(eventMessage: Event<String>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
-    val snackBar = Snackbar.make(binding.constraintLayout, message, Snackbar.LENGTH_SHORT)
-
-    val snackbarView = snackBar.view
-    snackbarView.setBackgroundColor(ContextCompat.getColor(this, red_matte))
-    snackBar.show()
   }
 
   companion object {
