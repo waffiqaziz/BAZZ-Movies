@@ -346,6 +346,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
           }
         }
       }.setAnchorView(requireActivity().findViewById(nav_view))
+        .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
       mSnackbar?.show()
     }
   }
@@ -413,6 +414,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         viewModelFav.updateToRemoveFromWatchlistDB(fav)
       }
     }.setAnchorView(requireActivity().findViewById(nav_view))
+      .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
     mSnackbar?.show()
   }
 

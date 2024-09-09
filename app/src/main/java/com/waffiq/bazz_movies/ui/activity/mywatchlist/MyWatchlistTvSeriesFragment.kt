@@ -95,7 +95,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     binding.rvWatchlistTv.itemAnimator = DefaultItemAnimator()
 
-      userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") { //user login then show favorite data from TMDB API
         initAction(isLogin = true)
         setupRefresh(true)
@@ -345,6 +345,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
           }
         }
       }.setAnchorView(requireActivity().findViewById(nav_view))
+        .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
       mSnackbar?.show()
     }
   }
@@ -412,6 +413,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
         viewModel.updateToRemoveFromFavoriteDB(fav)
       }
     }.setAnchorView(requireActivity().findViewById(nav_view))
+      .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
     mSnackbar?.show()
   }
 

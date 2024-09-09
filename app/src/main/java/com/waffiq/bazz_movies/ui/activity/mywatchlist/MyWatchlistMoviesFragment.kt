@@ -345,6 +345,7 @@ class MyWatchlistMoviesFragment : Fragment() {
           }
         }
       }.setAnchorView(requireActivity().findViewById(nav_view))
+        .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
       mSnackbar?.show()
     }
   }
@@ -412,6 +413,7 @@ class MyWatchlistMoviesFragment : Fragment() {
         viewModel.updateToRemoveFromFavoriteDB(fav)
       }
     }.setAnchorView(requireActivity().findViewById(nav_view))
+      .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
     mSnackbar?.show()
   }
 
