@@ -9,8 +9,8 @@ import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
-import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 
 class PersonMovieViewModel(
@@ -58,7 +58,7 @@ class PersonMovieViewModel(
     viewModelScope.launch {
       getDetailPersonUseCase.getKnownForPerson(id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _knownFor.value = it?.cast ?: emptyList() }
+          Status.SUCCESS -> networkResult.data.let { _knownFor.value = it }
           Status.LOADING -> {}
           Status.ERROR -> {
             _loadingState.value = false
