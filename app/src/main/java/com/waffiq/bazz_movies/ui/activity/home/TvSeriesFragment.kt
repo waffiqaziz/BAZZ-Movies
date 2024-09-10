@@ -129,13 +129,8 @@ class TvSeriesFragment : Fragment() {
     }
   }
 
-  private fun showView(isShow: Boolean) {
+  private fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
-    setMainContentVisibility(isShow)
-    setErrorIllustrationVisibility(!isShow)
-  }
-
-  private fun setMainContentVisibility(isVisible: Boolean) {
     binding.apply {
       tvPopular.isVisible = isVisible
       rvPopular.isVisible = isVisible
@@ -145,12 +140,8 @@ class TvSeriesFragment : Fragment() {
       rvOnTv.isVisible = isVisible
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
+      illustrationError.root.isVisible = !isVisible
     }
-  }
-
-  private fun setErrorIllustrationVisibility(isVisible: Boolean) {
-    binding.illustrationError.icGeneralErrror.isVisible = isVisible
-    binding.illustrationError.root.isVisible = isVisible
   }
 
   private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
@@ -161,9 +152,7 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      adapters.forEach { it.refresh() }
-    }
+    binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
   }
 
   private fun animationFadeOut() {

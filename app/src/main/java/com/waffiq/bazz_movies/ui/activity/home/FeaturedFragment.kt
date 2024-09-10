@@ -223,9 +223,7 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      adapters.forEach { it.refresh() }
-    }
+    binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
   }
 
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter, loadState: CombinedLoadStates) {
@@ -248,13 +246,8 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun showView(isShow: Boolean) {
+  private fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
-    setMainContentVisibility(isShow)
-    setErrorIllustrationVisibility(!isShow)
-  }
-
-  private fun setMainContentVisibility(isVisible: Boolean) {
     binding.apply {
       imgMainFeatured.isVisible = isVisible
       tvTrending.isVisible = isVisible
@@ -264,12 +257,8 @@ class FeaturedFragment : Fragment() {
       rvUpcoming.isVisible = isVisible
       rvPlayingNow.isVisible = isVisible
       tvPlayingNow.isVisible = isVisible
+      illustrationError.root.isVisible = !isVisible
     }
-  }
-
-  private fun setErrorIllustrationVisibility(isVisible: Boolean) {
-    binding.illustrationError.icGeneralErrror.isVisible = isVisible
-    binding.illustrationError.root.isVisible = isVisible
   }
 
   private fun animationFadeOut() {

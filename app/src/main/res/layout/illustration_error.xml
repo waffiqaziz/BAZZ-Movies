@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/container"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:gravity="center"
   android:orientation="vertical">
 
   <ImageView
-    android:id="@+id/ic_general_errror"
+    android:id="@+id/ic_general_error"
     android:layout_width="220dp"
     android:layout_height="220dp"
     android:layout_gravity="center"
     android:adjustViewBounds="true"
     android:contentDescription="@string/something_went_wrong"
-    android:src="@drawable/ic_general_error"
-    android:visibility="gone"
-    tools:visibility="visible" />
+    android:src="@drawable/ic_general_error" />
 
   <TextView
     android:id="@+id/tv_header_no_data"
