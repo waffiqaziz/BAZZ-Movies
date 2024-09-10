@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -17,7 +19,22 @@ class SearchViewModel(
   private val _searchResults = MutableStateFlow<PagingData<ResultsItemSearch>>(PagingData.empty())
   val searchResults: Flow<PagingData<ResultsItemSearch>> = _searchResults.cachedIn(viewModelScope)
 
+  private val _query = MutableLiveData<String>()
+  val query: LiveData<String> = _query
+
+  private val _firstTime = MutableLiveData<Boolean>()
+  val firstTime : LiveData<Boolean> = _firstTime
+
+  init {
+    setFirstTIme(true)
+  }
+
+  fun setFirstTIme(yes: Boolean){
+    _firstTime.value = yes
+  }
+
   fun search(query: String) {
+    _query.value = query
     viewModelScope.launch {
       multiSearchUseCase.search(query).collectLatest {
         _searchResults.value = it

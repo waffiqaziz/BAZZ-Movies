@@ -1,12 +1,16 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -49,7 +53,7 @@ class SearchFragment : Fragment() {
   private lateinit var closeButton: View
   private lateinit var searchView: SearchView
 
-  val adapter = SearchAdapter()
+  private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
 
@@ -69,48 +73,129 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
-    setupRecyclerView()
-    setupSearchView(searchViewModel)
+    setupView()
+    observeSearchResult()
+    adapterLoadStateListener()
     return root
   }
 
-  private fun setupRecyclerView() {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    setupSearchView()
+  }
+
+  private fun setupView() {
     binding.rvSearch.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     binding.rvSearch.itemAnimator = DefaultItemAnimator()
     binding.rvSearch.adapter =
       adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() })
 
+    binding.illustrationError.btnTryAgain.setOnClickListener { adapter.refresh() }
     binding.swipeRefresh.setOnRefreshListener {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
   }
 
-  private fun setupSearchView(searchViewModel: SearchViewModel) {
-    // show or hide view
+  private fun setupSearchView() {
+    var lastQuery: String? = null
+    requireActivity().addMenuProvider(object : MenuProvider {
+      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(search_menu, menu)
+        searchView = menu.findItem(action_search).actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        customizeSearchView(searchView)
+
+        searchViewModel.firstTime.observe(viewLifecycleOwner) {
+          if (it) {
+            menu.findItem(action_search).expandActionView()
+          } else {
+//            menu.findItem(action_search).expandActionView()
+//            searchView.isFocusable = false
+//            searchView.isIconified  =  false
+//            searchView.clearFocus()
+//            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.hideSoftInputFromWindow(searchView.windowToken, 0)
+
+            // Set soft input mode to prevent the keyboard from appearing
+            requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
+            // Expand the SearchView
+            menu.findItem(action_search).expandActionView()
+            searchView.isFocusable = false
+            searchView.isIconified = false
+            searchView.clearFocus()
+          }
+        }
+
+        // search queryTextChange Listener
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+          override fun onQueryTextSubmit(query: String?): Boolean {
+            if (query != null && query != lastQuery) {
+              lastQuery = query
+              searchViewModel.search(query)
+              searchViewModel.setFirstTIme(false)
+            } else return true
+            searchView.clearFocus()
+            return false
+          }
+
+          override fun onQueryTextChange(query: String?): Boolean {
+            return true
+          }
+        })
+
+        // Restore query if available
+        searchViewModel.query.observe(viewLifecycleOwner) {
+          searchView.setQuery(it, false)
+        }
+      }
+
+      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+          action_search -> true
+          else -> false
+        }
+      }
+    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+  }
+
+  private fun observeSearchResult() {
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        searchViewModel.searchResults.collectLatest { resultItemSearch ->
+          adapter.submitData(lifecycle, resultItemSearch)
+        }
+      }
+    }
+  }
+
+  private fun adapterLoadStateListener() {
     adapter.addLoadStateListener { loadState ->
+      Log.d("LoadState", "Load state triggered: ${loadState.source.refresh}")
       when (loadState.source.refresh) {
         is LoadState.Loading -> {
           // Data is loading; keep showing the containerSearch
           binding.progressBar.isVisible = true
-          binding.rvSearch.isVisible = true
-          binding.illustrationSearchView.containerSearch.isVisible = false
-          binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
+          binding.rvSearch.isVisible = false
+          binding.illustrationSearchView.root.isVisible = false
+          binding.illustrationSearchNoResultView.root.isVisible = false
+          binding.illustrationError.root.isVisible = false
         }
 
         is LoadState.NotLoading -> {
           binding.progressBar.isVisible = false
+          binding.illustrationSearchView.root.isVisible = false
+          binding.illustrationError.root.isVisible = false
           if (loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
             // No search results found; show empty view
             binding.rvSearch.isVisible = false
-            binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = true
-            binding.illustrationSearchView.containerSearch.isVisible = false
+            binding.illustrationSearchNoResultView.root.isVisible = true
           } else {
             // Data is loaded; show the results and hide the loading view
             binding.rvSearch.isVisible = true
-            binding.illustrationSearchView.containerSearch.isVisible = false
-            binding.illustrationSearchNoResultView.containerSearchNoResult.isVisible = false
+            binding.illustrationSearchNoResultView.root.isVisible = false
           }
         }
 
@@ -118,7 +203,8 @@ class SearchFragment : Fragment() {
           // Error occurred; handle error state and hide loading view
           binding.progressBar.isVisible = false
           binding.rvSearch.isVisible = false
-          binding.illustrationSearchView.containerSearch.isVisible = false
+          binding.illustrationSearchView.root.isVisible = false
+          binding.illustrationError.root.isVisible = true
           pagingErrorState(loadState)?.let {
             mSnackbar = SnackBarManager.snackBarWarning(
               requireContext(),
@@ -130,51 +216,6 @@ class SearchFragment : Fragment() {
         }
       }
     }
-
-    viewLifecycleOwner.lifecycleScope.launch {
-      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        searchViewModel.searchResults.collectLatest { resultItemSearch ->
-          adapter.submitData(lifecycle, resultItemSearch)
-        }
-      }
-    }
-
-    //setup searchView
-    val menuHost: MenuHost = requireActivity()
-    var lastQuery: String? = null
-    menuHost.addMenuProvider(object : MenuProvider {
-      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(search_menu, menu)
-
-        searchView = menu.findItem(action_search).actionView as SearchView
-        searchView.maxWidth = Int.MAX_VALUE
-        customizeSearchView(searchView)
-
-        // search queryTextChange Listener
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-          override fun onQueryTextSubmit(query: String?): Boolean {
-            if (query != null && query != lastQuery) {
-              lastQuery = query
-              searchViewModel.search(query)
-            } else return true
-            searchView.clearFocus()
-            return true
-          }
-
-          override fun onQueryTextChange(query: String?): Boolean {
-            return true
-          }
-        })
-      }
-
-      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return when (menuItem.itemId) {
-          action_search -> true
-          else -> false
-        }
-      }
-    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
   }
 
   private fun customizeSearchView(searchView: SearchView) {
@@ -219,7 +260,25 @@ class SearchFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
-    binding.illustrationSearchView.containerSearch.isVisible = true
-    binding.appBarLayout.setExpanded(true, true)
+    adapter.addLoadStateListener { loadState ->
+      when (loadState.source.refresh) {
+        is LoadState.Loading -> {}
+        is LoadState.Error -> {
+          if (adapter.itemCount <= 0) {
+            binding.illustrationError.root.isVisible = true
+            binding.illustrationSearchView.root.isVisible = false
+            binding.rvSearch.isVisible = false
+          }
+        }
+
+        is LoadState.NotLoading -> {
+          if (adapter.itemCount <= 0) {
+            binding.illustrationError.root.isVisible = false
+            binding.illustrationSearchView.root.isVisible = true
+            binding.rvSearch.isVisible = false
+          }
+        }
+      }
+    }
   }
 }
