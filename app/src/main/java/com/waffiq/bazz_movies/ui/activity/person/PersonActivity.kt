@@ -59,6 +59,9 @@ class PersonActivity : AppCompatActivity() {
   private lateinit var dataExtra: MovieTvCastItemResponse
   private lateinit var personMovieViewModel: PersonMovieViewModel
 
+  private var dialog: Dialog? = null
+  private val handler = Handler(Looper.getMainLooper())
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityPersonBinding.inflate(layoutInflater)
@@ -230,27 +233,28 @@ class PersonActivity : AppCompatActivity() {
       }
     }
 
-    Handler(Looper.getMainLooper()).postDelayed({
+    handler.postDelayed({
       binding.tvBiography.performClick() // set automatic click
     }, DELAY_CLICK_TIME)
   }
 
   private fun showImageDialog(position: Int, imageUrls: List<String>) {
-    val dialog = Dialog(this)
-    dialog.setContentView(dialog_image)
-    dialog.window?.setDimAmount(0.8f) // set transparent percent
-    dialog.window?.setLayout(
-      WindowManager.LayoutParams.MATCH_PARENT,
-      WindowManager.LayoutParams.WRAP_CONTENT
-    )
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // set background transparent
+    dialog = Dialog(this).apply {
+      setContentView(dialog_image)
+      window?.setDimAmount(0.8f) // set transparent percent
+      window?.setLayout(
+        WindowManager.LayoutParams.MATCH_PARENT,
+        WindowManager.LayoutParams.WRAP_CONTENT
+      )
+      window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // set background transparent
 
-    val viewPager: ViewPager2 = dialog.findViewById(view_pager_dialog)
-    viewPager.adapter = ImagePagerAdapter(imageUrls)
-    viewPager.setCurrentItem(position, false)
+      val viewPager: ViewPager2 = findViewById(view_pager_dialog)
+      viewPager.adapter = ImagePagerAdapter(imageUrls)
+      viewPager.setCurrentItem(position, false)
 
-    dialog.findViewById<ImageButton>(btn_close_dialog).setOnClickListener { dialog.dismiss() }
-    dialog.show()
+      findViewById<ImageButton>(btn_close_dialog).setOnClickListener { dismiss() }
+      show()
+    }
   }
 
   private fun btnListener() {
@@ -295,6 +299,13 @@ class PersonActivity : AppCompatActivity() {
       } ${getString(years_old)})"
       binding.tvDeath.text = deathDay
     }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    handler.removeCallbacksAndMessages(null)
+    dialog?.dismiss()
+    Glide.get(this).clearMemory()
   }
 
   companion object {

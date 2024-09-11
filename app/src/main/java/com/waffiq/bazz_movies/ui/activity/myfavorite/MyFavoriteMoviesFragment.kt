@@ -70,12 +70,8 @@ class MyFavoriteMoviesFragment : Fragment() {
   private var isWantToDelete = false
   private var isUndo = false
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentMyFavoriteMoviesBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
     val pref = requireContext().dataStore
     val factoryUser = ViewModelUserFactory.getInstance(pref)
@@ -84,9 +80,19 @@ class MyFavoriteMoviesFragment : Fragment() {
 
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModelFav = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
+  }
 
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentMyFavoriteMoviesBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     checkUser()
-    return root
   }
 
   private fun checkUser() {

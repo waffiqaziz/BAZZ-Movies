@@ -1,8 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,19 +35,23 @@ class TvSeriesFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    val factory = ViewModelFactory.getInstance(requireContext())
+    tvSeriesViewModel = ViewModelProvider(this, factory)[TvSeriesViewModel::class.java]
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentTvSeriesBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    return binding.root
+  }
 
-    val factory = ViewModelFactory.getInstance(requireContext())
-    tvSeriesViewModel = ViewModelProvider(this, factory)[TvSeriesViewModel::class.java]
-
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     setData()
-
-    return root
   }
 
   private fun setData() {
@@ -159,11 +161,8 @@ class TvSeriesFragment : Fragment() {
     val animation = animFadeOutLong(requireContext())
     binding.backgroundDimMovie.startAnimation(animation)
     binding.progressBar.startAnimation(animation)
-
-    Handler(Looper.getMainLooper()).post {
-      binding.backgroundDimMovie.isGone = true
-      binding.progressBar.isGone = true
-    }
+    binding.backgroundDimMovie.isGone = true
+    binding.progressBar.isGone = true
   }
 
   private fun showLoading(isLoading: Boolean) {
@@ -177,5 +176,6 @@ class TvSeriesFragment : Fragment() {
     super.onDestroyView()
     _binding = null
     mSnackbar?.dismiss()
+    mSnackbar = null
   }
 }

@@ -306,5 +306,6 @@ class MoreFragment : Fragment() {
     _binding = null
     mSnackbar?.dismiss()
     moreViewModelUser.removeState()
+    Glide.get(requireContext()).clearMemory()
   }
 }

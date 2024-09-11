@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -111,13 +108,6 @@ class SearchFragment : Fragment() {
           if (it) {
             menu.findItem(action_search).expandActionView()
           } else {
-//            menu.findItem(action_search).expandActionView()
-//            searchView.isFocusable = false
-//            searchView.isIconified  =  false
-//            searchView.clearFocus()
-//            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            imm.hideSoftInputFromWindow(searchView.windowToken, 0)
-
             // Set soft input mode to prevent the keyboard from appearing
             requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
@@ -217,7 +207,7 @@ class SearchFragment : Fragment() {
       }
     }
   }
-
+  
   private fun customizeSearchView(searchView: SearchView) {
     lateinit var backButton: ImageView
     val searchPlate = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
@@ -252,12 +242,6 @@ class SearchFragment : Fragment() {
     }
   }
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-    mSnackbar?.dismiss()
-  }
-
   override fun onResume() {
     super.onResume()
     adapter.addLoadStateListener { loadState ->
@@ -280,5 +264,13 @@ class SearchFragment : Fragment() {
         }
       }
     }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+    mSnackbar?.dismiss()
+    mSnackbar = null
+    (activity as? AppCompatActivity)?.setSupportActionBar(null)
   }
 }

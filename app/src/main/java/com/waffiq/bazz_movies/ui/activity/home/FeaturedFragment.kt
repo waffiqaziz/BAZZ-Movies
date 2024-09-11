@@ -65,13 +65,8 @@ class FeaturedFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
-    val root: View = binding.root
-
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
     val factory = ViewModelFactory.getInstance(requireContext())
     movieViewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
 
@@ -79,15 +74,24 @@ class FeaturedFragment : Fragment() {
     val factory2 = ViewModelUserFactory.getInstance(pref)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
     regionViewModel = ViewModelProvider(this, factory2)[RegionViewModel::class.java]
+  }
 
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     setRegion()
     showMainPicture()
-
-    return root
   }
 
   private fun showMainPicture() {
-    Glide.with(binding.imgMainFeatured)
+    Glide.with(requireContext())
       .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(ic_bazz_placeholder_search)
       .transition(withCrossFade())
@@ -278,7 +282,9 @@ class FeaturedFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    _binding = null
     mSnackbar?.dismiss()
+    mSnackbar = null
+    Glide.get(requireContext()).clearMemory()
+    _binding = null
   }
 }

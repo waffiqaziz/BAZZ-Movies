@@ -55,12 +55,8 @@ class MovieFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentMovieBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
     val factory = ViewModelFactory.getInstance(requireContext())
     movieViewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
@@ -69,13 +65,22 @@ class MovieFragment : Fragment() {
     val factory2 = ViewModelUserFactory.getInstance(pref)
     regionViewModel = ViewModelProvider(this, factory2)[RegionViewModel::class.java]
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
-
-    setRegion()
-
-    return root
   }
 
-  private fun setRegion() {
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentMovieBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    showData()
+  }
+
+  private fun showData() {
     // check if user already have region
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userRegion ->
 

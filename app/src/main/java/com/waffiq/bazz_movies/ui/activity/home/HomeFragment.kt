@@ -19,8 +19,9 @@ class HomeFragment : Fragment() {
   private var _binding: FragmentHomeBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var viewpager: ViewPager2
-  private lateinit var tabLayout: TabLayout
+  private var viewpager: ViewPager2? = null
+  private var tabLayout: TabLayout? = null
+  private var tabLayoutMediator: TabLayoutMediator? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -33,26 +34,44 @@ class HomeFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-    (activity as AppCompatActivity).supportActionBar?.title = null
+    (activity as? AppCompatActivity)?.let {
+      it.setSupportActionBar(binding.toolbar)
+      it.supportActionBar?.title = null
+    }
     setupTabLayoutViewPager()
   }
 
   private fun setupTabLayoutViewPager() {
     viewpager = binding.viewPager
     tabLayout = binding.tabs
-    viewpager.isUserInputEnabled = false //disable swipe action between tabs
+    viewpager?.isUserInputEnabled = false //disable swipe action between tabs
 
     val adapter = HomeViewPagerAdapter(childFragmentManager, lifecycle)
-    viewpager.adapter = adapter
+    viewpager?.adapter = adapter
 
-    TabLayoutMediator(tabLayout, viewpager) { tab, position ->
-      tab.text = requireActivity().getString(tabHomeHeadingArray[position])
-    }.attach()
+    tabLayout?.let { tabLayoutNonNull ->
+      viewpager?.let { viewpagerNonNull ->
+        tabLayoutMediator = TabLayoutMediator(tabLayoutNonNull, viewpagerNonNull) { tab, position ->
+          tab.text = requireActivity().getString(tabHomeHeadingArray[position])
+        }
+      }
+    }
+    tabLayoutMediator?.attach()
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
+
+    tabLayoutMediator?.detach()
+    tabLayoutMediator = null
+
+    binding.viewPager.adapter = null
+    binding.viewPager.removeAllViews()
+
+    tabLayout = null
+    viewpager = null
+
+    (activity as? AppCompatActivity)?.setSupportActionBar(null)
     _binding = null
   }
 }

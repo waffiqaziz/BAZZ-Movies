@@ -23,6 +23,7 @@ class MyFavoriteFragment : Fragment() {
 
   private lateinit var viewpager: ViewPager2
   private lateinit var tabLayout: TabLayout
+  private var tabLayoutMediator: TabLayoutMediator? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -47,13 +48,17 @@ class MyFavoriteFragment : Fragment() {
     val adapter = MyFavoriteViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
 
-    TabLayoutMediator(tabLayout, viewpager) { tab, position ->
+    tabLayoutMediator = TabLayoutMediator(tabLayout, viewpager) { tab, position ->
       tab.text = requireActivity().getString(tabMoviesTvHeadingArray[position])
-    }.attach()
+    }
+    tabLayoutMediator?.attach()
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
+    tabLayoutMediator?.detach()
+    tabLayoutMediator = null
+    binding.viewPager.adapter = null
     _binding = null
   }
 }

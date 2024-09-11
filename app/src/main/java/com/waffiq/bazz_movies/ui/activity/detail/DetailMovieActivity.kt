@@ -767,7 +767,7 @@ class DetailMovieActivity : AppCompatActivity() {
     toast?.cancel()
 
     toast = Toast.makeText(
-      this, HtmlCompat.fromHtml(
+      applicationContext, HtmlCompat.fromHtml(
         text, HtmlCompat.FROM_HTML_MODE_LEGACY
       ), Toast.LENGTH_SHORT
     )
@@ -862,10 +862,10 @@ class DetailMovieActivity : AppCompatActivity() {
   }
   // endregion TABLE
 
-
   override fun onDestroy() {
     super.onDestroy()
     toast?.cancel()
+    toast = null
   }
 
   companion object {

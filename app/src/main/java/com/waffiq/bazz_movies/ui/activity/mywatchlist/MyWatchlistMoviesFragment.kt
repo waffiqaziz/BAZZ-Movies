@@ -70,23 +70,29 @@ class MyWatchlistMoviesFragment : Fragment() {
   private var isWantToDelete = false
   private var isUndo = false
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentMyWatchlistMoviesBinding.inflate(inflater, container, false)
-    val root = binding.root
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
     val factory = ViewModelFactory.getInstance(requireContext())
     viewModel = ViewModelProvider(this, factory)[MyWatchlistViewModel::class.java]
 
     val pref = requireContext().dataStore
     val factoryUser = ViewModelUserFactory.getInstance(pref)
-    this.userPreferenceViewModel =
+    userPreferenceViewModel =
       ViewModelProvider(this, factoryUser)[UserPreferenceViewModel::class.java]
+  }
 
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    _binding = FragmentMyWatchlistMoviesBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     checkUser()
-    return root
   }
 
   private fun checkUser() {
