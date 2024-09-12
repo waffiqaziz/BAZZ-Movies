@@ -71,7 +71,6 @@ class HomeFragment : Fragment() {
     tabLayout = null
     viewpager = null
 
-    (activity as? AppCompatActivity)?.setSupportActionBar(null)
     _binding = null
   }
 }

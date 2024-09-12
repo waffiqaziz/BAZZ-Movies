@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -54,16 +53,23 @@ class SearchFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    val factory = ViewModelFactory.getInstance(requireContext())
+    searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentSearchBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    return binding.root
+  }
 
-    val factory = ViewModelFactory.getInstance(requireContext())
-    searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     // setup toolbar as action bar
     (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
@@ -71,14 +77,9 @@ class SearchFragment : Fragment() {
     binding.appBarLayout.setExpanded(true, true)
 
     setupView()
-    observeSearchResult()
     adapterLoadStateListener()
-    return root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
     setupSearchView()
+    observeSearchResult()
   }
 
   private fun setupView() {
@@ -104,18 +105,12 @@ class SearchFragment : Fragment() {
         searchView.maxWidth = Int.MAX_VALUE
         customizeSearchView(searchView)
 
-        searchViewModel.firstTime.observe(viewLifecycleOwner) {
+        searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
+          Log.e("SearhFragment", it.toString())
           if (it) {
-            menu.findItem(action_search).expandActionView()
-          } else {
-            // Set soft input mode to prevent the keyboard from appearing
-            requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-
-            // Expand the SearchView
             menu.findItem(action_search).expandActionView()
             searchView.isFocusable = false
             searchView.isIconified = false
-            searchView.clearFocus()
           }
         }
 
@@ -125,7 +120,6 @@ class SearchFragment : Fragment() {
             if (query != null && query != lastQuery) {
               lastQuery = query
               searchViewModel.search(query)
-              searchViewModel.setFirstTIme(false)
             } else return true
             searchView.clearFocus()
             return false
@@ -207,7 +201,12 @@ class SearchFragment : Fragment() {
       }
     }
   }
-  
+
+  fun openSearchView() {
+    Log.d("SearchFragment", "Opening SearchView")
+    searchViewModel.setExpandSearchView(true)
+  }
+
   private fun customizeSearchView(searchView: SearchView) {
     lateinit var backButton: ImageView
     val searchPlate = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
@@ -268,9 +267,10 @@ class SearchFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    _binding = null
+    searchViewModel.setExpandSearchView(false)
     mSnackbar?.dismiss()
     mSnackbar = null
     (activity as? AppCompatActivity)?.setSupportActionBar(null)
+    _binding = null
   }
 }

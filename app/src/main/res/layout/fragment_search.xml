@@ -10,7 +10,6 @@
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -19,8 +18,7 @@
       android:layout_height="?attr/actionBarSize"
       android:background="?attr/colorPrimary"
       android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-      app:layout_scrollFlags="scroll|snap|enterAlways"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+      app:layout_scrollFlags="scroll|snap|enterAlways">
 
       <ImageView
         android:layout_width="wrap_content"
@@ -41,16 +39,15 @@
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
-    android:layout_marginTop="?attr/actionBarSize"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="?attr/actionBarSize">
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv_search"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipToPadding="false"
-      android:paddingBottom="?attr/actionBarSize"
       android:visibility="gone"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
       tools:listitem="@layout/item_result"

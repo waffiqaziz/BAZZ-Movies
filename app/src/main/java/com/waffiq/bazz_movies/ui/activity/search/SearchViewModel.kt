@@ -22,15 +22,15 @@ class SearchViewModel(
   private val _query = MutableLiveData<String>()
   val query: LiveData<String> = _query
 
-  private val _firstTime = MutableLiveData<Boolean>()
-  val firstTime : LiveData<Boolean> = _firstTime
+  private val _expandSearchView = MutableLiveData<Boolean>()
+  val expandSearchView : LiveData<Boolean> = _expandSearchView
 
   init {
-    setFirstTIme(true)
+    setExpandSearchView(false)
   }
 
-  fun setFirstTIme(yes: Boolean){
-    _firstTime.value = yes
+  fun setExpandSearchView(isExpand: Boolean){
+    _expandSearchView.value = isExpand
   }
 
   fun search(query: String) {
