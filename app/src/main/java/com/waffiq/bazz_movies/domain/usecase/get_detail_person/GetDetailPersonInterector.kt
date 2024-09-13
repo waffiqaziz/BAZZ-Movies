@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.domain.usecase.get_detail_person
 
 import com.waffiq.bazz_movies.domain.model.person.CastItem
-import com.waffiq.bazz_movies.domain.model.person.CombinedCreditPerson
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson

@@ -18,7 +18,7 @@
     android:src="@drawable/ic_general_error" />
 
   <TextView
-    android:id="@+id/tv_header_no_data"
+    android:id="@+id/tv_something_wrong"
     style="@style/TextHeader1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
     android:text="@string/something_went_wrong" />
 
   <TextView
-    android:id="@+id/tv_no_data"
+    android:id="@+id/tv_error_description"
     style="@style/TextDivider"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -20,16 +20,17 @@ class SearchViewModel(
   val searchResults: Flow<PagingData<ResultsItemSearch>> = _searchResults.cachedIn(viewModelScope)
 
   private val _query = MutableLiveData<String>()
-  val query: LiveData<String> = _query
+  val query: LiveData<String> get() = _query
 
   private val _expandSearchView = MutableLiveData<Boolean>()
-  val expandSearchView : LiveData<Boolean> = _expandSearchView
+  val expandSearchView: LiveData<Boolean> get() = _expandSearchView
 
   init {
     setExpandSearchView(false)
+    _query.value = ""
   }
 
-  fun setExpandSearchView(isExpand: Boolean){
+  fun setExpandSearchView(isExpand: Boolean) {
     _expandSearchView.value = isExpand
   }
 

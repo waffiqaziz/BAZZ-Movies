@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.waffiq.bazz_movies.R.id.action_bar_title
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
 import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
+import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.common.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_MAIN
 
@@ -40,5 +41,8 @@ class AboutActivity : AppCompatActivity() {
     binding.btnAboutUs.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(BAZZ_MOVIES_LINK)))
     }
+
+    justifyTextView(binding.tvTmdbAttribute)
+    justifyTextView(binding.tvAboutText)
   }
 }
