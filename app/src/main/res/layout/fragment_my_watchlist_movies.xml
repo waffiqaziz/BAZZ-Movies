@@ -19,6 +19,7 @@
       android:clipToPadding="false"
       android:paddingTop="10dp"
       android:paddingBottom="?attr/actionBarSize"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
       tools:listitem="@layout/item_mulmed" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

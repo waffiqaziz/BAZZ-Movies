@@ -248,7 +248,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       mSnackbar =
         snackBarAlreadyWatchlist(
           requireContext(),
-          binding.coordinatorLayout,
+          requireActivity().findViewById(nav_view),
           requireActivity().findViewById(nav_view),
           it
         )
@@ -262,7 +262,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
           } else if (!it.isSuccess)  // an error happen
             mSnackbar = snackBarWarning(
               requireContext(),
-              binding.coordinatorLayout,
+              requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(it.title)
             )
@@ -276,7 +276,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         if (viewModelFav.isSnackbarShown.value == false) {
           mSnackbar = snackBarWarning(
             requireContext(),
-            binding.coordinatorLayout,
+            requireActivity().findViewById(nav_view),
             requireActivity().findViewById(nav_view),
             Event(pagingErrorHandling(it.error))
           )
@@ -330,7 +330,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   ) {
     if (isWantToDelete && fav != null || !isWantToDelete && wtc != null) {
       mSnackbar = Snackbar.make(
-        binding.coordinatorLayout,
+        requireActivity().findViewById(nav_view),
         HtmlCompat.fromHtml(
           "<b>$title</b> " +
             if (isWantToDelete && fav != null) getString(deleted_from_favorite)
@@ -374,7 +374,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         mSnackbar =
           snackBarAlreadyFavorite(
             requireContext(),
-            binding.coordinatorLayout,
+            requireActivity().findViewById(nav_view),
             requireActivity().findViewById(nav_view),
             Event(fav.title)
           )
@@ -402,7 +402,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private fun showSnackBarUndoGuest(title: String, pos: Int) {
     mSnackbar = Snackbar.make(
-      binding.coordinatorLayout,
+      requireActivity().findViewById(nav_view),
       HtmlCompat.fromHtml(
         "<b>$title</b> " +
           if (isWantToDelete) getString(deleted_from_favorite) else getString(added_to_watchlist),

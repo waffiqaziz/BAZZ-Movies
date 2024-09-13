@@ -24,7 +24,7 @@ import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 
 class TvSeriesFragment : Fragment() {
 
@@ -119,9 +119,9 @@ class TvSeriesFragment : Fragment() {
 
       pagingErrorState(loadState)?.let {
         if (adapter.itemCount < 1) showView(false)
-        mSnackbar = SnackBarManager.snackBarWarning(
+        mSnackbar = snackBarWarning(
           requireContext(),
-          binding.root,
+          requireActivity().findViewById(nav_view),
           requireActivity().findViewById(nav_view),
           Event(pagingErrorHandling(it.error))
         )

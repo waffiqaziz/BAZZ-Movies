@@ -39,7 +39,7 @@ import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -179,9 +179,9 @@ class MovieFragment : Fragment() {
 
       pagingErrorState(loadState)?.let {
         if (adapter.itemCount < 1) showView(false)
-        mSnackbar = SnackBarManager.snackBarWarning(
+        mSnackbar = snackBarWarning(
           requireContext(),
-          binding.root,
+          requireActivity().findViewById(nav_view),
           requireActivity().findViewById(nav_view),
           Event(pagingErrorHandling(it.error))
         )
