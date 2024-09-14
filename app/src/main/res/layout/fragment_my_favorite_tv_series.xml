@@ -25,17 +25,29 @@
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
+    android:id="@+id/illustration_error"
+    layout="@layout/illustration_error"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_to_centered"
+    android:visibility="gone"
+    tools:visibility="visible" />
+
+  <include
     android:id="@+id/illustration_no_data_view"
     layout="@layout/illustration_no_data"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_to_centered"
     android:visibility="gone" />
 
   <ProgressBar
     android:id="@+id/progress_bar"
     style="@style/MyProgressBar"
     android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

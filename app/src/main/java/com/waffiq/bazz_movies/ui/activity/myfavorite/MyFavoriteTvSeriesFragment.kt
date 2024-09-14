@@ -9,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,18 +36,17 @@ import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.SWIPE_THRESHOLD
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
+import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.result_state.DbResult
 
@@ -64,6 +62,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private lateinit var viewModelFav: MyFavoriteViewModel
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private val baseViewModel: BaseViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
 
@@ -234,7 +233,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private fun setupRefresh(isLogin: Boolean) {
     binding.swipeRefresh.setOnRefreshListener {
       if (isLogin) {
-        viewModelFav.clearSnackBar()
+        baseViewModel.resetSnackbarShown()
         adapterPagingRefresh()
       } else adapterDB.notifyDataSetChanged()
 
@@ -253,6 +252,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
           it
         )
     }
+
     viewModelFav.snackBarAdded.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
         if (!isUndo) {
@@ -271,36 +271,29 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
       }
     }
-    adapterPaging.addLoadStateListener { loadState ->
-      pagingErrorState(loadState)?.let {
-        if (viewModelFav.isSnackbarShown.value == false) {
-          mSnackbar = snackBarWarning(
-            requireContext(),
-            requireActivity().findViewById(nav_view),
-            requireActivity().findViewById(nav_view),
-            Event(pagingErrorHandling(it.error))
-          )
-          viewModelFav.markSnackbarShown()
-        }
-      }
 
-      // show/hide view
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapterPaging.itemCount < 1
-      ) { // show empty view
-        binding.illustrationNoDataView.containerNoData.isVisible = true
-      } else { // hide empty view
-        binding.illustrationNoDataView.containerNoData.visibility = View.GONE
-      }
+    mSnackbar = handlePagingLoadState(
+      adapterPaging = adapterPaging,
+      loadStateFlow = adapterPaging.loadStateFlow,
+      recyclerView = binding.rvFavTv,
+      progressBar = binding.progressBar,
+      errorView = binding.illustrationError.root,
+      emptyView = binding.illustrationNoDataView.containerNoData,
+      viewModel = baseViewModel,
+      context = requireContext(),
+      activity = requireActivity(),
+      navViewId = nav_view,
+      lifecycleOwner = viewLifecycleOwner
+    )
 
-      binding.progressBar.isVisible =
-        loadState.source.refresh is LoadState.Loading // show progressbar
-    }
     binding.rvFavTv.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterPaging.retry() }
     )
 
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      baseViewModel.resetSnackbarShown()
+      adapterPaging.refresh()
+    }
     collectAndSubmitData(this, { viewModelFav.favoriteTvSeries(userToken) }, adapterPaging)
   }
 
@@ -372,7 +365,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     } else { // add to watchlist action
       if (fav.isWatchlist) {
         mSnackbar =
-          snackBarAlreadyFavorite(
+          snackBarAlreadyWatchlist(
             requireContext(),
             requireActivity().findViewById(nav_view),
             requireActivity().findViewById(nav_view),
@@ -438,9 +431,10 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
+    mSnackbar?.dismiss()
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") {
-        viewModelFav.clearSnackBar()
+        baseViewModel.resetSnackbarShown()
         adapterPaging.refresh()
       }
     }
@@ -448,7 +442,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    _binding = null
     mSnackbar?.dismiss()
+    mSnackbar = null
+    _binding = null
   }
 }
