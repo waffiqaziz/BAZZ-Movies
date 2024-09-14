@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -36,17 +35,12 @@ class MainActivity : AppCompatActivity() {
 
     bottomNavigation.setOnItemReselectedListener { menuItem ->
       if (menuItem.itemId == R.id.navigation_search) {
-        Log.d("MainActivity", "Search icon reselected")
+        val myFragment =
+          supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) // nav host fragment
+            ?.childFragmentManager?.fragments?.firstOrNull() as? SearchFragment // search fragment
 
-        val navHostFragment = supportFragmentManager.findFragmentById(nav_host_fragment_activity_home)
-        val myFragment = navHostFragment?.childFragmentManager?.fragments?.firstOrNull() as? SearchFragment
-
-        // Use WeakReference here
         myFragment?.let { fragment ->
-          val weakFragment = WeakReference(fragment)
-
-          // Now call the method on the weak reference
-          weakFragment.get()?.openSearchView()
+          WeakReference(fragment).get()?.openSearchView()
         }
       }
     }

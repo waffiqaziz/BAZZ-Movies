@@ -1,13 +1,14 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -23,12 +24,11 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
-import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.menu.search_menu
-import com.waffiq.bazz_movies.R.string.clear_query
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
@@ -46,12 +46,10 @@ class SearchFragment : Fragment() {
   private val binding get() = _binding!!
 
   private lateinit var searchViewModel: SearchViewModel
-  private lateinit var closeButton: View
-  private lateinit var searchView: SearchView
-
   private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
+  private var mQuery: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -101,13 +99,18 @@ class SearchFragment : Fragment() {
     requireActivity().addMenuProvider(object : MenuProvider {
       override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(search_menu, menu)
-        searchView = menu.findItem(action_search).actionView as SearchView
+        val searchView = menu.findItem(action_search).actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        customizeSearchView(searchView)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+          searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+            .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
+        }
+        searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+          .setImageResource(ic_cross)
 
         searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
-          Log.e("SearhFragment", it.toString())
           if (it) {
+            searchView.isVisible = true
             menu.findItem(action_search).expandActionView()
             searchView.isFocusable = false
             searchView.isIconified = false
@@ -119,6 +122,7 @@ class SearchFragment : Fragment() {
           override fun onQueryTextSubmit(query: String?): Boolean {
             if (query != null && query != lastQuery) {
               lastQuery = query
+              mQuery = query
               searchViewModel.search(query)
             } else return true
             searchView.clearFocus()
@@ -132,7 +136,8 @@ class SearchFragment : Fragment() {
 
         // Restore query if available
         searchViewModel.query.observe(viewLifecycleOwner) {
-          searchView.setQuery(it, false)
+          mQuery = it
+          if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
         }
       }
 
@@ -157,7 +162,6 @@ class SearchFragment : Fragment() {
 
   private fun adapterLoadStateListener() {
     adapter.addLoadStateListener { loadState ->
-      Log.d("LoadState", "Load state triggered: ${loadState.source.refresh}")
       when (loadState.source.refresh) {
         is LoadState.Loading -> {
           // Data is loading; keep showing the containerSearch
@@ -170,15 +174,20 @@ class SearchFragment : Fragment() {
 
         is LoadState.NotLoading -> {
           binding.progressBar.isVisible = false
-          binding.illustrationSearchView.root.isVisible = false
           binding.illustrationError.root.isVisible = false
           if (loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
-            // No search results found; show empty view
             binding.rvSearch.isVisible = false
-            binding.illustrationSearchNoResultView.root.isVisible = true
+            if (mQuery.isNullOrEmpty()) { // user not yet searching
+              binding.illustrationSearchView.root.isVisible = true
+              binding.illustrationSearchNoResultView.root.isVisible = false
+            } else { // No search results found; show empty view
+              binding.illustrationSearchNoResultView.root.isVisible = true
+              binding.illustrationSearchView.root.isVisible = false
+            }
           } else {
-            // Data is loaded; show the results and hide the loading view
+            // Data is loaded; show the results
             binding.rvSearch.isVisible = true
+            binding.illustrationSearchView.root.isVisible = false
             binding.illustrationSearchNoResultView.root.isVisible = false
           }
         }
@@ -192,7 +201,7 @@ class SearchFragment : Fragment() {
           pagingErrorState(loadState)?.let {
             mSnackbar = SnackBarManager.snackBarWarning(
               requireContext(),
-              binding.root,
+              requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(pagingErrorHandling(it.error))
             )
@@ -202,72 +211,21 @@ class SearchFragment : Fragment() {
     }
   }
 
+  // trigger via bottom navigation
   fun openSearchView() {
-    Log.d("SearchFragment", "Opening SearchView")
+    (requireActivity() as AppCompatActivity).supportActionBar?.show()
+    binding.appBarLayout.setExpanded(true)
     searchViewModel.setExpandSearchView(true)
-  }
-
-  private fun customizeSearchView(searchView: SearchView) {
-    lateinit var backButton: ImageView
-    val searchPlate = searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)
-    traverseViewHierarchy(searchPlate)
-
-    for (i in 0 until searchView.childCount) {
-      val child = searchView.getChildAt(i)
-      if (child is ImageView) {
-        // Check if the child is the arrow icon
-        backButton = child
-
-        // Set custom drawable
-        backButton.setImageDrawable(ContextCompat.getDrawable(requireActivity(), ic_search))
-        break
-      }
-    }
-  }
-
-  private fun traverseViewHierarchy(view: View) {
-    if (view is ViewGroup) {
-      for (i in 0 until view.childCount) {
-        val child = view.getChildAt(i)
-        if (child is ViewGroup) {
-          traverseViewHierarchy(child)
-        } else if (child is View && child.contentDescription == getString(clear_query)) {
-          closeButton = child
-          val ivCloseButton = closeButton as ImageView
-          ivCloseButton.contentDescription = getString(clear_query)
-          ivCloseButton.setImageDrawable(ContextCompat.getDrawable(requireActivity(), ic_cross))
-        }
-      }
-    }
   }
 
   override fun onResume() {
     super.onResume()
-    adapter.addLoadStateListener { loadState ->
-      when (loadState.source.refresh) {
-        is LoadState.Loading -> {}
-        is LoadState.Error -> {
-          if (adapter.itemCount <= 0) {
-            binding.illustrationError.root.isVisible = true
-            binding.illustrationSearchView.root.isVisible = false
-            binding.rvSearch.isVisible = false
-          }
-        }
-
-        is LoadState.NotLoading -> {
-          if (adapter.itemCount <= 0) {
-            binding.illustrationError.root.isVisible = false
-            binding.illustrationSearchView.root.isVisible = true
-            binding.rvSearch.isVisible = false
-          }
-        }
-      }
-    }
+    binding.appBarLayout.setExpanded(true)
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    searchViewModel.setExpandSearchView(false)
+    searchViewModel.setExpandSearchView(false) // reset expand search view
     mSnackbar?.dismiss()
     mSnackbar = null
     (activity as? AppCompatActivity)?.setSupportActionBar(null)

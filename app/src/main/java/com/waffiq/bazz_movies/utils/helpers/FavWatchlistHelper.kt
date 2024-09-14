@@ -98,7 +98,6 @@ object FavWatchlistHelper {
     lifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
       loadStateFlow.debounce(DEBOUNCE_TIME).distinctUntilChanged().collectLatest { loadState ->
-        println("LLLLLLLLLLLLLLLLLLLLL ${loadState.refresh}")
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
             updatedSnackbar?.dismiss()
