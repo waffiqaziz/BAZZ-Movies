@@ -7,6 +7,25 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.search.SearchFragment">
 
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_search"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:visibility="gone"
+      android:paddingTop="?attr/actionBarSize"
+      android:paddingBottom="50dp"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      tools:listitem="@layout/item_result"
+      tools:visibility="visible" />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
@@ -37,24 +56,6 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize">
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_search"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:clipToPadding="false"
-      android:visibility="gone"
-      android:paddingBottom="50dp"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:listitem="@layout/item_result"
-      tools:visibility="visible" />
-
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
     android:id="@+id/illustration_search_view"

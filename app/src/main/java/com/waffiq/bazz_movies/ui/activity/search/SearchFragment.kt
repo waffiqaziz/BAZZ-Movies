@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -216,6 +217,13 @@ class SearchFragment : Fragment() {
     (requireActivity() as AppCompatActivity).supportActionBar?.show()
     binding.appBarLayout.setExpanded(true)
     searchViewModel.setExpandSearchView(true)
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
+      binding.appBarLayout.setExpanded(true)
+    }
   }
 
   override fun onResume() {
