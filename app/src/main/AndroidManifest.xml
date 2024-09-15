@@ -36,7 +36,12 @@
       android:name=".ui.activity.MainActivity"
       android:exported="false"
       android:label="@string/title_activity"
-      android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+      android:windowSoftInputMode="adjustPan" />
+    <!--
+      android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+      to show bottom navigation when keyboard shows up
+    -->
+
     <activity
       android:name=".ui.activity.LoginActivity"
       android:exported="false" />
@@ -49,6 +54,11 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    
+    <!--Enable to disable crashlytics-->
+    <!--    <meta-data-->
+    <!--      android:name="firebase_crashlytics_collection_enabled"-->
+    <!--      android:value="false" />-->
   </application>
 
 </manifest>
