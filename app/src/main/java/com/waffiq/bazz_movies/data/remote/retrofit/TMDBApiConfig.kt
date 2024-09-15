@@ -34,13 +34,13 @@ class TMDBApiConfig {
 
   companion object {
     fun getApiService(): TMDBApiService {
-      val loggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+//      val loggingInterceptor =
+//        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
       val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
       val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
+//        .addInterceptor(loggingInterceptor)
         .addInterceptor(ApiKeyInterceptorTMDB(API_KEY))
         .build()
       val retrofit = Retrofit.Builder()

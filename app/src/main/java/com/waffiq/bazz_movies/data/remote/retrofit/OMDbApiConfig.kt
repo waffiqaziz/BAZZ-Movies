@@ -10,25 +10,25 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class OMDbApiConfig {
-      fun getOMDBApiService(): OMDbApiService {
+  fun getOMDBApiService(): OMDbApiService {
 //    val loggingInterceptor =
 //      HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        val moshi = Moshi.Builder()
-          .add(KotlinJsonAdapterFactory())
-          .build()
-        val client = OkHttpClient.Builder()
-          .addInterceptor(ApiKeyInterceptorOMDb(API_KEY_OMDb))
-          .connectTimeout(30, TimeUnit.SECONDS)
-          .readTimeout(30, TimeUnit.SECONDS)
-          .writeTimeout(30, TimeUnit.SECONDS)
+    val moshi = Moshi.Builder()
+      .add(KotlinJsonAdapterFactory())
+      .build()
+    val client = OkHttpClient.Builder()
+      .addInterceptor(ApiKeyInterceptorOMDb(API_KEY_OMDb))
+      .connectTimeout(30, TimeUnit.SECONDS)
+      .readTimeout(30, TimeUnit.SECONDS)
+      .writeTimeout(30, TimeUnit.SECONDS)
 //      .addInterceptor(loggingInterceptor)
-          .build()
-        val retrofit = Retrofit.Builder()
-          .baseUrl(OMDb_API_URL)
-          .addConverterFactory(MoshiConverterFactory.create(moshi))
-          .client(client)
-          .build()
-        return retrofit.create(OMDbApiService::class.java)
+      .build()
+    val retrofit = Retrofit.Builder()
+      .baseUrl(OMDb_API_URL)
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .client(client)
+      .build()
+    return retrofit.create(OMDbApiService::class.java)
   }
 
   companion object {
