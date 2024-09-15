@@ -55,8 +55,11 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
       Glide.with(binding.imgCastPhoto)
         .load(
-          if (!cast.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + cast.posterPath
-          else ic_poster_error
+          if (!cast.posterPath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + cast.posterPath
+          } else {
+            ic_poster_error
+          }
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
@@ -91,7 +94,6 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItemResponse)
         it.context.startActivity(intent)
       }
-
     }
   }
 

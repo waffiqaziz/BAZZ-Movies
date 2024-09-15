@@ -50,5 +50,4 @@ data class FavoriteEntity(
 
   @ColumnInfo(name = "is_watchlist")
   val isWatchlist: Boolean
-
 )

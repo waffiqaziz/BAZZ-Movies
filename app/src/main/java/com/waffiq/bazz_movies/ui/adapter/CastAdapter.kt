@@ -53,8 +53,11 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
       Glide.with(binding.imgCastPhoto)
         .load(
-          if (!cast.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
-          else ic_no_profile_rounded
+          if (!cast.profilePath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
+          } else {
+            ic_no_profile_rounded
+          }
         )
         .placeholder(ic_no_profile_rounded)
         .transition(withCrossFade())

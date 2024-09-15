@@ -8,5 +8,4 @@ interface CountryIPApiService {
 
   @GET("/")
   suspend fun getIP(): Response<CountryIPResponse>
-
 }

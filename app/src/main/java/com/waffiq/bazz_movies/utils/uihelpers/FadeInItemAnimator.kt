@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.utils
+package com.waffiq.bazz_movies.utils.uihelpers
 
 import android.view.animation.AlphaAnimation
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -28,8 +28,8 @@ class FadeInItemAnimator : DefaultItemAnimator() {
           }
         }
 
-        override fun onAnimationRepeat(animation: android.view.animation.Animation?) {
-        }
+        @Suppress("EmptyFunctionBlock")
+        override fun onAnimationRepeat(animation: android.view.animation.Animation?) { }
       })
     }
 

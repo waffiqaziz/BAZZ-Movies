@@ -18,10 +18,10 @@ import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.ui.activity.person.PersonActivity
-import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.Helper.getKnownFor
-import com.waffiq.bazz_movies.utils.Helper.iterateGenre
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getGenreName
 
 class SearchAdapter :
   PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -35,7 +35,10 @@ class SearchAdapter :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position)
     if (data != null) {
-      holder.bind(data)
+      when (data.mediaType) {
+        "person" -> holder.bindPerson(data)
+        else -> holder.bindMovieTv(data)
+      }
       holder.itemView.startAnimation(
         AnimationUtils.loadAnimation(
           holder.itemView.context,
@@ -47,43 +50,41 @@ class SearchAdapter :
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
+    fun bindPerson(data: ResultsItemSearch) {
+      showDataPerson(binding, data)
+      binding.containerResult.setOnClickListener {
+        val person = MovieTvCastItemResponse(
+          id = data.id,
+          profilePath = data.profilePath,
+          name = data.name,
+          originalName = data.originalName
+        )
+        val intent = Intent(it.context, PersonActivity::class.java)
+        intent.putExtra(PersonActivity.EXTRA_PERSON, person)
+        it.context.startActivity(intent)
+      }
+    }
 
-    fun bind(data: ResultsItemSearch) {
-
-      if (data.mediaType == "person") {
-        showDataPerson(binding, data)
-        binding.containerResult.setOnClickListener {
-          val person = MovieTvCastItemResponse(
-            id = data.id,
-            profilePath = data.profilePath,
-            name = data.name,
-            originalName = data.originalName
-          )
-          val intent = Intent(it.context, PersonActivity::class.java)
-          intent.putExtra(PersonActivity.EXTRA_PERSON, person)
-          it.context.startActivity(intent)
-        }
-      } else { // movie & tv-series
-        showDataMovieTv(binding, data)
-        binding.containerResult.setOnClickListener {
-          val intent = Intent(it.context, DetailMovieActivity::class.java)
-          val resultItem = ResultItem(
-            posterPath = data.posterPath,
-            backdropPath = data.backdropPath,
-            firstAirDate = data.firstAirDate,
-            releaseDate = data.releaseDate,
-            overview = data.overview,
-            title = data.title,
-            name = data.name,
-            originalTitle = data.originalTitle,
-            originalName = data.originalName,
-            mediaType = data.mediaType,
-            listGenreIds = data.listGenreIds,
-            id = data.id
-          )
-          intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
-          it.context.startActivity(intent)
-        }
+    fun bindMovieTv(data: ResultsItemSearch) {
+      showDataMovieTv(binding, data)
+      binding.containerResult.setOnClickListener {
+        val intent = Intent(it.context, DetailMovieActivity::class.java)
+        val resultItem = ResultItem(
+          posterPath = data.posterPath,
+          backdropPath = data.backdropPath,
+          firstAirDate = data.firstAirDate,
+          releaseDate = data.releaseDate,
+          overview = data.overview,
+          title = data.title,
+          name = data.name,
+          originalTitle = data.originalTitle,
+          originalName = data.originalName,
+          mediaType = data.mediaType,
+          listGenreIds = data.listGenreIds,
+          id = data.id
+        )
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+        it.context.startActivity(intent)
       }
     }
   }
@@ -93,8 +94,11 @@ class SearchAdapter :
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
-        if (!data.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + data.profilePath
-        else ic_backdrop_error
+        if (!data.profilePath.isNullOrEmpty()) {
+          TMDB_IMG_LINK_POSTER_W185 + data.profilePath
+        } else {
+          ic_backdrop_error
+        }
       )
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error)
@@ -110,31 +114,37 @@ class SearchAdapter :
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
+    setImageMovieTv(binding, data)
+    binding.tvYearReleased.text = data.releaseDate
+      ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+      ?: data.firstAirDate
+        ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+      ?: "N/A"
+
+    binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
+    binding.tvGenre.text =
+      if (data.listGenreIds?.isEmpty() == true) {
+        "N/A"
+      } else {
+        data.listGenreIds?.let { getGenreName(it) }
+      }
+  }
+
+  private fun setImageMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
     Glide.with(binding.ivPicture)
       .load(
-        if (!data.backdropPath.isNullOrEmpty())
+        if (!data.backdropPath.isNullOrEmpty()) {
           TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
-        else if (!data.posterPath.isNullOrEmpty())
+        } else if (!data.posterPath.isNullOrEmpty()) {
           TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
-        else ic_backdrop_error
+        } else {
+          ic_backdrop_error
+        }
       )
       .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error)
       .into(binding.ivPicture)
-    binding.tvYearReleased.text = data.releaseDate
-      ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-      ?: data.firstAirDate
-        ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-        ?: "N/A"
-
-    binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
-    binding.tvGenre.text =
-      if (data.listGenreIds?.isEmpty() == true) "N/A" else data.listGenreIds?.let {
-        iterateGenre(
-          it
-        )
-      }
   }
 
   companion object {

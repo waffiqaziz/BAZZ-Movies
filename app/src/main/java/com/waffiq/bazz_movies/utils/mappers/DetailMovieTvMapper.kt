@@ -2,36 +2,34 @@ package com.waffiq.bazz_movies.utils.mappers
 
 import com.waffiq.bazz_movies.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.data.remote.responses.omdb.RatingsItemResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CastItemResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CrewItemResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoItemResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.BelongsToCollectionResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.ProductionCountriesItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.BelongsToCollectionResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesItemValueResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ContentRatingsItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.CreatedByItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.NetworksItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ProductionCompaniesItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.SpokenLanguagesItemReponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CastItemResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CrewItemResponse
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.BelongsToCollection
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.GenresItem
-import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
-import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.detail.ProductionCompaniesItem
 import com.waffiq.bazz_movies.domain.model.detail.ProductionCountriesItem
@@ -44,6 +42,8 @@ import com.waffiq.bazz_movies.domain.model.detail.VideoItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.ContentRatings
 import com.waffiq.bazz_movies.domain.model.detail.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.CreatedByItem
+import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
+import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.detail.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.domain.model.detail.tv.NetworksItem
 import com.waffiq.bazz_movies.domain.model.detail.tv.SeasonsItem
@@ -184,7 +184,6 @@ object DetailMovieTvMapper {
     englishName = englishName
   )
 
-
   private fun ProductionCountriesItemResponse.toProductionCountriesItem() = ProductionCountriesItem(
     iso31661 = iso31661,
     name = name,
@@ -200,7 +199,6 @@ object DetailMovieTvMapper {
     originCountry = originCountry
   )
   // endregion MOVIE & TV
-
 
   // region MOVIE
   fun DetailMovieResponse.toDetailMovie() = DetailMovie(
@@ -257,7 +255,6 @@ object DetailMovieTvMapper {
     posterPath = posterPath
   )
   // endregion MOVIE
-
 
   // region TV
   fun DetailTvResponse.toDetailTv() = DetailTv(

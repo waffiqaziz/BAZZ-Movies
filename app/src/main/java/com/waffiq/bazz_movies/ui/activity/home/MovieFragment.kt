@@ -30,7 +30,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.FadeInItemAnimator
+import com.waffiq.bazz_movies.utils.uihelpers.FadeInItemAnimator
 import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
@@ -68,7 +68,8 @@ class MovieFragment : Fragment() {
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentMovieBinding.inflate(inflater, container, false)
@@ -98,7 +99,9 @@ class MovieFragment : Fragment() {
             userPreferenceViewModel.saveRegionPref(region)
           }
         }
-      } else setData(userRegion) // user already have region
+      } else {
+        setData(userRegion) // user already have region
+      }
     }
   }
 
@@ -172,9 +175,9 @@ class MovieFragment : Fragment() {
   }
 
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter, loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
+    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
       showLoading(true) // show ProgressBar
-    else {
+    } else {
       showLoading(false) // hide ProgressBar
 
       pagingErrorState(loadState)?.let {
@@ -215,9 +218,9 @@ class MovieFragment : Fragment() {
   ) {
     // check if there any upcoming movie on selected region, if not show info on toast and edit text
     adapter.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapter.itemCount < 1
+      if (loadState.source.refresh is LoadState.NotLoading &&
+        loadState.append.endOfPaginationReached &&
+        adapter.itemCount < 1
       ) {
         Helper.showToastShort(
           requireContext(),
@@ -257,7 +260,9 @@ class MovieFragment : Fragment() {
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
-    } else animationFadeOut()
+    } else {
+      animationFadeOut()
+    }
   }
 
   override fun onDestroyView() {

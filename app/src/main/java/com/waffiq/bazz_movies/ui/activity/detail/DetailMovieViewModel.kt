@@ -23,12 +23,16 @@ import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
-import com.waffiq.bazz_movies.utils.Status
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.result_state.DbResult
-import com.waffiq.bazz_movies.utils.result_state.PostModelState
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
+import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.PostModelState
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class DetailMovieViewModel(
@@ -77,6 +81,9 @@ class DetailMovieViewModel(
 
   private val _tvImdbID = MutableLiveData<String>()
   val tvImdbID: LiveData<String> get() = _tvImdbID
+
+  private val _recommendation = MutableLiveData<PagingData<ResultItem>>()
+  val recommendation: LiveData<PagingData<ResultItem>> get() = _recommendation
   // endregion OBSERVABLES
 
   // region MOVIE
@@ -125,9 +132,13 @@ class DetailMovieViewModel(
     }
   }
 
-  fun getRecommendationMovie(movieId: Int): LiveData<PagingData<ResultItem>> =
-    getDetailMovieUseCase.getPagingMovieRecommendation(movieId).cachedIn(viewModelScope)
-      .asLiveData()
+  fun getRecommendationMovie(movieId: Int) {
+    viewModelScope.launch {
+      getDetailMovieUseCase.getPagingMovieRecommendation(movieId).collectLatest {
+        _recommendation.value = it
+      }
+    }
+  }
 
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
@@ -191,11 +202,19 @@ class DetailMovieViewModel(
     }
   }
 
-  fun externalId(id: Int) {
+  fun getImdbVideoTv(id: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getExternalTvId(id).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _tvImdbID.value = networkResult.data?.imdbId ?: ""
+          Status.SUCCESS -> {
+            _tvImdbID.value = networkResult.data?.imdbId ?: ""
+            networkResult.data.let {
+              if (it?.imdbId != null) {
+                getScoreOMDb(it.imdbId)
+                getLinkTv(id)
+              }
+            }
+          }
           Status.LOADING -> {}
           Status.ERROR -> {
             _errorState.emit(networkResult.message.toString())
@@ -244,6 +263,38 @@ class DetailMovieViewModel(
   }
 
   // region DB FUNCTION
+  fun handleBtnFavorite(favorite: Boolean, watchlist: Boolean, data: ResultItem) {
+    when {
+      // If in the watchlist but not a favorite, update to set as favorite.
+      !favorite && watchlist -> updateToFavoriteDB(favTrueWatchlistTrue(data))
+
+      // If neither a favorite nor in the watchlist, insert item with favorite set to true.
+      !favorite && !watchlist -> insertToDB(favTrueWatchlistFalse(data))
+
+      // If both a favorite and in the watchlist, update to remove as a favorite.
+      favorite && watchlist -> updateToRemoveFromFavoriteDB(favFalseWatchlistTrue(data))
+
+      // If not a favorite, remove it from the database.
+      else -> delFromFavoriteDB(favTrueWatchlistFalse(data))
+    }
+  }
+
+  fun handleBtnWatchlist(favorite: Boolean, watchlist: Boolean, data: ResultItem) {
+    when {
+      // If marked as a favorite but not in the watchlist, update watchlist to true.
+      favorite && !watchlist -> updateToWatchlistDB(favTrueWatchlistTrue(data))
+
+      // If it's neither a favorite nor in the watchlist, insert the item and set watchlist to true.
+      !favorite && !watchlist -> insertToDB(favFalseWatchlistTrue(data))
+
+      // If both favorite and in the watchlist, update watchlist to false.
+      favorite && watchlist -> updateToRemoveFromWatchlistDB(favTrueWatchlistFalse(data))
+
+      // If not a favorite, remove it from favorites.
+      else -> delFromFavoriteDB(favFalseWatchlistTrue(data))
+    }
+  }
+
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
@@ -267,8 +318,9 @@ class DetailMovieViewModel(
       when (val result = localDatabaseUseCase.insertToDB(fav)) {
         is DbResult.Error -> _errorState.emit(result.errorMessage)
         is DbResult.Success -> {
-          if (fav.isFavorite) _isFavorite.value = true
-          else if (fav.isWatchlist) _isWatchlist.value = true
+          if (fav.isFavorite) {
+            _isFavorite.value = true
+          } else if (fav.isWatchlist) _isWatchlist.value = true
           _postModelState.value = Event(
             PostModelState(
               isSuccess = true,
@@ -369,8 +421,11 @@ class DetailMovieViewModel(
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (data.mediaType == "movie") getStatedMovie(sessionId, data.mediaId)
-            else getStatedTv(sessionId, data.mediaId)
+            if (data.mediaType == "movie") {
+              getStatedMovie(sessionId, data.mediaId)
+            } else {
+              getStatedTv(sessionId, data.mediaId)
+            }
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = true,
@@ -404,8 +459,11 @@ class DetailMovieViewModel(
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
         when (networkResult.status) {
           Status.SUCCESS -> {
-            if (data.mediaType == "movie") getStatedMovie(sessionId, data.mediaId)
-            else getStatedTv(sessionId, data.mediaId)
+            if (data.mediaType == "movie") {
+              getStatedMovie(sessionId, data.mediaId)
+            } else {
+              getStatedTv(sessionId, data.mediaId)
+            }
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = true,

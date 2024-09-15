@@ -24,8 +24,8 @@ import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavoriteEntity
@@ -44,7 +44,7 @@ import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPostFavoriteWatchlist
 import com.waffiq.bazz_movies.utils.mappers.SearchMapper.toResultItemSearch
 import com.waffiq.bazz_movies.utils.mappers.UniversalMapper.toResultItem
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -88,7 +88,6 @@ class MoviesRepository(
     movieDataSource.getPagingPopularTv(getDateTwoWeeksFromToday()).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
-
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingOnTv().map { pagingData ->
@@ -365,14 +364,16 @@ class MoviesRepository(
     localDataSource.isWatchlist(id, mediaType)
 
   override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
-    if (isDelete) { // update set is_favorite = false (item on favorite to delete)
+    if (isDelete) {
+      // update set is_favorite = false (item on favorite to delete)
       localDataSource.update(
         isFavorite = false,
         isWatchlist = fav.isWatchlist,
         id = fav.mediaId,
         mediaType = fav.mediaType
       )
-    } else {  // update set is_favorite = true (add favorite item already on watchlist)
+    } else {
+      // update set is_favorite = true (add favorite item already on watchlist)
       localDataSource.update(
         isFavorite = true,
         isWatchlist = fav.isWatchlist,
@@ -398,10 +399,4 @@ class MoviesRepository(
       )
     }
 // endregion DATABASE
-
-  companion object {
-    private const val TAG = "MoviesRepository "
-  }
 }
-
-

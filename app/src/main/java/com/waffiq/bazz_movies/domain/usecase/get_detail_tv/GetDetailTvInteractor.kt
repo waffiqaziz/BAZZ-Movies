@@ -8,13 +8,13 @@ import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.detail.ReleaseDateRegion
 import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.Helper
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.Status
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getAgeRating
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformGenreIDs
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformGenreName
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getTransformGenreIDs
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getTransformGenreName
+import com.waffiq.bazz_movies.utils.helpers.details.AgeRatingHelper.getAgeRating
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.transformLink
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -57,7 +57,7 @@ class GetDetailTvInteractor(
         Status.SUCCESS -> {
           // Extract and transform the data
           NetworkResult.success(
-            networkResult.data?.let { Helper.transformLink(it) } ?: ""
+            networkResult.data?.let { transformLink(it) } ?: ""
           )
         }
 

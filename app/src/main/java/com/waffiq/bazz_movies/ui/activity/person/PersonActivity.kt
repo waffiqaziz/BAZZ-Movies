@@ -32,6 +32,7 @@ import com.waffiq.bazz_movies.R.string.years_old
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
+import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
@@ -51,6 +52,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeBirth
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeDeath
+import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.hasAnySocialMediaIds
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 
 class PersonActivity : AppCompatActivity() {
@@ -75,6 +77,7 @@ class PersonActivity : AppCompatActivity() {
     scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollViewPerson)
     showLoading(true)
     getDataExtra()
+    setupView()
     showData()
     btnListener()
   }
@@ -99,13 +102,15 @@ class PersonActivity : AppCompatActivity() {
     }
   }
 
-  private fun showData() {
+  private fun setupView() {
     // error and loading handle
     personMovieViewModel.errorState.observe(this) {
       snackBarWarning(this, binding.coordinatorLayout, null, it)
     }
     personMovieViewModel.loadingState.observe(this) { showLoading(it) }
+  }
 
+  private fun showData() {
     // setup recycle view and adapter
     val adapterKnownFor = KnownForAdapter()
     val adapterImage = ImagePersonAdapter { position, imageUrls ->
@@ -122,8 +127,11 @@ class PersonActivity : AppCompatActivity() {
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
     Glide.with(binding.ivPicture)
       .load(
-        if (!dataExtra.profilePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
-        else ic_no_profile
+        if (!dataExtra.profilePath.isNullOrEmpty()) {
+          TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
+        } else {
+          ic_no_profile
+        }
       )
       .placeholder(ic_bazz_logo)
       .transition(withCrossFade())
@@ -134,55 +142,11 @@ class PersonActivity : AppCompatActivity() {
     dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
     personMovieViewModel.externalIdPerson.observe(this) { externalID ->
 
-      if (!externalID.instagramId.isNullOrEmpty() || !externalID.twitterId.isNullOrEmpty() || !externalID.facebookId.isNullOrEmpty() ||
-        !externalID.tiktokId.isNullOrEmpty() || !externalID.youtubeId.isNullOrEmpty()
-      ) {
-        binding.viewGroupSocialMedia.visibility = View.VISIBLE
-        if (!externalID.instagramId.isNullOrEmpty()) {
-          binding.ivInstagram.visibility = View.VISIBLE
-          binding.ivInstagram.setOnClickListener {
-            startActivity(
-              Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_LINK + externalID.instagramId))
-            )
-          }
-        } else binding.ivInstagram.visibility = View.GONE
-
-        if (!externalID.twitterId.isNullOrEmpty()) {
-          binding.ivX.visibility = View.VISIBLE
-          binding.ivX.setOnClickListener {
-            startActivity(
-              Intent(Intent.ACTION_VIEW, Uri.parse(X_LINK + externalID.twitterId))
-            )
-          }
-        } else binding.ivX.visibility = View.GONE
-
-        if (!externalID.facebookId.isNullOrEmpty()) {
-          binding.ivFacebook.visibility = View.VISIBLE
-          binding.ivFacebook.setOnClickListener {
-            startActivity(
-              Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_LINK + externalID.facebookId))
-            )
-          }
-        } else binding.ivFacebook.visibility = View.GONE
-
-        if (!externalID.tiktokId.isNullOrEmpty()) {
-          binding.ivTiktok.visibility = View.VISIBLE
-          binding.ivTiktok.setOnClickListener {
-            startActivity(
-              Intent(Intent.ACTION_VIEW, Uri.parse(TIKTOK_PERSON_LINK + externalID.tiktokId))
-            )
-          }
-        } else binding.ivTiktok.visibility = View.GONE
-
-        if (!externalID.youtubeId.isNullOrEmpty()) {
-          binding.ivYoutube.visibility = View.VISIBLE
-          binding.ivYoutube.setOnClickListener {
-            startActivity(
-              Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_CHANNEL_LINK + externalID.youtubeId))
-            )
-          }
-        } else binding.ivYoutube.visibility = View.GONE
-      } else binding.viewGroupSocialMedia.visibility = View.GONE
+      if (hasAnySocialMediaIds(externalID)) {
+        showSocialMediaPerson(externalID)
+      } else {
+        binding.viewGroupSocialMedia.visibility = View.GONE
+      }
 
       if (!externalID.imdbId.isNullOrEmpty()) {
         binding.ivImdb.visibility = View.VISIBLE
@@ -191,7 +155,9 @@ class PersonActivity : AppCompatActivity() {
             Intent(Intent.ACTION_VIEW, Uri.parse(IMDB_PERSON_LINK + externalID.imdbId))
           )
         }
-      } else binding.ivImdb.visibility = View.GONE
+      } else {
+        binding.ivImdb.visibility = View.GONE
+      }
 
       if (!externalID.wikidataId.isNullOrEmpty()) {
         binding.ivWikidata.visibility = View.VISIBLE
@@ -200,7 +166,9 @@ class PersonActivity : AppCompatActivity() {
             Intent(Intent.ACTION_VIEW, Uri.parse(WIKIDATA_PERSON_LINK + externalID.wikidataId))
           )
         }
-      } else binding.ivWikidata.visibility = View.GONE
+      } else {
+        binding.ivWikidata.visibility = View.GONE
+      }
     }
 
     // show known for
@@ -216,9 +184,11 @@ class PersonActivity : AppCompatActivity() {
     // show detail person
     dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
     personMovieViewModel.detailPerson.observe(this) {
-      if (!it.biography.isNullOrEmpty() && it.biography.isNotBlank())
+      if (!it.biography.isNullOrEmpty() && it.biography.isNotBlank()) {
         binding.tvBiography.text = it.biography
-      else binding.tvBiography.text = getString(no_biography)
+      } else {
+        binding.tvBiography.text = getString(no_biography)
+      }
       showBirthdate(it)
 
       if (!it.homepage.isNullOrEmpty()) {
@@ -236,6 +206,64 @@ class PersonActivity : AppCompatActivity() {
     handler.postDelayed({
       binding.tvBiography.performClick() // set automatic click
     }, DELAY_CLICK_TIME)
+  }
+
+  private fun showSocialMediaPerson(externalID: ExternalIDPerson) {
+    binding.viewGroupSocialMedia.visibility = View.VISIBLE
+    if (!externalID.instagramId.isNullOrEmpty()) {
+      binding.ivInstagram.visibility = View.VISIBLE
+      binding.ivInstagram.setOnClickListener {
+        startActivity(
+          Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_LINK + externalID.instagramId))
+        )
+      }
+    } else {
+      binding.ivInstagram.visibility = View.GONE
+    }
+
+    if (!externalID.twitterId.isNullOrEmpty()) {
+      binding.ivX.visibility = View.VISIBLE
+      binding.ivX.setOnClickListener {
+        startActivity(
+          Intent(Intent.ACTION_VIEW, Uri.parse(X_LINK + externalID.twitterId))
+        )
+      }
+    } else {
+      binding.ivX.visibility = View.GONE
+    }
+
+    if (!externalID.facebookId.isNullOrEmpty()) {
+      binding.ivFacebook.visibility = View.VISIBLE
+      binding.ivFacebook.setOnClickListener {
+        startActivity(
+          Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_LINK + externalID.facebookId))
+        )
+      }
+    } else {
+      binding.ivFacebook.visibility = View.GONE
+    }
+
+    if (!externalID.tiktokId.isNullOrEmpty()) {
+      binding.ivTiktok.visibility = View.VISIBLE
+      binding.ivTiktok.setOnClickListener {
+        startActivity(
+          Intent(Intent.ACTION_VIEW, Uri.parse(TIKTOK_PERSON_LINK + externalID.tiktokId))
+        )
+      }
+    } else {
+      binding.ivTiktok.visibility = View.GONE
+    }
+
+    if (!externalID.youtubeId.isNullOrEmpty()) {
+      binding.ivYoutube.visibility = View.VISIBLE
+      binding.ivYoutube.setOnClickListener {
+        startActivity(
+          Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_CHANNEL_LINK + externalID.youtubeId))
+        )
+      }
+    } else {
+      binding.ivYoutube.visibility = View.GONE
+    }
   }
 
   private fun showImageDialog(position: Int, imageUrls: List<String>) {
@@ -274,7 +302,9 @@ class PersonActivity : AppCompatActivity() {
     if (isLoading) {
       binding.backgroundDimPerson.visibility = View.VISIBLE // blur background when loading
       binding.progressBar.visibility = View.VISIBLE
-    } else animFadeOut()
+    } else {
+      animFadeOut()
+    }
   }
 
   private fun showBirthdate(it: DetailPerson) {
@@ -284,10 +314,15 @@ class PersonActivity : AppCompatActivity() {
 
       if (!it.birthday.isNullOrEmpty() && it.birthday.isNotBlank()) {
         val birthday =
-          "${dateFormatterStandard(it.birthday)} (${getAgeBirth(it.birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
+          "${
+            dateFormatterStandard(
+              it.birthday
+            )
+          } (${getAgeBirth(it.birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
         binding.tvBorn.text = birthday
-      } else binding.tvBorn.text = getString(no_data)
-
+      } else {
+        binding.tvBorn.text = getString(no_data)
+      }
     } else {
       binding.tvDeath.isVisible = true
       binding.tvDeadHeader.isVisible = true

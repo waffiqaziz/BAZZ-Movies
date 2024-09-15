@@ -6,22 +6,22 @@ import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
-import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
-import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
-import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.model.detail.Video
+import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
+import com.waffiq.bazz_movies.domain.model.detail.tv.ExternalTvID
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.domain.model.person.CombinedCreditPerson
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
-import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.post.Post
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {
@@ -129,18 +129,18 @@ interface IMoviesRepository {
 
   val favoriteTvFromDB: Flow<List<Favorite>>
 
-  suspend fun insertToDB(fav: Favorite) : DbResult<Int>
+  suspend fun insertToDB(fav: Favorite): DbResult<Int>
 
-  suspend fun deleteFromDB(fav: Favorite) : DbResult<Int>
+  suspend fun deleteFromDB(fav: Favorite): DbResult<Int>
 
-  suspend fun deleteAll() : DbResult<Int>
+  suspend fun deleteAll(): DbResult<Int>
 
-  suspend fun isFavoriteDB(id: Int, mediaType: String) : DbResult<Boolean>
+  suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean>
 
-  suspend fun isWatchlistDB(id: Int, mediaType: String) : DbResult<Boolean>
+  suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean>
 
-  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite) : DbResult<Int>
+  suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int>
 
-  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite) : DbResult<Int>
+  suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int>
 // endregion DATABASE
 }

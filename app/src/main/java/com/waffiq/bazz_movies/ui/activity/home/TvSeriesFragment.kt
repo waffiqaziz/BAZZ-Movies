@@ -42,7 +42,8 @@ class TvSeriesFragment : Fragment() {
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentTvSeriesBinding.inflate(inflater, container, false)
@@ -112,9 +113,9 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun combinedLoadStatesHandle(adapter: TvAdapter, loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
+    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
       showLoading(true) // show ProgressBar
-    else {
+    } else {
       showLoading(false) // hide ProgressBar
 
       pagingErrorState(loadState)?.let {
@@ -169,7 +170,9 @@ class TvSeriesFragment : Fragment() {
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
-    } else animationFadeOut()
+    } else {
+      animationFadeOut()
+    }
   }
 
   override fun onDestroyView() {

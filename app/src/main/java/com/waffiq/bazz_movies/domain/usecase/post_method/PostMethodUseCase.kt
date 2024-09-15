@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.post.Post
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface PostMethodUseCase {

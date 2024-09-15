@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.utils.result_state
+package com.waffiq.bazz_movies.utils.resultstate
 
 sealed class DbResult<out T> {
   data class Success<out T>(val data: T) : DbResult<T>()

@@ -21,9 +21,9 @@ import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistMovieUseC
 import com.waffiq.bazz_movies.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -110,11 +110,13 @@ class MyWatchlistViewModel(
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sesId, data, userId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _snackBarAdded.value =
-            Event(SnackBarUserLoginData(true, title, data, null))
+          Status.SUCCESS ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(true, title, data, null))
 
-          Status.ERROR -> _snackBarAdded.value =
-            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+          Status.ERROR ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
 
           Status.LOADING -> {}
         }
@@ -126,11 +128,13 @@ class MyWatchlistViewModel(
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sesId, data, userId).collect { networkResult ->
         when (networkResult.status) {
-          Status.SUCCESS -> _snackBarAdded.value =
-            Event(SnackBarUserLoginData(true, title, null, data))
+          Status.SUCCESS ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(true, title, null, data))
 
-          Status.ERROR -> _snackBarAdded.value =
-            Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+          Status.ERROR ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
 
           Status.LOADING -> {}
         }
@@ -149,8 +153,9 @@ class MyWatchlistViewModel(
         getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
           when (networkResult.status) {
             Status.SUCCESS -> {
-              if (networkResult.data?.favorite == true) _snackBarAlready.value = Event(title)
-              else {
+              if (networkResult.data?.favorite == true) {
+                _snackBarAlready.value = Event(title)
+              } else {
                 postFavorite(
                   user.token,
                   user.userId,
@@ -161,16 +166,18 @@ class MyWatchlistViewModel(
             }
 
             Status.LOADING -> {}
-            Status.ERROR -> _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+            Status.ERROR ->
+              _snackBarAdded.value =
+                Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
           }
         }
       } else {
         getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
           when (networkResult.status) {
             Status.SUCCESS -> {
-              if (networkResult.data?.favorite == true) _snackBarAlready.value = Event(title)
-              else {
+              if (networkResult.data?.favorite == true) {
+                _snackBarAlready.value = Event(title)
+              } else {
                 postFavorite(
                   user.token,
                   user.userId,
@@ -181,8 +188,9 @@ class MyWatchlistViewModel(
             }
 
             Status.LOADING -> {}
-            Status.ERROR -> _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+            Status.ERROR ->
+              _snackBarAdded.value =
+                Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
           }
         }
       }

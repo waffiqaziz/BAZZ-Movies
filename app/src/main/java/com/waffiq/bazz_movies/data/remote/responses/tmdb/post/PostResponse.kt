@@ -5,12 +5,12 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
 data class PostResponse(
-  @Json(name="success")
+  @Json(name = "success")
   val success: Boolean? = null,
 
-  @Json(name="status_code")
+  @Json(name = "status_code")
   val statusCode: Int? = null,
 
-  @Json(name="status_message")
+  @Json(name = "status_message")
   val statusMessage: String? = null,
 )

@@ -6,12 +6,12 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = false)
 data class AuthenticationResponse(
 
-  @Json(name="success")
+  @Json(name = "success")
   val success: Boolean,
 
-  @Json(name="expire_at")
+  @Json(name = "expire_at")
   val expireAt: String? = null,
 
-  @Json(name="request_token")
+  @Json(name = "request_token")
   val requestToken: String? = null
 )

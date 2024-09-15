@@ -35,11 +35,11 @@ import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
+import com.waffiq.bazz_movies.utils.uihelpers.CustomTypefaceSpan
+import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.utils.CustomTypefaceSpan
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -106,17 +106,16 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun btnListener() {
-
     // login as user
     binding.btnLogin.setOnClickListener {
-
       // check if username and password form is filled or not
       if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
         binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
         binding.btnEye.visibility = View.GONE
       }
-      if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank())
+      if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank()) {
         binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
+      }
 
       // listener to show btn eye
       binding.edPass.addTextChangedListener {
@@ -124,16 +123,16 @@ class LoginActivity : AppCompatActivity() {
       }
 
       // listener for autofill
-      if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank())
+      if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank()) {
         binding.edUsername.error = null
-      if (binding.edPass.text.isNotEmpty() && binding.edPass.text.isNotBlank())
+      }
+      if (binding.edPass.text.isNotEmpty() && binding.edPass.text.isNotBlank()) {
         binding.edPass.error = null
+      }
 
-      if (binding.edUsername.text.isNotEmpty()
-        && binding.edUsername.text.isNotBlank()
-        && binding.edPass.text.isNotEmpty()
-        && binding.edPass.text.isNotBlank()
-      ) loginAsUserRegistered()
+      if (formNotEmpty()) {
+        loginAsUserRegistered()
+      }
     }
 
     // login as guest
@@ -155,6 +154,12 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
+  private fun formNotEmpty(): Boolean {
+    return binding.edUsername.text.isNotEmpty() &&
+      binding.edUsername.text.isNotBlank() &&
+      binding.edPass.text.isNotEmpty() &&
+      binding.edPass.text.isNotBlank()
+  }
 
   private fun goToMainActivity(isGuest: Boolean) {
     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -168,8 +173,11 @@ class LoginActivity : AppCompatActivity() {
       @Suppress("DEPRECATION")
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
-    if (isGuest) showToastShort(this, getString(login_as_guest_successful))
-    else showToastShort(this, getString(login_successful))
+    if (isGuest) {
+      showToastShort(this, getString(login_as_guest_successful))
+    } else {
+      showToastShort(this, getString(login_successful))
+    }
 
     finishAffinity()
   }
@@ -210,8 +218,11 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun showLoading(isLoading: Boolean) {
-    if (isLoading) binding.progressBar.visibility = View.VISIBLE
-    else binding.progressBar.visibility = View.GONE
+    if (isLoading) {
+      binding.progressBar.visibility = View.VISIBLE
+    } else {
+      binding.progressBar.visibility = View.GONE
+    }
   }
 
   private fun applyFontFamily(text: String): SpannableStringBuilder {
@@ -226,5 +237,4 @@ class LoginActivity : AppCompatActivity() {
     )
     return spannableStringBuilder
   }
-
 }

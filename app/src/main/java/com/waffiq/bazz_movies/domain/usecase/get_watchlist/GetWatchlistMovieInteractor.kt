@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetWatchlistMovieInteractor(
   private val getWatchlistMovieRepository: IMoviesRepository
-) : GetWatchlistMovieUseCase{
+) : GetWatchlistMovieUseCase {
   override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
     getWatchlistMovieRepository.getPagingWatchlistMovies(sessionId)
 }

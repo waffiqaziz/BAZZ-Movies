@@ -35,9 +35,17 @@ interface FavoriteDao {
   @Query("DELETE FROM $TABLE_NAME")
   suspend fun deleteALl(): Int
 
-  @Insert(onConflict = OnConflictStrategy.IGNORE) // used while a conflict occurs, returns -1, indicating the insertion was ignored.
+  // used while a conflict occurs, returns -1, indicating the insertion was ignored.
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
   suspend fun insert(favoriteEntity: FavoriteEntity): Long
 
-  @Query("UPDATE $TABLE_NAME SET is_favorited = :isFavorite, is_watchlist = :isWatchlist WHERE mediaType = :mediaType and mediaId = :id")
+  @Query(
+    """
+        UPDATE $TABLE_NAME 
+        SET is_favorited = :isFavorite, is_watchlist = :isWatchlist 
+        WHERE mediaType = :mediaType
+        AND mediaId = :id
+    """
+  )
   suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
 }

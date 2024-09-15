@@ -47,8 +47,11 @@ class MovieHomeAdapter :
 
       Glide.with(binding.imgPoster)
         .load(
-          if (!movie.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + movie.posterPath
-          else ic_poster_error
+          if (!movie.posterPath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + movie.posterPath
+          } else {
+            ic_poster_error
+          }
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())

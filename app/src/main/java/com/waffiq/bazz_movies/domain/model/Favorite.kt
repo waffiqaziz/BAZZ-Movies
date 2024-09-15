@@ -18,4 +18,4 @@ data class Favorite(
   val rating: Float,
   val isFavorite: Boolean,
   val isWatchlist: Boolean
-): Parcelable
+) : Parcelable

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.utils
+package com.waffiq.bazz_movies.utils.resultstate
 
 data class NetworkResult<out T>(val status: Status, val data: T?, val message: String?) {
 

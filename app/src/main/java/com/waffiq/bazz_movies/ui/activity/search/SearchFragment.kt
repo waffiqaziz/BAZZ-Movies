@@ -75,13 +75,6 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
-    setupView()
-    adapterLoadStateListener()
-    setupSearchView()
-    observeSearchResult()
-  }
-
-  private fun setupView() {
     binding.rvSearch.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     binding.rvSearch.itemAnimator = DefaultItemAnimator()
@@ -93,62 +86,72 @@ class SearchFragment : Fragment() {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
+
+    adapterLoadStateListener()
+    setupSearchView()
+    observeSearchResult()
   }
 
   private fun setupSearchView() {
     var lastQuery: String? = null
-    requireActivity().addMenuProvider(object : MenuProvider {
-      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(search_menu, menu)
-        val searchView = menu.findItem(action_search).actionView as SearchView
-        searchView.maxWidth = Int.MAX_VALUE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-          searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-            .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
-        }
-        searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
-          .setImageResource(ic_cross)
+    requireActivity().addMenuProvider(
+      object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+          menuInflater.inflate(search_menu, menu)
+          val searchView = menu.findItem(action_search).actionView as SearchView
+          searchView.maxWidth = Int.MAX_VALUE
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+              .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
+          }
+          searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+            .setImageResource(ic_cross)
 
-        searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
-          if (it) {
-            searchView.isVisible = true
-            menu.findItem(action_search).expandActionView()
-            searchView.isFocusable = false
-            searchView.isIconified = false
+          searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
+            if (it) {
+              searchView.isVisible = true
+              menu.findItem(action_search).expandActionView()
+              searchView.isFocusable = false
+              searchView.isIconified = false
+            }
+          }
+
+          // search queryTextChange Listener
+          searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+              if (query != null && query != lastQuery) {
+                lastQuery = query
+                mQuery = query
+                searchViewModel.search(query)
+              } else {
+                return true
+              }
+              searchView.clearFocus()
+              return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+              return true
+            }
+          })
+
+          // Restore query if available
+          searchViewModel.query.observe(viewLifecycleOwner) {
+            mQuery = it
+            if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
           }
         }
 
-        // search queryTextChange Listener
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-          override fun onQueryTextSubmit(query: String?): Boolean {
-            if (query != null && query != lastQuery) {
-              lastQuery = query
-              mQuery = query
-              searchViewModel.search(query)
-            } else return true
-            searchView.clearFocus()
-            return false
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+          return when (menuItem.itemId) {
+            action_search -> true
+            else -> false
           }
-
-          override fun onQueryTextChange(query: String?): Boolean {
-            return true
-          }
-        })
-
-        // Restore query if available
-        searchViewModel.query.observe(viewLifecycleOwner) {
-          mQuery = it
-          if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
         }
-      }
-
-      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return when (menuItem.itemId) {
-          action_search -> true
-          else -> false
-        }
-      }
-    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+      },
+      viewLifecycleOwner,
+      Lifecycle.State.RESUMED
+    )
   }
 
   private fun observeSearchResult() {

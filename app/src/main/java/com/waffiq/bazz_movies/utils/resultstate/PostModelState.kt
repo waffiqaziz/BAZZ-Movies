@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.utils.result_state
+package com.waffiq.bazz_movies.utils.resultstate
 
 /**
  * handler for watchlist and favorite operation on detail page

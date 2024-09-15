@@ -19,4 +19,4 @@ data class DetailPerson(
   val id: Int? = null,
   val adult: Boolean? = null,
   val homepage: String? = null
-): Parcelable
+) : Parcelable

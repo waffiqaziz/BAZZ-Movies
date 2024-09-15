@@ -46,7 +46,7 @@ object FavWatchlistHelper {
     val mSnackbar = Snackbar.make(
       view,
       HtmlCompat.fromHtml(
-        "<b>${result}</b> " + ContextCompat.getString(context, R.string.already_watchlist),
+        "<b>$result</b> " + ContextCompat.getString(context, R.string.already_watchlist),
         HtmlCompat.FROM_HTML_MODE_LEGACY
       ),
       Snackbar.LENGTH_SHORT
@@ -65,7 +65,7 @@ object FavWatchlistHelper {
     val mSnackbar = Snackbar.make(
       view,
       HtmlCompat.fromHtml(
-        "<b>${result}</b> " + ContextCompat.getString(context, R.string.already_favorite),
+        "<b>$result</b> " + ContextCompat.getString(context, R.string.already_favorite),
         HtmlCompat.FROM_HTML_MODE_LEGACY
       ),
       Snackbar.LENGTH_SHORT
@@ -142,5 +142,4 @@ object FavWatchlistHelper {
     }
     return updatedSnackbar
   }
-
 }

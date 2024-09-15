@@ -1,10 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity.detail
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -12,20 +9,14 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
+import android.util.Log
 import android.view.View
 import android.view.Window
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.RatingBar
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -42,16 +33,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_bookmark
-import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
-import com.waffiq.bazz_movies.R.drawable.ic_hearth
-import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.R.id.btn_cancel
 import com.waffiq.bazz_movies.R.id.btn_submit
 import com.waffiq.bazz_movies.R.id.rating_bar_action
@@ -66,6 +51,7 @@ import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.R.string.not_available_full
 import com.waffiq.bazz_movies.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.R.string.status_
+import com.waffiq.bazz_movies.R.string.unknown_error
 import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
@@ -73,6 +59,7 @@ import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.model.Stated
+import com.waffiq.bazz_movies.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -83,16 +70,16 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
-import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.detailCrew
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.utils.helpers.details.CreateTableViewHelper.createTable
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.detailCrew
+import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
+import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import com.waffiq.bazz_movies.utils.uihelpers.ScrollActionBarBehavior.Companion.setupScrollActionBarBehavior
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -105,6 +92,9 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var dataExtra: ResultItem
   private lateinit var detailViewModel: DetailMovieViewModel
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+
+  private val adapterCast = CastAdapter()
+  private val adapterRecommendation = TrendingAdapter()
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
@@ -132,7 +122,7 @@ class DetailMovieActivity : AppCompatActivity() {
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     transparentStatusBar(window)
-    scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
+    setupScrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
     justifyTextView(binding.tvOverview)
     loadData()
     favWatchlistHandler()
@@ -144,11 +134,9 @@ class DetailMovieActivity : AppCompatActivity() {
       eventResult.getContentIfNotHandled()?.let { postModelState ->
         if (postModelState.isSuccess) {
           if (!postModelState.isDelete) {
-            if (!postModelState.isFavorite) showToastAddedWatchlist()
-            else showToastAddedFavorite()
+            if (!postModelState.isFavorite) showToastAddedWatchlist() else showToastAddedFavorite()
           } else {
-            if (postModelState.isFavorite) showToastRemoveFromFavorite()
-            else showToastRemoveFromWatchlist()
+            if (postModelState.isFavorite) showToastRemoveFromFavorite() else showToastRemoveFromWatchlist()
           }
         }
       }
@@ -201,13 +189,58 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
-    // shows backdrop
+    setupRecyclerView()
+    showRecommendation()
+    showGeneralInfo()
+    getDetailData()
+
+    // show detail data based media type
+    if (dataExtra.mediaType == "movie") {
+      observeDetailMovie()
+    } else if (dataExtra.mediaType == "tv") {
+      observeDetailTv()
+    }
+  }
+
+  private fun getDetailData() {
+    showBackdrop()
+    showPoster()
+    if (dataExtra.mediaType == "movie") {
+      getDetailMovie()
+    } else if (dataExtra.mediaType == "tv") {
+      getDetailTv()
+    }
+  }
+
+  private fun setupRecyclerView() {
+    // setup rv cast
+    binding.rvCast.itemAnimator = DefaultItemAnimator()
+    binding.rvCast.layoutManager =
+      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    binding.rvCast.adapter = adapterCast
+
+    // setup rv recommendation
+    binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
+    binding.rvRecommendation.layoutManager =
+      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+    binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
+      footer = LoadingStateAdapter { adapterRecommendation.retry() }
+    )
+  }
+
+  private fun showBackdrop() {
     Glide.with(binding.ivPictureBackdrop)
       .load(
-        if (dataExtra.backdropPath == "N/A" || dataExtra.posterPath == "N/A") ic_backdrop_error_filled
-        else if (!dataExtra.backdropPath.isNullOrEmpty()) TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-        else if (!dataExtra.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        else ic_backdrop_error_filled
+        if (dataExtra.backdropPath == "N/A" || dataExtra.posterPath == "N/A") {
+          ic_backdrop_error_filled
+        } else if (!dataExtra.backdropPath.isNullOrEmpty()) {
+          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+        } else if (!dataExtra.posterPath.isNullOrEmpty()) {
+          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+        } else {
+          ic_backdrop_error_filled
+        }
       )
       .placeholder(ic_bazz_placeholder_backdrops)
       .centerCrop()
@@ -215,21 +248,28 @@ class DetailMovieActivity : AppCompatActivity() {
       .transition(withCrossFade())
       .into(binding.ivPictureBackdrop)
 
-    // shows poster
+    binding.tvBackdropNotFound.isVisible =
+      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == "N/A"
+  }
+
+  private fun showPoster() {
     Glide.with(binding.ivPoster)
       .load(
-        if (dataExtra.posterPath == "N/A") ic_poster_error
-        else if (dataExtra.posterPath != null) TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        else ic_poster_error
+        if (dataExtra.posterPath == "N/A") {
+          ic_poster_error
+        } else if (dataExtra.posterPath != null) {
+          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+        } else {
+          ic_poster_error
+        }
       )
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_poster_error)
       .transition(withCrossFade())
       .into(binding.ivPoster)
+  }
 
-    binding.tvBackdropNotFound.isVisible =
-      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == "N/A"
-
+  private fun showGeneralInfo() {
     // show data (title, released year, media type, and overview) based DATA_EXTRA
     binding.apply {
       dataExtra.apply {
@@ -238,200 +278,198 @@ class DetailMovieActivity : AppCompatActivity() {
         tvYearReleased.text =
           dateFormatterStandard(releaseDate.toString().ifEmpty { firstAirDate.toString() })
         tvOverview.text =
-          if (!overview.isNullOrEmpty() && overview.isNotBlank()) overview
-          else getString(no_overview)
+          if (!overview.isNullOrEmpty() && overview.isNotBlank()) {
+            overview
+          } else {
+            getString(no_overview)
+          }
       }
     }
+  }
 
-    // setup rv cast
-    binding.rvCast.itemAnimator = DefaultItemAnimator()
-    binding.rvCast.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-    val adapterCast = CastAdapter()
-    binding.rvCast.adapter = adapterCast
+  private fun getDetailMovie() {
+    // shows crew and cast
+    detailViewModel.getMovieCredits(dataExtra.id)
 
-    // setup rv recommendation
-    binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
-    binding.rvRecommendation.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-    val adapterRecommendation = TrendingAdapter()
-    binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterRecommendation.retry() }
-    )
+    // get detail movie
+    userPreferenceViewModel.getUserPref().observe(this) { user ->
+      detailViewModel.detailMovie(dataExtra.id, user.region)
+    }
 
-    // hide recommendation if null
-    adapterRecommendation.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading &&
-        loadState.append.endOfPaginationReached &&
-        adapterRecommendation.itemCount < 1
-      ) {
-        binding.tvRecommendationHeader.isVisible = false
-        binding.rvRecommendation.isVisible = false
+    detailViewModel.detailMovieTv.observe(this) { movie ->
+      // copy genre id
+      dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
+
+      // update UI for movie details
+      updateMovieDetailsUI(movie)
+
+      // Trigger fetching of other data
+      movie.imdbId?.let { detailViewModel.getScoreOMDb(it) }
+      detailViewModel.getLinkVideoMovie(movie.id)
+      detailViewModel.getRecommendationMovie(movie.id)
+    }
+  }
+
+  private fun updateMovieDetailsUI(data: DetailMovieTvUsed) {
+    // show genre, duration, tmdb score
+    binding.tvGenre.text = data.genre ?: getString(not_available)
+    binding.tvDuration.text = data.duration ?: getString(not_available)
+    binding.tvScoreTmdb.text = data.tmdbScore ?: getString(not_available)
+
+    // set age rating
+    if (!data.ageRating.isNullOrEmpty()) {
+      showViewAgeRating(true)
+      binding.tvAgeRating.text = data.ageRating
+    } else {
+      showViewAgeRating(false)
+    }
+
+    // set region release
+    if (data.releaseDateRegion.regionRelease.isNotEmpty()) {
+      showViewRegionReleaseDate(true)
+      binding.tvRegionRelease.text = data.releaseDateRegion.regionRelease
+    } else {
+      showViewRegionReleaseDate(false)
+    }
+
+    // set date release based on user region
+    if (data.releaseDateRegion.releaseDate.isNotEmpty()) {
+      showViewReleaseDate(true)
+      binding.tvYearReleased.text = data.releaseDateRegion.releaseDate
+    } else {
+      showViewReleaseDate(false)
+    }
+  }
+
+  private fun observeDetailMovie() {
+    detailViewModel.movieTvCreditsResult.observe(this) {
+      createTable(this, detailCrew(it.crew), binding.table)
+      adapterCast.setCast(it.cast)
+      if (adapterCast.itemCount <= 0) {
+        binding.rvCast.isVisible = false
+        binding.tvCastHeader.isVisible = false
       } else {
-        binding.tvRecommendationHeader.isVisible = true
-        binding.rvRecommendation.isVisible = true
+        binding.rvCast.isVisible = true
+        binding.tvCastHeader.isVisible = true
+      }
+    }
+    detailViewModel.omdbResult.observe(this) { omdbScore ->
+      showDetailOMDb(omdbScore)
+    }
+
+    detailViewModel.linkVideo.observe(this) { videoLink ->
+      if (videoLink.isNullOrEmpty() || videoLink.isBlank()) {
+        hideTrailer(true)
+      } else {
+        hideTrailer(false)
+        btnTrailer(videoLink)
       }
     }
 
-    //show more detail data based media type
-    if (dataExtra.mediaType == "movie") {
+    detailViewModel.recommendation.observe(this) { recommendations ->
+      adapterRecommendation.submitData(lifecycle, recommendations)
+    }
+  }
 
-      // shows crew and cast
-      detailViewModel.getMovieCredits(dataExtra.id)
-      detailViewModel.movieTvCreditsResult.observe(this) {
-        createTable(detailCrew(it.crew))
-        adapterCast.setCast(it.cast)
-        if (adapterCast.itemCount <= 0) {
-          binding.rvCast.isVisible = false
-          binding.tvCastHeader.isVisible = false
+  private fun getDetailTv() {
+    // show crew & cast
+    detailViewModel.getTvCredits(dataExtra.id)
+
+    // video
+    detailViewModel.getImdbVideoTv(dataExtra.id)
+
+    // recommendation tv
+    detailViewModel.getRecommendationTv(dataExtra.id).observe(this) {
+      adapterRecommendation.submitData(lifecycle, it)
+    }
+
+    // show genres & age rate
+    userPreferenceViewModel.getUserPref().observe(this) {
+      detailViewModel.detailTv(dataExtra.id, it.region)
+    }
+    detailViewModel.detailMovieTv.observe(this) { tv ->
+
+      // genre and tmdb score
+      binding.tvGenre.text = tv.genre ?: getString(not_available)
+      binding.tvScoreTmdb.text = tv.tmdbScore ?: getString(not_available)
+
+      // status
+      binding.tvDuration.text =
+        if (tv.duration.isNullOrEmpty()) {
+          getString(not_available)
         } else {
-          binding.rvCast.isVisible = true
-          binding.tvCastHeader.isVisible = true
-        }
-      }
-
-      // get detail movie
-      userPreferenceViewModel.getUserPref().observe(this) { user ->
-        detailViewModel.detailMovie(dataExtra.id, user.region)
-      }
-
-      detailViewModel.detailMovieTv.observe(this) { movie ->
-        // copy genre id
-        dataExtra = dataExtra.copy(listGenreIds = movie.genreId)
-
-        // show genre, duration, tmdb score
-        binding.tvGenre.text = movie.genre ?: getString(not_available)
-        binding.tvDuration.text = movie.duration ?: getString(not_available)
-        binding.tvScoreTmdb.text = movie.tmdbScore ?: getString(not_available)
-
-        // set age rating
-        if (!movie.ageRating.isNullOrEmpty()) {
-          showViewAgeRating(true)
-          binding.tvAgeRating.text = movie.ageRating
-        } else showViewAgeRating(false)
-
-        // set region release
-        if (movie.releaseDateRegion.regionRelease.isNotEmpty()) {
-          showViewRegionReleaseDate(true)
-          binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
-        } else showViewRegionReleaseDate(false)
-
-        // set date release based on user region
-        if (movie.releaseDateRegion.releaseDate.isNotEmpty()) {
-          showViewReleaseDate(true)
-          binding.tvYearReleased.text = movie.releaseDateRegion.releaseDate
-        } else showViewReleaseDate(false)
-
-        // show OMDb detail (score)
-        if (movie.imdbId != null) {
-          detailViewModel.getScoreOMDb(movie.imdbId)
-          detailViewModel.omdbResult.observe(this) {
-            showDetailOMDb(it)
-          }
-        } else showLoadingDim(false)
-
-        // trailer
-        detailViewModel.getLinkVideoMovie(movie.id)
-        detailViewModel.linkVideo.observe(this) {
-          if (it.isNullOrEmpty() || it.isBlank()) hideTrailer(true)
-          else {
-            hideTrailer(false)
-            btnTrailer(it)
-          }
+          getString(status_, tv.duration)
         }
 
-        // recommendation movie
-        detailViewModel.getRecommendationMovie(movie.id).observe(this) {
-          adapterRecommendation.submitData(lifecycle, it)
-        }
+      // age rating
+      if (!tv.ageRating.isNullOrEmpty()) {
+        showViewAgeRating(true)
+        binding.tvAgeRating.text = tv.ageRating
+      } else {
+        showViewAgeRating(false)
       }
 
-
-    } else if (dataExtra.mediaType == "tv") {
-
-      // show crew & cast
-      detailViewModel.getTvCredits(dataExtra.id)
-      detailViewModel.movieTvCreditsResult.observe(this) {
-        createTable(detailCrew(it.crew))
-        adapterCast.setCast(it.cast)
-        if (adapterCast.itemCount <= 0) {
-          binding.rvCast.isVisible = false
-          binding.tvCastHeader.isVisible = false
-        } else {
-          binding.rvCast.isVisible = true
-          binding.tvCastHeader.isVisible = true
-        }
+      // release date
+      if (tv.releaseDateRegion.regionRelease.isNotEmpty()) {
+        showViewReleaseDate(true)
+        binding.tvYearReleased.text = tv.releaseDateRegion.regionRelease
+      } else {
+        showViewReleaseDate(false)
       }
 
-      detailViewModel.externalId(dataExtra.id)
-      detailViewModel.tvImdbID.observe(this) { imdb ->
-        if (imdb != null && imdb.isNotBlank() && imdb.isNotEmpty()) {
-          detailViewModel.getScoreOMDb(imdb)
-          detailViewModel.omdbResult.observe(this) {
-            showDetailOMDb(it)
-          }
-        } else {
-          showLoadingDim(false)
-          binding.tvScoreImdb.text = getString(not_available)
-          binding.tvScoreMetascore.text = getString(not_available)
-        }
+      showViewRegionReleaseDate(false)
+    }
+  }
 
-        // trailer
-        detailViewModel.getLinkTv(dataExtra.id)
-        detailViewModel.linkVideo.observe(this) {
-          if (it.isNullOrEmpty() || it.isBlank()) hideTrailer(true)
-          else {
-            hideTrailer(false)
-            btnTrailer(it)
-          }
-        }
+  private fun observeDetailTv() {
+    detailViewModel.movieTvCreditsResult.observe(this) {
+      createTable(this, detailCrew(it.crew), binding.table)
+      adapterCast.setCast(it.cast)
+      if (adapterCast.itemCount <= 0) {
+        binding.rvCast.isVisible = false
+        binding.tvCastHeader.isVisible = false
+      } else {
+        binding.rvCast.isVisible = true
+        binding.tvCastHeader.isVisible = true
       }
+    }
 
-      // recommendation tv
-      detailViewModel.getRecommendationTv(dataExtra.id).observe(this) {
-        adapterRecommendation.submitData(lifecycle, it)
+    detailViewModel.tvImdbID.observe(this) { imdb ->
+      if (imdb == null || imdb.isBlank() || imdb.isEmpty()) {
+        showLoadingDim(false)
+        binding.tvScoreImdb.text = getString(not_available)
+        binding.tvScoreMetascore.text = getString(not_available)
       }
+    }
 
-      // show genres & age rate
-      userPreferenceViewModel.getUserPref().observe(this) {
-        detailViewModel.detailTv(dataExtra.id, it.region)
-      }
-      detailViewModel.detailMovieTv.observe(this) { tv ->
+    detailViewModel.omdbResult.observe(this) {
+      showDetailOMDb(it)
+    }
 
-        // genre and tmdb score
-        binding.tvGenre.text = tv.genre ?: getString(not_available)
-        binding.tvScoreTmdb.text = tv.tmdbScore ?: getString(not_available)
-
-        // status
-        binding.tvDuration.text =
-          if (tv.duration.isNullOrEmpty()) getString(not_available)
-          else getString(status_, tv.duration)
-
-        // age rating
-        if (!tv.ageRating.isNullOrEmpty()) {
-          showViewAgeRating(true)
-          binding.tvAgeRating.text = tv.ageRating
-        } else showViewAgeRating(false)
-
-        // release date
-        if (tv.releaseDateRegion.regionRelease.isNotEmpty()) {
-          showViewReleaseDate(true)
-          binding.tvYearReleased.text = tv.releaseDateRegion.regionRelease
-        } else showViewReleaseDate(false)
-
-        showViewRegionReleaseDate(false)
+    detailViewModel.linkVideo.observe(this) {
+      if (it.isNullOrEmpty() || it.isBlank()) {
+        hideTrailer(true)
+      } else {
+        hideTrailer(false)
+        btnTrailer(it)
       }
     }
   }
 
   private fun getStated(token: String) {
-    if (dataExtra.mediaType == "movie") detailViewModel.getStatedMovie(token, dataExtra.id)
-    else detailViewModel.getStatedTv(token, dataExtra.id)
+    if (dataExtra.mediaType == "movie") {
+      detailViewModel.getStatedMovie(token, dataExtra.id)
+    } else {
+      detailViewModel.getStatedTv(token, dataExtra.id)
+    }
   }
 
   private fun showRatingUserLogin(state: Stated) {
-    binding.tvScoreYourScore.text = if (state.rated.toString() == "false") getString(not_available)
-    else state.rated.toString().replace("{value=", "").replace("}", "")
+    binding.tvScoreYourScore.text = if (state.rated.toString() == "false") {
+      getString(not_available)
+    } else {
+      state.rated.toString().replace("{value=", "").replace("}", "")
+    }
   }
 
   private fun btnTrailer(link: String) {
@@ -440,10 +478,18 @@ class DetailMovieActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse("$YOUTUBE_LINK_VIDEO$link")
         startActivity(intent)
-      } catch (e: Exception) {
+      } catch (e: ActivityNotFoundException) {
+        Log.e(TAG, "YouTube app not installed", e)
         Snackbar.make(
           binding.coordinatorLayout,
           yt_not_installed,
+          Snackbar.LENGTH_LONG
+        ).show()
+      } catch (e: Exception) {
+        Log.e(TAG, "Unknown error occurred while trying to play video", e)
+        Snackbar.make(
+          binding.coordinatorLayout,
+          unknown_error,
           Snackbar.LENGTH_LONG
         ).show()
       }
@@ -455,7 +501,7 @@ class DetailMovieActivity : AppCompatActivity() {
       // handle swipe refresh to reload data
       swipeRefresh.setOnRefreshListener {
         checkUser()
-        showDetailData()
+        getDetailData()
         swipeRefresh.isRefreshing = false
       }
 
@@ -463,22 +509,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
       btnFavorite.setOnClickListener {
         if (!isLogin) { // Guest user
-          when {
-            // if watchlist, then edit is_favorite = true
-            !favorite && watchlist ->
-              detailViewModel.updateToFavoriteDB(favTrueWatchlistTrue(dataExtra))
-
-            // if not in favorite and watchlist insert into room dataset, then set is_favorite = true
-            !favorite && !watchlist ->
-              detailViewModel.insertToDB(favTrueWatchlistFalse(dataExtra))
-
-            // if favorite and watchlist, then edit is_favorite to false
-            favorite && watchlist ->
-              detailViewModel.updateToRemoveFromFavoriteDB(favFalseWatchlistTrue(dataExtra))
-
-            // remove from room database, cuz not in favorite
-            else -> detailViewModel.delFromFavoriteDB(favTrueWatchlistFalse(dataExtra))
-          }
+          detailViewModel.handleBtnFavorite(favorite, watchlist, dataExtra)
         } else { // Logged-in user
           postDataToTMDB(isModeFavorite = true, state = favorite)
         }
@@ -486,22 +517,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
       btnWatchlist.setOnClickListener {
         if (!isLogin) { // Guest user
-          when {
-            // if on favorite, then update is_watchlist = true
-            !watchlist && favorite ->
-              detailViewModel.updateToWatchlistDB(favTrueWatchlistTrue(dataExtra))
-
-            // if not in favorite and watchlist, insert item into room database and set is_watchlist = true
-            !watchlist && !favorite ->
-              detailViewModel.insertToDB(favFalseWatchlistTrue(dataExtra))
-
-            // if watchlist and favorite, then update is_watchlist to false
-            watchlist && favorite ->
-              detailViewModel.updateToRemoveFromWatchlistDB(favTrueWatchlistFalse(dataExtra))
-
-            // remove from room database, cuz is not favorite
-            else -> detailViewModel.delFromFavoriteDB(favFalseWatchlistTrue(dataExtra))
-          }
+          detailViewModel.handleBtnWatchlist(favorite, watchlist, dataExtra)
         } else { // Logged-in user
           postDataToTMDB(isModeFavorite = false, state = watchlist)
         }
@@ -511,7 +527,11 @@ class DetailMovieActivity : AppCompatActivity() {
 
       imdbViewGroup.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
       tmdbViewGroup.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
-      metascoreViewGroup.setOnClickListener { if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      metascoreViewGroup.setOnClickListener {
+        if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) {
+          showDialogNotRated()
+        }
+      }
     }
   }
 
@@ -526,7 +546,6 @@ class DetailMovieActivity : AppCompatActivity() {
       userPreferenceViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postFavorite(user.token, fav, user.userId)
       }
-
     } else { // for watchlist
       watchlist = !state
       val wtc = WatchlistPostModel(
@@ -540,7 +559,6 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-
   // show score from OMDb API
   private fun showDetailOMDb(data: OMDbDetails) {
     binding.apply {
@@ -550,7 +568,6 @@ class DetailMovieActivity : AppCompatActivity() {
         if (data.metascore.isNullOrEmpty() || data.metascore.isBlank()) getString(not_available) else data.metascore
     }
   }
-
 
   // check if favorite or watchlist
   private fun isFavoriteWatchlist(isLogin: Boolean) {
@@ -562,125 +579,24 @@ class DetailMovieActivity : AppCompatActivity() {
             favorite = it.favorite
             watchlist = it.watchlist
             showRatingUserLogin(it)
-            changeBtnFavoriteBG(it.favorite)
-            changeBtnWatchlistBG(it.watchlist)
+            changeBtnFavoriteBG(this, binding.btnFavorite, it.favorite)
+            changeBtnWatchlistBG(this, binding.btnWatchlist, it.watchlist)
           }
         }
       }
-    } else { //guest user
+    } else { // guest user
       detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
       detailViewModel.isFavorite.observe(this) {
-        changeBtnFavoriteBG(it)
+        changeBtnFavoriteBG(this, binding.btnFavorite, it)
         favorite = it
       }
       detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
       detailViewModel.isWatchlist.observe(this) {
-        changeBtnWatchlistBG(it)
+        changeBtnWatchlistBG(this, binding.btnWatchlist, it)
         watchlist = it
       }
     }
   }
-
-
-  // favorite & watchlist button transform
-  private fun changeBtnWatchlistBG(isActivated: Boolean) {
-    if (isActivated && binding.btnWatchlist.drawable.constantState ==
-      ActivityCompat.getDrawable(this, ic_bookmark_selected)?.constantState
-    ) {
-      return
-    }
-
-    if (!isActivated && binding.btnWatchlist.drawable.constantState ==
-      ActivityCompat.getDrawable(this, ic_bookmark)?.constantState
-    ) {
-      return
-    }
-
-    val toRes = if (isActivated) ic_bookmark_selected else ic_bookmark
-    val scaleXAnimator =
-      ObjectAnimator.ofFloat(binding.btnWatchlist, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
-        interpolator = AccelerateDecelerateInterpolator()
-      }
-
-    val scaleYAnimator =
-      ObjectAnimator.ofFloat(binding.btnWatchlist, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
-        interpolator = AccelerateDecelerateInterpolator()
-      }
-
-    val alphaAnimator = ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 1f, 0f).apply {
-      duration = 150
-      startDelay = 150 // Delay the alpha animation for smooth transition
-      interpolator = AccelerateDecelerateInterpolator()
-    }
-
-    val set = AnimatorSet().apply {
-      playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator)
-    }
-
-    set.addListener(object : AnimatorListenerAdapter() {
-      override fun onAnimationEnd(animation: Animator) {
-        binding.btnWatchlist.setImageResource(toRes)
-        ObjectAnimator.ofFloat(binding.btnWatchlist, View.ALPHA, 0f, 1f).apply {
-          duration = 150
-          interpolator = AccelerateDecelerateInterpolator()
-        }.start()
-      }
-    })
-
-    set.start()
-  }
-
-  private fun changeBtnFavoriteBG(isActivated: Boolean) {
-    if (isActivated && binding.btnFavorite.drawable.constantState ==
-      ActivityCompat.getDrawable(this, ic_hearth_selected)?.constantState
-    ) {
-      return
-    }
-
-    if (!isActivated && binding.btnFavorite.drawable.constantState ==
-      ActivityCompat.getDrawable(this, ic_hearth)?.constantState
-    ) {
-      return
-    }
-
-    val toRes = if (isActivated) ic_hearth_selected else ic_hearth
-    val scaleXAnimator =
-      ObjectAnimator.ofFloat(binding.btnFavorite, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
-        interpolator = AccelerateDecelerateInterpolator()
-      }
-
-    val scaleYAnimator =
-      ObjectAnimator.ofFloat(binding.btnFavorite, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
-        interpolator = AccelerateDecelerateInterpolator()
-      }
-
-    val alphaAnimator = ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 1f, 0f).apply {
-      duration = 150
-      startDelay = 150 // Delay the alpha animation for smooth transition
-      interpolator = AccelerateDecelerateInterpolator()
-    }
-
-    val set = AnimatorSet().apply {
-      playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator)
-    }
-
-    set.addListener(object : AnimatorListenerAdapter() {
-      override fun onAnimationEnd(animation: Animator) {
-        binding.btnFavorite.setImageResource(toRes)
-        ObjectAnimator.ofFloat(binding.btnFavorite, View.ALPHA, 0f, 1f).apply {
-          duration = 150
-          interpolator = AccelerateDecelerateInterpolator()
-        }.start()
-      }
-    })
-
-    set.start()
-  }
-
 
   // region toast, snackbar, dialog
   private fun showToastAddedFavorite() {
@@ -731,9 +647,11 @@ class DetailMovieActivity : AppCompatActivity() {
     btnSubmit.setOnClickListener {
       val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
       userPreferenceViewModel.getUserPref().observe(this) { user ->
-        if (dataExtra.mediaType == "movie")
+        if (dataExtra.mediaType == "movie") {
           detailViewModel.postMovieRate(user.token, ratePostModel, dataExtra.id)
-        else detailViewModel.postTvRate(user.token, ratePostModel, dataExtra.id)
+        } else {
+          detailViewModel.postTvRate(user.token, ratePostModel, dataExtra.id)
+        }
       }
 
       // change rating
@@ -754,7 +672,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun errorStateObserver() {
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.errorState.debounce(500)  // Prevent multiple emissions within 500ms
+        detailViewModel.errorState.debounce(500) // Prevent multiple emissions within 500ms
           .collect { errorMessage ->
             snackBarWarning(this@DetailMovieActivity, binding.coordinatorLayout, null, errorMessage)
           }
@@ -767,16 +685,33 @@ class DetailMovieActivity : AppCompatActivity() {
     toast?.cancel()
 
     toast = Toast.makeText(
-      applicationContext, HtmlCompat.fromHtml(
+      applicationContext,
+      HtmlCompat.fromHtml(
         text, HtmlCompat.FROM_HTML_MODE_LEGACY
-      ), Toast.LENGTH_SHORT
+      ),
+      Toast.LENGTH_SHORT
     )
     toast?.show()
   }
   // endregion toast, snackbar, dialog
 
+  // region VIEW HANDLER
+  private fun showRecommendation() {
+    // show or hide recommendation if null
+    adapterRecommendation.addLoadStateListener { loadState ->
+      if (loadState.source.refresh is LoadState.NotLoading &&
+        loadState.append.endOfPaginationReached &&
+        adapterRecommendation.itemCount < 1
+      ) {
+        binding.tvRecommendationHeader.isVisible = false
+        binding.rvRecommendation.isVisible = false
+      } else {
+        binding.tvRecommendationHeader.isVisible = true
+        binding.rvRecommendation.isVisible = true
+      }
+    }
+  }
 
-  // region MOVIE VIEW HANDLER
   private fun animFadeOut() {
     val animation = animFadeOutLong(this)
     if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
@@ -812,55 +747,7 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.tvYearReleased.isVisible = isShow
     binding.divider1.isVisible = isShow
   }
-  // endregion MOVIE VIEW HANDLER
-
-
-  // region TABLE
-  private fun createTable(pair: Pair<MutableList<String>, MutableList<String>>) {
-    val (job, crewName) = pair
-
-    // Create a TableLayout
-    val tableLayout = TableLayout(this)
-    tableLayout.layoutParams = TableLayout.LayoutParams(
-      TableLayout.LayoutParams.MATCH_PARENT,
-      TableLayout.LayoutParams.WRAP_CONTENT
-    )
-
-    // Create rows
-    for (i in 0..<job.size) {
-      val tableRow = TableRow(this)
-      tableRow.layoutParams = TableRow.LayoutParams(
-        TableRow.LayoutParams.MATCH_PARENT,
-        TableRow.LayoutParams.WRAP_CONTENT
-      )
-
-      val cell1 = createTableCell(job[i])
-      val cell2 = createTableCell(": " + crewName[i])
-
-      tableRow.addView(cell1)
-      tableRow.addView(cell2)
-
-      tableLayout.addView(tableRow)
-    }
-
-    binding.table.addView(tableLayout)
-  }
-
-  private fun createTableCell(text: String): TextView {
-    val textView = TextView(this)
-    textView.text = text
-    textView.layoutParams = TableRow.LayoutParams(
-      TableRow.LayoutParams.WRAP_CONTENT,
-      TableRow.LayoutParams.WRAP_CONTENT
-    )
-    textView.typeface = ResourcesCompat.getFont(this, nunito_sans_regular)
-    textView.gravity = Gravity.START
-    textView.textSize = 14F
-    textView.setPadding(0, 7, 24, 7)
-    textView.setTextColor(ActivityCompat.getColor(this, gray_100))
-    return textView
-  }
-  // endregion TABLE
+  // endregion VIEW HANDLER
 
   override fun onDestroy() {
     super.onDestroy()
@@ -869,6 +756,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   companion object {
+    const val TAG = "DETAIL MOVIE ACTIVITY"
     const val EXTRA_MOVIE = "MOVIE"
   }
 }

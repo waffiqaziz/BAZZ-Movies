@@ -5,6 +5,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
 data class ReleaseDatesResponse(
-  @Json(name="results")
+  @Json(name = "results")
   val listReleaseDatesItemResponse: List<ReleaseDatesItemResponse?>? = null
 )

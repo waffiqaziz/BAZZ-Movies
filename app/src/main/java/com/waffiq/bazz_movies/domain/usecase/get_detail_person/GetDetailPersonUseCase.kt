@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.domain.model.person.CastItem
 import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface GetDetailPersonUseCase {

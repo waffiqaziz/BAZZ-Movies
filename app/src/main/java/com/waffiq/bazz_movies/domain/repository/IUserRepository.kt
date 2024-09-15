@@ -7,7 +7,7 @@ import com.waffiq.bazz_movies.domain.model.account.Authentication
 import com.waffiq.bazz_movies.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.domain.model.post.Post
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface IUserRepository {

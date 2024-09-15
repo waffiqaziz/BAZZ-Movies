@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = false)
 data class ImagePersonResponse(
 
-  @Json(name="profiles")
-	val profiles: List<ProfilesItemResponse>? = null,
+  @Json(name = "profiles")
+  val profiles: List<ProfilesItemResponse>? = null,
 
-  @Json(name="id")
-	val id: Int? = null
+  @Json(name = "id")
+  val id: Int? = null
 )

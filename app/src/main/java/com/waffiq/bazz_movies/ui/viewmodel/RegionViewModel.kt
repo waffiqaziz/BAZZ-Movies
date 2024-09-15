@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.domain.usecase.get_region.GetRegionUseCase
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 

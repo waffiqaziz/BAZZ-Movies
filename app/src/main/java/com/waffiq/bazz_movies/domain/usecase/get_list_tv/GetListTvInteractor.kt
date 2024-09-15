@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetListTvInteractor(
-  private  val getListTvRepository: IMoviesRepository
+  private val getListTvRepository: IMoviesRepository
 ) : GetListTvUseCase {
   override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
     getListTvRepository.getPagingPopularTv()

@@ -77,7 +77,8 @@ class FeaturedFragment : Fragment() {
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
@@ -117,7 +118,9 @@ class FeaturedFragment : Fragment() {
             userPreferenceViewModel.saveRegionPref(region)
           }
         }
-      } else setData(userRegion) // user already have region
+      } else {
+        setData(userRegion) // user already have region
+      }
     }
   }
 
@@ -184,11 +187,11 @@ class FeaturedFragment : Fragment() {
   private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
     collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
     binding.rbToday.setOnClickListener {
-      currentJob?.cancel()  // Cancel the previous job if it exists
+      currentJob?.cancel() // Cancel the previous job if it exists
       collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
     }
     binding.rbThisWeek.setOnClickListener {
-      currentJob?.cancel()  // Cancel the previous job if it exists
+      currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
         collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
     }
@@ -203,9 +206,9 @@ class FeaturedFragment : Fragment() {
   ) {
     // check if there any upcoming movie on selected region, if not show info on toast and edit text
     adapter.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading
-        && loadState.append.endOfPaginationReached
-        && adapter.itemCount < 1
+      if (loadState.source.refresh is LoadState.NotLoading &&
+        loadState.append.endOfPaginationReached &&
+        adapter.itemCount < 1
       ) {
         showToastShort(
           requireContext(),
@@ -231,9 +234,9 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter, loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading)
+    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
       showLoading(true) // show ProgressBar
-    else {
+    } else {
       showLoading(false) // hide ProgressBar
 
       pagingErrorState(loadState)?.let {
@@ -277,7 +280,9 @@ class FeaturedFragment : Fragment() {
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
-    } else animationFadeOut()
+    } else {
+      animationFadeOut()
+    }
   }
 
   override fun onDestroyView() {

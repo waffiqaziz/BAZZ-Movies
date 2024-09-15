@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.data.local.datasource
 
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.data.local.room.FavoriteDao
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

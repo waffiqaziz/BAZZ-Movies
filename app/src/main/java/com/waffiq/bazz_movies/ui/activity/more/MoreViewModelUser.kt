@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
 
 class MoreViewModelUser(

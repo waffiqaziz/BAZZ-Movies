@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 
@@ -35,7 +35,9 @@ class AuthenticationViewModel(
           Status.SUCCESS -> {
             if (resultCreateToken.data?.success == true && resultCreateToken.data.requestToken != null) {
               login(username, password, resultCreateToken.data.requestToken)
-            } else _loginState.value = false
+            } else {
+              _loginState.value = false
+            }
           }
 
           Status.LOADING -> _loadingState.value = true
@@ -57,8 +59,7 @@ class AuthenticationViewModel(
         when (resultLogin.status) {
           Status.SUCCESS -> {
             resultLogin.data?.requestToken.let { token ->
-              if (token != null) createSession(token)
-              else _loginState.value = false
+              if (token != null) createSession(token) else _loginState.value = false
             }
           }
 
@@ -85,7 +86,9 @@ class AuthenticationViewModel(
             result.data.let {
               if (it?.success == true) {
                 getUserDetail(it.sessionId)
-              } else _loginState.value = false
+              } else {
+                _loginState.value = false
+              }
             }
           }
 
@@ -122,7 +125,9 @@ class AuthenticationViewModel(
                 tmdbAvatar = result.data.avatarItem?.avatarTMDb?.avatarPath
               )
               _loginState.value = true
-            } else _loginState.value = false
+            } else {
+              _loginState.value = false
+            }
             _loadingState.value = false
           }
 

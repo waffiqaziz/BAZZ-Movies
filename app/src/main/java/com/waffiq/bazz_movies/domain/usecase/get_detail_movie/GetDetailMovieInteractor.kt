@@ -6,15 +6,15 @@ import com.waffiq.bazz_movies.domain.model.Stated
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.Helper
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.Status
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getAgeRating
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getReleaseDateRegion
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformDuration
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformGenreIDs
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformGenreName
-import com.waffiq.bazz_movies.utils.helpers.DetailPageHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getTransformGenreIDs
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getTransformGenreName
+import com.waffiq.bazz_movies.utils.helpers.details.AgeRatingHelper.getAgeRating
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.getTransformDuration
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.transformLink
+import com.waffiq.bazz_movies.utils.helpers.details.ReleaseDateHelper.getReleaseDateRegion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -56,7 +56,7 @@ class GetDetailMovieInteractor(
         Status.SUCCESS -> {
           // Extract and transform the data
           NetworkResult.success(
-            networkResult.data?.let { Helper.transformLink(it) } ?: ""
+            networkResult.data?.let { transformLink(it) } ?: ""
           )
         }
 

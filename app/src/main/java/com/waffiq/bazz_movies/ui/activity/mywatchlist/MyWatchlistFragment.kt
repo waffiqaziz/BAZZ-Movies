@@ -23,7 +23,9 @@ class MyWatchlistFragment : Fragment() {
   private var tabLayoutMediator: TabLayoutMediator? = null
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View {
     _binding = FragmentMyWatchlistBinding.inflate(inflater, container, false)
     return binding.root
@@ -37,7 +39,7 @@ class MyWatchlistFragment : Fragment() {
   private fun setupView() {
     viewpager = binding.viewPager
     tabLayout = binding.tabs
-    viewpager.isUserInputEnabled = false //disable swiping between tabs
+    viewpager.isUserInputEnabled = false // disable swiping between tabs
 
     val adapter = MyWatchlistViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
@@ -55,5 +57,4 @@ class MyWatchlistFragment : Fragment() {
     binding.viewPager.adapter = null
     _binding = null
   }
-
 }

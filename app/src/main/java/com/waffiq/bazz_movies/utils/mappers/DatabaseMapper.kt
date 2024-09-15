@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.utils.mappers
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
-import com.waffiq.bazz_movies.utils.Helper
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getGenreName
 
 object DatabaseMapper {
 
@@ -19,7 +19,7 @@ object DatabaseMapper {
     rating = voteAverage ?: 0.0f,
     backDrop = backdropPath ?: "N/A",
     poster = posterPath ?: "N/A",
-    genre = Helper.iterateGenre(listGenreIds ?: listOf()),
+    genre = getGenreName(listGenreIds ?: listOf()),
     popularity = popularity ?: 0.0,
     overview = overview ?: "N/A",
     isFavorite = isFavorite,

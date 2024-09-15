@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteFullException
 import android.util.Log
 import com.waffiq.bazz_movies.data.local.model.FavoriteEntity
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSourceInterface {
@@ -15,7 +15,8 @@ interface LocalDataSourceInterface {
   val getWatchlistMovies: Flow<List<FavoriteEntity>>
   val getWatchlistTv: Flow<List<FavoriteEntity>>
 
-  suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int> // use integer to save memory, i don't think it will more than 2.1 billion rows
+  // use integer to save memory, i don't think it will more than 2.1 billion rows
+  suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int>
   suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): DbResult<Int>
   suspend fun deleteAll(): DbResult<Int>
   suspend fun isFavorite(id: Int, mediaType: String): DbResult<Boolean>

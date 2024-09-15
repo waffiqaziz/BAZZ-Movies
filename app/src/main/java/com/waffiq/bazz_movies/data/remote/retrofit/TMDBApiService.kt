@@ -159,12 +159,6 @@ interface TMDBApiService {
     @Query("session_id") sessionId: String
   ): Response<StatedResponse>
 
-  @GET("3/search/multi?include_adult=false")
-  suspend fun search(
-    @Query("query") query: String,
-    @Query("page") page: Int,
-  ): MultiSearchResponse
-
   @GET("3/movie/{movieId}/credits?language=en-US")
   suspend fun getCreditMovies(
     @Path("movieId") movieId: Int
@@ -262,4 +256,10 @@ interface TMDBApiService {
     @Query("session_id") sessionId: String
   ): Response<PostResponse>
   // endregion
+
+  @GET("3/search/multi?include_adult=false")
+  suspend fun search(
+    @Query("query") query: String,
+    @Query("page") page: Int,
+  ): MultiSearchResponse
 }

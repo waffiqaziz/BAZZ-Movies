@@ -6,12 +6,12 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = false)
 data class CombinedCreditResponse(
 
-  @Json(name="cast")
-	val cast: List<CastItemResponse>? = null,
+  @Json(name = "cast")
+  val cast: List<CastItemResponse>? = null,
 
-  @Json(name="id")
-	val id: Int? = null,
+  @Json(name = "id")
+  val id: Int? = null,
 
-  @Json(name="crew")
-	val crew: List<CrewItemResponse>? = null
+  @Json(name = "crew")
+  val crew: List<CrewItemResponse>? = null
 )

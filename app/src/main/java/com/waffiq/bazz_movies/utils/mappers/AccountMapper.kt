@@ -7,11 +7,11 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AvatarItemRespo
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.GravatarResponse
-import com.waffiq.bazz_movies.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.domain.model.account.Authentication
 import com.waffiq.bazz_movies.domain.model.account.AvatarItem
 import com.waffiq.bazz_movies.domain.model.account.AvatarTMDb
+import com.waffiq.bazz_movies.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.domain.model.account.Gravatar
 

@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.launch
 

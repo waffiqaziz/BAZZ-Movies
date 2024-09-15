@@ -38,7 +38,6 @@ object GetRegionHelper {
     }
   }
 
-
   fun getLocation(context: Context): String {
     // Get network location or fallback to locale-based location
     return getNetworkLocation(context).ifEmpty {

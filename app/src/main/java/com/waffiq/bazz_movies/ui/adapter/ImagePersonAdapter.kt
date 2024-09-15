@@ -47,7 +47,8 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     holder.itemView.setOnClickListener {
       onItemClick.invoke(
         position,
-        listCast.map { TMDB_IMG_LINK_POSTER_W500 + it.filePath.toString() })
+        listCast.map { TMDB_IMG_LINK_POSTER_W500 + it.filePath.toString() }
+      )
     }
   }
 
@@ -59,8 +60,11 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     fun bind(cast: ProfilesItem) {
       Glide.with(binding.imgPoster)
         .load(
-          if (!cast.filePath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + cast.filePath
-          else ic_poster_error
+          if (!cast.filePath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + cast.filePath
+          } else {
+            ic_poster_error
+          }
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())

@@ -2,19 +2,19 @@ package com.waffiq.bazz_movies.data.repository
 
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.data.local.model.UserPreference
-import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.data.remote.datasource.UserDataSource
-import com.waffiq.bazz_movies.domain.model.account.CountryIP
+import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.domain.model.account.Authentication
+import com.waffiq.bazz_movies.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
-import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toCountryIP
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toAccountDetails
 import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toAuthentication
+import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toCreateSession
 import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPost
 import kotlinx.coroutines.flow.Flow
@@ -88,7 +88,6 @@ class UserRepository(
   override suspend fun removeUserDataPref() = pref.removeUserData()
   // endregion PREF
 
-
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIP>> =
     userDataSource.getCountryCode().map { networkResult ->
       when (networkResult.status) {
@@ -97,8 +96,4 @@ class UserRepository(
         Status.LOADING -> NetworkResult.loading()
       }
     }
-
-  companion object {
-    private const val TAG = "UserRepository"
-  }
 }

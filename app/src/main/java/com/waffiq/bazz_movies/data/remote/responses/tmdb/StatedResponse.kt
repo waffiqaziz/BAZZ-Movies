@@ -5,15 +5,15 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
 data class StatedResponse(
-  @Json(name="id")
+  @Json(name = "id")
   val id: Int,
 
-  @Json(name="favorite")
+  @Json(name = "favorite")
   val favorite: Boolean,
 
-  @Json(name="rated")
+  @Json(name = "rated")
   val rated: Any,
 
-  @Json(name="watchlist")
+  @Json(name = "watchlist")
   val watchlist: Boolean,
 )

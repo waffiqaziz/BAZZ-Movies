@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AccountDetailsR
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import okio.IOException
 import org.json.JSONException
@@ -25,9 +25,13 @@ interface UserDataSourceInterface {
       if (response != null && response.isSuccessful) return NetworkResult.success(response.body())
 
       val errorBody = response?.errorBody()?.string()
-      return if (response?.code() == 404) NetworkResult.error("Bad Request")
-      else if (!errorBody.isNullOrEmpty()) NetworkResult.error(errorBody)
-      else NetworkResult.error("Error in fetching data")
+      return if (response?.code() == 404) {
+        NetworkResult.error("Bad Request")
+      } else if (!errorBody.isNullOrEmpty()) {
+        NetworkResult.error(errorBody)
+      } else {
+        NetworkResult.error("Error in fetching data")
+      }
     } catch (e: HttpException) {
       return NetworkResult.error(e.message ?: "Something went wrong")
     } catch (e: SocketTimeoutException) {
@@ -68,7 +72,6 @@ interface UserDataSourceInterface {
       } else {
         return NetworkResult.error("Null response")
       }
-
     } catch (e: HttpException) {
       return NetworkResult.error(e.message ?: "Something went wrong")
     } catch (e: SocketTimeoutException) {

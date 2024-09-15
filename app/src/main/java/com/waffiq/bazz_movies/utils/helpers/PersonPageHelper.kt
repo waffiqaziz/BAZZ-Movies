@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.utils.helpers
 
+import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
 
@@ -28,5 +29,13 @@ object PersonPageHelper {
       LocalDate.of(yearBirth, monthBirth, dayBirth),
       LocalDate.of(yearDeath, monthDeath, dayDeath)
     ).years
+  }
+
+  fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean {
+    return !externalID.instagramId.isNullOrEmpty() ||
+      !externalID.twitterId.isNullOrEmpty() ||
+      !externalID.facebookId.isNullOrEmpty() ||
+      !externalID.tiktokId.isNullOrEmpty() ||
+      !externalID.youtubeId.isNullOrEmpty()
   }
 }

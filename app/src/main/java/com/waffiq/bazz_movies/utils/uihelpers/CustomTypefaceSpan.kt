@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.utils
+package com.waffiq.bazz_movies.utils.uihelpers
 
 import android.graphics.Typeface
 import android.text.TextPaint

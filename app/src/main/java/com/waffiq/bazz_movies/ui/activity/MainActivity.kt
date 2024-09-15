@@ -11,7 +11,6 @@ import com.waffiq.bazz_movies.databinding.ActivityMainBinding
 import com.waffiq.bazz_movies.ui.activity.search.SearchFragment
 import java.lang.ref.WeakReference
 
-
 class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     val bottomNavigation: BottomNavigationView = binding.navView
-
 
     /**
      * use below if use FragmentContainerView  on activity_main.xml
@@ -62,6 +60,6 @@ class MainActivity : AppCompatActivity() {
       )
     )
     setupActionBarWithNavController(navController, appBarConfiguration)
-    */
+     */
   }
 }

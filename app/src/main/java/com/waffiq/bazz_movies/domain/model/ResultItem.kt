@@ -23,4 +23,4 @@ data class ResultItem(
   val video: Boolean = false,
   val title: String? = null,
   val releaseDate: String? = null
-): Parcelable
+) : Parcelable

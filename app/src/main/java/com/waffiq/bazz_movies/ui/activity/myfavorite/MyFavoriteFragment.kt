@@ -41,7 +41,7 @@ class MyFavoriteFragment : Fragment() {
   private fun setupTabLayoutViewPager() {
     viewpager = binding.viewPager
     tabLayout = binding.tabs
-    viewpager.isUserInputEnabled = false //disable swiping between tabs
+    viewpager.isUserInputEnabled = false // disable swiping between tabs
 
     val adapter = MyFavoriteViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter

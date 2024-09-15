@@ -47,7 +47,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
@@ -56,7 +56,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.utils.result_state.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.DbResult
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -92,7 +92,9 @@ class MoreFragment : Fragment() {
       if (user.token == "NaN" || user.token.isEmpty()) {
         val factory = ViewModelFactory.getInstance(requireContext())
         moreViewModelLocal = ViewModelProvider(this, factory)[MoreViewModelLocal::class.java]
-      } else signOutStateObserver()
+      } else {
+        signOutStateObserver()
+      }
     }
 
     setTypeface()
@@ -133,7 +135,6 @@ class MoreFragment : Fragment() {
           )
         }
       }
-
     }
   }
 
@@ -163,8 +164,11 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        if (user.token == "NaN" || user.token.isEmpty()) dialogSignOutGuestMode()
-        else dialogSignOutLoggedIn(user.token)
+        if (user.token == "NaN" || user.token.isEmpty()) {
+          dialogSignOutGuestMode()
+        } else {
+          dialogSignOutLoggedIn(user.token)
+        }
       }
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
@@ -190,8 +194,11 @@ class MoreFragment : Fragment() {
       }
 
     val dialog: AlertDialog = builder.create()
-    if (!requireActivity().isFinishing) dialog.show()
-    else dialog.cancel()
+    if (!requireActivity().isFinishing) {
+      dialog.show()
+    } else {
+      dialog.cancel()
+    }
   }
 
   private fun dialogSignOutGuestMode() {
@@ -236,8 +243,11 @@ class MoreFragment : Fragment() {
       }
 
     val dialog: AlertDialog = builder.create()
-    if (!requireActivity().isFinishing) dialog.show()
-    else dialog.cancel()
+    if (!requireActivity().isFinishing) {
+      dialog.show()
+    } else {
+      dialog.cancel()
+    }
   }
 
   private fun removePrefUserData() {
@@ -258,7 +268,9 @@ class MoreFragment : Fragment() {
           "$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200"
         } else if (!it.tmdbAvatar.isNullOrEmpty()) {
           "$TMDB_IMG_LINK_AVATAR${it.tmdbAvatar}" + ".png"
-        } else GRAVATAR_LINK
+        } else {
+          GRAVATAR_LINK
+        }
 
         Glide.with(binding.imgAvatar)
           .load(link)
@@ -282,7 +294,9 @@ class MoreFragment : Fragment() {
             binding.btnCountryPicker.setCountryForNameCode(countryCode)
           }
         }
-      } else binding.btnCountryPicker.setCountryForNameCode(userCountry)
+      } else {
+        binding.btnCountryPicker.setCountryForNameCode(userCountry)
+      }
     }
   }
 

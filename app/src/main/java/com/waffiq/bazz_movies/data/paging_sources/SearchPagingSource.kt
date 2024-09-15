@@ -8,7 +8,10 @@ import com.waffiq.bazz_movies.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class SearchPagingSource(private val apiService: TMDBApiService, private val query: String) : PagingSource<Int, ResultsItemSearchResponse>() {
+class SearchPagingSource(
+  private val apiService: TMDBApiService,
+  private val query: String
+) : PagingSource<Int, ResultsItemSearchResponse>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultsItemSearchResponse> {
     return try {

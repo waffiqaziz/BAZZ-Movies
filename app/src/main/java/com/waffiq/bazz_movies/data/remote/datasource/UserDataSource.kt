@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionRe
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,49 +21,63 @@ class UserDataSource(
 
   override suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = flow {
     emit(NetworkResult.loading())
-    emit(safeApiCall {
-      tmdbApiService.createToken()
-    })
+    emit(
+      safeApiCall {
+        tmdbApiService.createToken()
+      }
+    )
   }.flowOn(Dispatchers.IO)
 
   override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.loading())
-      emit(safeApiCall {
-        tmdbApiService.delSession(data.sessionID)
-      })
+      emit(
+        safeApiCall {
+          tmdbApiService.delSession(data.sessionID)
+        }
+      )
     }.flowOn(Dispatchers.IO)
 
   override suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSessionResponse>> =
     flow {
       emit(NetworkResult.loading())
-      emit(safeApiCall {
-        tmdbApiService.createSessionLogin(token)
-      })
+      emit(
+        safeApiCall {
+          tmdbApiService.createSessionLogin(token)
+        }
+      )
     }.flowOn(Dispatchers.IO)
 
   override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     flow {
       emit(NetworkResult.loading())
-      emit(safeApiCall {
-        tmdbApiService.getAccountDetails(sessionId)
-      })
+      emit(
+        safeApiCall {
+          tmdbApiService.getAccountDetails(sessionId)
+        }
+      )
     }.flowOn(Dispatchers.IO)
 
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = flow {
     emit(NetworkResult.loading())
-    emit(safeApiCall {
-      countryIPApiService.getIP()
-    })
+    emit(
+      safeApiCall {
+        countryIPApiService.getIP()
+      }
+    )
   }.flowOn(Dispatchers.IO)
 
   override suspend fun login(
-    username: String, pass: String, token: String
+    username: String,
+    pass: String,
+    token: String
   ): Flow<NetworkResult<AuthenticationResponse>> = flow {
     emit(NetworkResult.loading())
-    emit(safeApiCallLogin {
-      tmdbApiService.login(username, pass, token)
-    })
+    emit(
+      safeApiCallLogin {
+        tmdbApiService.login(username, pass, token)
+      }
+    )
   }.flowOn(Dispatchers.IO)
 
   companion object {

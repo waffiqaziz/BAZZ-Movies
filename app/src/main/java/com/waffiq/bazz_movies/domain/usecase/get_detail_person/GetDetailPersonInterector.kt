@@ -5,8 +5,8 @@ import com.waffiq.bazz_movies.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.NetworkResult
-import com.waffiq.bazz_movies.utils.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

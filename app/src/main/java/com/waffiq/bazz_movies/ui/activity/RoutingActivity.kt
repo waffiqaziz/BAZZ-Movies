@@ -32,14 +32,16 @@ class RoutingActivity : AppCompatActivity() {
     val factory = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
     userPreferenceViewModel.getUserPref().observe(this) {
-      if (it.isLogin) gotoMainActivity(true)
-      else gotoMainActivity(false)
+      if (it.isLogin) gotoMainActivity(true) else gotoMainActivity(false)
     }
   }
 
   private fun gotoMainActivity(boolean: Boolean) {
-    if (boolean) startActivity(Intent(this, MainActivity::class.java))
-    else startActivity(Intent(this, LoginActivity::class.java))
+    if (boolean) {
+      startActivity(Intent(this, MainActivity::class.java))
+    } else {
+      startActivity(Intent(this, LoginActivity::class.java))
+    }
     finish()
   }
 }

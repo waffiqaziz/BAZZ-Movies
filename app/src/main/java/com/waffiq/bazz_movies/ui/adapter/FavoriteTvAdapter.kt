@@ -15,9 +15,9 @@ import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
-import com.waffiq.bazz_movies.utils.Helper.iterateGenre
+import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.utils.helpers.GenreHelper.getGenreName
 import java.text.DecimalFormat
 
 class FavoriteTvAdapter :
@@ -52,8 +52,11 @@ class FavoriteTvAdapter :
 
       Glide.with(binding.ivPicture)
         .load(
-          if (!resultItem.posterPath.isNullOrEmpty()) TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
-          else ic_poster_error
+          if (!resultItem.posterPath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
+          } else {
+            ic_poster_error
+          }
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
@@ -66,7 +69,7 @@ class FavoriteTvAdapter :
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
         dateFormatterStandard(it)
       } ?: "N/A"
-      binding.tvGenre.text = resultItem.listGenreIds?.let { iterateGenre(it) } ?: "N/A"
+      binding.tvGenre.text = resultItem.listGenreIds?.let { getGenreName(it) } ?: "N/A"
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")

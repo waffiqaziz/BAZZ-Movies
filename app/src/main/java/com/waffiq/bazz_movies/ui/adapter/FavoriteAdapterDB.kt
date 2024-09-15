@@ -14,9 +14,9 @@ import com.waffiq.bazz_movies.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 
 class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
@@ -58,9 +58,13 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
       Glide.with(binding.ivPicture)
         .load(
-          if (fav.backDrop != "N/A") TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
-          else if (fav.poster != "N/A") TMDB_IMG_LINK_POSTER_W185 + fav.poster
-          else ic_backdrop_error
+          if (fav.backDrop != "N/A") {
+            TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
+          } else if (fav.poster != "N/A") {
+            TMDB_IMG_LINK_POSTER_W185 + fav.poster
+          } else {
+            ic_backdrop_error
+          }
         )
         .placeholder(ic_bazz_placeholder_search)
         .transition(withCrossFade())
@@ -100,15 +104,19 @@ class FavoriteAdapterDB : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
     override fun getNewListSize() = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-      (oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId
-        && oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite
-        && oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist
-        && oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType)
+      (
+        oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId &&
+          oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite &&
+          oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist &&
+          oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType
+        )
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-      (oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId
-        && oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite
-        && oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist
-        && oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType)
+      (
+        oldList[oldItemPosition].mediaId == newList[newItemPosition].mediaId &&
+          oldList[oldItemPosition].isFavorite == newList[newItemPosition].isFavorite &&
+          oldList[oldItemPosition].isWatchlist == newList[newItemPosition].isWatchlist &&
+          oldList[oldItemPosition].mediaType == newList[newItemPosition].mediaType
+        )
   }
 }

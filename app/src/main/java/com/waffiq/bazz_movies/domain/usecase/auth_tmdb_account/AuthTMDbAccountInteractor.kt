@@ -6,18 +6,18 @@ import com.waffiq.bazz_movies.domain.model.account.Authentication
 import com.waffiq.bazz_movies.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
-import com.waffiq.bazz_movies.utils.NetworkResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 class AuthTMDbAccountInteractor(
-  private val authTMDbAccountRepository : IUserRepository
+  private val authTMDbAccountRepository: IUserRepository
 ) : AuthTMDbAccountUseCase {
   override suspend fun login(
     username: String,
     pass: String,
     token: String
   ): Flow<NetworkResult<Authentication>> =
-    authTMDbAccountRepository.login(username,pass,token)
+    authTMDbAccountRepository.login(username, pass, token)
 
   override suspend fun createToken(): Flow<NetworkResult<Authentication>> =
     authTMDbAccountRepository.createToken()

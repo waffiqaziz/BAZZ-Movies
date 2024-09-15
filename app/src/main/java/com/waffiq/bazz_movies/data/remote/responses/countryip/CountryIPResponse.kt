@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = false)
 data class CountryIPResponse(
 
-	@Json(name="country")
-	val country: String? = null,
+  @Json(name = "country")
+  val country: String? = null,
 
-	@Json(name="ip")
-	val ip: String? = null
+  @Json(name = "ip")
+  val ip: String? = null
 )
