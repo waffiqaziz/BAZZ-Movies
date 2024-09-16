@@ -89,6 +89,3 @@ data class DetailMovieResponse(
   @Json(name = "status")
   val status: String? = null
 )
-
-
-

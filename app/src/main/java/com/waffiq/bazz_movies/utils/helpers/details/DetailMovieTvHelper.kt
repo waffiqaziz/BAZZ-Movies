@@ -36,7 +36,6 @@ object DetailMovieTvHelper {
     return job to name
   }
 
-
   fun transformLink(video: Video): String {
     return video.results
       .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) }

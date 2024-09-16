@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(

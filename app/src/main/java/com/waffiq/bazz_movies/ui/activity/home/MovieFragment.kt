@@ -30,7 +30,6 @@ import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.uihelpers.FadeInItemAnimator
 import com.waffiq.bazz_movies.utils.Helper
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
@@ -40,6 +39,7 @@ import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.utils.uihelpers.FadeInItemAnimator
 import java.util.Locale
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -263,6 +263,11 @@ class MovieFragment : Fragment() {
     } else {
       animationFadeOut()
     }
+  }
+
+  override fun onPause() {
+    super.onPause()
+    mSnackbar?.dismiss()
   }
 
   override fun onDestroyView() {

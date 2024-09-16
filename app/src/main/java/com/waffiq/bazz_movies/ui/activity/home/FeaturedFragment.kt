@@ -285,6 +285,11 @@ class FeaturedFragment : Fragment() {
     }
   }
 
+  override fun onPause() {
+    super.onPause()
+    mSnackbar?.dismiss()
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar?.dismiss()

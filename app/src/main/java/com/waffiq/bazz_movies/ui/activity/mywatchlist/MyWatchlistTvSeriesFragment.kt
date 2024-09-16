@@ -361,6 +361,11 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   }
   // endregion GUEST USER
 
+  override fun onPause() {
+    super.onPause()
+    mSnackbar?.dismiss()
+  }
+
   override fun onResume() {
     super.onResume()
     mSnackbar?.dismiss()

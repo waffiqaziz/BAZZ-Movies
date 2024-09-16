@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.di.providers
 
-
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.waffiq.bazz_movies.data.local.model.UserPreference

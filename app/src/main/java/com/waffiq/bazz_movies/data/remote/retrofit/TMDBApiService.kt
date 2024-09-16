@@ -3,23 +3,23 @@ package com.waffiq.bazz_movies.data.remote.retrofit
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.MovieTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.AuthenticationResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.MovieTvResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.MultiSearchResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
-import com.waffiq.bazz_movies.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
+import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.MultiSearchResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -115,7 +115,14 @@ interface TMDBApiService {
     @Query("page") page: Int
   ): MovieTvResponse
 
-  @GET("3/discover/tv?language=en-US&sort_by=popularity.desc&watch_region=CA&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate|free|ads|rent|buy")
+  @GET(
+    "3/discover/tv?language=en-US" +
+      "&sort_by=popularity.desc" +
+      "&watch_region=CA" +
+      "&with_runtime.gte=0" +
+      "&with_runtime.lte=400" +
+      "&with_watch_monetization_types=flatrate|free|ads|rent|buy"
+  )
   suspend fun getPopularTv(
     @Query("page") page: Int,
     @Query("air_date.lte") dateTime: String

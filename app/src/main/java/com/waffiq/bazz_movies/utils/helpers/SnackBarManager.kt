@@ -15,17 +15,17 @@ object SnackBarManager {
     guideView: View?,
     eventMessage: Event<String>
   ): Snackbar? {
-    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() } ?: return null
+    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
 
-    if (view.isAttachedToWindow) {
-      val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-      if (guideView != null) mSnackbar.setAnchorView(guideView)
-
-      mSnackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
-      mSnackbar.show()
-      return mSnackbar
+    return if (message != null && view.isAttachedToWindow) {
+      Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
+        guideView?.let { anchorView = it } // Check if guideView is non-null
+        setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
+        show()
+      }
+    } else {
+      null
     }
-    return null
   }
 
   fun snackBarWarning(
@@ -34,16 +34,14 @@ object SnackBarManager {
     guideView: View?,
     message: String?
   ): Snackbar? {
-    if (message.isNullOrEmpty()) return null
-
-    if (view.isAttachedToWindow) {
-      val mSnackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-      if (guideView != null) mSnackbar.setAnchorView(guideView)
-
-      mSnackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
-      mSnackbar.show()
-      return mSnackbar
+    return if (!message.isNullOrEmpty() && view.isAttachedToWindow) {
+      Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
+        guideView?.let { anchorView = it } // Check if guideView is non-null
+        setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
+        show()
+      }
+    } else {
+      null
     }
-    return null
   }
 }
