@@ -1,22 +1,12 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-  val kotlin_version by extra("1.9.10")
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-  }
-}
-
+// Top-level build file, add configuration options common to all sub-projects/modules.
 plugins {
-  id("com.android.application") version "8.2.0" apply false
-  id("com.android.library") version "8.2.0" apply false
-  id("org.jetbrains.kotlin.android") version "1.9.10" apply false
-
-  id("com.google.gms.google-services") version "4.4.1" apply false
-  id("com.google.firebase.crashlytics") version "2.9.9" apply false
-  id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
+  alias(libs.plugins.android.application) apply false // Available for app module
+  alias(libs.plugins.android.library) apply false // Available for library modules
+  alias(libs.plugins.kotlin.android) apply false // Available for Kotlin in all modules
+//  alias(libs.plugins.detekt) version libs.versions.detekt.get() apply false
+  alias(libs.plugins.gms.googleServices) apply false // Google services (used in specific modules)
+  alias(libs.plugins.firebase.crashlytics) apply false // Crashlytics plugin for app
+  alias(libs.plugins.ksp) version libs.versions.ksp.get() apply false // KSP plugin version defined
 }
 
 tasks.register<Delete>("clean") {
