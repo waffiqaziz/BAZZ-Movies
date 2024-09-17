@@ -43,6 +43,7 @@ import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.handlePagingLoadS
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
@@ -165,6 +166,20 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   // region LOG-IN USER
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
+    handleSnackbarLoginUser()
+
+    binding.rvFavMovies.adapter = adapterPaging.withLoadStateFooter(
+      footer = LoadingStateAdapter { adapterPaging.retry() }
+    )
+
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      baseViewModel.resetSnackbarShown()
+      adapterPaging.refresh()
+    }
+    collectAndSubmitData(this, { viewModelFav.favoriteMovies(userToken) }, adapterPaging)
+  }
+
+  private fun handleSnackbarLoginUser() {
     viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
       mSnackbar =
         snackBarAlreadyWatchlist(
@@ -196,29 +211,28 @@ class MyFavoriteMoviesFragment : Fragment() {
       }
     }
 
-    mSnackbar = handlePagingLoadState(
+    handlePagingLoadState(
       adapterPaging = adapterPaging,
       loadStateFlow = adapterPaging.loadStateFlow,
       recyclerView = binding.rvFavMovies,
       progressBar = binding.progressBar,
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.containerNoData,
-      viewModel = baseViewModel,
-      context = requireContext(),
-      activity = requireActivity(),
-      navViewId = nav_view,
-      lifecycleOwner = viewLifecycleOwner
+      lifecycleOwner = viewLifecycleOwner,
+      onError = { error ->
+        error?.let {
+          if (baseViewModel.isSnackbarShown.value == false) {
+            mSnackbar = snackBarWarning(
+              requireContext(),
+              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(nav_view),
+              pagingErrorHandling(it)
+            )
+            baseViewModel.markSnackbarShown()
+          }
+        }
+      }
     )
-
-    binding.rvFavMovies.adapter = adapterPaging.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterPaging.retry() }
-    )
-
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      baseViewModel.resetSnackbarShown()
-      adapterPaging.refresh()
-    }
-    collectAndSubmitData(this, { viewModelFav.favoriteMovies(userToken) }, adapterPaging)
   }
 
   private fun postToRemoveFavTMDB(title: String, movieId: Int) {
@@ -364,11 +378,11 @@ class MyFavoriteMoviesFragment : Fragment() {
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
+    mSnackbar = null
   }
 
   override fun onResume() {
     super.onResume()
-    mSnackbar?.dismiss()
     baseViewModel.resetSnackbarShown()
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != "NaN") {

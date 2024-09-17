@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.utils.helpers
 
-import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
@@ -16,12 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.domain.model.ResultItem
-import com.waffiq.bazz_movies.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -87,20 +82,14 @@ object FavWatchlistHelper {
     progressBar: ProgressBar,
     errorView: View,
     emptyView: View,
-    viewModel: BaseViewModel,
-    context: Context,
-    activity: Activity,
-    navViewId: Int,
     lifecycleOwner: LifecycleOwner,
-    snackbar: Snackbar? = null
-  ): Snackbar? {
-    var updatedSnackbar = snackbar
+    onError: (Throwable?) -> Unit // A callback for when there’s an error
+  ) {
     lifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
       loadStateFlow.debounce(DEBOUNCE_TIME).distinctUntilChanged().collectLatest { loadState ->
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-            updatedSnackbar?.dismiss()
             progressBar.isVisible = true
             recyclerView.isVisible = true
             errorView.isVisible = false
@@ -111,35 +100,24 @@ object FavWatchlistHelper {
             recyclerView.isVisible = adapterPaging.itemCount > 0
             errorView.isVisible = adapterPaging.itemCount <= 0
             emptyView.isVisible = false
-            pagingErrorState(loadState)?.let {
-              if (viewModel.isSnackbarShown.value == false) {
-                updatedSnackbar = snackBarWarning(
-                  context,
-                  activity.findViewById(navViewId),
-                  activity.findViewById(navViewId),
-                  pagingErrorHandling(it.error)
-                )
-                viewModel.markSnackbarShown()
-              }
-            }
+            // Trigger the error callback
+            val error = (loadState.refresh as? LoadState.Error)?.error
+            onError(error)
           }
           loadState.append.endOfPaginationReached && adapterPaging.itemCount < 1 -> {
             progressBar.isVisible = false
             recyclerView.isVisible = false
             errorView.isVisible = false
             emptyView.isVisible = true
-            updatedSnackbar?.dismiss()
           }
           else -> {
             progressBar.isVisible = false
             recyclerView.isVisible = true
             errorView.isVisible = false
             emptyView.isVisible = false
-            updatedSnackbar?.dismiss()
           }
         }
       }
     }
-    return updatedSnackbar
   }
 }
