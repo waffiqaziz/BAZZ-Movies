@@ -50,7 +50,6 @@ class SearchFragment : Fragment() {
   private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
-  private var mQuery: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -121,7 +120,6 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
               if (query != null && query != lastQuery) {
                 lastQuery = query
-                mQuery = query
                 searchViewModel.search(query)
               } else {
                 return true
@@ -137,7 +135,6 @@ class SearchFragment : Fragment() {
 
           // Restore query if available
           searchViewModel.query.observe(viewLifecycleOwner) {
-            mQuery = it
             if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
           }
         }
@@ -180,14 +177,15 @@ class SearchFragment : Fragment() {
           binding.progressBar.isVisible = false
           binding.illustrationError.root.isVisible = false
           if (loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+            // No results found; displaying empty view instead.
             binding.rvSearch.isVisible = false
-            if (mQuery.isNullOrEmpty()) { // user not yet searching
-              binding.illustrationSearchView.root.isVisible = true
-              binding.illustrationSearchNoResultView.root.isVisible = false
-            } else { // No search results found; show empty view
-              binding.illustrationSearchNoResultView.root.isVisible = true
-              binding.illustrationSearchView.root.isVisible = false
-            }
+            binding.illustrationSearchNoResultView.root.isVisible = true
+            binding.illustrationSearchView.root.isVisible = false
+          } else if (!loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+            // No search operation; show illustration search
+            binding.rvSearch.isVisible = false
+            binding.illustrationSearchView.root.isVisible = true
+            binding.illustrationSearchNoResultView.root.isVisible = false
           } else {
             // Data is loaded; show the results
             binding.rvSearch.isVisible = true
