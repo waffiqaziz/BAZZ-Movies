@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.ui.activity.home
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper.getMainLooper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +52,8 @@ class MovieFragment : Fragment() {
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
 
   private var mSnackbar: Snackbar? = null
+
+  private var loadStateListener: ((CombinedLoadStates) -> Unit)? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -112,10 +112,8 @@ class MovieFragment : Fragment() {
     val upComingAdapter = MovieHomeAdapter()
     val topRatedAdapter = MovieHomeAdapter()
 
-    // show loading(progressbar)
-    topRatedAdapter.addLoadStateListener {
-      combinedLoadStatesHandle(topRatedAdapter, it)
-    }
+    loadStateListener = { combinedLoadStatesHandle(topRatedAdapter, it) }
+    loadStateListener?.let { topRatedAdapter.addLoadStateListener(it) }
 
     // Setup RecyclerViews
     binding.apply {
@@ -245,23 +243,18 @@ class MovieFragment : Fragment() {
     binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
   }
 
-  private fun animationFadeOut() {
-    val animation = animFadeOutLong(requireContext())
-    binding.backgroundDimMovie.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-
-    Handler(getMainLooper()).post {
-      binding.backgroundDimMovie.isGone = true
-      binding.progressBar.isGone = true
-    }
-  }
-
   private fun showLoading(isLoading: Boolean) {
+    if (_binding == null) return // Ensure binding is still valid
+
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
     } else {
-      animationFadeOut()
+      val animation = animFadeOutLong(requireContext())
+      binding.backgroundDimMovie.startAnimation(animation)
+      binding.progressBar.startAnimation(animation)
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
@@ -272,7 +265,13 @@ class MovieFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    loadStateListener?.let { listener ->
+      binding.rvTopRated.adapter?.let { adapter ->
+        (adapter as? MovieHomeAdapter)?.removeLoadStateListener(listener)
+      }
+    }
     _binding = null
     mSnackbar?.dismiss()
+    mSnackbar = null
   }
 }

@@ -62,6 +62,8 @@ class FeaturedFragment : Fragment() {
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
   private lateinit var regionViewModel: RegionViewModel
 
+  private var loadStateListener: ((CombinedLoadStates) -> Unit)? = null
+
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
 
@@ -130,10 +132,8 @@ class FeaturedFragment : Fragment() {
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
 
-    // show loading(progressbar)
-    adapterPlayingNow.addLoadStateListener {
-      combinedLoadStatesHandle(adapterPlayingNow, it)
-    }
+    loadStateListener = { combinedLoadStatesHandle(adapterPlayingNow, it) }
+    loadStateListener?.let { adapterPlayingNow.addLoadStateListener(it) }
 
     // Setup RecyclerViews
     binding.apply {
@@ -268,20 +268,18 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun animationFadeOut() {
-    val animation = animFadeOutLong(requireContext())
-    binding.backgroundDimMovie.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-    binding.backgroundDimMovie.isGone = true
-    binding.progressBar.isGone = true
-  }
-
   private fun showLoading(isLoading: Boolean) {
+    if (_binding == null) return // Ensure binding is still valid
+
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
     } else {
-      animationFadeOut()
+      val animation = animFadeOutLong(requireContext())
+      binding.backgroundDimMovie.startAnimation(animation)
+      binding.progressBar.startAnimation(animation)
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
@@ -292,6 +290,11 @@ class FeaturedFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    loadStateListener?.let { listener ->
+      binding.rvPlayingNow.adapter?.let { adapter ->
+        (adapter as? MovieHomeAdapter)?.removeLoadStateListener(listener)
+      }
+    }
     mSnackbar?.dismiss()
     mSnackbar = null
     Glide.get(requireContext()).clearMemory()

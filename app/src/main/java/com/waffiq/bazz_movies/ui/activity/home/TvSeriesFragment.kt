@@ -35,6 +35,8 @@ class TvSeriesFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
+  private var loadStateListener: ((CombinedLoadStates) -> Unit)? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val factory = ViewModelFactory.getInstance(requireContext())
@@ -62,10 +64,8 @@ class TvSeriesFragment : Fragment() {
     val onTvAdapter = TvAdapter()
     val topRatedAdapter = TvAdapter()
 
-    // show loading(progressbar)
-    topRatedAdapter.addLoadStateListener {
-      combinedLoadStatesHandle(topRatedAdapter, it)
-    }
+    loadStateListener = { combinedLoadStatesHandle(topRatedAdapter, it) }
+    loadStateListener?.let { topRatedAdapter.addLoadStateListener(it) }
 
     // Setup RecyclerViews
     binding.apply {
@@ -158,20 +158,18 @@ class TvSeriesFragment : Fragment() {
     binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
   }
 
-  private fun animationFadeOut() {
-    val animation = animFadeOutLong(requireContext())
-    binding.backgroundDimMovie.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-    binding.backgroundDimMovie.isGone = true
-    binding.progressBar.isGone = true
-  }
-
   private fun showLoading(isLoading: Boolean) {
+    if (_binding == null) return // Ensure binding is still valid
+
     if (isLoading) {
       binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
     } else {
-      animationFadeOut()
+      val animation = animFadeOutLong(requireContext())
+      binding.backgroundDimMovie.startAnimation(animation)
+      binding.progressBar.startAnimation(animation)
+      binding.backgroundDimMovie.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
@@ -182,6 +180,11 @@ class TvSeriesFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    loadStateListener?.let { listener ->
+      binding.rvTopRated.adapter?.let { adapter ->
+        (adapter as? TvAdapter)?.removeLoadStateListener(listener)
+      }
+    }
     _binding = null
     mSnackbar?.dismiss()
     mSnackbar = null
