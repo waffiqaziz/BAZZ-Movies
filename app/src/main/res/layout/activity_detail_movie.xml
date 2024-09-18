@@ -122,7 +122,7 @@
           android:foreground="@drawable/bg_gradient_shape"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          tools:src="@drawable/ic_backdrop_error_filled" />
+          tools:src="@drawable/ic_bazz_placeholder_backdrops" />
 
         <TextView
           android:id="@+id/tv_backdrop_not_found"
@@ -514,7 +514,7 @@
     android:id="@+id/background_dim_movie"
     style="@style/MyDimStyle"
     android:layout_gravity="center"
-    android:visibility="gone"
+    android:visibility="visible"
     tools:visibility="gone" />
 
   <ProgressBar

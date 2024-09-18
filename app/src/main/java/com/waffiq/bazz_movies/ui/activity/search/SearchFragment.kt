@@ -50,6 +50,7 @@ class SearchFragment : Fragment() {
   private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
+  var lastQuery: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -70,7 +71,7 @@ class SearchFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
 
     // setup toolbar as action bar
-    (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+    (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
@@ -80,8 +81,12 @@ class SearchFragment : Fragment() {
     binding.rvSearch.adapter =
       adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() })
 
-    binding.illustrationError.btnTryAgain.setOnClickListener { adapter.refresh() }
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      mSnackbar?.dismiss()
+      adapter.refresh()
+    }
     binding.swipeRefresh.setOnRefreshListener {
+      mSnackbar?.dismiss()
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
@@ -92,7 +97,6 @@ class SearchFragment : Fragment() {
   }
 
   private fun setupSearchView() {
-    var lastQuery: String? = null
     requireActivity().addMenuProvider(
       object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -167,10 +171,7 @@ class SearchFragment : Fragment() {
         is LoadState.Loading -> {
           // Data is loading; keep showing the containerSearch
           binding.progressBar.isVisible = true
-          binding.rvSearch.isVisible = false
-          binding.illustrationSearchView.root.isVisible = false
-          binding.illustrationSearchNoResultView.root.isVisible = false
-          binding.illustrationError.root.isVisible = false
+          binding.rvSearch.isVisible = true
         }
 
         is LoadState.NotLoading -> {
@@ -196,10 +197,16 @@ class SearchFragment : Fragment() {
 
         is LoadState.Error -> {
           // Error occurred; handle error state and hide loading view
+          lastQuery = null
           binding.progressBar.isVisible = false
-          binding.rvSearch.isVisible = false
+          if (adapter.itemCount < 1) {
+            binding.illustrationError.root.isVisible = true
+            binding.rvSearch.isVisible = false
+          } else {
+            binding.illustrationError.root.isVisible = false
+            binding.rvSearch.isVisible = true
+          }
           binding.illustrationSearchView.root.isVisible = false
-          binding.illustrationError.root.isVisible = true
           pagingErrorState(loadState)?.let {
             mSnackbar = SnackBarManager.snackBarWarning(
               requireContext(),

@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     (activity as? AppCompatActivity)?.let {
-      it.setSupportActionBar(binding.toolbar)
+      it.setSupportActionBar(binding.layoutToolbar.toolbar)
       it.supportActionBar?.title = null
     }
     setupTabLayoutViewPager()

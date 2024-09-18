@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.ui.activity
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +13,6 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -19,8 +20,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
@@ -35,11 +34,14 @@ import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.uihelpers.CustomTypefaceSpan
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.utils.common.Event
+import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.utils.uihelpers.CustomTypefaceSpan
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -57,7 +59,16 @@ class LoginActivity : AppCompatActivity() {
     authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
     userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
 
-    authenticationViewModel.errorState.observe(this) { showSnackBar(it) }
+    authenticationViewModel.errorState.observe(this) { errorMessage ->
+      binding.layoutBackground?.bgAlpha?.let { fadeOut(it, ANIM_DURATION) }
+      binding.btnLogin.isEnabled = true
+      snackBarWarning(
+        this,
+        binding.constraintLayout,
+        null,
+        errorMessage
+      )
+    }
     authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
     binding.progressBar.isVisible = false
 
@@ -108,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
   private fun btnListener() {
     // login as user
     binding.btnLogin.setOnClickListener {
-      // check if username and password form is filled or not
+      // Check if the username and password fields are filled or not
       if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
         binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
         binding.btnEye.visibility = View.GONE
@@ -117,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
         binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
       }
 
-      // listener to show btn eye
+      // listener to show button eye
       binding.edPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
       }
@@ -131,6 +142,8 @@ class LoginActivity : AppCompatActivity() {
       }
 
       if (formNotEmpty()) {
+        binding.btnLogin.isEnabled = false
+        binding.layoutBackground?.bgAlpha?.let { fadeInAlpha50(it, ANIM_DURATION) }
         loginAsUserRegistered()
       }
     }
@@ -166,12 +179,12 @@ class LoginActivity : AppCompatActivity() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
       overrideActivityTransition(
         OVERRIDE_TRANSITION_OPEN,
-        android.R.anim.fade_in,
-        android.R.anim.fade_out
+        fade_in,
+        fade_out
       )
     } else {
       @Suppress("DEPRECATION")
-      overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+      overridePendingTransition(fade_in, fade_out)
     }
     if (isGuest) {
       showToastShort(this, getString(login_as_guest_successful))
@@ -183,10 +196,9 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun loginAsUserRegistered() {
-    val username = binding.edUsername.text.toString()
-    val password = binding.edPass.text.toString()
-
-    authenticationViewModel.loadingState.observe(this) { showLoading(it) }
+    authenticationViewModel.loadingState.observe(this) {
+      binding.progressBar.isVisible = it
+    }
 
     /**
      *  login steps
@@ -194,35 +206,10 @@ class LoginActivity : AppCompatActivity() {
      * 2. Get the user to authorize the request token
      * 3. Create a new session id with the authorized request token
      */
-    authenticationViewModel.userLogin(username, password)
-  }
-
-  private fun showSnackBar(eventMessage: Event<String>) {
-    val message = eventMessage.getContentIfNotHandled() ?: return
-    if (message.isNotEmpty()) {
-      val snackBar = Snackbar.make(
-        binding.constraintLayout,
-        message,
-        Snackbar.LENGTH_SHORT
-      )
-
-      val snackbarView = snackBar.view
-      snackbarView.setBackgroundColor(
-        ContextCompat.getColor(
-          this,
-          red_matte
-        )
-      )
-      snackBar.show()
-    }
-  }
-
-  private fun showLoading(isLoading: Boolean) {
-    if (isLoading) {
-      binding.progressBar.visibility = View.VISIBLE
-    } else {
-      binding.progressBar.visibility = View.GONE
-    }
+    authenticationViewModel.userLogin(
+      binding.edUsername.text.toString(),
+      binding.edPass.text.toString()
+    )
   }
 
   private fun applyFontFamily(text: String): SpannableStringBuilder {

@@ -112,8 +112,8 @@
     android:id="@+id/btn_eye"
     android:layout_width="48dp"
     android:layout_height="48dp"
-    android:layout_marginEnd="@dimen/default_margin_parent_20"
     android:layout_marginTop="-4dp"
+    android:layout_marginEnd="@dimen/default_margin_parent_20"
     android:adjustViewBounds="true"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:contentDescription="@string/hide_unhide_password"
@@ -129,7 +129,6 @@
     style="@style/MyLoginButtonPortrait"
     android:layout_marginHorizontal="@dimen/default_margin_parent_20"
     android:contentDescription="@string/button_login"
-    android:labelFor="@id/ed_pass"
     android:text="@string/login"
     app:layout_constraintBottom_toTopOf="@+id/tv_guest"
     app:layout_constraintEnd_toEndOf="parent"
@@ -154,6 +153,10 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
+
+  <include
+    android:id="@+id/layout_background"
+    layout="@layout/background_alpha" />
 
   <ProgressBar
     android:id="@+id/progress_bar"

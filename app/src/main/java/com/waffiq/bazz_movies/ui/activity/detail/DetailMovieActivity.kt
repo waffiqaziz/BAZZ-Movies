@@ -18,7 +18,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -67,7 +66,6 @@ import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
@@ -77,6 +75,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.helpers.details.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.detailCrew
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
 import com.waffiq.bazz_movies.utils.uihelpers.ScrollActionBarBehavior.Companion.setupScrollActionBarBehavior
@@ -101,7 +100,6 @@ class DetailMovieActivity : AppCompatActivity() {
   private var isLogin = false // is login as user or not
 
   private var toast: Toast? = null
-  private var isBGShowed: Boolean = false // flag to show backgroundDim
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -112,10 +110,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
-    detailViewModel.loadingState.observe(this) {
-      if (it) isBGShowed = true
-      showLoadingDim(it)
-    }
+    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     errorStateObserver()
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
@@ -716,21 +711,13 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun animFadeOut() {
-    val animation = animFadeOutLong(this)
-    if (!isBGShowed) binding.backgroundDimMovie.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-    binding.backgroundDimMovie.isGone = true
-    binding.progressBar.isGone = true
-  }
-
   private fun showLoadingDim(isLoading: Boolean) {
     if (isLoading) {
-      if (!isBGShowed) binding.backgroundDimMovie.isVisible = true
       binding.progressBar.isVisible = true
     } else {
       binding.appBarLayout.isVisible = true
-      animFadeOut()
+      binding.progressBar.isVisible = false
+      fadeOut(binding.backgroundDimMovie, 200L)
     }
   }
 

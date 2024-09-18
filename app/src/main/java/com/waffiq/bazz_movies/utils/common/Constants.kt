@@ -30,6 +30,7 @@ object Constants {
   const val IMDB_PERSON_LINK = "https://www.imdb.com/name/"
 
   const val DEBOUNCE_TIME = 200L
+  const val ANIM_DURATION = 200L
 
   const val TERMS_CONDITIONS_LINK =
     "https://www.freeprivacypolicy.com/live/e3b6a0d4-ea46-4a95-914b-4120b0e83e9c"

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.launch
 
@@ -20,8 +19,8 @@ class AuthenticationViewModel(
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
 
-  private val _errorState = MutableLiveData<Event<String>>()
-  val errorState: LiveData<Event<String>> get() = _errorState
+  private val _errorState = MutableLiveData<String>()
+  val errorState: LiveData<String> get() = _errorState
 
   private val _loginState = MutableLiveData<Boolean>()
   val loginState: LiveData<Boolean> get() = _loginState
@@ -45,7 +44,7 @@ class AuthenticationViewModel(
             _loginState.value = false
             _loadingState.value = false
             _errorState.value =
-              Event(resultCreateToken.message ?: "Something went wrong. Please try again later.")
+              resultCreateToken.message ?: "Something went wrong. Please try again later."
           }
         }
       }
@@ -68,9 +67,7 @@ class AuthenticationViewModel(
             _loginState.value = false
             _loadingState.value = false
             _errorState.value =
-              Event(
-                resultLogin.message ?: "Something went wrong. Please try again later."
-              )
+              resultLogin.message ?: "Something went wrong. Please try again later."
           }
         }
       }
@@ -96,11 +93,7 @@ class AuthenticationViewModel(
           Status.ERROR -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value =
-              Event(
-                result.message
-                  ?: "Something went wrong. Please try again later."
-              )
+            _errorState.value = result.message ?: "Something went wrong. Please try again later."
           }
         }
       }
@@ -136,7 +129,7 @@ class AuthenticationViewModel(
             _loginState.value = false
             _loadingState.value = false
             _errorState.value =
-              Event(result.message ?: "Something went wrong. Please try again later.")
+              result.message ?: "Something went wrong. Please try again later."
           }
         }
       }

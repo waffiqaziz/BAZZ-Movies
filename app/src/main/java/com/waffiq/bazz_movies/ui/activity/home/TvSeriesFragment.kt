@@ -8,7 +8,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.CombinedLoadStates
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -18,13 +18,19 @@ import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
-import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
+import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class TvSeriesFragment : Fragment() {
 
@@ -34,8 +40,6 @@ class TvSeriesFragment : Fragment() {
   private lateinit var tvSeriesViewModel: TvSeriesViewModel
 
   private var mSnackbar: Snackbar? = null
-
-  private var loadStateListener: ((CombinedLoadStates) -> Unit)? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -64,8 +68,7 @@ class TvSeriesFragment : Fragment() {
     val onTvAdapter = TvAdapter()
     val topRatedAdapter = TvAdapter()
 
-    loadStateListener = { combinedLoadStatesHandle(topRatedAdapter, it) }
-    loadStateListener?.let { topRatedAdapter.addLoadStateListener(it) }
+    combinedLoadStatesHandle(topRatedAdapter)
 
     // Setup RecyclerViews
     binding.apply {
@@ -112,23 +115,39 @@ class TvSeriesFragment : Fragment() {
     setupRetryButton(popularAdapter, topRatedAdapter, nowPlayingAdapter, onTvAdapter)
   }
 
-  private fun combinedLoadStatesHandle(adapter: TvAdapter, loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
-      showLoading(true) // show ProgressBar
-    } else {
-      showLoading(false) // hide ProgressBar
+  private fun combinedLoadStatesHandle(adapter: TvAdapter) {
+    viewLifecycleOwner.lifecycleScope.launch {
+      @OptIn(FlowPreview::class)
+      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_TIME).distinctUntilChanged()
+        .collectLatest { loadState ->
+          when {
+            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+              binding.progressBar.isVisible = true
+            }
 
-      pagingErrorState(loadState)?.let {
-        if (adapter.itemCount < 1) showView(false)
-        mSnackbar = snackBarWarning(
-          requireContext(),
-          requireActivity().findViewById(nav_view),
-          requireActivity().findViewById(nav_view),
-          Event(pagingErrorHandling(it.error))
-        )
-      } ?: run {
-        showView(true) // hide the error illustration if no error
-      }
+            loadState.refresh is LoadState.NotLoading &&
+              loadState.prepend is LoadState.NotLoading &&
+              loadState.append is LoadState.NotLoading -> {
+              fadeOut(binding.backgroundDimMovie)
+              binding.progressBar.isGone = true
+              showView(true)
+            }
+
+            loadState.refresh is LoadState.Error -> {
+              fadeOut(binding.backgroundDimMovie)
+              binding.progressBar.isGone = true
+              pagingErrorState(loadState)?.let {
+                showView(adapter.itemCount > 0)
+                mSnackbar = snackBarWarning(
+                  requireContext(),
+                  requireActivity().findViewById(nav_view),
+                  requireActivity().findViewById(nav_view),
+                  Event(pagingErrorHandling(it.error))
+                )
+              }
+            }
+          }
+        }
     }
   }
 
@@ -149,27 +168,16 @@ class TvSeriesFragment : Fragment() {
 
   private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
     binding.swipeRefresh.setOnRefreshListener {
+      mSnackbar?.dismiss()
       adapters.forEach { it.refresh() }
       binding.swipeRefresh.isRefreshing = false
     }
   }
 
   private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
-  }
-
-  private fun showLoading(isLoading: Boolean) {
-    if (_binding == null) return // Ensure binding is still valid
-
-    if (isLoading) {
-      binding.backgroundDimMovie.isVisible = true
-      binding.progressBar.isVisible = true
-    } else {
-      val animation = animFadeOutLong(requireContext())
-      binding.backgroundDimMovie.startAnimation(animation)
-      binding.progressBar.startAnimation(animation)
-      binding.backgroundDimMovie.isGone = true
-      binding.progressBar.isGone = true
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      mSnackbar?.dismiss()
+      adapters.forEach { it.refresh() }
     }
   }
 
@@ -180,13 +188,7 @@ class TvSeriesFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    loadStateListener?.let { listener ->
-      binding.rvTopRated.adapter?.let { adapter ->
-        (adapter as? TvAdapter)?.removeLoadStateListener(listener)
-      }
-    }
-    _binding = null
-    mSnackbar?.dismiss()
     mSnackbar = null
+    _binding = null
   }
 }

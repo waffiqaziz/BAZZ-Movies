@@ -134,6 +134,7 @@ class MyFavoriteMoviesFragment : Fragment() {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = true
           postToRemoveFavTMDB(titleHandler(fav), fav.id)
+          adapterPaging.notifyItemChanged(position)
         } else {
           val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
           isWantToDelete = true
@@ -173,6 +174,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     )
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
+      mSnackbar?.dismiss()
       baseViewModel.resetSnackbarShown()
       adapterPaging.refresh()
     }

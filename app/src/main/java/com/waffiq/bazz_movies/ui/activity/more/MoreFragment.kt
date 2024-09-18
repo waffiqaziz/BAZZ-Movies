@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.res.ResourcesCompat
@@ -40,14 +39,14 @@ import com.waffiq.bazz_movies.R.string.yes
 import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
-import com.waffiq.bazz_movies.ui.activity.RoutingActivity
+import com.waffiq.bazz_movies.ui.activity.LoginActivity
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
@@ -57,6 +56,9 @@ import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -108,7 +110,6 @@ class MoreFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentMoreBinding.inflate(inflater, container, false)
-    (activity as AppCompatActivity).supportActionBar?.hide() // hide action bar
     return binding.root
   }
 
@@ -125,6 +126,7 @@ class MoreFragment : Fragment() {
 
         Status.LOADING -> btnSignOutIsEnable(false)
         Status.ERROR -> {
+          fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
           btnSignOutIsEnable(true)
           progressIsVisible(false)
           mSnackbar = snackBarWarning(
@@ -183,6 +185,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(warning_signOut_logged_user))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
+        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
         progressIsVisible(true)
         moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
@@ -233,6 +236,7 @@ class MoreFragment : Fragment() {
       .setMessage(getString(warning_signOut_guest_mode))
       .setTitle(getString(warning))
       .setPositiveButton(getString(yes)) { dialog, _ ->
+        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         moreViewModelLocal.deleteAll() // delete all user data  (watchlistPostModel and favoritePostModel)
         dialog.dismiss()
         removePrefUserData() // remove preference user data
@@ -252,7 +256,7 @@ class MoreFragment : Fragment() {
 
   private fun removePrefUserData() {
     userPreferenceViewModel.removeUserDataPref()
-    val intent = Intent(activity, RoutingActivity::class.java)
+    val intent = Intent(activity, LoginActivity::class.java)
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())

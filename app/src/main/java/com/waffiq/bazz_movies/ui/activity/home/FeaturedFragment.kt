@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.datastore.core.DataStore
@@ -13,11 +12,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.CombinedLoadStates
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
@@ -25,8 +23,6 @@ import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
-import com.waffiq.bazz_movies.R.string.data
-import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
@@ -37,19 +33,24 @@ import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
+import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import java.util.Locale
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -61,8 +62,6 @@ class FeaturedFragment : Fragment() {
   private lateinit var movieViewModel: MovieViewModel
   private lateinit var userPreferenceViewModel: UserPreferenceViewModel
   private lateinit var regionViewModel: RegionViewModel
-
-  private var loadStateListener: ((CombinedLoadStates) -> Unit)? = null
 
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
@@ -132,8 +131,7 @@ class FeaturedFragment : Fragment() {
     val adapterUpcoming = MovieHomeAdapter()
     val adapterPlayingNow = MovieHomeAdapter()
 
-    loadStateListener = { combinedLoadStatesHandle(adapterPlayingNow, it) }
-    loadStateListener?.let { adapterPlayingNow.addLoadStateListener(it) }
+    combinedLoadStatesHandle(adapterTrending)
 
     // Setup RecyclerViews
     binding.apply {
@@ -163,18 +161,22 @@ class FeaturedFragment : Fragment() {
 
     // Handle LoadState for RecyclerViews
     handleLoadState(
+      requireContext(),
       adapterPlayingNow,
       binding.rvPlayingNow,
       binding.tvPlayingNow,
       no_movie_currently_playing,
-      region
+      region,
+      viewLifecycleOwner
     )
     handleLoadState(
+      requireContext(),
       adapterUpcoming,
       binding.rvUpcoming,
       binding.tvUpcomingMovie,
       no_upcoming_movie,
-      region
+      region,
+      viewLifecycleOwner
     )
 
     // Set up swipe-to-refresh
@@ -188,7 +190,8 @@ class FeaturedFragment : Fragment() {
     collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
     binding.rbToday.setOnClickListener {
       currentJob?.cancel() // Cancel the previous job if it exists
-      collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
+      currentJob =
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
     }
     binding.rbThisWeek.setOnClickListener {
       currentJob?.cancel() // Cancel the previous job if it exists
@@ -197,59 +200,54 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun handleLoadState(
-    adapter: MovieHomeAdapter,
-    recyclerView: RecyclerView,
-    textView: TextView,
-    noMoviesStringRes: Int,
-    region: String
-  ) {
-    // check if there any upcoming movie on selected region, if not show info on toast and edit text
-    adapter.addLoadStateListener { loadState ->
-      if (loadState.source.refresh is LoadState.NotLoading &&
-        loadState.append.endOfPaginationReached &&
-        adapter.itemCount < 1
-      ) {
-        showToastShort(
-          requireContext(),
-          getString(noMoviesStringRes, Locale("", region).displayCountry)
-        )
-        recyclerView.isGone = true
-        if (!textView.text.contains(getString(data))) {
-          textView.append(" (${getString(no_data)})")
-        }
-      }
-    }
-  }
-
   private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
     binding.swipeRefresh.setOnRefreshListener {
+      mSnackbar?.dismiss()
       adapters.forEach { it.refresh() }
       binding.swipeRefresh.isRefreshing = false
     }
   }
 
   private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener { adapters.forEach { it.refresh() } }
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      mSnackbar?.dismiss()
+      adapters.forEach { it.refresh() }
+    }
   }
 
-  private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter, loadState: CombinedLoadStates) {
-    if (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) {
-      showLoading(true) // show ProgressBar
-    } else {
-      showLoading(false) // hide ProgressBar
+  private fun combinedLoadStatesHandle(adapter: TrendingAdapter) {
+    viewLifecycleOwner.lifecycleScope.launch {
+      @OptIn(FlowPreview::class)
+      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_TIME).distinctUntilChanged()
+        .collectLatest { loadState ->
+          when {
+            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+              binding.progressBar.isVisible = true
+            }
 
-      pagingErrorState(loadState)?.let {
-        if (adapter.itemCount < 1) showView(false)
-        mSnackbar = snackBarWarning(
-          requireContext(),
-          requireActivity().findViewById(nav_view),
-          requireActivity().findViewById(nav_view),
-          Event(pagingErrorHandling(it.error))
-        )
-      } ?: run {
-        showView(true) // hide the error illustration if no error
-      }
+            loadState.refresh is LoadState.NotLoading &&
+              loadState.prepend is LoadState.NotLoading &&
+              loadState.append is LoadState.NotLoading -> {
+              fadeOut(binding.backgroundDimMovie)
+              binding.progressBar.isGone = true
+              showView(true)
+            }
+
+            loadState.refresh is LoadState.Error -> {
+              fadeOut(binding.backgroundDimMovie)
+              binding.progressBar.isGone = true
+              pagingErrorState(loadState)?.let {
+                showView(adapter.itemCount > 0)
+                mSnackbar = snackBarWarning(
+                  requireContext(),
+                  requireActivity().findViewById(nav_view),
+                  requireActivity().findViewById(nav_view),
+                  Event(pagingErrorHandling(it.error))
+                )
+              }
+            }
+          }
+        }
     }
   }
 
@@ -268,34 +266,14 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun showLoading(isLoading: Boolean) {
-    if (_binding == null) return // Ensure binding is still valid
-
-    if (isLoading) {
-      binding.backgroundDimMovie.isVisible = true
-      binding.progressBar.isVisible = true
-    } else {
-      val animation = animFadeOutLong(requireContext())
-      binding.backgroundDimMovie.startAnimation(animation)
-      binding.progressBar.startAnimation(animation)
-      binding.backgroundDimMovie.isGone = true
-      binding.progressBar.isGone = true
-    }
-  }
-
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
+    currentJob?.cancel()
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
-    loadStateListener?.let { listener ->
-      binding.rvPlayingNow.adapter?.let { adapter ->
-        (adapter as? MovieHomeAdapter)?.removeLoadStateListener(listener)
-      }
-    }
-    mSnackbar?.dismiss()
     mSnackbar = null
     Glide.get(requireContext()).clearMemory()
     _binding = null

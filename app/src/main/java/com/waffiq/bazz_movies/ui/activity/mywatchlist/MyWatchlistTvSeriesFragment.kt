@@ -134,6 +134,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
           val fav = (viewHolder as FavoriteTvAdapter.ViewHolder).data
           isWantToDelete = true
           postToRemoveWatchlistTMDB(titleHandler(fav), fav.id)
+          adapterPaging.notifyItemChanged(position)
         } else {
           val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
           isWantToDelete = true
@@ -173,6 +174,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     )
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
+      mSnackbar?.dismiss()
       baseViewModel.resetSnackbarShown()
       adapterPaging.refresh()
     }
@@ -219,7 +221,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.containerNoData,
       lifecycleOwner = viewLifecycleOwner,
-      onError = {error ->
+      onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
             mSnackbar = snackBarWarning(
