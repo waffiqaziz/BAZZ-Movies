@@ -304,7 +304,11 @@ class DetailMovieActivity : AppCompatActivity() {
       updateMovieDetailsUI(movie)
 
       // Trigger fetching of other data
-      movie.imdbId?.let { detailViewModel.getScoreOMDb(it) }
+      if (!movie.imdbId.isNullOrEmpty()) {
+        detailViewModel.getScoreOMDb(movie.imdbId)
+      } else {
+        showLoadingDim(false)
+      }
       detailViewModel.getLinkVideoMovie(movie.id)
       detailViewModel.getRecommendationMovie(movie.id)
     }
