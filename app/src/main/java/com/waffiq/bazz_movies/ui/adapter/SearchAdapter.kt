@@ -4,12 +4,16 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
@@ -61,7 +65,13 @@ class SearchAdapter :
         )
         val intent = Intent(it.context, PersonActivity::class.java)
         intent.putExtra(PersonActivity.EXTRA_PERSON, person)
-        it.context.startActivity(intent)
+        val options =
+          ActivityOptionsCompat.makeCustomAnimation(
+            it.context,
+            fade_in,
+            fade_out
+          )
+        ActivityCompat.startActivity(it.context, intent, options.toBundle())
       }
     }
 
@@ -84,7 +94,13 @@ class SearchAdapter :
           id = data.id
         )
         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
-        it.context.startActivity(intent)
+        val options =
+          ActivityOptionsCompat.makeCustomAnimation(
+            it.context,
+            fade_in,
+            fade_out
+          )
+        ActivityCompat.startActivity(it.context, intent, options.toBundle())
       }
     }
   }
@@ -119,7 +135,7 @@ class SearchAdapter :
       ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
       ?: data.firstAirDate
         ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-      ?: "N/A"
+        ?: "N/A"
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
     binding.tvGenre.text =

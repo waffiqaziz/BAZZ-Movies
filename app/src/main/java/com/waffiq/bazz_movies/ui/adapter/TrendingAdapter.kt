@@ -4,12 +4,16 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
@@ -63,7 +67,13 @@ class TrendingAdapter :
       binding.imgPoster.setOnClickListener {
         val intent = Intent(it.context, DetailMovieActivity::class.java)
         intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie)
-        it.context.startActivity(intent)
+        val options =
+          ActivityOptionsCompat.makeCustomAnimation(
+            it.context,
+            fade_in,
+            fade_out
+          )
+        ActivityCompat.startActivity(it.context, intent, options.toBundle())
       }
     }
   }

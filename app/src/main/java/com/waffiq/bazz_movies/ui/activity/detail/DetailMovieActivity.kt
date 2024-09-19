@@ -111,7 +111,9 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
-    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
+    detailViewModel.loadingState.observe(this) {
+      showLoadingDim(it)
+    }
     errorStateObserver()
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
