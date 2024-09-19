@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.utils.helpers
 
 import com.waffiq.bazz_movies.domain.model.detail.GenresItem
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 
 object GenreHelper {
   private val genreNameMap = mapOf(
@@ -37,13 +38,13 @@ object GenreHelper {
   )
 
   private fun getGenreName(int: Int): String {
-    return genreNameMap[int] ?: "NaN"
+    return genreNameMap[int] ?: NAN
   }
 
   fun getGenreName(data: List<Int>): String {
     return data
       .map { getGenreName(it) }
-      .filter { it != "NaN" } // Optional: if you want to exclude "NaN"
+      .filter { it != NAN }
       .joinToString(", ")
   }
 

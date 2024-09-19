@@ -36,6 +36,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
@@ -154,9 +155,9 @@ class LoginActivity : AppCompatActivity() {
         userId = 0,
         name = resources.getString(guest_user),
         username = resources.getString(guest_user),
-        password = getString(nan),
-        region = getString(nan),
-        token = getString(nan),
+        password = NAN,
+        region = NAN,
+        token = NAN,
         isLogin = true,
         gravatarHast = null,
         tmdbAvatar = null

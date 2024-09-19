@@ -50,6 +50,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
@@ -91,7 +92,7 @@ class MoreFragment : Fragment() {
 
     // initialize for guest user
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token == "NaN" || user.token.isEmpty()) {
+      if (user.token == NAN) {
         val factory = ViewModelFactory.getInstance(requireContext())
         moreViewModelLocal = ViewModelProvider(this, factory)[MoreViewModelLocal::class.java]
       } else {
@@ -166,7 +167,7 @@ class MoreFragment : Fragment() {
 
     binding.btnSignout.setOnClickListener {
       userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        if (user.token == "NaN" || user.token.isEmpty()) {
+        if (user.token == NAN) {
           dialogSignOutGuestMode()
         } else {
           dialogSignOutLoggedIn(user.token)
@@ -289,7 +290,7 @@ class MoreFragment : Fragment() {
     // check if user already have countryCode
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userCountry ->
 
-      if (userCountry.equals("NaN")) { // if not yet, then set country
+      if (userCountry == NAN) { // if not yet, then set country
         regionViewModel.getCountryCode()
         regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 

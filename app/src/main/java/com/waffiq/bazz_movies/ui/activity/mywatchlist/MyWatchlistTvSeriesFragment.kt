@@ -38,6 +38,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
@@ -101,7 +102,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     binding.rvWatchlistTv.itemAnimator = DefaultItemAnimator()
 
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != "NaN") { // user login then show favorite data from TMDB API
+      if (user.token != NAN) { // user login then show favorite data from TMDB API
         initAction(isLogin = true)
         setupRefresh(true)
         setDataUserLoginProgressBarEmptyView(user.token)
@@ -387,7 +388,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     super.onResume()
     baseViewModel.resetSnackbarShown()
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != "NaN") {
+      if (user.token != NAN) {
         adapterPaging.refresh()
       }
     }

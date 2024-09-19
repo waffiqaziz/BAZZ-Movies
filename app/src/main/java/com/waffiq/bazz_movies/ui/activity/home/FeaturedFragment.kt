@@ -35,6 +35,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Constants
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
@@ -106,7 +107,7 @@ class FeaturedFragment : Fragment() {
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userRegion ->
 
       // if user didn't have region, then get region from Country API
-      if (userRegion.equals("NaN")) {
+      if (userRegion == NAN) {
         regionViewModel.getCountryCode()
         regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 

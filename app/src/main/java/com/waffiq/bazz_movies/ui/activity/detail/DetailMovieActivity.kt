@@ -69,6 +69,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.utils.common.Constants.YOUTUBE_LINK_VIDEO
@@ -146,7 +147,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun checkUser() {
     userPreferenceViewModel.getUserPref().observe(this) {
-      isLogin = it.token != "NaN"
+      isLogin = it.token != NAN
 
       // handler for rating, add favorite and watchlist for user login
       if (isLogin) {
