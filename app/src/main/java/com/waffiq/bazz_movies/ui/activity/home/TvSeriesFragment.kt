@@ -138,8 +138,7 @@ class TvSeriesFragment : Fragment() {
               binding.progressBar.isGone = true
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = snackBarWarning(
-                  requireContext(),
+                mSnackbar = requireContext().snackBarWarning(
                   requireActivity().findViewById(nav_view),
                   requireActivity().findViewById(nav_view),
                   Event(pagingErrorHandling(it.error))
@@ -168,7 +167,6 @@ class TvSeriesFragment : Fragment() {
 
   private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
     binding.swipeRefresh.setOnRefreshListener {
-      mSnackbar?.dismiss()
       adapters.forEach { it.refresh() }
       binding.swipeRefresh.isRefreshing = false
     }
@@ -176,7 +174,6 @@ class TvSeriesFragment : Fragment() {
 
   private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
     binding.illustrationError.btnTryAgain.setOnClickListener {
-      mSnackbar?.dismiss()
       adapters.forEach { it.refresh() }
     }
   }

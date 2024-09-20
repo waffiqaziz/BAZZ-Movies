@@ -70,9 +70,8 @@ object FavWatchlistHelper {
   }
 
   fun getDateTwoWeeksFromToday(): String {
-    val twoWeeksFromNow = LocalDate.now().plusWeeks(2)
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    return twoWeeksFromNow.format(formatter)
+    return LocalDate.now().plusWeeks(2) // get date two weeks from now
+      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) // formatter
   }
 
   fun handlePagingLoadState(
@@ -95,6 +94,7 @@ object FavWatchlistHelper {
             errorView.isVisible = false
             emptyView.isVisible = false
           }
+
           loadState.refresh is LoadState.Error -> {
             progressBar.isVisible = false
             recyclerView.isVisible = adapterPaging.itemCount > 0
@@ -104,12 +104,14 @@ object FavWatchlistHelper {
             val error = (loadState.refresh as? LoadState.Error)?.error
             onError(error)
           }
+
           loadState.append.endOfPaginationReached && adapterPaging.itemCount < 1 -> {
             progressBar.isVisible = false
             recyclerView.isVisible = false
             errorView.isVisible = false
             emptyView.isVisible = true
           }
+
           else -> {
             progressBar.isVisible = false
             recyclerView.isVisible = true

@@ -69,6 +69,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
@@ -82,6 +83,7 @@ import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchl
 import com.waffiq.bazz_movies.utils.uihelpers.ScrollActionBarBehavior.Companion.setupScrollActionBarBehavior
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -674,9 +676,9 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun errorStateObserver() {
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.errorState.debounce(500) // Prevent multiple emissions within 500ms
+        detailViewModel.errorState.debounce(350L) // Prevent multiple emissions within 500ms
           .collect { errorMessage ->
-            snackBarWarning(this@DetailMovieActivity, binding.coordinatorLayout, null, errorMessage)
+            snackBarWarning(binding.coordinatorLayout, null, errorMessage)
           }
       }
     }

@@ -26,7 +26,6 @@ import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.R.string.guest_user
 import com.waffiq.bazz_movies.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.R.string.login_successful
-import com.waffiq.bazz_movies.R.string.nan
 import com.waffiq.bazz_movies.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.data.local.model.UserModel
@@ -34,7 +33,7 @@ import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
@@ -64,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
       binding.layoutBackground?.bgAlpha?.let { fadeOut(it, ANIM_DURATION) }
       binding.btnLogin.isEnabled = true
       snackBarWarning(
-        this,
         binding.constraintLayout,
         null,
         errorMessage
@@ -188,9 +186,9 @@ class LoginActivity : AppCompatActivity() {
       overridePendingTransition(fade_in, fade_out)
     }
     if (isGuest) {
-      showToastShort(this, getString(login_as_guest_successful))
+      toastShort(getString(login_as_guest_successful))
     } else {
-      showToastShort(this, getString(login_successful))
+      toastShort(getString(login_successful))
     }
 
     finishAffinity()

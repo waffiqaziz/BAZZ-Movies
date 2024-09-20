@@ -105,7 +105,7 @@ class PersonActivity : AppCompatActivity() {
   private fun setupView() {
     // error and loading handle
     personMovieViewModel.errorState.observe(this) {
-      snackBarWarning(this, binding.coordinatorLayout, null, it)
+      snackBarWarning(binding.coordinatorLayout, null, it)
     }
     personMovieViewModel.loadingState.observe(this) { showLoading(it) }
   }

@@ -37,7 +37,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -97,9 +97,9 @@ class MyWatchlistMoviesFragment : Fragment() {
 
   private fun checkUser() {
     // setup recyclerview
-    binding.rvWatchlistMovie.layoutManager =
+    binding.rvWatchlistMovies.layoutManager =
       LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-    binding.rvWatchlistMovie.itemAnimator = DefaultItemAnimator()
+    binding.rvWatchlistMovies.itemAnimator = DefaultItemAnimator()
 
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != NAN) { // user login then show data from TMDB
@@ -118,6 +118,7 @@ class MyWatchlistMoviesFragment : Fragment() {
     val swipeCallback = SwipeCallbackHelper(
       isLogin = isLogin,
       onSwipeLeft = { login, viewHolder, position ->
+        isUndo = false
         if (login) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = false
@@ -131,6 +132,7 @@ class MyWatchlistMoviesFragment : Fragment() {
         }
       },
       onSwipeRight = { login, viewHolder, position ->
+        isUndo = false
         if (login) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = true
@@ -150,7 +152,7 @@ class MyWatchlistMoviesFragment : Fragment() {
     )
 
     val itemTouchHelper = ItemTouchHelper(swipeCallback)
-    itemTouchHelper.attachToRecyclerView(binding.rvWatchlistMovie)
+    itemTouchHelper.attachToRecyclerView(binding.rvWatchlistMovies)
   }
 
   private fun setupRefresh(isLogin: Boolean) {
@@ -170,12 +172,11 @@ class MyWatchlistMoviesFragment : Fragment() {
   private fun setDataUserLoginProgressBarEmptyView(userToken: String) {
     handleSnackbarLoginUser()
 
-    binding.rvWatchlistMovie.adapter = adapterPaging.withLoadStateFooter(
+    binding.rvWatchlistMovies.adapter = adapterPaging.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterPaging.retry() }
     )
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
-      mSnackbar?.dismiss()
       baseViewModel.resetSnackbarShown()
       adapterPaging.refresh()
     }
@@ -200,8 +201,7 @@ class MyWatchlistMoviesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
-            mSnackbar = snackBarWarning(
-              requireActivity(),
+            mSnackbar = requireActivity().snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(it.title)
@@ -217,7 +217,7 @@ class MyWatchlistMoviesFragment : Fragment() {
     handlePagingLoadState(
       adapterPaging = adapterPaging,
       loadStateFlow = adapterPaging.loadStateFlow,
-      recyclerView = binding.rvWatchlistMovie,
+      recyclerView = binding.rvWatchlistMovies,
       progressBar = binding.progressBar,
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.containerNoData,
@@ -225,8 +225,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = snackBarWarning(
-              requireContext(),
+            mSnackbar = requireContext().snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               pagingErrorHandling(it)
@@ -325,14 +324,14 @@ class MyWatchlistMoviesFragment : Fragment() {
   }
 
   private fun setDataGuestUserProgressBarEmptyView() {
-    binding.rvWatchlistMovie.adapter = adapterDB
+    binding.rvWatchlistMovies.adapter = adapterDB
     viewModel.watchlistMoviesDB.observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
-        binding.rvWatchlistMovie.visibility = View.VISIBLE
+        binding.rvWatchlistMovies.visibility = View.VISIBLE
         binding.illustrationNoDataView.containerNoData.visibility = View.GONE
       } else {
-        binding.rvWatchlistMovie.visibility = View.GONE
+        binding.rvWatchlistMovies.visibility = View.GONE
         binding.illustrationNoDataView.containerNoData.visibility = View.VISIBLE
       }
       binding.progressBar.visibility = View.GONE
@@ -357,7 +356,7 @@ class MyWatchlistMoviesFragment : Fragment() {
         } else {
           viewModel.insertToDB(fav.copy(isWatchlist = true))
         }
-        binding.rvWatchlistMovie.scrollToPosition(pos)
+        binding.rvWatchlistMovies.scrollToPosition(pos)
       } else { // undo add to watchlist
         viewModel.updateToRemoveFromFavoriteDB(fav)
       }
@@ -370,7 +369,7 @@ class MyWatchlistMoviesFragment : Fragment() {
     viewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
-          is DbResult.Error -> showToastShort(requireContext(), it.errorMessage)
+          is DbResult.Error -> requireContext().toastShort(it.errorMessage)
           else -> {}
         }
       }

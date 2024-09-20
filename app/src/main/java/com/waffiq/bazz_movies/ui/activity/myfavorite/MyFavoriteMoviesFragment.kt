@@ -37,7 +37,7 @@ import com.waffiq.bazz_movies.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -118,6 +118,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     val swipeCallback = SwipeCallbackHelper(
       isLogin = isLogin,
       onSwipeLeft = { login, viewHolder, position ->
+        isUndo = false
         if (login) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = false
@@ -131,6 +132,7 @@ class MyFavoriteMoviesFragment : Fragment() {
         }
       },
       onSwipeRight = { login, viewHolder, position ->
+        isUndo = false
         if (login) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = true
@@ -175,7 +177,6 @@ class MyFavoriteMoviesFragment : Fragment() {
     )
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
-      mSnackbar?.dismiss()
       baseViewModel.resetSnackbarShown()
       adapterPaging.refresh()
     }
@@ -200,8 +201,7 @@ class MyFavoriteMoviesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) { // an error happen
-            mSnackbar = snackBarWarning(
-              requireContext(),
+            mSnackbar = requireContext().snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(it.title)
@@ -225,8 +225,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = snackBarWarning(
-              requireContext(),
+            mSnackbar = requireContext().snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               pagingErrorHandling(it)
@@ -370,7 +369,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     viewModelFav.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
-          is DbResult.Error -> showToastShort(requireContext(), it.errorMessage)
+          is DbResult.Error -> requireContext().toastShort(it.errorMessage)
           else -> {}
         }
       }

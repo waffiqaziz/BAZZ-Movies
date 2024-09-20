@@ -25,9 +25,9 @@ import java.time.format.DateTimeParseException
 
 object Helper {
 
-  fun showToastShort(context: Context, text: String) {
+  fun Context.toastShort(text: String) {
     Toast.makeText(
-      context,
+      applicationContext,
       HtmlCompat.fromHtml(
         text,
         HtmlCompat.FROM_HTML_MODE_LEGACY

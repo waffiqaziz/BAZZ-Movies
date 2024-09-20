@@ -9,8 +9,7 @@ import com.waffiq.bazz_movies.utils.common.Event
 
 object SnackBarManager {
 
-  fun snackBarWarning(
-    context: Context,
+  fun Context.snackBarWarning(
     view: View,
     guideView: View?,
     eventMessage: Event<String>
@@ -28,8 +27,7 @@ object SnackBarManager {
     }
   }
 
-  fun snackBarWarning(
-    context: Context,
+  fun Context.snackBarWarning(
     view: View,
     guideView: View?,
     message: String?

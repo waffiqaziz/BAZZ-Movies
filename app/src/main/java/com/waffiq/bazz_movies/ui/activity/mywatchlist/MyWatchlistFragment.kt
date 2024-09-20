@@ -55,6 +55,7 @@ class MyWatchlistFragment : Fragment() {
     tabLayoutMediator?.detach()
     tabLayoutMediator = null
     binding.viewPager.adapter = null
+    binding.viewPager.removeAllViews()
     _binding = null
   }
 }

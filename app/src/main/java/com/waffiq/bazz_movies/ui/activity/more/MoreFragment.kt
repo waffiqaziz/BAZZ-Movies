@@ -18,6 +18,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -45,8 +46,9 @@ import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
-import com.waffiq.bazz_movies.utils.Helper.showToastShort
+import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
@@ -60,6 +62,10 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
@@ -115,27 +121,30 @@ class MoreFragment : Fragment() {
   }
 
   private fun signOutStateObserver() {
-    moreViewModelUser.signOutState.observe(viewLifecycleOwner) { result ->
-      when (result.status) {
-        Status.SUCCESS -> {
-          progressIsVisible(false)
-          if (result.data?.success == true) {
-            showToastShort(requireContext(), getString(sign_out_success))
+    viewLifecycleOwner.lifecycleScope.launch {
+      @OptIn(FlowPreview::class)
+      moreViewModelUser.signOutState.debounce(500L).collectLatest {
+        when (it?.status) {
+          Status.SUCCESS -> {
+            progressIsVisible(false)
+            requireContext().toastShort(getString(sign_out_success))
             removePrefUserData() // remove preference user data
           }
-        }
 
-        Status.LOADING -> btnSignOutIsEnable(false)
-        Status.ERROR -> {
-          fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-          btnSignOutIsEnable(true)
-          progressIsVisible(false)
-          mSnackbar = snackBarWarning(
-            requireContext(),
-            binding.constraintLayout,
-            requireActivity().findViewById(nav_view),
-            Event(result.message.toString())
-          )
+          Status.LOADING -> {}
+
+          Status.ERROR -> {
+            fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+            btnSignOutIsEnable(true)
+            progressIsVisible(false)
+            mSnackbar = requireContext().snackBarWarning(
+              binding.constraintLayout,
+              requireActivity().findViewById(nav_view),
+              Event(it.message.toString())
+            )
+          }
+
+          else -> {}
         }
       }
     }
@@ -211,16 +220,12 @@ class MoreFragment : Fragment() {
         when (it) {
           is DbResult.Success -> {
             progressIsVisible(false)
-            showToastShort(
-              requireActivity(),
-              getString(all_data_deleted)
-            )
+            requireContext().toastShort(getString(all_data_deleted))
           }
 
           is DbResult.Error -> {
             progressIsVisible(false)
-            mSnackbar = snackBarWarning(
-              requireContext(),
+            mSnackbar = requireContext().snackBarWarning(
               binding.constraintLayout,
               requireActivity().findViewById(nav_view),
               Event(it.errorMessage)
@@ -321,9 +326,9 @@ class MoreFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
-    _binding = null
     mSnackbar?.dismiss()
     moreViewModelUser.removeState()
     Glide.get(requireContext()).clearMemory()
+    _binding = null
   }
 }
