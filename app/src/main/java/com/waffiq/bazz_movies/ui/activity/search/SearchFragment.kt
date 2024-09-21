@@ -235,6 +235,7 @@ class SearchFragment : Fragment() {
   override fun onResume() {
     super.onResume()
     binding.appBarLayout.setExpanded(true)
+    searchViewModel.setExpandSearchView(false)
   }
 
   override fun onDestroyView() {
