@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-//  alias(libs.plugins.detekt)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
 }
@@ -24,8 +23,8 @@ android {
     applicationId = "com.bazz.bazz_movies"
     minSdk = 23
     targetSdk = 34
-    versionCode = 9
-    versionName = "1.0.8"
+    versionCode = 10
+    versionName = "1.0.9"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -52,11 +51,11 @@ android {
       isDebuggable = true
 
       // disable below for faster development flow.
-//            shrinkResources = true
-//            isMinifyEnabled = true
-//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      isShrinkResources = true
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
-      resValue("string", "app_name", "@string/app_name_debug")
+//      resValue("string", "app_name", "@string/app_name_debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
     }
@@ -65,7 +64,7 @@ android {
       isShrinkResources = true
       isMinifyEnabled = true
       resValue("string", "app_name", "@string/app_name_release")
-      proguardFiles("proguard-rules.pro")
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
         mappingFileUploadEnabled = true
@@ -149,9 +148,9 @@ dependencies {
   implementation(libs.firebase.analytics)
 
   // Koin
-  implementation(libs.koin.core)
-  implementation(libs.koin.android)
-  implementation(libs.koin.androidx.navigation)
+//  implementation(libs.koin.core)
+//  implementation(libs.koin.android)
+//  implementation(libs.koin.androidx.navigation)
 }
 
 repositories {

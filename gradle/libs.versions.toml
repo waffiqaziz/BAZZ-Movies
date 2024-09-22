@@ -3,7 +3,7 @@
 agp = "8.2.0"
 kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13"
-koin = "3.4.0"
+#koin = "3.4.0"
 
 # Google services
 gms = "4.4.1"
@@ -12,8 +12,7 @@ firebaseBom = "32.8.1"
 playIntegrity = "1.3.0"
 
 # Development tools
-leakcanary = "2.12"
-detekt = "1.23.1"
+#leakcanary = "2.12"
 
 # AndroidX Libraries
 coreKtx = "1.13.0"
@@ -31,6 +30,7 @@ viewpager2 = "1.0.0"
 lifecycleLivedataKtx = "2.7.0"
 lifecycleViewmodelKtx = "2.7.0"
 
+# Data storage
 # Data storage
 datastorePreferences = "1.1.0"
 
@@ -104,7 +104,7 @@ moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-code
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
 
 ## Development tools
-leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+#leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
 # Tools and Testing Libraries
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
@@ -127,10 +127,10 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 expandable-textview = { group = "io.github.glailton.expandabletextview", name = "expandabletextview", version.ref = "expandableTextView" }
 country-picker = { group = "com.hbb20", name = "ccp", version.ref = "countryPicker" }
 
-# Koin
-koin-core =  { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
-koin-android =  { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-koin-androidx-navigation =  { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
+## Koin
+#koin-core =  { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+#koin-android =  { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+#koin-androidx-navigation =  { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
 
 
 [plugins]
