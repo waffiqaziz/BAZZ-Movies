@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.databinding.ItemTrendingBinding
+import com.waffiq.bazz_movies.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.ui.activity.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -21,7 +21,7 @@ class TvAdapter :
   PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -38,7 +38,7 @@ class TvAdapter :
     }
   }
 
-  inner class ViewHolder(private var binding: ItemTrendingBinding) :
+  inner class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(tv: ResultItem) {

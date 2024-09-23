@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
     userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
-      binding.layoutBackground?.bgAlpha?.let { fadeOut(it, ANIM_DURATION) }
+      fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
       binding.btnLogin.isEnabled = true
       snackBarWarning(
         binding.constraintLayout,
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_SIGNUP)))
     }
 
-    binding.tvForgetPassword.setOnClickListener {
+    binding.btnForgetPassword.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_FORGET_PASSWORD)))
     }
   }
@@ -142,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
 
       if (formNotEmpty()) {
         binding.btnLogin.isEnabled = false
-        binding.layoutBackground?.bgAlpha?.let { fadeInAlpha50(it, ANIM_DURATION) }
+        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         loginAsUserRegistered()
       }
     }

@@ -6,6 +6,7 @@
   android:orientation="vertical"
   android:padding="8dp">
 
+  <!-- Error message -->
   <TextView
     android:fontFamily="@font/nunito_sans_regular"
     android:id="@+id/error_msg"
@@ -27,6 +28,7 @@
 <!--    android:indeterminateTint="?attr/colorPrimaryVariant"-->
 <!--    android:indeterminateTintMode="src_atop" />-->
 
+  <!-- Retry button -->
   <Button
     android:id="@+id/retry_button"
     android:layout_width="wrap_content"

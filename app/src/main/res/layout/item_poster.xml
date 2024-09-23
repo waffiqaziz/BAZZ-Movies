@@ -6,12 +6,13 @@
   android:layout_height="wrap_content"
   android:paddingEnd="10dp">
 
+  <!-- Poster -->
   <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/img_poster"
     android:layout_width="100dp"
     android:layout_height="150dp"
+    android:adjustViewBounds="true"
     android:contentDescription="@string/picture"
     app:shapeAppearanceOverlay="@style/roundedCornersImageView"
     tools:background="@drawable/ic_bazz_placeholder_poster" />
-
 </FrameLayout>

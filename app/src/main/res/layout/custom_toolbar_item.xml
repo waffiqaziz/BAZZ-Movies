@@ -4,12 +4,14 @@
   android:layout_height="wrap_content"
   android:orientation="horizontal">
 
+  <!-- BAZZ Movies logo-->
   <ImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/bazz"
     android:src="@mipmap/ic_launcher" />
 
+  <!-- BAZZ Movies text-->
   <include
     android:id="@+id/tv_title"
     layout="@layout/custom_action_bar_title"

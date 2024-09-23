@@ -6,6 +6,9 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.AboutActivity">
 
+  <!-- ========================== -->
+  <!--        HEADER SECTION      -->
+  <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
@@ -16,7 +19,11 @@
     <include layout="@layout/custom_toolbar_scroll_snap" />
 
   </com.google.android.material.appbar.AppBarLayout>
+  <!-- End of HEADER SECTION -->
 
+  <!-- ========================== -->
+  <!--         BODY SECTION       -->
+  <!-- ========================== -->
   <TextView
     android:id="@+id/tv_about_header"
     style="@style/TextHeader1"
@@ -41,6 +48,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tv_about_header" />
 
+  <!-- ====== TMDB logo ====== -->
   <ImageView
     android:id="@+id/iv_tmdb_logo"
     android:layout_width="0dp"
@@ -65,6 +73,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/iv_tmdb_logo" />
 
+  <!-- ====== About button ====== -->
   <Button
     android:id="@+id/btn_about_us"
     style="@style/MyTransparentButton"
@@ -74,7 +83,9 @@
     android:text="@string/about_us"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/tv_about_text" />
+  <!-- End of BODY SECTION -->
 
+  <!-- ====== Back button ====== -->
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab"
     style="@style/MyFAB"
@@ -85,4 +96,5 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:rippleColor="@color/yellow_alpha_80"
     app:srcCompat="@drawable/ic_left_icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

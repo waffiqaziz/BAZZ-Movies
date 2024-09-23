@@ -7,6 +7,9 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.detail.DetailMovieActivity">
 
+  <!-- ========================== -->
+  <!--       TOOLBAR SECTION      -->
+  <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
@@ -25,11 +28,13 @@
       app:contentInsetLeft="0dp"
       app:contentInsetStart="0dp">
 
+      <!-- Button layout -->
       <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!-- Back button -->
         <ImageButton
           android:id="@+id/btn_back"
           android:layout_width="wrap_content"
@@ -44,6 +49,7 @@
           android:minHeight="48dp"
           android:src="@drawable/ic_left_icon" />
 
+        <!-- Favorite watchlist button -->
         <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -85,7 +91,13 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
   </com.google.android.material.appbar.AppBarLayout>
+  <!-- End of TOOLBAR SECTION -->
 
+  <!-- ========================== -->
+  <!--         MAIN SECTION       -->
+  <!-- ========================== -->
+
+  <!-- Swipe to refresh -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -111,6 +123,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- ========================== -->
+        <!--      BACKDROP SECTION      -->
+        <!-- ========================== -->
+
+        <!-- Backdrop image -->
         <com.google.android.material.imageview.ShapeableImageView
           android:id="@+id/iv_picture_backdrop"
           style="@style/roundedCornersPoster"
@@ -124,6 +141,7 @@
           app:layout_constraintTop_toTopOf="parent"
           tools:src="@drawable/ic_bazz_placeholder_backdrops" />
 
+        <!-- No backdrop text -->
         <TextView
           android:id="@+id/tv_backdrop_not_found"
           android:layout_width="wrap_content"
@@ -151,6 +169,7 @@
           app:layout_constraintStart_toStartOf="@+id/iv_picture_backdrop"
           app:layout_constraintTop_toTopOf="@+id/iv_picture_backdrop">
 
+          <!-- Trailer button -->
           <ImageButton
             android:id="@+id/ib_play"
             android:layout_width="wrap_content"
@@ -163,7 +182,13 @@
             android:visibility="gone"
             tools:visibility="visible" />
         </androidx.cardview.widget.CardView>
+        <!-- End of BACKDROP SECTION -->
 
+        <!-- ========================== -->
+        <!--    DETAIL UPPER SECTION    -->
+        <!-- ========================== -->
+
+        <!-- Poster -->
         <com.google.android.material.imageview.ShapeableImageView
           android:id="@+id/iv_poster"
           android:layout_width="120dp"
@@ -177,6 +202,7 @@
           tools:layout_width="120dp"
           tools:src="@drawable/ic_bazz_placeholder_poster" />
 
+        <!-- Title -->
         <TextView
           android:id="@+id/tv_title"
           style="@style/TextHeader1"
@@ -192,6 +218,7 @@
           app:layout_constraintStart_toEndOf="@+id/iv_poster"
           tools:text="The Silence" />
 
+        <!-- TV/Movie -->
         <TextView
           android:id="@+id/tv_mediaType"
           style="@style/TextBody"
@@ -202,6 +229,7 @@
           app:layout_constraintStart_toStartOf="@+id/tv_title"
           tools:text="MOVIE" />
 
+        <!-- Release date -->
         <TextView
           android:id="@+id/tv_year_released"
           style="@style/TextBody"
@@ -212,6 +240,7 @@
           app:layout_constraintStart_toEndOf="@+id/divider1"
           tools:text="Jul 24, 2020" />
 
+        <!-- Region -->
         <TextView
           android:id="@+id/tv_region_release"
           style="@style/TextBody"
@@ -244,6 +273,7 @@
           app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
           app:layout_constraintStart_toEndOf="@+id/tv_region_release" />
 
+        <!-- Age rating -->
         <TextView
           android:id="@+id/tv_age_rating"
           style="@style/TextBody"
@@ -260,6 +290,7 @@
           app:layout_constraintStart_toEndOf="@+id/divider2"
           tools:text="PG-A" />
 
+        <!-- Genre -->
         <TextView
           android:id="@+id/tv_genre"
           style="@style/TextBody"
@@ -277,6 +308,7 @@
           app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
           tools:text="Action, Drama, &amp; Family" />
 
+        <!-- Duration -->
         <TextView
           android:id="@+id/tv_duration"
           style="@style/TextBody"
@@ -289,10 +321,16 @@
           app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
           app:layout_constraintStart_toStartOf="@+id/tv_genre"
           tools:text="1H 22m" />
+        <!-- End of DETAIL UPPER SECTION -->
 
+        <!-- ========================== -->
+        <!--        SCORE SECTION       -->
+        <!-- ========================== -->
+
+        <!-- IMDB -->
         <LinearLayout
           android:id="@+id/imdb_viewGroup"
-          android:layout_width="wrap_content"
+          android:layout_width="48dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:orientation="vertical"
@@ -314,10 +352,11 @@
           <TextView
             style="@style/TextScoreHeader"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/imdb" />
-
         </LinearLayout>
 
+        <!-- METASCORE -->
         <LinearLayout
           android:id="@+id/metascore_viewGroup"
           android:layout_width="wrap_content"
@@ -349,12 +388,12 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toEndOf="@+id/tv_imdb"
             app:layout_constraintTop_toBottomOf="@+id/tv_score_metascore" />
-
         </LinearLayout>
 
+        <!-- TMDB -->
         <LinearLayout
           android:id="@+id/tmdb_viewGroup"
-          android:layout_width="wrap_content"
+          android:layout_width="48dp"
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:paddingBottom="10dp"
@@ -373,10 +412,11 @@
           <TextView
             style="@style/TextScoreHeader"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/tmdb" />
-
         </LinearLayout>
 
+        <!-- USER SCORE -->
         <LinearLayout
           android:id="@+id/your_score_viewGroup"
           android:layout_width="wrap_content"
@@ -403,8 +443,8 @@
             style="@style/TextScoreHeader"
             android:layout_height="wrap_content"
             android:text="@string/your_score" />
-
         </LinearLayout>
+        <!-- End of SCORE SECTION -->
 
         <com.google.android.material.divider.MaterialDivider
           android:id="@+id/divider_score"
@@ -417,6 +457,11 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/imdb_viewGroup" />
 
+        <!-- ========================== -->
+        <!--    DETAIL LOWER SECTION    -->
+        <!-- ========================== -->
+
+        <!-- Summary -->
         <TextView
           android:id="@+id/tv_summary_header"
           style="@style/TextHeader2"
@@ -446,6 +491,7 @@
           app:textMode="line"
           tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
 
+        <!-- Crew -->
         <FrameLayout
           android:id="@+id/table"
           android:layout_width="match_parent"
@@ -458,6 +504,7 @@
           tools:background="@color/yellow"
           tools:layout_height="100dp" />
 
+        <!-- Cast | Actor | Actress -->
         <TextView
           android:id="@+id/tv_cast_header"
           style="@style/TextHeader2"
@@ -481,6 +528,7 @@
           tools:listitem="@layout/item_cast"
           tools:orientation="horizontal" />
 
+        <!-- Recommendation -->
         <TextView
           android:id="@+id/tv_recommendation_header"
           style="@style/TextHeader2"
@@ -490,6 +538,7 @@
           android:text="@string/recommendation"
           app:layout_constraintStart_toStartOf="@+id/tv_cast_header"
           app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+        <!-- End of DETAIL LOWER SECTION -->
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_recommendation"
@@ -501,7 +550,7 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
       </androidx.constraintlayout.widget.ConstraintLayout>
@@ -509,7 +558,9 @@
     </androidx.core.widget.NestedScrollView>
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+  <!-- End of MAIN SECTION -->
 
+  <!-- Background overlay on start -->
   <View
     android:id="@+id/background_dim_movie"
     style="@style/MyDimStyle"

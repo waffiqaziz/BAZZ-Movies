@@ -13,10 +13,12 @@
     android:layout_height="wrap_content"
     app:layout_scrollFlags="scroll|snap">
 
+    <!-- Toolbar -->
     <include
       android:id="@+id/layout_toolbar"
       layout="@layout/custom_toolbar_scroll_snap" />
 
+    <!-- Tab layout -->
     <com.google.android.material.tabs.TabLayout
       android:id="@+id/tabs"
       android:layout_width="match_parent"
@@ -29,18 +31,21 @@
       app:tabTextAppearance="@style/TextTabLayoutStyle"
       app:tabTextColor="@color/white">
 
+      <!-- Featured tab -->
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:tabTextAppearance="@style/TextTabLayoutStyle"
         tools:text="@string/featured" />
 
+      <!-- Movies tab -->
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:tabTextAppearance="@style/TextTabLayoutStyle"
         tools:text="@string/movies" />
 
+      <!-- TV Series tab -->
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,6 +56,7 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
+  <!-- ViewPager2 -->
   <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/view_pager"
     android:layout_width="match_parent"

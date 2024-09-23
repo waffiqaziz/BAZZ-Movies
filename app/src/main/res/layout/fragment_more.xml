@@ -27,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+      <!-- Profile picture -->
       <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_avatar"
         android:layout_width="50dp"
@@ -39,6 +40,7 @@
         app:shapeAppearanceOverlay="@style/circleImage"
         tools:src="@drawable/ic_bazz_logo" />
 
+      <!-- Name and username -->
       <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
@@ -66,6 +68,7 @@
 
       </LinearLayout>
 
+      <!-- Select region -->
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_region"
         style="@style/ButtonMoreStyle"
@@ -102,6 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_region" />
 
+      <!-- FAQ -->
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_faq"
         style="@style/ButtonMoreStyle"
@@ -121,6 +125,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_faq" />
 
+      <!-- Suggestion -->
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_suggestion"
         style="@style/ButtonMoreStyle"
@@ -140,6 +145,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_suggestion" />
 
+      <!-- About -->
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_about_us"
         style="@style/ButtonMoreStyle"
@@ -159,6 +165,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_about_us" />
 
+      <!-- Term and Condition -->
       <TextView
         android:id="@+id/tv_terms_conditon"
         style="@style/TextDivider"
@@ -171,6 +178,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_about_us" />
 
+      <!-- Privacy Policy -->
       <TextView
         android:id="@+id/tv_privacy_policy"
         style="@style/TextDivider"
@@ -183,6 +191,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
 
+      <!-- Sign out button -->
       <Button
         android:id="@+id/btn_signout"
         style="@style/ButtonSignOut"
@@ -199,6 +208,7 @@
 
   </ScrollView>
 
+  <!-- Background layout for overlay when loading -->
   <include
     android:id="@+id/layout_background"
     layout="@layout/background_alpha" />

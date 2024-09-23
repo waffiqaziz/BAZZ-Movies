@@ -7,6 +7,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.person.PersonActivity">
 
+  <!-- Back button layout -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
@@ -42,6 +43,10 @@
     </com.google.android.material.appbar.MaterialToolbar>
   </com.google.android.material.appbar.AppBarLayout>
 
+  <!-- ========================== -->
+  <!--          MAIN SECTION      -->
+  <!-- ========================== -->
+
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -69,6 +74,7 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent">
 
+          <!-- Image actor -->
           <ImageView
             android:id="@+id/iv_picture"
             android:layout_width="match_parent"
@@ -82,6 +88,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
+          <!-- Name -->
           <TextView
             android:id="@+id/tv_Name"
             style="@style/TextHeader1"
@@ -103,16 +110,9 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_known_for"
             app:layout_constraintTop_toBottomOf="@+id/view_group_social_media" />
 
-          <TextView
-            android:id="@+id/tv_known_for"
-            style="@style/TextHeader2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_parent_20"
-            android:text="@string/known_for"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_picture" />
-
+          <!-- ========================== -->
+          <!--    SOCIAL MEDIA SECTION    -->
+          <!-- ========================== -->
           <LinearLayout
             android:id="@+id/view_group_social_media"
             android:layout_width="wrap_content"
@@ -155,7 +155,18 @@
               android:src="@drawable/ic_youtube" />
 
           </LinearLayout>
+          <!-- End of SOCIAL MEDIA SECTION -->
 
+          <!-- List playing on -->
+          <TextView
+            android:id="@+id/tv_known_for"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_parent_20"
+            android:text="@string/known_for"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_picture" />
 
           <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_known_for"
@@ -167,9 +178,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_cast"
+            tools:listitem="@layout/item_poster"
             tools:orientation="horizontal" />
 
+          <!-- Biography text -->
           <TextView
             android:id="@+id/tv_biography_header"
             style="@style/TextHeader2"
@@ -180,6 +192,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_known_for"
             app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
 
+          <!-- Wikidata -->
           <LinearLayout
             android:id="@+id/view_group_social_media2"
             android:layout_width="wrap_content"
@@ -223,7 +236,7 @@
 
           </LinearLayout>
 
-
+          <!-- Biography -->
           <io.github.glailton.expandabletextview.ExpandableTextView
             android:id="@+id/tv_biography"
             style="@style/TextBody"
@@ -242,6 +255,7 @@
             app:textMode="line"
             tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
 
+          <!-- Born -->
           <TextView
             android:id="@+id/tv_born_header"
             style="@style/TextHeader2"
@@ -264,6 +278,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_born_header"
             tools:text="November 11, 1974 (64 years old) \nHollywood, Los Angeles, California, USA" />
 
+          <!-- Date of death-->
           <TextView
             android:id="@+id/tv_dead_header"
             style="@style/TextHeader2"
@@ -286,6 +301,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_dead_header"
             tools:text="2008-01-22 (28 years old)" />
 
+          <!-- List of photos -->
           <TextView
             android:id="@+id/tv_photos_header"
             style="@style/TextHeader2"
@@ -307,7 +323,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_photos_header"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_trending"
+            tools:listitem="@layout/item_poster"
             tools:orientation="horizontal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -326,7 +342,9 @@
       tools:visibility="visible" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
+  <!--  End of MAIN SECTION-->
 
+  <!-- Background on start -->
   <View
     android:id="@+id/background_dim_person"
     style="@style/MyDimStyle"

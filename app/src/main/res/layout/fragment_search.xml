@@ -7,6 +7,9 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.search.SearchFragment">
 
+  <!-- ========================== -->
+  <!--   SEARCH RESULT SECTION    -->
+  <!-- ========================== -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -17,6 +20,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipToPadding="false"
+      android:contentDescription="@string/search_results"
       android:paddingTop="?attr/actionBarSize"
       android:paddingBottom="50dp"
       android:visibility="gone"
@@ -25,7 +29,11 @@
       tools:visibility="visible" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+  <!-- End of SEARCH RESULT SECTION -->
 
+  <!-- ========================== -->
+  <!--        HEADER SECTION      -->
+  <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
@@ -33,10 +41,16 @@
 
     <include
       android:id="@+id/toolbar_layout"
-      layout="@layout/custom_toolbar_scroll_snap_enteralways"/>
+      layout="@layout/custom_toolbar_scroll_snap_enteralways" />
 
   </com.google.android.material.appbar.AppBarLayout>
+  <!-- End of HEADER SECTION -->
 
+  <!-- ========================== -->
+  <!-- SEARCH STATE ILLUSTRATIONS -->
+  <!-- ========================== -->
+
+  <!-- Illustration for the initial search view -->
   <include
     android:id="@+id/illustration_search_view"
     layout="@layout/illustration_search"
@@ -45,6 +59,7 @@
     android:layout_gravity="center"
     tools:visibility="invisible" />
 
+  <!-- Illustration for "no results found" state -->
   <include
     android:id="@+id/illustration_search_no_result_view"
     layout="@layout/illustration_search_no_result"
@@ -54,6 +69,7 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
+  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"
@@ -62,7 +78,9 @@
     android:layout_gravity="center"
     android:visibility="gone"
     tools:visibility="visible" />
+  <!-- End of HEADER SECTION -->
 
+  <!-- Progress bar -->
   <ProgressBar
     android:id="@+id/progress_bar"
     android:layout_width="wrap_content"

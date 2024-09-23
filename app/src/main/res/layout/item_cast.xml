@@ -17,6 +17,7 @@
     android:orientation="vertical"
     android:padding="5dp">
 
+    <!-- Profile picture -->
     <com.google.android.material.imageview.ShapeableImageView
       android:id="@+id/img_cast_photo"
       android:layout_width="80dp"
@@ -27,6 +28,7 @@
       app:shapeAppearanceOverlay="@style/circleImage"
       tools:background="@tools:sample/avatars" />
 
+    <!-- Name -->
     <TextView
       android:id="@+id/tv_cast_name"
       android:layout_width="match_parent"
@@ -44,6 +46,7 @@
       android:textColor="@color/white"
       android:theme="@style/TextCast" />
 
+    <!-- Character names-->
     <TextView
       android:id="@+id/tv_cast_character"
       android:layout_width="match_parent"

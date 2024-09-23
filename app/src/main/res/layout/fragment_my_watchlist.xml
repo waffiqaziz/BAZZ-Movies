@@ -7,6 +7,7 @@
   android:orientation="vertical"
   tools:context=".ui.activity.mywatchlist.MyWatchlistFragment">
 
+  <!-- Toolbar -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
@@ -26,12 +27,14 @@
       app:tabTextAppearance="@style/TextTabLayoutStyle"
       app:tabTextColor="@color/white">
 
+      <!-- Movies tab -->
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:tabTextAppearance="@style/TextTabLayoutStyle"
         tools:text="@string/movies" />
 
+      <!-- TV Series tab -->
       <com.google.android.material.tabs.TabItem
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +45,7 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
+  <!-- ViewPager2 -->
   <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/view_pager"
     android:layout_width="match_parent"

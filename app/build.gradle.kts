@@ -51,11 +51,11 @@ android {
       isDebuggable = true
 
       // disable below for faster development flow.
-      isShrinkResources = true
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//      isShrinkResources = true
+//      isMinifyEnabled = true
+//      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
-//      resValue("string", "app_name", "@string/app_name_debug")
+      resValue("string", "app_name", "@string/app_name_debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
     }

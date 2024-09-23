@@ -27,6 +27,7 @@
         android:orientation="vertical"
         android:paddingBottom="?attr/actionBarSize">
 
+        <!-- Fixed backdrop -->
         <ImageView
           android:id="@+id/img_main_featured"
           android:layout_width="match_parent"
@@ -37,6 +38,7 @@
           tools:layout_height="250dp"
           tools:src="@color/red_matte" />
 
+
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -44,6 +46,7 @@
           android:layout_marginTop="-20dp"
           android:orientation="horizontal">
 
+          <!-- Trending -->
           <TextView
             android:id="@+id/tv_trending"
             style="@style/TextHeader2"
@@ -53,6 +56,7 @@
             android:layout_marginEnd="10dp"
             android:text="@string/trending_now" />
 
+          <!-- Trending button -->
           <RadioGroup
             android:id="@+id/toggle"
             android:layout_width="190dp"
@@ -66,14 +70,13 @@
               android:id="@+id/rb_today"
               style="@style/MySwitchRadioButton"
               android:layout_marginStart="1dp"
-              android:button="@null"
               android:text="@string/today" />
 
             <RadioButton
               android:id="@+id/rb_this_week"
+
               style="@style/MySwitchRadioButton"
               android:layout_marginEnd="1dp"
-              android:button="@null"
               android:text="@string/this_week" />
           </RadioGroup>
 
@@ -84,12 +87,13 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="12dp"
+          android:layout_marginTop="10dp"
           android:contentDescription="@string/trending_now"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
+        <!-- Upcoming-->
         <TextView
           android:id="@+id/tv_upcoming_movie"
           style="@style/TextHeader2"
@@ -107,9 +111,10 @@
           android:layout_marginTop="8dp"
           android:contentDescription="@string/upcoming_movies"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_upcoming"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
+        <!-- Playing now -->
         <TextView
           android:id="@+id/tv_playing_now"
           style="@style/TextHeader2"
@@ -127,7 +132,7 @@
           android:layout_marginTop="8dp"
           android:contentDescription="@string/playing_now_on_theater"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_upcoming"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
       </LinearLayout>
 
@@ -135,6 +140,7 @@
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"
@@ -145,6 +151,7 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
+  <!-- Background overlay on start -->
   <View
     android:id="@+id/background_dim_movie"
     style="@style/MyDimStyleMatchParent"

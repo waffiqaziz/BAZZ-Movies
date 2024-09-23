@@ -7,6 +7,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.home.TvSeriesFragment">
 
+  <!-- TV list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -27,6 +28,7 @@
         android:orientation="vertical"
         android:paddingBottom="?attr/actionBarSize">
 
+        <!-- Popular -->
         <TextView
           android:id="@+id/tv_popular"
           style="@style/TextHeader2"
@@ -43,9 +45,10 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
+        <!-- Airing today -->
         <TextView
           android:id="@+id/tv_airing_today"
           style="@style/TextHeader2"
@@ -62,9 +65,10 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
+        <!-- Air on tv -->
         <TextView
           android:id="@+id/tv_on_tv"
           style="@style/TextHeader2"
@@ -81,9 +85,10 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
+        <!-- Top rated -->
         <TextView
           android:id="@+id/tv_top_rated"
           style="@style/TextHeader2"
@@ -100,7 +105,7 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:listitem="@layout/item_trending"
+          tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
       </LinearLayout>
@@ -109,6 +114,7 @@
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"
@@ -119,6 +125,7 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
+  <!-- Background overlay on start -->
   <View
     android:id="@+id/background_dim_movie"
     style="@style/MyDimStyleMatchParent"

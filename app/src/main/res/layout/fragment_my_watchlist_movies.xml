@@ -7,6 +7,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.mywatchlist.MyWatchlistMoviesFragment">
 
+  <!-- Main list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -24,6 +25,7 @@
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"
@@ -34,6 +36,7 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
+  <!-- Illustration for "no data found" state -->
   <include
     android:id="@+id/illustration_no_data_view"
     layout="@layout/illustration_no_data"

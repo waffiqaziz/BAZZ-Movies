@@ -135,7 +135,7 @@ class SearchAdapter :
       ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
       ?: data.firstAirDate
         ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-        ?: "N/A"
+      ?: "N/A"
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
     binding.tvGenre.text =

@@ -1,32 +1,37 @@
 <resources>
   <string name="app_name_release">BAZZ Movies</string>
   <string name="app_name_debug">BAZZ Movies Debug</string>
+
+  <string name="title_activity">BAZZ Movies</string>
+  <string name="poster">Poster</string>
+  <string name="back">Back</string>
+
+  <!-- LOGIN -->
   <string name="bazz">BAZZ Movies</string>
   <string name="join_tmdb">Don\'t Have Account? Join TMDB</string>
   <string name="login">Login</string>
   <string name="text_login">text login</string>
-  <string name="button_login">button login</string>
   <string name="username">Username</string>
   <string name="password">Password</string>
   <string name="hide_unhide_password">hide or show password</string>
   <string name="please_enter_a_password">Please enter a password</string>
   <string name="please_enter_a_username">Please enter a username</string>
   <string name="guest_session"><u>Guest Session</u></string>
-  <string name="poster">Poster</string>
   <string name="retry">Retry</string>
-  <string name="unknown_error">Unknown error</string>
-
   <string name="login_as_guest_successful">Login as Guest Successful</string>
   <string name="login_successful">Login Successful</string>
 
-  <string name="title_activity">BAZZ Movies</string>
+  <!-- BOTTOM NAVIGATION -->
   <string name="title_home">Home</string>
   <string name="title_search">Search</string>
-  <string name="title_my_favorite">My Favorite</string>
   <string name="title_more">More</string>
+  <string name="title_my_favorite">My Favorite</string>
   <string name="title_my_watchlist">My Watchlist</string>
+
   <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
 
+  <!-- ERROR -->
+  <string name="unknown_error">Unknown error</string>
   <string name="something_went_wrong">Something Went Wrong</string>
   <string name="we_encountered_an_error_please_try_again">We encountered an error. Please try again.</string>
   <string name="try_again">Try Again</string>
@@ -72,6 +77,8 @@
   <string name="about_text">I created BAZZ Movies app for movie lovers. It helps you easily manage, discover, and enjoy your favorite films anywhere. Join me to elevate your movie experience!</string>
   <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but not endorsed or certified by TMDB.</string>
 
+  <!-- SEARCH -->
+  <string name="search_results">Search results</string>
   <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
@@ -83,8 +90,6 @@
   <string name="no_data_illustration">no data illustration</string>
   <string name="no_data_found">No data found!</string>
   <string name="no_data_explanation">We cannot find data you are looking for,\nmaybe add favorite or watchlist first</string>
-
-  <string name="back">Back</string>
 
   <!-- DETAIL MOVIE/TV -->
   <string name="yt_not_installed">Youtube App Not Installed</string>

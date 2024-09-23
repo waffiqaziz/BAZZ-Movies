@@ -5,6 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
+  <!-- Photo actor/actress -->
   <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/imageViewSlider"
     android:layout_width="match_parent"
