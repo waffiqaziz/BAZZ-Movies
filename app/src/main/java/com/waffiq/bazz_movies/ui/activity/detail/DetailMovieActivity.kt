@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
@@ -68,8 +67,9 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
+import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
 import com.waffiq.bazz_movies.utils.Helper.transparentStatusBar
-import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
@@ -80,10 +80,8 @@ import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.detailCr
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
-import com.waffiq.bazz_movies.utils.uihelpers.ScrollActionBarBehavior.Companion.setupScrollActionBarBehavior
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
@@ -113,16 +111,14 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val factory1 = ViewModelFactory.getInstance(this)
     detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
-    detailViewModel.loadingState.observe(this) {
-      showLoadingDim(it)
-    }
+    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     errorStateObserver()
 
     val factory2 = ViewModelUserFactory.getInstance(dataStore)
     userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     transparentStatusBar(window)
-    setupScrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollView)
+    scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollView)
     justifyTextView(binding.tvOverview)
     loadData()
     favWatchlistHandler()
@@ -192,7 +188,7 @@ class DetailMovieActivity : AppCompatActivity() {
     setupRecyclerView()
     showRecommendation()
     showGeneralInfo()
-    getDetailData()
+    getDetailBasedMediaType()
 
     // show detail data based media type
     if (dataExtra.mediaType == "movie") {
@@ -202,7 +198,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun getDetailData() {
+  private fun getDetailBasedMediaType() {
     showBackdrop()
     showPoster()
     if (dataExtra.mediaType == "movie") {
@@ -484,18 +480,18 @@ class DetailMovieActivity : AppCompatActivity() {
         startActivity(intent)
       } catch (e: ActivityNotFoundException) {
         Log.e(TAG, "YouTube app not installed", e)
-        Snackbar.make(
+        snackBarWarning(
           binding.coordinatorLayout,
-          yt_not_installed,
-          Snackbar.LENGTH_LONG
-        ).show()
+          null,
+          getString(yt_not_installed)
+        )
       } catch (e: Exception) {
         Log.e(TAG, "Unknown error occurred while trying to play video", e)
-        Snackbar.make(
+        snackBarWarning(
           binding.coordinatorLayout,
-          unknown_error,
-          Snackbar.LENGTH_LONG
-        ).show()
+          null,
+          getString(unknown_error)
+        )
       }
     }
   }
@@ -505,7 +501,7 @@ class DetailMovieActivity : AppCompatActivity() {
       // handle swipe refresh to reload data
       swipeRefresh.setOnRefreshListener {
         checkUser()
-        getDetailData()
+        getDetailBasedMediaType()
         swipeRefresh.isRefreshing = false
       }
 
@@ -578,14 +574,14 @@ class DetailMovieActivity : AppCompatActivity() {
     if (isLogin) { // user
       userPreferenceViewModel.getUserPref().observe(this) { user ->
         getStated(user.token)
-        detailViewModel.itemState.observe(this) {
-          if (it != null) {
-            favorite = it.favorite
-            watchlist = it.watchlist
-            showRatingUserLogin(it)
-            changeBtnFavoriteBG(this, binding.btnFavorite, it.favorite)
-            changeBtnWatchlistBG(this, binding.btnWatchlist, it.watchlist)
-          }
+      }
+      detailViewModel.itemState.observe(this) {
+        if (it != null) {
+          favorite = it.favorite
+          watchlist = it.watchlist
+          showRatingUserLogin(it)
+          changeBtnFavoriteBG(this, binding.btnFavorite, it.favorite)
+          changeBtnWatchlistBG(this, binding.btnWatchlist, it.watchlist)
         }
       }
     } else { // guest user
@@ -676,7 +672,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun errorStateObserver() {
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.errorState.debounce(350L) // Prevent multiple emissions within 500ms
+        detailViewModel.errorState.debounce(DEBOUNCE_LONG) // Prevent multiple emissions within 500ms
           .collect { errorMessage ->
             snackBarWarning(binding.coordinatorLayout, null, errorMessage)
           }

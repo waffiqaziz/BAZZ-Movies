@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.utils.common.Constants.SWIPE_THRESHOLD
 
+/**
+ * Used to handle swipe action on favorite and watchlist fragment
+ */
 class SwipeCallbackHelper(
   private val isLogin: Boolean,
   private val onSwipeLeft: (Boolean, RecyclerView.ViewHolder, Int) -> Unit,

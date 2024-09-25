@@ -4,6 +4,9 @@ import android.graphics.Typeface
 import android.text.TextPaint
 import android.text.style.StyleSpan
 
+/**
+ * Used to change  font family of error text in EditText.
+ */
 class CustomTypefaceSpan(private val typeface: Typeface) : StyleSpan(Typeface.NORMAL) {
   override fun updateDrawState(ds: TextPaint) {
     super.updateDrawState(ds)

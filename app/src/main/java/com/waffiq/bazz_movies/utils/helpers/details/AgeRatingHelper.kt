@@ -3,21 +3,22 @@ package com.waffiq.bazz_movies.utils.helpers.details
 import com.waffiq.bazz_movies.domain.model.detail.DetailMovie
 import com.waffiq.bazz_movies.domain.model.detail.tv.DetailTv
 
+/**
+ * Used to retrieving age ratings based on the user's or others region
+ */
 object AgeRatingHelper {
   // region CALCULATE AGE RATING MOVIE
   fun getAgeRating(
     data: DetailMovie?,
     userRegion: String,
   ): String {
-    // get age rating based on region
-    val certification = getTransformAgeRatingMovie(data, userRegion)
-
-    // if certification return empty, get age rating from US as default
-    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingMovie(data, "false")
+    // if age rating based on user region return empty, get age rating from any region
+    return getTransformAgeRatingMovie(data, userRegion).takeIf { it.isNotEmpty() }
+      ?: getTransformAgeRatingMovie(data, "false")
   }
 
   private fun getTransformAgeRatingMovie(data: DetailMovie?, region: String): String {
-    return if (region != "false") {
+    return if (region != "false") { // find age rating based on user region
       data?.releaseDates?.listReleaseDatesItem
         ?.find { it?.iso31661 == region }
         ?.let { regionItem ->
@@ -25,7 +26,7 @@ object AgeRatingHelper {
             ?.find { it.certification?.isNotEmpty() == true }
             ?.certification
         } ?: ""
-    } else {
+    } else { // find age rating from any country
       data?.releaseDates?.listReleaseDatesItem
         ?.asSequence() // Convert to sequence for lazy evaluation
         ?.flatMap {
@@ -42,11 +43,9 @@ object AgeRatingHelper {
     data: DetailTv?,
     userRegion: String,
   ): String {
-    // get age rating based on region
-    val certification = getTransformAgeRatingTv(data, userRegion)
-
-    // if certification return empty, get age rating from others
-    return certification.takeIf { it.isNotEmpty() } ?: getTransformAgeRatingTv(data, "false")
+    // if age rating based on user region return empty, get age rating from US
+    return getTransformAgeRatingTv(data, userRegion).takeIf { it.isNotEmpty() }
+      ?: getTransformAgeRatingTv(data, "false")
   }
 
   private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String =

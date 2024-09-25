@@ -23,6 +23,9 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
+/**
+ * Used as general helper
+ */
 object Helper {
 
   fun Context.toastShort(text: String) {
@@ -94,24 +97,18 @@ object Helper {
   }
 
   // region NESTED SCROLL VIEW BEHAVIOR
-  fun scrollActionBarBehavior(
-    context: Context,
+  fun Context.scrollActionBarBehavior(
     appBarLayout: AppBarLayout,
     nestedScrollView: NestedScrollView
   ) {
-    val fromColor = ContextCompat.getColor(context, android.R.color.transparent)
-    val toColor = ContextCompat.getColor(context, R.color.gray)
+    val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
+    val toColor = ContextCompat.getColor(this, R.color.gray)
 
     nestedScrollView.setOnScrollChangeListener(
       NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-        val maxScroll =
-          nestedScrollView.getChildAt(0).height - nestedScrollView.height
-        animateColorChange(
-          appBarLayout,
-          fromColor,
-          toColor,
-          percentage = scrollY.toFloat() / maxScroll.toFloat()
-        )
+        val maxScroll = nestedScrollView.getChildAt(0).height - nestedScrollView.height
+        val percentage = if (maxScroll > 0) scrollY.toFloat() / maxScroll.toFloat() else 0f
+        animateColorChange(appBarLayout, fromColor, toColor, percentage)
       }
     )
   }

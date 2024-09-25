@@ -34,7 +34,7 @@ class GetDetailMovieInteractor(
           NetworkResult.success(
             DetailMovieTvUsed(
               id = networkResult.data?.id ?: 0,
-              genre = getTransformGenreName(networkResult.data?.listGenres),
+              genre = getTransformGenreName(networkResult.data?.listGenres), // for view
               genreId = getTransformGenreIDs(networkResult.data?.listGenres),
               duration = getTransformDuration(networkResult.data?.runtime),
               imdbId = networkResult.data?.imdbId,

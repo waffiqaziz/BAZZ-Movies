@@ -6,6 +6,9 @@ import android.telephony.TelephonyManager
 import java.util.Locale
 import java.util.TimeZone
 
+/**
+ * Used to get user region via SIM Card and default phone configuration
+ */
 object GetRegionHelper {
   private fun getNetworkLocation(context: Context): String {
     val telMgr: TelephonyManager =

@@ -3,6 +3,9 @@ package com.waffiq.bazz_movies.utils.helpers.details
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
 import com.waffiq.bazz_movies.domain.model.detail.Video
 
+/**
+ * Used for detail fragment
+ */
 object DetailMovieTvHelper {
   private fun convertRuntime(t: Int): String {
     val hours: Int = t / 60
@@ -11,6 +14,7 @@ object DetailMovieTvHelper {
   }
 
   fun detailCrew(crew: List<MovieTvCrewItemResponse>): Pair<MutableList<String>, MutableList<String>> {
+    // key-value pair
     val jobToNamesMap = mapOf(
       "Director" to "Director",
       "Story" to "Story",
@@ -26,7 +30,14 @@ object DetailMovieTvHelper {
     val name: MutableList<String> = ArrayList()
 
     jobToNamesMap.forEach { (jobTitle, displayName) ->
-      val filteredNames = crew.filter { it.job == jobTitle }.map { it.name }.joinToString()
+      val filteredNames =
+        // Filters the crew list to find members whose job matches the jobTitle in the map.
+        crew.filter { it.job == jobTitle }
+          // Maps the filtered crew members to their name field.
+          .map { it.name }.joinToString()
+
+      // If the list of names isn't empty, the displayName (from the map) is added to the job list,
+      // and the corresponding names are added to the name list.
       if (filteredNames.isNotEmpty()) {
         job.add(displayName)
         name.add(filteredNames)

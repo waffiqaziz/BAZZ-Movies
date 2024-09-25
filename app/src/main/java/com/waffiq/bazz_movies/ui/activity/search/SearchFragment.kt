@@ -37,7 +37,6 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.utils.helpers.SnackBarManager
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -207,7 +206,7 @@ class SearchFragment : Fragment() {
           }
           binding.illustrationSearchView.root.isVisible = false
           pagingErrorState(loadState)?.let {
-            mSnackbar = requireContext().snackBarWarning(
+            mSnackbar = snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(pagingErrorHandling(it.error))

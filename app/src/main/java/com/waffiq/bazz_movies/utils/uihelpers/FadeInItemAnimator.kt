@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
+/**
+ * Used as animation for recyclerview
+ */
 class FadeInItemAnimator : DefaultItemAnimator() {
 
   private var currentRecyclerView: RecyclerView? = null

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.domain.model.ResultItem
-import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.utils.common.Event
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +26,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Used for watchlist and favorite fragments
+ */
 object FavWatchlistHelper {
   fun titleHandler(item: ResultItem): String {
     return item.name ?: item.title ?: item.originalTitle ?: "Item"
@@ -86,7 +89,7 @@ object FavWatchlistHelper {
   ) {
     lifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      loadStateFlow.debounce(DEBOUNCE_TIME).distinctUntilChanged().collectLatest { loadState ->
+      loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
             progressBar.isVisible = true

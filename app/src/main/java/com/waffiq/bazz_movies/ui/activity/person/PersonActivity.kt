@@ -74,7 +74,7 @@ class PersonActivity : AppCompatActivity() {
 
     justifyTextView(binding.tvBiography)
     transparentStatusBar(window)
-    scrollActionBarBehavior(this, binding.appBarLayout, binding.nestedScrollViewPerson)
+    scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollViewPerson)
     showLoading(true)
     getDataExtra()
     setupView()

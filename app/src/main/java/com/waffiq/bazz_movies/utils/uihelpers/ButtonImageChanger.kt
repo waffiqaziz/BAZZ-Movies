@@ -14,6 +14,9 @@ import com.waffiq.bazz_movies.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_selected
 
+/**
+ * Used to update the drawable images for the favorite and watchlist buttons.
+ */
 object ButtonImageChanger {
   fun changeBtnWatchlistBG(
     context: Context,

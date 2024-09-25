@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.R.string.data
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.utils.Helper.toastShort
-import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_SHORT
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -19,19 +19,21 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+/**
+ * Used as loadStateFlow listener on HomeFragment child (Featured, Movie, TvSeries fragments)
+ */
 object HomeFragmentHelper {
-  fun handleLoadState(
+  fun LifecycleOwner.handleLoadState(
     context: Context,
     adapter: PagingDataAdapter<*, *>,
     recyclerView: RecyclerView,
     textView: TextView,
     noMoviesStringRes: Int,
     region: String,
-    lifecycleOwner: LifecycleOwner
   ) {
-    lifecycleOwner.lifecycleScope.launch {
+    this.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(DEBOUNCE_TIME).distinctUntilChanged()
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           if (loadState.source.refresh is LoadState.NotLoading &&
             loadState.append.endOfPaginationReached &&

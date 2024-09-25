@@ -5,6 +5,9 @@ import com.waffiq.bazz_movies.domain.model.detail.ReleaseDateRegion
 import com.waffiq.bazz_movies.domain.model.detail.ReleaseDatesItem
 import com.waffiq.bazz_movies.utils.Helper
 
+/**
+ * Used to get release date and its region
+ */
 object ReleaseDateHelper {
   fun getReleaseDateRegion(data: DetailMovie?, userRegion: String): ReleaseDateRegion {
     var releaseDateRegion: ReleaseDateRegion? = null
@@ -19,7 +22,7 @@ object ReleaseDateHelper {
       )
     }
 
-    // Step 2: Fallback to production country and its release date
+    // Step 2: Fallback to use production country and its release date
     if (releaseDateRegion == null) {
       val productionCountryRegionAndDate = ReleaseDateRegion(
         regionRelease = data?.listProductionCountriesItem?.firstOrNull { !it?.iso31661.isNullOrEmpty() }?.iso31661

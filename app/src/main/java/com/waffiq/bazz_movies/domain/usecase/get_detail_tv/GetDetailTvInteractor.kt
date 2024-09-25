@@ -32,7 +32,7 @@ class GetDetailTvInteractor(
           NetworkResult.success(
             DetailMovieTvUsed(
               id = networkResult.data?.id ?: 0,
-              genre = getTransformGenreName(networkResult.data?.listGenres),
+              genre = getTransformGenreName(networkResult.data?.listGenres), // for view
               genreId = getTransformGenreIDs(networkResult.data?.listGenres),
               duration = networkResult.data?.status, // for tv duration set as status
               imdbId = "",

@@ -201,7 +201,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
-            mSnackbar = requireContext().snackBarWarning(
+            mSnackbar = snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               Event(it.title)
@@ -225,7 +225,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = requireContext().snackBarWarning(
+            mSnackbar = snackBarWarning(
               requireActivity().findViewById(nav_view),
               requireActivity().findViewById(nav_view),
               pagingErrorHandling(it)

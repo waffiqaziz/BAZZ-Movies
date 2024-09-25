@@ -29,7 +29,9 @@ object Constants {
   const val WIKIDATA_PERSON_LINK = "https://www.wikidata.org/wiki/"
   const val IMDB_PERSON_LINK = "https://www.imdb.com/name/"
 
-  const val DEBOUNCE_TIME = 200L
+  const val DEBOUNCE_SHORT = 200L
+  const val DEBOUNCE_LONG = 350L
+  const val DEBOUNCE_VERY_LONG = 500L
   const val ANIM_DURATION = 200L
 
   const val NAN = "NaN"

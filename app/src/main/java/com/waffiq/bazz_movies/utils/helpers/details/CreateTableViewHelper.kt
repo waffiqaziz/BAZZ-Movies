@@ -11,6 +11,9 @@ import androidx.core.content.res.ResourcesCompat
 import com.waffiq.bazz_movies.R.color.gray_100
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
 
+/**
+ * Used to create a table view to display movie or TV crew details.
+ */
 object CreateTableViewHelper {
   fun createTable(
     context: Context,

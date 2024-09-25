@@ -6,6 +6,9 @@ import okio.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+/**
+ * Used to handle error on PagingData
+ */
 object PagingLoadStateHelper {
   fun pagingErrorHandling(error: Throwable): String =
     when (error) {

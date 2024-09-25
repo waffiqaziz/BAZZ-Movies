@@ -3,9 +3,12 @@ package com.waffiq.bazz_movies.utils.helpers
 import com.waffiq.bazz_movies.domain.model.detail.GenresItem
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 
+/**
+ * Used to retrieve genre names and codes.
+ */
 object GenreHelper {
   private val genreNameMap = mapOf(
-    // movies
+    // movie genres
     28 to "Action",
     12 to "Adventure",
     16 to "Animation",
@@ -26,7 +29,7 @@ object GenreHelper {
     10752 to "War",
     37 to "Western",
 
-    // for TV
+    // tv genres
     10759 to "Action & Adventure",
     10762 to "Kids",
     10763 to "News",
@@ -49,7 +52,7 @@ object GenreHelper {
   }
 
   private val genreCodeMap = mapOf(
-    // movies
+    // movie genres
     "Action" to 28,
     "Adventure" to 12,
     "Animation" to 16,
@@ -70,7 +73,7 @@ object GenreHelper {
     "War" to 10752,
     "Western" to 37,
 
-    // for TV
+    // tv genres
     "Action & Adventure" to 10759,
     "Kids" to 10762,
     "News" to 10763,

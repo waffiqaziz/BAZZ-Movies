@@ -48,7 +48,7 @@ import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_TIME
+import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.utils.common.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.utils.common.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.utils.common.Constants.GRAVATAR_LINK
@@ -123,7 +123,7 @@ class MoreFragment : Fragment() {
   private fun signOutStateObserver() {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      moreViewModelUser.signOutState.debounce(500L).collectLatest {
+      moreViewModelUser.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest {
         when (it?.status) {
           Status.SUCCESS -> {
             progressIsVisible(false)
@@ -137,7 +137,7 @@ class MoreFragment : Fragment() {
             fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
             btnSignOutIsEnable(true)
             progressIsVisible(false)
-            mSnackbar = requireContext().snackBarWarning(
+            mSnackbar = snackBarWarning(
               binding.constraintLayout,
               requireActivity().findViewById(nav_view),
               Event(it.message.toString())
@@ -225,7 +225,7 @@ class MoreFragment : Fragment() {
 
           is DbResult.Error -> {
             progressIsVisible(false)
-            mSnackbar = requireContext().snackBarWarning(
+            mSnackbar = snackBarWarning(
               binding.constraintLayout,
               requireActivity().findViewById(nav_view),
               Event(it.errorMessage)
@@ -295,17 +295,18 @@ class MoreFragment : Fragment() {
     // check if user already have countryCode
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userCountry ->
 
-      if (userCountry == NAN) { // if not yet, then set country
+      if (userCountry == NAN) { // if country not yet initialize, set country
         regionViewModel.getCountryCode()
-        regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
-
-          if (countryCode.isNotEmpty()) {
-            userPreferenceViewModel.saveRegionPref(countryCode)
-            binding.btnCountryPicker.setCountryForNameCode(countryCode)
-          }
-        }
       } else {
         binding.btnCountryPicker.setCountryForNameCode(userCountry)
+      }
+    }
+
+    // observe country code
+    regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
+      if (countryCode.isNotEmpty()) {
+        userPreferenceViewModel.saveRegionPref(countryCode)
+        binding.btnCountryPicker.setCountryForNameCode(countryCode)
       }
     }
   }

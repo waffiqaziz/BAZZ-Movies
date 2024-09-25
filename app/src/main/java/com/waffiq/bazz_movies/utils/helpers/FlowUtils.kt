@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Used to collect and submit PagingData via flow
+ */
 object FlowUtils {
   fun <T : Any> collectAndSubmitData(
     fragment: Fragment,

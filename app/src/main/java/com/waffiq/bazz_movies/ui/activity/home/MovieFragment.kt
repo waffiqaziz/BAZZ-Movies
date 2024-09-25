@@ -16,9 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
+import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
+import com.waffiq.bazz_movies.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
@@ -151,23 +152,21 @@ class MovieFragment : Fragment() {
     collectAndSubmitData(this, { movieViewModel.getTopRatedMovies() }, topRatedAdapter)
 
     // Handle LoadState for RecyclerViews
-    handleLoadState(
+    viewLifecycleOwner.handleLoadState(
       requireContext(),
       nowPlayingAdapter,
       binding.rvNowPlaying,
       binding.tvAiringToday,
-      R.string.no_movie_currently_playing,
-      region,
-      viewLifecycleOwner
+      no_movie_currently_playing,
+      region
     )
-    handleLoadState(
+    viewLifecycleOwner.handleLoadState(
       requireContext(),
       upComingAdapter,
       binding.rvUpcoming,
       binding.tvUpcoming,
-      R.string.no_upcoming_movie,
-      region,
-      viewLifecycleOwner
+      no_upcoming_movie,
+      region
     )
 
     // Set up swipe-to-refresh
@@ -180,7 +179,7 @@ class MovieFragment : Fragment() {
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter) {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_TIME).distinctUntilChanged()
+      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
             loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
@@ -200,7 +199,7 @@ class MovieFragment : Fragment() {
               binding.progressBar.isGone = true
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = requireContext().snackBarWarning(
+                mSnackbar = snackBarWarning(
                   requireActivity().findViewById(nav_view),
                   requireActivity().findViewById(nav_view),
                   Event(pagingErrorHandling(it.error))

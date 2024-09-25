@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.view.View
 import androidx.core.view.isVisible
 
+/**
+ * Used as animation fade in and fade out
+ */
 object Animation {
   fun fadeOut(view: View, duration: Long = 300) {
     view.animate()

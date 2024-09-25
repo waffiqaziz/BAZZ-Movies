@@ -4,6 +4,9 @@ import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
 
+/**
+ * Used for person fragment
+ */
 object PersonPageHelper {
   fun getAgeBirth(date: String): Int {
     val dateParts = date.split("-").toTypedArray()

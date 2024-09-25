@@ -157,7 +157,7 @@ class DetailMovieViewModel(
   // endregion MOVIE
 
   // region TV-SERIES
-  fun getLinkTv(tvId: Int) {
+  private fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getTrailerLinkTv(tvId).collect { networkResult ->
         when (networkResult.status) {
@@ -333,7 +333,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
+  private fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(false, fav)) {
       is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
@@ -349,7 +349,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
+  private fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateFavoriteItemDB(true, fav)) {
       is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
@@ -365,7 +365,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
+  private fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(false, fav)) {
       is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
@@ -381,7 +381,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
+  private fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.updateWatchlistItemDB(true, fav)) {
       is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {
@@ -397,7 +397,7 @@ class DetailMovieViewModel(
     }
   }
 
-  fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
+  private fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
     when (val result = localDatabaseUseCase.deleteFromDB(fav)) {
       is DbResult.Error -> _errorState.emit(result.errorMessage)
       is DbResult.Success -> {

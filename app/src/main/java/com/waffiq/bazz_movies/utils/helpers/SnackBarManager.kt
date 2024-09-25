@@ -1,15 +1,17 @@
 package com.waffiq.bazz_movies.utils.helpers
 
-import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.utils.common.Event
 
+/**
+ * Used to handle all snackbar warning
+ */
 object SnackBarManager {
 
-  fun Context.snackBarWarning(
+  fun snackBarWarning(
     view: View,
     guideView: View?,
     eventMessage: Event<String>
@@ -27,7 +29,7 @@ object SnackBarManager {
     }
   }
 
-  fun Context.snackBarWarning(
+  fun snackBarWarning(
     view: View,
     guideView: View?,
     message: String?
