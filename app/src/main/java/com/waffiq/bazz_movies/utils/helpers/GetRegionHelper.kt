@@ -11,40 +11,29 @@ import java.util.TimeZone
  */
 object GetRegionHelper {
   private fun getNetworkLocation(context: Context): String {
-    val telMgr: TelephonyManager =
-      context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+    val telMgr = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
     return when (telMgr.simState) {
-      TelephonyManager.SIM_STATE_ABSENT ->
-        TimeZone.getDefault().id.lowercase()
+      // If the SIM card is absent, returns the default time zone ID of the device
+      TelephonyManager.SIM_STATE_ABSENT -> TimeZone.getDefault().id.lowercase()
 
-      TelephonyManager.SIM_STATE_READY ->
-        telMgr.networkCountryIso.lowercase()
+      // If the SIM card is ready (i.e., active and operational), returns the country code
+      // of the mobile network (telMgr.networkCountryIso), which indicates the country where
+      // the network is registered.
+      TelephonyManager.SIM_STATE_READY -> telMgr.networkCountryIso.lowercase()
 
-      TelephonyManager.SIM_STATE_CARD_IO_ERROR -> ""
-
-      TelephonyManager.SIM_STATE_CARD_RESTRICTED -> ""
-
-      TelephonyManager.SIM_STATE_NETWORK_LOCKED -> ""
-
-      TelephonyManager.SIM_STATE_NOT_READY -> ""
-
-      TelephonyManager.SIM_STATE_PERM_DISABLED -> ""
-
-      TelephonyManager.SIM_STATE_PIN_REQUIRED -> ""
-
-      TelephonyManager.SIM_STATE_PUK_REQUIRED -> ""
-
-      TelephonyManager.SIM_STATE_UNKNOWN -> ""
-
+      // Other SIM States indicating no valid network location can be determined.
       else -> ""
     }
   }
 
   fun getLocation(context: Context): String {
-    // Get network location or fallback to locale-based location
+    // if the network location is empty, fallback to the locale's country
     return getNetworkLocation(context).ifEmpty {
       val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+        // Starting from Android Nougat (API level 24), device can support multiple locales, so
+        // get this first locale which highest-priority locale chosen by the user
         context.resources.configuration.locales.get(0)
       } else {
         @Suppress("DEPRECATION")

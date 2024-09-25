@@ -96,7 +96,7 @@ class MovieFragment : Fragment() {
           if (countryCode.isNotEmpty()) { // if success
             setData(countryCode)
             userPreferenceViewModel.saveRegionPref(countryCode)
-          } else { // if null, then set region using SIM Card and default phone configuration
+          } else { // if null, then set region using SIM Card or default phone configuration
             val region = getLocation(requireContext())
             setData(region)
             userPreferenceViewModel.saveRegionPref(region)

@@ -30,6 +30,7 @@ class RegionViewModel(
 
           Status.LOADING -> {}
           Status.ERROR -> {
+            _countryCode.value = ""
             _errorState.value =
               Event(networkResult.message ?: "Something went wrong. Please try again later.")
           }
