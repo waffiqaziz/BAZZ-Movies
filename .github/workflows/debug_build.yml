@@ -1,10 +1,6 @@
 name: Android Build (Debug)
 
-on:
-  push:
-    branches: [ "development" ]
-  pull_request:
-    branches: [ "development" ]
+on: [push]
 
 jobs:
   build:
@@ -51,8 +47,8 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: BAZZ_Movies.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+      # - name: Upload a Build Artifact
+      #   uses: actions/upload-artifact@v4.3.3
+      #   with:
+      #     name: BAZZ_Movies.apk
+      #     path: app/build/outputs/apk/debug/app-debug.apk
