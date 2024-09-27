@@ -41,13 +41,13 @@ object GenreHelper {
   )
 
   private fun getGenreName(int: Int): String {
-    return genreNameMap[int] ?: NAN
+    return genreNameMap[int] ?: ""
   }
 
   fun getGenreName(data: List<Int>): String {
     return data
       .map { getGenreName(it) }
-      .filter { it != NAN }
+      .filter { it.isNotEmpty() }
       .joinToString(", ")
   }
 

@@ -25,12 +25,12 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<CastItem>()
 
-  fun setCast(itemStory: List<CastItem>) {
-    val diffCallback = DiffCallback(this.listCast, itemStory)
+  fun setCast(itemCast: List<CastItem>) {
+    val diffCallback = DiffCallback(this.listCast, itemCast)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
     this.listCast.clear()
-    this.listCast.addAll(itemStory)
+    this.listCast.addAll(itemCast)
     diffResult.dispatchUpdatesTo(this)
   }
 

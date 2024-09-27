@@ -20,12 +20,12 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
 
   private val listCast = ArrayList<ProfilesItem>()
 
-  fun setImage(itemStory: List<ProfilesItem>) {
-    val diffCallback = DiffCallback(this.listCast, itemStory)
+  fun setImage(itemPerson: List<ProfilesItem>) {
+    val diffCallback = DiffCallback(this.listCast, itemPerson)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
     this.listCast.clear()
-    this.listCast.addAll(itemStory)
+    this.listCast.addAll(itemPerson)
     diffResult.dispatchUpdatesTo(this)
   }
 

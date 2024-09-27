@@ -19,12 +19,12 @@ class CastAdapter : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<MovieTvCastItemResponse>()
 
-  fun setCast(itemStory: List<MovieTvCastItemResponse>) {
-    val diffCallback = DiffCallback(this.listCast, itemStory)
+  fun setCast(itemCast: List<MovieTvCastItemResponse>) {
+    val diffCallback = DiffCallback(this.listCast, itemCast)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
     this.listCast.clear()
-    this.listCast.addAll(itemStory)
+    this.listCast.addAll(itemCast)
     diffResult.dispatchUpdatesTo(this)
   }
 

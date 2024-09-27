@@ -3,12 +3,19 @@ package com.waffiq.bazz_movies.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.domain.usecase.get_region.GetRegionUseCase
+import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.launch
 
+/**
+ * region = country
+ * region is used by TMDB and for local operation
+ * and country is used to get country code from country.is, network operation
+ */
 class RegionViewModel(
   private val getRegionUseCase: GetRegionUseCase
 ) : ViewModel() {

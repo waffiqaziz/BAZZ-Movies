@@ -11,9 +11,7 @@ import com.waffiq.bazz_movies.ui.activity.home.TvSeriesFragment
 class HomeViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
   FragmentStateAdapter(fragmentManager, lifecycle) {
 
-  override fun getItemCount(): Int {
-    return NUM_TABS
-  }
+  override fun getItemCount(): Int = NUM_TABS
 
   override fun createFragment(position: Int): Fragment {
     return when (position) {
@@ -24,6 +22,6 @@ class HomeViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycl
   }
 
   companion object {
-    const val NUM_TABS = 3
+    private const val NUM_TABS = 3
   }
 }
