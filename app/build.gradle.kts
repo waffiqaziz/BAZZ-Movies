@@ -1,3 +1,4 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.util.Properties
 
 plugins {
@@ -23,8 +24,8 @@ android {
     applicationId = "com.bazz.bazz_movies"
     minSdk = 23
     targetSdk = 34
-    versionCode = 10
-    versionName = "1.0.9"
+    versionCode = 11
+    versionName = "1.0.10"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -66,7 +67,7 @@ android {
       resValue("string", "app_name", "@string/app_name_release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
-      configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+      configure<CrashlyticsExtension> {
         mappingFileUploadEnabled = true
       }
     }
@@ -96,6 +97,7 @@ dependencies {
   implementation(libs.androidx.navigation.fragment.ktx)
   implementation(libs.androidx.navigation.ui.ktx)
   implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.legacy.support.v4)
 
   // splashscreen
   implementation(libs.androidx.core.splashscreen)
@@ -118,15 +120,17 @@ dependencies {
   implementation(libs.androidx.legacy.support.v4)
   ksp(libs.androidx.room.room.compiler)
 
-  implementation(libs.androidx.legacy.support.v4)
+  // material3
   implementation(libs.google.material)
 
+  // retrofit & moshi
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.moshi)
   implementation(libs.moshi.kotlin)
   ksp(libs.moshi.kotlin.codegen)
   implementation(libs.okhttp.logging.interceptor)
 
+  // testing
   coreLibraryDesugaring(libs.desugar.jdk.libs)
   testImplementation(libs.junit)
   androidTestImplementation(libs.junit)
@@ -137,11 +141,15 @@ dependencies {
   // disable for faster build
 //  debugImplementation(libs.leakcanary)
 
+  // glide
   implementation(libs.glide)
   ksp(libs.glide.compiler)
 
+  // third-party library
   implementation(libs.expandable.textview)
   implementation(libs.country.picker)
+
+  // firebase
   implementation(libs.play.integrity)
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
