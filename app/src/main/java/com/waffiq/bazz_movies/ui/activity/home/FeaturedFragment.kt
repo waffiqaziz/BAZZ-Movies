@@ -268,6 +268,11 @@ class FeaturedFragment : Fragment() {
     currentJob?.cancel()
   }
 
+  override fun onStop() {
+    super.onStop()
+    mSnackbar?.dismiss()
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar = null

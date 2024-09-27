@@ -183,6 +183,11 @@ class TvSeriesFragment : Fragment() {
     mSnackbar?.dismiss()
   }
 
+  override fun onStop() {
+    super.onStop()
+    mSnackbar?.dismiss()
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar = null
