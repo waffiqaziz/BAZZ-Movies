@@ -8,6 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.button.MaterialButton
 import com.waffiq.bazz_movies.R.string.data
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.utils.Helper.toastShort
@@ -48,6 +50,22 @@ object HomeFragmentHelper {
             }
           }
         }
+    }
+  }
+
+  fun setupSwipeRefresh(
+    swipeRefresh: SwipeRefreshLayout,
+    vararg adapters: PagingDataAdapter<*, *>
+  ) {
+    swipeRefresh.setOnRefreshListener {
+      adapters.forEach { it.refresh() }
+      swipeRefresh.isRefreshing = false
+    }
+  }
+
+  fun setupRetryButton(materialButton: MaterialButton, vararg adapters: PagingDataAdapter<*, *>) {
+    materialButton.setOnClickListener {
+      adapters.forEach { it.refresh() }
     }
   }
 }

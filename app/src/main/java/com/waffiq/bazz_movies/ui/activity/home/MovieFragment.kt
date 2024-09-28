@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingDataAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.id.nav_view
 import com.waffiq.bazz_movies.R.string.binding_error
@@ -34,6 +33,8 @@ import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.handleLoadState
+import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
@@ -170,10 +171,22 @@ class MovieFragment : Fragment() {
     )
 
     // Set up swipe-to-refresh
-    setupSwipeRefresh(popularAdapter, nowPlayingAdapter, upComingAdapter, topRatedAdapter)
+    setupSwipeRefresh(
+      binding.swipeRefresh,
+      popularAdapter,
+      nowPlayingAdapter,
+      upComingAdapter,
+      topRatedAdapter
+    )
 
     // Set up retry button
-    setupRetryButton(popularAdapter, nowPlayingAdapter, upComingAdapter, topRatedAdapter)
+    setupRetryButton(
+      binding.illustrationError.btnTryAgain,
+      popularAdapter,
+      nowPlayingAdapter,
+      upComingAdapter,
+      topRatedAdapter
+    )
   }
 
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter) {
@@ -223,19 +236,6 @@ class MovieFragment : Fragment() {
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
-    }
-  }
-
-  private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.swipeRefresh.setOnRefreshListener {
-      adapters.forEach { it.refresh() }
-      binding.swipeRefresh.isRefreshing = false
-    }
-  }
-
-  private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      adapters.forEach { it.refresh() }
     }
   }
 

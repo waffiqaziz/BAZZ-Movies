@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -42,6 +41,8 @@ import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.utils.helpers.FlowUtils.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.handleLoadState
+import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
@@ -179,10 +180,20 @@ class FeaturedFragment : Fragment() {
     )
 
     // Set up swipe-to-refresh
-    setupSwipeRefresh(adapterTrending, adapterPlayingNow, adapterUpcoming)
+    setupSwipeRefresh(
+      binding.swipeRefresh,
+      adapterTrending,
+      adapterPlayingNow,
+      adapterUpcoming
+    )
 
     // Set up retry button
-    setupRetryButton(adapterTrending, adapterPlayingNow, adapterUpcoming)
+    setupRetryButton(
+      binding.illustrationError.btnTryAgain,
+      adapterTrending,
+      adapterPlayingNow,
+      adapterUpcoming
+    )
   }
 
   private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
@@ -196,19 +207,6 @@ class FeaturedFragment : Fragment() {
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
         collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
-    }
-  }
-
-  private fun setupSwipeRefresh(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.swipeRefresh.setOnRefreshListener {
-      adapters.forEach { it.refresh() }
-      binding.swipeRefresh.isRefreshing = false
-    }
-  }
-
-  private fun setupRetryButton(vararg adapters: PagingDataAdapter<*, *>) {
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      adapters.forEach { it.refresh() }
     }
   }
 
