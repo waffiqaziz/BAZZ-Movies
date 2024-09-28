@@ -13,7 +13,6 @@
     android:fullBackupContent="@xml/backup_rules"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:networkSecurityConfig="@xml/network_security_config"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="false"
     android:theme="@style/Base.Theme.BAZZ_movies"
