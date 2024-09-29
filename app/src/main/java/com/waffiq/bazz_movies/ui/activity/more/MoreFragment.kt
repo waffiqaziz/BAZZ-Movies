@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.more
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -22,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.anim.fade_in
 import com.waffiq.bazz_movies.R.anim.fade_out
@@ -190,27 +190,25 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutLoggedIn(token: String) {
-    val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-    builder
-      .setMessage(getString(warning_signOut_logged_user))
-      .setTitle(getString(warning))
-      .setPositiveButton(getString(yes)) { dialog, _ ->
+    MaterialAlertDialogBuilder(requireContext()).apply {
+      setTitle(resources.getString(warning))
+      setMessage(resources.getString(warning_signOut_logged_user))
+      setNegativeButton(resources.getString(no)) { dialog, _ ->
+        dialog.dismiss()
+        dialog.cancel()
+      }
+      setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
         progressIsVisible(true)
         moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
         dialog.dismiss()
       }
-      .setNegativeButton(getString(no)) { dialog, _ ->
-        dialog.dismiss()
+    }.show().also { dialog ->
+      // Ensure dialog is shown if the activity is not finishing
+      if (requireActivity().isFinishing) {
         dialog.cancel()
       }
-
-    val dialog: AlertDialog = builder.create()
-    if (!requireActivity().isFinishing) {
-      dialog.show()
-    } else {
-      dialog.cancel()
     }
   }
 
@@ -237,26 +235,24 @@ class MoreFragment : Fragment() {
       }
     }
 
-    val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-    builder
-      .setMessage(getString(warning_signOut_guest_mode))
-      .setTitle(getString(warning))
-      .setPositiveButton(getString(yes)) { dialog, _ ->
-        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-        moreViewModelLocal.deleteAll() // delete all user data  (watchlistPostModel and favoritePostModel)
-        dialog.dismiss()
-        removePrefUserData() // remove preference user data
-      }
-      .setNegativeButton(getString(no)) { dialog, _ ->
+    MaterialAlertDialogBuilder(requireContext()).apply {
+      setTitle(resources.getString(warning))
+      setMessage(resources.getString(warning_signOut_guest_mode))
+      setNegativeButton(resources.getString(no)) { dialog, _ ->
         dialog.dismiss()
         dialog.cancel()
       }
-
-    val dialog: AlertDialog = builder.create()
-    if (!requireActivity().isFinishing) {
-      dialog.show()
-    } else {
-      dialog.cancel()
+      setPositiveButton(resources.getString(yes)) { dialog, _ ->
+        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+        moreViewModelLocal.deleteAll() // delete all user data (watchlistPostModel and favoritePostModel)
+        dialog.dismiss()
+        removePrefUserData() // remove preference user data
+      }
+    }.show().also { dialog ->
+      // Ensure dialog is shown if the activity is not finishing
+      if (requireActivity().isFinishing) {
+        dialog.cancel()
+      }
     }
   }
 

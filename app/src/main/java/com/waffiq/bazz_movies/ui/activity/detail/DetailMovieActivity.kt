@@ -15,7 +15,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.RatingBar
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
@@ -31,6 +30,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
@@ -616,13 +616,15 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDialogNotRated() {
-    val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-    builder
-      .setTitle(getString(not_available_full))
-      .setMessage(getString(cant_provide_a_score))
-
-    val dialog: AlertDialog = builder.create()
-    dialog.show()
+    MaterialAlertDialogBuilder(this).apply {
+      setTitle(resources.getString(not_available_full))
+      setMessage(resources.getString(cant_provide_a_score))
+    }.show().also { dialog ->
+      // Ensure dialog is shown if the activity is not finishing
+      if (this.isFinishing) {
+        dialog.cancel()
+      }
+    }
   }
 
   private fun showDialogRate() {
