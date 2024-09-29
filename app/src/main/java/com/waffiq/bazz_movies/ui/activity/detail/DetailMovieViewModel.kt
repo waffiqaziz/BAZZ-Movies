@@ -28,8 +28,8 @@ import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import com.waffiq.bazz_movies.utils.resultstate.PostModelState
-import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -90,12 +90,12 @@ class DetailMovieViewModel(
   fun getLinkVideoMovie(movieId: Int) {
     viewModelScope.launch {
       getDetailMovieUseCase.getLinkVideoMovies(movieId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> _linkVideo.value = networkResult.data ?: ""
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _linkVideo.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -105,12 +105,12 @@ class DetailMovieViewModel(
   fun detailMovie(id: Int, userRegion: String) {
     viewModelScope.launch {
       getDetailMovieUseCase.getDetailMovie(id, userRegion).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _detailMovieTv.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _detailMovieTv.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -120,12 +120,12 @@ class DetailMovieViewModel(
   fun getMovieCredits(movieId: Int) {
     viewModelScope.launch {
       getDetailMovieUseCase.getCreditMovies(movieId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _movieTvCreditsResult.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _movieTvCreditsResult.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -143,12 +143,12 @@ class DetailMovieViewModel(
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
       getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _itemState.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _itemState.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -160,12 +160,12 @@ class DetailMovieViewModel(
   private fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getTrailerLinkTv(tvId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> _linkVideo.value = networkResult.data ?: ""
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _linkVideo.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -175,12 +175,12 @@ class DetailMovieViewModel(
   fun detailTv(id: Int, userRegion: String) {
     viewModelScope.launch {
       getDetailTvUseCase.getDetailTv(id, userRegion).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _detailMovieTv.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _detailMovieTv.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -190,12 +190,12 @@ class DetailMovieViewModel(
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getCreditTv(tvId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _movieTvCreditsResult.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _movieTvCreditsResult.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -205,19 +205,20 @@ class DetailMovieViewModel(
   fun getImdbVideoTv(id: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getExternalTvId(id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
-            _tvImdbID.value = networkResult.data?.imdbId ?: ""
+        when (networkResult) {
+          is NetworkResult.Success -> {
+            networkResult.data.imdbId.let { _tvImdbID.value = it }
             networkResult.data.let {
-              if (it?.imdbId != null) {
+              if (it.imdbId != null) {
                 getScoreOMDb(it.imdbId)
                 getLinkTv(id)
               }
             }
           }
-          Status.LOADING -> {}
-          Status.ERROR -> {
-            _errorState.emit(networkResult.message.toString())
+
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -230,12 +231,12 @@ class DetailMovieViewModel(
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
       getStatedTvUseCase.getStatedTv(sessionId, id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _itemState.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _itemState.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -246,16 +247,16 @@ class DetailMovieViewModel(
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
       getDetailOMDbUseCase.getDetailOMDb(imdbId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             networkResult.data.let { _omdbResult.value = it }
             _loadingState.value = false
           }
 
-          Status.LOADING -> {}
-          Status.ERROR -> {
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -419,8 +420,8 @@ class DetailMovieViewModel(
   fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             if (data.mediaType == "movie") {
               getStatedMovie(sessionId, data.mediaId)
             } else {
@@ -436,8 +437,8 @@ class DetailMovieViewModel(
             _loadingState.value = false
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = false,
@@ -446,7 +447,7 @@ class DetailMovieViewModel(
               )
             )
             data.favorite.let { _isFavorite.value = it }
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
             _loadingState.value = false
           }
         }
@@ -457,8 +458,8 @@ class DetailMovieViewModel(
   fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             if (data.mediaType == "movie") {
               getStatedMovie(sessionId, data.mediaId)
             } else {
@@ -475,8 +476,8 @@ class DetailMovieViewModel(
             _loadingState.value = false
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = false,
@@ -484,7 +485,7 @@ class DetailMovieViewModel(
                 isFavorite = false
               )
             )
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
             _loadingState.value = false
           }
         }
@@ -495,17 +496,17 @@ class DetailMovieViewModel(
   fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postMovieRate(sessionId, data, movieId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             _rateState.value = Event(true)
             _loadingState.value = false
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }
@@ -515,17 +516,17 @@ class DetailMovieViewModel(
   fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postTvRate(sessionId, data, tvId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             _rateState.value = Event(true)
             _loadingState.value = false
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.emit(networkResult.message.toString())
+            _errorState.emit(networkResult.message)
           }
         }
       }

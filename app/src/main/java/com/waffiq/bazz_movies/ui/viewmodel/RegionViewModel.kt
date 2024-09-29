@@ -3,12 +3,10 @@ package com.waffiq.bazz_movies.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.domain.usecase.get_region.GetRegionUseCase
-import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
 
 /**
@@ -28,18 +26,17 @@ class RegionViewModel(
   fun getCountryCode() =
     viewModelScope.launch {
       getRegionUseCase.getCountryCode().collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             networkResult.data.let {
-              if (it != null) _countryCode.value = it.country ?: ""
+              _countryCode.value = it.country ?: ""
             }
           }
 
-          Status.LOADING -> {}
-          Status.ERROR -> {
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _countryCode.value = ""
-            _errorState.value =
-              Event(networkResult.message ?: "Something went wrong. Please try again later.")
+            _errorState.value = Event(networkResult.message)
           }
         }
       }

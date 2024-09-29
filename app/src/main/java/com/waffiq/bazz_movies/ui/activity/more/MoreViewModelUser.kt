@@ -26,6 +26,6 @@ class MoreViewModelUser(
   }
 
   fun removeState() {
-    _signOutState.value = NetworkResult.loading()
+    _signOutState.value = NetworkResult.Loading
   }
 }

@@ -23,7 +23,7 @@ import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -109,16 +109,16 @@ class MyWatchlistViewModel(
   fun postFavorite(sesId: String, userId: Int, data: FavoritePostModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sesId, data, userId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS ->
+        when (networkResult) {
+          is NetworkResult.Success ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(true, title, data, null))
 
-          Status.ERROR ->
+          is NetworkResult.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
 
-          Status.LOADING -> {}
+          is NetworkResult.Loading -> {}
         }
       }
     }
@@ -127,16 +127,16 @@ class MyWatchlistViewModel(
   fun postWatchlist(sesId: String, userId: Int, data: WatchlistPostModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sesId, data, userId).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS ->
+        when (networkResult) {
+          is NetworkResult.Success ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(true, title, null, data))
 
-          Status.ERROR ->
+          is NetworkResult.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
 
-          Status.LOADING -> {}
+          is NetworkResult.Loading -> {}
         }
       }
     }
@@ -151,9 +151,9 @@ class MyWatchlistViewModel(
     viewModelScope.launch {
       if (mediaType == "movie") {
         getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
-          when (networkResult.status) {
-            Status.SUCCESS -> {
-              if (networkResult.data?.favorite == true) {
+          when (networkResult) {
+            is NetworkResult.Success -> {
+              if (networkResult.data.favorite == true) {
                 _snackBarAlready.value = Event(title)
               } else {
                 postFavorite(
@@ -165,17 +165,17 @@ class MyWatchlistViewModel(
               }
             }
 
-            Status.LOADING -> {}
-            Status.ERROR ->
+            is NetworkResult.Loading -> {}
+            is NetworkResult.Error ->
               _snackBarAdded.value =
-                Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+                Event(SnackBarUserLoginData(false, networkResult.message, null, null))
           }
         }
       } else {
         getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
-          when (networkResult.status) {
-            Status.SUCCESS -> {
-              if (networkResult.data?.favorite == true) {
+          when (networkResult) {
+            is NetworkResult.Success -> {
+              if (networkResult.data.favorite == true) {
                 _snackBarAlready.value = Event(title)
               } else {
                 postFavorite(
@@ -187,10 +187,10 @@ class MyWatchlistViewModel(
               }
             }
 
-            Status.LOADING -> {}
-            Status.ERROR ->
+            is NetworkResult.Loading -> {}
+            is NetworkResult.Error ->
               _snackBarAdded.value =
-                Event(SnackBarUserLoginData(false, networkResult.message.toString(), null, null))
+                Event(SnackBarUserLoginData(false, networkResult.message, null, null))
           }
         }
       }

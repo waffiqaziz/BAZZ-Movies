@@ -40,6 +40,7 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
+import com.waffiq.bazz_movies.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -175,7 +176,7 @@ class MovieDataSource private constructor(
   // region DETAIL
   override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.getCreditMovies(movieId)
@@ -184,7 +185,7 @@ class MovieDataSource private constructor(
     }.flowOn(Dispatchers.IO)
 
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getCreditTv(tvId)
@@ -194,7 +195,7 @@ class MovieDataSource private constructor(
 
   override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           omDbApiService.getMovieDetailOMDb(imdbId)
@@ -203,7 +204,7 @@ class MovieDataSource private constructor(
     }.flowOn(Dispatchers.IO)
 
   override suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<VideoResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getVideoMovies(movieId)
@@ -212,7 +213,7 @@ class MovieDataSource private constructor(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<VideoResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getVideoTv(tvId)
@@ -221,7 +222,7 @@ class MovieDataSource private constructor(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovieResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getDetailMovie(id)
@@ -230,7 +231,7 @@ class MovieDataSource private constructor(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getDetailTv(id: Int): Flow<NetworkResult<DetailTvResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getDetailTv(id)
@@ -239,7 +240,7 @@ class MovieDataSource private constructor(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getExternalId(id)
@@ -251,7 +252,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     id: Int
   ): Flow<NetworkResult<StatedResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getStatedMovie(id, sessionId)
@@ -263,7 +264,7 @@ class MovieDataSource private constructor(
     sessionId: String,
     id: Int
   ): Flow<NetworkResult<StatedResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getStatedTv(id, sessionId)
@@ -274,7 +275,7 @@ class MovieDataSource private constructor(
 
   // region PERSON
   override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getDetailPerson(id)
@@ -283,7 +284,7 @@ class MovieDataSource private constructor(
   }.flowOn(Dispatchers.IO)
 
   override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getImagePerson(id)
@@ -293,7 +294,7 @@ class MovieDataSource private constructor(
 
   override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.getKnownForPersonCombinedMovieTv(id)
@@ -303,7 +304,7 @@ class MovieDataSource private constructor(
 
   override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.getExternalIdPerson(id)
@@ -317,9 +318,9 @@ class MovieDataSource private constructor(
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
-        safeApiCallPost {
+        safeApiCall {
           tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
         }
       )
@@ -331,9 +332,9 @@ class MovieDataSource private constructor(
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
-        safeApiCallPost {
+        safeApiCall {
           tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
         }
       )
@@ -345,9 +346,9 @@ class MovieDataSource private constructor(
     tvId: Int
   ): Flow<NetworkResult<PostResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
-        safeApiCallPost {
+        safeApiCall {
           tmdbApiService.postTvRate(tvId, sessionId, data)
         }
       )
@@ -359,9 +360,9 @@ class MovieDataSource private constructor(
     movieId: Int
   ): Flow<NetworkResult<PostResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
-        safeApiCallPost {
+        safeApiCall {
           tmdbApiService.postMovieRate(movieId, sessionId, data)
         }
       )

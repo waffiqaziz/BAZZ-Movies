@@ -6,22 +6,26 @@ import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
-import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
-class GetDetailPersonInterector(
+class GetDetailPersonInteractor(
   private val getDetailPersonRepository: IMoviesRepository
 ) : GetDetailPersonUseCase {
   override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
     getDetailPersonRepository.getDetailPerson(id)
 
   override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<List<CastItem>>> =
-    getDetailPersonRepository.getKnownForPerson(id).map { result ->
-      when (result.status) {
-        Status.SUCCESS -> NetworkResult.success(result.data?.cast?.sortedByDescending { it.voteCount })
-        Status.ERROR -> NetworkResult.error(result.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+    getDetailPersonRepository.getKnownForPerson(id).mapNotNull { networkResult ->
+      when (networkResult) {
+        is NetworkResult.Success -> {
+          networkResult.data.cast?.let { castItems ->
+            NetworkResult.Success(castItems.sortedByDescending { it.voteCount })
+          }
+        }
+
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 

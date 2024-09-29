@@ -21,68 +21,8 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
-import okio.IOException
-import retrofit2.HttpException
-import retrofit2.Response
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 interface MovieDataSourceInterface {
-
-  // CALL FUNCTION
-  suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
-    try {
-      val response = apiCall()
-      if (response != null && response.isSuccessful) return NetworkResult.success(response.body())
-
-      val errorBody = response?.errorBody()?.string()
-      return if (response?.code() == 404) {
-        NetworkResult.error("Bad Request")
-      } else if (!errorBody.isNullOrEmpty()) {
-        NetworkResult.error(errorBody)
-      } else {
-        NetworkResult.error("Error in fetching data")
-      }
-    } catch (e: HttpException) {
-      return NetworkResult.error(e.message ?: "Something went wrong")
-    } catch (e: SocketTimeoutException) {
-      return NetworkResult.error("Connection timed out. Please try again.")
-    } catch (e: UnknownHostException) {
-      return NetworkResult.error("Unable to resolve server hostname. Please check your internet connection.")
-    } catch (e: IOException) {
-      return NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      return NetworkResult.error(e.toString())
-    }
-  }
-
-  suspend fun <T> safeApiCallPost(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
-    return try {
-      val response = apiCall()
-      if (response != null && response.isSuccessful) {
-        val responseBody = response.body()
-        if (responseBody != null) {
-          NetworkResult.success(responseBody)
-        } else {
-          NetworkResult.error("Error in fetching data")
-        }
-      } else {
-        val errorMessage = response?.message() ?: "Unknown error"
-        NetworkResult.error(errorMessage)
-      }
-    } catch (e: HttpException) {
-      return NetworkResult.error(e.message ?: "Something went wrong")
-    } catch (e: SocketTimeoutException) {
-      return NetworkResult.error("Connection timed out. Please try again.")
-    } catch (e: UnknownHostException) {
-      return NetworkResult.error("Unable to resolve server hostname. Please check your internet connection.")
-    } catch (e: IOException) {
-      NetworkResult.error("Please check your network connection")
-    } catch (e: Exception) {
-      NetworkResult.error(e.toString())
-    }
-  }
-
   // PAGING
   fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>>
   fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>>

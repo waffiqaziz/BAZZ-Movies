@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
 import com.waffiq.bazz_movies.utils.common.Event
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
 
 class PersonMovieViewModel(
@@ -38,16 +38,16 @@ class PersonMovieViewModel(
   fun getDetailPerson(id: Int) {
     viewModelScope.launch {
       getDetailPersonUseCase.getDetailPerson((id)).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> {
+        when (networkResult) {
+          is NetworkResult.Success -> {
             _loadingState.value = false
             networkResult.data.let { _detailPerson.value = it }
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.value = Event(networkResult.message)
           }
         }
       }
@@ -57,12 +57,12 @@ class PersonMovieViewModel(
   fun getKnownFor(id: Int) {
     viewModelScope.launch {
       getDetailPersonUseCase.getKnownForPerson(id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _knownFor.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _knownFor.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.value = Event(networkResult.message)
           }
         }
       }
@@ -72,12 +72,15 @@ class PersonMovieViewModel(
   fun getImagePerson(id: Int) {
     viewModelScope.launch {
       getDetailPersonUseCase.getImagePerson((id)).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _imagePerson.value = it?.profiles ?: emptyList() }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let {
+            _imagePerson.value = it.profiles ?: emptyList()
+          }
+
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.value = Event(networkResult.message)
           }
         }
       }
@@ -87,12 +90,12 @@ class PersonMovieViewModel(
   fun getExternalIDPerson(id: Int) {
     viewModelScope.launch {
       getDetailPersonUseCase.getExternalIDPerson(id).collect { networkResult ->
-        when (networkResult.status) {
-          Status.SUCCESS -> networkResult.data.let { _externalIdPerson.value = it }
-          Status.LOADING -> {}
-          Status.ERROR -> {
+        when (networkResult) {
+          is NetworkResult.Success -> networkResult.data.let { _externalIdPerson.value = it }
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message.toString())
+            _errorState.value = Event(networkResult.message)
           }
         }
       }

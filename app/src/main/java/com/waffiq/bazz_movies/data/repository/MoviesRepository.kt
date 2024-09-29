@@ -24,8 +24,6 @@ import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
-import com.waffiq.bazz_movies.utils.resultstate.Status
 import com.waffiq.bazz_movies.utils.helpers.FavWatchlistHelper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.toFavoriteEntity
@@ -45,6 +43,7 @@ import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPostFavoriteWatchlist
 import com.waffiq.bazz_movies.utils.mappers.SearchMapper.toResultItemSearch
 import com.waffiq.bazz_movies.utils.mappers.UniversalMapper.toResultItem
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -143,73 +142,73 @@ class MoviesRepository(
   // region DETAIL
   override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetails>> =
     movieDataSource.getDetailOMDb(imdbId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toOMDbDetails())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toOMDbDetails())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getDetailMovie(movieId: Int): Flow<NetworkResult<DetailMovie>> =
     movieDataSource.getDetailMovie(movieId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailMovie())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailMovie())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getDetailTv(tvId: Int): Flow<NetworkResult<DetailTv>> =
     movieDataSource.getDetailTv(tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailTv())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailTv())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>> =
     movieDataSource.getExternalTvId(tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toExternalTvID())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toExternalTvID())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getTrailerLinkMovie(movieId: Int): Flow<NetworkResult<Video>> =
     movieDataSource.getVideoMovies(movieId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<Video>> =
     movieDataSource.getVideoTv(tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toVideo())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
     movieDataSource.getCreditMovies(movieId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
     movieDataSource.getCreditTv(tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toMovieTvCredits())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
@@ -218,19 +217,19 @@ class MoviesRepository(
     movieId: Int
   ): Flow<NetworkResult<Stated>> =
     movieDataSource.getStatedMovie(sessionId, movieId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toStated())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toStated())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<NetworkResult<Stated>> =
     movieDataSource.getStatedTv(sessionId, tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toStated())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toStated())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
   // endregion DETAIL
@@ -242,10 +241,10 @@ class MoviesRepository(
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>> =
     movieDataSource.postFavorite(sessionId, fav, userId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPostFavoriteWatchlist())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
@@ -255,10 +254,10 @@ class MoviesRepository(
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>> =
     movieDataSource.postWatchlist(sessionId, wtc, userId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPostFavoriteWatchlist())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
@@ -268,10 +267,10 @@ class MoviesRepository(
     movieId: Int
   ): Flow<NetworkResult<Post>> =
     movieDataSource.postMovieRate(sessionId, data, movieId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPost())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
@@ -281,10 +280,10 @@ class MoviesRepository(
     tvId: Int
   ): Flow<NetworkResult<Post>> =
     movieDataSource.postTvRate(sessionId, data, tvId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPost())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 // endregion POST FAVORITE AND WATCHLIST
@@ -292,37 +291,37 @@ class MoviesRepository(
   // region PERSON
   override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
     movieDataSource.getDetailPerson(id).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toDetailPerson())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailPerson())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditPerson>> =
     movieDataSource.getKnownForPerson(id).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toCombinedCredit())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCombinedCredit())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePerson>> =
     movieDataSource.getImagePerson(id).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toImagePerson())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toImagePerson())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPerson>> =
     movieDataSource.getExternalIDPerson(id).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toExternalIDPerson())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toExternalIDPerson())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
   // endregion PERSON

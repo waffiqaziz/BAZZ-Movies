@@ -59,7 +59,7 @@ import com.waffiq.bazz_movies.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import kotlinx.coroutines.FlowPreview
@@ -123,24 +123,24 @@ class MoreFragment : Fragment() {
   private fun signOutStateObserver() {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      moreViewModelUser.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest {
-        when (it?.status) {
-          Status.SUCCESS -> {
+      moreViewModelUser.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
+        when (networkResult) {
+          is NetworkResult.Success -> {
             progressIsVisible(false)
             requireContext().toastShort(getString(sign_out_success))
             removePrefUserData() // remove preference user data
           }
 
-          Status.LOADING -> {}
+          is NetworkResult.Loading -> {}
 
-          Status.ERROR -> {
+          is NetworkResult.Error -> {
             fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
             btnSignOutIsEnable(true)
             progressIsVisible(false)
             mSnackbar = snackBarWarning(
               binding.constraintLayout,
               requireActivity().findViewById(nav_view),
-              Event(it.message.toString())
+              Event(networkResult.message)
             )
           }
 

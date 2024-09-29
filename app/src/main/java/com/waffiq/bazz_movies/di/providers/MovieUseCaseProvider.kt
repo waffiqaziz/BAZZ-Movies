@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieInte
 import com.waffiq.bazz_movies.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbInteractor
 import com.waffiq.bazz_movies.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonInterector
+import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonInteractor
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
 import com.waffiq.bazz_movies.domain.usecase.get_detail_tv.GetDetailTvInteractor
 import com.waffiq.bazz_movies.domain.usecase.get_detail_tv.GetDetailTvUseCase
@@ -126,7 +126,7 @@ object MovieUseCaseProvider {
   // region PERSON
   fun provideDetailPersonUseCase(context: Context): GetDetailPersonUseCase {
     val repository = provideMovieRepository(context)
-    return GetDetailPersonInterector(repository)
+    return GetDetailPersonInteractor(repository)
   }
   // endregion PERSON
 

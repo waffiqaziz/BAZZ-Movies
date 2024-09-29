@@ -16,9 +16,9 @@ import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.utils.mappers.AccountMapper.toCreateSession
 import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
-import com.waffiq.bazz_movies.utils.resultstate.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 class UserRepository(
   private val pref: UserPreference,
@@ -28,10 +28,10 @@ class UserRepository(
   // region AUTH
   override suspend fun createToken(): Flow<NetworkResult<Authentication>> =
     userDataSource.createToken().map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toAuthentication())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAuthentication())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
@@ -41,37 +41,37 @@ class UserRepository(
     token: String
   ): Flow<NetworkResult<Authentication>> =
     userDataSource.login(username, pass, token).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toAuthentication())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAuthentication())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSession>> =
     userDataSource.createSessionLogin(token).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toCreateSession())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCreateSession())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<Post>> =
     userDataSource.deleteSession(data).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toPost())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 
   override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetails>> =
     userDataSource.getUserDetail(sessionId).map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toAccountDetails())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAccountDetails())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
   // endregion AUTH
@@ -90,10 +90,10 @@ class UserRepository(
 
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIP>> =
     userDataSource.getCountryCode().map { networkResult ->
-      when (networkResult.status) {
-        Status.SUCCESS -> NetworkResult.success(networkResult.data?.toCountryIP())
-        Status.ERROR -> NetworkResult.error(networkResult.message ?: "Unknown error")
-        Status.LOADING -> NetworkResult.loading()
+      when (networkResult) {
+        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCountryIP())
+        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+        is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
 }

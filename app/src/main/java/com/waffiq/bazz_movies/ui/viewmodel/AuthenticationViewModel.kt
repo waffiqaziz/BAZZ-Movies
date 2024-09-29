@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.utils.resultstate.Status
+import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
@@ -31,21 +31,20 @@ class AuthenticationViewModel(
     _loginState.value = false
     viewModelScope.launch {
       authTMDbAccountUseCase.createToken().collect { resultCreateToken ->
-        when (resultCreateToken.status) {
-          Status.SUCCESS -> {
-            if (resultCreateToken.data?.success == true && resultCreateToken.data.requestToken != null) {
+        when (resultCreateToken) {
+          is NetworkResult.Success -> {
+            if (resultCreateToken.data.success && resultCreateToken.data.requestToken != null) {
               login(username, password, resultCreateToken.data.requestToken)
             } else {
               _loginState.value = false
             }
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value =
-              resultCreateToken.message ?: "Something went wrong. Please try again later."
+            _errorState.value = resultCreateToken.message
           }
         }
       }
@@ -56,19 +55,18 @@ class AuthenticationViewModel(
   private fun login(username: String, password: String, requestToken: String) {
     viewModelScope.launch {
       authTMDbAccountUseCase.login(username, password, requestToken).collect { resultLogin ->
-        when (resultLogin.status) {
-          Status.SUCCESS -> {
-            resultLogin.data?.requestToken.let { token ->
+        when (resultLogin) {
+          is NetworkResult.Success -> {
+            resultLogin.data.requestToken.let { token ->
               if (token != null) createSession(token) else _loginState.value = false
             }
           }
 
-          Status.LOADING -> _loadingState.postValue(true)
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.postValue(true)
+          is NetworkResult.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value =
-              resultLogin.message ?: "Something went wrong. Please try again later."
+            _errorState.value = resultLogin.message
           }
         }
       }
@@ -79,22 +77,18 @@ class AuthenticationViewModel(
   private fun createSession(token: String) {
     viewModelScope.launch {
       authTMDbAccountUseCase.createSessionLogin(token).collect { result ->
-        when (result.status) {
-          Status.SUCCESS -> {
+        when (result) {
+          is NetworkResult.Success -> {
             result.data.let {
-              if (it?.success == true) {
-                getUserDetail(it.sessionId)
-              } else {
-                _loginState.value = false
-              }
+              if (it.success) getUserDetail(it.sessionId) else _loginState.value = false
             }
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value = result.message ?: "Something went wrong. Please try again later."
+            _errorState.value = result.message
           }
         }
       }
@@ -104,33 +98,28 @@ class AuthenticationViewModel(
   private fun getUserDetail(sessionId: String) {
     viewModelScope.launch {
       authTMDbAccountUseCase.getUserDetail(sessionId).collect { result ->
-        when (result.status) {
-          Status.SUCCESS -> {
-            if (result.data != null) {
-              _userModel.value = UserModel(
-                userId = result.data.id ?: 0,
-                name = result.data.name.toString(),
-                username = result.data.username.toString(),
-                password = NAN,
-                region = NAN,
-                token = sessionId,
-                isLogin = true,
-                gravatarHast = result.data.avatarItem?.gravatar?.hash,
-                tmdbAvatar = result.data.avatarItem?.avatarTMDb?.avatarPath
-              )
-              _loginState.value = true
-            } else {
-              _loginState.value = false
-            }
+        when (result) {
+          is NetworkResult.Success -> {
+            _userModel.value = UserModel(
+              userId = result.data.id ?: 0,
+              name = result.data.name.toString(),
+              username = result.data.username.toString(),
+              password = NAN,
+              region = NAN,
+              token = sessionId,
+              isLogin = true,
+              gravatarHast = result.data.avatarItem?.gravatar?.hash,
+              tmdbAvatar = result.data.avatarItem?.avatarTMDb?.avatarPath
+            )
+            _loginState.value = true
             _loadingState.value = false
           }
 
-          Status.LOADING -> _loadingState.value = true
-          Status.ERROR -> {
+          is NetworkResult.Loading -> _loadingState.value = true
+          is NetworkResult.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value =
-              result.message ?: "Something went wrong. Please try again later."
+            _errorState.value = result.message
           }
         }
       }

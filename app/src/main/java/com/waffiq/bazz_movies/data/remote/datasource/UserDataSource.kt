@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.data.remote.responses.tmdb.account.CreateSessionRe
 import com.waffiq.bazz_movies.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiService
 import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
+import com.waffiq.bazz_movies.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class UserDataSource(
 ) : UserDataSourceInterface {
 
   override suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.createToken()
@@ -30,7 +31,7 @@ class UserDataSource(
 
   override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<PostResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.delSession(data.sessionID)
@@ -40,7 +41,7 @@ class UserDataSource(
 
   override suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSessionResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.createSessionLogin(token)
@@ -50,7 +51,7 @@ class UserDataSource(
 
   override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     flow {
-      emit(NetworkResult.loading())
+      emit(NetworkResult.Loading)
       emit(
         safeApiCall {
           tmdbApiService.getAccountDetails(sessionId)
@@ -59,7 +60,7 @@ class UserDataSource(
     }.flowOn(Dispatchers.IO)
 
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         countryIPApiService.getIP()
@@ -72,9 +73,9 @@ class UserDataSource(
     pass: String,
     token: String
   ): Flow<NetworkResult<AuthenticationResponse>> = flow {
-    emit(NetworkResult.loading())
+    emit(NetworkResult.Loading)
     emit(
-      safeApiCallLogin {
+      safeApiCall {
         tmdbApiService.login(username, pass, token)
       }
     )
