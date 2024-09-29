@@ -17,7 +17,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.gray_1000
 import com.waffiq.bazz_movies.domain.model.search.KnownForItem
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -102,7 +102,7 @@ object Helper {
     nestedScrollView: NestedScrollView
   ) {
     val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
-    val toColor = ContextCompat.getColor(this, R.color.gray)
+    val toColor = ContextCompat.getColor(this, gray_1000)
 
     nestedScrollView.setOnScrollChangeListener(
       NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->

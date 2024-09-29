@@ -9,7 +9,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.utils.common.Constants.SWIPE_THRESHOLD
 
 /**
- * Used to handle swipe action on favorite and watchlist fragment
+ * A helper class that handles swipe actions on the favorite and watchlist fragments.
+ * This class extends [ItemTouchHelper.Callback] to manage swipe gestures (left and right) on items
+ * within a RecyclerView.
+ *
+ * @property isLogin A boolean flag indicating whether the user is logged in. This is used to determine
+ *                   the behavior of swipe actions.
+ * @property onSwipeLeft A callback function triggered when an item is swiped left. It takes three parameters:
+ *  - A boolean indicating if the user is logged in.
+ *  - The [RecyclerView.ViewHolder] being swiped.
+ *  - The position of the item in the adapter.
+ * @property onSwipeRight A callback function triggered when an item is swiped right.
+ *                        It also takes the same parameters as [onSwipeLeft].
+ * @property context The context used for accessing resources and drawing UI elements.
+ * @property deleteIconResId The resource ID for the icon displayed during a right swipe (delete action).
+ * @property actionIconResId The resource ID for the icon displayed during a left swipe
+ *                           (custom action, such as adding/removing from watchlist).
+ * @property deleteColor The color used for the background during a right swipe (delete).
+ * @property actionColor The color used for the background during a left swipe (custom action).
+ *
+ * This class overrides methods from [ItemTouchHelper.Callback] to:
+ *  - Set swipe directions (left/right) in [getMovementFlags].
+ *  - Handle the swipe action in [onSwiped], invoking the appropriate callback based on swipe direction.
+ *  - Draw custom background and icons during the swipe in [onChildDraw].
+ *  - Customize swipe behavior, such as setting a threshold in [getSwipeThreshold].
  */
 class SwipeCallbackHelper(
   private val isLogin: Boolean,

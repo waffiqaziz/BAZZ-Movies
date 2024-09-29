@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.utils.helpers
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
+import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.utils.common.Event
 
 /**
@@ -21,7 +21,7 @@ object SnackBarManager {
     return if (message != null && view.isAttachedToWindow) {
       Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
         guideView?.let { anchorView = it } // Check if guideView is non-null
-        setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
+        setBackgroundTint(ContextCompat.getColor(context, red_matte))
         show()
       }
     } else {
@@ -37,7 +37,7 @@ object SnackBarManager {
     return if (!message.isNullOrEmpty() && view.isAttachedToWindow) {
       Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
         guideView?.let { anchorView = it } // Check if guideView is non-null
-        setBackgroundTint(ContextCompat.getColor(context, R.color.red_matte))
+        setBackgroundTint(ContextCompat.getColor(context, red_matte))
         show()
       }
     } else {
