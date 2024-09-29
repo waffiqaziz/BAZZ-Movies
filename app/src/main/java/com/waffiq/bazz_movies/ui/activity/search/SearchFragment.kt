@@ -28,7 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.id.action_search
-import com.waffiq.bazz_movies.R.id.nav_view
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -207,8 +207,8 @@ class SearchFragment : Fragment() {
           binding.illustrationSearchView.root.isVisible = false
           pagingErrorState(loadState)?.let {
             mSnackbar = snackBarWarning(
-              requireActivity().findViewById(nav_view),
-              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(bottom_navigation),
+              requireActivity().findViewById(bottom_navigation),
               Event(pagingErrorHandling(it.error))
             )
           }

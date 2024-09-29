@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.id.nav_view
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
@@ -152,8 +152,8 @@ class TvSeriesFragment : Fragment() {
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
                 mSnackbar = snackBarWarning(
-                  requireActivity().findViewById(nav_view),
-                  requireActivity().findViewById(nav_view),
+                  requireActivity().findViewById(bottom_navigation),
+                  requireActivity().findViewById(bottom_navigation),
                   Event(pagingErrorHandling(it.error))
                 )
               }

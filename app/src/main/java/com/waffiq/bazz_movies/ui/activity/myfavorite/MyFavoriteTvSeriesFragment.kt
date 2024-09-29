@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
-import com.waffiq.bazz_movies.R.id.nav_view
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.deleted_from_favorite
@@ -188,8 +188,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       mSnackbar =
         snackBarAlreadyWatchlist(
           requireContext(),
-          requireActivity().findViewById(nav_view),
-          requireActivity().findViewById(nav_view),
+          requireActivity().findViewById(bottom_navigation),
+          requireActivity().findViewById(bottom_navigation),
           it
         )
     }
@@ -202,8 +202,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
             mSnackbar = snackBarWarning(
-              requireActivity().findViewById(nav_view),
-              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(bottom_navigation),
+              requireActivity().findViewById(bottom_navigation),
               Event(it.title)
             )
           } else {
@@ -226,8 +226,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
             mSnackbar = snackBarWarning(
-              requireActivity().findViewById(nav_view),
-              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(bottom_navigation),
+              requireActivity().findViewById(bottom_navigation),
               pagingErrorHandling(it)
             )
             baseViewModel.markSnackbarShown()
@@ -267,7 +267,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     val addToWatchlist = !isWantToDelete && wtc != null
     if (delete || addToWatchlist) {
       mSnackbar = Snackbar.make(
-        requireActivity().findViewById(nav_view),
+        requireActivity().findViewById(bottom_navigation),
         HtmlCompat.fromHtml(
           "<b>$title</b> " +
             if (delete) getString(deleted_from_favorite) else getString(added_to_watchlist),
@@ -286,7 +286,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             viewModelFav.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
           }
         }
-      }.setAnchorView(requireActivity().findViewById(nav_view))
+      }.setAnchorView(requireActivity().findViewById(bottom_navigation))
         .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
       mSnackbar?.show()
     }
@@ -312,8 +312,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         mSnackbar =
           snackBarAlreadyWatchlist(
             requireContext(),
-            requireActivity().findViewById(nav_view),
-            requireActivity().findViewById(nav_view),
+            requireActivity().findViewById(bottom_navigation),
+            requireActivity().findViewById(bottom_navigation),
             Event(fav.title)
           )
       } else {
@@ -340,7 +340,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private fun showSnackBarUndoGuest(title: String, pos: Int) {
     mSnackbar = Snackbar.make(
-      requireActivity().findViewById(nav_view),
+      requireActivity().findViewById(bottom_navigation),
       HtmlCompat.fromHtml(
         "<b>$title</b> " +
           if (isWantToDelete) getString(deleted_from_favorite) else getString(added_to_watchlist),
@@ -360,7 +360,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       } else { // undo add to watchlist
         viewModelFav.updateToRemoveFromWatchlistDB(fav)
       }
-    }.setAnchorView(requireActivity().findViewById(nav_view))
+    }.setAnchorView(requireActivity().findViewById(bottom_navigation))
       .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
     mSnackbar?.show()
   }

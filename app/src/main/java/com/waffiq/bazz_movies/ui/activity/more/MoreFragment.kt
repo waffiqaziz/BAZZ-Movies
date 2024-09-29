@@ -28,7 +28,7 @@ import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
-import com.waffiq.bazz_movies.R.id.nav_view
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.all_data_deleted
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.no
@@ -139,7 +139,7 @@ class MoreFragment : Fragment() {
             progressIsVisible(false)
             mSnackbar = snackBarWarning(
               binding.constraintLayout,
-              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(bottom_navigation),
               Event(networkResult.message)
             )
           }
@@ -225,7 +225,7 @@ class MoreFragment : Fragment() {
             progressIsVisible(false)
             mSnackbar = snackBarWarning(
               binding.constraintLayout,
-              requireActivity().findViewById(nav_view),
+              requireActivity().findViewById(bottom_navigation),
               Event(it.errorMessage)
             )
           }

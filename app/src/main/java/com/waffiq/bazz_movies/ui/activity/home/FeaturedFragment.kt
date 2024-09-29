@@ -20,7 +20,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.R.id.nav_view
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
@@ -234,8 +234,8 @@ class FeaturedFragment : Fragment() {
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
                 mSnackbar = snackBarWarning(
-                  requireActivity().findViewById(nav_view),
-                  requireActivity().findViewById(nav_view),
+                  requireActivity().findViewById(bottom_navigation),
+                  requireActivity().findViewById(bottom_navigation),
                   Event(pagingErrorHandling(it.error))
                 )
               }
