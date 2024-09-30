@@ -2,16 +2,16 @@
   <!-- Base application theme -->
   <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3.DayNight.NoActionBar">
     <!-- Primary brand color -->
-    <item name="colorPrimary">@color/gray</item>
-    <item name="colorPrimaryVariant">@color/yellow</item>
+    <item name="colorPrimary">@color/gray_1000</item>
+    <item name="colorPrimaryVariant">@color/gray_900</item>
     <item name="colorOnPrimary">@color/white</item>
-    <item name="colorAccent">@color/gray_800</item>
-    <item name="colorOnBackground">@color/gray_900</item>
-
-    <!-- Secondary brand color -->
-    <item name="colorSecondary">@color/teal_200</item>
-    <item name="colorSecondaryVariant">@color/teal_700</item>
-    <item name="colorOnSecondary">@color/black</item>
+    <item name="colorAccent">@color/yellow</item>
+    <item name="colorOnBackground">@color/white</item>
+    <item name="android:colorBackground">@color/gray_900</item>
+    <item name="colorSurface">@color/gray_200</item>
+    <item name="colorOnSurface">@color/gray_900</item>
+    <item name="colorError">@color/red_matte</item>
+    <item name="colorOnError">@color/white</item>
 
     <!-- Color for all background -->
     <item name="android:windowBackground">@color/gray_900</item>
@@ -39,7 +39,7 @@
   <!-- Splash Screen for RoutingActivity on Manifests -->
   <style name="SplashScreenTheme" parent="Theme.SplashScreen">
     <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
-    <item name="windowSplashScreenBackground">@color/gray</item>
+    <item name="windowSplashScreenBackground">@color/gray_1000</item>
     <item name="windowSplashScreenAnimationDuration">300</item>
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>

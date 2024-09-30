@@ -25,9 +25,9 @@
       android:layout_height="@dimen/tab_layout_height"
       android:background="?attr/colorPrimary"
       android:contentDescription="@string/tab_layout_explanation"
-      app:tabIndicatorColor="@color/yellow"
-      app:tabRippleColor="@color/gray_300"
-      app:tabSelectedTextColor="@color/yellow"
+      app:tabIndicatorColor="?attr/colorAccent"
+      app:tabRippleColor="?attr/colorSurface"
+      app:tabSelectedTextColor="?attr/colorAccent"
       app:tabTextAppearance="@style/TextTabLayoutStyle"
       app:tabTextColor="@color/white">
 

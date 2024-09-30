@@ -12,7 +12,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/no_data_illustration"
-    android:src="@drawable/ic_no_data" />
+    android:src="@drawable/ic_ill_no_data" />
 
   <TextView
     android:id="@+id/tv_header_no_data"

@@ -11,7 +11,7 @@
     android:layout_width="300dp"
     android:layout_height="300dp"
     android:contentDescription="@string/search_illustration"
-    android:src="@drawable/ic_no_found" />
+    android:src="@drawable/ic_ill_no_found" />
 
   <TextView
     android:id="@+id/tv_header_noResult"

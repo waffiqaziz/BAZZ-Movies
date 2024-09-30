@@ -146,7 +146,7 @@
               android:id="@+id/iv_tiktok"
               style="@style/MySocialMediaButton"
               android:contentDescription="@string/open_actor_actress_tiktok_page"
-              android:src="@drawable/ic_tik_tok" />
+              android:src="@drawable/ic_tiktok" />
 
             <ImageView
               android:id="@+id/iv_youtube"

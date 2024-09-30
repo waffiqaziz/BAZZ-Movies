@@ -8,7 +8,7 @@ object Constants {
   const val TABLE_NAME = "favorite"
   const val INITIAL_PAGE_INDEX = 1
   const val TWO_NUM_TABS = 2
-  const val SWIPE_THRESHOLD = 0.33f
+  const val SWIPE_THRESHOLD = 0.3f
 
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"

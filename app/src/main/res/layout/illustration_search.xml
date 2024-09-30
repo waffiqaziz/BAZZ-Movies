@@ -11,7 +11,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/search_illustration"
-    android:src="@drawable/ic_search_ilust" />
+    android:src="@drawable/ic_ill_search" />
 
   <TextView
     android:id="@+id/tv_search_any_movies"

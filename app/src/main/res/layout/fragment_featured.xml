@@ -38,7 +38,6 @@
           tools:layout_height="250dp"
           tools:src="@color/red_matte" />
 
-
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

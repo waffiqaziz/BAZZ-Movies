@@ -3,10 +3,10 @@
   android:color="?android:attr/colorControlHighlight">
   <item>
     <shape
-      android:shape="rectangle"
-      android:alpha="0.5">
+      android:alpha="0.5"
+      android:shape="rectangle">
       <solid android:color="@color/gray_600_alpha" />
-      <corners android:radius="500dp"/>
+      <corners android:radius="500dp" />
     </shape>
   </item>
 </ripple>

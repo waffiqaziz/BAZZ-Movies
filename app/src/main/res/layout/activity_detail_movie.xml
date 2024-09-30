@@ -82,7 +82,7 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_back" />
+            app:layout_constraintTop_toTopOf="@+id/btn_back"/>
 
         </LinearLayout>
 
