@@ -82,7 +82,7 @@
             android:minHeight="48dp"
             android:src="@drawable/ic_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_back"/>
+            app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
         </LinearLayout>
 
@@ -211,6 +211,8 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:layout_marginBottom="8dp"
+          android:ellipsize="end"
+          android:maxLines="4"
           app:layout_constrainedWidth="true"
           app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
           app:layout_constraintEnd_toEndOf="parent"
