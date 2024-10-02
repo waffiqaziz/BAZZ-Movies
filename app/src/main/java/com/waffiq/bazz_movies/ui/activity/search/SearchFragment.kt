@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
+import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.menu.search_menu
@@ -101,12 +102,15 @@ class SearchFragment : Fragment() {
           menuInflater.inflate(search_menu, menu)
           val searchView = menu.findItem(action_search).actionView as SearchView
           searchView.maxWidth = Int.MAX_VALUE
+
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
               .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
           }
           searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
             .setImageResource(ic_cross)
+          searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
+            .setImageResource(ic_search)
 
           searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
             if (it) {
@@ -241,8 +245,8 @@ class SearchFragment : Fragment() {
     super.onDestroyView()
     searchViewModel.setExpandSearchView(false) // reset expand search view
     mSnackbar?.dismiss()
+    lastQuery = null
     mSnackbar = null
-    (activity as? AppCompatActivity)?.setSupportActionBar(null)
     _binding = null
   }
 }
