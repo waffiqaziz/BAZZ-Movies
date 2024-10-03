@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.utils.helpers
 import android.util.Log
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import okio.IOException
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 import java.net.SocketTimeoutException
@@ -36,19 +38,42 @@ object SafeApiCallHelper {
     performApiCall(apiCall)
 
   private fun <T> processApiResponse(response: Response<T>?): NetworkResult<T> {
-    return if (response != null && response.isSuccessful) {
-      // if the response is successful but the body is null, return Error
-      response.body()?.let {
-        NetworkResult.Success(it)
-      } ?: NetworkResult.Error("Response body is null")
+    return if (response != null) {
+      if (response.isSuccessful) {
+        // if the response is successful but the body is null, return Error
+        response.body()?.let {
+          NetworkResult.Success(it)
+        } ?: NetworkResult.Error("Response body is null")
+      } else {
+        val errorBody = response.errorBody()?.string()
+        if (response.code() == 404) {
+          NetworkResult.Error("Bad Request")
+        } else if (!errorBody.isNullOrEmpty()) {
+          return NetworkResult.Error(
+            errorBody.let {
+              try {
+                JSONObject(it).getString("status_message")
+              } catch (e: JSONException) {
+                Log.e("processApiResponse", "An error occurred: ${e.message}", e)
+                "Error parsing response"
+              }
+            } ?: "Error in fetching data"
+          )
+        } else {
+          NetworkResult.Error("Error in fetching data")
+        }
+      }
     } else {
-      NetworkResult.Error(response?.errorBody()?.string() ?: "Unknown error")
+      NetworkResult.Error("Null response")
     }
   }
 
-  private suspend fun <T> performApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
+
+  private suspend fun <T> performApiCall(
+    apiCall: suspend () -> Response<T>?
+  ): NetworkResult<T> {
     return try {
-      val response : Response<T>? = apiCall()
+      val response: Response<T>? = apiCall()
       if (response != null) {
         processApiResponse(response)
       } else {
