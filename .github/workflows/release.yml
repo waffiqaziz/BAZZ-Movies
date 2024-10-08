@@ -36,7 +36,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/settings.gradle', '**/gradle.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
@@ -78,9 +78,12 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+            key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/settings.gradle', '**/gradle.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
+      - name: Grant execute permissions for gradlew
+        run: chmod +x gradlew
 
       - name: Version Bump
         uses: chkfung/android-version-actions@v1.2.3
