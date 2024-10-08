@@ -85,11 +85,11 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
 
-      - name: Version Bump
-        uses: chkfung/android-version-actions@v1.2.3
-        with:
-          gradlePath: app/build.gradle.kts
-          versionCode: ${{ github.run_number }}
+#      - name: Version Bump
+#        uses: chkfung/android-version-actions@v1.2.3
+#        with:
+#          gradlePath: app/build.gradle.kts
+#          versionCode: ${{ github.run_number }}
 
       - name: Assemble Release Bundle
         run: ./gradlew bundleRelease
