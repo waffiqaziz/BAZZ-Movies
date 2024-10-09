@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.data.remote
+package com.waffiq.bazz_movies.domain.model
 
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel

@@ -3,8 +3,9 @@ package com.waffiq.bazz_movies.domain.usecase.user_pref
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class UserPrefInteractor(
+class UserPrefInteractor @Inject constructor(
   private val userPrefRepository: IUserRepository
 ) : UserPrefUseCase {
 

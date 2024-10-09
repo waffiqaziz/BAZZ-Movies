@@ -8,8 +8,9 @@ import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AuthTMDbAccountInteractor(
+class AuthTMDbAccountInteractor @Inject constructor(
   private val authTMDbAccountRepository: IUserRepository
 ) : AuthTMDbAccountUseCase {
   override suspend fun login(

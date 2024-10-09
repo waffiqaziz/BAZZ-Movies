@@ -7,17 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.bottom_navigation
@@ -53,30 +51,29 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
+import javax.inject.Inject
 
 class FeaturedFragment : Fragment() {
+
+  @Inject
+  lateinit var factory: ViewModelFactory
+
+  @Inject
+  lateinit var factoryUser: ViewModelUserFactory
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var movieViewModel: MovieViewModel
-  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
-  private lateinit var regionViewModel: RegionViewModel
+  private val movieViewModel: MovieViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
+  private val regionViewModel: RegionViewModel by viewModels { factoryUser }
 
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    val factory = ViewModelFactory.getInstance(requireContext())
-    movieViewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
-
-    val pref = requireContext().dataStore
-    val factory2 = ViewModelUserFactory.getInstance(pref)
-    userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
-    regionViewModel = ViewModelProvider(this, factory2)[RegionViewModel::class.java]
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as MyApplication).appComponent.inject(this)
   }
 
   override fun onCreateView(

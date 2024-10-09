@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.ui.activity
 
 import android.R.anim.fade_in
 import android.R.anim.fade_out
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -12,14 +11,12 @@ import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
@@ -42,22 +39,22 @@ import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.utils.uihelpers.CustomTypefaceSpan
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
+import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
+
+  @Inject
+  lateinit var factoryUser: ViewModelUserFactory
+
   private lateinit var binding: ActivityLoginBinding
-  private lateinit var authenticationViewModel: AuthenticationViewModel
-  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private val authenticationViewModel: AuthenticationViewModel by viewModels { factoryUser }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
-
-    val factory = ViewModelUserFactory.getInstance(dataStore)
-    authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
-    userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
@@ -149,19 +146,19 @@ class LoginActivity : AppCompatActivity() {
 
     // login as guest
     binding.tvGuest.setOnClickListener {
-      val guestUser = UserModel(
-        userId = 0,
-        name = resources.getString(guest_user),
-        username = resources.getString(guest_user),
-        password = NAN,
-        region = NAN,
-        token = NAN,
-        isLogin = true,
-        gravatarHast = null,
-        tmdbAvatar = null
+      userPreferenceViewModel.saveUserPref(
+        UserModel(
+          userId = 0,
+          name = resources.getString(guest_user),
+          username = resources.getString(guest_user),
+          password = NAN,
+          region = NAN,
+          token = NAN,
+          isLogin = true,
+          gravatarHast = null,
+          tmdbAvatar = null
+        )
       )
-
-      userPreferenceViewModel.saveUserPref(guestUser)
       goToMainActivity(isGuest = true)
     }
   }

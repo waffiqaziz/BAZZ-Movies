@@ -16,8 +16,9 @@ import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.transfor
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetDetailTvInteractor(
+class GetDetailTvInteractor @Inject constructor(
   private val getDetailTvRepository: IMoviesRepository
 ) : GetDetailTvUseCase {
 

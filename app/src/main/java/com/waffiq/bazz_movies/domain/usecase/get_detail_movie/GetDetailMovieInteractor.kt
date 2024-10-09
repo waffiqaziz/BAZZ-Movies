@@ -16,8 +16,9 @@ import com.waffiq.bazz_movies.utils.helpers.details.ReleaseDateHelper.getRelease
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetDetailMovieInteractor(
+class GetDetailMovieInteractor @Inject constructor(
   private val getDetailMovieRepository: IMoviesRepository
 ) : GetDetailMovieUseCase {
 

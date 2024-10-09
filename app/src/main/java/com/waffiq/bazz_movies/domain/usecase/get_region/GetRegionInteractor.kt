@@ -4,8 +4,9 @@ import com.waffiq.bazz_movies.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetRegionInteractor(
+class GetRegionInteractor @Inject constructor(
   private val getRegionRepository: IUserRepository
 ) : GetRegionUseCase {
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIP>> =

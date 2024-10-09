@@ -74,7 +74,7 @@
   <string name="open_help">open help</string>
   <string name="open_about_us">open about us</string>
   <string name="about">About</string>
-  <string name="about_text">I created BAZZ Movies app for movie lovers. It helps you easily manage, discover, and enjoy your favorite films anywhere. Join me to elevate your movie experience!</string>
+  <string name="about_text">BAZZ Movies app is for movie lovers. Hopefully it helps you easily to manage, discover, and enjoy your favorite movies.</string>
   <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but not endorsed or certified by TMDB.</string>
 
   <!-- SEARCH -->

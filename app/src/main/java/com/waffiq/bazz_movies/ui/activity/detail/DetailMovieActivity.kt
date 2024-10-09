@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.ui.activity.detail
 
 import android.app.Dialog
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,14 +14,11 @@ import android.view.Window
 import android.widget.Button
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -31,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
@@ -83,15 +80,20 @@ import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchl
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
+import javax.inject.Inject
 
 class DetailMovieActivity : AppCompatActivity() {
 
+  @Inject
+  lateinit var factory: ViewModelFactory
+
+  @Inject
+  lateinit var factoryUser: ViewModelUserFactory
+
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
-  private lateinit var detailViewModel: DetailMovieViewModel
-  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private val detailViewModel: DetailMovieViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
 
   private val adapterCast = CastAdapter()
   private val adapterRecommendation = TrendingAdapter()
@@ -103,19 +105,15 @@ class DetailMovieActivity : AppCompatActivity() {
   private var toast: Toast? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     showLoadingDim(true)
 
-    val factory1 = ViewModelFactory.getInstance(this)
-    detailViewModel = ViewModelProvider(this, factory1)[DetailMovieViewModel::class.java]
     detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     errorStateObserver()
-
-    val factory2 = ViewModelUserFactory.getInstance(dataStore)
-    userPreferenceViewModel = ViewModelProvider(this, factory2)[UserPreferenceViewModel::class.java]
 
     transparentStatusBar(window)
     scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollView)

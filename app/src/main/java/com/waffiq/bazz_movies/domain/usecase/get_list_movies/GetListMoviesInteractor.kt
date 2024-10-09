@@ -4,8 +4,9 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetListMoviesInteractor(
+class GetListMoviesInteractor @Inject constructor(
   private val getListMoviesRepository: IMoviesRepository
 ) : GetListMoviesUseCase {
   override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =

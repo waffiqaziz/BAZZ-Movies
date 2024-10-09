@@ -139,7 +139,7 @@ dependencies {
   androidTestImplementation(libs.androidx.test.ext.junit)
 
   // disable for faster build
-//  debugImplementation(libs.leakcanary)
+  debugImplementation(libs.leakcanary)
 
   // glide
   implementation(libs.glide)
@@ -155,10 +155,9 @@ dependencies {
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
-  // Koin
-//  implementation(libs.koin.core)
-//  implementation(libs.koin.android)
-//  implementation(libs.koin.androidx.navigation)
+  // Dagger
+  implementation(libs.dagger)
+  ksp(libs.dagger.ksp)
 }
 
 repositories {

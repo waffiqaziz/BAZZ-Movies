@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.usecase.get_list_tv.GetListTvUseCase
 import kotlinx.coroutines.flow.Flow
 
-class TvSeriesViewModel(
+class TvSeriesViewModel (
   private val getListTvUseCase: GetListTvUseCase
 ) : ViewModel() {
   fun getPopularTv(): Flow<PagingData<ResultItem>> =

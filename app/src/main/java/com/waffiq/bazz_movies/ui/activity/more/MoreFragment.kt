@@ -12,17 +12,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.anim.fade_in
 import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
@@ -41,7 +39,6 @@ import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
-import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
@@ -66,31 +63,31 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
 
 class MoreFragment : Fragment() {
+
+  @Inject
+  lateinit var factory: ViewModelFactory
+
+  @Inject
+  lateinit var factoryUser: ViewModelUserFactory
 
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var authViewModel: AuthenticationViewModel // logged-in user
-  private lateinit var moreViewModelLocal: MoreViewModelLocal // guest user
-  private lateinit var moreViewModelUser: MoreViewModelUser
-  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
-  private lateinit var regionViewModel: RegionViewModel
+  private val moreLocalViewModel: MoreLocalViewModel by viewModels { factory }
+  private val moreUserViewModel: MoreUserViewModel by viewModels { factoryUser }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
+  private val regionViewModel: RegionViewModel by viewModels { factoryUser }
 
   private var mSnackbar: Snackbar? = null
+  private var mDialog: MaterialAlertDialogBuilder? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    val pref = requireContext().dataStore
-    val factory = ViewModelUserFactory.getInstance(pref)
-    authViewModel = ViewModelProvider(this, factory)[AuthenticationViewModel::class.java]
-    moreViewModelUser = ViewModelProvider(this, factory)[MoreViewModelUser::class.java]
-    userPreferenceViewModel = ViewModelProvider(this, factory)[UserPreferenceViewModel::class.java]
-    regionViewModel = ViewModelProvider(this, factory)[RegionViewModel::class.java]
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as MyApplication).appComponent.inject(this)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,10 +95,7 @@ class MoreFragment : Fragment() {
 
     // initialize for guest user
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token == NAN) {
-        val factory = ViewModelFactory.getInstance(requireContext())
-        moreViewModelLocal = ViewModelProvider(this, factory)[MoreViewModelLocal::class.java]
-      } else {
+      if (user.token != NAN) {
         signOutStateObserver()
       }
     }
@@ -123,7 +117,7 @@ class MoreFragment : Fragment() {
   private fun signOutStateObserver() {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      moreViewModelUser.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
+      moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
             progressIsVisible(false)
@@ -190,7 +184,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutLoggedIn(token: String) {
-    MaterialAlertDialogBuilder(requireContext()).apply {
+    mDialog = MaterialAlertDialogBuilder(requireContext()).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_logged_user))
       setNegativeButton(resources.getString(no)) { dialog, _ ->
@@ -201,19 +195,21 @@ class MoreFragment : Fragment() {
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
         progressIsVisible(true)
-        moreViewModelUser.deleteSession(SessionIDPostModel(token)) // revoke session for login user
+        moreUserViewModel.deleteSession(SessionIDPostModel(token)) // revoke session for login user
         dialog.dismiss()
       }
-    }.show().also { dialog ->
+    }
+
+    mDialog?.show().also { dialog ->
       // Ensure dialog is shown if the activity is not finishing
       if (requireActivity().isFinishing) {
-        dialog.cancel()
+        dialog?.cancel()
       }
     }
   }
 
   private fun dialogSignOutGuestMode() {
-    moreViewModelLocal.dbResult.observe(viewLifecycleOwner) { eventResult ->
+    moreLocalViewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Success -> {
@@ -235,7 +231,7 @@ class MoreFragment : Fragment() {
       }
     }
 
-    MaterialAlertDialogBuilder(requireContext()).apply {
+    mDialog = MaterialAlertDialogBuilder(requireContext()).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_guest_mode))
       setNegativeButton(resources.getString(no)) { dialog, _ ->
@@ -244,14 +240,16 @@ class MoreFragment : Fragment() {
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-        moreViewModelLocal.deleteAll() // delete all user data (watchlistPostModel and favoritePostModel)
+        moreLocalViewModel.deleteAll() // delete all user data (watchlistPostModel and favoritePostModel)
         dialog.dismiss()
         removePrefUserData() // remove preference user data
       }
-    }.show().also { dialog ->
+    }
+
+    mDialog?.show().also { dialog ->
       // Ensure dialog is shown if the activity is not finishing
       if (requireActivity().isFinishing) {
-        dialog.cancel()
+        dialog?.cancel()
       }
     }
   }
@@ -321,10 +319,19 @@ class MoreFragment : Fragment() {
     progressIsVisible(false)
   }
 
+  override fun onStop() {
+    super.onStop()
+    mSnackbar?.dismiss()
+    mSnackbar = null
+    mDialog = null
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar?.dismiss()
-    moreViewModelUser.removeState()
+    mSnackbar = null
+    mDialog = null
+    moreUserViewModel.removeState()
     Glide.get(requireContext()).clearMemory()
     _binding = null
   }

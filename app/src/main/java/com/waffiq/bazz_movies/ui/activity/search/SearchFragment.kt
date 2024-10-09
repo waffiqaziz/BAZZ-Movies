@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -17,14 +18,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
@@ -41,22 +43,25 @@ import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorSta
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
+
+  @Inject
+  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentSearchBinding? = null
   private val binding get() = _binding!!
 
-  private lateinit var searchViewModel: SearchViewModel
+  private val searchViewModel: SearchViewModel by viewModels { factory }
   private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
   var lastQuery: String? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    val factory = ViewModelFactory.getInstance(requireContext())
-    searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as MyApplication).appComponent.inject(this)
   }
 
   override fun onCreateView(
@@ -71,9 +76,11 @@ class SearchFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // setup toolbar as action bar
-    (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
-    (activity as AppCompatActivity).supportActionBar?.title = null
+    // Check if the toolbar is already set as the support action bar
+//    if ((activity as AppCompatActivity).supportActionBar == null) {
+      (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
+      (activity as AppCompatActivity).supportActionBar?.title = null
+//    }
     binding.appBarLayout.setExpanded(true, true)
 
     binding.rvSearch.layoutManager =

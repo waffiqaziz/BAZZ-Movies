@@ -18,9 +18,11 @@ import com.waffiq.bazz_movies.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserRepository(
+@Singleton
+class UserRepository @Inject constructor(
   private val pref: UserPreference,
   private val userDataSource: UserDataSource
 ) : IUserRepository {

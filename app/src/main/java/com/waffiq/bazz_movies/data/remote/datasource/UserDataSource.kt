@@ -14,8 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserDataSource(
+@Singleton
+class UserDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
   private val countryIPApiService: CountryIPApiService
 ) : UserDataSourceInterface {
@@ -80,21 +83,4 @@ class UserDataSource(
       }
     )
   }.flowOn(Dispatchers.IO)
-
-  companion object {
-    const val TAG = "UserDataSource"
-
-    @Volatile
-    private var instance: UserDataSource? = null
-
-    fun getInstance(
-      tmdbApiService: TMDBApiService,
-      countryIPApiService: CountryIPApiService
-    ): UserDataSource =
-      instance ?: synchronized(this) {
-        instance ?: UserDataSource(
-          tmdbApiService, countryIPApiService
-        )
-      }
-  }
 }

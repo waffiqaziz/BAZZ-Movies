@@ -8,8 +8,9 @@ import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
+import javax.inject.Inject
 
-class GetDetailPersonInteractor(
+class GetDetailPersonInteractor @Inject constructor(
   private val getDetailPersonRepository: IMoviesRepository
 ) : GetDetailPersonUseCase {
   override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =

@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
@@ -48,10 +45,15 @@ import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHan
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_data")
+import javax.inject.Inject
 
 class MyFavoriteTvSeriesFragment : Fragment() {
+
+  @Inject
+  lateinit var factory: ViewModelFactory
+
+  @Inject
+  lateinit var factoryUser: ViewModelUserFactory
 
   private var _binding: FragmentMyFavoriteTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -59,8 +61,8 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private val adapterPaging = FavoriteTvAdapter()
   private val adapterDB = FavoriteAdapterDB()
 
-  private lateinit var viewModelFav: MyFavoriteViewModel
-  private lateinit var userPreferenceViewModel: UserPreferenceViewModel
+  private val viewModelFav: MyFavoriteViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
   private val baseViewModel: BaseViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -69,16 +71,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private var isWantToDelete = false
   private var isUndo = false
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    val pref = requireContext().dataStore
-    val factoryAuth = ViewModelUserFactory.getInstance(pref)
-    userPreferenceViewModel =
-      ViewModelProvider(this, factoryAuth)[UserPreferenceViewModel::class.java]
-
-    val factory = ViewModelFactory.getInstance(requireContext())
-    viewModelFav = ViewModelProvider(this, factory)[MyFavoriteViewModel::class.java]
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as MyApplication).appComponent.inject(this)
   }
 
   override fun onCreateView(
@@ -161,7 +156,9 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         baseViewModel.resetSnackbarShown()
         adapterPagingRefresh()
       } else {
-        adapterDB.notifyDataSetChanged()
+        if (adapterDB.itemCount > 0) {
+          adapterDB.notifyItemRangeChanged(0, adapterDB.itemCount - 1)
+        }
       }
 
       binding.swipeRefresh.isRefreshing = false

@@ -8,8 +8,11 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserPreference(private val dataStore: DataStore<Preferences>) {
+@Singleton
+class UserPreference @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
   suspend fun saveUser(user: UserModel) {
     dataStore.edit {
@@ -61,9 +64,6 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
   }
 
   companion object {
-    @Volatile
-    private var INSTANCE: UserPreference? = null
-
     private val NAME_KEY = stringPreferencesKey("name")
     private val USERNAME_KEY = stringPreferencesKey("username")
     private val PASSWORD_KEY = stringPreferencesKey("password")
@@ -73,13 +73,5 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
     private val STATE_KEY = booleanPreferencesKey("state")
     private val GRAVATAR_KEY = stringPreferencesKey("gravatar")
     private val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
-
-    fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
-      return INSTANCE ?: synchronized(this) {
-        val instance = UserPreference(dataStore)
-        INSTANCE = instance
-        instance
-      }
-    }
   }
 }

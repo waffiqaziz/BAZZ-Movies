@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.UserModel
-import com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData
+import com.waffiq.bazz_movies.domain.model.SnackBarUserLoginData
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite

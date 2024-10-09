@@ -8,8 +8,9 @@ import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MoreViewModelLocal(
+class MoreLocalViewModel @Inject constructor(
   private val localDatabaseUseCase: LocalDatabaseUseCase
 ) : ViewModel() {
 

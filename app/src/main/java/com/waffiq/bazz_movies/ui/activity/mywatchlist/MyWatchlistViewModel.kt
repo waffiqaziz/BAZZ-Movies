@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.data.local.model.UserModel
-import com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData
+import com.waffiq.bazz_movies.domain.model.SnackBarUserLoginData
 import com.waffiq.bazz_movies.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.domain.model.Favorite
@@ -153,7 +153,7 @@ class MyWatchlistViewModel(
         getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
           when (networkResult) {
             is NetworkResult.Success -> {
-              if (networkResult.data.favorite == true) {
+              if (networkResult.data.favorite) {
                 _snackBarAlready.value = Event(title)
               } else {
                 postFavorite(
@@ -175,7 +175,7 @@ class MyWatchlistViewModel(
         getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
           when (networkResult) {
             is NetworkResult.Success -> {
-              if (networkResult.data.favorite == true) {
+              if (networkResult.data.favorite) {
                 _snackBarAlready.value = Event(title)
               } else {
                 postFavorite(

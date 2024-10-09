@@ -4,8 +4,9 @@ import com.waffiq.bazz_movies.domain.model.Favorite
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocalDatabaseInteractor(
+class LocalDatabaseInteractor @Inject constructor(
   private val localDatabaseRepository: IMoviesRepository
 ) : LocalDatabaseUseCase {
   override val favoriteMoviesFromDB: Flow<List<Favorite>> =

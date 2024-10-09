@@ -46,8 +46,11 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MoviesRepository(
+@Singleton
+class MoviesRepository @Inject constructor(
   private val localDataSource: LocalDataSource,
   private val movieDataSource: MovieDataSource
 ) : IMoviesRepository {

@@ -8,8 +8,9 @@ import com.waffiq.bazz_movies.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class PostMethodInteractor(
+class PostMethodInteractor @Inject constructor(
   private val postMethodRepository: IMoviesRepository
 ) : PostMethodUseCase {
   override suspend fun postFavorite(

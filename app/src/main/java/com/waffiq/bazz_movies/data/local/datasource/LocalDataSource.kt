@@ -6,8 +6,13 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) :
+@Singleton
+class LocalDataSource @Inject constructor(
+  private val favoriteDao: FavoriteDao
+) :
   LocalDataSourceInterface {
 
   override val getFavoriteMovies: Flow<List<FavoriteEntity>> =
@@ -44,11 +49,4 @@ class LocalDataSource private constructor(private val favoriteDao: FavoriteDao) 
     mediaType: String
   ): DbResult<Int> =
     executeDbOperation { favoriteDao.update(isFavorite, isWatchlist, id, mediaType) }
-
-  companion object {
-    private var instance: LocalDataSource? = null
-
-    fun getInstance(favoriteDao: FavoriteDao): LocalDataSource =
-      instance ?: synchronized(this) { instance ?: LocalDataSource(favoriteDao) }
-  }
 }

@@ -46,8 +46,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieDataSource private constructor(
+@Singleton
+class MovieDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
   private val omDbApiService: OMDbApiService
 ) : MovieDataSourceInterface {
@@ -370,20 +373,6 @@ class MovieDataSource private constructor(
   // endregion PERSON
 
   companion object {
-    const val TAG = "MovieDataSource"
     const val PAGE_SIZE = 5
-
-    @Volatile
-    private var instance: MovieDataSource? = null
-
-    @JvmStatic
-    fun getInstance(
-      tmdbApiService: TMDBApiService,
-      omDbApiService: OMDbApiService
-    ): MovieDataSource = instance ?: synchronized(this) {
-      instance ?: MovieDataSource(
-        tmdbApiService, omDbApiService
-      )
-    }
   }
 }

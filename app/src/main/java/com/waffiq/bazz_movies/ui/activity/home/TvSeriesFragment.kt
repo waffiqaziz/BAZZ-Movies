@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,11 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
@@ -32,20 +34,23 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class TvSeriesFragment : Fragment() {
+
+  @Inject
+  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var tvSeriesViewModel: TvSeriesViewModel
+  private val tvSeriesViewModel: TvSeriesViewModel by viewModels { factory }
 
   private var mSnackbar: Snackbar? = null
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    val factory = ViewModelFactory.getInstance(requireContext())
-    tvSeriesViewModel = ViewModelProvider(this, factory)[TvSeriesViewModel::class.java]
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    (requireActivity().application as MyApplication).appComponent.inject(this)
   }
 
   override fun onCreateView(

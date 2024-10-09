@@ -38,7 +38,7 @@
 -keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
 
 # Keep specific classes and their members
--keep class com.waffiq.bazz_movies.data.remote.SnackBarUserLoginData { *; }
+-keep class com.waffiq.bazz_movies.domain.model.SnackBarUserLoginData { *; }
 -keep class com.waffiq.bazz_movies.utils.resultstate.NetworkResult { *; }
 -keep class com.waffiq.bazz_movies.utils.resultstate.** { *; }
 -keep class com.waffiq.bazz_movies.data.remote.post_body.** { *; }
