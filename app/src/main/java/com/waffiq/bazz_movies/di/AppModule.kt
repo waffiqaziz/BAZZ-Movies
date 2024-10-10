@@ -38,104 +38,126 @@ import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefInteractor
 import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefUseCase
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Suppress("unused")
 @Module
+@InstallIn(ViewModelComponent::class)
 abstract class AppModule {
 
   // region USER
   @Binds
+  @ViewModelScoped
   abstract fun provideAuthTMDbAccountUseCase(
     authTMDbAccountInteractor: AuthTMDbAccountInteractor
   ): AuthTMDbAccountUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideUserPrefUseCase(
     userPrefInteractor: UserPrefInteractor
   ): UserPrefUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideGetRegionUseCase(
     getRegionInteractor: GetRegionInteractor
   ): GetRegionUseCase
   // endregion USER
 
   @Binds
+  @ViewModelScoped
   abstract fun provideDetailOMDbUseCase(
     getDetailOMDbInteractor: GetDetailOMDbInteractor
   ): GetDetailOMDbUseCase
 
   // region MOVIE
   @Binds
+  @ViewModelScoped
   abstract fun provideListMoviesUseCase(
     getListMoviesInteractor: GetListMoviesInteractor
   ): GetListMoviesUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideDetailMovieUseCase(
     getDetailMovieInteractor: GetDetailMovieInteractor
   ): GetDetailMovieUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideStatedMovieUseCase(
     getStatedMovieInteractor: GetStatedMovieInteractor
   ): GetStatedMovieUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideFavoriteMovieUseCase(
     getFavoriteMovieInteractor: GetFavoriteMovieInteractor
   )
     : GetFavoriteMovieUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideWatchlistMovieUseCase(
     getWatchlistMovieInteractor: GetWatchlistMovieInteractor
   ): GetWatchlistMovieUseCase
   // endregion MOVIE
 
 
-  @Binds// region TV
+  @Binds
+  @ViewModelScoped// region TV
   abstract fun provideListTvUseCase(
     getListTvInteractor: GetListTvInteractor
   ): GetListTvUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideDetailTvUseCase(
     getDetailTvInteractor: GetDetailTvInteractor
   ): GetDetailTvUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideStatedTvUseCase(
     getStatedTvInteractor: GetStatedTvInteractor
   ): GetStatedTvUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideFavoriteTvUseCase(
     getFavoriteTvInteractor: GetFavoriteTvInteractor
   ): GetFavoriteTvUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideWatchlistTvUseCase(
     getWatchlistTvInteractor: GetWatchlistTvInteractor
   ): GetWatchlistTvUseCase
   // endregion TV
 
   @Binds
+  @ViewModelScoped
   abstract fun provideMultiSearchUseCase(
     multiSearchInteractor: MultiSearchInteractor
   ): MultiSearchUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideDetailPersonUseCase(
     getDetailPersonInteractor: GetDetailPersonInteractor
   ): GetDetailPersonUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun providePostMethodUseCase(
     postMethodInteractor: PostMethodInteractor
   ): PostMethodUseCase
 
   @Binds
+  @ViewModelScoped
   abstract fun provideLocalDatabaseUseCase(
     localDatabaseInteractor: LocalDatabaseInteractor
   ): LocalDatabaseUseCase

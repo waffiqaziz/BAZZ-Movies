@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.R.font.nunito_sans_regular
@@ -29,7 +28,6 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
@@ -39,19 +37,16 @@ import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.utils.uihelpers.CustomTypefaceSpan
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
-  @Inject
-  lateinit var factory: ViewModelFactory
-
   private lateinit var binding: ActivityLoginBinding
-  private val authenticationViewModel: AuthenticationViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
+  private val authenticationViewModel: AuthenticationViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
@@ -59,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
       binding.btnLogin.isEnabled = true
+      binding.tvGuest.isEnabled = true
       snackBarWarning(
         binding.constraintLayout,
         null,
@@ -137,7 +133,8 @@ class LoginActivity : AppCompatActivity() {
         binding.edPass.error = null
       }
 
-      if (formNotEmpty()) {
+      if (formNotEmpty) {
+        binding.tvGuest.isEnabled = false
         binding.btnLogin.isEnabled = false
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         loginAsUserRegistered()
@@ -163,12 +160,12 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
-  private fun formNotEmpty(): Boolean {
-    return binding.edUsername.text.isNotEmpty() &&
+  private val formNotEmpty =
+    binding.edUsername.text.isNotEmpty() &&
       binding.edUsername.text.isNotBlank() &&
       binding.edPass.text.isNotEmpty() &&
       binding.edPass.text.isNotBlank()
-  }
+
 
   private fun goToMainActivity(isGuest: Boolean) {
     startActivity(Intent(this@LoginActivity, MainActivity::class.java))

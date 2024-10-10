@@ -8,12 +8,14 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.domain.usecase.multi_search.MultiSearchUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchViewModel @Inject constructor(
   private val multiSearchUseCase: MultiSearchUseCase
 ) : ViewModel() {

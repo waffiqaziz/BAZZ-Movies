@@ -9,14 +9,18 @@ import com.waffiq.bazz_movies.data.local.model.UserPreference
 import com.waffiq.bazz_movies.utils.common.Constants.DATASTORE_NAME
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class DatastoreModule {
 
   @Provides
   @Singleton
-  fun provideDataStore(context: Context): DataStore<Preferences> {
+  fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
     return PreferenceDataStoreFactory.create(
       produceFile = { context.preferencesDataStoreFile(DATASTORE_NAME) }
     )

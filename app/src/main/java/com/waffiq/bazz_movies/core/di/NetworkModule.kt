@@ -4,9 +4,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.waffiq.bazz_movies.BuildConfig.API_KEY
 import com.waffiq.bazz_movies.BuildConfig.API_KEY_OMDb
+import com.waffiq.bazz_movies.BuildConfig.DEBUG
 import com.waffiq.bazz_movies.BuildConfig.OMDb_API_URL
 import com.waffiq.bazz_movies.BuildConfig.TMDB_API_URL
-import com.waffiq.bazz_movies.BuildConfig.DEBUG
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiKeyInterceptorOMDb
 import com.waffiq.bazz_movies.data.remote.retrofit.ApiKeyInterceptorTMDB
 import com.waffiq.bazz_movies.data.remote.retrofit.CountryIPApiService
@@ -15,6 +15,8 @@ import com.waffiq.bazz_movies.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.utils.common.Constants.COUNTRY_API_LINK
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,6 +24,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
   private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()

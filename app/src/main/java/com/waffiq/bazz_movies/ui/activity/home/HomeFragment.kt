@@ -13,7 +13,9 @@ import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentHomeBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.HomeViewPagerAdapter
 import com.waffiq.bazz_movies.utils.common.Constants.tabHomeHeadingArray
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
   private var _binding: FragmentHomeBinding? = null

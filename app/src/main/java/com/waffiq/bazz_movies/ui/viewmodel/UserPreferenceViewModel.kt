@@ -6,9 +6,11 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class UserPreferenceViewModel @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase
 ) : ViewModel() {

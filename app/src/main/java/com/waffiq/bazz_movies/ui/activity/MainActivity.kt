@@ -8,8 +8,10 @@ import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
 import com.waffiq.bazz_movies.ui.activity.search.SearchFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding

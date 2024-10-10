@@ -11,9 +11,11 @@ import com.waffiq.bazz_movies.domain.model.person.ProfilesItem
 import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class PersonMovieViewModel @Inject constructor(
   private val getDetailPersonUseCase: GetDetailPersonUseCase
 ) : ViewModel() {

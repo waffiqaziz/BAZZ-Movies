@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TvAdapter
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Event
@@ -29,29 +26,22 @@ import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHan
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class TvSeriesFragment : Fragment() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val tvSeriesViewModel: TvSeriesViewModel by viewModels { factory }
+  private val tvSeriesViewModel: TvSeriesViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
-
-  override fun onAttach(context: Context) {
-    super.onAttach(context)
-    (requireActivity().application as MyApplication).appComponent.inject(this)
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,

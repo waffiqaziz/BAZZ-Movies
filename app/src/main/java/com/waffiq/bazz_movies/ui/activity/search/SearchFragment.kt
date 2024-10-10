@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.search
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +25,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.drawable.ic_search
@@ -36,33 +34,25 @@ import com.waffiq.bazz_movies.R.menu.search_menu
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.SearchAdapter
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentSearchBinding? = null
   private val binding get() = _binding!!
 
-  private val searchViewModel: SearchViewModel by viewModels { factory }
+  private val searchViewModel: SearchViewModel by viewModels()
   private val adapter = SearchAdapter()
 
   private var mSnackbar: Snackbar? = null
   var lastQuery: String? = null
-
-  override fun onAttach(context: Context) {
-    super.onAttach(context)
-    (requireActivity().application as MyApplication).appComponent.inject(this)
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -78,8 +68,8 @@ class SearchFragment : Fragment() {
 
     // Check if the toolbar is already set as the support action bar
 //    if ((activity as AppCompatActivity).supportActionBar == null) {
-      (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
-      (activity as AppCompatActivity).supportActionBar?.title = null
+    (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
+    (activity as AppCompatActivity).supportActionBar?.title = null
 //    }
     binding.appBarLayout.setExpanded(true, true)
 

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.mywatchlist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
@@ -32,7 +30,6 @@ import com.waffiq.bazz_movies.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.common.Event
@@ -44,12 +41,10 @@ import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHan
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyWatchlistMoviesFragment : Fragment() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -57,8 +52,8 @@ class MyWatchlistMoviesFragment : Fragment() {
   private val adapterPaging = FavoriteMovieAdapter()
   private val adapterDB = FavoriteAdapterDB()
 
-  private val viewModel: MyWatchlistViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
+  private val viewModel: MyWatchlistViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private val baseViewModel: BaseViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -66,11 +61,6 @@ class MyWatchlistMoviesFragment : Fragment() {
   // helper
   private var isWantToDelete = false
   private var isUndo = false
-
-  override fun onAttach(context: Context) {
-    super.onAttach(context)
-    (requireActivity().application as MyApplication).appComponent.inject(this)
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,

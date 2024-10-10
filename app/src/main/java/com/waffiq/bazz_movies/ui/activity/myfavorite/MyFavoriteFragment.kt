@@ -13,7 +13,9 @@ import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.MyFavoriteViewPagerAdapter
 import com.waffiq.bazz_movies.utils.common.Constants.tabMoviesTvHeadingArray
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyFavoriteFragment : Fragment() {
 
   private var _binding: FragmentMyFavoriteBinding? = null

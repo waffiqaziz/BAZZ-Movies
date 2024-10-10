@@ -20,7 +20,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_no_profile
@@ -38,7 +37,6 @@ import com.waffiq.bazz_movies.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.ui.adapter.KnownForAdapter
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.animFadeOutLong
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
@@ -56,16 +54,14 @@ import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeBirth
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.getAgeDeath
 import com.waffiq.bazz_movies.utils.helpers.PersonPageHelper.hasAnySocialMediaIds
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PersonActivity : AppCompatActivity() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private lateinit var binding: ActivityPersonBinding
   private lateinit var dataExtra: MovieTvCastItemResponse
-  private val personMovieViewModel: PersonMovieViewModel by viewModels { factory }
+  private val personMovieViewModel: PersonMovieViewModel by viewModels()
 
   private var dialog: Dialog? = null
   private val handler = Handler(Looper.getMainLooper())
@@ -73,7 +69,6 @@ class PersonActivity : AppCompatActivity() {
   private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     binding = ActivityPersonBinding.inflate(layoutInflater)
     setContentView(binding.root)

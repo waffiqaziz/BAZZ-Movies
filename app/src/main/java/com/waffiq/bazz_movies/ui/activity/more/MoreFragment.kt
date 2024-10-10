@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.more
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -20,7 +19,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.anim.fade_in
 import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
@@ -41,7 +39,6 @@ import com.waffiq.bazz_movies.ui.activity.AboutActivity
 import com.waffiq.bazz_movies.ui.activity.LoginActivity
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_VERY_LONG
@@ -58,32 +55,25 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class MoreFragment : Fragment() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val moreLocalViewModel: MoreLocalViewModel by viewModels { factory }
-  private val moreUserViewModel: MoreUserViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
-  private val regionViewModel: RegionViewModel by viewModels { factory }
+  private val moreLocalViewModel: MoreLocalViewModel by viewModels()
+  private val moreUserViewModel: MoreUserViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val regionViewModel: RegionViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null
-
-  override fun onAttach(context: Context) {
-    super.onAttach(context)
-    (requireActivity().application as MyApplication).appComponent.inject(this)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

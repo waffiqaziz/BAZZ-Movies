@@ -5,6 +5,7 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
+  alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
 }
 
@@ -156,9 +157,9 @@ dependencies {
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
-  // Dagger
-  implementation(libs.dagger)
-  ksp(libs.dagger.ksp)
+  // Hilt
+  implementation(libs.hilt.android)
+  ksp(libs.hilt.android.compiler)
 }
 
 repositories {

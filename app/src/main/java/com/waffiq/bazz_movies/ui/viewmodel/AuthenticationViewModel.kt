@@ -8,9 +8,11 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class AuthenticationViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase,
 ) : ViewModel() {

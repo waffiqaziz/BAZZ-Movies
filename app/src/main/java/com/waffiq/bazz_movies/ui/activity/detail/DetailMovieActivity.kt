@@ -60,7 +60,6 @@ import com.waffiq.bazz_movies.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
@@ -76,20 +75,18 @@ import com.waffiq.bazz_movies.utils.helpers.details.DetailMovieTvHelper.detailCr
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailMovieActivity : AppCompatActivity() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
-  private val detailViewModel: DetailMovieViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
+  private val detailViewModel: DetailMovieViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   private val adapterCast = CastAdapter()
   private val adapterRecommendation = TrendingAdapter()
@@ -101,7 +98,6 @@ class DetailMovieActivity : AppCompatActivity() {
   private var toast: Toast? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)

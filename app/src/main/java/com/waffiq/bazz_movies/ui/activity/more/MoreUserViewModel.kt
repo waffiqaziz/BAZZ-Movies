@@ -6,11 +6,13 @@ import com.waffiq.bazz_movies.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.domain.model.post.Post
 import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MoreUserViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase
 ) : ViewModel() {

@@ -7,23 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.color.gray_900
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RoutingActivity : AppCompatActivity() {
 
-  @Inject
-  lateinit var factory: ViewModelFactory
-
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private lateinit var splashScreen: SplashScreen
 
   override fun onCreate(savedInstanceState: Bundle?) {
     splashScreen = installSplashScreen()
-    (application as MyApplication).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     splashScreen.setKeepOnScreenCondition { true }
 

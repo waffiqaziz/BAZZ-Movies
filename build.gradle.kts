@@ -5,6 +5,7 @@ plugins {
   alias(libs.plugins.kotlin.android) apply false // Available for Kotlin in all modules
   alias(libs.plugins.gms.googleServices) apply false // Google services (used in specific modules)
   alias(libs.plugins.firebase.crashlytics) apply false // Crashlytics plugin for app
+  alias(libs.plugins.hilt) apply false
   alias(libs.plugins.ksp) version libs.versions.ksp.get() apply false // KSP plugin version defined
 }
 

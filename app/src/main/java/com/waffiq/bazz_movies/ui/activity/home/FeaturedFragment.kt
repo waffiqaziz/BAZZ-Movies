@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.ui.activity.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.MyApplication
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.bottom_navigation
@@ -28,7 +26,6 @@ import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
@@ -44,33 +41,26 @@ import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorHan
 import com.waffiq.bazz_movies.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.utils.uihelpers.Animation.fadeOut
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class FeaturedFragment : Fragment() {
-
-  @Inject
-  lateinit var factory: ViewModelFactory
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val movieViewModel: MovieViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
-  private val regionViewModel: RegionViewModel by viewModels { factory }
+  private val movieViewModel: MovieViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val regionViewModel: RegionViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
-
-  override fun onAttach(context: Context) {
-    super.onAttach(context)
-    (requireActivity().application as MyApplication).appComponent.inject(this)
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,

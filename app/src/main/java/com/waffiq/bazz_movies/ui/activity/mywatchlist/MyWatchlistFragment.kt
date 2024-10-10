@@ -12,7 +12,9 @@ import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistBinding
 import com.waffiq.bazz_movies.ui.adapter.viewpager.MyWatchlistViewPagerAdapter
 import com.waffiq.bazz_movies.utils.common.Constants.tabMoviesTvHeadingArray
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyWatchlistFragment : Fragment() {
 
   private var _binding: FragmentMyWatchlistBinding? = null

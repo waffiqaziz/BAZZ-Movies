@@ -30,12 +30,14 @@ import com.waffiq.bazz_movies.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import com.waffiq.bazz_movies.utils.resultstate.PostModelState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailMovieViewModel @Inject constructor(
   private val getDetailMovieUseCase: GetDetailMovieUseCase,
   private val getDetailTvUseCase: GetDetailTvUseCase,

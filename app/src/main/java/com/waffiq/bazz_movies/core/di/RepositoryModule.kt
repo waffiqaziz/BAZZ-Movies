@@ -6,8 +6,11 @@ import com.waffiq.bazz_movies.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.domain.repository.IUserRepository
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-@Module(includes = [NetworkModule::class, DatabaseModule::class, DatastoreModule::class])
+@Module
+@InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
   @Binds

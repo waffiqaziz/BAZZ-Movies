@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.domain.usecase.get_region.GetRegionUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ import javax.inject.Inject
  * region is used by TMDB and for local operation
  * and country is used to get country code from country.is, network operation
  */
+@HiltViewModel
 class RegionViewModel @Inject constructor(
   private val getRegionUseCase: GetRegionUseCase
 ) : ViewModel() {

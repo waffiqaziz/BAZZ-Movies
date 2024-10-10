@@ -24,10 +24,12 @@ import com.waffiq.bazz_movies.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MyWatchlistViewModel @Inject constructor(
   private val getWatchlistMovieUseCase: GetWatchlistMovieUseCase,
   private val getWatchlistTvUseCase: GetWatchlistTvUseCase,

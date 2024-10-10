@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.DbResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MoreLocalViewModel @Inject constructor(
   private val localDatabaseUseCase: LocalDatabaseUseCase
 ) : ViewModel() {

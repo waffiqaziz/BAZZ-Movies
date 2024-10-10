@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.usecase.get_list_tv.GetListTvUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@HiltViewModel
 class TvSeriesViewModel @Inject constructor(
   private val getListTvUseCase: GetListTvUseCase
 ) : ViewModel() {

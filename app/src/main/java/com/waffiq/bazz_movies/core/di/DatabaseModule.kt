@@ -9,14 +9,18 @@ import com.waffiq.bazz_movies.data.local.room.FavoriteDatabase
 import com.waffiq.bazz_movies.utils.common.Constants.TABLE_NAME
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
   @Singleton
   @Provides
-  fun provideDatabase(context: Context): FavoriteDatabase = Room.databaseBuilder(
+  fun provideDatabase(@ApplicationContext context: Context): FavoriteDatabase = Room.databaseBuilder(
     context,
     FavoriteDatabase::class.java, "$TABLE_NAME.db"
   ).addMigrations(migrationOneTwo)
