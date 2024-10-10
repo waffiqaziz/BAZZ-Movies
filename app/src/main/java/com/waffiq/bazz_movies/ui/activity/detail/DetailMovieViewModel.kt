@@ -34,8 +34,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailMovieViewModel(
+class DetailMovieViewModel @Inject constructor(
   private val getDetailMovieUseCase: GetDetailMovieUseCase,
   private val getDetailTvUseCase: GetDetailTvUseCase,
   private val localDatabaseUseCase: LocalDatabaseUseCase,

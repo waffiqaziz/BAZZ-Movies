@@ -9,8 +9,9 @@ import com.waffiq.bazz_movies.domain.usecase.auth_tmdb_account.AuthTMDbAccountUs
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthenticationViewModel(
+class AuthenticationViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase,
 ) : ViewModel() {
 

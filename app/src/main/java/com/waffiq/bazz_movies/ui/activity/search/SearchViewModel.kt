@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(
+class SearchViewModel @Inject constructor(
   private val multiSearchUseCase: MultiSearchUseCase
 ) : ViewModel() {
   private val _searchResults = MutableStateFlow<PagingData<ResultsItemSearch>>(PagingData.empty())

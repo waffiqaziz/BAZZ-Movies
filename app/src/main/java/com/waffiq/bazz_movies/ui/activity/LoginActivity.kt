@@ -29,7 +29,7 @@ import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.ui.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
+import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
@@ -44,11 +44,11 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var factoryUser: ViewModelUserFactory
+  lateinit var factory: ViewModelFactory
 
   private lateinit var binding: ActivityLoginBinding
-  private val authenticationViewModel: AuthenticationViewModel by viewModels { factoryUser }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
+  private val authenticationViewModel: AuthenticationViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (application as MyApplication).appComponent.inject(this)

@@ -26,8 +26,9 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyWatchlistViewModel(
+class MyWatchlistViewModel @Inject constructor(
   private val getWatchlistMovieUseCase: GetWatchlistMovieUseCase,
   private val getWatchlistTvUseCase: GetWatchlistTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,

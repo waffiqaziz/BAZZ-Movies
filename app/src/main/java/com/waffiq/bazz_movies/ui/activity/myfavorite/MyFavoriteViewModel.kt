@@ -26,8 +26,9 @@ import com.waffiq.bazz_movies.utils.resultstate.DbResult
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyFavoriteViewModel(
+class MyFavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,

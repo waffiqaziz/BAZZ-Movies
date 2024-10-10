@@ -61,7 +61,6 @@ import com.waffiq.bazz_movies.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.dateFormatterStandard
 import com.waffiq.bazz_movies.utils.Helper.justifyTextView
 import com.waffiq.bazz_movies.utils.Helper.scrollActionBarBehavior
@@ -87,13 +86,10 @@ class DetailMovieActivity : AppCompatActivity() {
   @Inject
   lateinit var factory: ViewModelFactory
 
-  @Inject
-  lateinit var factoryUser: ViewModelUserFactory
-
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
   private val detailViewModel: DetailMovieViewModel by viewModels { factory }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
 
   private val adapterCast = CastAdapter()
   private val adapterRecommendation = TrendingAdapter()

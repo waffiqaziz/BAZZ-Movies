@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.data.local.model.UserModel
 import com.waffiq.bazz_movies.domain.usecase.user_pref.UserPrefUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserPreferenceViewModel(
+class UserPreferenceViewModel @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase
 ) : ViewModel() {
 

@@ -42,7 +42,6 @@ import com.waffiq.bazz_movies.ui.activity.LoginActivity
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.toastShort
 import com.waffiq.bazz_movies.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.utils.common.Constants.DEBOUNCE_VERY_LONG
@@ -65,22 +64,18 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class MoreFragment : Fragment() {
 
   @Inject
   lateinit var factory: ViewModelFactory
 
-  @Inject
-  lateinit var factoryUser: ViewModelUserFactory
-
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val moreLocalViewModel: MoreLocalViewModel by viewModels { factory }
-  private val moreUserViewModel: MoreUserViewModel by viewModels { factoryUser }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
-  private val regionViewModel: RegionViewModel by viewModels { factoryUser }
+  private val moreUserViewModel: MoreUserViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
+  private val regionViewModel: RegionViewModel by viewModels { factory }
 
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null

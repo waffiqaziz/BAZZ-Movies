@@ -9,8 +9,9 @@ import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MoreUserViewModel(
+class MoreUserViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase
 ) : ViewModel() {
 

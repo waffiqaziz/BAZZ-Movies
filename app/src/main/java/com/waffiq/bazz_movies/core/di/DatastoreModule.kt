@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.waffiq.bazz_movies.data.local.model.UserPreference
+import com.waffiq.bazz_movies.utils.common.Constants.DATASTORE_NAME
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,9 +16,9 @@ class DatastoreModule {
 
   @Provides
   @Singleton
-  fun provideDataStore( context: Context): DataStore<Preferences> {
+  fun provideDataStore(context: Context): DataStore<Preferences> {
     return PreferenceDataStoreFactory.create(
-      produceFile = { context.preferencesDataStoreFile("user_data") }
+      produceFile = { context.preferencesDataStoreFile(DATASTORE_NAME) }
     )
   }
 

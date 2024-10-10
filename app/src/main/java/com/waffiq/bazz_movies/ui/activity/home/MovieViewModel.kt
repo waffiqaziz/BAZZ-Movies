@@ -7,8 +7,9 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.domain.model.ResultItem
 import com.waffiq.bazz_movies.domain.usecase.get_list_movies.GetListMoviesUseCase
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class MovieViewModel(
+class MovieViewModel @Inject constructor(
   private val getListMoviesUseCase: GetListMoviesUseCase
 ) : ViewModel() {
   fun getTopRatedMovies(): Flow<PagingData<ResultItem>> =

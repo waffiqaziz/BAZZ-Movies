@@ -8,13 +8,14 @@ import com.waffiq.bazz_movies.domain.usecase.get_region.GetRegionUseCase
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * region = country
  * region is used by TMDB and for local operation
  * and country is used to get country code from country.is, network operation
  */
-class RegionViewModel(
+class RegionViewModel @Inject constructor(
   private val getRegionUseCase: GetRegionUseCase
 ) : ViewModel() {
   private val _countryCode = MutableLiveData<String>()

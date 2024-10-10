@@ -23,7 +23,6 @@ import com.waffiq.bazz_movies.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelFactory
-import com.waffiq.bazz_movies.ui.viewmodelfactory.ViewModelUserFactory
 import com.waffiq.bazz_movies.utils.Helper.initLinearLayoutManager
 import com.waffiq.bazz_movies.utils.common.Constants
 import com.waffiq.bazz_movies.utils.common.Constants.NAN
@@ -50,15 +49,12 @@ class MovieFragment : Fragment() {
   @Inject
   lateinit var factory: ViewModelFactory
 
-  @Inject
-  lateinit var factoryUser: ViewModelUserFactory
-
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val movieViewModel: MovieViewModel by viewModels { factory }
-  private val regionViewModel: RegionViewModel by viewModels { factoryUser }
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factoryUser }
+  private val regionViewModel: RegionViewModel by viewModels { factory }
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels { factory }
 
   private var mSnackbar: Snackbar? = null
 

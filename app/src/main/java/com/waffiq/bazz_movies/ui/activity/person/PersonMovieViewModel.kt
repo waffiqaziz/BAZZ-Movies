@@ -12,8 +12,9 @@ import com.waffiq.bazz_movies.domain.usecase.get_detail_person.GetDetailPersonUs
 import com.waffiq.bazz_movies.utils.common.Event
 import com.waffiq.bazz_movies.utils.resultstate.NetworkResult
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PersonMovieViewModel(
+class PersonMovieViewModel @Inject constructor(
   private val getDetailPersonUseCase: GetDetailPersonUseCase
 ) : ViewModel() {
 
