@@ -1,6 +1,5 @@
 <resources>
   <string name="app_name_release">BAZZ Movies</string>
-  <string name="app_name_debug">BAZZ Movies Debug</string>
 
   <string name="title_activity">BAZZ Movies</string>
   <string name="poster">Poster</string>

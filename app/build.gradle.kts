@@ -56,7 +56,7 @@ android {
 //      isMinifyEnabled = true
 //      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
-      resValue("string", "app_name", "@string/app_name_debug")
+      resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
     }
@@ -91,6 +91,7 @@ dependencies {
   // core
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.activity.ktx)
+  implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.cardview)
   implementation(libs.androidx.constraintlayout)
@@ -138,7 +139,7 @@ dependencies {
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.test.ext.junit)
 
-  // disable for faster build
+  // leakcanary
   debugImplementation(libs.leakcanary)
 
   // glide

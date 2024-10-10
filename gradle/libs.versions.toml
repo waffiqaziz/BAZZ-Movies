@@ -17,6 +17,7 @@ leakcanary = "2.12"
 # AndroidX Libraries
 coreKtx = "1.13.0"
 activityKtx = "1.9.0"
+fragmentKtx = "1.8.4"
 appcompat = "1.6.1"
 cardview = "1.0.0"
 constraintlayout = "2.1.4"
@@ -72,6 +73,7 @@ countryPicker = "2.7.0"
 # AndroidX Libraries
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
