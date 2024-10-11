@@ -6,31 +6,31 @@
 
   <fragment
     android:id="@+id/navigation_home"
-    android:name="com.waffiq.bazz_movies.ui.activity.home.HomeFragment"
+    android:name="com.waffiq.bazz_movies.pages.home.HomeFragment"
     android:label="@string/title_home"
     tools:layout="@layout/fragment_featured" />
 
   <fragment
     android:id="@+id/navigation_search"
-    android:name="com.waffiq.bazz_movies.ui.activity.search.SearchFragment"
+    android:name="com.waffiq.bazz_movies.pages.search.SearchFragment"
     android:label="@string/title_search"
     tools:layout="@layout/fragment_search" />
 
   <fragment
     android:id="@+id/navigation_my_favorite"
-    android:name="com.waffiq.bazz_movies.ui.activity.myfavorite.MyFavoriteFragment"
+    android:name="com.waffiq.bazz_movies.pages.myfavorite.MyFavoriteFragment"
     android:label="@string/title_my_favorite"
     tools:layout="@layout/fragment_my_favorite_movies" />
 
   <fragment
     android:id="@+id/navigation_my_watchlist"
-    android:name="com.waffiq.bazz_movies.ui.activity.mywatchlist.MyWatchlistFragment"
+    android:name="com.waffiq.bazz_movies.pages.mywatchlist.MyWatchlistFragment"
     android:label="@string/title_my_watchlist"
     tools:layout="@layout/fragment_my_watchlist_movies" />
 
   <fragment
     android:id="@+id/navigation_more"
-    android:name="com.waffiq.bazz_movies.ui.activity.more.MoreFragment"
+    android:name="com.waffiq.bazz_movies.pages.more.MoreFragment"
     android:label="@string/title_more"
     tools:layout="@layout/fragment_more">
 

@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.home.TvSeriesFragment">
+  tools:context=".pages.home.TvSeriesFragment">
 
   <!-- TV list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

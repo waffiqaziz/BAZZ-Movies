@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.waffiq.bazz_movies.data.local.room.FavoriteDao
-import com.waffiq.bazz_movies.data.local.room.FavoriteDatabase
-import com.waffiq.bazz_movies.utils.common.Constants.TABLE_NAME
+import com.waffiq.bazz_movies.core.data.local.room.FavoriteDao
+import com.waffiq.bazz_movies.core.data.local.room.FavoriteDatabase
+import com.waffiq.bazz_movies.core.utils.common.Constants.TABLE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
