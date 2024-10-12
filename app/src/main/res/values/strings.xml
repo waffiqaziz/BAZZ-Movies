@@ -78,7 +78,6 @@
 
   <!-- SEARCH -->
   <string name="search_results">Search results</string>
-  <string name="clear_query">Clear query</string>
   <string name="search_any">Search any Movies</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
@@ -103,7 +102,6 @@
   <string name="rating">Rating</string>
   <string name="cancel">Cancel</string>
   <string name="submit">Submit</string>
-  <string name="item">Item</string>
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
   <string name="not_available">N/A</string>
@@ -136,7 +134,6 @@
 
   <string name="picture">Picture</string>
   <string name="forget_password">Forget Password</string>
-  <string name="nan">NaN</string>
 
   <!-- PERSON -->
   <string name="known_for">Known For</string>

@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.pages.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,25 +17,26 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitDataJob
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupRetryButton
@@ -41,6 +45,11 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -50,7 +59,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FeaturedFragment : Fragment() {
+class FeaturedFragment : Fragment(), DetailNavigator {
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -112,9 +121,9 @@ class FeaturedFragment : Fragment() {
 
   private fun setData(region: String) {
     // Initialize adapters
-    val adapterTrending = TrendingAdapter()
-    val adapterUpcoming = MovieHomeAdapter()
-    val adapterPlayingNow = MovieHomeAdapter()
+    val adapterTrending = TrendingAdapter(this)
+    val adapterUpcoming = MovieHomeAdapter(this)
+    val adapterPlayingNow = MovieHomeAdapter(this)
 
     combinedLoadStatesHandle(adapterTrending)
 
@@ -259,5 +268,13 @@ class FeaturedFragment : Fragment() {
     mSnackbar = null
     Glide.get(requireContext()).clearMemory()
     _binding = null
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

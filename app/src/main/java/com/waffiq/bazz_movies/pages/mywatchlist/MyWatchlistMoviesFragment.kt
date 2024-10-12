@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.pages.mywatchlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
@@ -23,34 +27,38 @@ import com.waffiq.bazz_movies.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
-import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
 import com.waffiq.bazz_movies.core.domain.model.Favorite
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
+import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.viewmodel.BaseViewModel
+import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyWatchlistMoviesFragment : Fragment() {
+class MyWatchlistMoviesFragment : Fragment(), DetailNavigator {
 
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val adapterPaging = FavoriteMovieAdapter()
-  private val adapterDB = FavoriteAdapterDB()
+  private val adapterPaging = FavoriteMovieAdapter(this)
+  private val adapterDB = FavoriteAdapterDB(this)
 
   private val viewModel: MyWatchlistViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
@@ -381,5 +389,13 @@ class MyWatchlistMoviesFragment : Fragment() {
     mSnackbar?.dismiss()
     mSnackbar = null
     _binding = null
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), R.anim.fade_in, R.anim.fade_out)
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

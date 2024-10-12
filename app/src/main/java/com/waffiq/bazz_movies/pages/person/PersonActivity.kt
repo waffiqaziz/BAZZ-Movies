@@ -14,12 +14,16 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.drawable.ic_no_profile
@@ -30,18 +34,14 @@ import com.waffiq.bazz_movies.R.string.no_biography
 import com.waffiq.bazz_movies.R.string.no_data
 import com.waffiq.bazz_movies.R.string.not_available
 import com.waffiq.bazz_movies.R.string.years_old
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
-import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
+import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.KnownForAdapter
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.animFadeOutLong
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.common.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.INSTAGRAM_LINK
@@ -50,17 +50,24 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.utils.common.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_CHANNEL_LINK
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.animFadeOutLong
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.getAgeBirth
 import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.getAgeDeath
 import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.hasAnySocialMediaIds
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PersonActivity : AppCompatActivity() {
+class PersonActivity : AppCompatActivity(), DetailNavigator {
 
   private lateinit var binding: ActivityPersonBinding
-  private lateinit var dataExtra: MovieTvCastItemResponse
+  private lateinit var dataExtra: MovieTvCastItem
   private val personMovieViewModel: PersonMovieViewModel by viewModels()
 
   private var dialog: Dialog? = null
@@ -91,7 +98,7 @@ class PersonActivity : AppCompatActivity() {
     }
 
     dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItemResponse::class.java)
+      intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItem::class.java)
     } else {
       @Suppress("DEPRECATION")
       intent.getParcelableExtra(EXTRA_PERSON)
@@ -113,7 +120,7 @@ class PersonActivity : AppCompatActivity() {
 
   private fun showData() {
     // setup recycle view and adapter
-    val adapterKnownFor = KnownForAdapter()
+    val adapterKnownFor = KnownForAdapter(this)
     val adapterImage = ImagePersonAdapter { position, imageUrls ->
       showImageDialog(position, imageUrls)
     }
@@ -184,19 +191,16 @@ class PersonActivity : AppCompatActivity() {
 
     // show detail person
     dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
-    personMovieViewModel.detailPerson.observe(this) {
-      if (!it.biography.isNullOrEmpty() && it.biography.isNotBlank()) {
-        binding.tvBiography.text = it.biography
-      } else {
-        binding.tvBiography.text = getString(no_biography)
-      }
-      showBirthdate(it)
+    personMovieViewModel.detailPerson.observe(this) { detailPerson ->
+      binding.tvBiography.text =
+        detailPerson.biography?.takeIf { it.isNotBlank() } ?: getString(no_biography)
+      showBirthdate(detailPerson)
 
-      if (!it.homepage.isNullOrEmpty()) {
+      if (!detailPerson.homepage.isNullOrEmpty()) {
         binding.ivLink.visibility = View.VISIBLE
         binding.divider1.visibility = View.VISIBLE
         binding.ivLink.setOnClickListener { _ ->
-          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.homepage)))
+          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(detailPerson.homepage)))
         }
       } else {
         binding.ivLink.visibility = View.GONE
@@ -313,27 +317,32 @@ class PersonActivity : AppCompatActivity() {
       binding.tvDeath.isVisible = false
       binding.tvDeadHeader.isVisible = false
 
-      if (!it.birthday.isNullOrEmpty() && it.birthday.isNotBlank()) {
-        val birthday =
-          "${
-            dateFormatterStandard(
-              it.birthday
-            )
-          } (${getAgeBirth(it.birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
-        binding.tvBorn.text = birthday
-      } else {
+      it.birthday?.let { birthday ->
+        if (birthday.isNotBlank()) {
+          val formattedBirthday =
+            "${dateFormatterStandard(birthday)} (${getAgeBirth(birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
+          binding.tvBorn.text = formattedBirthday
+        } else {
+          binding.tvBorn.text = getString(no_data)
+        }
+      } ?: run {
         binding.tvBorn.text = getString(no_data)
       }
+
     } else {
       binding.tvDeath.isVisible = true
       binding.tvDeadHeader.isVisible = true
 
       val birthDay = "${it.birthday?.let { dateFormatterStandard(it) }} \n${it.placeOfBirth}"
       binding.tvBorn.text = birthDay
-      val deathDay = "${dateFormatterStandard(it.deathday)} (${
-        it.birthday?.let { birthday -> getAgeDeath(birthday, it.deathday) }
-      } ${getString(years_old)})"
-      binding.tvDeath.text = deathDay
+      it.deathday?.let { deathday ->
+        val formattedDeathDay = "${dateFormatterStandard(deathday)} (${
+          it.birthday?.let { birthday -> getAgeDeath(birthday, deathday) }
+        } ${getString(years_old)})"
+        binding.tvDeath.text = formattedDeathDay
+      } ?: run {
+        binding.tvDeath.text = getString(no_data)
+      }
     }
   }
 
@@ -350,5 +359,13 @@ class PersonActivity : AppCompatActivity() {
   companion object {
     const val EXTRA_PERSON = "EXTRA_PERSON"
     const val DELAY_CLICK_TIME = 800L
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(this, DetailMovieActivity::class.java)
+    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
+    ActivityCompat.startActivity(this, intent, options.toBundle())
   }
 }

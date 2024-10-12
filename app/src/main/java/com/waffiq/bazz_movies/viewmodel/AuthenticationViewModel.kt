@@ -36,8 +36,8 @@ class AuthenticationViewModel @Inject constructor(
       authTMDbAccountUseCase.createToken().collect { resultCreateToken ->
         when (resultCreateToken) {
           is NetworkResult.Success -> {
-            if (resultCreateToken.data.success && resultCreateToken.data.requestToken != null) {
-              login(username, password, resultCreateToken.data.requestToken)
+            if (resultCreateToken.data.success) {
+              resultCreateToken.data.requestToken?.let { login(username, password, it) }
             } else {
               _loginState.value = false
             }

@@ -104,8 +104,4 @@ class PersonMovieViewModel @Inject constructor(
       }
     }
   }
-
-  companion object {
-    const val TAG = "PersonMovieViewModel"
-  }
 }

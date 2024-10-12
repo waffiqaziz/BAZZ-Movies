@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.pages.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,20 +14,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
-import com.waffiq.bazz_movies.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupRetryButton
@@ -34,6 +37,11 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.uihelpers.FadeInItemAnimator
+import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -42,7 +50,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MovieFragment : Fragment() {
+class MovieFragment : Fragment(), DetailNavigator {
 
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -93,10 +101,10 @@ class MovieFragment : Fragment() {
 
   private fun setData(region: String) {
     // Initialize adapters
-    val popularAdapter = MovieHomeAdapter()
-    val nowPlayingAdapter = MovieHomeAdapter()
-    val upComingAdapter = MovieHomeAdapter()
-    val topRatedAdapter = MovieHomeAdapter()
+    val popularAdapter = MovieHomeAdapter(this)
+    val nowPlayingAdapter = MovieHomeAdapter(this)
+    val upComingAdapter = MovieHomeAdapter(this)
+    val topRatedAdapter = MovieHomeAdapter(this)
 
     combinedLoadStatesHandle(topRatedAdapter)
 
@@ -235,5 +243,13 @@ class MovieFragment : Fragment() {
     super.onDestroyView()
     mSnackbar = null
     _binding = null
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), R.anim.fade_in, R.anim.fade_out)
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

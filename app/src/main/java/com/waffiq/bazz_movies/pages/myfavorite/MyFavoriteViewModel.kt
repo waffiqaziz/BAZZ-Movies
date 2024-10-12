@@ -42,9 +42,6 @@ class MyFavoriteViewModel @Inject constructor(
   private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()
   val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
 
-  private val _stated = MutableLiveData<Stated?>()
-  val stated: LiveData<Stated?> get() = _stated
-
   private val _undoDB = MutableLiveData<Event<Favorite>>()
   val undoDB: LiveData<Event<Favorite>> = _undoDB
 

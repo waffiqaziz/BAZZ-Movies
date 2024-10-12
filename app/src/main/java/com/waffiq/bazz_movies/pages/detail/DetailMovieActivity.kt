@@ -16,6 +16,8 @@ import android.widget.RatingBar
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -27,6 +29,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
@@ -50,45 +54,50 @@ import com.waffiq.bazz_movies.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
-import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
 import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.navigation.PersonNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_LINK_VIDEO
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.details.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.core.utils.helpers.details.DetailMovieTvHelper.detailCrew
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.core.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.pages.person.PersonActivity
+import com.waffiq.bazz_movies.pages.person.PersonActivity.Companion.EXTRA_PERSON
+import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailMovieActivity : AppCompatActivity() {
+class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigator {
 
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
   private val detailViewModel: DetailMovieViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
-  private val adapterCast = CastAdapter()
-  private val adapterRecommendation = TrendingAdapter()
+  private val adapterCast = CastAdapter(this)
+  private val adapterRecommendation = TrendingAdapter(this)
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
@@ -262,12 +271,7 @@ class DetailMovieActivity : AppCompatActivity() {
         tvMediaType.text = mediaType.uppercase()
         tvYearReleased.text =
           dateFormatterStandard(releaseDate.toString().ifEmpty { firstAirDate.toString() })
-        tvOverview.text =
-          if (!overview.isNullOrEmpty() && overview.isNotBlank()) {
-            overview
-          } else {
-            getString(no_overview)
-          }
+        tvOverview.text = overview?.takeIf { it.isNotBlank() } ?: getString(no_overview)
       }
     }
   }
@@ -289,10 +293,12 @@ class DetailMovieActivity : AppCompatActivity() {
       updateMovieDetailsUI(movie)
 
       // Trigger fetching of other data
-      if (!movie.imdbId.isNullOrEmpty()) {
-        detailViewModel.getScoreOMDb(movie.imdbId)
-      } else {
-        showLoadingDim(false)
+      movie.imdbId?.let {
+        if (it.isNotEmpty()) {
+          detailViewModel.getScoreOMDb(it)
+        } else {
+          showLoadingDim(false)
+        }
       }
       detailViewModel.getLinkVideoMovie(movie.id)
       detailViewModel.getRecommendationMovie(movie.id)
@@ -551,10 +557,8 @@ class DetailMovieActivity : AppCompatActivity() {
   // show score from OMDb API
   private fun showDetailOMDb(data: OMDbDetails) {
     binding.apply {
-      tvScoreImdb.text =
-        if (data.imdbRating.isNullOrEmpty() || data.imdbRating.isBlank()) getString(not_available) else data.imdbRating
-      tvScoreMetascore.text =
-        if (data.metascore.isNullOrEmpty() || data.metascore.isBlank()) getString(not_available) else data.metascore
+      tvScoreImdb.text = data.imdbRating?.takeIf { it.isNotBlank() } ?: getString(not_available)
+      tvScoreMetascore.text = data.metascore?.takeIf { it.isNotBlank() } ?: getString(not_available)
     }
   }
 
@@ -741,5 +745,21 @@ class DetailMovieActivity : AppCompatActivity() {
   companion object {
     const val TAG = "DETAIL MOVIE ACTIVITY"
     const val EXTRA_MOVIE = "MOVIE"
+  }
+
+  override fun openPersonDetails(cast: MovieTvCastItem) {
+    val intent = Intent(this, PersonActivity::class.java)
+    intent.putExtra(EXTRA_PERSON, cast)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
+    ActivityCompat.startActivity(this, intent, options.toBundle())
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(this, DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
+    ActivityCompat.startActivity(this, intent, options.toBundle())
   }
 }

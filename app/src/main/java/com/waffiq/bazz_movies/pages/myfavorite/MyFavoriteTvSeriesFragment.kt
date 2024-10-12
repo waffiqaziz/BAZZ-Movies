@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.pages.myfavorite
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +15,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.color.red_matte
 import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
@@ -23,34 +28,38 @@ import com.waffiq.bazz_movies.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.R.string.undo
 import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
-import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
 import com.waffiq.bazz_movies.core.domain.model.Favorite
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
+import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.viewmodel.BaseViewModel
+import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyFavoriteTvSeriesFragment : Fragment() {
+class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
 
   private var _binding: FragmentMyFavoriteTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val adapterPaging = FavoriteTvAdapter()
-  private val adapterDB = FavoriteAdapterDB()
+  private val adapterPaging = FavoriteTvAdapter(this)
+  private val adapterDB = FavoriteAdapterDB(this)
 
   private val viewModelFav: MyFavoriteViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
@@ -381,5 +390,13 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     mSnackbar?.dismiss()
     mSnackbar = null
     _binding = null
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

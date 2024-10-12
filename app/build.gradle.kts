@@ -1,5 +1,4 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-import java.util.Properties
 
 plugins {
   alias(libs.plugins.android.application)
@@ -29,23 +28,6 @@ android {
     versionName = "1.0.10"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-    val properties = Properties().apply {
-      load(project.rootProject.file("local.properties").inputStream())
-    }
-
-    // API KEY inside local.properties
-    buildConfigField("String", "API_KEY", "\"${properties["API_KEY"]}\"")
-    buildConfigField("String", "API_KEY_OMDb", "\"${properties["API_KEY_OMDb"]}\"")
-
-    // BASE URL
-    buildConfigField("String", "TMDB_API_URL", "\"https://api.themoviedb.org/\"")
-    buildConfigField("String", "OMDb_API_URL", "\"https://www.omdbapi.com/\"")
-
-    // room database schema location for migration
-    ksp {
-      arg("room.schemaLocation", "$projectDir/schemas")
-    }
   }
 
   buildTypes {
@@ -89,56 +71,22 @@ android {
 }
 
 dependencies {
-  // core
-  implementation(libs.androidx.core.ktx)
+  implementation(project(":core"))
+
+  // jetpack library
   implementation(libs.androidx.activity.ktx)
   implementation(libs.androidx.fragment.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.cardview)
   implementation(libs.androidx.constraintlayout)
   implementation(libs.androidx.navigation.fragment.ktx)
   implementation(libs.androidx.navigation.ui.ktx)
   implementation(libs.androidx.swiperefreshlayout)
-  implementation(libs.androidx.legacy.support.v4)
-
-  // splashscreen
   implementation(libs.androidx.core.splashscreen)
-
-  // viewpager2
   implementation(libs.androidx.viewpager2)
-
-  // lifecycle
   implementation(libs.androidx.lifecycle.livedata.ktx)
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-  // datastore
-  implementation(libs.androidx.datastore.preferences)
-
-  // room & paging
-  implementation(libs.androidx.room.runtime)
-  implementation(libs.androidx.room.ktx)
-  implementation(libs.androidx.room.paging)
   implementation(libs.androidx.paging.runtime.ktx)
-  implementation(libs.androidx.legacy.support.v4)
-  ksp(libs.androidx.room.room.compiler)
 
-  // material3
-  implementation(libs.google.material)
-
-  // retrofit & moshi
-  implementation(libs.retrofit)
-  implementation(libs.retrofit.converter.moshi)
-  implementation(libs.moshi.kotlin)
-  ksp(libs.moshi.kotlin.codegen)
-  implementation(libs.okhttp.logging.interceptor)
-
-  // testing
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-  testImplementation(libs.junit)
-  androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.test.rules)
-  androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.androidx.test.ext.junit)
 
   // leakcanary
   debugImplementation(libs.leakcanary)
@@ -151,13 +99,15 @@ dependencies {
   implementation(libs.expandable.textview)
   implementation(libs.country.picker)
 
-  // firebase
+  // play integrity
   implementation(libs.play.integrity)
+
+  // firebase
   implementation(platform(libs.firebase.bom))
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
-  // Hilt
+  // hilt
   implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

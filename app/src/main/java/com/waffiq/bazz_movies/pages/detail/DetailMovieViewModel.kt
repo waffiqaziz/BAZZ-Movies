@@ -211,9 +211,9 @@ class DetailMovieViewModel @Inject constructor(
         when (networkResult) {
           is NetworkResult.Success -> {
             networkResult.data.imdbId.let { _tvImdbID.value = it }
-            networkResult.data.let {
-              if (it.imdbId != null) {
-                getScoreOMDb(it.imdbId)
+            networkResult.data.let { externalId ->
+              externalId.imdbId?.let { imdbId ->
+                getScoreOMDb(imdbId)
                 getLinkTv(id)
               }
             }

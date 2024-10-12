@@ -67,6 +67,7 @@ glide = "4.16.0"
 # Third-party libraries
 expandableTextView = "1.0.4"
 countryPicker = "2.7.0"
+espresso-core = "3.6.1"
 
 
 [libraries]
@@ -109,10 +110,10 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.re
 
 # Tools and Testing Libraries
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
-androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
+#junit = { group = "junit", name = "junit", version.ref = "junit" }
+#androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
+#androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
+#androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
 
 # Image loading
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
@@ -131,6 +132,7 @@ country-picker = { group = "com.hbb20", name = "ccp", version.ref = "countryPick
 # Hilt
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+#espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 
 [plugins]

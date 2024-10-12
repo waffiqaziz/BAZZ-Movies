@@ -1,9 +1,12 @@
 package com.waffiq.bazz_movies.pages.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,21 +14,27 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.R.anim.fade_in
+import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.string.binding_error
-import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.TvAdapter
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -34,7 +43,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TvSeriesFragment : Fragment() {
+class TvSeriesFragment : Fragment(), DetailNavigator {
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -59,10 +68,10 @@ class TvSeriesFragment : Fragment() {
 
   private fun setData() {
     // Initialize adapters
-    val popularAdapter = TvAdapter()
-    val nowPlayingAdapter = TvAdapter()
-    val onTvAdapter = TvAdapter()
-    val topRatedAdapter = TvAdapter()
+    val popularAdapter = TvAdapter(this)
+    val nowPlayingAdapter = TvAdapter(this)
+    val onTvAdapter = TvAdapter(this)
+    val topRatedAdapter = TvAdapter(this)
 
     combinedLoadStatesHandle(topRatedAdapter)
 
@@ -187,5 +196,13 @@ class TvSeriesFragment : Fragment() {
     super.onDestroyView()
     mSnackbar = null
     _binding = null
+  }
+
+  override fun openDetails(resultItem: ResultItem) {
+    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+    intent.putExtra(EXTRA_MOVIE, resultItem)
+    val options =
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
+    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }
