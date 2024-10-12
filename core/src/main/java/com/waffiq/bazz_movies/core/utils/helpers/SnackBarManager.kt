@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.utils.helpers
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.R.color.red_matte
+import com.waffiq.bazz_movies.core_ui.R.color.red_matte
 import com.waffiq.bazz_movies.core.utils.common.Event
 
 /**

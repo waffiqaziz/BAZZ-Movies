@@ -46,18 +46,17 @@ android {
     jvmTarget = "1.8"
   }
   buildFeatures {
-    viewBinding = true
     buildConfig = true
   }
 }
 
 dependencies {
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.cardview)
+  implementation(project(":core_ui"))
 
-  // material3
+  // for item layout
+  implementation(libs.androidx.core.ktx)
   implementation(libs.google.material)
+  implementation(libs.androidx.cardview)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 

@@ -68,6 +68,9 @@ glide = "4.16.0"
 expandableTextView = "1.0.4"
 countryPicker = "2.7.0"
 espresso-core = "3.6.1"
+junit-junit = "4.13.2"
+androidx-test-ext-junit = "1.2.1"
+androidx-test-espresso-espresso-core = "3.6.1"
 
 
 [libraries]
@@ -132,6 +135,9 @@ country-picker = { group = "com.hbb20", name = "ccp", version.ref = "countryPick
 # Hilt
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+junit = { group = "junit", name = "junit", version.ref = "junit-junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso-espresso-core" }
 #espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 

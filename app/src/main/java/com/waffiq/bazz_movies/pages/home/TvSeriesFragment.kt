@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.anim.fade_in
 import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
@@ -32,6 +31,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.waffiq.bazz_movies.R.color.gray_900
+import com.waffiq.bazz_movies.core_ui.R.color.gray_900
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

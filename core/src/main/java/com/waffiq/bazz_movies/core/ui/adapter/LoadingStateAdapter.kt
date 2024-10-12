@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.databinding.ItemLoadingBinding
+import com.waffiq.bazz_movies.core_ui.databinding.ItemLoadingBinding
 
 class LoadingStateAdapter(
   private val retry: () -> Unit

@@ -10,8 +10,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
-import com.waffiq.bazz_movies.core.R.string.data
-import com.waffiq.bazz_movies.core.R.string.no_data
+import com.waffiq.bazz_movies.core_ui.R.string.data
+import com.waffiq.bazz_movies.core_ui.R.string.no_data
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
 import kotlinx.coroutines.FlowPreview

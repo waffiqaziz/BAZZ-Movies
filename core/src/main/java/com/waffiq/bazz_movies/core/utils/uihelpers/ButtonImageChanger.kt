@@ -9,10 +9,10 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
-import com.waffiq.bazz_movies.core.R.drawable.ic_bookmark
-import com.waffiq.bazz_movies.core.R.drawable.ic_bookmark_selected
-import com.waffiq.bazz_movies.core.R.drawable.ic_hearth
-import com.waffiq.bazz_movies.core.R.drawable.ic_hearth_selected
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bookmark
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bookmark_selected
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_hearth
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_hearth_selected
 
 /**
  * Used to update the drawable images for the favorite and watchlist buttons.

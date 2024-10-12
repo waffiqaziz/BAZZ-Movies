@@ -6,9 +6,9 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.core.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.databinding.ItemImageSliderBinding
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core_ui.databinding.ItemImageSliderBinding
 
 class ImagePagerAdapter(private val images: List<String>) :
   RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.core.R.drawable.ic_no_profile_rounded
-import com.waffiq.bazz_movies.core.databinding.ItemCastBinding
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_no_profile_rounded
+import com.waffiq.bazz_movies.core_ui.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
 import com.waffiq.bazz_movies.core.navigation.PersonNavigator
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300

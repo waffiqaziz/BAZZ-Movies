@@ -30,10 +30,10 @@ import com.waffiq.bazz_movies.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
-import com.waffiq.bazz_movies.R.string.no_biography
-import com.waffiq.bazz_movies.R.string.no_data
-import com.waffiq.bazz_movies.R.string.not_available
-import com.waffiq.bazz_movies.R.string.years_old
+import com.waffiq.bazz_movies.core_ui.R.string.no_biography
+import com.waffiq.bazz_movies.core_ui.R.string.no_data
+import com.waffiq.bazz_movies.core_ui.R.string.not_available
+import com.waffiq.bazz_movies.core_ui.R.string.years_old
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson

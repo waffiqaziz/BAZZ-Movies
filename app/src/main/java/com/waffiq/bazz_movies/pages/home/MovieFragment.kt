@@ -16,9 +16,6 @@ import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.R.string.binding_error
-import com.waffiq.bazz_movies.R.string.no_movie_currently_playing
-import com.waffiq.bazz_movies.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
@@ -37,6 +34,9 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.uihelpers.FadeInItemAnimator
+import com.waffiq.bazz_movies.core_ui.R.string.binding_error
+import com.waffiq.bazz_movies.core_ui.R.string.no_movie_currently_playing
+import com.waffiq.bazz_movies.core_ui.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE

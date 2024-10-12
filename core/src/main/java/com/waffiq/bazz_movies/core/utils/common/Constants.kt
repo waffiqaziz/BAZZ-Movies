@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.utils.common
 
-import com.waffiq.bazz_movies.core.R.string.featured
-import com.waffiq.bazz_movies.core.R.string.movies
-import com.waffiq.bazz_movies.core.R.string.tv_series
+import com.waffiq.bazz_movies.core_ui.R.string.featured
+import com.waffiq.bazz_movies.core_ui.R.string.movies
+import com.waffiq.bazz_movies.core_ui.R.string.tv_series
 
 object Constants {
   const val TABLE_NAME = "favorite"

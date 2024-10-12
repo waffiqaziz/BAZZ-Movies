@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.waffiq.bazz_movies.R.string.binding_error
 import com.waffiq.bazz_movies.core.utils.common.Constants.tabHomeHeadingArray
+import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentHomeBinding
 import com.waffiq.bazz_movies.viewpager.GenericViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint

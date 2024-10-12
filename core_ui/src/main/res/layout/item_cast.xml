@@ -56,6 +56,4 @@
       tools:text="Jake Sully" />
 
   </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

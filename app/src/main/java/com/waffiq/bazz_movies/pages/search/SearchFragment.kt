@@ -30,9 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.anim.fade_in
 import com.waffiq.bazz_movies.R.anim.fade_out
-import com.waffiq.bazz_movies.R.color.yellow
 import com.waffiq.bazz_movies.R.drawable.ic_cross
-import com.waffiq.bazz_movies.R.drawable.ic_search
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.menu.search_menu
@@ -46,6 +44,8 @@ import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core_ui.R.color.yellow
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE

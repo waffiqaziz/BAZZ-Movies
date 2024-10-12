@@ -72,8 +72,10 @@ android {
 
 dependencies {
   implementation(project(":core"))
-
+  implementation(project(":core_ui"))
+  
   // jetpack library
+
   implementation(libs.androidx.activity.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.constraintlayout)
