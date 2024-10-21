@@ -30,6 +30,5 @@
 ##---------------End: proguard configuration for Firebase crashlytics  ----------
 
 ##---------------Begin: proguard configuration for Others  ----------
--keep class com.hbb20.CountryCodePicker { <init>(android.content.Context, android.util.AttributeSet); }
 -keep class io.github.glailton.expandabletextview.ExpandableTextView { <init>(android.content.Context, android.util.AttributeSet); }
 ##---------------End: proguard configuration for Others  ----------

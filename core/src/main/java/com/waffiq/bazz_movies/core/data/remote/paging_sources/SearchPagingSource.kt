@@ -18,11 +18,15 @@ class SearchPagingSource(
       val position = params.key ?: INITIAL_PAGE_INDEX
       val responseData = apiService.search(query, position).results
 
-      LoadResult.Page(
-        data = responseData!!,
-        prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
-        nextKey = if (responseData.isEmpty()) null else position + 1
-      )
+      if (responseData != null) {
+        LoadResult.Page(
+          data = responseData,
+          prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
+          nextKey = if (responseData.isEmpty()) null else position + 1
+        )
+      } else {
+        LoadResult.Error(Exception("Response data is null"))
+      }
     } catch (exception: IOException) {
       LoadResult.Error(exception)
     } catch (exception: HttpException) {

@@ -86,6 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="450dp"
             tools:src="@tools:sample/avatars" />
 
           <!-- Name -->
@@ -243,13 +244,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             app:collapsedLines="3"
             app:ellipsizeTextColor="@color/yellow"
             app:expandType="layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
+            app:animDuration="1000"
             app:readLessText="@string/less_more"
             app:readMoreText="@string/read_more"
             app:textMode="line"

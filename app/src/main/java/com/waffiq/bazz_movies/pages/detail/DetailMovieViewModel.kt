@@ -317,7 +317,7 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun insertToDB(fav: Favorite) {
+  private fun insertToDB(fav: Favorite) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.insertToDB(fav)) {
         is DbResult.Error -> _errorState.emit(result.errorMessage)
