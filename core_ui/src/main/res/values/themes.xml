@@ -38,7 +38,7 @@
 
   <!-- Splash Screen for RoutingActivity on Manifests -->
   <style name="SplashScreenTheme" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
     <item name="windowSplashScreenBackground">@color/gray_1000</item>
     <item name="windowSplashScreenAnimationDuration">300</item>
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
