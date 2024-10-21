@@ -1,6 +1,8 @@
 # BAZZ Movies
 
-BAZZ Movies is an Andrid app build with Kotlin, offering comprehensive movie and TV catalog. BAZZ Movies allows users to discover, explore, and manage their favorite and watchlist with ease.
+![Header](/assets/images/featured-picture.png)
+
+BAZZ Movies is an Android app build with Kotlin, offering comprehensive movie and TV catalog. BAZZ Movies allows users to discover, explore, and manage their favorite and watchlist with ease.
 
 This project is a non-commercial application for showcasing movies and TV shows, intended for personal and educational use as part of my portfolio.
 
@@ -38,7 +40,7 @@ This application is released under the [MIT License](LICENSE). You are free to u
 2. OMDb API: RESTful service for movie info. See [OMDb Terms](https://www.omdbapi.com/legal.htm).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
 4. ExpandableTextView: An expandable Android TextView (MIT License) - [GitHub](https://github.com/glailton/ExpandableTextView).
-5. Country Code Picker (CCP): Country selector (Apache 2.0) - [GitHub](https://github.com/hbb20/CountryCodePickerProject).
+5. Country Picker Android: (Apache 2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
 6. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
 7. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
 

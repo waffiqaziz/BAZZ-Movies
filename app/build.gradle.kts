@@ -99,7 +99,7 @@ dependencies {
 
   // third-party library
   implementation(libs.expandable.textview)
-  implementation(libs.country.picker)
+  implementation(libs.my.country.picker)
 
   // play integrity
   implementation(libs.play.integrity)

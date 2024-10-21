@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.pages.more
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -41,7 +39,6 @@ import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core_ui.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core_ui.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.no
@@ -80,12 +77,9 @@ class MoreFragment : Fragment() {
 
     // initialize for guest user
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != NAN) {
-        signOutStateObserver()
-      }
+      if (user.token != NAN) signOutStateObserver(true) else signOutStateObserver(false)
     }
 
-    setTypeface()
     setData()
     btnAction()
   }
@@ -99,39 +93,58 @@ class MoreFragment : Fragment() {
     return binding.root
   }
 
-  private fun signOutStateObserver() {
-    viewLifecycleOwner.lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
-      moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            progressIsVisible(false)
-            requireContext().toastShort(getString(sign_out_success))
-            removePrefUserData() // remove preference user data
+  private fun signOutStateObserver(isLogin: Boolean) {
+    if (isLogin) {
+      viewLifecycleOwner.lifecycleScope.launch {
+        @OptIn(FlowPreview::class)
+        moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
+          when (networkResult) {
+            is NetworkResult.Success -> {
+              progressIsVisible(false)
+              requireContext().toastShort(getString(sign_out_success))
+              removePrefUserData() // remove preference user data
+            }
+
+            is NetworkResult.Loading -> {}
+
+            is NetworkResult.Error -> {
+              fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+              btnSignOutIsEnable(true)
+              progressIsVisible(false)
+              mSnackbar = snackBarWarning(
+                binding.constraintLayout,
+                requireActivity().findViewById(bottom_navigation),
+                Event(networkResult.message)
+              )
+            }
+
+            else -> {}
           }
+        }
+      }
+    } else {
+      moreLocalViewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
+        eventResult.getContentIfNotHandled().let {
+          when (it) {
+            is DbResult.Success -> {
+              progressIsVisible(false)
+              requireContext().toastShort(getString(all_data_deleted))
+            }
 
-          is NetworkResult.Loading -> {}
+            is DbResult.Error -> {
+              progressIsVisible(false)
+              mSnackbar = snackBarWarning(
+                binding.constraintLayout,
+                requireActivity().findViewById(bottom_navigation),
+                Event(it.errorMessage)
+              )
+            }
 
-          is NetworkResult.Error -> {
-            fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-            btnSignOutIsEnable(true)
-            progressIsVisible(false)
-            mSnackbar = snackBarWarning(
-              binding.constraintLayout,
-              requireActivity().findViewById(bottom_navigation),
-              Event(networkResult.message)
-            )
+            else -> {}
           }
-
-          else -> {}
         }
       }
     }
-  }
-
-  private fun setTypeface() {
-    val typeFace = ResourcesCompat.getFont(requireContext(), nunito_sans_regular) as Typeface
-    binding.btnCountryPicker.setTypeFace(typeFace)
   }
 
   private fun btnAction() {
@@ -163,8 +176,8 @@ class MoreFragment : Fragment() {
       }
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
-    binding.btnCountryPicker.setOnCountryChangeListener {
-      userPreferenceViewModel.saveRegionPref(binding.btnCountryPicker.selectedCountryNameCode)
+    binding.btnCountryPicker.onCountrySelectedListener = {
+      userPreferenceViewModel.saveRegionPref(binding.btnCountryPicker.selectedCountryCode.isoCode)
     }
   }
 
@@ -194,28 +207,6 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutGuestMode() {
-    moreLocalViewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
-      eventResult.getContentIfNotHandled().let {
-        when (it) {
-          is DbResult.Success -> {
-            progressIsVisible(false)
-            requireContext().toastShort(getString(all_data_deleted))
-          }
-
-          is DbResult.Error -> {
-            progressIsVisible(false)
-            mSnackbar = snackBarWarning(
-              binding.constraintLayout,
-              requireActivity().findViewById(bottom_navigation),
-              Event(it.errorMessage)
-            )
-          }
-
-          else -> {}
-        }
-      }
-    }
-
     mDialog = MaterialAlertDialogBuilder(requireContext()).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_guest_mode))
@@ -241,11 +232,16 @@ class MoreFragment : Fragment() {
 
   private fun removePrefUserData() {
     userPreferenceViewModel.removeUserDataPref()
-    val intent = Intent(activity, LoginActivity::class.java)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
-    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
-    activity?.finishAffinity()
+    ActivityCompat.startActivity(
+      requireContext(),
+      Intent(activity, LoginActivity::class.java),
+      ActivityOptionsCompat.makeCustomAnimation(
+        requireContext(),
+        fade_in,
+        fade_out
+      ).toBundle()
+    )
+    activity?.finishAfterTransition()
   }
 
   private fun setData() {
@@ -277,7 +273,7 @@ class MoreFragment : Fragment() {
       if (userCountry == NAN) { // if country not yet initialize, set country
         regionViewModel.getCountryCode()
       } else {
-        binding.btnCountryPicker.setCountryForNameCode(userCountry)
+        binding.btnCountryPicker.setCountry(userCountry.uppercase())
       }
     }
 
@@ -285,7 +281,7 @@ class MoreFragment : Fragment() {
     regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
       if (countryCode.isNotEmpty()) {
         userPreferenceViewModel.saveRegionPref(countryCode)
-        binding.btnCountryPicker.setCountryForNameCode(countryCode)
+        binding.btnCountryPicker.setCountry(countryCode.uppercase())
       }
     }
   }
