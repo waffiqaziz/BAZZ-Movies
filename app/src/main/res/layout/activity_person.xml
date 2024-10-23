@@ -13,18 +13,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
-    android:fitsSystemWindows="true"
-    android:translationZ="0.1dp"
-    app:elevation="0dp"
-    tools:visibility="visible">
+    android:translationZ="0.1dp">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true"
-      app:contentInsetLeft="0dp"
-      app:contentInsetStart="0dp">
+      android:layout_height="wrap_content">
 
       <ImageButton
         android:id="@+id/btn_back"
@@ -245,13 +239,13 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
             android:layout_marginTop="12dp"
+            app:animDuration="1000"
             app:collapsedLines="3"
             app:ellipsizeTextColor="@color/yellow"
             app:expandType="layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
-            app:animDuration="1000"
             app:readLessText="@string/less_more"
             app:readMoreText="@string/read_more"
             app:textMode="line"

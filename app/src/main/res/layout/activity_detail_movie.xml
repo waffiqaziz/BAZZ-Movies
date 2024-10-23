@@ -15,18 +15,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
-    android:translationZ="0.1dp"
-    android:visibility="gone"
-    app:elevation="0dp"
-    tools:visibility="visible">
+    android:translationZ="0.1dp">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true"
-      app:contentInsetLeft="0dp"
-      app:contentInsetStart="0dp">
+      android:layout_height="wrap_content">
 
       <!-- Button layout -->
       <RelativeLayout
@@ -41,7 +35,6 @@
           android:layout_height="wrap_content"
           android:layout_alignParentStart="true"
           android:layout_alignParentTop="true"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
           android:foreground="?actionBarItemBackground"
@@ -105,14 +98,12 @@
 
     <androidx.core.widget.NestedScrollView
       android:id="@+id/nested_scroll_view"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.0">
+      app:layout_constraintTop_toTopOf="parent">
 
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -137,6 +128,7 @@
           android:contentDescription="@string/poster"
           android:fitsSystemWindows="false"
           android:foreground="@drawable/bg_gradient_shape"
+          android:scaleType="centerCrop"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           tools:src="@drawable/ic_bazz_placeholder_backdrops" />
@@ -149,8 +141,8 @@
           android:layout_marginBottom="8dp"
           android:fontFamily="@font/nunito_sans_italic"
           android:text="@string/backdrop_not_found"
-          android:textColor="@color/gray_100"
-          android:textSize="11sp"
+          android:textColor="@color/gray_300"
+          android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
           android:visibility="gone"
           app:layout_constraintBottom_toTopOf="@+id/iv_poster"
           app:layout_constraintEnd_toEndOf="parent"
@@ -544,7 +536,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_recommendation"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"

@@ -18,7 +18,6 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.getKnownFor
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getGenreName
-import com.waffiq.bazz_movies.core.utils.uihelpers.ShiftTransformation
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core_ui.databinding.ItemResultBinding

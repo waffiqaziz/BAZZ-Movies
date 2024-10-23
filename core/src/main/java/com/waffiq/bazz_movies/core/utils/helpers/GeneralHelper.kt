@@ -2,11 +2,9 @@ package com.waffiq.bazz_movies.core.utils.helpers
 
 import android.animation.ArgbEvaluator
 import android.content.Context
-import android.graphics.Color
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.text.Layout
-import android.view.View
 import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -17,8 +15,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.waffiq.bazz_movies.core_ui.R.color.gray_1000
 import com.waffiq.bazz_movies.core.domain.model.search.KnownForItem
+import com.waffiq.bazz_movies.core_ui.R.color.gray_1000
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -47,6 +45,7 @@ object GeneralHelper {
   }
 
   fun dateFormatterStandard(date: String?): String {
+    if (date.isNullOrEmpty()) return ""
     return try {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
       val newDate = formatter.parse(date)
@@ -57,6 +56,7 @@ object GeneralHelper {
   }
 
   fun dateFormatterISO8601(date: String?): String {
+    if (date.isNullOrEmpty()) return ""
     return try {
       val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
       val newDate = ZonedDateTime.parse(date, formatter)
@@ -75,17 +75,6 @@ object GeneralHelper {
   fun initLinearLayoutManager(context: Context) =
     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-  @Suppress("DEPRECATION")
-  fun transparentStatusBar(window: Window) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      window.setDecorFitsSystemWindows(false)
-    } else {
-      // This flag is deprecated in API 30 (Android R), but necessary for older versions
-      window.decorView.systemUiVisibility =
-        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-    }
-    window.statusBarColor = Color.TRANSPARENT
-  }
 
   fun justifyTextView(textView: TextView) {
     @Suppress("WrongConstant")
@@ -98,6 +87,7 @@ object GeneralHelper {
 
   // region NESTED SCROLL VIEW BEHAVIOR
   fun Context.scrollActionBarBehavior(
+    window: Window,
     appBarLayout: AppBarLayout,
     nestedScrollView: NestedScrollView
   ) {
@@ -109,6 +99,7 @@ object GeneralHelper {
         val maxScroll = nestedScrollView.getChildAt(0).height - nestedScrollView.height
         val percentage = if (maxScroll > 0) scrollY.toFloat() / maxScroll.toFloat() else 0f
         animateColorChange(appBarLayout, fromColor, toColor, percentage)
+        setStatusBarColorWithAnimation(window, fromColor, toColor, percentage)
       }
     )
   }
@@ -127,6 +118,30 @@ object GeneralHelper {
 
     // Set the interpolated color as the background color of the AppBarLayout
     appBarLayout.setBackgroundColor(interpolatedColor)
+  }
+
+  private fun setStatusBarColorWithAnimation(
+    window: Window,
+    fromColor: Int,
+    toColor: Int,
+    percentage: Float
+  ) {
+    val interpolatedColor =
+      ArgbEvaluator().evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
+    window.statusBarColor = interpolatedColor
+
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//      val insetsController = window.insetsController
+//      insetsController?.setSystemBarsAppearance(
+//        0, // Clear appearance flags to ensure white icons and text
+//        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+//      )
+//    } else {
+//      @Suppress("DEPRECATION")
+//      // This flag is deprecated in API 30 (Android R - Android 11), but necessary for older versions
+//      window.decorView.systemUiVisibility =
+//        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+//    }
   }
   // endregion NESTED SCROLL VIEW BEHAVIOR
 }

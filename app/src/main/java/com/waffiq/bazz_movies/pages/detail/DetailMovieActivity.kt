@@ -57,10 +57,11 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_LINK_VIDEO
+import com.waffiq.bazz_movies.core.utils.helpers.ActionBarBehavior.handleOverHeightAppBar
+import com.waffiq.bazz_movies.core.utils.helpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.details.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.core.utils.helpers.details.DetailMovieTvHelper.detailCrew
@@ -109,14 +110,16 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
-
     showLoadingDim(true)
 
     detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     errorStateObserver()
 
+    // action bar behavior
     transparentStatusBar(window)
-    scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollView)
+    handleOverHeightAppBar(binding.appBarLayout)
+    scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
+
     justifyTextView(binding.tvOverview)
     loadData()
     favWatchlistHandler()
@@ -128,9 +131,17 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       eventResult.getContentIfNotHandled()?.let { postModelState ->
         if (postModelState.isSuccess) {
           if (!postModelState.isDelete) {
-            if (!postModelState.isFavorite) showToastAddedWatchlist() else showToastAddedFavorite()
+            if (!postModelState.isFavorite) {
+              showToast(getString(item_added_to_watchlist))
+            } else {
+              showToast(getString(item_added_to_favorite))
+            }
           } else {
-            if (postModelState.isFavorite) showToastRemoveFromFavorite() else showToastRemoveFromWatchlist()
+            if (postModelState.isFavorite) {
+              showToast(getString(item_deleted_from_favorite))
+            } else {
+              showToast(getString(item_deleted_from_watchlist))
+            }
           }
         }
       }
@@ -296,9 +307,9 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       movie.imdbId?.let {
         if (it.isNotEmpty()) {
           detailViewModel.getScoreOMDb(it)
-        } else {
-          showLoadingDim(false)
         }
+      }.run {
+        showLoadingDim(false)
       }
       detailViewModel.getLinkVideoMovie(movie.id)
       detailViewModel.getRecommendationMovie(movie.id)
@@ -592,22 +603,6 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   }
 
   // region toast, snackbar, dialog
-  private fun showToastAddedFavorite() {
-    showToast(getString(item_added_to_favorite))
-  }
-
-  private fun showToastAddedWatchlist() {
-    showToast(getString(item_added_to_watchlist))
-  }
-
-  private fun showToastRemoveFromFavorite() {
-    showToast(getString(item_deleted_from_favorite))
-  }
-
-  private fun showToastRemoveFromWatchlist() {
-    showToast(getString(item_deleted_from_watchlist))
-  }
-
   private fun showDialogNotRated() {
     MaterialAlertDialogBuilder(this).apply {
       setTitle(resources.getString(not_available_full))
@@ -742,11 +737,6 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     toast = null
   }
 
-  companion object {
-    const val TAG = "DETAIL MOVIE ACTIVITY"
-    const val EXTRA_MOVIE = "MOVIE"
-  }
-
   override fun openPersonDetails(cast: MovieTvCastItem) {
     val intent = Intent(this, PersonActivity::class.java)
     intent.putExtra(EXTRA_PERSON, cast)
@@ -761,5 +751,10 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     val options =
       ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
     ActivityCompat.startActivity(this, intent, options.toBundle())
+  }
+
+  companion object {
+    const val TAG = "DETAIL MOVIE ACTIVITY"
+    const val EXTRA_MOVIE = "MOVIE"
   }
 }

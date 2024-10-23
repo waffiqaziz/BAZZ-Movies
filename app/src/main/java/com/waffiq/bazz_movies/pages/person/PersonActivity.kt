@@ -9,15 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -30,13 +29,8 @@ import com.waffiq.bazz_movies.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.R.layout.dialog_image
-import com.waffiq.bazz_movies.core_ui.R.string.no_biography
-import com.waffiq.bazz_movies.core_ui.R.string.no_data
-import com.waffiq.bazz_movies.core_ui.R.string.not_available
-import com.waffiq.bazz_movies.core_ui.R.string.years_old
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
-import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
@@ -50,15 +44,20 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.utils.common.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_CHANNEL_LINK
+import com.waffiq.bazz_movies.core.utils.helpers.ActionBarBehavior.handleOverHeightAppBar
+import com.waffiq.bazz_movies.core.utils.helpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.animFadeOutLong
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.transparentStatusBar
-import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.getAgeBirth
-import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.getAgeDeath
+import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.formatBirthInfo
+import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.hasAnySocialMediaIds
+import com.waffiq.bazz_movies.core.utils.helpers.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core_ui.R.string.no_biography
+import com.waffiq.bazz_movies.core_ui.R.string.no_data
+import com.waffiq.bazz_movies.core_ui.R.string.not_available
 import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,14 +79,16 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     binding = ActivityPersonBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    justifyTextView(binding.tvBiography)
+    // action bar behavior
     transparentStatusBar(window)
-    scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollViewPerson)
+    handleOverHeightAppBar(binding.appBarLayout)
+    scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollViewPerson)
+
+    justifyTextView(binding.tvBiography)
     showLoading(true)
     getDataExtra()
     setupView()
     showData()
-    btnListener()
   }
 
   private fun getDataExtra() {
@@ -103,14 +104,16 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
       @Suppress("DEPRECATION")
       intent.getParcelableExtra(EXTRA_PERSON)
     } ?: error("No DataExtra")
+  }
+
+  private fun setupView() {
+    binding.btnBack.setOnClickListener { finish() }
 
     binding.swipeRefresh.setOnRefreshListener {
       showData()
       binding.swipeRefresh.isRefreshing = false
     }
-  }
 
-  private fun setupView() {
     // error and loading handle
     personMovieViewModel.errorState.observe(this) {
       mSnackbar = snackBarWarning(binding.coordinatorLayout, null, it)
@@ -125,11 +128,10 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
       showImageDialog(position, imageUrls)
     }
 
-    binding.rvKnownFor.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    // setup layout
+    binding.rvKnownFor.layoutManager = initLinearLayoutManager(this)
     binding.rvKnownFor.adapter = adapterKnownFor
-    binding.rvPhotos.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    binding.rvPhotos.layoutManager = initLinearLayoutManager(this)
     binding.rvPhotos.adapter = adapterImage
 
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
@@ -146,42 +148,13 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
       .error(ic_broken_image)
       .into(binding.ivPicture)
 
-    // social media
-    dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
-    personMovieViewModel.externalIdPerson.observe(this) { externalID ->
-
-      if (hasAnySocialMediaIds(externalID)) {
-        showSocialMediaPerson(externalID)
-      } else {
-        binding.viewGroupSocialMedia.visibility = View.GONE
-      }
-
-      if (!externalID.imdbId.isNullOrEmpty()) {
-        binding.ivImdb.visibility = View.VISIBLE
-        binding.ivImdb.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(IMDB_PERSON_LINK + externalID.imdbId))
-          )
-        }
-      } else {
-        binding.ivImdb.visibility = View.GONE
-      }
-
-      if (!externalID.wikidataId.isNullOrEmpty()) {
-        binding.ivWikidata.visibility = View.VISIBLE
-        binding.ivWikidata.setOnClickListener {
-          startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse(WIKIDATA_PERSON_LINK + externalID.wikidataId))
-          )
-        }
-      } else {
-        binding.ivWikidata.visibility = View.GONE
-      }
-    }
+    showSocialMediaPerson()
 
     // show known for
     dataExtra.id?.let { personMovieViewModel.getKnownFor(it) }
-    personMovieViewModel.knownFor.observe(this) { adapterKnownFor.setCast(it) }
+    personMovieViewModel.knownFor.observe(this) {
+      adapterKnownFor.setCast(it)
+    }
 
     // show picture
     dataExtra.id?.let { personMovieViewModel.getImagePerson(it) }
@@ -197,14 +170,14 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
       showBirthdate(detailPerson)
 
       if (!detailPerson.homepage.isNullOrEmpty()) {
-        binding.ivLink.visibility = View.VISIBLE
-        binding.divider1.visibility = View.VISIBLE
+        binding.ivLink.isVisible = true
+        binding.divider1.isVisible = true
         binding.ivLink.setOnClickListener { _ ->
           startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(detailPerson.homepage)))
         }
       } else {
-        binding.ivLink.visibility = View.GONE
-        binding.divider1.visibility = View.GONE
+        binding.ivLink.isGone = true
+        binding.divider1.isGone = true
       }
     }
 
@@ -213,61 +186,23 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     }, DELAY_CLICK_TIME)
   }
 
-  private fun showSocialMediaPerson(externalID: ExternalIDPerson) {
-    binding.viewGroupSocialMedia.visibility = View.VISIBLE
-    if (!externalID.instagramId.isNullOrEmpty()) {
-      binding.ivInstagram.visibility = View.VISIBLE
-      binding.ivInstagram.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(INSTAGRAM_LINK + externalID.instagramId))
-        )
-      }
-    } else {
-      binding.ivInstagram.visibility = View.GONE
-    }
+  private fun showSocialMediaPerson() {
+    dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
+    personMovieViewModel.externalIdPerson.observe(this) { externalID ->
 
-    if (!externalID.twitterId.isNullOrEmpty()) {
-      binding.ivX.visibility = View.VISIBLE
-      binding.ivX.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(X_LINK + externalID.twitterId))
-        )
+      if (hasAnySocialMediaIds(externalID)) {
+        binding.viewGroupSocialMedia.isVisible = true
+        setupSocialLink(externalID.instagramId, binding.ivInstagram, INSTAGRAM_LINK)
+        setupSocialLink(externalID.twitterId, binding.ivX, X_LINK)
+        setupSocialLink(externalID.facebookId, binding.ivFacebook, FACEBOOK_LINK)
+        setupSocialLink(externalID.tiktokId, binding.ivTiktok, TIKTOK_PERSON_LINK)
+        setupSocialLink(externalID.youtubeId, binding.ivYoutube, YOUTUBE_CHANNEL_LINK)
+      } else {
+        binding.viewGroupSocialMedia.isVisible = false
       }
-    } else {
-      binding.ivX.visibility = View.GONE
-    }
 
-    if (!externalID.facebookId.isNullOrEmpty()) {
-      binding.ivFacebook.visibility = View.VISIBLE
-      binding.ivFacebook.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(FACEBOOK_LINK + externalID.facebookId))
-        )
-      }
-    } else {
-      binding.ivFacebook.visibility = View.GONE
-    }
-
-    if (!externalID.tiktokId.isNullOrEmpty()) {
-      binding.ivTiktok.visibility = View.VISIBLE
-      binding.ivTiktok.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(TIKTOK_PERSON_LINK + externalID.tiktokId))
-        )
-      }
-    } else {
-      binding.ivTiktok.visibility = View.GONE
-    }
-
-    if (!externalID.youtubeId.isNullOrEmpty()) {
-      binding.ivYoutube.visibility = View.VISIBLE
-      binding.ivYoutube.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_CHANNEL_LINK + externalID.youtubeId))
-        )
-      }
-    } else {
-      binding.ivYoutube.visibility = View.GONE
+      setupSocialLink(externalID.imdbId, binding.ivImdb, IMDB_PERSON_LINK)
+      setupSocialLink(externalID.wikidataId, binding.ivWikidata, WIKIDATA_PERSON_LINK)
     }
   }
 
@@ -290,60 +225,37 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     }
   }
 
-  private fun btnListener() {
-    binding.btnBack.setOnClickListener { finish() }
-  }
-
-  private fun animFadeOut() {
-    val animation = animFadeOutLong(this)
-    binding.backgroundDimPerson.startAnimation(animation)
-    binding.progressBar.startAnimation(animation)
-
-    binding.backgroundDimPerson.visibility = View.GONE
-    binding.progressBar.visibility = View.GONE
-  }
-
   private fun showLoading(isLoading: Boolean) {
     if (isLoading) {
-      binding.backgroundDimPerson.visibility = View.VISIBLE // blur background when loading
-      binding.progressBar.visibility = View.VISIBLE
+      binding.backgroundDimPerson.isVisible = true // blur background when loading
+      binding.progressBar.isVisible = true
     } else {
-      animFadeOut()
+      val animation = animFadeOutLong(this)
+      binding.backgroundDimPerson.startAnimation(animation)
+      binding.progressBar.startAnimation(animation)
+
+      binding.backgroundDimPerson.isGone = true
+      binding.progressBar.isGone = true
     }
   }
 
-  private fun showBirthdate(it: DetailPerson) {
-    if (it.deathday.isNullOrEmpty()) {
+  private fun showBirthdate(person: DetailPerson) {
+    if (person.deathday.isNullOrEmpty()) {
       binding.tvDeath.isVisible = false
       binding.tvDeadHeader.isVisible = false
-
-      it.birthday?.let { birthday ->
-        if (birthday.isNotBlank()) {
-          val formattedBirthday =
-            "${dateFormatterStandard(birthday)} (${getAgeBirth(birthday)} ${getString(years_old)}) \n${it.placeOfBirth}"
-          binding.tvBorn.text = formattedBirthday
-        } else {
-          binding.tvBorn.text = getString(no_data)
-        }
-      } ?: run {
-        binding.tvBorn.text = getString(no_data)
-      }
-
     } else {
       binding.tvDeath.isVisible = true
       binding.tvDeadHeader.isVisible = true
 
-      val birthDay = "${it.birthday?.let { dateFormatterStandard(it) }} \n${it.placeOfBirth}"
-      binding.tvBorn.text = birthDay
-      it.deathday?.let { deathday ->
-        val formattedDeathDay = "${dateFormatterStandard(deathday)} (${
-          it.birthday?.let { birthday -> getAgeDeath(birthday, deathday) }
-        } ${getString(years_old)})"
-        binding.tvDeath.text = formattedDeathDay
-      } ?: run {
-        binding.tvDeath.text = getString(no_data)
-      }
+      val deathInfo = formatDeathInfo(person.birthday, person.deathday)
+      binding.tvDeath.text = deathInfo
     }
+
+    // show birth info
+    binding.tvBorn.isVisible = true
+    binding.tvBornHeader.isVisible = true
+    val birthInfo = formatBirthInfo(person.birthday, person.placeOfBirth)
+    binding.tvBorn.text = birthInfo.ifEmpty { getString(no_data) }
   }
 
   override fun onDestroy() {
