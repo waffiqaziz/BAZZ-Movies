@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.utils.helpers
+package com.waffiq.bazz_movies.core.utils.helpers.home
 
 import android.content.Context
 import android.widget.TextView

@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.pages
 import android.R.anim.fade_in
 import android.R.anim.fade_out
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -14,26 +15,29 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
+import com.waffiq.bazz_movies.core.data.local.model.UserModel
+import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
+import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_SIGNUP
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.CustomTypefaceSpan
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core_ui.R.string.guest_user
 import com.waffiq.bazz_movies.core_ui.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.core_ui.R.string.login_successful
 import com.waffiq.bazz_movies.core_ui.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core_ui.R.string.please_enter_a_username
-import com.waffiq.bazz_movies.core.data.local.model.UserModel
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
-import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeInAlpha50
-import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.uihelpers.CustomTypefaceSpan
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.viewmodel.AuthenticationViewModel
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
@@ -50,6 +54,8 @@ class LoginActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
+    applyWindowInsetsListener()
+    transparentStatusBar(window)
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
@@ -216,5 +222,34 @@ class LoginActivity : AppCompatActivity() {
       SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     return spannableStringBuilder
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+    applyWindowInsetsListener()
+  }
+
+  private fun applyWindowInsetsListener() {
+
+    val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    if (isLandscape) {
+      ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+        val navBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        val isGestureNavigation = navBarInsets.right == 0
+
+        if (!isGestureNavigation) {
+          v.setPadding(
+            v.paddingLeft,
+            v.paddingTop,
+            58,
+            v.paddingBottom
+          )
+        } else {
+          v.setPadding(v.paddingLeft, v.paddingTop, 0, v.paddingBottom)
+        }
+        insets
+      }
+    }
   }
 }

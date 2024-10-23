@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.utils.uihelpers
+package com.waffiq.bazz_movies.core.utils.helpers.uihelpers
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

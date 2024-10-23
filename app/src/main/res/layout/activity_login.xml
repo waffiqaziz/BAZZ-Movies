@@ -29,7 +29,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/default_margin_parent_20"
-    android:layout_marginTop="@dimen/default_margin_parent_20"
+    android:layout_marginTop="54dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,7 +148,7 @@
   <Button
     android:id="@+id/tv_joinTMDB"
     style="@style/MyTransparentButton"
-    android:layout_marginBottom="32dp"
+    android:layout_marginBottom="?attr/actionBarSize"
     android:gravity="center"
     android:text="@string/join_tmdb"
     app:layout_constraintBottom_toBottomOf="parent"

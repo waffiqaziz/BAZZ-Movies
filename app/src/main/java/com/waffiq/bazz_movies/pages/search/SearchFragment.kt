@@ -43,7 +43,7 @@ import com.waffiq.bazz_movies.core.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.color.yellow
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding

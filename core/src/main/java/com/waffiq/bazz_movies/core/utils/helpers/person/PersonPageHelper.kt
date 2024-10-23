@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.utils.helpers
+package com.waffiq.bazz_movies.core.utils.helpers.person
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper
 import com.waffiq.bazz_movies.core_ui.R
 import java.time.LocalDate
 import java.time.Period

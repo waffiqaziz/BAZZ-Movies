@@ -35,8 +35,8 @@ import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.utils.helpers.SwipeCallbackHelper
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core_ui.R.color.red_matte
 import com.waffiq.bazz_movies.core_ui.R.color.yellow

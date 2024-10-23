@@ -36,12 +36,14 @@
   <!-- Title -->
   <TextView
     android:id="@+id/tv_title"
-    style="@style/TextHeader1"
+    style="@style/TextHeader3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
     android:layout_marginTop="10dp"
     android:ellipsize="end"
+    android:includeFontPadding="false"
+    android:lineSpacingExtra="0dp"
     android:maxLines="2"
     android:textSize="18sp"
     app:layout_constrainedWidth="true"
@@ -49,7 +51,7 @@
     app:layout_constraintHorizontal_bias="0"
     app:layout_constraintStart_toEndOf="@+id/iv_picture"
     app:layout_constraintTop_toTopOf="@+id/bg_item"
-    tools:text="Avenger Endgame" />
+    tools:text="Bleach: Sennen Kessen-hen - Soukoku-tan" />
 
   <!-- Released year-->
   <TextView
@@ -68,8 +70,8 @@
     style="@style/TextBody"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="12dp"
-    android:layout_marginTop="8dp"
     android:ellipsize="end"
     android:maxLines="1"
     app:layout_constrainedWidth="true"
@@ -84,7 +86,7 @@
     android:id="@+id/tv_rating"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="11dp"
+    android:layout_marginBottom="10dp"
     android:fontFamily="@font/nunito_sans_bold"
     android:textColor="@color/yellow"
     android:textSize="16sp"

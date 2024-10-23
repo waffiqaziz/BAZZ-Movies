@@ -34,11 +34,11 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
-import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeInAlpha50
-import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core_ui.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.no

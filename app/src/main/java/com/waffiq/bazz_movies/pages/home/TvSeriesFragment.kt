@@ -25,12 +25,12 @@ import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
-import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupRetryButton
-import com.waffiq.bazz_movies.core.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.utils.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupSwipeRefresh
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
