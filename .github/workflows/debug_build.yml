@@ -25,13 +25,13 @@ jobs:
         run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4.2.1
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Cache Gradle packages
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches

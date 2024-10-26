@@ -3,36 +3,36 @@
 agp = "8.2.0"
 kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13"
-#koin = "3.4.0"
+hilt = "2.48.1"
 
 # Google services
-gms = "4.4.1"
-crashlytics = "2.9.9"
-firebaseBom = "32.8.1"
-playIntegrity = "1.3.0"
+gms = "4.4.2"
+crashlytics = "3.0.2"
+firebaseBom = "33.5.0"
+playIntegrity = "1.4.0"
 
 # Development tools
-#leakcanary = "2.12"
+leakcanary = "2.12"
 
 # AndroidX Libraries
-coreKtx = "1.13.0"
-activityKtx = "1.9.0"
-appcompat = "1.6.1"
+coreKtx = "1.13.1"
+activityKtx = "1.9.3"
+fragmentKtx = "1.8.4"
+appcompat = "1.7.0"
 cardview = "1.0.0"
 constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.7.7"
-navigationUiKtx = "2.7.7"
+navigationFragmentKtx = "2.8.3"
+navigationUiKtx = "2.8.3"
 swiperefreshlayout = "1.2.0-alpha01"
 coreSplashscreen = "1.0.1"
-viewpager2 = "1.0.0"
+viewpager2 = "1.1.0"
 
 # Lifecycle Libraries
-lifecycleLivedataKtx = "2.7.0"
-lifecycleViewmodelKtx = "2.7.0"
+lifecycleLivedataKtx = "2.8.6"
+lifecycleViewmodelKtx = "2.8.6"
 
-# Data storage
-# Data storage
-datastorePreferences = "1.1.0"
+# Datastore
+datastorePreferences = "1.1.1"
 
 # Room Libraries
 roomRuntime = "2.6.1"
@@ -42,10 +42,10 @@ legacySupportV4 = "1.0.0"
 roomCompiler = "2.6.1"
 
 # Paging3
-pagingRuntimeKtx = "3.2.1"
+pagingRuntimeKtx = "3.3.2"
 
 # UI components
-material = "1.11.0"
+material = "1.12.0"
 
 # Networking
 retrofit = "2.11.0"
@@ -53,26 +53,29 @@ moshi = "1.15.1"
 okhttpLoggingInterceptor = "5.0.0-alpha.7"
 
 # Java compatibility
-desugarJdkLibs = "2.0.4"
+desugarJdkLibs = "2.1.2"
 
 # Testing
 junit = "4.13.2"
 testRules = "1.5.0"
 testRunner = "1.5.2"
 testExtJunit = "1.1.5"
+espresso-core = "3.6.1"
+androidx-test-ext-junit = "1.2.1"
 
 # Image loading
 glide = "4.16.0"
 
 # Third-party libraries
 expandableTextView = "1.0.4"
-countryPicker = "2.7.0"
+myCountryPicker = "0.1.2"
 
 
 [libraries]
 # AndroidX Libraries
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -95,23 +98,23 @@ androidx-room-room-compiler = { group = "androidx.room", name = "room-compiler",
 # UI components
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
-# Square Libraries
-## Networking
+# Networking
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
 
-## Development tools
-#leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+# Development tools
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
 # Tools and Testing Libraries
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
-androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
+#junit = { group = "junit", name = "junit", version.ref = "junit" }
+#androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
+#androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
+#androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testExtJunit" }
+#espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 # Image loading
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
@@ -125,13 +128,11 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 
 # Third-party libraries
 expandable-textview = { group = "io.github.glailton.expandabletextview", name = "expandabletextview", version.ref = "expandableTextView" }
-country-picker = { group = "com.hbb20", name = "ccp", version.ref = "countryPicker" }
+my-country-picker = { group = "com.github.waffiqaziz", name = "country-picker-android", version.ref = "myCountryPicker" }
 
-## Koin
-#koin-core =  { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
-#koin-android =  { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
-#koin-androidx-navigation =  { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
-
+# Hilt
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 
 [plugins]
 # Core
@@ -143,3 +144,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 gms-googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

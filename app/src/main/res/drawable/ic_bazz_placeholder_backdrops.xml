@@ -8,6 +8,6 @@
   </item>
 
   <item
-    android:drawable="@drawable/splash_inset"
+    android:drawable="@drawable/ic_bazz_black_transparent"
     android:gravity="center" />
 </layer-list>

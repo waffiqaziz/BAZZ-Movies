@@ -7,6 +7,7 @@
   <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
   <application
+    android:name=".MyApplication"
     android:allowBackup="true"
     android:dataExtractionRules="@xml/data_extraction_rules"
     android:exported="false"
@@ -20,19 +21,19 @@
     tools:targetApi="34">
 
     <activity
-      android:name=".ui.activity.AboutActivity"
+      android:name=".pages.AboutActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".ui.activity.person.PersonActivity"
+      android:name=".pages.person.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".ui.activity.detail.DetailMovieActivity"
+      android:name=".pages.detail.DetailMovieActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".ui.activity.MainActivity"
+      android:name=".pages.MainActivity"
       android:exported="false"
       android:label="@string/title_activity"
       android:windowSoftInputMode="adjustPan" />
@@ -42,10 +43,10 @@
     -->
 
     <activity
-      android:name=".ui.activity.LoginActivity"
+      android:name=".pages.LoginActivity"
       android:exported="false" />
     <activity
-      android:name=".ui.activity.RoutingActivity"
+      android:name=".pages.RoutingActivity"
       android:exported="true"
       android:theme="@style/SplashScreenTheme">
       <intent-filter>

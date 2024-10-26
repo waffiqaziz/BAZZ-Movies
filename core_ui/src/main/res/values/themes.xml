@@ -1,0 +1,282 @@
+<resources>
+  <!-- Base application theme -->
+  <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Primary brand color -->
+    <item name="colorPrimary">@color/gray_1000</item>
+    <item name="colorPrimaryVariant">@color/gray_900</item>
+    <item name="colorOnPrimary">@color/white</item>
+    <item name="colorAccent">@color/yellow</item>
+    <item name="colorOnBackground">@color/white</item>
+    <item name="android:colorBackground">@color/gray_900</item>
+    <item name="colorSurface">@color/gray_200</item>
+    <item name="colorOnSurface">@color/gray_900</item>
+    <item name="colorError">@color/red_matte</item>
+    <item name="colorOnError">@color/white</item>
+
+    <!-- Color for all background -->
+    <item name="android:windowBackground">@color/gray_900</item>
+
+    <!-- Color divider recycle view -->
+    <item name="android:listDivider">@color/yellow_alpha_80</item>
+
+    <!-- Status Bar -->
+    <item name="android:statusBarColor">?attr/colorPrimary</item>
+
+    <!-- Search View -->
+    <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
+
+    <!-- Bottom Sheet -->
+    <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
+    <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+  </style>
+
+  <style name="WindowAnimationStyle">
+    <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+  </style>
+
+  <!-- Splash Screen for RoutingActivity on Manifests -->
+  <style name="SplashScreenTheme" parent="Theme.SplashScreen">
+    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+    <item name="windowSplashScreenBackground">@color/gray_1000</item>
+    <item name="windowSplashScreenAnimationDuration">300</item>
+    <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
+  </style>
+
+  <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog" />
+
+  <style name="MyFAB" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="android:layout_gravity">end|bottom</item>
+    <item name="android:backgroundTint">@color/yellow</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+  <style name="MySwitchRadioButton">
+    <item name="android:background">@drawable/bg_switch_selector</item>
+    <item name="android:textColor">@color/radio_button_state</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:button">@null</item>
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_marginTop">1dp</item>
+    <item name="android:layout_marginBottom">1dp</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="MyBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+    <item name="itemTextAppearanceActive">@style/CustomBottomNavigationTextAppearance</item>
+    <item name="itemTextAppearanceInactive">@style/CustomBottomNavigationTextAppearance</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:layout_gravity">bottom</item>
+    <item name="android:background">?attr/colorPrimary</item>
+  </style>
+
+  <style name="CustomBottomNavigationTextAppearance" parent="TextAppearance.AppCompat">
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="MyDimStyle">
+    <item name="android:background">@color/gray_900</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="MyDimStyleMatchParent">
+    <item name="android:background">@color/gray_900</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="MyProgressBar">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:indeterminateTint">@color/yellow</item>
+    <item name="android:indeterminate">true</item>
+    <item name="android:visibility">visible</item>
+  </style>
+
+  <style name="MyLoginButtonPortrait" parent="Widget.MaterialComponents.Button">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginBottom">8dp</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textColor">@color/gray_900</item>
+    <item name="android:backgroundTint">@color/yellow</item>
+  </style>
+
+  <style name="MyTransparentButton">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:background">?attr/selectableItemBackground</item>
+  </style>
+
+  <style name="MyLoginButtonLand" parent="Widget.MaterialComponents.Button">
+    <item name="android:layout_width">450dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginBottom">4dp</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textColor">@color/gray_900</item>
+    <item name="android:backgroundTint">@color/yellow</item>
+  </style>
+
+  <style name="ButtonTryAgain" parent="ThemeOverlay.Material3.Button">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginBottom">4dp</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textColor">@color/gray_900</item>
+    <item name="android:backgroundTint">@color/yellow</item>
+  </style>
+
+  <style name="MySocialMediaButton">
+    <item name="android:padding">8dp</item>
+    <item name="android:layout_width">48dp</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+  </style>
+
+  <!-- Style for SearchView -->
+  <style name="MySearchViewTheme" parent="Widget.AppCompat.SearchView">
+    <!-- Gets rid of the search icon -->
+    <item name="searchIcon">@drawable/ic_search</item>
+    <!-- Gets rid of the "underline" in the text -->
+    <item name="queryBackground">@color/white</item>
+    <!-- Gets rid of the search icon when the SearchView is expanded -->
+    <item name="searchHintIcon">@color/yellow</item>
+  </style>
+
+  <!-- Style for tab layout -->
+  <style name="TextTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+    <item name="android:textSize">15sp</item>
+    <item name="android:textStyle">normal</item>
+    <item name="textAllCaps">false</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="TextHeader1">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineMedium</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="TextHeader2">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="TextHeader3">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="TextDivider">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="android:textColor">@color/gray_400</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="TextCast">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="TextBody">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="android:textColor">@color/gray_100</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="TextScore">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="android:textColor">@color/gray_100</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="TextScoreHeader">
+    <item name="android:layout_marginTop">4dp</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_width">wrap_content</item>
+  </style>
+
+  <!-- Style button on more page -->
+  <style name="ButtonMoreStyle">
+    <item name="android:paddingStart">20dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:background">?attr/selectableItemBackground</item>
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleSmall</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <!-- Style for button signOut on more page -->
+  <style name="ButtonSignOut" parent="Widget.MaterialComponents.Button">
+    <item name="strokeColor">@color/gray_400</item>
+    <item name="textAllCaps">false</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="strokeWidth">0.8dp</item>
+    <item name="android:textColor">@color/red_matte</item>
+    <item name="backgroundTint">@android:color/transparent</item>
+  </style>
+
+  <style name="customButton">
+    <item name="textAllCaps">false</item>
+    <item name="android:minHeight">39dp</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <!-- Style for image view on favorite/watchlist page user login -->
+  <style name="roundedCornersImageView" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">5dp</item>
+  </style>
+
+  <style name="roundedCornersPoster" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">3%</item>
+  </style>
+
+  <style name="circleImage" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">50%</item>
+  </style>
+
+  <style name="CustomAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <item name="colorOnSurface">@color/gray_1000</item>
+    <item name="colorPrimary">@color/gray_1000</item>
+    <item name="android:textColorPrimaryInverse">@color/gray_1000</item>
+    <item name="android:textColorSecondaryInverse">@color/gray_900</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:backgroundTint">@color/white</item>
+  </style>
+</resources>

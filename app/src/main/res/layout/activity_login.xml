@@ -5,7 +5,7 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.LoginActivity">
+  tools:context=".pages.LoginActivity">
 
   <!-- Background image -->
   <ImageView
@@ -29,7 +29,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/default_margin_parent_20"
-    android:layout_marginTop="@dimen/default_margin_parent_20"
+    android:layout_marginTop="54dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,7 +137,7 @@
   <Button
     android:id="@+id/tv_guest"
     style="@style/MyTransparentButton"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="15dp"
     android:text="@string/guest_session"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"
@@ -148,7 +148,7 @@
   <Button
     android:id="@+id/tv_joinTMDB"
     style="@style/MyTransparentButton"
-    android:layout_marginBottom="32dp"
+    android:layout_marginBottom="?attr/actionBarSize"
     android:gravity="center"
     android:text="@string/join_tmdb"
     app:layout_constraintBottom_toBottomOf="parent"

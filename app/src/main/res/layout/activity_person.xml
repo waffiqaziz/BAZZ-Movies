@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.person.PersonActivity">
+  tools:context=".pages.person.PersonActivity">
 
   <!-- Back button layout -->
   <com.google.android.material.appbar.AppBarLayout
@@ -13,18 +13,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
-    android:fitsSystemWindows="true"
-    android:translationZ="0.1dp"
-    app:elevation="0dp"
-    tools:visibility="visible">
+    android:translationZ="0.1dp">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true"
-      app:contentInsetLeft="0dp"
-      app:contentInsetStart="0dp">
+      android:layout_height="wrap_content">
 
       <ImageButton
         android:id="@+id/btn_back"
@@ -86,6 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="450dp"
             tools:src="@tools:sample/avatars" />
 
           <!-- Name -->
@@ -243,7 +238,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            app:animDuration="1000"
             app:collapsedLines="3"
             app:ellipsizeTextColor="@color/yellow"
             app:expandType="layout"

@@ -12,7 +12,10 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
   }
 }
 rootProject.name = "BAZZ Movies"
 include(":app")
+include(":core")
+include(":core_ui")

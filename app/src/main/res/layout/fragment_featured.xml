@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.home.FeaturedFragment">
+  tools:context=".pages.home.FeaturedFragment">
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
@@ -88,6 +88,7 @@
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="10dp"
           android:contentDescription="@string/trending_now"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
@@ -109,6 +110,7 @@
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:contentDescription="@string/upcoming_movies"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
@@ -130,6 +132,7 @@
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:contentDescription="@string/playing_now_on_theater"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />

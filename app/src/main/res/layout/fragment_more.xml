@@ -5,7 +5,7 @@
   android:id="@+id/constraint_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.myfavorite.MyFavoriteFragment">
+  tools:context=".pages.myfavorite.MyFavoriteFragment">
 
   <ScrollView
     android:id="@+id/scroll_view"
@@ -32,9 +32,9 @@
         android:id="@+id/img_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginStart="@dimen/default_margin_parent_20"
         android:contentDescription="@string/image_profile"
         app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/circleImage"
@@ -53,7 +53,7 @@
 
         <TextView
           android:id="@+id/tv_fullName"
-          style="@style/TextHeader1"
+          style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           tools:text="Name" />
@@ -72,38 +72,36 @@
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_region"
         style="@style/ButtonMoreStyle"
-        android:layout_width="wrap_content"
         android:layout_marginTop="24dp"
-        android:paddingEnd="120dp"
         android:text="@string/select_region"
         app:icon="@drawable/ic_region"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         tools:ignore="RtlSymmetry" />
 
-      <com.hbb20.CountryCodePicker
+      <com.waffiq.CountryPickerButton
         android:id="@+id/btn_country_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        app:ccpDialog_backgroundColor="@color/gray_700"
-        app:ccpDialog_fastScroller_bubbleColor="@color/yellow"
-        app:ccpDialog_fastScroller_handleColor="@color/yellow"
-        app:ccpDialog_keyboardAutoPopup="false"
-        app:ccpDialog_searchEditTextTint="@color/yellow"
-        app:ccpDialog_showCloseIcon="true"
-        app:ccpDialog_textColor="@color/white"
-        app:ccp_arrowColor="@color/yellow"
-        app:ccp_arrowSize="36sp"
-        app:ccp_autoDetectCountry="false"
-        app:ccp_clickable="true"
-        app:ccp_contentColor="@color/white"
-        app:ccp_showPhoneCode="false"
-        app:ccp_textGravity="RIGHT"
-        app:ccp_textSize="14sp"
+        android:layout_marginEnd="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="@dimen/button_radius"
+        app:cardElevation="0dp"
+        app:rippleColor="@color/gray_1000"
+        app:cpa_dialogApplyBorderSearch="true"
+        app:cpa_dialogBackgroundColor="@color/gray_800"
+        app:cpa_dialogSearchBackgroundColor="@color/gray_800"
+        app:cpa_dialogSearchCrossIconColor="@color/gray_300"
+        app:cpa_dialogTextColor="@color/gray_300"
+        app:cpa_dialogTextHintColor="@color/gray_700"
+        app:cpa_fontFamily="@font/nunito_sans_regular"
         app:layout_constraintBottom_toBottomOf="@+id/btn_region"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_region" />
+        app:layout_constraintTop_toTopOf="@+id/btn_region"
+        app:strokeWidth="0dp" />
 
       <!-- FAQ -->
       <com.google.android.material.button.MaterialButton
@@ -166,28 +164,22 @@
         app:layout_constraintTop_toTopOf="@+id/btn_about_us" />
 
       <!-- Term and Condition -->
-      <TextView
+      <com.google.android.material.button.MaterialButton
         android:id="@+id/tv_terms_conditon"
-        style="@style/TextDivider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:background="?attr/selectableItemBackground"
+        style="@style/ButtonMoreStyle"
         android:paddingVertical="12dp"
         android:text="@string/terms_amp_condition"
+        android:textColor="@color/gray_400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_about_us" />
 
       <!-- Privacy Policy -->
-      <TextView
+      <com.google.android.material.button.MaterialButton
         android:id="@+id/tv_privacy_policy"
-        style="@style/TextDivider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:background="?attr/selectableItemBackground"
+        style="@style/ButtonMoreStyle"
         android:paddingVertical="12dp"
         android:text="@string/privacy_amp_policy"
+        android:textColor="@color/gray_400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
 

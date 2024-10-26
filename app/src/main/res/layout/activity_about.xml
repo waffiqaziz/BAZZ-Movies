@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.AboutActivity">
+  tools:context=".pages.AboutActivity">
 
   <!-- ========================== -->
   <!--        HEADER SECTION      -->
@@ -93,6 +93,7 @@
     android:layout_marginBottom="32dp"
     android:contentDescription="@string/submit"
     app:layout_constraintBottom_toBottomOf="parent"
+    app:tint="@color/black"
     app:layout_constraintEnd_toEndOf="parent"
     app:rippleColor="@color/yellow_alpha_80"
     app:srcCompat="@drawable/ic_left_icon" />

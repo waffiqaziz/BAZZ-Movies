@@ -1,8 +1,0 @@
-<resources>
-  <!-- Default screen margins, per the Android Design guidelines. -->
-  <dimen name="tab_layout_height">44dp</dimen>
-  <dimen name="default_margin_parent_20">20dp</dimen>
-  <dimen name="margin_detail_info">4dp</dimen>
-  <dimen name="margin_to_centered">100dp</dimen>
-  <dimen name="margin_reduce_20">-20dp</dimen>
-</resources>

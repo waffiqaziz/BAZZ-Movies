@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.activity.home.MovieFragment">
+  tools:context=".pages.home.MovieFragment">
 
   <!-- Movie list-->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -44,6 +44,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
@@ -64,6 +65,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
@@ -84,6 +86,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
@@ -104,6 +107,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:nestedScrollingEnabled="false"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
