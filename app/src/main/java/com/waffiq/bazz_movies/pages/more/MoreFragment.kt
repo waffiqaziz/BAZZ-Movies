@@ -34,11 +34,11 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_AVATAR
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core_ui.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.no
@@ -47,6 +47,7 @@ import com.waffiq.bazz_movies.core_ui.R.string.warning
 import com.waffiq.bazz_movies.core_ui.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.core_ui.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core_ui.R.string.yes
+import com.waffiq.bazz_movies.core_ui.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.pages.AboutActivity
 import com.waffiq.bazz_movies.pages.LoginActivity
@@ -182,7 +183,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutLoggedIn(token: String) {
-    mDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+    mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_logged_user))
       setNegativeButton(resources.getString(no)) { dialog, _ ->
@@ -207,7 +208,7 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutGuestMode() {
-    mDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+    mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_guest_mode))
       setNegativeButton(resources.getString(no)) { dialog, _ ->

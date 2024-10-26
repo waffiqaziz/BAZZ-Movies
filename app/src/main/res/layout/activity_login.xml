@@ -137,7 +137,7 @@
   <Button
     android:id="@+id/tv_guest"
     style="@style/MyTransparentButton"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="15dp"
     android:text="@string/guest_session"
     app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
     app:layout_constraintEnd_toEndOf="@+id/btn_login"

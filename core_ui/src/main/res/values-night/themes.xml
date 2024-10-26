@@ -272,11 +272,11 @@
   </style>
 
   <style name="CustomAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-    <item name="colorOnSurface">@color/gray_1000</item>
-    <item name="colorPrimary">@color/gray_1000</item>
-    <item name="android:textColorPrimaryInverse">@color/gray_1000</item>
-    <item name="android:textColorSecondaryInverse">@color/gray_900</item>
+    <item name="colorOnSurface">@color/white</item>
+    <item name="colorPrimary">@color/white</item>
+    <item name="android:textColorPrimaryInverse">@color/white</item>
+    <item name="android:textColorSecondaryInverse">#B3FFFFFF</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
-    <item name="android:backgroundTint">@color/white</item>
+    <item name="android:backgroundTint">@color/gray_800</item>
   </style>
 </resources>

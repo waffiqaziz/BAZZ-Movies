@@ -5,4 +5,5 @@
   <dimen name="margin_detail_info">4dp</dimen>
   <dimen name="margin_to_centered">100dp</dimen>
   <dimen name="margin_reduce_20">-20dp</dimen>
+  <dimen name="button_radius">5dp</dimen>
 </resources>

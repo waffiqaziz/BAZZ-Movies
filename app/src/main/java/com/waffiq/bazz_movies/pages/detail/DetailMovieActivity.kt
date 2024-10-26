@@ -80,6 +80,7 @@ import com.waffiq.bazz_movies.core_ui.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core_ui.R.string.status_
 import com.waffiq.bazz_movies.core_ui.R.string.unknown_error
 import com.waffiq.bazz_movies.core_ui.R.string.yt_not_installed
+import com.waffiq.bazz_movies.core_ui.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.pages.person.PersonActivity
 import com.waffiq.bazz_movies.pages.person.PersonActivity.Companion.EXTRA_PERSON
@@ -604,7 +605,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
 
   // region toast, snackbar, dialog
   private fun showDialogNotRated() {
-    MaterialAlertDialogBuilder(this).apply {
+    MaterialAlertDialogBuilder(this, CustomAlertDialogTheme).apply {
       setTitle(resources.getString(not_available_full))
       setMessage(resources.getString(cant_provide_a_score))
     }.show().also { dialog ->

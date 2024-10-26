@@ -8,7 +8,7 @@ hilt = "2.48.1"
 # Google services
 gms = "4.4.2"
 crashlytics = "3.0.2"
-firebaseBom = "33.4.0"
+firebaseBom = "33.5.0"
 playIntegrity = "1.4.0"
 
 # Development tools
@@ -16,13 +16,13 @@ leakcanary = "2.12"
 
 # AndroidX Libraries
 coreKtx = "1.13.1"
-activityKtx = "1.9.2"
+activityKtx = "1.9.3"
 fragmentKtx = "1.8.4"
 appcompat = "1.7.0"
 cardview = "1.0.0"
 constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.8.2"
-navigationUiKtx = "2.8.2"
+navigationFragmentKtx = "2.8.3"
+navigationUiKtx = "2.8.3"
 swiperefreshlayout = "1.2.0-alpha01"
 coreSplashscreen = "1.0.1"
 viewpager2 = "1.1.0"
@@ -68,7 +68,7 @@ glide = "4.16.0"
 
 # Third-party libraries
 expandableTextView = "1.0.4"
-myCountryPicker = "0.1.1"
+myCountryPicker = "0.1.2"
 
 
 [libraries]

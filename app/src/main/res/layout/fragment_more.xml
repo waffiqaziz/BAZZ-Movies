@@ -72,9 +72,7 @@
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_region"
         style="@style/ButtonMoreStyle"
-        android:layout_width="wrap_content"
         android:layout_marginTop="24dp"
-        android:paddingEnd="120dp"
         android:text="@string/select_region"
         app:icon="@drawable/ic_region"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,19 +83,20 @@
         android:id="@+id/btn_country_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="@dimen/button_radius"
         app:cardElevation="0dp"
+        app:rippleColor="@color/gray_1000"
         app:cpa_dialogApplyBorderSearch="true"
-        app:cpa_dialogBackgroundColor="@color/gray_900"
-        app:cpa_dialogSearchBackgroundColor="@color/gray_900"
+        app:cpa_dialogBackgroundColor="@color/gray_800"
+        app:cpa_dialogSearchBackgroundColor="@color/gray_800"
         app:cpa_dialogSearchCrossIconColor="@color/gray_300"
         app:cpa_dialogTextColor="@color/gray_300"
-        app:cpa_dialogTextHintColor="@color/gray_600"
+        app:cpa_dialogTextHintColor="@color/gray_700"
         app:cpa_fontFamily="@font/nunito_sans_regular"
         app:layout_constraintBottom_toBottomOf="@+id/btn_region"
         app:layout_constraintEnd_toEndOf="parent"
@@ -165,28 +164,22 @@
         app:layout_constraintTop_toTopOf="@+id/btn_about_us" />
 
       <!-- Term and Condition -->
-      <TextView
+      <com.google.android.material.button.MaterialButton
         android:id="@+id/tv_terms_conditon"
-        style="@style/TextDivider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:background="?attr/selectableItemBackground"
+        style="@style/ButtonMoreStyle"
         android:paddingVertical="12dp"
         android:text="@string/terms_amp_condition"
+        android:textColor="@color/gray_400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_about_us" />
 
       <!-- Privacy Policy -->
-      <TextView
+      <com.google.android.material.button.MaterialButton
         android:id="@+id/tv_privacy_policy"
-        style="@style/TextDivider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:background="?attr/selectableItemBackground"
+        style="@style/ButtonMoreStyle"
         android:paddingVertical="12dp"
         android:text="@string/privacy_amp_policy"
+        android:textColor="@color/gray_400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
 
