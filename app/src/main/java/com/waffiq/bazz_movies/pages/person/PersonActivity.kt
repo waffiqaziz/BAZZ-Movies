@@ -54,6 +54,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.hasAnyS
 import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.string.no_biography
 import com.waffiq.bazz_movies.core_ui.R.string.no_data
@@ -80,10 +81,11 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     setContentView(binding.root)
 
     // action bar behavior
-    transparentStatusBar(window)
+    window.transparentStatusBar()
     handleOverHeightAppBar(binding.appBarLayout)
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollViewPerson)
 
+    addPaddingWhenNavigationEnable(binding.root)
     justifyTextView(binding.tvBiography)
     showLoading(true)
     getDataExtra()

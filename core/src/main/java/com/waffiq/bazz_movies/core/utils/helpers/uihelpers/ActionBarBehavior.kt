@@ -13,15 +13,15 @@ import com.google.android.material.appbar.AppBarLayout
 object ActionBarBehavior {
 
   @Suppress("DEPRECATION")
-  fun transparentStatusBar(window: Window) {
+  fun Window.transparentStatusBar() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      window.setDecorFitsSystemWindows(false)
+      setDecorFitsSystemWindows(false)
     } else {
       // This flag is deprecated in API 30 (Android R), but necessary for older versions
-      window.decorView.systemUiVisibility =
+      decorView.systemUiVisibility =
         View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
     }
-    window.statusBarColor = Color.TRANSPARENT
+    statusBarColor = Color.TRANSPARENT
   }
 
   fun handleOverHeightAppBar(appBarLayout: AppBarLayout) {

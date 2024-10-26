@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
     applyWindowInsetsListener()
-    transparentStatusBar(window)
+    window.transparentStatusBar()
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)

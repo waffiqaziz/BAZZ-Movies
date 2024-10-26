@@ -67,6 +67,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.tra
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core_ui.R.string.item_added_to_favorite
@@ -117,10 +118,11 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     errorStateObserver()
 
     // action bar behavior
-    transparentStatusBar(window)
+    window.transparentStatusBar()
     handleOverHeightAppBar(binding.appBarLayout)
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
 
+    addPaddingWhenNavigationEnable(binding.root)
     justifyTextView(binding.tvOverview)
     loadData()
     favWatchlistHandler()
