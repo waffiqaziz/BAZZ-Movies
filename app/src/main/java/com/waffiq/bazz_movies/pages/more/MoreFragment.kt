@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,6 +73,8 @@ class MoreFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null
+
+  private var isCancelSignout = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -168,11 +171,14 @@ class MoreFragment : Fragment() {
     }
 
     binding.btnSignout.setOnClickListener {
+      isCancelSignout = false
       userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        if (user.token == NAN) {
-          dialogSignOutGuestMode()
-        } else {
-          dialogSignOutLoggedIn(user.token)
+        if (!isCancelSignout) {
+          if (user.token == NAN) {
+            dialogSignOutGuestMode()
+          } else {
+            dialogSignOutLoggedIn(user.token)
+          }
         }
       }
     }
@@ -183,12 +189,18 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutLoggedIn(token: String) {
+
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_logged_user))
-      setNegativeButton(resources.getString(no)) { dialog, _ ->
+      setNegativeButton(
+        HtmlCompat.fromHtml(
+          "<b>${resources.getString(no)}</b>",
+          HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+      ) { dialog, _ ->
+        isCancelSignout = !isCancelSignout
         dialog.dismiss()
-        dialog.cancel()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
@@ -202,7 +214,7 @@ class MoreFragment : Fragment() {
     mDialog?.show().also { dialog ->
       // Ensure dialog is shown if the activity is not finishing
       if (requireActivity().isFinishing) {
-        dialog?.cancel()
+        dialog?.dismiss()
       }
     }
   }
@@ -211,9 +223,14 @@ class MoreFragment : Fragment() {
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_guest_mode))
-      setNegativeButton(resources.getString(no)) { dialog, _ ->
+      setNegativeButton(
+        HtmlCompat.fromHtml(
+          "<b>${resources.getString(no)}</b>",
+          HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+      ) { dialog, _ ->
+        isCancelSignout = !isCancelSignout
         dialog.dismiss()
-        dialog.cancel()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
@@ -226,7 +243,7 @@ class MoreFragment : Fragment() {
     mDialog?.show().also { dialog ->
       // Ensure dialog is shown if the activity is not finishing
       if (requireActivity().isFinishing) {
-        dialog?.cancel()
+        dialog?.dismiss()
       }
     }
   }
