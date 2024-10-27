@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.domain.usecase.get_detail_person
+package com.waffiq.bazz_movies.feature_person.domain.usecase
 
 import com.waffiq.bazz_movies.core.domain.model.person.CastItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson

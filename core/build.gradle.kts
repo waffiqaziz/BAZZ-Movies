@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-  implementation(project(":core_ui"))
+  implementation(project(":core-ui"))
 
   // for item layout
   implementation(libs.androidx.core.ktx)

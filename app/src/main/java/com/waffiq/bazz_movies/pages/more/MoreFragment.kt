@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.more
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,10 +20,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_logo
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.core.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
@@ -253,11 +253,7 @@ class MoreFragment : Fragment() {
     ActivityCompat.startActivity(
       requireContext(),
       Intent(activity, LoginActivity::class.java),
-      ActivityOptionsCompat.makeCustomAnimation(
-        requireContext(),
-        fade_in,
-        fade_out
-      ).toBundle()
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out).toBundle()
     )
     activity?.finishAfterTransition()
   }

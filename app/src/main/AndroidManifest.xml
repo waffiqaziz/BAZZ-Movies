@@ -25,7 +25,7 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".pages.person.PersonActivity"
+      android:name=".feature_person.ui.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity

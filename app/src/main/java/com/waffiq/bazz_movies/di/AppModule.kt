@@ -6,8 +6,6 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie.GetDetailMovi
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_person.GetDetailPersonInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_person.GetDetailPersonUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_tv.GetDetailTvInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_tv.GetDetailTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieInteractor
@@ -106,9 +104,9 @@ abstract class AppModule {
   ): GetWatchlistMovieUseCase
   // endregion MOVIE
 
-
+  // region TV
   @Binds
-  @ViewModelScoped// region TV
+  @ViewModelScoped
   abstract fun provideListTvUseCase(
     getListTvInteractor: GetListTvInteractor
   ): GetListTvUseCase
@@ -143,12 +141,6 @@ abstract class AppModule {
   abstract fun provideMultiSearchUseCase(
     multiSearchInteractor: MultiSearchInteractor
   ): MultiSearchUseCase
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideDetailPersonUseCase(
-    getDetailPersonInteractor: GetDetailPersonInteractor
-  ): GetDetailPersonUseCase
 
   @Binds
   @ViewModelScoped

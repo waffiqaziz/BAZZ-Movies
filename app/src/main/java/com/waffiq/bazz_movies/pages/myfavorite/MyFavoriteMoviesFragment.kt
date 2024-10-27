@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.myfavorite
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.id.bottom_navigation

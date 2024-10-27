@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.mywatchlist
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.id.bottom_navigation
@@ -395,7 +396,7 @@ class MyWatchlistTvSeriesFragment : Fragment(), DetailNavigator {
     val intent = Intent(requireContext(), DetailMovieActivity::class.java)
     intent.putExtra(EXTRA_MOVIE, resultItem)
     val options =
-      ActivityOptionsCompat.makeCustomAnimation(requireContext(), R.anim.fade_in, R.anim.fade_out)
+      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

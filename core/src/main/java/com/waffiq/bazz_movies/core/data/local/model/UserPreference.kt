@@ -47,6 +47,8 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     dataStore.edit { it[REGION_KEY] = region }
   }
 
+  fun getToken(): Flow<String> = dataStore.data.map { it[TOKEN_KEY] ?: "" }
+
   fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY] ?: "" }
 
   suspend fun removeUserData() { // remove all data from datastore

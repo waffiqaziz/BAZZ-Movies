@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.detail
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.RatingBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,8 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
@@ -83,9 +84,8 @@ import com.waffiq.bazz_movies.core_ui.R.string.unknown_error
 import com.waffiq.bazz_movies.core_ui.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core_ui.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.pages.person.PersonActivity
-import com.waffiq.bazz_movies.pages.person.PersonActivity.Companion.EXTRA_PERSON
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature_person.ui.PersonActivity
+import com.waffiq.bazz_movies.feature_person.ui.PersonActivity.Companion.EXTRA_PERSON
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -97,7 +97,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
   private val detailViewModel: DetailMovieViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
   private val adapterCast = CastAdapter(this)
   private val adapterRecommendation = TrendingAdapter(this)
@@ -123,7 +123,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
 
     addPaddingWhenNavigationEnable(binding.root)
-    justifyTextView(binding.tvOverview)
+    justifyTextView(binding.tvOverview as TextView)
     loadData()
     favWatchlistHandler()
     viewListener()
@@ -158,8 +158,8 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   }
 
   private fun checkUser() {
-    userPreferenceViewModel.getUserPref().observe(this) {
-      isLogin = it.token != NAN
+    prefViewModel.getUserToken().observe(this) { token ->
+      isLogin = token != NAN && token.isNotEmpty()
 
       // handler for rating, add favorite and watchlist for user login
       if (isLogin) {
@@ -168,10 +168,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
             if (isRateSuccessful) showToast(getString(rating_added_successfully))
           }
         }
-
-        userPreferenceViewModel.getUserPref().observe(this) { user ->
-          getStated(user.token)
-        }
+        getStated(token)
       }
 
       // shor or hide user score
@@ -295,8 +292,8 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     detailViewModel.getMovieCredits(dataExtra.id)
 
     // get detail movie
-    userPreferenceViewModel.getUserPref().observe(this) { user ->
-      detailViewModel.detailMovie(dataExtra.id, user.region)
+    prefViewModel.getUserRegion().observe(this) { region ->
+      detailViewModel.detailMovie(dataExtra.id, region)
     }
 
     detailViewModel.detailMovieTv.observe(this) { movie ->
@@ -393,8 +390,8 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     }
 
     // show genres & age rate
-    userPreferenceViewModel.getUserPref().observe(this) {
-      detailViewModel.detailTv(dataExtra.id, it.region)
+    prefViewModel.getUserRegion().observe(this) { region ->
+      detailViewModel.detailTv(dataExtra.id, region)
     }
     detailViewModel.detailMovieTv.observe(this) { tv ->
 
@@ -552,7 +549,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
         dataExtra.id,
         !state
       )
-      userPreferenceViewModel.getUserPref().observe(this) { user ->
+      prefViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postFavorite(user.token, fav, user.userId)
       }
     } else { // for watchlist
@@ -562,7 +559,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
         dataExtra.id,
         !state
       )
-      userPreferenceViewModel.getUserPref().observe(this) { user ->
+      prefViewModel.getUserPref().observe(this) { user ->
         detailViewModel.postWatchlist(user.token, wtc, user.userId)
       }
     }
@@ -579,8 +576,8 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   // check if favorite or watchlist
   private fun isFavoriteWatchlist(isLogin: Boolean) {
     if (isLogin) { // user
-      userPreferenceViewModel.getUserPref().observe(this) { user ->
-        getStated(user.token)
+      prefViewModel.getUserToken().observe(this) { token ->
+        getStated(token)
       }
       detailViewModel.itemState.observe(this) {
         if (it != null) {
@@ -639,11 +636,11 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     val btnSubmit: Button = dialogView.findViewById(btn_submit)
     btnSubmit.setOnClickListener {
       val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
-      userPreferenceViewModel.getUserPref().observe(this) { user ->
+      prefViewModel.getUserToken().observe(this) { token ->
         if (dataExtra.mediaType == "movie") {
-          detailViewModel.postMovieRate(user.token, ratePostModel, dataExtra.id)
+          detailViewModel.postMovieRate(token, ratePostModel, dataExtra.id)
         } else {
-          detailViewModel.postTvRate(user.token, ratePostModel, dataExtra.id)
+          detailViewModel.postTvRate(token, ratePostModel, dataExtra.id)
         }
       }
 

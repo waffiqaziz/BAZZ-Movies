@@ -25,6 +25,7 @@ interface IUserRepository {
   suspend fun saveUserPref(userModel: UserModel)
   suspend fun saveRegionPref(region: String)
   fun getUserPref(): Flow<UserModel>
+  fun getUserToken(): Flow<String>
   fun getUserRegionPref(): Flow<String>
   suspend fun removeUserDataPref()
 

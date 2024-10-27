@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.search
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
@@ -28,9 +30,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
-import com.waffiq.bazz_movies.R.drawable.ic_cross
 import com.waffiq.bazz_movies.R.id.action_search
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.menu.search_menu
@@ -45,12 +44,13 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.color.yellow
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.feature_person.ui.PersonActivity
+import com.waffiq.bazz_movies.feature_person.ui.PersonActivity.Companion.EXTRA_PERSON
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
 import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
-import com.waffiq.bazz_movies.pages.person.PersonActivity
-import com.waffiq.bazz_movies.pages.person.PersonActivity.Companion.EXTRA_PERSON
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

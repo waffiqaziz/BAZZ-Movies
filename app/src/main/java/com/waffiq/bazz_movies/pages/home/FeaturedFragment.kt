@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.home
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
@@ -42,6 +41,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRe
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core_ui.R.string.no_upcoming_movie

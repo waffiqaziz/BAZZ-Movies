@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.pages.person
+package com.waffiq.bazz_movies.feature_person.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.domain.model.person.CastItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.core.domain.model.person.ProfilesItem
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_person.GetDetailPersonUseCase
+import com.waffiq.bazz_movies.feature_person.domain.usecase.GetDetailPersonUseCase
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PersonMovieViewModel @Inject constructor(
+class PersonViewModel @Inject constructor(
   private val getDetailPersonUseCase: GetDetailPersonUseCase
 ) : ViewModel() {
 

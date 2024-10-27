@@ -18,4 +18,5 @@ dependencyResolutionManagement {
 rootProject.name = "BAZZ Movies"
 include(":app")
 include(":core")
-include(":core_ui")
+include(":core-ui")
+include(":feature-person")

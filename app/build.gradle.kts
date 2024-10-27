@@ -24,8 +24,8 @@ android {
     applicationId = "com.bazz.bazz_movies"
     minSdk = 23
     targetSdk = 34
-    versionCode = 12
-    versionName = "1.1.0"
+    versionCode = 13
+    versionName = "1.1.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -72,8 +72,8 @@ android {
 
 dependencies {
   implementation(project(":core"))
-  implementation(project(":core_ui"))
-  
+  implementation(project(":core-ui"))
+  implementation(project(":feature-person"))
   // jetpack library
 
   implementation(libs.androidx.activity.ktx)

@@ -85,6 +85,8 @@ class UserRepository @Inject constructor(
 
   override fun getUserPref(): Flow<UserModel> = pref.getUser()
 
+  override fun getUserToken(): Flow<String> = pref.getToken()
+
   override fun getUserRegionPref(): Flow<String> = pref.getRegion()
 
   override suspend fun removeUserDataPref() = pref.removeUserData()

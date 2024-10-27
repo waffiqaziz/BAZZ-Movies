@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.pages.person
+package com.waffiq.bazz_movies.feature_person.ui
 
 import android.app.Dialog
 import android.content.Intent
@@ -13,22 +13,12 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_logo
-import com.waffiq.bazz_movies.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.R.drawable.ic_no_profile
-import com.waffiq.bazz_movies.R.id.btn_close_dialog
-import com.waffiq.bazz_movies.R.id.view_pager_dialog
-import com.waffiq.bazz_movies.R.layout.dialog_image
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
@@ -56,11 +46,16 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.han
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_logo
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core_ui.R.string.no_biography
 import com.waffiq.bazz_movies.core_ui.R.string.no_data
 import com.waffiq.bazz_movies.core_ui.R.string.not_available
-import com.waffiq.bazz_movies.databinding.ActivityPersonBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_person.R.id.btn_close_dialog
+import com.waffiq.bazz_movies.feature_person.R.id.view_pager_dialog
+import com.waffiq.bazz_movies.feature_person.R.layout.dialog_image
+import com.waffiq.bazz_movies.feature_person.databinding.ActivityPersonBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,7 +63,7 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
 
   private lateinit var binding: ActivityPersonBinding
   private lateinit var dataExtra: MovieTvCastItem
-  private val personMovieViewModel: PersonMovieViewModel by viewModels()
+  private val personViewModel: PersonViewModel by viewModels()
 
   private var dialog: Dialog? = null
   private val handler = Handler(Looper.getMainLooper())
@@ -117,10 +112,10 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     }
 
     // error and loading handle
-    personMovieViewModel.errorState.observe(this) {
+    personViewModel.errorState.observe(this) {
       mSnackbar = snackBarWarning(binding.coordinatorLayout, null, it)
     }
-    personMovieViewModel.loadingState.observe(this) { showLoading(it) }
+    personViewModel.loadingState.observe(this) { showLoading(it) }
   }
 
   private fun showData() {
@@ -153,20 +148,20 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
     showSocialMediaPerson()
 
     // show known for
-    dataExtra.id?.let { personMovieViewModel.getKnownFor(it) }
-    personMovieViewModel.knownFor.observe(this) {
+    dataExtra.id?.let { personViewModel.getKnownFor(it) }
+    personViewModel.knownFor.observe(this) {
       adapterKnownFor.setCast(it)
     }
 
     // show picture
-    dataExtra.id?.let { personMovieViewModel.getImagePerson(it) }
-    personMovieViewModel.imagePerson.observe(this) {
+    dataExtra.id?.let { personViewModel.getImagePerson(it) }
+    personViewModel.imagePerson.observe(this) {
       adapterImage.setImage(it)
     }
 
     // show detail person
-    dataExtra.id?.let { personMovieViewModel.getDetailPerson(it) }
-    personMovieViewModel.detailPerson.observe(this) { detailPerson ->
+    dataExtra.id?.let { personViewModel.getDetailPerson(it) }
+    personViewModel.detailPerson.observe(this) { detailPerson ->
       binding.tvBiography.text =
         detailPerson.biography?.takeIf { it.isNotBlank() } ?: getString(no_biography)
       showBirthdate(detailPerson)
@@ -189,8 +184,8 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
   }
 
   private fun showSocialMediaPerson() {
-    dataExtra.id?.let { personMovieViewModel.getExternalIDPerson(it) }
-    personMovieViewModel.externalIdPerson.observe(this) { externalID ->
+    dataExtra.id?.let { personViewModel.getExternalIDPerson(it) }
+    personViewModel.externalIdPerson.observe(this) { externalID ->
 
       if (hasAnySocialMediaIds(externalID)) {
         binding.viewGroupSocialMedia.isVisible = true
@@ -276,10 +271,10 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
   }
 
   override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(this, DetailMovieActivity::class.java)
-    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
-    ActivityCompat.startActivity(this, intent, options.toBundle())
+//    val intent = Intent(this, DetailMovieActivity::class.java)
+//    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+//    val options =
+//      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
+//    ActivityCompat.startActivity(this, intent, options.toBundle())
   }
 }
