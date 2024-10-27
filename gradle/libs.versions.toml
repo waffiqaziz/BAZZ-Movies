@@ -1,14 +1,14 @@
 [versions]
 # Plugin versions
-agp = "8.2.0"
-kotlin = "1.9.10"
-ksp = "1.9.10-1.0.13"
+agp = "8.7.1"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.25"
 hilt = "2.48.1"
 
 # Google services
 gms = "4.4.2"
 crashlytics = "3.0.2"
-firebaseBom = "33.5.0"
+firebaseBom = "33.5.1"
 playIntegrity = "1.4.0"
 
 # Development tools

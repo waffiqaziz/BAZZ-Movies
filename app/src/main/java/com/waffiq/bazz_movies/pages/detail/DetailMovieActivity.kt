@@ -636,7 +636,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       }
     }
 
-    val btnSubmit = dialogView.findViewById(btn_submit) as Button
+    val btnSubmit: Button = dialogView.findViewById(btn_submit)
     btnSubmit.setOnClickListener {
       val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
       userPreferenceViewModel.getUserPref().observe(this) { user ->
@@ -656,7 +656,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       dialog.dismiss()
     }
 
-    val btnCancel = dialogView.findViewById(btn_cancel) as Button
+    val btnCancel: Button = dialogView.findViewById(btn_cancel)
     btnCancel.setOnClickListener { dialog.dismiss() }
     dialog.show()
   }
