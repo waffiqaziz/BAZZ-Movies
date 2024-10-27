@@ -47,10 +47,6 @@ This application is released under the [MIT License](LICENSE).
 
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-**Important Notes**: While the MIT License allows for both commercial and non-commercial use of this
-code, be sure to check and adhere to the terms of any third-party services (such as APIs) you
-utilize, as they may impose additional restrictions or requirements.
-
 ### Third-Party Libraries
 
 1. TMDB API: Provides movie and TV data.
