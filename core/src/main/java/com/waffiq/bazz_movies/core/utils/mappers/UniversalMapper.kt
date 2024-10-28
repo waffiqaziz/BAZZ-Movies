@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.utils.mappers
 
 import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 
 object UniversalMapper {
 
@@ -12,16 +13,16 @@ object UniversalMapper {
     listGenreIds = genreIds,
     posterPath = posterPath,
     backdropPath = backdropPath,
-    mediaType = mediaType ?: "movie",
+    mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
     originalName = originalName,
     popularity = popularity,
     voteAverage = voteAverage,
     name = name,
     id = id ?: 0,
-    adult = adult ?: false,
+    adult = adult == true,
     voteCount = voteCount ?: 0,
     originalTitle = originalTitle,
-    video = video ?: false,
+    video = video == true,
     title = title,
     releaseDate = releaseDate
   )

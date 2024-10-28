@@ -11,10 +11,10 @@ plugins {
 
 android {
   namespace = "com.waffiq.bazz_movies.feature_person"
-  compileSdk = 34
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = 23
+    minSdk = libs.versions.minSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -43,6 +43,7 @@ android {
 dependencies {
   implementation(project(":core"))
   implementation(project(":core-ui"))
+  implementation(project(":navigation"))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)

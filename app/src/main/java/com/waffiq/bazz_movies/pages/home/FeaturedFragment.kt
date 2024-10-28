@@ -46,8 +46,8 @@ import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core_ui.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
 import com.waffiq.bazz_movies.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -18,8 +18,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
-  @Singleton
   @Provides
+  @Singleton
   fun provideDatabase(@ApplicationContext context: Context): FavoriteDatabase = Room.databaseBuilder(
     context,
     FavoriteDatabase::class.java, "$TABLE_NAME.db"

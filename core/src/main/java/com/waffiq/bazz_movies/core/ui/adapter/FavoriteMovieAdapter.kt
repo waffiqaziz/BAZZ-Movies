@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.core_ui.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core_ui.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getGenreName
@@ -64,7 +65,7 @@ class FavoriteMovieAdapter(private val detailNavigator: DetailNavigator) :
 
       // OnClickListener
       binding.container.setOnClickListener {
-        detailNavigator.openDetails(resultItem.copy(mediaType = "movie"))
+        detailNavigator.openDetails(resultItem.copy(mediaType = MOVIE_MEDIA_TYPE))
       }
     }
   }

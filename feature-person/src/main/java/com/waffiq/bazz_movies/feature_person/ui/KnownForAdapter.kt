@@ -1,5 +1,6 @@
-package com.waffiq.bazz_movies.core.ui.adapter
+package com.waffiq.bazz_movies.feature_person.ui
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -13,10 +14,10 @@ import com.waffiq.bazz_movies.core_ui.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core_ui.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.CastItem
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.navigation.Navigator
 
-class KnownForAdapter(private val detailNavigator: DetailNavigator) :
+class KnownForAdapter(private val navigator: Navigator) :
   RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<CastItem>()
@@ -40,7 +41,7 @@ class KnownForAdapter(private val detailNavigator: DetailNavigator) :
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(
         holder.itemView.context,
-        android.R.anim.fade_in
+        fade_in
       )
     )
   }
@@ -90,7 +91,7 @@ class KnownForAdapter(private val detailNavigator: DetailNavigator) :
 
       // OnClickListener
       binding.container.setOnClickListener {
-        detailNavigator.openDetails(resultItem)
+        navigator.openDetails(itemView.context, resultItem)
       }
     }
   }

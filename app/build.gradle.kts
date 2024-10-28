@@ -17,13 +17,13 @@ if (file("${project.rootDir}/app/google-services.json").exists()) {
 }
 
 android {
-  compileSdk = 34
+  compileSdk = libs.versions.compileSdk.get().toInt()
   namespace = "com.waffiq.bazz_movies"
 
   defaultConfig {
     applicationId = "com.bazz.bazz_movies"
-    minSdk = 23
-    targetSdk = 34
+    minSdk = libs.versions.minSdk.get().toInt()
+    targetSdk = libs.versions.targetSdk.get().toInt()
     versionCode = 13
     versionName = "1.1.1"
 
@@ -35,9 +35,9 @@ android {
       isDebuggable = true
 
       // disable below for faster development flow.
-//      isShrinkResources = true
-//      isMinifyEnabled = true
-//      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      isShrinkResources = true
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
@@ -73,9 +73,11 @@ android {
 dependencies {
   implementation(project(":core"))
   implementation(project(":core-ui"))
+  implementation(project(":feature-detail"))
   implementation(project(":feature-person"))
-  // jetpack library
+  implementation(project(":navigation"))
 
+  // jetpack library
   implementation(libs.androidx.activity.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.constraintlayout)

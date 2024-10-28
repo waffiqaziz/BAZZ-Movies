@@ -29,6 +29,7 @@ import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
@@ -46,8 +47,8 @@ import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.core_ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -235,7 +236,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
         user.token,
         user.userId,
         FavoritePostModel(
-          mediaType = "tv",
+          mediaType = TV_MEDIA_TYPE,
           mediaId = tvId,
           favorite = false
         ),
@@ -246,7 +247,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
 
   private fun postToAddWatchlistTMDB(title: String, tvId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkStatedThenPostWatchlist("tv", user, tvId, title)
+      viewModelFav.checkStatedThenPostWatchlist(TV_MEDIA_TYPE, user, tvId, title)
     }
   }
 

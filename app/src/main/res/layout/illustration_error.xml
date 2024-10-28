@@ -23,6 +23,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="8dp"
+    android:gravity="center"
     android:text="@string/something_went_wrong" />
 
   <TextView
@@ -31,14 +32,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:gravity="center"
     android:text="@string/we_encountered_an_error_please_try_again"
     app:layout_constraintEnd_toEndOf="parent" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_try_again"
+    style="@style/ButtonTryAgain"
     android:layout_gravity="center"
     android:layout_marginTop="4dp"
-    style="@style/ButtonTryAgain"
     android:text="@string/try_again"
     android:textColor="@color/gray_1000" />
 

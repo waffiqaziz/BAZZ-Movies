@@ -7,7 +7,8 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper
-import com.waffiq.bazz_movies.core_ui.R
+import com.waffiq.bazz_movies.core_ui.R.string.no_data
+import com.waffiq.bazz_movies.core_ui.R.string.years_old
 import java.time.LocalDate
 import java.time.Period
 
@@ -62,8 +63,8 @@ object PersonPageHelper {
   fun Context.formatDeathInfo(birthday: String?, deathday: String?): String {
     return deathday?.let { deathdayStr ->
       val ageAtDeath = birthday?.let { getAgeDeath(it, deathdayStr) } ?: ""
-      "${GeneralHelper.dateFormatterStandard(deathdayStr)} ($ageAtDeath ${getString(R.string.years_old)})"
-    } ?: getString(R.string.no_data)
+      "${GeneralHelper.dateFormatterStandard(deathdayStr)} ($ageAtDeath ${getString(years_old)})"
+    } ?: getString(no_data)
   }
 
   fun Context.setupSocialLink(

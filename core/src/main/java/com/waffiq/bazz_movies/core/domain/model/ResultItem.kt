@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.domain.model
 
 import android.os.Parcelable
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -11,7 +12,7 @@ data class ResultItem(
   val listGenreIds: List<Int>? = null,
   val posterPath: String? = null,
   val backdropPath: String? = null,
-  val mediaType: String = "movie",
+  val mediaType: String = MOVIE_MEDIA_TYPE,
   val originalName: String? = null,
   val popularity: Double? = 0.0,
   val voteAverage: Float? = 0f,

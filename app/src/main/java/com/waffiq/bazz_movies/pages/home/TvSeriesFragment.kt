@@ -33,8 +33,8 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest

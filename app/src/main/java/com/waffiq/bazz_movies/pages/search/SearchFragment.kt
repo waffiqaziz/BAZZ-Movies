@@ -49,8 +49,8 @@ import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.feature_person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature_person.ui.PersonActivity.Companion.EXTRA_PERSON
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

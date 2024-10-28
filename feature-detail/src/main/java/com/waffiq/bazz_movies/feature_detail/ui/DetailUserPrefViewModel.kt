@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.pages.detail
+package com.waffiq.bazz_movies.feature_detail.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

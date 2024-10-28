@@ -1,9 +1,10 @@
-package com.waffiq.bazz_movies.pages.detail
+package com.waffiq.bazz_movies.feature_detail.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -11,25 +12,26 @@ import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
+import com.waffiq.bazz_movies.core.domain.model.PostModelState
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
 import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.core.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_tv.GetDetailTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodUseCase
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature_detail.domain.usecase.get_detail_movie.GetDetailMovieUseCase
+import com.waffiq.bazz_movies.feature_detail.domain.usecase.get_detail_tv.GetDetailTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -56,7 +58,7 @@ class DetailMovieViewModel @Inject constructor(
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 
   private val _itemState = MutableLiveData<Stated>()
-  val itemState: LiveData<Stated> get() = _itemState
+  val itemState: LiveData<Stated> get() = _itemState.distinctUntilChanged()
 
   private val _movieTvCreditsResult = MutableLiveData<MovieTvCredits>()
   val movieTvCreditsResult: LiveData<MovieTvCredits> get() = _movieTvCreditsResult
@@ -425,7 +427,7 @@ class DetailMovieViewModel @Inject constructor(
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
-            if (data.mediaType == "movie") {
+            if (data.mediaType == MOVIE_MEDIA_TYPE) {
               getStatedMovie(sessionId, data.mediaId)
             } else {
               getStatedTv(sessionId, data.mediaId)
@@ -463,7 +465,7 @@ class DetailMovieViewModel @Inject constructor(
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
-            if (data.mediaType == "movie") {
+            if (data.mediaType == MOVIE_MEDIA_TYPE) {
               getStatedMovie(sessionId, data.mediaId)
             } else {
               getStatedTv(sessionId, data.mediaId)

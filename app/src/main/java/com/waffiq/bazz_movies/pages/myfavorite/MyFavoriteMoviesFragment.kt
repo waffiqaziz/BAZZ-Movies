@@ -28,6 +28,7 @@ import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -46,8 +47,8 @@ import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_favorite
 import com.waffiq.bazz_movies.core_ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteMoviesBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -235,7 +236,7 @@ class MyFavoriteMoviesFragment : Fragment(), DetailNavigator {
         user.token,
         user.userId,
         FavoritePostModel(
-          mediaType = "movie",
+          mediaType = MOVIE_MEDIA_TYPE,
           mediaId = movieId,
           favorite = false
         ),
@@ -246,7 +247,7 @@ class MyFavoriteMoviesFragment : Fragment(), DetailNavigator {
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkStatedThenPostWatchlist("movie", user, movieId, title)
+      viewModelFav.checkStatedThenPostWatchlist(MOVIE_MEDIA_TYPE, user, movieId, title)
     }
   }
 

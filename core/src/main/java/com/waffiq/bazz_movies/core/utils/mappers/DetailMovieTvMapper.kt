@@ -52,6 +52,7 @@ import com.waffiq.bazz_movies.core.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.core.domain.model.person.CastItem
 import com.waffiq.bazz_movies.core.domain.model.person.CombinedCreditPerson
 import com.waffiq.bazz_movies.core.domain.model.person.CrewItem
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.mappers.MovieTvCastMapper.toMovieTvCastItem
 import com.waffiq.bazz_movies.core.utils.mappers.MovieTvCastMapper.toMovieTvCrewItem
 
@@ -75,16 +76,16 @@ object DetailMovieTvMapper {
     backdropPath = backdropPath,
     character = character,
     creditId = creditId,
-    mediaType = mediaType ?: "movie",
+    mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
     originalName = originalName,
     popularity = popularity ?: 0.0,
     voteAverage = voteAverage ?: 0f,
     name = name,
     id = id ?: 0,
-    adult = adult ?: false,
+    adult = adult == true,
     voteCount = voteCount ?: 0,
     originalTitle = originalTitle,
-    video = video ?: false,
+    video = video == true,
     title = title,
     releaseDate = releaseDate,
     order = order ?: 0,

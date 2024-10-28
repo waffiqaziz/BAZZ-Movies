@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie
+package com.waffiq.bazz_movies.feature_detail.domain.usecase.get_detail_movie
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.ResultItem

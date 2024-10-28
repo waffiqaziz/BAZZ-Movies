@@ -34,6 +34,9 @@ object Constants {
   const val DEBOUNCE_VERY_LONG = 500L
   const val ANIM_DURATION = 200L
 
+  const val TV_MEDIA_TYPE = "tv"
+  const val MOVIE_MEDIA_TYPE = "movie"
+
   const val NAN = "NaN"
 
   const val TERMS_CONDITIONS_LINK =

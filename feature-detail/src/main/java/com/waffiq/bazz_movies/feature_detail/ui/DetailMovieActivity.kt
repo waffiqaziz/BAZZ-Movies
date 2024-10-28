@@ -1,7 +1,5 @@
-package com.waffiq.bazz_movies.pages.detail
+package com.waffiq.bazz_movies.feature_detail.ui
 
-import android.R.anim.fade_in
-import android.R.anim.fade_out
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -19,8 +17,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -32,14 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.waffiq.bazz_movies.R.drawable.ic_backdrop_error_filled
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_backdrops
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.R.id.btn_cancel
-import com.waffiq.bazz_movies.R.id.btn_submit
-import com.waffiq.bazz_movies.R.id.rating_bar_action
-import com.waffiq.bazz_movies.R.layout.dialog_rating
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
@@ -47,16 +36,13 @@ import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
 import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
-import com.waffiq.bazz_movies.core.navigation.PersonNavigator
-import com.waffiq.bazz_movies.core.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_LONG
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
@@ -70,6 +56,10 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.ch
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_backdrops
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.core_ui.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core_ui.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core_ui.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core_ui.R.string.item_added_to_watchlist
@@ -83,24 +73,36 @@ import com.waffiq.bazz_movies.core_ui.R.string.status_
 import com.waffiq.bazz_movies.core_ui.R.string.unknown_error
 import com.waffiq.bazz_movies.core_ui.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core_ui.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature_person.ui.PersonActivity
-import com.waffiq.bazz_movies.feature_person.ui.PersonActivity.Companion.EXTRA_PERSON
+import com.waffiq.bazz_movies.feature_detail.R.id.btn_cancel
+import com.waffiq.bazz_movies.feature_detail.R.id.btn_submit
+import com.waffiq.bazz_movies.feature_detail.R.id.rating_bar_action
+import com.waffiq.bazz_movies.feature_detail.R.layout.dialog_rating
+import com.waffiq.bazz_movies.feature_detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature_detail.ui.adapter.CastAdapter
+import com.waffiq.bazz_movies.feature_detail.ui.adapter.RecommendationAdapter
+import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.text.isBlank
+import kotlin.text.isEmpty
 
 @AndroidEntryPoint
-class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigator {
+class DetailMovieActivity : AppCompatActivity() {
+
+  @Inject
+  lateinit var navigator: Navigator
 
   private lateinit var binding: ActivityDetailMovieBinding
   private lateinit var dataExtra: ResultItem
   private val detailViewModel: DetailMovieViewModel by viewModels()
   private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
-  private val adapterCast = CastAdapter(this)
-  private val adapterRecommendation = TrendingAdapter(this)
+  private lateinit var adapterCast: CastAdapter
+  private lateinit var adapterRecommendation: RecommendationAdapter
+  private var mSnackbar: Snackbar? = null
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
@@ -112,6 +114,10 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
+
+    adapterCast = CastAdapter(navigator)
+    adapterRecommendation = RecommendationAdapter(navigator)
+
     showLoadingDim(true)
 
     detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
@@ -200,9 +206,9 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     getDetailBasedMediaType()
 
     // show detail data based media type
-    if (dataExtra.mediaType == "movie") {
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
       observeDetailMovie()
-    } else if (dataExtra.mediaType == "tv") {
+    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) {
       observeDetailTv()
     }
   }
@@ -210,9 +216,9 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   private fun getDetailBasedMediaType() {
     showBackdrop()
     showPoster()
-    if (dataExtra.mediaType == "movie") {
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
       getDetailMovie()
-    } else if (dataExtra.mediaType == "tv") {
+    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) {
       getDetailTv()
     }
   }
@@ -463,7 +469,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
   }
 
   private fun getStated(token: String) {
-    if (dataExtra.mediaType == "movie") {
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
       detailViewModel.getStatedMovie(token, dataExtra.id)
     } else {
       detailViewModel.getStatedTv(token, dataExtra.id)
@@ -514,6 +520,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       btnBack.setOnClickListener { finish() }
 
       btnFavorite.setOnClickListener {
+        mSnackbar?.dismiss()
         if (!isLogin) { // Guest user
           detailViewModel.handleBtnFavorite(favorite, watchlist, dataExtra)
         } else { // Logged-in user
@@ -522,6 +529,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       }
 
       btnWatchlist.setOnClickListener {
+        mSnackbar?.dismiss()
         if (!isLogin) { // Guest user
           detailViewModel.handleBtnWatchlist(favorite, watchlist, dataExtra)
         } else { // Logged-in user
@@ -637,7 +645,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
     btnSubmit.setOnClickListener {
       val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
       prefViewModel.getUserToken().observe(this) { token ->
-        if (dataExtra.mediaType == "movie") {
+        if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
           detailViewModel.postMovieRate(token, ratePostModel, dataExtra.id)
         } else {
           detailViewModel.postTvRate(token, ratePostModel, dataExtra.id)
@@ -664,7 +672,7 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         detailViewModel.errorState.debounce(DEBOUNCE_LONG) // Prevent multiple emissions within 500ms
           .collect { errorMessage ->
-            snackBarWarning(binding.coordinatorLayout, null, errorMessage)
+            mSnackbar = snackBarWarning(binding.coordinatorLayout, null, errorMessage)
           }
       }
     }
@@ -733,24 +741,10 @@ class DetailMovieActivity : AppCompatActivity(), PersonNavigator, DetailNavigato
 
   override fun onDestroy() {
     super.onDestroy()
+    mSnackbar?.dismiss()
+    mSnackbar = null
     toast?.cancel()
     toast = null
-  }
-
-  override fun openPersonDetails(cast: MovieTvCastItem) {
-    val intent = Intent(this, PersonActivity::class.java)
-    intent.putExtra(EXTRA_PERSON, cast)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
-    ActivityCompat.startActivity(this, intent, options.toBundle())
-  }
-
-  override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(this, DetailMovieActivity::class.java)
-    intent.putExtra(EXTRA_MOVIE, resultItem)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
-    ActivityCompat.startActivity(this, intent, options.toBundle())
   }
 
   companion object {

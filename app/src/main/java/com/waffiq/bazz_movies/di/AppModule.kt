@@ -2,12 +2,8 @@ package com.waffiq.bazz_movies.di
 
 import com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie.GetDetailMovieInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_movie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_tv.GetDetailTvInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_tv.GetDetailTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvInteractor
@@ -18,10 +14,6 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_list_tv.GetListTvInteracto
 import com.waffiq.bazz_movies.core.domain.usecase.get_list_tv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovieInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvInteractor
@@ -80,22 +72,9 @@ abstract class AppModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun provideDetailMovieUseCase(
-    getDetailMovieInteractor: GetDetailMovieInteractor
-  ): GetDetailMovieUseCase
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideStatedMovieUseCase(
-    getStatedMovieInteractor: GetStatedMovieInteractor
-  ): GetStatedMovieUseCase
-
-  @Binds
-  @ViewModelScoped
   abstract fun provideFavoriteMovieUseCase(
     getFavoriteMovieInteractor: GetFavoriteMovieInteractor
-  )
-    : GetFavoriteMovieUseCase
+  ): GetFavoriteMovieUseCase
 
   @Binds
   @ViewModelScoped
@@ -110,18 +89,6 @@ abstract class AppModule {
   abstract fun provideListTvUseCase(
     getListTvInteractor: GetListTvInteractor
   ): GetListTvUseCase
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideDetailTvUseCase(
-    getDetailTvInteractor: GetDetailTvInteractor
-  ): GetDetailTvUseCase
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideStatedTvUseCase(
-    getStatedTvInteractor: GetStatedTvInteractor
-  ): GetStatedTvUseCase
 
   @Binds
   @ViewModelScoped

@@ -19,13 +19,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePersonAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.KnownForAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.INSTAGRAM_LINK
@@ -56,10 +53,14 @@ import com.waffiq.bazz_movies.feature_person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature_person.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.feature_person.R.layout.dialog_image
 import com.waffiq.bazz_movies.feature_person.databinding.ActivityPersonBinding
+import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class PersonActivity : AppCompatActivity(), DetailNavigator {
+class PersonActivity : AppCompatActivity() {
+
+  @Inject lateinit var navigator: Navigator
 
   private lateinit var binding: ActivityPersonBinding
   private lateinit var dataExtra: MovieTvCastItem
@@ -120,7 +121,7 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
 
   private fun showData() {
     // setup recycle view and adapter
-    val adapterKnownFor = KnownForAdapter(this)
+    val adapterKnownFor = KnownForAdapter(navigator)
     val adapterImage = ImagePersonAdapter { position, imageUrls ->
       showImageDialog(position, imageUrls)
     }
@@ -268,13 +269,5 @@ class PersonActivity : AppCompatActivity(), DetailNavigator {
   companion object {
     const val EXTRA_PERSON = "EXTRA_PERSON"
     const val DELAY_CLICK_TIME = 800L
-  }
-
-  override fun openDetails(resultItem: ResultItem) {
-//    val intent = Intent(this, DetailMovieActivity::class.java)
-//    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
-//    val options =
-//      ActivityOptionsCompat.makeCustomAnimation(this, fade_in, fade_out)
-//    ActivityCompat.startActivity(this, intent, options.toBundle())
   }
 }

@@ -1,5 +1,6 @@
-package com.waffiq.bazz_movies.core.ui.adapter
+package com.waffiq.bazz_movies.feature_detail.ui.adapter
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -7,14 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
+import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core_ui.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
-import com.waffiq.bazz_movies.core.navigation.PersonNavigator
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.navigation.Navigator
 
-class CastAdapter(private val personNavigator: PersonNavigator) :
+class CastAdapter(private val navigator: Navigator) :
   RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<MovieTvCastItem>()
@@ -38,7 +39,7 @@ class CastAdapter(private val personNavigator: PersonNavigator) :
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(
         holder.itemView.context,
-        android.R.anim.fade_in
+        fade_in
       )
     )
   }
@@ -65,12 +66,11 @@ class CastAdapter(private val personNavigator: PersonNavigator) :
         .into(binding.imgCastPhoto)
 
       binding.tvCastName.text = cast.name ?: cast.originalName
-      binding.tvCastCharacter.text =
-        if (!cast.character.isNullOrEmpty() && cast.character.isNotBlank()) cast.character else "TBA"
+      binding.tvCastCharacter.text = cast.character?.takeIf { it.isNotBlank() } ?: "TBA"
 
       // image OnClickListener
       binding.container.setOnClickListener {
-        personNavigator.openPersonDetails(cast)
+        navigator.openPersonDetails(itemView.context, cast)
       }
     }
   }
