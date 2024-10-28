@@ -1,5 +1,6 @@
-package com.waffiq.bazz_movies.core.ui.adapter
+package com.waffiq.bazz_movies.feature_search.ui
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -12,8 +13,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
-import com.waffiq.bazz_movies.core.navigation.PersonNavigator
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.getKnownFor
@@ -21,11 +20,9 @@ import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core_ui.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.navigation.Navigator
 
-class SearchAdapter(
-  private val detailNavigator: DetailNavigator,
-  private val personNavigator: PersonNavigator
-) :
+class SearchAdapter(private val navigator: Navigator) :
   PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,7 +41,7 @@ class SearchAdapter(
       holder.itemView.startAnimation(
         AnimationUtils.loadAnimation(
           holder.itemView.context,
-          android.R.anim.fade_in
+          fade_in
         )
       )
     }
@@ -61,7 +58,7 @@ class SearchAdapter(
           name = data.name,
           originalName = data.originalName
         )
-        personNavigator.openPersonDetails(person)
+        navigator.openPersonDetails(itemView.context, person)
       }
     }
 
@@ -82,7 +79,7 @@ class SearchAdapter(
           listGenreIds = data.listGenreIds,
           id = data.id
         )
-        detailNavigator.openDetails(resultItem)
+        navigator.openDetails(itemView.context, resultItem)
       }
     }
   }

@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitDataJob
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
@@ -130,19 +130,19 @@ class FeaturedFragment : Fragment(), DetailNavigator {
     // Setup RecyclerViews
     binding.apply {
       rvTrending.itemAnimator = DefaultItemAnimator()
-      rvTrending.layoutManager = initLinearLayoutManager(requireContext())
+      rvTrending.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvTrending.adapter = adapterTrending.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterTrending.retry() }
       )
 
       rvUpcoming.itemAnimator = DefaultItemAnimator()
-      rvUpcoming.layoutManager = initLinearLayoutManager(requireContext())
+      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterUpcoming.retry() }
       )
 
       rvPlayingNow.itemAnimator = DefaultItemAnimator()
-      rvPlayingNow.layoutManager = initLinearLayoutManager(requireContext())
+      rvPlayingNow.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
         footer = LoadingStateAdapter { adapterPlayingNow.retry() }
       )

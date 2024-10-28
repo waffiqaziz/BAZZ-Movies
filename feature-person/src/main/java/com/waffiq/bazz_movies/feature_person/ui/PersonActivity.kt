@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.X_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.animFadeOutLong
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.formatBirthInfo
@@ -127,9 +127,9 @@ class PersonActivity : AppCompatActivity() {
     }
 
     // setup layout
-    binding.rvKnownFor.layoutManager = initLinearLayoutManager(this)
+    binding.rvKnownFor.layoutManager = initLinearLayoutManagerHorizontal(this)
     binding.rvKnownFor.adapter = adapterKnownFor
-    binding.rvPhotos.layoutManager = initLinearLayoutManager(this)
+    binding.rvPhotos.layoutManager = initLinearLayoutManagerHorizontal(this)
     binding.rvPhotos.adapter = adapterImage
 
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)

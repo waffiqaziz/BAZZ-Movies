@@ -1,8 +1,5 @@
-package com.waffiq.bazz_movies.pages.search
+package com.waffiq.bazz_movies.feature_search.ui
 
-import android.R.anim.fade_in
-import android.R.anim.fade_out
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -14,10 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.R.id.search_button
+import androidx.appcompat.R.id.search_close_btn
+import androidx.appcompat.R.id.search_src_text
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -28,44 +26,40 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.id.action_search
-import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.R.menu.search_menu
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
-import com.waffiq.bazz_movies.core.navigation.PersonNavigator
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.SearchAdapter
 import com.waffiq.bazz_movies.core.utils.common.Event
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.core_ui.R.color.yellow
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
-import com.waffiq.bazz_movies.databinding.FragmentSearchBinding
-import com.waffiq.bazz_movies.feature_person.ui.PersonActivity
-import com.waffiq.bazz_movies.feature_person.ui.PersonActivity.Companion.EXTRA_PERSON
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature_search.R.id.action_search
+import com.waffiq.bazz_movies.feature_search.R.menu.search_menu
+import com.waffiq.bazz_movies.feature_search.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), DetailNavigator, PersonNavigator {
+class SearchFragment : Fragment() {
+
+  @Inject
+  lateinit var navigator: Navigator
+
+  private var uiController: UIController? = null
+    get() = activity as? UIController
 
   private var _binding: FragmentSearchBinding? = null
   private val binding get() = _binding!!
 
   private val searchViewModel: SearchViewModel by viewModels()
-  private val adapter = SearchAdapter(this, this)
+  private lateinit var adapter: SearchAdapter
 
-  private var mSnackbar: Snackbar? = null
-  var lastQuery: String? = null
+  private var lastQuery: String? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -78,16 +72,12 @@ class SearchFragment : Fragment(), DetailNavigator, PersonNavigator {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    // Check if the toolbar is already set as the support action bar
-//    if ((activity as AppCompatActivity).supportActionBar == null) {
     (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
     (activity as AppCompatActivity).supportActionBar?.title = null
-//    }
     binding.appBarLayout.setExpanded(true, true)
 
-    binding.rvSearch.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    adapter = SearchAdapter(navigator)
+    binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
     binding.rvSearch.itemAnimator = DefaultItemAnimator()
     binding.rvSearch.adapter =
       adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() })
@@ -114,12 +104,12 @@ class SearchFragment : Fragment(), DetailNavigator, PersonNavigator {
           searchView.maxWidth = Int.MAX_VALUE
 
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+            searchView.findViewById<EditText>(search_src_text)
               .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
           }
-          searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+          searchView.findViewById<ImageView>(search_close_btn)
             .setImageResource(ic_cross)
-          searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
+          searchView.findViewById<ImageView>(search_button)
             .setImageResource(ic_search)
 
           searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
@@ -220,11 +210,12 @@ class SearchFragment : Fragment(), DetailNavigator, PersonNavigator {
           }
           binding.illustrationSearchView.root.isVisible = false
           pagingErrorState(loadState)?.let {
-            mSnackbar = snackBarWarning(
-              requireActivity().findViewById(bottom_navigation),
-              requireActivity().findViewById(bottom_navigation),
-              Event(pagingErrorHandling(it.error))
-            )
+//            mSnackbar = snackBarWarning(
+//              requireActivity().findViewById(com.waffiq.bazz_movies.R.id.bottom_navigation),
+//              requireActivity().findViewById(com.waffiq.bazz_movies.R.id.bottom_navigation),
+//              Event(pagingErrorHandling(it.error))
+//            )
+            uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
           }
         }
       }
@@ -251,28 +242,15 @@ class SearchFragment : Fragment(), DetailNavigator, PersonNavigator {
     searchViewModel.setExpandSearchView(false)
   }
 
+  override fun onDetach() {
+    super.onDetach()
+    uiController = null
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     searchViewModel.setExpandSearchView(false) // reset expand search view
-    mSnackbar?.dismiss()
     lastQuery = null
-    mSnackbar = null
     _binding = null
-  }
-
-  override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(EXTRA_MOVIE, resultItem)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
-    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
-  }
-
-  override fun openPersonDetails(cast: MovieTvCastItem) {
-    val intent = Intent(requireContext(), PersonActivity::class.java)
-    intent.putExtra(EXTRA_PERSON, cast)
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
-    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

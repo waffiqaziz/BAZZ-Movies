@@ -35,9 +35,9 @@ android {
       isDebuggable = true
 
       // disable below for faster development flow.
-      isShrinkResources = true
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//      isShrinkResources = true
+//      isMinifyEnabled = true
+//      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
@@ -75,6 +75,7 @@ dependencies {
   implementation(project(":core-ui"))
   implementation(project(":feature-detail"))
   implementation(project(":feature-person"))
+  implementation(project(":feature-search"))
   implementation(project(":navigation"))
 
   // jetpack library

@@ -24,7 +24,7 @@ import com.waffiq.bazz_movies.core.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRetryButton
@@ -77,22 +77,22 @@ class TvSeriesFragment : Fragment(), DetailNavigator {
 
     // Setup RecyclerViews
     binding.apply {
-      rvPopular.layoutManager = initLinearLayoutManager(requireContext())
+      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvPopular.adapter = popularAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { popularAdapter.retry() }
       )
 
-      rvAiringToday.layoutManager = initLinearLayoutManager(requireContext())
+      rvAiringToday.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvAiringToday.adapter = nowPlayingAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
       )
 
-      rvOnTv.layoutManager = initLinearLayoutManager(requireContext())
+      rvOnTv.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvOnTv.adapter = onTvAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { onTvAdapter.retry() }
       )
 
-      rvTopRated.layoutManager = initLinearLayoutManager(requireContext())
+      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )

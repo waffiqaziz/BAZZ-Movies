@@ -1,13 +1,12 @@
-package com.waffiq.bazz_movies.pages.search
+package com.waffiq.bazz_movies.feature_search.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
-import com.waffiq.bazz_movies.core.domain.usecase.multi_search.MultiSearchUseCase
+import com.waffiq.bazz_movies.feature_search.domain.usecase.MultiSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +18,11 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
   private val multiSearchUseCase: MultiSearchUseCase
 ) : ViewModel() {
-  private val _searchResults = MutableStateFlow<PagingData<ResultsItemSearch>>(PagingData.empty())
-  val searchResults: Flow<PagingData<ResultsItemSearch>> = _searchResults.cachedIn(viewModelScope)
+  private val _searchResults = MutableStateFlow<androidx.paging.PagingData<ResultsItemSearch>>(
+    androidx.paging.PagingData.Companion.empty())
+  val searchResults: Flow<androidx.paging.PagingData<ResultsItemSearch>> = _searchResults.cachedIn(
+    viewModelScope
+  )
 
   private val _query = MutableLiveData<String>()
   val query: LiveData<String> get() = _query

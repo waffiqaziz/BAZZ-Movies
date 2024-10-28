@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_hearth_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
@@ -35,6 +34,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePaging
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
@@ -88,8 +88,7 @@ class MyWatchlistTvSeriesFragment : Fragment(), DetailNavigator {
 
   private fun checkUser() {
     // setup recyclerview
-    binding.rvWatchlistTv.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    binding.rvWatchlistTv.layoutManager = initLinearLayoutManagerVertical(requireContext())
     binding.rvWatchlistTv.itemAnimator = DefaultItemAnimator()
 
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->

@@ -6,13 +6,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
+import com.waffiq.bazz_movies.core.utils.common.Event
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
-import com.waffiq.bazz_movies.pages.search.SearchFragment
+import com.waffiq.bazz_movies.feature_search.ui.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UIController {
 
   private lateinit var binding: ActivityMainBinding
 
@@ -32,10 +35,10 @@ class MainActivity : AppCompatActivity() {
     // Expand SearchView on FragmentSearch when navigation search clicked twice
     binding.bottomNavigation.setOnItemReselectedListener { menuItem ->
       if (menuItem.itemId == navigation_search) {
-        val myFragment =
-          navHostFragment.childFragmentManager.fragments.firstOrNull() as? SearchFragment // search fragment
+        val searchFragment = navHostFragment.childFragmentManager.fragments
+          .firstOrNull { it is SearchFragment } as? SearchFragment
 
-        myFragment?.let { fragment ->
+        searchFragment?.let { fragment ->
           WeakReference(fragment).get()?.openSearchView()
         }
       }
@@ -45,5 +48,9 @@ class MainActivity : AppCompatActivity() {
   override fun onDestroy() {
     super.onDestroy()
     setSupportActionBar(null)
+  }
+
+  override fun showSnackbar(message: Event<String>) {
+    snackBarWarning(binding.root, binding.bottomNavigation, message)
   }
 }

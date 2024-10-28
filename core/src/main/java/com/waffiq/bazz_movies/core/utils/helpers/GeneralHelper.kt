@@ -72,9 +72,11 @@ object GeneralHelper {
     return animation
   }
 
-  fun initLinearLayoutManager(context: Context) =
+  fun initLinearLayoutManagerHorizontal(context: Context) =
     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+  fun initLinearLayoutManagerVertical(context: Context) =
+    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
   fun justifyTextView(textView: TextView) {
     @Suppress("WrongConstant")

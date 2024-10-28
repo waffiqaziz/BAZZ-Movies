@@ -25,7 +25,7 @@ import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManager
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
@@ -111,22 +111,22 @@ class MovieFragment : Fragment(), DetailNavigator {
 
     // Setup RecyclerViews
     binding.apply {
-      rvPopular.layoutManager = initLinearLayoutManager(requireContext())
+      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvPopular.adapter = popularAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { popularAdapter.retry() }
       )
 
-      rvNowPlaying.layoutManager = initLinearLayoutManager(requireContext())
+      rvNowPlaying.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
       )
 
-      rvUpcoming.layoutManager = initLinearLayoutManager(requireContext())
+      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
       )
 
-      rvTopRated.layoutManager = initLinearLayoutManager(requireContext())
+      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
       rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )

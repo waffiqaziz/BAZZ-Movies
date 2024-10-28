@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.domain.usecase.multi_search
+package com.waffiq.bazz_movies.feature_search.domain.usecase
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch

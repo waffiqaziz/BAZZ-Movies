@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.di
 
 import com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvInteractor
@@ -20,8 +18,6 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvIn
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.multi_search.MultiSearchInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.multi_search.MultiSearchUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.user_pref.UserPrefInteractor
@@ -56,12 +52,6 @@ abstract class AppModule {
     getRegionInteractor: GetRegionInteractor
   ): GetRegionUseCase
   // endregion USER
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideDetailOMDbUseCase(
-    getDetailOMDbInteractor: GetDetailOMDbInteractor
-  ): GetDetailOMDbUseCase
 
   // region MOVIE
   @Binds
@@ -102,12 +92,6 @@ abstract class AppModule {
     getWatchlistTvInteractor: GetWatchlistTvInteractor
   ): GetWatchlistTvUseCase
   // endregion TV
-
-  @Binds
-  @ViewModelScoped
-  abstract fun provideMultiSearchUseCase(
-    multiSearchInteractor: MultiSearchInteractor
-  ): MultiSearchUseCase
 
   @Binds
   @ViewModelScoped

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb
+package com.waffiq.bazz_movies.feature_detail.domain.usecase.get_detail_omdb
 
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository

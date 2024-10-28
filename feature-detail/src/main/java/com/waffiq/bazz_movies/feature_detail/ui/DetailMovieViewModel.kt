@@ -18,7 +18,7 @@ import com.waffiq.bazz_movies.core.domain.model.Stated
 import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.core.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.core.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
+import com.waffiq.bazz_movies.feature_detail.domain.usecase.get_detail_omdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
