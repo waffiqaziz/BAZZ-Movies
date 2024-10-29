@@ -7,7 +7,7 @@ minSdk = "23"
 agp = "8.7.1"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.25"
-hilt = "2.48.1"
+hilt = "2.52"
 
 # Google services
 gms = "4.4.2"

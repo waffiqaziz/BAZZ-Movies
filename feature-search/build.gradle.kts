@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-  namespace = "com.waffiq.bazz_movies.feature_search"
+  namespace = "com.waffiq.bazz_movies.feature.search"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {

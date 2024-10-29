@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-  namespace = "com.waffiq.bazz_movies.feature_person"
+  namespace = "com.waffiq.bazz_movies.feature.person"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {

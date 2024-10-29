@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
-import com.waffiq.bazz_movies.feature_search.ui.SearchFragment
+import com.waffiq.bazz_movies.feature.search.ui.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 

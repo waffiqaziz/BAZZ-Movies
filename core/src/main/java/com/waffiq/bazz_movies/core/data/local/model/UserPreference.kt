@@ -37,7 +37,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
         it[PASSWORD_KEY] ?: "",
         it[REGION_KEY] ?: "",
         it[TOKEN_KEY] ?: "",
-        it[STATE_KEY] ?: false,
+        it[STATE_KEY] == true,
         it[GRAVATAR_KEY] ?: "",
         it[TMDB_AVATAR_KEY] ?: ""
       )

@@ -33,8 +33,7 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -200,7 +199,7 @@ class TvSeriesFragment : Fragment(), DetailNavigator {
 
   override fun openDetails(resultItem: ResultItem) {
     val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(EXTRA_MOVIE, resultItem)
+    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())

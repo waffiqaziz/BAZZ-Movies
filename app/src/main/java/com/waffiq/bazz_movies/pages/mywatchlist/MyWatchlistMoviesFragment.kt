@@ -47,8 +47,7 @@ import com.waffiq.bazz_movies.core_ui.R.string.binding_error
 import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_watchlist
 import com.waffiq.bazz_movies.core_ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity
-import com.waffiq.bazz_movies.feature_detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -394,7 +393,7 @@ class MyWatchlistMoviesFragment : Fragment(), DetailNavigator {
 
   override fun openDetails(resultItem: ResultItem) {
     val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(EXTRA_MOVIE, resultItem)
+    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())

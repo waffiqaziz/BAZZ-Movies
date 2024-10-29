@@ -25,11 +25,11 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".feature_person.ui.PersonActivity"
+      android:name=".feature.person.ui.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".feature_detail.ui.DetailMovieActivity"
+      android:name=".feature.detail.ui.DetailMovieActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
