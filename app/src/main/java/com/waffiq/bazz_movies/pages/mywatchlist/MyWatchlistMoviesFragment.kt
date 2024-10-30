@@ -24,9 +24,16 @@ import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.ui.R.color.red_matte
+import com.waffiq.bazz_movies.core.ui.R.color.yellow
+import com.waffiq.bazz_movies.core.ui.R.string.added_to_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_watchlist
+import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
@@ -40,16 +47,9 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core_ui.R.color.red_matte
-import com.waffiq.bazz_movies.core_ui.R.color.yellow
-import com.waffiq.bazz_movies.core_ui.R.string.added_to_favorite
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
-import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_watchlist
-import com.waffiq.bazz_movies.core_ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistMoviesBinding
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

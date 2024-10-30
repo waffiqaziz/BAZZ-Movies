@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-ui" />
             <option value="$PROJECT_DIR$/feature-detail" />
+            <option value="$PROJECT_DIR$/feature-home" />
             <option value="$PROJECT_DIR$/feature-person" />
             <option value="$PROJECT_DIR$/feature-search" />
             <option value="$PROJECT_DIR$/navigation" />

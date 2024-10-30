@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.viewpager
+package com.waffiq.bazz_movies.feature.home.ui.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

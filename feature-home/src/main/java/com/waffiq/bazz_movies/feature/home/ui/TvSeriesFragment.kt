@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.pages.home
+package com.waffiq.bazz_movies.feature.home.ui
 
 import android.R.anim.fade_in
 import android.R.anim.fade_out
@@ -16,9 +16,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants
@@ -30,10 +30,9 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
-import com.waffiq.bazz_movies.databinding.FragmentTvSeriesBinding
-import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
+import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
+import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +42,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TvSeriesFragment : Fragment(), DetailNavigator {
+
+  private var uiController: UIController? = null
+    get() = activity as? UIController
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -154,11 +156,7 @@ class TvSeriesFragment : Fragment(), DetailNavigator {
               binding.progressBar.isGone = true
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = snackBarWarning(
-                  requireActivity().findViewById(bottom_navigation),
-                  requireActivity().findViewById(bottom_navigation),
-                  Event(pagingErrorHandling(it.error))
-                )
+                mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
               }
             }
           }
@@ -198,8 +196,14 @@ class TvSeriesFragment : Fragment(), DetailNavigator {
   }
 
   override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+    val intent = Intent(
+      requireContext(),
+      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity::class.java
+    )
+    intent.putExtra(
+      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE,
+      resultItem
+    )
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())

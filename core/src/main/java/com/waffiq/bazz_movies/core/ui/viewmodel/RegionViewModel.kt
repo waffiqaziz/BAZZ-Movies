@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.viewmodel
+package com.waffiq.bazz_movies.core.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

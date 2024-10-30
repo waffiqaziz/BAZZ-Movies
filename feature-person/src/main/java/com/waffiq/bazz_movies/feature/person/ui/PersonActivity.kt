@@ -21,6 +21,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
 import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_logo
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_no_profile
+import com.waffiq.bazz_movies.core.ui.R.string.no_biography
+import com.waffiq.bazz_movies.core.ui.R.string.no_data
+import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.FACEBOOK_LINK
@@ -43,12 +49,6 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.han
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_logo
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_no_profile
-import com.waffiq.bazz_movies.core_ui.R.string.no_biography
-import com.waffiq.bazz_movies.core_ui.R.string.no_data
-import com.waffiq.bazz_movies.core_ui.R.string.not_available
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.feature.person.R.layout.dialog_image
@@ -60,7 +60,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PersonActivity : AppCompatActivity() {
 
-  @Inject lateinit var navigator: Navigator
+  @Inject
+  lateinit var navigator: Navigator
 
   private lateinit var binding: ActivityPersonBinding
   private lateinit var dataExtra: MovieTvCastItem

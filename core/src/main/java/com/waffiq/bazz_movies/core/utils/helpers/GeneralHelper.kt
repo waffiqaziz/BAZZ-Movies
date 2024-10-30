@@ -16,7 +16,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.domain.model.search.KnownForItem
-import com.waffiq.bazz_movies.core_ui.R.color.gray_1000
+import com.waffiq.bazz_movies.core.ui.R.color.gray_1000
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException

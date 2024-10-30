@@ -13,9 +13,9 @@ import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core_ui.R.string.already_favorite
-import com.waffiq.bazz_movies.core_ui.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.ui.R.string.already_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.utils.common.Event
 import kotlinx.coroutines.FlowPreview

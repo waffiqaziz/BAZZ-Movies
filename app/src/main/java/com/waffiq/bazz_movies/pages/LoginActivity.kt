@@ -22,6 +22,13 @@ import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.R.drawable.ic_eye
 import com.waffiq.bazz_movies.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.core.data.local.model.UserModel
+import com.waffiq.bazz_movies.core.ui.R.font.nunito_sans_regular
+import com.waffiq.bazz_movies.core.ui.R.string.guest_user
+import com.waffiq.bazz_movies.core.ui.R.string.login_as_guest_successful
+import com.waffiq.bazz_movies.core.ui.R.string.login_successful
+import com.waffiq.bazz_movies.core.ui.R.string.please_enter_a_password
+import com.waffiq.bazz_movies.core.ui.R.string.please_enter_a_username
+import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
@@ -32,15 +39,8 @@ import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.CustomTypefaceSpan
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core_ui.R.font.nunito_sans_regular
-import com.waffiq.bazz_movies.core_ui.R.string.guest_user
-import com.waffiq.bazz_movies.core_ui.R.string.login_as_guest_successful
-import com.waffiq.bazz_movies.core_ui.R.string.login_successful
-import com.waffiq.bazz_movies.core_ui.R.string.please_enter_a_password
-import com.waffiq.bazz_movies.core_ui.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.viewmodel.AuthenticationViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

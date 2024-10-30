@@ -6,10 +6,6 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieI
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_list_movies.GetListMoviesInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_list_movies.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.domain.usecase.get_list_tv.GetListTvInteractor
-import com.waffiq.bazz_movies.core.domain.usecase.get_list_tv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionInteractor
 import com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovieInteractor
@@ -56,12 +52,6 @@ abstract class AppModule {
   // region MOVIE
   @Binds
   @ViewModelScoped
-  abstract fun provideListMoviesUseCase(
-    getListMoviesInteractor: GetListMoviesInteractor
-  ): GetListMoviesUseCase
-
-  @Binds
-  @ViewModelScoped
   abstract fun provideFavoriteMovieUseCase(
     getFavoriteMovieInteractor: GetFavoriteMovieInteractor
   ): GetFavoriteMovieUseCase
@@ -74,12 +64,6 @@ abstract class AppModule {
   // endregion MOVIE
 
   // region TV
-  @Binds
-  @ViewModelScoped
-  abstract fun provideListTvUseCase(
-    getListTvInteractor: GetListTvInteractor
-  ): GetListTvUseCase
-
   @Binds
   @ViewModelScoped
   abstract fun provideFavoriteTvUseCase(

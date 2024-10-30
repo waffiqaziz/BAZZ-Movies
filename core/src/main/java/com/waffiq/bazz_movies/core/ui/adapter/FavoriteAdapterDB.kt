@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_backdrop_error
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.core_ui.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.core.ui.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard

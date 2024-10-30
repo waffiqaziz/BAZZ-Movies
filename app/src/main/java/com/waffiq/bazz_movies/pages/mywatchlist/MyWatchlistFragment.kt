@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.utils.common.Constants.tabMoviesTvHeadingArray
 import com.waffiq.bazz_movies.databinding.FragmentMyWatchlistBinding
-import com.waffiq.bazz_movies.viewpager.GenericViewPagerAdapter
+import com.waffiq.bazz_movies.feature.home.ui.viewpager.GenericViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

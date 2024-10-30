@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
 import com.waffiq.bazz_movies.core.utils.common.Event
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), UIController {
     setSupportActionBar(null)
   }
 
-  override fun showSnackbar(message: Event<String>) {
-    snackBarWarning(binding.root, binding.bottomNavigation, message)
+  override fun showSnackbar(message: Event<String>): Snackbar? {
+    return snackBarWarning(binding.root, binding.bottomNavigation, message)
   }
 }

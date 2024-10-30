@@ -1,4 +1,4 @@
-# This will apply the ProGuard rules only to the core_ui module
+# This will apply the ProGuard rules only to the core-ui module
 
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the

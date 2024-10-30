@@ -8,8 +8,8 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
-import com.waffiq.bazz_movies.core_ui.R.color.gray_100
-import com.waffiq.bazz_movies.core_ui.R.font.nunito_sans_regular
+import com.waffiq.bazz_movies.core.ui.R.color.gray_100
+import com.waffiq.bazz_movies.core.ui.R.font.nunito_sans_regular
 
 /**
  * Used to create a table view to display movie or TV crew details.

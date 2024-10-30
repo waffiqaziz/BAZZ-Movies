@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.pages.home
+package com.waffiq.bazz_movies.feature.home.ui
 
 import android.R.anim.fade_in
 import android.R.anim.fade_out
@@ -15,23 +15,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DefaultItemAnimator
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
+import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.ui.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
@@ -40,61 +37,47 @@ import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.handleL
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
-import com.waffiq.bazz_movies.core_ui.R.string.no_movie_currently_playing
-import com.waffiq.bazz_movies.core_ui.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.databinding.FragmentFeaturedBinding
-import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
-import com.waffiq.bazz_movies.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.FadeInItemAnimator
+import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
+import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FeaturedFragment : Fragment(), DetailNavigator {
+class MovieFragment : Fragment(), DetailNavigator {
 
-  private var _binding: FragmentFeaturedBinding? = null
+  private var uiController: UIController? = null
+    get() = activity as? UIController
+
+  private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val movieViewModel: MovieViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private val regionViewModel: RegionViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
-  private var currentJob: Job? = null
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
+    _binding = FragmentMovieBinding.inflate(inflater, container, false)
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setRegion()
-    showMainPicture()
+    showData()
   }
 
-  private fun showMainPicture() {
-    Glide.with(requireContext())
-      .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
-      .placeholder(ic_bazz_placeholder_search)
-      .transition(withCrossFade())
-      .error(ic_broken_image)
-      .into(binding.imgMainFeatured)
-  }
-
-  private fun setRegion() {
+  private fun showData() {
     // check if user already have region
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userRegion ->
 
@@ -120,52 +103,61 @@ class FeaturedFragment : Fragment(), DetailNavigator {
 
   private fun setData(region: String) {
     // Initialize adapters
-    val adapterTrending = TrendingAdapter(this)
-    val adapterUpcoming = MovieHomeAdapter(this)
-    val adapterPlayingNow = MovieHomeAdapter(this)
+    val popularAdapter = MovieHomeAdapter(this)
+    val nowPlayingAdapter = MovieHomeAdapter(this)
+    val upComingAdapter = MovieHomeAdapter(this)
+    val topRatedAdapter = MovieHomeAdapter(this)
 
-    combinedLoadStatesHandle(adapterTrending)
+    combinedLoadStatesHandle(topRatedAdapter)
 
     // Setup RecyclerViews
     binding.apply {
-      rvTrending.itemAnimator = DefaultItemAnimator()
-      rvTrending.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTrending.adapter = adapterTrending.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterTrending.retry() }
+      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvPopular.adapter = popularAdapter.withLoadStateFooter(
+        footer = LoadingStateAdapter { popularAdapter.retry() }
       )
 
-      rvUpcoming.itemAnimator = DefaultItemAnimator()
+      rvNowPlaying.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
+        footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
+      )
+
       rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterUpcoming.retry() }
+      rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
+        footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
       )
 
-      rvPlayingNow.itemAnimator = DefaultItemAnimator()
-      rvPlayingNow.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterPlayingNow.retry() }
+      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
+        footer = LoadingStateAdapter { topRatedAdapter.retry() }
       )
+
+      rvPopular.itemAnimator = FadeInItemAnimator()
+      rvNowPlaying.itemAnimator = FadeInItemAnimator()
+      rvUpcoming.itemAnimator = FadeInItemAnimator()
+      rvTopRated.itemAnimator = FadeInItemAnimator()
     }
 
     // Observe ViewModel data and submit to adapters
-    observeTrendingMovies(region, adapterTrending)
-    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, adapterUpcoming)
-    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, adapterPlayingNow)
+    collectAndSubmitData(this, { movieViewModel.getPopularMovies() }, popularAdapter)
+    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, nowPlayingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, upComingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getTopRatedMovies() }, topRatedAdapter)
 
     // Handle LoadState for RecyclerViews
     viewLifecycleOwner.handleLoadState(
       requireContext(),
-      adapterPlayingNow,
-      binding.rvPlayingNow,
-      binding.tvPlayingNow,
+      nowPlayingAdapter,
+      binding.rvNowPlaying,
+      binding.tvAiringToday,
       no_movie_currently_playing,
       region
     )
     viewLifecycleOwner.handleLoadState(
       requireContext(),
-      adapterUpcoming,
+      upComingAdapter,
       binding.rvUpcoming,
-      binding.tvUpcomingMovie,
+      binding.tvUpcoming,
       no_upcoming_movie,
       region
     )
@@ -173,38 +165,26 @@ class FeaturedFragment : Fragment(), DetailNavigator {
     // Set up swipe-to-refresh
     setupSwipeRefresh(
       binding.swipeRefresh,
-      adapterTrending,
-      adapterPlayingNow,
-      adapterUpcoming
+      popularAdapter,
+      nowPlayingAdapter,
+      upComingAdapter,
+      topRatedAdapter
     )
 
     // Set up retry button
     setupRetryButton(
       binding.illustrationError.btnTryAgain,
-      adapterTrending,
-      adapterPlayingNow,
-      adapterUpcoming
+      popularAdapter,
+      nowPlayingAdapter,
+      upComingAdapter,
+      topRatedAdapter
     )
   }
 
-  private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
-    collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
-    binding.rbToday.setOnClickListener {
-      currentJob?.cancel() // Cancel the previous job if it exists
-      currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
-    }
-    binding.rbThisWeek.setOnClickListener {
-      currentJob?.cancel() // Cancel the previous job if it exists
-      currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
-    }
-  }
-
-  private fun combinedLoadStatesHandle(adapter: TrendingAdapter) {
+  private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter) {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
+      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
             loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
@@ -224,11 +204,7 @@ class FeaturedFragment : Fragment(), DetailNavigator {
               binding.progressBar.isGone = true
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = snackBarWarning(
-                  requireActivity().findViewById(bottom_navigation),
-                  requireActivity().findViewById(bottom_navigation),
-                  Event(pagingErrorHandling(it.error))
-                )
+                mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
               }
             }
           }
@@ -239,14 +215,14 @@ class FeaturedFragment : Fragment(), DetailNavigator {
   private fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
-      imgMainFeatured.isVisible = isVisible
-      tvTrending.isVisible = isVisible
-      toggle.isVisible = isVisible
-      rvTrending.isVisible = isVisible
-      tvUpcomingMovie.isVisible = isVisible
+      tvPopular.isVisible = isVisible
+      rvPopular.isVisible = isVisible
+      tvAiringToday.isVisible = isVisible
+      rvNowPlaying.isVisible = isVisible
+      tvUpcoming.isVisible = isVisible
       rvUpcoming.isVisible = isVisible
-      rvPlayingNow.isVisible = isVisible
-      tvPlayingNow.isVisible = isVisible
+      tvTopRated.isVisible = isVisible
+      rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
     }
   }
@@ -254,7 +230,6 @@ class FeaturedFragment : Fragment(), DetailNavigator {
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
-    currentJob?.cancel()
   }
 
   override fun onStop() {
@@ -265,13 +240,18 @@ class FeaturedFragment : Fragment(), DetailNavigator {
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar = null
-    Glide.get(requireContext()).clearMemory()
     _binding = null
   }
 
   override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+    val intent = Intent(
+      requireContext(),
+      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity::class.java
+    )
+    intent.putExtra(
+      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE,
+      resultItem
+    )
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())

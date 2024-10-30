@@ -1,11 +1,11 @@
-package com.waffiq.bazz_movies.pages.home
+package com.waffiq.bazz_movies.feature.home.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.usecase.get_list_movies.GetListMoviesUseCase
+import com.waffiq.bazz_movies.feature.home.domain.usecase.getListMovie.GetListMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

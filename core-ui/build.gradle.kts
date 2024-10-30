@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  namespace = "com.waffiq.bazz_movies.core_ui"
+  namespace = "com.waffiq.bazz_movies.core.ui"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {

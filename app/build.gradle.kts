@@ -74,6 +74,7 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":core-ui"))
   implementation(project(":feature-detail"))
+  implementation(project(":feature-home"))
   implementation(project(":feature-person"))
   implementation(project(":feature-search"))
   implementation(project(":navigation"))

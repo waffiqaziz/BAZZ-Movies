@@ -26,15 +26,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.waffiq.bazz_movies.core.ui.R.color.yellow
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_cross
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
-import com.waffiq.bazz_movies.core_ui.R.color.yellow
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_cross
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_search
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
@@ -210,11 +210,6 @@ class SearchFragment : Fragment() {
           }
           binding.illustrationSearchView.root.isVisible = false
           pagingErrorState(loadState)?.let {
-//            mSnackbar = snackBarWarning(
-//              requireActivity().findViewById(com.waffiq.bazz_movies.R.id.bottom_navigation),
-//              requireActivity().findViewById(com.waffiq.bazz_movies.R.id.bottom_navigation),
-//              Event(pagingErrorHandling(it.error))
-//            )
             uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
           }
         }

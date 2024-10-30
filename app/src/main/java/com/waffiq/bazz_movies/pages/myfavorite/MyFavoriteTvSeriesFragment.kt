@@ -40,16 +40,16 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core_ui.R.color.red_matte
-import com.waffiq.bazz_movies.core_ui.R.color.yellow
-import com.waffiq.bazz_movies.core_ui.R.string.added_to_watchlist
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
-import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_favorite
-import com.waffiq.bazz_movies.core_ui.R.string.undo
+import com.waffiq.bazz_movies.core.ui.R.color.red_matte
+import com.waffiq.bazz_movies.core.ui.R.color.yellow
+import com.waffiq.bazz_movies.core.ui.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
