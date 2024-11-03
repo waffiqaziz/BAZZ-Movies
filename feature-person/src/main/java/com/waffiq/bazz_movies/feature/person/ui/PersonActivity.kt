@@ -19,8 +19,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_no_profile
@@ -28,7 +27,6 @@ import com.waffiq.bazz_movies.core.ui.R.string.no_biography
 import com.waffiq.bazz_movies.core.ui.R.string.no_data
 import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.INSTAGRAM_LINK
@@ -41,10 +39,6 @@ import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.animFadeOutLong
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.formatBirthInfo
-import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.formatDeathInfo
-import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.hasAnySocialMediaIds
-import com.waffiq.bazz_movies.core.utils.helpers.person.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
@@ -53,6 +47,13 @@ import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.feature.person.R.layout.dialog_image
 import com.waffiq.bazz_movies.feature.person.databinding.ActivityPersonBinding
+import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
+import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePersonAdapter
+import com.waffiq.bazz_movies.feature.person.ui.adapter.KnownForAdapter
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

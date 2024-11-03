@@ -73,11 +73,6 @@ object FavWatchlistHelper {
     return mSnackbar
   }
 
-  fun getDateTwoWeeksFromToday(): String {
-    return LocalDate.now().plusWeeks(2) // get date two weeks from now
-      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) // formatter
-  }
-
   fun handlePagingLoadState(
     adapterPaging: PagingDataAdapter<*, *>,
     loadStateFlow: Flow<CombinedLoadStates>,

@@ -4,5 +4,5 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.utils.common.Event
 
 interface UIController {
-  fun showSnackbar(message: Event<String>) : Snackbar?
+  fun showSnackbar(message: Event<String>): Snackbar?
 }

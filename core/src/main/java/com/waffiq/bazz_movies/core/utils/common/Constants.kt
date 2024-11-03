@@ -36,6 +36,8 @@ object Constants {
 
   const val TV_MEDIA_TYPE = "tv"
   const val MOVIE_MEDIA_TYPE = "movie"
+  const val PERSON_MEDIA_TYPE = "person"
+  const val NOT_AVAILABLE = "N/A"
 
   const val NAN = "NaN"
 

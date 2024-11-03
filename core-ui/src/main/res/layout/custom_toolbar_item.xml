@@ -9,7 +9,7 @@
     android:layout_width="38dp"
     android:layout_height="38dp"
     android:layout_marginEnd="8dp"
-    android:contentDescription="@string/bazz"
+    android:contentDescription="@string/app_name_release"
     android:src="@drawable/ic_bazz_logo" />
 
   <!-- BAZZ Movies text-->

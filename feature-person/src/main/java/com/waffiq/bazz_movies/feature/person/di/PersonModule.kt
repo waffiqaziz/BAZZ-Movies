@@ -15,7 +15,7 @@ abstract class PersonModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun provideDetailPersonUseCase(
+  abstract fun bindDetailPersonUseCase(
     getDetailPersonInteractor: GetDetailPersonInteractor
   ): GetDetailPersonUseCase
 }

@@ -34,7 +34,6 @@ import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
-import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_backdrops
@@ -57,6 +56,7 @@ import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.utils.common.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
@@ -64,13 +64,13 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.dateFormatterStandard
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.utils.helpers.details.CreateTableViewHelper.createTable
-import com.waffiq.bazz_movies.core.utils.helpers.details.DetailMovieTvHelper.detailCrew
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.detailCrew
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
+import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
@@ -78,6 +78,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.navigation.Navigator
@@ -243,7 +244,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showBackdrop() {
     Glide.with(binding.ivPictureBackdrop)
       .load(
-        if (dataExtra.backdropPath == "N/A" || dataExtra.posterPath == "N/A") {
+        if (dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE) {
           ic_backdrop_error_filled
         } else if (!dataExtra.backdropPath.isNullOrEmpty()) {
           TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
@@ -260,13 +261,13 @@ class DetailMovieActivity : AppCompatActivity() {
       .into(binding.ivPictureBackdrop)
 
     binding.tvBackdropNotFound.isVisible =
-      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == "N/A"
+      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == NOT_AVAILABLE
   }
 
   private fun showPoster() {
     Glide.with(binding.ivPoster)
       .load(
-        if (dataExtra.posterPath == "N/A") {
+        if (dataExtra.posterPath == NOT_AVAILABLE) {
           ic_poster_error
         } else if (dataExtra.posterPath != null) {
           TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
@@ -539,8 +540,12 @@ class DetailMovieActivity : AppCompatActivity() {
 
       yourScoreViewGroup.setOnClickListener { showDialogRate() }
 
-      imdbViewGroup.setOnClickListener { if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
-      tmdbViewGroup.setOnClickListener { if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated() }
+      imdbViewGroup.setOnClickListener {
+        if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated()
+      }
+      tmdbViewGroup.setOnClickListener {
+        if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated()
+      }
       metascoreViewGroup.setOnClickListener {
         if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) {
           showDialogNotRated()

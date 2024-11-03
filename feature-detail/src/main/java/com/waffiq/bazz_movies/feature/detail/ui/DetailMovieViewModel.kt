@@ -12,11 +12,9 @@ import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
 import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
-import com.waffiq.bazz_movies.core.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
-import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
-import com.waffiq.bazz_movies.core.domain.model.detail.MovieTvCredits
 import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
@@ -29,6 +27,8 @@ import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.favTrueWatchlist
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
+import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvUseCase

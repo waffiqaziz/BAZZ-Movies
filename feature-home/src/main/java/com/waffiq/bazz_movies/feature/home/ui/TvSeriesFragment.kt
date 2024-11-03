@@ -27,8 +27,8 @@ import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupRetryButton
-import com.waffiq.bazz_movies.core.utils.helpers.home.HomeFragmentHelper.setupSwipeRefresh
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding

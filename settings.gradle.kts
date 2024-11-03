@@ -15,6 +15,7 @@ dependencyResolutionManagement {
     maven { url = uri("https://jitpack.io") }
   }
 }
+
 rootProject.name = "BAZZ Movies"
 include(":app")
 include(":core")

@@ -32,14 +32,15 @@ personal and educational use as part of my portfolio.
 3. (Optional)
    Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
    and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
-4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started) and [OMDb](https://www.omdbapi.com/apikey.aspx).
+4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started)
+   and [OMDb](https://www.omdbapi.com/apikey.aspx).
 5. Create or edit `local.properties` and put your API keys:
    ```properties
    API_KEY = { TMDB_API_KEY }
    API_KEY_OMDb = { OMDB_API_KEY }
    ```
 6. Build the project (`Ctrl + F9`).
-7. Run with your virtual or phone devices 
+7. Run with your virtual or phone devices
 
 ## Licenses and Usage
 

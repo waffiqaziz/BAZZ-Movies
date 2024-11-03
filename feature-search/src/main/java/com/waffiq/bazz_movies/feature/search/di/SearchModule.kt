@@ -15,7 +15,7 @@ abstract class SearchModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun provideMultiSearchUseCase(
+  abstract fun bindMultiSearchUseCase(
     multiSearchInteractor: MultiSearchInteractor
   ): MultiSearchUseCase
 }

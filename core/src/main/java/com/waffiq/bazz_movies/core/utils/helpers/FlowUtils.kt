@@ -13,24 +13,13 @@ import kotlinx.coroutines.launch
  * Used to collect and submit PagingData via flow
  */
 object FlowUtils {
+
   fun <T : Any> collectAndSubmitData(
     fragment: Fragment,
     flowProvider: () -> Flow<PagingData<T>>,
     adapter: PagingDataAdapter<T, *>
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
-      flowProvider().collectLatest { pagingData ->
-        adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
-      }
-    }
-  }
-
-  fun <T : Any> collectAndSubmitDataJob(
-    fragment: Fragment,
-    flowProvider: () -> Flow<PagingData<T>>,
-    adapter: PagingDataAdapter<T, *>
-  ): Job {
-    return fragment.viewLifecycleOwner.lifecycleScope.launch {
       flowProvider().collectLatest { pagingData ->
         adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
       }

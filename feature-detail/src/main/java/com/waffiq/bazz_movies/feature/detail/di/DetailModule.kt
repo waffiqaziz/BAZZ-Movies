@@ -19,19 +19,19 @@ abstract class DetailModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun provideDetailMovieUseCase(
+  abstract fun bindDetailMovieUseCase(
     getDetailMovieInteractor: GetDetailMovieInteractor
   ): GetDetailMovieUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun provideDetailTvUseCase(
+  abstract fun bindDetailTvUseCase(
     getDetailTvInteractor: GetDetailTvInteractor
   ): GetDetailTvUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun provideDetailOMDbUseCase(
+  abstract fun bindDetailOMDbUseCase(
     getDetailOMDbInteractor: GetDetailOMDbInteractor
   ): GetDetailOMDbUseCase
 }

@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".pages.home.FeaturedFragment">
+  tools:context=".ui.FeaturedFragment">
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"

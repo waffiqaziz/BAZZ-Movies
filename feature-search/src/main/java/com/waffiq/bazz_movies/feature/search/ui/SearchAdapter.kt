@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.ui
 
 import android.R.anim.fade_in
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
@@ -10,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.core.utils.common.Constants.PERSON_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.getKnownFor
@@ -35,7 +38,7 @@ class SearchAdapter(private val navigator: Navigator) :
     val data = getItem(position)
     if (data != null) {
       when (data.mediaType) {
-        "person" -> holder.bindPerson(data)
+        PERSON_MEDIA_TYPE -> holder.bindPerson(data)
         else -> holder.bindMovieTv(data)
       }
       holder.itemView.startAnimation(
@@ -63,7 +66,7 @@ class SearchAdapter(private val navigator: Navigator) :
     }
 
     fun bindMovieTv(data: ResultsItemSearch) {
-      showDataMovieTv(binding, data)
+      showDataMovieTv(binding, data, itemView)
       binding.containerResult.setOnClickListener {
         val resultItem = ResultItem(
           posterPath = data.posterPath,
@@ -84,7 +87,7 @@ class SearchAdapter(private val navigator: Navigator) :
     }
   }
 
-  private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+  internal fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
     binding.ivPicture.contentDescription =
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -106,7 +109,7 @@ class SearchAdapter(private val navigator: Navigator) :
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
-  private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+  internal fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     setImageMovieTv(binding, data)
@@ -114,12 +117,12 @@ class SearchAdapter(private val navigator: Navigator) :
       ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
       ?: data.firstAirDate
         ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-        ?: "N/A"
+        ?: view.context.getString(not_available)
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
     binding.tvGenre.text =
       if (data.listGenreIds?.isEmpty() == true) {
-        "N/A"
+        view.context.getString(not_available)
       } else {
         data.listGenreIds?.let { getGenreName(it) }
       }

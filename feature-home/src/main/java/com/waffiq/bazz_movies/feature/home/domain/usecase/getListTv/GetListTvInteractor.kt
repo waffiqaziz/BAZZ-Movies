@@ -2,22 +2,22 @@ package com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetListTvInteractor @Inject constructor(
-  private val getListTvRepository: IMoviesRepository
+  private val homeRepository: IHomeRepository
 ) : GetListTvUseCase {
   override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    getListTvRepository.getPagingPopularTv()
+    homeRepository.getPagingPopularTv()
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    getListTvRepository.getPagingOnTv()
+    homeRepository.getPagingOnTv()
 
   override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    getListTvRepository.getPagingAiringTodayTv()
+    homeRepository.getPagingAiringTodayTv()
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
-    getListTvRepository.getPagingTopRatedTv()
+    homeRepository.getPagingTopRatedTv()
 }

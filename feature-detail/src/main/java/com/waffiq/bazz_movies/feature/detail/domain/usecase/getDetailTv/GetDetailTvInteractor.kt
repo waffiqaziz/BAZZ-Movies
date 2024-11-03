@@ -2,31 +2,30 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.Stated
-import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovieTvUsed
-import com.waffiq.bazz_movies.core.domain.model.detail.MovieTvCredits
-import com.waffiq.bazz_movies.core.domain.model.detail.ReleaseDateRegion
-import com.waffiq.bazz_movies.core.domain.model.detail.tv.ExternalTvID
-import com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreIDs
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreName
-import com.waffiq.bazz_movies.core.utils.helpers.details.AgeRatingHelper.getAgeRating
-import com.waffiq.bazz_movies.core.utils.helpers.details.DetailMovieTvHelper.getTransformTMDBScore
-import com.waffiq.bazz_movies.core.utils.helpers.details.DetailMovieTvHelper.transformLink
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
+import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
+import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.transformLink
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetDetailTvInteractor @Inject constructor(
-  private val getDetailTvRepository: IMoviesRepository
+  private val detailRepository: IDetailRepository
 ) : GetDetailTvUseCase {
 
   override suspend fun getDetailTv(
     tvId: Int,
     userRegion: String
   ): Flow<NetworkResult<DetailMovieTvUsed>> =
-    getDetailTvRepository.getDetailTv(tvId).map { networkResult ->
+    detailRepository.getDetailTv(tvId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> {
           NetworkResult.Success(
@@ -49,10 +48,10 @@ class GetDetailTvInteractor @Inject constructor(
     }
 
   override suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>> =
-    getDetailTvRepository.getExternalTvId(tvId)
+    detailRepository.getExternalTvId(tvId)
 
   override suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<String>> =
-    getDetailTvRepository.getTrailerLinkTv(tvId).map { networkResult ->
+    detailRepository.getTrailerLinkTv(tvId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(transformLink(networkResult.data))
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
@@ -61,11 +60,8 @@ class GetDetailTvInteractor @Inject constructor(
     }
 
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
-    getDetailTvRepository.getCreditTv(tvId)
-
-  override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<NetworkResult<Stated>> =
-    getDetailTvRepository.getStatedTv(sessionId, tvId)
+    detailRepository.getCreditTv(tvId)
 
   override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
-    getDetailTvRepository.getPagingTvRecommendation(tvId)
+    detailRepository.getPagingTvRecommendation(tvId)
 }

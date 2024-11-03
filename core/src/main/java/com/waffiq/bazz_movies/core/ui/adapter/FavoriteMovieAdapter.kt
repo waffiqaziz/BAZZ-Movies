@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -54,12 +55,12 @@ class FavoriteMovieAdapter(private val detailNavigator: DetailNavigator) :
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
         dateFormatterStandard(it)
-      } ?: "N/A"
-      binding.tvGenre.text = resultItem.listGenreIds?.let { getGenreName(it) } ?: "N/A"
+      } ?: itemView.context.getString(not_available)
+      binding.tvGenre.text = resultItem.listGenreIds?.let { getGenreName(it) }
+        ?: itemView.context.getString(not_available)
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
-      val df = DecimalFormat("#.#")
-      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
+      (DecimalFormat("#.#").format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
         binding.tvRating.text = it
       }
 
@@ -70,7 +71,7 @@ class FavoriteMovieAdapter(private val detailNavigator: DetailNavigator) :
     }
   }
 
-  private fun setImagePoster(binding: ItemMulmedBinding, data: ResultItem) {
+  internal fun setImagePoster(binding: ItemMulmedBinding, data: ResultItem) {
     Glide.with(binding.ivPicture)
       .load(
         if (!data.posterPath.isNullOrEmpty()) {

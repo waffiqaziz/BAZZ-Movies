@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
@@ -68,8 +69,9 @@ class FavoriteTvAdapter(private val detailNavigator: DetailNavigator) :
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
         dateFormatterStandard(it)
-      } ?: "N/A"
-      binding.tvGenre.text = resultItem.listGenreIds?.let { getGenreName(it) } ?: "N/A"
+      } ?: itemView.context.getString(not_available)
+      binding.tvGenre.text = resultItem.listGenreIds?.let { getGenreName(it) }
+        ?: itemView.context.getString(not_available)
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")

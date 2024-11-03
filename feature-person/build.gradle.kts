@@ -21,7 +21,16 @@ android {
   }
 
   buildTypes {
-    release {
+    getByName("debug") {
+      isMinifyEnabled = false
+    }
+
+    create("staging") {
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+
+    getByName("release") {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
@@ -52,7 +61,7 @@ dependencies {
   implementation(libs.google.material)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-  
+
   // glide
   implementation(libs.glide)
   ksp(libs.glide.compiler)

@@ -35,7 +35,7 @@
     <activity
       android:name=".pages.MainActivity"
       android:exported="false"
-      android:label="@string/title_activity"
+      android:label="@string/app_name_release"
       android:windowSoftInputMode="adjustPan" />
     <!--
       android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
@@ -54,11 +54,11 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    
+
     <!--Enable to disable crashlytics-->
-    <!--    <meta-data-->
-    <!--      android:name="firebase_crashlytics_collection_enabled"-->
-    <!--      android:value="false" />-->
+        <meta-data
+          android:name="firebase_crashlytics_collection_enabled"
+          android:value="false" />
   </application>
 
 </manifest>

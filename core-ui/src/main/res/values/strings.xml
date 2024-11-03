@@ -1,13 +1,11 @@
 <resources>
   <string name="app_name_release">BAZZ Movies</string>
 
-  <string name="title_activity">BAZZ Movies</string>
   <string name="poster">Poster</string>
   <string name="back">Back</string>
 
   <!-- LOGIN -->
-  <string name="bazz">BAZZ Movies</string>
-  <string name="join_tmdb">Don\'t Have Account? Join TMDB</string>
+  <string name="join_tmdb">Don\’t Have Account? Join TMDB</string>
   <string name="login">Login</string>
   <string name="text_login">text login</string>
   <string name="username">Username</string>
@@ -106,7 +104,7 @@
   <string name="your_rating">Your rating:</string>
   <string name="not_available">N/A</string>
   <string name="not_available_full">Not Available</string>
-  <string name="cant_provide_a_score">Sorry we can\'t provide the score or it hasn\'t been rated yet</string>
+  <string name="cant_provide_a_score">Sorry we can\’t provide the score or it hasn\’t been rated yet</string>
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>

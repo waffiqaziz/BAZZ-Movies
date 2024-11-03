@@ -132,18 +132,6 @@ object GeneralHelper {
       ArgbEvaluator().evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
     window.statusBarColor = interpolatedColor
 
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//      val insetsController = window.insetsController
-//      insetsController?.setSystemBarsAppearance(
-//        0, // Clear appearance flags to ensure white icons and text
-//        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-//      )
-//    } else {
-//      @Suppress("DEPRECATION")
-//      // This flag is deprecated in API 30 (Android R - Android 11), but necessary for older versions
-//      window.decorView.systemUiVisibility =
-//        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-//    }
   }
   // endregion NESTED SCROLL VIEW BEHAVIOR
 }

@@ -1,23 +1,23 @@
 package com.waffiq.bazz_movies.feature.person.domain.usecase
 
-import com.waffiq.bazz_movies.core.domain.model.person.CastItem
-import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
-import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
-import com.waffiq.bazz_movies.core.domain.model.person.ImagePerson
-import com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
+import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
+import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
+import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
+import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class GetDetailPersonInteractor @Inject constructor(
-  private val getDetailPersonRepository: IMoviesRepository
+  private val personRepository: IPersonRepository
 ) : GetDetailPersonUseCase {
   override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
-    getDetailPersonRepository.getDetailPerson(id)
+    personRepository.getDetailPerson(id)
 
   override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<List<CastItem>>> =
-    getDetailPersonRepository.getKnownForPerson(id).mapNotNull { networkResult ->
+    personRepository.getKnownForPerson(id).mapNotNull { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> {
           networkResult.data.cast?.let { castItems ->
@@ -31,8 +31,8 @@ class GetDetailPersonInteractor @Inject constructor(
     }
 
   override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePerson>> =
-    getDetailPersonRepository.getImagePerson(id)
+    personRepository.getImagePerson(id)
 
   override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPerson>> =
-    getDetailPersonRepository.getExternalIDPerson(id)
+    personRepository.getExternalIDPerson(id)
 }

@@ -17,13 +17,13 @@ abstract class HomeModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun provideListMoviesUseCase(
+  abstract fun bindListMoviesUseCase(
     getListMoviesInteractor: GetListMoviesInteractor
   ): GetListMoviesUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun provideListTvUseCase(
+  abstract fun bindListTvUseCase(
     getListTvInteractor: GetListTvInteractor
   ): GetListTvUseCase
 }

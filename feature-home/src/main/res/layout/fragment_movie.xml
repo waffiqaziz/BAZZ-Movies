@@ -5,7 +5,7 @@
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".pages.home.MovieFragment">
+  tools:context=".ui.MovieFragment">
 
   <!-- Movie list-->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

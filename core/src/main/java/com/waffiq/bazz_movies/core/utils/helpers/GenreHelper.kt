@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.utils.helpers
 
-import com.waffiq.bazz_movies.core.domain.model.detail.GenresItem
+import com.waffiq.bazz_movies.core.domain.model.GenresItem
 
 /**
  * Used to retrieve genre names and codes.

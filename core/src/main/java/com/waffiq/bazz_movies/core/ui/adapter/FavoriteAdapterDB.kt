@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
+import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -58,9 +59,9 @@ class FavoriteAdapterDB(private val detailNavigator: DetailNavigator) :
 
       Glide.with(binding.ivPicture)
         .load(
-          if (fav.backDrop != "N/A") {
+          if (fav.backDrop != itemView.context.getString(not_available)) {
             TMDB_IMG_LINK_BACKDROP_W300 + fav.backDrop
-          } else if (fav.poster != "N/A") {
+          } else if (fav.poster != itemView.context.getString(not_available)) {
             TMDB_IMG_LINK_POSTER_W185 + fav.poster
           } else {
             ic_backdrop_error
@@ -73,7 +74,8 @@ class FavoriteAdapterDB(private val detailNavigator: DetailNavigator) :
 
       binding.tvTitle.text = fav.title
       binding.tvGenre.text = fav.genre
-      binding.tvYearReleased.text = dateFormatterStandard(fav.releaseDate).ifEmpty { "N/A" }
+      binding.tvYearReleased.text =
+        dateFormatterStandard(fav.releaseDate).ifEmpty { itemView.context.getString(not_available) }
 
       val resultItem = ResultItem(
         backdropPath = fav.backDrop,

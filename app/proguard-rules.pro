@@ -1,3 +1,6 @@
+-keepattributes LineNumberTable,SourceFile
+-renamesourcefileattribute SourceFile
+
 # LOG
 -assumenosideeffects class android.util.Log {
   public static *** v(...);
@@ -8,10 +11,8 @@
 }
 
 ##---------------Begin: proguard configuration for Glide  ----------
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep class * extends com.bumptech.glide.module.AppGlideModule {
- <init>(...);
-}
+-keep public class * implements com.bumptech.glide.module.GlideModule{ <init>(...);}
+-keep class * extends com.bumptech.glide.module.AppGlideModule { <init>(...);}
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
@@ -32,3 +33,11 @@
 ##---------------Begin: proguard configuration for Others  ----------
 -keep class io.github.glailton.expandabletextview.ExpandableTextView { <init>(android.content.Context, android.util.AttributeSet); }
 ##---------------End: proguard configuration for Others  ----------
+
+# Keep generated Hilt components
+-keep class dagger.** { *; }
+-dontwarn dagger.**
+-keep class dagger.hilt.** { *; }
+-keep class * extends dagger.hilt.internal.GeneratedComponent { *; }
+-keep class * extends dagger.hilt.android.internal.lifecycle.HiltViewModelFactory { *; }
+-keep class * extends dagger.hilt.android.HiltWrapper_** { *; }

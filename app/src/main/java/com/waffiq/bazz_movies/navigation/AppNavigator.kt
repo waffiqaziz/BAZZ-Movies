@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.person.MovieTvCastItem
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import javax.inject.Inject

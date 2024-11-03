@@ -20,7 +20,8 @@ class SearchViewModel @Inject constructor(
   private val multiSearchUseCase: MultiSearchUseCase
 ) : ViewModel() {
   private val _searchResults = MutableStateFlow<PagingData<ResultsItemSearch>>(
-    PagingData.Companion.empty())
+    PagingData.Companion.empty()
+  )
   val searchResults: Flow<PagingData<ResultsItemSearch>> = _searchResults.cachedIn(
     viewModelScope
   )

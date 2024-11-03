@@ -19,6 +19,7 @@ if (file("${project.rootDir}/app/google-services.json").exists()) {
 android {
   compileSdk = libs.versions.compileSdk.get().toInt()
   namespace = "com.waffiq.bazz_movies"
+  ndkVersion = libs.versions.ndkVersion.get()
 
   defaultConfig {
     applicationId = "com.bazz.bazz_movies"
@@ -28,46 +29,68 @@ android {
     versionName = "1.1.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments["room.schemaLocation"] = "$projectDir/src/main/schemas"
+      }
+    }
   }
 
   buildTypes {
-    debug {
+    getByName("debug") {
       isDebuggable = true
-
-      // disable below for faster development flow.
-//      isShrinkResources = true
-//      isMinifyEnabled = true
-//      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-
       resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
     }
-    release {
+
+    create("staging") {
+      isDebuggable = true
+      resValue("string", "app_name", "BAZZ Movies Debug")
+      applicationIdSuffix = ".debug"
+      versionNameSuffix = "-debug"
+
+      isShrinkResources = true
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+
+    getByName("release") {
       isDebuggable = false
       isShrinkResources = true
       isMinifyEnabled = true
       resValue("string", "app_name", "@string/app_name_release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      signingConfig = signingConfigs.getByName("debug")
 
       configure<CrashlyticsExtension> {
         mappingFileUploadEnabled = true
       }
     }
   }
+
   compileOptions {
     isCoreLibraryDesugaringEnabled = true
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
+
   kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
   }
+
   buildFeatures {
     viewBinding = true
     buildConfig = true
   }
+
+//  // disable when build ABB only enable when build APK
+//  lint {
+//    checkReleaseBuilds = false
+//    abortOnError = false
+//  }
 }
 
 dependencies {
@@ -95,7 +118,7 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // leakcanary
-  debugImplementation(libs.leakcanary)
+//  debugImplementation(libs.leakcanary)
 
   // glide
   implementation(libs.glide)
@@ -116,8 +139,4 @@ dependencies {
   // hilt
   implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
-}
-
-repositories {
-  mavenCentral()
 }
