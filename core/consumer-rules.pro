@@ -89,7 +89,6 @@
 -dontwarn java.lang.invoke.StringConcatFactory
 -dontwarn java.lang.invoke.**
 -keep class java.lang.invoke.** { *; }
--whyareyoukeeping java.lang.invoke.StringConcatFactory
 -printusage missing_classes.txt
 
 # Keep Hilt generated classes
