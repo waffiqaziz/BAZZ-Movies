@@ -9,13 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +24,6 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.core.ui.viewmodel.RegionViewModel
@@ -36,10 +33,8 @@ import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
@@ -47,6 +42,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
@@ -61,6 +57,11 @@ class FeaturedFragment : Fragment(), DetailNavigator {
 
   private var uiController: UIController? = null
     get() = activity as? UIController
+
+  // Initialize adapters
+  private val adapterTrending = TrendingAdapter(this)
+  private val adapterUpcoming = MovieHomeAdapter(this)
+  private val adapterPlayingNow = MovieHomeAdapter(this)
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -78,6 +79,12 @@ class FeaturedFragment : Fragment(), DetailNavigator {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
+
+    // Set up RecyclerViews with shimmer
+    binding.rvUpcoming.setupShimmer(requireContext(), adapterUpcoming)
+    binding.rvPlayingNow.setupShimmer(requireContext(), adapterUpcoming)
+    binding.rvTrending.setupShimmer(requireContext(), adapterUpcoming)
+
     return binding.root
   }
 
@@ -121,33 +128,7 @@ class FeaturedFragment : Fragment(), DetailNavigator {
   }
 
   private fun setData(region: String) {
-    // Initialize adapters
-    val adapterTrending = TrendingAdapter(this)
-    val adapterUpcoming = MovieHomeAdapter(this)
-    val adapterPlayingNow = MovieHomeAdapter(this)
-
     combinedLoadStatesHandle(adapterTrending)
-
-    // Setup RecyclerViews
-    binding.apply {
-      rvTrending.itemAnimator = DefaultItemAnimator()
-      rvTrending.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTrending.adapter = adapterTrending.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterTrending.retry() }
-      )
-
-      rvUpcoming.itemAnimator = DefaultItemAnimator()
-      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvUpcoming.adapter = adapterUpcoming.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterUpcoming.retry() }
-      )
-
-      rvPlayingNow.itemAnimator = DefaultItemAnimator()
-      rvPlayingNow.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvPlayingNow.adapter = adapterPlayingNow.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterPlayingNow.retry() }
-      )
-    }
 
     // Observe ViewModel data and submit to adapters
     observeTrendingMovies(region, adapterTrending)
@@ -210,20 +191,18 @@ class FeaturedFragment : Fragment(), DetailNavigator {
         .collectLatest { loadState ->
           when {
             loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-              binding.progressBar.isVisible = true
+              isUnveil(false)
             }
 
             loadState.refresh is LoadState.NotLoading &&
               loadState.prepend is LoadState.NotLoading &&
               loadState.append is LoadState.NotLoading -> {
-              fadeOut(binding.backgroundDimMovie)
-              binding.progressBar.isGone = true
+              isUnveil(true)
               showView(true)
             }
 
             loadState.refresh is LoadState.Error -> {
-              fadeOut(binding.backgroundDimMovie)
-              binding.progressBar.isGone = true
+              isUnveil(true)
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
                 mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
@@ -246,6 +225,22 @@ class FeaturedFragment : Fragment(), DetailNavigator {
       rvPlayingNow.isVisible = isVisible
       tvPlayingNow.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
+    }
+  }
+
+  private fun isUnveil(isUnveil: Boolean) {
+    if (isUnveil) {
+      binding.apply {
+        rvUpcoming.unVeil()
+        rvTrending.unVeil()
+        rvPlayingNow.unVeil()
+      }
+    } else {
+      binding.apply {
+        rvUpcoming.veil()
+        rvTrending.veil()
+        rvPlayingNow.veil()
+      }
     }
   }
 

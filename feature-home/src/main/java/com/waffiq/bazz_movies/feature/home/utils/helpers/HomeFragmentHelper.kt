@@ -10,9 +10,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
+import com.skydoves.androidveil.VeilRecyclerFrameView
+import com.waffiq.bazz_movies.core.ui.R.layout.item_poster
 import com.waffiq.bazz_movies.core.ui.R.string.data
 import com.waffiq.bazz_movies.core.ui.R.string.no_data
+import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -53,6 +57,34 @@ object HomeFragmentHelper {
     }
   }
 
+  fun LifecycleOwner.handleLoadState(
+    context: Context,
+    adapter: PagingDataAdapter<*, *>,
+    recyclerView: VeilRecyclerFrameView,
+    textView: TextView,
+    noMoviesStringRes: Int,
+    region: String,
+  ) {
+    this.lifecycleScope.launch {
+      @OptIn(FlowPreview::class)
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
+        .collectLatest { loadState ->
+          if (loadState.source.refresh is LoadState.NotLoading &&
+            loadState.append.endOfPaginationReached &&
+            adapter.itemCount < 1
+          ) {
+            context.toastShort(
+              context.getString(noMoviesStringRes, Locale("", region).displayCountry)
+            )
+            recyclerView.isGone = true
+            if (!textView.text.contains(context.getString(data))) {
+              textView.append(" (${context.getString(no_data)})")
+            }
+          }
+        }
+    }
+  }
+
   fun setupSwipeRefresh(
     swipeRefresh: SwipeRefreshLayout,
     vararg adapters: PagingDataAdapter<*, *>
@@ -66,6 +98,15 @@ object HomeFragmentHelper {
   fun setupRetryButton(materialButton: MaterialButton, vararg adapters: PagingDataAdapter<*, *>) {
     materialButton.setOnClickListener {
       adapters.forEach { it.refresh() }
+    }
+  }
+
+  fun VeilRecyclerFrameView.setupShimmer(context: Context, adapter: PagingDataAdapter<*, *>) {
+    this.run {
+      setVeilLayout(layout = item_poster)
+      setAdapter(adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() }))
+      setLayoutManager(initLinearLayoutManagerHorizontal(context))
+      addVeiledItems(10)
     }
   }
 }

@@ -43,7 +43,8 @@
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="-20dp"
-          android:orientation="horizontal">
+          android:orientation="horizontal"
+          tools:ignore="NegativeMargin">
 
           <!-- Trending -->
           <TextView
@@ -81,7 +82,7 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_trending"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -89,7 +90,17 @@
           android:layout_marginTop="10dp"
           android:contentDescription="@string/trending_now"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="0.6"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="2.0"
+          app:veilFrame_highlightAlpha="0.6"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -103,7 +114,7 @@
           android:layout_marginTop="16dp"
           android:text="@string/upcoming_movies" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_upcoming"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -111,7 +122,17 @@
           android:layout_marginTop="8dp"
           android:contentDescription="@string/upcoming_movies"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="0.6"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="2.0"
+          app:veilFrame_highlightAlpha="0.6"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -125,7 +146,7 @@
           android:layout_marginTop="16dp"
           android:text="@string/playing_now_on_theater" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_playing_now"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -133,7 +154,17 @@
           android:layout_marginTop="8dp"
           android:contentDescription="@string/playing_now_on_theater"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="0.6"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="2.0"
+          app:veilFrame_highlightAlpha="0.6"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
       </LinearLayout>
@@ -159,16 +190,7 @@
     style="@style/MyDimStyleMatchParent"
     android:layout_gravity="center"
     android:fitsSystemWindows="true"
-    android:visibility="visible"
+    android:visibility="gone"
     tools:visibility="gone" />
-
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
-    android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/margin_to_centered"
-    android:fitsSystemWindows="true"
-    app:indicatorColor="@color/yellow"
-    tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
