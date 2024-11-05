@@ -29,6 +29,7 @@ android {
     versionName = "1.1.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    signingConfig = signingConfigs.getByName("debug")
 
     javaCompileOptions {
       annotationProcessorOptions {
@@ -40,6 +41,9 @@ android {
   buildTypes {
     getByName("debug") {
       isDebuggable = true
+      isShrinkResources = false
+      isMinifyEnabled = false
+
       resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
@@ -47,22 +51,23 @@ android {
 
     create("staging") {
       isDebuggable = true
+      isShrinkResources = true
+      isMinifyEnabled = true
+
       resValue("string", "app_name", "BAZZ Movies Debug")
       applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
-
-      isShrinkResources = true
-      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      signingConfig = signingConfigs.getByName("debug")
     }
 
     getByName("release") {
       isDebuggable = false
       isShrinkResources = true
       isMinifyEnabled = true
+
       resValue("string", "app_name", "@string/app_name_release")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("debug")
 
       configure<CrashlyticsExtension> {
         mappingFileUploadEnabled = true
@@ -79,7 +84,6 @@ android {
 
   kotlinOptions {
     jvmTarget = "1.8"
-    freeCompilerArgs = listOf("-Xjvm-default=all")
   }
 
   buildFeatures {
@@ -119,7 +123,7 @@ dependencies {
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // leakcanary
-//  debugImplementation(libs.leakcanary)
+  debugImplementation(libs.leakcanary)
 
   // glide
   implementation(libs.glide)
