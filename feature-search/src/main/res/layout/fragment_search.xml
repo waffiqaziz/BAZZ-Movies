@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.skydoves.androidveil.VeilRecyclerFrameView
       android:id="@+id/rv_search"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -25,6 +25,15 @@
       android:paddingBottom="50dp"
       android:visibility="gone"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
+      app:veilFrame_baseColor="@color/gray_800"
+      app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
+      app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
+      app:veilFrame_highlightColor="@color/gray_700"
+      app:veilFrame_isItemWrapContentWidth="true"
+      app:veilFrame_radius="@dimen/button_radius"
+      app:veilFrame_shimmerEnable="true"
+      app:veilFrame_veiled="true"
       tools:listitem="@layout/item_result"
       tools:visibility="visible" />
 
@@ -80,14 +89,14 @@
     tools:visibility="visible" />
   <!-- End of HEADER SECTION -->
 
-  <!-- Progress bar -->
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:indeterminateTint="@color/yellow"
-    android:visibility="gone"
-    tools:visibility="visible" />
+<!--  &lt;!&ndash; Progress bar &ndash;&gt;-->
+<!--  <ProgressBar-->
+<!--    android:id="@+id/progress_bar"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_gravity="center"-->
+<!--    android:indeterminateTint="@color/yellow"-->
+<!--    android:visibility="gone"-->
+<!--    tools:visibility="visible" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

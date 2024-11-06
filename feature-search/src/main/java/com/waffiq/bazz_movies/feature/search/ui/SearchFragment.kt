@@ -25,19 +25,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.core.ui.R.color.yellow
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_search
-import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupShimmer
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +58,7 @@ class SearchFragment : Fragment() {
   private val binding get() = _binding!!
 
   private val searchViewModel: SearchViewModel by viewModels()
-  private lateinit var adapter: SearchAdapter
+  private lateinit var searchAdapter: SearchAdapter
 
   private var lastQuery: String? = null
 
@@ -76,17 +77,14 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
-    adapter = SearchAdapter(navigator)
-    binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
-    binding.rvSearch.itemAnimator = DefaultItemAnimator()
-    binding.rvSearch.adapter =
-      adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() })
+    searchAdapter = SearchAdapter(navigator)
+    binding.rvSearch.setupShimmer(requireContext(), searchAdapter)
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
-      adapter.refresh()
+      searchAdapter.refresh()
     }
     binding.swipeRefresh.setOnRefreshListener {
-      adapter.refresh()
+      searchAdapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
 
@@ -125,6 +123,10 @@ class SearchFragment : Fragment() {
           searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
               if (query != null && query != lastQuery) {
+                lifecycleScope.launch {
+                  searchAdapter.submitData(PagingData.empty())
+                }
+                searchAdapter.refresh()
                 lastQuery = query
                 searchViewModel.search(query)
               } else {
@@ -161,30 +163,33 @@ class SearchFragment : Fragment() {
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         searchViewModel.searchResults.collectLatest { resultItemSearch ->
-          adapter.submitData(lifecycle, resultItemSearch)
+          searchAdapter.submitData(lifecycle, resultItemSearch)
         }
       }
     }
   }
 
   private fun adapterLoadStateListener() {
-    adapter.addLoadStateListener { loadState ->
+    searchAdapter.addLoadStateListener { loadState ->
       when (loadState.source.refresh) {
         is LoadState.Loading -> {
           // Data is loading; keep showing the containerSearch
-          binding.progressBar.isVisible = true
+          isUnveil(false)
+          binding.illustrationSearchView.root.isVisible = false
+          binding.illustrationError.root.isVisible = false
+          binding.illustrationSearchNoResultView.root.isVisible = false
           binding.rvSearch.isVisible = true
         }
 
         is LoadState.NotLoading -> {
-          binding.progressBar.isVisible = false
+          isUnveil(true)
           binding.illustrationError.root.isVisible = false
-          if (loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+          if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
             // No results found; displaying empty view instead.
             binding.rvSearch.isVisible = false
             binding.illustrationSearchNoResultView.root.isVisible = true
             binding.illustrationSearchView.root.isVisible = false
-          } else if (!loadState.append.endOfPaginationReached && adapter.itemCount < 1) {
+          } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
             // No search operation; show illustration search
             binding.rvSearch.isVisible = false
             binding.illustrationSearchView.root.isVisible = true
@@ -200,8 +205,8 @@ class SearchFragment : Fragment() {
         is LoadState.Error -> {
           // Error occurred; handle error state and hide loading view
           lastQuery = null
-          binding.progressBar.isVisible = false
-          if (adapter.itemCount < 1) {
+          isUnveil(true)
+          if (searchAdapter.itemCount < 1) {
             binding.illustrationError.root.isVisible = true
             binding.rvSearch.isVisible = false
           } else {
@@ -209,6 +214,8 @@ class SearchFragment : Fragment() {
             binding.rvSearch.isVisible = true
           }
           binding.illustrationSearchView.root.isVisible = false
+
+          // show snackbar
           pagingErrorState(loadState)?.let {
             uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
           }
@@ -224,6 +231,14 @@ class SearchFragment : Fragment() {
     searchViewModel.setExpandSearchView(true)
   }
 
+  fun isUnveil(isUnveil: Boolean) {
+    if (isUnveil) {
+      binding.rvSearch.unVeil()
+    } else {
+      binding.rvSearch.veil()
+    }
+  }
+
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
@@ -233,6 +248,7 @@ class SearchFragment : Fragment() {
 
   override fun onResume() {
     super.onResume()
+    searchAdapter.refresh()
     binding.appBarLayout.setExpanded(true)
     searchViewModel.setExpandSearchView(false)
   }
