@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity(), UIController {
   override fun onDestroy() {
     super.onDestroy()
     setSupportActionBar(null)
+    supportFragmentManager.fragments.forEach { fragment ->
+      supportFragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss()
+    }
   }
 
   override fun showSnackbar(message: Event<String>): Snackbar? {

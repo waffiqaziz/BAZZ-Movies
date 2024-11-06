@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +20,6 @@ import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.core.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
@@ -29,18 +27,17 @@ import com.waffiq.bazz_movies.core.utils.common.Constants
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.feature.home.utils.uihelpers.FadeInItemAnimator
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -53,6 +50,12 @@ class MovieFragment : Fragment(), DetailNavigator {
 
   private var uiController: UIController? = null
     get() = activity as? UIController
+
+  // Initialize adapters
+  private val popularAdapter = MovieHomeAdapter(this)
+  private val nowPlayingAdapter = MovieHomeAdapter(this)
+  private val upComingAdapter = MovieHomeAdapter(this)
+  private val topRatedAdapter = MovieHomeAdapter(this)
 
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -74,6 +77,15 @@ class MovieFragment : Fragment(), DetailNavigator {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    // Set up RecyclerViews with shimmer
+    binding.apply {
+      rvPopular.setupShimmer(requireContext(), popularAdapter)
+      rvNowPlaying.setupShimmer(requireContext(), nowPlayingAdapter)
+      rvUpcoming.setupShimmer(requireContext(), upComingAdapter)
+      rvTopRated.setupShimmer(requireContext(), topRatedAdapter)
+    }
+
     showData()
   }
 
@@ -102,41 +114,7 @@ class MovieFragment : Fragment(), DetailNavigator {
   }
 
   private fun setData(region: String) {
-    // Initialize adapters
-    val popularAdapter = MovieHomeAdapter(this)
-    val nowPlayingAdapter = MovieHomeAdapter(this)
-    val upComingAdapter = MovieHomeAdapter(this)
-    val topRatedAdapter = MovieHomeAdapter(this)
-
     combinedLoadStatesHandle(topRatedAdapter)
-
-    // Setup RecyclerViews
-    binding.apply {
-      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvPopular.adapter = popularAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { popularAdapter.retry() }
-      )
-
-      rvNowPlaying.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvNowPlaying.adapter = nowPlayingAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
-      )
-
-      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvUpcoming.adapter = upComingAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { nowPlayingAdapter.retry() }
-      )
-
-      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTopRated.adapter = topRatedAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { topRatedAdapter.retry() }
-      )
-
-      rvPopular.itemAnimator = FadeInItemAnimator()
-      rvNowPlaying.itemAnimator = FadeInItemAnimator()
-      rvUpcoming.itemAnimator = FadeInItemAnimator()
-      rvTopRated.itemAnimator = FadeInItemAnimator()
-    }
 
     // Observe ViewModel data and submit to adapters
     collectAndSubmitData(this, { movieViewModel.getPopularMovies() }, popularAdapter)
@@ -187,21 +165,20 @@ class MovieFragment : Fragment(), DetailNavigator {
       adapter.loadStateFlow.debounce(Constants.DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
-            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
-              binding.progressBar.isVisible = true
+            (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
+              loadState.append.endOfPaginationReached -> {
+              isUnveil(false)
             }
 
             loadState.refresh is LoadState.NotLoading &&
               loadState.prepend is LoadState.NotLoading &&
               loadState.append is LoadState.NotLoading -> {
-              fadeOut(binding.backgroundDimMovie)
-              binding.progressBar.isGone = true
+              isUnveil(true)
               showView(true)
             }
 
             loadState.refresh is LoadState.Error -> {
-              fadeOut(binding.backgroundDimMovie)
-              binding.progressBar.isGone = true
+              isUnveil(true)
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
                 mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
@@ -227,6 +204,24 @@ class MovieFragment : Fragment(), DetailNavigator {
     }
   }
 
+  private fun isUnveil(isUnveil: Boolean) {
+    if (isUnveil) {
+      binding.apply {
+        rvPopular.unVeil()
+        rvNowPlaying.unVeil()
+        rvUpcoming.unVeil()
+        rvTopRated.unVeil()
+      }
+    } else {
+      binding.apply {
+        rvPopular.veil()
+        rvNowPlaying.veil()
+        rvUpcoming.veil()
+        rvTopRated.veil()
+      }
+    }
+  }
+
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
@@ -239,6 +234,20 @@ class MovieFragment : Fragment(), DetailNavigator {
 
   override fun onDestroyView() {
     super.onDestroyView()
+
+    popularAdapter.removeLoadStateListener { }
+    nowPlayingAdapter.removeLoadStateListener { }
+    upComingAdapter.removeLoadStateListener { }
+    topRatedAdapter.removeLoadStateListener { }
+
+    // Detach RecyclerViews programmatically
+    binding.apply {
+      binding.rvPopular.detachRecyclerView()
+      binding.rvNowPlaying.detachRecyclerView()
+      binding.rvUpcoming.detachRecyclerView()
+      binding.rvTopRated.detachRecyclerView()
+    }
+
     mSnackbar = null
     _binding = null
   }

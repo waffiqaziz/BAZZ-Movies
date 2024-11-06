@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.home.utils.helpers
 
 import android.content.Context
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.lifecycle.LifecycleOwner
@@ -108,5 +109,10 @@ object HomeFragmentHelper {
       setLayoutManager(initLinearLayoutManagerHorizontal(context))
       addVeiledItems(10)
     }
+  }
+
+  fun VeilRecyclerFrameView.detachRecyclerView() {
+    val parentViewGroup = this.parent as? ViewGroup
+    parentViewGroup?.removeView(this)
   }
 }

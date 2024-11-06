@@ -40,6 +40,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLo
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
@@ -79,17 +80,19 @@ class FeaturedFragment : Fragment(), DetailNavigator {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
-
-    // Set up RecyclerViews with shimmer
-    binding.rvUpcoming.setupShimmer(requireContext(), adapterUpcoming)
-    binding.rvPlayingNow.setupShimmer(requireContext(), adapterUpcoming)
-    binding.rvTrending.setupShimmer(requireContext(), adapterUpcoming)
-
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    // Set up RecyclerViews with shimmer
+    binding.apply {
+      rvUpcoming.setupShimmer(requireContext(), adapterUpcoming)
+      rvPlayingNow.setupShimmer(requireContext(), adapterPlayingNow)
+      rvTrending.setupShimmer(requireContext(), adapterTrending)
+    }
+
     setRegion()
     showMainPicture()
   }
@@ -190,7 +193,8 @@ class FeaturedFragment : Fragment(), DetailNavigator {
       adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
-            loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
+            (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
+              loadState.append.endOfPaginationReached -> {
               isUnveil(false)
             }
 
@@ -257,6 +261,18 @@ class FeaturedFragment : Fragment(), DetailNavigator {
 
   override fun onDestroyView() {
     super.onDestroyView()
+
+    adapterUpcoming.removeLoadStateListener { }
+    adapterPlayingNow.removeLoadStateListener { }
+    adapterTrending.removeLoadStateListener { }
+
+    // Detach RecyclerViews programmatically
+    binding.apply {
+      rvUpcoming.detachRecyclerView()
+      rvPlayingNow.detachRecyclerView()
+      rvTrending.detachRecyclerView()
+    }
+
     mSnackbar = null
     Glide.get(requireContext()).clearMemory()
     _binding = null
