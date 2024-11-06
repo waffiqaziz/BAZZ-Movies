@@ -258,7 +258,7 @@
   <!-- Style for image view on favorite/watchlist page user login -->
   <style name="roundedCornersImageView" parent="">
     <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">5dp</item>
+    <item name="cornerSize">@dimen/button_radius</item>
   </style>
 
   <style name="roundedCornersPoster" parent="">

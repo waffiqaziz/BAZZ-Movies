@@ -38,14 +38,24 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/popular" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_popular"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
+          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -59,14 +69,24 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/airing_today" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_airing_today"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
+          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -80,14 +100,24 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/on_tv" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_on_tv"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
+          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -101,14 +131,24 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/top_rated" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.skydoves.androidveil.VeilRecyclerFrameView
           android:id="@+id/rv_top_rated"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
+          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
+          app:veilFrame_baseColor="@color/gray_800"
+          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
+          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
+          app:veilFrame_highlightColor="@color/gray_700"
+          app:veilFrame_isItemWrapContentWidth="true"
+          app:veilFrame_radius="@dimen/button_radius"
+          app:veilFrame_shimmerEnable="true"
+          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
@@ -127,23 +167,6 @@
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/margin_to_centered"
     android:visibility="gone"
-    tools:visibility="visible" />
-
-  <!-- Background overlay on start -->
-  <View
-    android:id="@+id/background_dim_movie"
-    style="@style/MyDimStyleMatchParent"
-    android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/margin_to_centered"
-    android:background="@color/gray_900"
-    android:visibility="visible"
-    tools:visibility="invisible" />
-
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="@style/MyProgressBar"
-    android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

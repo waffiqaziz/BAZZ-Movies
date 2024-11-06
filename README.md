@@ -56,10 +56,11 @@ This application is released under the [MIT License](LICENSE).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
 4. ExpandableTextView: An expandable Android TextView (MIT
    License) - [GitHub](https://github.com/glailton/ExpandableTextView).
-5. Country Picker Android: (Apache
+5. AndroidVeil: Skeletons and shimmering effects - [GitHub](https://github.com/skydoves/AndroidVeil)
+6. Country Picker Android: (Apache
    2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
-6. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
-7. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
+7. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
+8. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
 
 ### Full License Texts
 

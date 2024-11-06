@@ -58,8 +58,10 @@ dependencies {
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.swiperefreshlayout)
-  implementation(libs.google.material)
   implementation(libs.androidx.paging.runtime.ktx)
+
+  implementation(libs.google.material)
+  implementation(libs.android.veil)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
