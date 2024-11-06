@@ -13,9 +13,9 @@ import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core_ui.R.string.already_favorite
-import com.waffiq.bazz_movies.core_ui.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.ui.R.string.already_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.utils.common.Event
 import kotlinx.coroutines.FlowPreview
@@ -71,11 +71,6 @@ object FavWatchlistHelper {
     ).setAnchorView(viewGuide)
     mSnackbar.show()
     return mSnackbar
-  }
-
-  fun getDateTwoWeeksFromToday(): String {
-    return LocalDate.now().plusWeeks(2) // get date two weeks from now
-      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) // formatter
   }
 
   fun handlePagingLoadState(

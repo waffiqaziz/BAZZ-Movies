@@ -16,7 +16,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.domain.model.search.KnownForItem
-import com.waffiq.bazz_movies.core_ui.R.color.gray_1000
+import com.waffiq.bazz_movies.core.ui.R.color.gray_1000
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -72,9 +72,11 @@ object GeneralHelper {
     return animation
   }
 
-  fun initLinearLayoutManager(context: Context) =
+  fun initLinearLayoutManagerHorizontal(context: Context) =
     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+  fun initLinearLayoutManagerVertical(context: Context) =
+    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
   fun justifyTextView(textView: TextView) {
     @Suppress("WrongConstant")
@@ -130,18 +132,6 @@ object GeneralHelper {
       ArgbEvaluator().evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
     window.statusBarColor = interpolatedColor
 
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//      val insetsController = window.insetsController
-//      insetsController?.setSystemBarsAppearance(
-//        0, // Clear appearance flags to ensure white icons and text
-//        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-//      )
-//    } else {
-//      @Suppress("DEPRECATION")
-//      // This flag is deprecated in API 30 (Android R - Android 11), but necessary for older versions
-//      window.decorView.systemUiVisibility =
-//        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-//    }
   }
   // endregion NESTED SCROLL VIEW BEHAVIOR
 }

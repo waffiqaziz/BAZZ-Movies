@@ -7,7 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core_ui.R.color.gray_900
+import com.waffiq.bazz_movies.core.ui.R.color.gray_900
 import com.waffiq.bazz_movies.core.utils.common.Constants.SWIPE_THRESHOLD
 import kotlin.math.abs
 

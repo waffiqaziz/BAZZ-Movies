@@ -1,0 +1,72 @@
+plugins {
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  id("kotlin-parcelize")
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.hilt)
+}
+
+android {
+  namespace = "com.waffiq.bazz_movies.feature.home"
+  compileSdk = libs.versions.compileSdk.get().toInt()
+
+  defaultConfig {
+    minSdk = libs.versions.minSdk.get().toInt()
+
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles("consumer-rules.pro")
+  }
+
+  buildTypes {
+    getByName("debug") {
+      isMinifyEnabled = false
+    }
+
+    create("staging") {
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+
+    getByName("release") {
+      isMinifyEnabled = false
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+  }
+  compileOptions {
+    isCoreLibraryDesugaringEnabled = true
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+  buildFeatures {
+    viewBinding = true
+  }
+}
+
+dependencies {
+  implementation(project(":core"))
+  implementation(project(":core-ui"))
+  implementation(project(":navigation"))
+  implementation(project(":feature-detail"))
+  implementation(project(":feature-person"))
+
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.fragment.ktx)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.google.material)
+  implementation(libs.androidx.paging.runtime.ktx)
+
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+  // glide
+  implementation(libs.glide)
+  ksp(libs.glide.compiler)
+
+  // hilt
+  implementation(libs.hilt.android)
+  ksp(libs.hilt.android.compiler)
+}

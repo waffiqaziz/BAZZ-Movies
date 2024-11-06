@@ -5,12 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.waffiq.bazz_movies.R.id.action_bar_title
 import com.waffiq.bazz_movies.R.mipmap.ic_launcher
-import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
+import com.waffiq.bazz_movies.core.ui.R.id.action_bar_title
 import com.waffiq.bazz_movies.core.utils.common.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.justifyTextView
+import com.waffiq.bazz_movies.databinding.ActivityAboutBinding
 
 class AboutActivity : AppCompatActivity() {
 

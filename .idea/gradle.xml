@@ -4,14 +4,20 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="17" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core_ui" />
+            <option value="$PROJECT_DIR$/core-ui" />
+            <option value="$PROJECT_DIR$/feature-detail" />
+            <option value="$PROJECT_DIR$/feature-home" />
+            <option value="$PROJECT_DIR$/feature-person" />
+            <option value="$PROJECT_DIR$/feature-search" />
+            <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

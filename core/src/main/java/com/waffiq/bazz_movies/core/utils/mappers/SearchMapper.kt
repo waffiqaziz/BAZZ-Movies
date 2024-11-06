@@ -4,21 +4,22 @@ import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.search.KnownForIte
 import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.core.domain.model.search.KnownForItem
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 
 object SearchMapper {
   fun ResultsItemSearchResponse.toResultItemSearch() = ResultsItemSearch(
-    mediaType = mediaType ?: "movie",
+    mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
     listKnownFor = listKnownFor?.map { it.toKnownForItem() },
     knownForDepartment = knownForDepartment,
     popularity = popularity ?: 0.0,
     name = name,
     profilePath = profilePath,
     id = id ?: 0,
-    adult = adult ?: false,
+    adult = adult == true,
     overview = overview,
     originalLanguage = originalLanguage,
     originalTitle = originalTitle,
-    video = video ?: false,
+    video = video == true,
     title = title,
     listGenreIds = listGenreIds,
     posterPath = posterPath,

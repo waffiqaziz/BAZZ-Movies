@@ -6,13 +6,13 @@
 
   <fragment
     android:id="@+id/navigation_home"
-    android:name="com.waffiq.bazz_movies.pages.home.HomeFragment"
+    android:name="com.waffiq.bazz_movies.feature.home.ui.HomeFragment"
     android:label="@string/title_home"
     tools:layout="@layout/fragment_featured" />
 
   <fragment
     android:id="@+id/navigation_search"
-    android:name="com.waffiq.bazz_movies.pages.search.SearchFragment"
+    android:name="com.waffiq.bazz_movies.feature.search.ui.SearchFragment"
     android:label="@string/title_search"
     tools:layout="@layout/fragment_search" />
 

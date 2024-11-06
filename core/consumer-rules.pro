@@ -1,3 +1,116 @@
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn com.waffiq.bazz_movies.core.data.local.datasource.LocalDataSource
+-dontwarn com.waffiq.bazz_movies.core.data.local.model.UserModel
+-dontwarn com.waffiq.bazz_movies.core.data.local.model.UserPreference
+-dontwarn com.waffiq.bazz_movies.core.data.local.room.FavoriteDao
+-dontwarn com.waffiq.bazz_movies.core.data.remote.datasource.MovieDataSource
+-dontwarn com.waffiq.bazz_movies.core.data.remote.datasource.UserDataSource
+-dontwarn com.waffiq.bazz_movies.core.data.remote.retrofit.CountryIPApiService
+-dontwarn com.waffiq.bazz_movies.core.data.remote.retrofit.OMDbApiService
+-dontwarn com.waffiq.bazz_movies.core.data.remote.retrofit.TMDBApiService
+-dontwarn com.waffiq.bazz_movies.core.data.repository.MoviesRepository
+-dontwarn com.waffiq.bazz_movies.core.data.repository.UserRepository
+-dontwarn com.waffiq.bazz_movies.core.di.DatabaseModule
+-dontwarn com.waffiq.bazz_movies.core.di.DatabaseModule_ProvideDatabaseFactory
+-dontwarn com.waffiq.bazz_movies.core.di.DatabaseModule_ProvideFavoriteDaoFactory
+-dontwarn com.waffiq.bazz_movies.core.di.DatastoreModule
+-dontwarn com.waffiq.bazz_movies.core.di.DatastoreModule_ProvideDataStoreFactory
+-dontwarn com.waffiq.bazz_movies.core.di.DatastoreModule_ProvideUserPreferenceFactory
+-dontwarn com.waffiq.bazz_movies.core.di.NetworkModule
+-dontwarn com.waffiq.bazz_movies.core.di.NetworkModule_ProvideCountryIPApiServiceFactory
+-dontwarn com.waffiq.bazz_movies.core.di.NetworkModule_ProvideOMDBApiServiceFactory
+-dontwarn com.waffiq.bazz_movies.core.di.NetworkModule_ProvideOkHttpClientFactory
+-dontwarn com.waffiq.bazz_movies.core.di.NetworkModule_ProvideTMDBApiServiceFactory
+-dontwarn com.waffiq.bazz_movies.core.domain.model.Favorite
+-dontwarn com.waffiq.bazz_movies.core.domain.model.GenresItem
+-dontwarn com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
+-dontwarn com.waffiq.bazz_movies.core.domain.model.PostModelState
+-dontwarn com.waffiq.bazz_movies.core.domain.model.ResultItem
+-dontwarn com.waffiq.bazz_movies.core.domain.model.Stated
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.AccountDetails
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.Authentication
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.AvatarItem
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.AvatarTMDb
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.CreateSession
+-dontwarn com.waffiq.bazz_movies.core.domain.model.account.Gravatar
+-dontwarn com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
+-dontwarn com.waffiq.bazz_movies.core.domain.model.omdb.RatingsItem
+-dontwarn com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
+-dontwarn com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository
+-dontwarn com.waffiq.bazz_movies.core.domain.repository.IUserRepository
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteTvUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_region.GetRegionUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovieInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovieUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodUseCase
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.user_pref.UserPrefInteractor
+-dontwarn com.waffiq.bazz_movies.core.domain.usecase.user_pref.UserPrefUseCase
+-dontwarn com.waffiq.bazz_movies.core.navigation.DetailNavigator
+-dontwarn com.waffiq.bazz_movies.core.utils.common.Constants
+-dontwarn com.waffiq.bazz_movies.core.utils.common.Event
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.FlowUtils
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.GenreHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.CustomTypefaceSpan
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.GestureHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
+-dontwarn com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
+-dontwarn com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper
+-dontwarn com.waffiq.bazz_movies.core.utils.mappers.SearchMapper
+-dontwarn com.waffiq.bazz_movies.core.utils.mappers.UniversalMapper
+-dontwarn com.waffiq.bazz_movies.core.utils.result.DbResult$Error
+-dontwarn com.waffiq.bazz_movies.core.utils.result.DbResult$Success
+-dontwarn com.waffiq.bazz_movies.core.utils.result.DbResult
+-dontwarn com.waffiq.bazz_movies.core.utils.result.NetworkResult$Error
+-dontwarn com.waffiq.bazz_movies.core.utils.result.NetworkResult$Loading
+-dontwarn com.waffiq.bazz_movies.core.utils.result.NetworkResult$Success
+-dontwarn com.waffiq.bazz_movies.core.utils.result.NetworkResult
+-dontwarn com.waffiq.bazz_movies.core.utils.result.SnackBarUserLoginData
+-dontwarn java.lang.invoke.StringConcatFactory
+-dontwarn java.lang.invoke.**
+-keep class java.lang.invoke.** { *; }
+-printusage missing_classes.txt
+
+# Keep Hilt generated classes
+-keep class dagger.hilt.** { *; }
+-keep class * extends dagger.hilt.internal.GeneratedComponent { *; }
+-dontwarn dagger.hilt.**
+
+# Keep all Hilt-related generated factories in the specified package
+-keep class com.waffiq.bazz_movies.core.di.** { *; }
+-dontwarn com.waffiq.bazz_movies.core.di.**
+
+# Preserve generated Dagger components and factories
+-keep class * extends dagger.hilt.android.internal.lifecycle.HiltViewModelFactory { *; }
+-keep class * extends dagger.hilt.android.HiltWrapper_** { *; }
+-keep class * extends dagger.hilt.android.components.** { *; }
+
+# Keep the DatabaseModule and any other Hilt modules explicitly
+-keep class com.waffiq.bazz_movies.core.di.DatabaseModule
+-keep class com.waffiq.bazz_movies.Hilt_** { *; }
+
+
+
 # Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
 -keep,allowobfuscation,allowshrinking class retrofit2.Response

@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.ui.adapter
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -9,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_bazz_placeholder_poster
-import com.waffiq.bazz_movies.core_ui.R.drawable.ic_broken_image
-import com.waffiq.bazz_movies.core_ui.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_poster
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core.ui.databinding.ItemPosterBinding
 
 class TvAdapter(private val detailNavigator: DetailNavigator) :
   PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -31,7 +33,7 @@ class TvAdapter(private val detailNavigator: DetailNavigator) :
       holder.itemView.startAnimation(
         AnimationUtils.loadAnimation(
           holder.itemView.context,
-          android.R.anim.fade_in
+          fade_in
         )
       )
     }
@@ -60,7 +62,7 @@ class TvAdapter(private val detailNavigator: DetailNavigator) :
 
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
-        detailNavigator.openDetails(tv.copy(mediaType = "tv"))
+        detailNavigator.openDetails(tv.copy(mediaType = TV_MEDIA_TYPE))
       }
     }
   }

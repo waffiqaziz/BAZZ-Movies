@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Layout dialog for rate movie/tv -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:background="@color/black">
+
+  <View
+    android:id="@+id/bg"
+    android:layout_width="wrap_content"
+    android:layout_height="249dp"
+    android:background="@drawable/bg_alert"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/bg_top" />
+
+  <View
+    android:id="@+id/bg_top"
+    android:layout_width="wrap_content"
+    android:layout_height="70dp"
+    android:background="@drawable/bg_alert_rating"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    style="@style/TextHeader1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/your_rating"
+    android:textColor="@color/gray_900"
+    app:layout_constraintBottom_toBottomOf="@+id/bg_top"
+    app:layout_constraintEnd_toEndOf="@+id/bg_top"
+    app:layout_constraintStart_toStartOf="@+id/bg_top"
+    app:layout_constraintTop_toTopOf="@+id/bg" />
+
+  <RatingBar
+    android:id="@+id/rating_bar_action"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="25dp"
+    app:layout_constraintEnd_toEndOf="@+id/bg"
+    app:layout_constraintStart_toStartOf="@+id/bg"
+    app:layout_constraintTop_toBottomOf="@+id/bg_top" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_cancel"
+    style="@style/customButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="29dp"
+    android:backgroundTint="@color/red_matte"
+    android:fontFamily="@font/nunito_sans_bold"
+    android:padding="7dp"
+    android:text="@string/cancel"
+    app:layout_constraintStart_toStartOf="@+id/rating_bar_action"
+    app:layout_constraintTop_toBottomOf="@+id/rating_bar_action" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btn_submit"
+    style="@style/customButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/green"
+    android:fontFamily="@font/nunito_sans_bold"
+    android:padding="7dp"
+    android:text="@string/submit"
+    app:layout_constraintEnd_toEndOf="@+id/rating_bar_action"
+    app:layout_constraintTop_toTopOf="@+id/btn_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

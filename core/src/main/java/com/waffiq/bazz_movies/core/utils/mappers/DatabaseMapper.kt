@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.utils.mappers
 import com.waffiq.bazz_movies.core.data.local.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.utils.common.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getGenreName
 
 object DatabaseMapper {
@@ -14,14 +15,14 @@ object DatabaseMapper {
     id = 0,
     mediaId = id,
     mediaType = mediaType,
-    title = name ?: originalName ?: title ?: originalTitle ?: "N/A",
-    releaseDate = releaseDate ?: firstAirDate ?: "N/A",
+    title = name ?: originalName ?: title ?: originalTitle ?: NOT_AVAILABLE,
+    releaseDate = releaseDate ?: firstAirDate ?: NOT_AVAILABLE,
     rating = voteAverage ?: 0.0f,
-    backDrop = backdropPath ?: "N/A",
-    poster = posterPath ?: "N/A",
+    backDrop = backdropPath ?: NOT_AVAILABLE,
+    poster = posterPath ?: NOT_AVAILABLE,
     genre = getGenreName(listGenreIds ?: listOf()),
     popularity = popularity ?: 0.0,
-    overview = overview ?: "N/A",
+    overview = overview ?: NOT_AVAILABLE,
     isFavorite = isFavorite,
     isWatchlist = isWatchlist
   )

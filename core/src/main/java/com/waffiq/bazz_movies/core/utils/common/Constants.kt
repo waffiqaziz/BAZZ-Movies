@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.utils.common
 
-import com.waffiq.bazz_movies.core_ui.R.string.featured
-import com.waffiq.bazz_movies.core_ui.R.string.movies
-import com.waffiq.bazz_movies.core_ui.R.string.tv_series
+import com.waffiq.bazz_movies.core.ui.R.string.featured
+import com.waffiq.bazz_movies.core.ui.R.string.movies
+import com.waffiq.bazz_movies.core.ui.R.string.tv_series
 
 object Constants {
   const val TABLE_NAME = "favorite"
@@ -33,6 +33,11 @@ object Constants {
   const val DEBOUNCE_LONG = 350L
   const val DEBOUNCE_VERY_LONG = 500L
   const val ANIM_DURATION = 200L
+
+  const val TV_MEDIA_TYPE = "tv"
+  const val MOVIE_MEDIA_TYPE = "movie"
+  const val PERSON_MEDIA_TYPE = "person"
+  const val NOT_AVAILABLE = "N/A"
 
   const val NAN = "NaN"
 

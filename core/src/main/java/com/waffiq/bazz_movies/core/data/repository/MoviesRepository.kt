@@ -10,37 +10,16 @@ import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
-import com.waffiq.bazz_movies.core.domain.model.detail.DetailMovie
-import com.waffiq.bazz_movies.core.domain.model.detail.MovieTvCredits
-import com.waffiq.bazz_movies.core.domain.model.detail.Video
-import com.waffiq.bazz_movies.core.domain.model.detail.tv.DetailTv
-import com.waffiq.bazz_movies.core.domain.model.detail.tv.ExternalTvID
-import com.waffiq.bazz_movies.core.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.core.domain.model.person.CombinedCreditPerson
-import com.waffiq.bazz_movies.core.domain.model.person.DetailPerson
-import com.waffiq.bazz_movies.core.domain.model.person.ExternalIDPerson
-import com.waffiq.bazz_movies.core.domain.model.person.ImagePerson
 import com.waffiq.bazz_movies.core.domain.model.post.Post
 import com.waffiq.bazz_movies.core.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
 import com.waffiq.bazz_movies.core.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.core.utils.mappers.DatabaseMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toCombinedCredit
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toDetailMovie
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toDetailTv
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toExternalTvID
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toMovieTvCredits
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toOMDbDetails
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toStated
-import com.waffiq.bazz_movies.core.utils.mappers.DetailMovieTvMapper.toVideo
-import com.waffiq.bazz_movies.core.utils.mappers.PersonMapper.toDetailPerson
-import com.waffiq.bazz_movies.core.utils.mappers.PersonMapper.toExternalIDPerson
-import com.waffiq.bazz_movies.core.utils.mappers.PersonMapper.toImagePerson
 import com.waffiq.bazz_movies.core.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.utils.mappers.PostMapper.toPostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.utils.mappers.SearchMapper.toResultItemSearch
+import com.waffiq.bazz_movies.core.utils.mappers.StateMapper.toStated
 import com.waffiq.bazz_movies.core.utils.mappers.UniversalMapper.toResultItem
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
@@ -56,16 +35,6 @@ class MoviesRepository @Inject constructor(
 ) : IMoviesRepository {
 
   // region PAGING FUNCTION
-  override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTopRatedMovies().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularMovies().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
   override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingFavoriteMovies(sessionId).map { pagingData ->
       pagingData.map { it.toResultItem() }
@@ -85,135 +54,7 @@ class MoviesRepository @Inject constructor(
     movieDataSource.getPagingWatchlistTv(sessionId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
-
-  override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularTv(getDateTwoWeeksFromToday()).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingOnTv().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingAiringTodayTv().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTrendingWeek(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTrendingDay(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingUpcomingMovies(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPlayingNowMovies(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTopRatedTv().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearch>> =
-    movieDataSource.getPagingSearch(query).map { pagingData ->
-      pagingData.map { it.toResultItemSearch() }
-    }
   // endregion PAGING FUNCTION
-
-  // region DETAIL
-  override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetails>> =
-    movieDataSource.getDetailOMDb(imdbId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toOMDbDetails())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getDetailMovie(movieId: Int): Flow<NetworkResult<DetailMovie>> =
-    movieDataSource.getDetailMovie(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailMovie())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getDetailTv(tvId: Int): Flow<NetworkResult<DetailTv>> =
-    movieDataSource.getDetailTv(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailTv())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>> =
-    movieDataSource.getExternalTvId(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toExternalTvID())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getTrailerLinkMovie(movieId: Int): Flow<NetworkResult<Video>> =
-    movieDataSource.getVideoMovies(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<Video>> =
-    movieDataSource.getVideoTv(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
-    movieDataSource.getCreditMovies(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
-    movieDataSource.getCreditTv(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
 
   override suspend fun getStatedMovie(
     sessionId: String,
@@ -289,45 +130,7 @@ class MoviesRepository @Inject constructor(
         is NetworkResult.Loading -> NetworkResult.Loading
       }
     }
-// endregion POST FAVORITE AND WATCHLIST
-
-  // region PERSON
-  override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
-    movieDataSource.getDetailPerson(id).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailPerson())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditPerson>> =
-    movieDataSource.getKnownForPerson(id).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCombinedCredit())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePerson>> =
-    movieDataSource.getImagePerson(id).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toImagePerson())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-
-  override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPerson>> =
-    movieDataSource.getExternalIDPerson(id).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toExternalIDPerson())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
-      }
-    }
-  // endregion PERSON
+  // endregion POST FAVORITE AND WATCHLIST
 
   // region DATABASE
   override val favoriteMoviesFromDB: Flow<List<Favorite>> =

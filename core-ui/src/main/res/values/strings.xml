@@ -1,0 +1,163 @@
+<resources>
+  <string name="app_name_release">BAZZ Movies</string>
+
+  <string name="poster">Poster</string>
+  <string name="back">Back</string>
+
+  <!-- LOGIN -->
+  <string name="join_tmdb">Don\’t Have Account? Join TMDB</string>
+  <string name="login">Login</string>
+  <string name="text_login">text login</string>
+  <string name="username">Username</string>
+  <string name="password">Password</string>
+  <string name="hide_unhide_password">hide or show password</string>
+  <string name="please_enter_a_password">Please enter a password</string>
+  <string name="please_enter_a_username">Please enter a username</string>
+  <string name="guest_session"><u>Guest Session</u></string>
+  <string name="retry">Retry</string>
+  <string name="login_as_guest_successful">Login as Guest Successful</string>
+  <string name="login_successful">Login Successful</string>
+
+  <!-- BOTTOM NAVIGATION -->
+  <string name="title_home">Home</string>
+  <string name="title_search">Search</string>
+  <string name="title_more">More</string>
+  <string name="title_my_favorite">My Favorite</string>
+  <string name="title_my_watchlist">My Watchlist</string>
+
+  <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
+
+  <!-- ERROR -->
+  <string name="unknown_error">Unknown error</string>
+  <string name="something_went_wrong">Something Went Wrong</string>
+  <string name="we_encountered_an_error_please_try_again">We encountered an error. Please try again.</string>
+  <string name="try_again">Try Again</string>
+
+  <!-- FEATURED -->
+  <string name="movies">Movies</string>
+  <string name="tv_series">TV Series</string>
+  <string name="trending_now">Trending now</string>
+  <string name="today">Today</string>
+  <string name="this_week">This Week</string>
+  <string name="featured">Featured</string>
+  <string name="upcoming_movies">Upcoming Movies</string>
+  <string name="popular">Popular</string>
+  <string name="top_rated">Top Rated</string>
+  <string name="now_playing">Now Playing</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="airing_today">Airing Today</string>
+  <string name="playing_now_on_theater">Playing now on Theater</string>
+  <string name="on_tv">On Tv</string>
+  <string name="no_upcoming_movie">No upcoming movies are available in %1$s.\nPlease consider selecting a different country.</string>
+  <string name="no_movie_currently_playing">No movies are currently playing in %1$s.\nPlease consider selecting a different country.</string>
+
+  <!-- MORE -->
+  <string name="guest_user">Guest User</string>
+  <string name="image_profile">Image Profile</string>
+  <string name="faq">FAQ</string>
+  <string name="suggestion">Suggestion</string>
+  <string name="open_suggestion">open suggestion</string>
+  <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
+  <string name="privacy_amp_policy"><![CDATA[Privacy & Policy]]></string>
+  <string name="sign_out">Sign Out</string>
+  <string name="sign_out_success">Sign Out Success</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="warning">Warning</string>
+  <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
+  <string name="warning_signOut_guest_mode">You are currently logged in as a guest. All data, including your favorites and watchlist, will be deleted if you sign out. Do you want to continue?</string>
+  <string name="warning_signOut_logged_user">Signing out will end your session. Are you sure you want to continue?</string>
+  <string name="select_region">Select Region</string>
+  <string name="open_help">open help</string>
+  <string name="open_about_us">open about us</string>
+  <string name="about">About</string>
+  <string name="about_text">BAZZ Movies app is for movie lovers. Hopefully it helps you easily to manage, discover, and enjoy your favorite movies.</string>
+  <string name="tmdb_endorse">Important, BAZZ Movies uses the TMDB API but not endorsed or certified by TMDB.</string>
+
+  <!-- SEARCH -->
+  <string name="search_results">Search results</string>
+  <string name="search_any">Search any Movies</string>
+  <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
+  <string name="sorry_no_result">Sorry no result!</string>
+  <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
+  <string name="search_illustration">search illustration</string>
+
+  <string name="data">Data</string>
+  <string name="no_data_illustration">no data illustration</string>
+  <string name="no_data_found">No data found!</string>
+  <string name="no_data_explanation">We cannot find data you are looking for,\nmaybe add favorite or watchlist first</string>
+
+  <!-- DETAIL MOVIE/TV -->
+  <string name="yt_not_installed">Youtube App Not Installed</string>
+  <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
+  <string name="_divider">|</string>
+  <string name="overview">Overview</string>
+  <string name="no_overview">Theres no overview translated in English</string>
+  <string name="watch_trailer">Watch Trailer</string>
+  <string name="cast">Cast</string>
+  <string name="as">as</string>
+  <string name="recommendation">Recommendation</string>
+  <string name="rating">Rating</string>
+  <string name="cancel">Cancel</string>
+  <string name="submit">Submit</string>
+  <string name="your_score">Your Score</string>
+  <string name="your_rating">Your rating:</string>
+  <string name="not_available">N/A</string>
+  <string name="not_available_full">Not Available</string>
+  <string name="cant_provide_a_score">Sorry we can\’t provide the score or it hasn\’t been rated yet</string>
+  <string name="metascore">Metascore</string>
+  <string name="imdb">IMDB</string>
+  <string name="tmdb">TMDB</string>
+  <string name="tmdb_full">The Movie Database</string>
+  <string name="status_">Status : %1$s</string>
+
+  <!-- FAVORITE/WATCHLIST -->
+  <string name="undo">Undo</string>
+  <string name="already_watchlist">already in watchlist</string>
+  <string name="already_favorite">already in favorite</string>
+
+  <string name="added_to_favorite">has been added to favorite</string>
+  <string name="added_to_watchlist">has been added to watchlist</string>
+  <string name="deleted_from_favorite">has been deleted from favorite</string>
+  <string name="deleted_from_watchlist">has been deleted from watchlist</string>
+
+  <string name="item_added_to_favorite">Item added to favorite.</string>
+  <string name="item_added_to_watchlist">Item added to watchlist.</string>
+  <string name="item_deleted_from_favorite">Item deleted from favorite</string>
+  <string name="item_deleted_from_watchlist">Item deleted from watchlist</string>
+
+  <string name="no_data">No Data</string>
+  <string name="add_to_favorite">add to favorite</string>
+  <string name="add_to_watchlist">add to watchlist</string>
+
+  <string name="picture">Picture</string>
+  <string name="forget_password">Forget Password</string>
+
+  <!-- PERSON -->
+  <string name="known_for">Known For</string>
+  <string name="biography">Biography</string>
+  <string name="born">Born</string>
+  <string name="day_of_death">Day of Death</string>
+  <string name="years_old">years old</string>
+  <string name="photos">Photos</string>
+  <string name="read_more">Read More</string>
+  <string name="less_more">Less More</string>
+  <string name="playing_as">Playing as</string>
+  <string name="no_biography">No biography</string>
+  <string name="actress_photo">actress photo</string>
+  <string name="close">close</string>
+
+  <string name="open_actor_actress_instagram_page">open actor/actress Instagram page</string>
+  <string name="open_actor_x_account">open actor/actress X account</string>
+  <string name="open_actor_actress_facebook_page">open actor/actress Facebook page</string>
+  <string name="open_actor_actress_tiktok_page">open actor/actress Tik Tok page</string>
+  <string name="open_actor_actress_imdb_page">open actor/actress IMDb page</string>
+  <string name="open_actor_actress_youtube_channel">open actor/actress youtube channel</string>
+  <string name="open_actor_actress_wikidata_page">open actor/actress Wikidata page</string>
+  <string name="open_actor_actress_home_page">open actor/actress home page</string>
+  <string name="binding_error">Binding should not be accessed before onCreateView() or after onDestroyView()</string>
+  <string name="tab_selection">tab selection</string>
+  <string name="about_us"><u>About Us</u></string>
+  <string name="rating_added_successfully">Rating added successfully!</string>
+
+</resources>

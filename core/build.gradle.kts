@@ -9,10 +9,10 @@ plugins {
 
 android {
   namespace = "com.waffiq.bazz_movies.core"
-  compileSdk = 34
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = 23
+    minSdk = libs.versions.minSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -31,7 +31,16 @@ android {
   }
 
   buildTypes {
-    release {
+    getByName("debug") {
+      isMinifyEnabled = false
+    }
+
+    create("staging") {
+      isMinifyEnabled = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
+
+    getByName("release") {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
@@ -51,7 +60,7 @@ android {
 }
 
 dependencies {
-  implementation(project(":core_ui"))
+  implementation(project(":core-ui"))
 
   // for item layout
   implementation(libs.androidx.core.ktx)

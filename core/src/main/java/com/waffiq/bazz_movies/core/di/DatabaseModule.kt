@@ -18,13 +18,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
-  @Singleton
   @Provides
-  fun provideDatabase(@ApplicationContext context: Context): FavoriteDatabase = Room.databaseBuilder(
-    context,
-    FavoriteDatabase::class.java, "$TABLE_NAME.db"
-  ).addMigrations(migrationOneTwo)
-    .build()
+  @Singleton
+  fun provideDatabase(@ApplicationContext context: Context): FavoriteDatabase =
+    Room.databaseBuilder(
+      context,
+      FavoriteDatabase::class.java, "$TABLE_NAME.db"
+    ).addMigrations(migrationOneTwo)
+      .build()
 
   // Define the migration from version 1 to version 2
   // update app version from v1.0.7 to v1.0.8 and newer

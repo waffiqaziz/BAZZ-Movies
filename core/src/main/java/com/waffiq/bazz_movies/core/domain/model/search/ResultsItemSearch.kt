@@ -1,7 +1,9 @@
 package com.waffiq.bazz_movies.core.domain.model.search
 
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
+
 data class ResultsItemSearch(
-  val mediaType: String = "movie",
+  val mediaType: String = MOVIE_MEDIA_TYPE,
   val listKnownFor: List<KnownForItem>? = null,
   val knownForDepartment: String? = null,
   val popularity: Double = 0.0,

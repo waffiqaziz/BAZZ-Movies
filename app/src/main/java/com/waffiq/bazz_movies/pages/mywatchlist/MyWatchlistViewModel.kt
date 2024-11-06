@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistMovi
 import com.waffiq.bazz_movies.core.domain.usecase.get_watchlist.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodUseCase
+import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.result.DbResult
 import com.waffiq.bazz_movies.core.utils.result.NetworkResult
@@ -148,7 +149,7 @@ class MyWatchlistViewModel @Inject constructor(
     title: String
   ) {
     viewModelScope.launch {
-      if (mediaType == "movie") {
+      if (mediaType == MOVIE_MEDIA_TYPE) {
         getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
           when (networkResult) {
             is NetworkResult.Success -> {

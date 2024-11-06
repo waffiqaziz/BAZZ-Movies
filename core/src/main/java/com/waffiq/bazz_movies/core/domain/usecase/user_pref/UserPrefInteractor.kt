@@ -15,6 +15,9 @@ class UserPrefInteractor @Inject constructor(
   override fun getUserRegionPref(): Flow<String> =
     userPrefRepository.getUserRegionPref()
 
+  override fun getUserToken(): Flow<String> =
+    userPrefRepository.getUserToken()
+
   override suspend fun saveRegionPref(region: String) =
     userPrefRepository.saveRegionPref(region)
 

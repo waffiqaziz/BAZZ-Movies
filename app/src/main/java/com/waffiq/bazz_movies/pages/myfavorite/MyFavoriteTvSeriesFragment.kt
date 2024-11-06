@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.pages.myfavorite
 
+import android.R.anim.fade_in
+import android.R.anim.fade_out
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.R.anim.fade_in
-import com.waffiq.bazz_movies.R.anim.fade_out
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.id.bottom_navigation
@@ -29,27 +28,28 @@ import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.core.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core_ui.R.color.red_matte
-import com.waffiq.bazz_movies.core_ui.R.color.yellow
-import com.waffiq.bazz_movies.core_ui.R.string.added_to_watchlist
-import com.waffiq.bazz_movies.core_ui.R.string.binding_error
-import com.waffiq.bazz_movies.core_ui.R.string.deleted_from_favorite
-import com.waffiq.bazz_movies.core_ui.R.string.undo
+import com.waffiq.bazz_movies.core.ui.R.color.red_matte
+import com.waffiq.bazz_movies.core.ui.R.color.yellow
+import com.waffiq.bazz_movies.core.ui.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity
-import com.waffiq.bazz_movies.pages.detail.DetailMovieActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -87,8 +87,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
 
   private fun checkUser() {
     // setup recyclerview
-    binding.rvFavTv.layoutManager =
-      LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    binding.rvFavTv.layoutManager = initLinearLayoutManagerVertical(requireContext())
     binding.rvFavTv.itemAnimator = DefaultItemAnimator()
 
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
@@ -235,7 +234,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
         user.token,
         user.userId,
         FavoritePostModel(
-          mediaType = "tv",
+          mediaType = TV_MEDIA_TYPE,
           mediaId = tvId,
           favorite = false
         ),
@@ -246,7 +245,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
 
   private fun postToAddWatchlistTMDB(title: String, tvId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkStatedThenPostWatchlist("tv", user, tvId, title)
+      viewModelFav.checkStatedThenPostWatchlist(TV_MEDIA_TYPE, user, tvId, title)
     }
   }
 
@@ -394,7 +393,7 @@ class MyFavoriteTvSeriesFragment : Fragment(), DetailNavigator {
 
   override fun openDetails(resultItem: ResultItem) {
     val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-    intent.putExtra(EXTRA_MOVIE, resultItem)
+    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
     val options =
       ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
     ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
