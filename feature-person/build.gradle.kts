@@ -7,6 +7,7 @@ plugins {
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
+  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -31,7 +32,7 @@ android {
     }
 
     getByName("release") {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -50,15 +51,33 @@ android {
 }
 
 dependencies {
+  api(project(":core-network"))
+  api(project(":core-ui"))
+  api(project(":navigation"))
   implementation(project(":core"))
-  implementation(project(":core-ui"))
-  implementation(project(":navigation"))
+
+  api(libs.androidx.constraintlayout)
+  api(libs.androidx.coordinatorlayout)
+  api(libs.androidx.core)
+  api(libs.androidx.lifecycle.livedata.core)
+  api(libs.androidx.lifecycle.viewmodel)
+  api(libs.androidx.recyclerview)
+  api(libs.androidx.viewpager2)
+  api(libs.google.dagger)
+  api(libs.google.hilt.core)
+  api(libs.javax.inject)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.activity.ktx)
+  implementation(libs.androidx.annotation)
+  implementation(libs.androidx.cardview)
+  implementation(libs.androidx.lifecycle.common)
+  implementation(libs.jetbrains.coroutines.core)
+  implementation(libs.jetbrains.parcelize.runtime)
 
   implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.fragment.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.swiperefreshlayout)
-  implementation(libs.google.material)
+  api(libs.androidx.appcompat)
+  api(libs.androidx.swiperefreshlayout)
+  api(libs.google.material)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
@@ -66,9 +85,9 @@ dependencies {
   implementation(libs.glide)
   ksp(libs.glide.compiler)
 
-  implementation(libs.expandable.textview)
+  api(libs.expandable.textview)
 
   // hilt
-  implementation(libs.hilt.android)
+  api(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

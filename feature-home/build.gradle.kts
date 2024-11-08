@@ -4,6 +4,7 @@ plugins {
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
+  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -28,7 +29,7 @@ android {
     }
 
     getByName("release") {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -47,20 +48,37 @@ android {
 }
 
 dependencies {
-  implementation(project(":core"))
-  implementation(project(":core-ui"))
+  api(project(":core"))
+  api(project(":core-network"))
+  api(project(":core-ui"))
   implementation(project(":navigation"))
+  implementation(project(":core-user"))
   implementation(project(":feature-detail"))
-  implementation(project(":feature-person"))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.swiperefreshlayout)
-  implementation(libs.androidx.paging.runtime.ktx)
+  api(libs.androidx.swiperefreshlayout)
 
-  implementation(libs.google.material)
-  implementation(libs.android.veil)
+  api(libs.androidx.coordinatorlayout)
+  api(libs.androidx.core)
+  api(libs.androidx.fragment)
+  api(libs.androidx.lifecycle.common)
+  api(libs.androidx.lifecycle.viewmodel)
+  api(libs.androidx.paging.runtime)
+  api(libs.androidx.recyclerview)
+  api(libs.androidx.viewpager2)
+  api(libs.google.dagger)
+  api(libs.google.hilt.core)
+  api(libs.javax.inject)
+  api(libs.jetbrains.coroutines.core)
+  implementation(libs.androidx.annotation)
+  implementation(libs.androidx.lifecycle.livedata.core)
+  implementation(libs.androidx.paging.common)
+  implementation(libs.expandable.textview)
+
+  api(libs.google.material)
+  api(libs.android.veil)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
@@ -69,6 +87,6 @@ dependencies {
   ksp(libs.glide.compiler)
 
   // hilt
-  implementation(libs.hilt.android)
+  api(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

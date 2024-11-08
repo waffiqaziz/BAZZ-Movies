@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -42,8 +43,11 @@ android {
 }
 
 dependencies {
-  implementation(libs.androidx.cardview)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.google.material)
+  api(libs.androidx.constraintlayout)
+  api(libs.androidx.cardview)
+  api(libs.androidx.appcompat)
+  api(libs.google.material)
+
+  implementation(libs.androidx.annotation)
   implementation(libs.androidx.core.splashscreen)
 }

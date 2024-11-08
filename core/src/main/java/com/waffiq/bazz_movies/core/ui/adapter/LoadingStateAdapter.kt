@@ -10,8 +10,7 @@ import com.waffiq.bazz_movies.core.ui.databinding.ItemLoadingBinding
 
 class LoadingStateAdapter(
   private val retry: () -> Unit
-) :
-  LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
+) : LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadingStateViewHolder {
     val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)

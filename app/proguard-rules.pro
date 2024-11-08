@@ -1,5 +1,7 @@
 -keepattributes LineNumberTable,SourceFile
 -renamesourcefileattribute SourceFile
+-keepattributes Signature
+-keepattributes *Annotation*
 
 # LOG
 -assumenosideeffects class android.util.Log {

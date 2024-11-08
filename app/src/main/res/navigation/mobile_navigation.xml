@@ -30,7 +30,7 @@
 
   <fragment
     android:id="@+id/navigation_more"
-    android:name="com.waffiq.bazz_movies.pages.more.MoreFragment"
+    android:name="com.waffiq.bazz_movies.feature.more.ui.MoreFragment"
     android:label="@string/title_more"
     tools:layout="@layout/fragment_more">
 

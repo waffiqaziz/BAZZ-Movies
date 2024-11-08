@@ -1,14 +1,9 @@
 package com.waffiq.bazz_movies.feature.home.ui
 
-import android.R.anim.fade_in
-import android.R.anim.fade_out
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,17 +12,13 @@ import androidx.paging.LoadState
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.navigation.DetailNavigator
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
-import com.waffiq.bazz_movies.core.ui.adapter.MovieHomeAdapter
-import com.waffiq.bazz_movies.core.ui.adapter.TrendingAdapter
-import com.waffiq.bazz_movies.core.ui.viewmodel.RegionViewModel
-import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
+import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
@@ -38,6 +29,8 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
+import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
+import com.waffiq.bazz_movies.feature.home.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -45,6 +38,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.hand
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
+import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -52,17 +46,21 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class FeaturedFragment : Fragment(), DetailNavigator {
+class FeaturedFragment : Fragment() {
+
+  @Inject
+  lateinit var navigator: Navigator
 
   private var uiController: UIController? = null
     get() = activity as? UIController
 
   // Initialize adapters
-  private val adapterTrending = TrendingAdapter(this)
-  private val adapterUpcoming = MovieHomeAdapter(this)
-  private val adapterPlayingNow = MovieHomeAdapter(this)
+  private lateinit var adapterTrending : TrendingAdapter
+  private lateinit var adapterUpcoming : MovieHomeAdapter
+  private lateinit var adapterPlayingNow : MovieHomeAdapter
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -85,6 +83,10 @@ class FeaturedFragment : Fragment(), DetailNavigator {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    adapterTrending = TrendingAdapter(navigator)
+    adapterUpcoming = MovieHomeAdapter(navigator)
+    adapterPlayingNow = MovieHomeAdapter(navigator)
 
     // Set up RecyclerViews with shimmer
     binding.apply {
@@ -276,19 +278,5 @@ class FeaturedFragment : Fragment(), DetailNavigator {
     mSnackbar = null
     Glide.get(requireContext()).clearMemory()
     _binding = null
-  }
-
-  override fun openDetails(resultItem: ResultItem) {
-    val intent = Intent(
-      requireContext(),
-      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity::class.java
-    )
-    intent.putExtra(
-      com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity.Companion.EXTRA_MOVIE,
-      resultItem
-    )
-    val options =
-      ActivityOptionsCompat.makeCustomAnimation(requireContext(), fade_in, fade_out)
-    ActivityCompat.startActivity(requireContext(), intent, options.toBundle())
   }
 }

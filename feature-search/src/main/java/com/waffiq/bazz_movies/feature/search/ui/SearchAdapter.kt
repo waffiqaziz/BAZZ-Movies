@@ -42,10 +42,7 @@ class SearchAdapter(private val navigator: Navigator) :
         else -> holder.bindMovieTv(data)
       }
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(
-          holder.itemView.context,
-          fade_in
-        )
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
       )
     }
   }

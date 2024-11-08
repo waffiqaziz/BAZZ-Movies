@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCastItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCrewItemResponse
 import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCrewItem
 

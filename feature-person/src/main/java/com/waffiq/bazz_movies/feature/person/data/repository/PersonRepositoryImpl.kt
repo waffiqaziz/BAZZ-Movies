@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
-import com.waffiq.bazz_movies.core.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.domain.repository.IPersonRepository
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

@@ -26,7 +26,7 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.ui.R.string.no_biography
 import com.waffiq.bazz_movies.core.ui.R.string.no_data
 import com.waffiq.bazz_movies.core.ui.R.string.not_available
-import com.waffiq.bazz_movies.core.ui.adapter.ImagePagerAdapter
+import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.core.utils.common.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.utils.common.Constants.INSTAGRAM_LINK

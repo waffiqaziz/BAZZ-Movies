@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
-import com.waffiq.bazz_movies.core.domain.usecase.user_pref.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.user_pref.UserPrefUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

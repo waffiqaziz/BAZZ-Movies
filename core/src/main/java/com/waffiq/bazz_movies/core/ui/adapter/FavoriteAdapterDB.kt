@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.ui.adapter
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -40,14 +41,11 @@ class FavoriteAdapterDB(private val detailNavigator: DetailNavigator) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listItemDB[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(
-        holder.itemView.context,
-        android.R.anim.fade_in
-      )
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
   }
 
-  override fun getItemCount() = listItemDB.size
+  override fun getItemCount(): Int = listItemDB.size
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {

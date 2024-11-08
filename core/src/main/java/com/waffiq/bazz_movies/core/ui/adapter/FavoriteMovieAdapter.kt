@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.ui.adapter
 
+import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -34,10 +35,7 @@ class FavoriteMovieAdapter(private val detailNavigator: DetailNavigator) :
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(
-          holder.itemView.context,
-          android.R.anim.fade_in
-        )
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
       )
     }
   }

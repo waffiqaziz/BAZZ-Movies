@@ -19,14 +19,21 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.R.drawable.ic_trash
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.navigation.DetailNavigator
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.ui.R.color.red_matte
+import com.waffiq.bazz_movies.core.ui.R.color.yellow
+import com.waffiq.bazz_movies.core.ui.R.string.added_to_watchlist
+import com.waffiq.bazz_movies.core.ui.R.string.binding_error
+import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
 import com.waffiq.bazz_movies.core.utils.common.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
@@ -40,16 +47,9 @@ import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErr
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core.ui.R.color.red_matte
-import com.waffiq.bazz_movies.core.ui.R.color.yellow
-import com.waffiq.bazz_movies.core.ui.R.string.added_to_watchlist
-import com.waffiq.bazz_movies.core.ui.R.string.binding_error
-import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_favorite
-import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.databinding.FragmentMyFavoriteTvSeriesBinding
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.viewmodel.BaseViewModel
-import com.waffiq.bazz_movies.core.ui.viewmodel.UserPreferenceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

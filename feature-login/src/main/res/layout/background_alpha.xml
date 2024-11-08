@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/bg_alpha"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:alpha="0.5"
+  android:background="@color/gray_1000"
+  android:orientation="horizontal"
+  android:visibility="gone"
+  tools:visibility="visible" />

@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.domain.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.model.Stated
 import com.waffiq.bazz_movies.core.domain.model.post.Post
 import com.waffiq.bazz_movies.core.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {

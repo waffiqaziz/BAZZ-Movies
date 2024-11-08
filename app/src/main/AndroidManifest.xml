@@ -43,7 +43,7 @@
     -->
 
     <activity
-      android:name=".pages.LoginActivity"
+      android:name=".feature.login.ui.LoginActivity"
       android:exported="false" />
     <activity
       android:name=".pages.RoutingActivity"

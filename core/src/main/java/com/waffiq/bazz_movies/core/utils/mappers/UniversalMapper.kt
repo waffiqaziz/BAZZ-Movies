@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.utils.mappers
 
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 
