@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID

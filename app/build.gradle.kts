@@ -6,6 +6,7 @@ plugins {
   id("kotlin-parcelize")
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
+  alias(libs.plugins.dependency.analysis)
 }
 
 // apply the Google Services and Crashlytics if exist
@@ -90,37 +91,50 @@ android {
     viewBinding = true
     buildConfig = true
   }
-
-//  // disable when build ABB only enable when build APK
-//  lint {
-//    checkReleaseBuilds = false
-//    abortOnError = false
-//  }
 }
 
 dependencies {
   implementation(project(":core"))
+  implementation(project(":core-user"))
+  implementation(project(":core-network"))
   implementation(project(":core-ui"))
   implementation(project(":feature-detail"))
   implementation(project(":feature-home"))
+  implementation(project(":feature-login"))
+  implementation(project(":feature-more"))
   implementation(project(":feature-person"))
   implementation(project(":feature-search"))
   implementation(project(":navigation"))
 
   // jetpack library
-  implementation(libs.androidx.activity.ktx)
+  implementation(libs.androidx.core)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.fragment)
   implementation(libs.androidx.fragment.ktx)
+  implementation(libs.androidx.annotation)
+  implementation(libs.androidx.coordinatorlayout)
   implementation(libs.androidx.constraintlayout)
-  implementation(libs.androidx.navigation.fragment.ktx)
-  implementation(libs.androidx.navigation.ui.ktx)
   implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.core.splashscreen)
   implementation(libs.androidx.viewpager2)
-  implementation(libs.androidx.lifecycle.livedata.ktx)
-  implementation(libs.androidx.lifecycle.viewmodel.ktx)
-  implementation(libs.androidx.paging.runtime.ktx)
+  implementation(libs.androidx.recyclerview)
+
+  implementation(libs.androidx.lifecycle.common)
+  implementation(libs.androidx.lifecycle.livedata)
+  implementation(libs.androidx.lifecycle.livedata.core)
+  implementation(libs.androidx.lifecycle.viewmodel)
+  implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+
+  implementation(libs.androidx.navigation.ui)
+  implementation(libs.androidx.navigation.fragment)
+  implementation(libs.androidx.navigation.runtime)
+
+  implementation(libs.androidx.paging.common)
+  implementation(libs.androidx.paging.runtime)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
+  implementation(libs.google.material)
 
   // leakcanary
   debugImplementation(libs.leakcanary)
@@ -131,7 +145,6 @@ dependencies {
 
   // third-party library
   implementation(libs.expandable.textview)
-  implementation(libs.my.country.picker)
 
   // play integrity
   implementation(libs.play.integrity)
@@ -141,7 +154,16 @@ dependencies {
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
+  implementation(libs.androidx.datastore.core)
+  implementation(libs.androidx.datastore.preferences.core)
+
+  implementation(libs.jetbrains.coroutines.core)
+  implementation(libs.okhttp)
+
   // hilt
+  implementation(libs.google.dagger)
+  implementation(libs.google.hilt.core)
+  implementation(libs.javax.inject)
   implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

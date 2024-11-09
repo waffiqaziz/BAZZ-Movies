@@ -1,0 +1,19 @@
+package com.waffiq.bazz_movies.core.user.di
+
+import com.waffiq.bazz_movies.core.user.data.repository.UserRepository
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Suppress("Unused")
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserRepositoryModule {
+
+  @Binds
+  abstract fun bindUserRepository(
+    userRepository: UserRepository
+  ): IUserRepository
+}

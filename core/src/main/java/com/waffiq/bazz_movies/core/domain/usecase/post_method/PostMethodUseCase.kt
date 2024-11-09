@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.core.domain.usecase.post_method
 
-import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.post.Post
 import com.waffiq.bazz_movies.core.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface PostMethodUseCase {

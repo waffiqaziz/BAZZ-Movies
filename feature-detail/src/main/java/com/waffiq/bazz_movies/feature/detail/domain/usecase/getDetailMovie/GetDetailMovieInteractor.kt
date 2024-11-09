@@ -2,17 +2,17 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreIDs
 import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreName
+import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
+import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
+import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.transformLink
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
-import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
-import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
-import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

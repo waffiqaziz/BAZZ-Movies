@@ -38,10 +38,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(
-        holder.itemView.context,
-        fade_in
-      )
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
 
     // on click listener to open image inside dialog
@@ -53,7 +50,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     }
   }
 
-  override fun getItemCount() = listCast.size
+  override fun getItemCount(): Int = listCast.size
 
   inner class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {

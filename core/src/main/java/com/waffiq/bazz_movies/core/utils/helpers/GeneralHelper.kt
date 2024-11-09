@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.utils.helpers
 
+import android.R.anim.fade_out
 import android.animation.ArgbEvaluator
 import android.content.Context
 import android.graphics.text.LineBreaker
@@ -67,7 +68,7 @@ object GeneralHelper {
   }
 
   fun animFadeOutLong(context: Context): Animation {
-    val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
+    val animation = AnimationUtils.loadAnimation(context, fade_out)
     animation.duration = 750
     return animation
   }

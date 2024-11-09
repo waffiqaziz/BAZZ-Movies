@@ -30,10 +30,7 @@ class RecommendationAdapter(private val navigator: Navigator) :
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(
-          holder.itemView.context,
-          fade_in
-        )
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
       )
     }
   }

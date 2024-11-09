@@ -1,10 +1,9 @@
-import java.util.Properties
-
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
+  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -16,18 +15,6 @@ android {
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
-
-    val properties = Properties().apply {
-      load(project.rootProject.file("local.properties").inputStream())
-    }
-
-    // API KEY inside local.properties
-    buildConfigField("String", "API_KEY", "\"${properties["API_KEY"]}\"")
-    buildConfigField("String", "API_KEY_OMDb", "\"${properties["API_KEY_OMDb"]}\"")
-
-    // BASE URL
-    buildConfigField("String", "TMDB_API_URL", "\"https://api.themoviedb.org/\"")
-    buildConfigField("String", "OMDb_API_URL", "\"https://www.omdbapi.com/\"")
   }
 
   buildTypes {
@@ -54,20 +41,26 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
-  buildFeatures {
-    buildConfig = true
-  }
 }
 
 dependencies {
-  implementation(project(":core-ui"))
+  api(project(":core-ui"))
+  api(project(":core-network"))
+
+  api(libs.androidx.core)
+  api(libs.androidx.fragment)
+  api(libs.androidx.lifecycle.common)
+  implementation(libs.androidx.core.ktx)
+
+  api(libs.jetbrains.coroutines.core)
 
   // for item layout
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.google.material)
-  implementation(libs.androidx.cardview)
-
+  api(libs.androidx.recyclerview)
+  api(libs.google.material)
+  implementation(libs.androidx.constraintlayout)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+  implementation(libs.androidx.annotation)
 
 //  testImplementation(libs.junit)
 //  androidTestImplementation(libs.junit)
@@ -76,29 +69,28 @@ dependencies {
 //  androidTestImplementation(libs.androidx.test.ext.junit)
 //  androidTestImplementation(libs.espresso.core)
 
-  // datastore
-  implementation(libs.androidx.datastore.preferences)
-
   // room & paging
-  implementation(libs.androidx.room.runtime)
+  api(libs.androidx.paging.common)
+  api(libs.androidx.paging.runtime)
   implementation(libs.androidx.room.ktx)
-  implementation(libs.androidx.room.paging)
-  implementation(libs.androidx.paging.runtime.ktx)
-  implementation(libs.androidx.legacy.support.v4)
+  api(libs.androidx.room.runtime)
+  implementation(libs.androidx.room.common)
+  implementation(libs.androidx.sqlite)
   ksp(libs.androidx.room.room.compiler)
-
-  // retrofit & moshi
-  implementation(libs.retrofit)
-  implementation(libs.retrofit.converter.moshi)
-  implementation(libs.moshi.kotlin)
-  ksp(libs.moshi.kotlin.codegen)
-  implementation(libs.okhttp.logging.interceptor)
+  implementation(libs.jetbrains.parcelize.runtime)
 
   // glide
   implementation(libs.glide)
   ksp(libs.glide.compiler)
 
   // Hilt
-  implementation(libs.hilt.android)
+  api(libs.google.dagger)
+  api(libs.javax.inject)
+  api(libs.hilt.android)
+  implementation(libs.google.hilt.core)
   ksp(libs.hilt.android.compiler)
+}
+
+ksp {
+  arg("room.schemaLocation", "$projectDir/schemas")
 }

@@ -8,9 +8,6 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.core.data.local.model.UserModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.domain.model.Favorite
 import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.domain.usecase.get_favorite.GetFavoriteMovieUseCase
@@ -19,10 +16,13 @@ import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedMovieUseCa
 import com.waffiq.bazz_movies.core.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.domain.usecase.post_method.PostMethodUseCase
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.utils.common.Event
 import com.waffiq.bazz_movies.core.utils.result.DbResult
-import com.waffiq.bazz_movies.core.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.utils.result.SnackBarUserLoginData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

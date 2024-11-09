@@ -1,12 +1,12 @@
 package com.waffiq.bazz_movies.feature.person.utils.mapper
 
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.CastItemResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.CombinedCreditResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.CrewItemResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.DetailPersonResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.ExternalIDPersonResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.ImagePersonResponse
-import com.waffiq.bazz_movies.core.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
 import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson

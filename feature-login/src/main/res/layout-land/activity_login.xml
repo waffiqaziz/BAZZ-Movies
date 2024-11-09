@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/constraint_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.LoginActivity">
+
+  <!-- ========================== -->
+  <!--     BACKGROUND SECTION     -->
+  <!-- ========================== -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+
+    <ImageView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:contentDescription="@string/poster"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_login" />
+  </LinearLayout>
+  <!-- End of BACKGROUND SECTION -->
+
+  <!-- ========================== -->
+  <!--        HEADER SECTION      -->
+  <!-- ========================== -->
+  <include
+    android:id="@+id/layout_bazz_movies"
+    layout="@layout/custom_toolbar_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/default_margin_parent_20"
+    android:layout_marginTop="40dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <!-- Forget password button -->
+  <Button
+    android:id="@+id/btn_forget_password"
+    style="@style/MyTransparentButton"
+    android:layout_marginEnd="@dimen/default_margin_parent_20"
+    android:text="@string/forget_password"
+    app:layout_constraintBottom_toBottomOf="@+id/layout_bazz_movies"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/layout_bazz_movies" />
+  <!-- End of HEADER SECTION -->
+
+  <!-- ========================== -->
+  <!--     LOGIN FORM SECTION     -->
+  <!-- ========================== -->
+  <TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/text_login"
+    android:fontFamily="@font/nunito_sans_bold"
+    android:text="@string/login"
+    android:textColor="@color/white"
+    android:textSize="40sp"
+    app:layout_constraintBottom_toTopOf="@+id/ed_username"
+    app:layout_constraintStart_toStartOf="@+id/ed_username" />
+
+  <!-- Login Form -->
+  <EditText
+    android:id="@+id/ed_username"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:autofillHints="emailAddress"
+    android:fontFamily="@font/nunito_sans_regular"
+    android:hint="@string/username"
+    android:inputType="textEmailAddress"
+    android:minHeight="48dp"
+    android:textColor="@color/white"
+    android:textColorHint="@color/gray_400"
+    android:textColorLink="@color/white"
+    android:textCursorDrawable="@drawable/cursor_color"
+    app:layout_constraintBottom_toTopOf="@+id/ed_pass"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:ignore="DuplicateSpeakableTextCheck" />
+
+  <EditText
+    android:id="@+id/ed_pass"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:autofillHints="password"
+    android:fontFamily="@font/nunito_sans_regular"
+    android:hint="@string/password"
+    android:inputType="textPassword"
+    android:minHeight="48dp"
+    android:textColor="@color/white"
+    android:textColorHint="@color/gray_400"
+    android:textColorLink="@color/white"
+    android:textCursorDrawable="@drawable/cursor_color"
+    app:layout_constraintBottom_toTopOf="@+id/btn_login"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:ignore="LabelFor,DuplicateSpeakableTextCheck" />
+
+  <!-- Button show password -->
+  <ImageView
+    android:id="@+id/btn_eye"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginTop="-4dp"
+    android:layout_marginEnd="12dp"
+    android:adjustViewBounds="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:contentDescription="@string/hide_unhide_password"
+    android:padding="8dp"
+    android:scaleType="fitCenter"
+    android:src="@drawable/ic_eye_off"
+    app:layout_constraintBottom_toBottomOf="@+id/ed_pass"
+    app:layout_constraintEnd_toEndOf="@+id/ed_pass"
+    app:layout_constraintTop_toTopOf="@+id/ed_pass" />
+
+  <!-- Login button -->
+  <Button
+    android:id="@+id/btn_login"
+    style="@style/MyLoginButtonLand"
+    android:contentDescription="@string/login"
+    android:text="@string/login"
+    app:layout_constraintBottom_toTopOf="@+id/tv_guest"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:ignore="DuplicateSpeakableTextCheck" />
+
+  <!-- Guest button -->
+  <Button
+    android:id="@+id/tv_guest"
+    style="@style/MyTransparentButton"
+    android:text="@string/guest_session"
+    app:layout_constraintBottom_toTopOf="@+id/tv_joinTMDB"
+    app:layout_constraintEnd_toEndOf="@+id/btn_login"
+    app:layout_constraintStart_toStartOf="@+id/btn_login" />
+  <!-- End of LOGIN FORM SECTION -->
+
+  <!-- Create account button -->
+  <Button
+    android:id="@+id/tv_joinTMDB"
+    style="@style/MyTransparentButton"
+    android:layout_marginBottom="8dp"
+    android:gravity="center"
+    android:text="@string/join_tmdb"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/btn_login"
+    app:layout_constraintStart_toStartOf="@+id/btn_login" />
+
+  <!-- Background layout for overlay when loading -->
+  <include
+    android:id="@+id/layout_background"
+    layout="@layout/background_alpha" />
+
+  <!-- Progress bar -->
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="@style/MyProgressBar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

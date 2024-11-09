@@ -37,14 +37,11 @@ class CastAdapter(private val navigator: Navigator) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(
-        holder.itemView.context,
-        fade_in
-      )
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
   }
 
-  override fun getItemCount() = listCast.size
+  override fun getItemCount(): Int = listCast.size
 
   inner class ViewHolder(private var binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {

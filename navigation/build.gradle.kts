@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -41,9 +42,6 @@ android {
 }
 
 dependencies {
-  implementation(project(":core"))
-
-  implementation(libs.androidx.core.ktx)
-
+  api(project(":core"))
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

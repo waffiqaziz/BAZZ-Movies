@@ -6,9 +6,7 @@ import com.waffiq.bazz_movies.core.ui.R.string.tv_series
 
 object Constants {
   const val TABLE_NAME = "favorite"
-  const val INITIAL_PAGE_INDEX = 1
   const val SWIPE_THRESHOLD = 0.3f
-  const val DATASTORE_NAME = "user_data"
 
   const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
   const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
@@ -19,7 +17,6 @@ object Constants {
   const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200/"
   const val YOUTUBE_LINK_VIDEO = "https://www.youtube.com/watch?v="
   const val GRAVATAR_LINK = "https://secure.gravatar.com/avatar/"
-  const val COUNTRY_API_LINK = "https://api.country.is"
 
   const val INSTAGRAM_LINK = "https://www.instagram.com/"
   const val X_LINK = "https://x.com/"
