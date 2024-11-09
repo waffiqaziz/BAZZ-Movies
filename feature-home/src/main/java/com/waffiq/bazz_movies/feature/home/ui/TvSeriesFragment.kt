@@ -42,7 +42,6 @@ class TvSeriesFragment : Fragment() {
   private var uiController: UIController? = null
     get() = activity as? UIController
 
-  // Initialize adapters
   private lateinit var popularAdapter: TvAdapter
   private lateinit var nowPlayingAdapter: TvAdapter
   private lateinit var onTvAdapter: TvAdapter
@@ -66,6 +65,7 @@ class TvSeriesFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
 
     popularAdapter = TvAdapter(navigator)
     nowPlayingAdapter = TvAdapter(navigator)

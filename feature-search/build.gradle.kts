@@ -80,6 +80,9 @@ dependencies {
   api(libs.google.material)
   api(libs.android.veil)
 
+  implementation(libs.google.material)
+  implementation(libs.android.veil)
+
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // glide

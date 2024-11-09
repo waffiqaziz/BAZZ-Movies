@@ -49,7 +49,6 @@ class MovieFragment : Fragment() {
   private var uiController: UIController? = null
     get() = activity as? UIController
 
-  // Initialize adapters
   private lateinit var popularAdapter: MovieHomeAdapter
   private lateinit var nowPlayingAdapter: MovieHomeAdapter
   private lateinit var upComingAdapter: MovieHomeAdapter
