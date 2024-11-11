@@ -12,6 +12,14 @@ import androidx.paging.LoadState
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.core.movie.utils.common.Event
+import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
@@ -19,14 +27,6 @@ import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
@@ -58,9 +58,9 @@ class FeaturedFragment : Fragment() {
     get() = activity as? UIController
 
   // Initialize adapters
-  private lateinit var adapterTrending : TrendingAdapter
-  private lateinit var adapterUpcoming : MovieHomeAdapter
-  private lateinit var adapterPlayingNow : MovieHomeAdapter
+  private lateinit var adapterTrending: TrendingAdapter
+  private lateinit var adapterUpcoming: MovieHomeAdapter
+  private lateinit var adapterPlayingNow: MovieHomeAdapter
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -71,6 +71,13 @@ class FeaturedFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
   private var currentJob: Job? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    adapterTrending = TrendingAdapter(navigator)
+    adapterUpcoming = MovieHomeAdapter(navigator)
+    adapterPlayingNow = MovieHomeAdapter(navigator)
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -83,10 +90,6 @@ class FeaturedFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    adapterTrending = TrendingAdapter(navigator)
-    adapterUpcoming = MovieHomeAdapter(navigator)
-    adapterPlayingNow = MovieHomeAdapter(navigator)
 
     // Set up RecyclerViews with shimmer
     binding.apply {
@@ -211,7 +214,7 @@ class FeaturedFragment : Fragment() {
               isUnveil(true)
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
+                mSnackbar = uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
               }
             }
           }

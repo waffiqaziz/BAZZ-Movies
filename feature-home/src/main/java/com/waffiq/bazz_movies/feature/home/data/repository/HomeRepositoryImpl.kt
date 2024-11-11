@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.feature.home.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.model.ResultItem
+import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.utils.mappers.UniversalMapper.toResultItem
 import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getDateTwoWeeksFromToday
 import kotlinx.coroutines.flow.Flow

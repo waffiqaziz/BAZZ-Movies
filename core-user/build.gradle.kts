@@ -1,11 +1,11 @@
 import org.gradle.kotlin.dsl.libs
 
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-  api(project(":core"))
+  api(project(":core-movie"))
   api(project(":core-network"))
 
   api(libs.androidx.lifecycle.livedata.core)

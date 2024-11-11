@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import com.waffiq.bazz_movies.core.utils.common.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.model.utils.Constants.MOVIE_MEDIA_TYPE
 
 data class CastItem(
   val firstAirDate: String? = null,

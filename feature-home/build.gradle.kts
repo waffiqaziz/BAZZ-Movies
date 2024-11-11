@@ -1,10 +1,10 @@
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -48,13 +48,15 @@ android {
 }
 
 dependencies {
-  api(project(":core"))
   api(project(":core-network"))
   api(project(":core-ui"))
-  implementation(project(":navigation"))
+  api(project(":core-model"))
+  api(project(":navigation"))
+  implementation(project(":core-movie"))
   implementation(project(":core-user"))
   implementation(project(":feature-detail"))
 
+  implementation(libs.shimmer)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
@@ -79,9 +81,6 @@ dependencies {
 
   api(libs.google.material)
   api(libs.android.veil)
-
-  implementation(libs.google.material)
-  implementation(libs.android.veil)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 

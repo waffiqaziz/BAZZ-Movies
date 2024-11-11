@@ -2,12 +2,12 @@ import org.gradle.kotlin.dsl.android
 import org.gradle.kotlin.dsl.libs
 
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -54,7 +54,8 @@ dependencies {
   api(project(":core-network"))
   api(project(":core-ui"))
   api(project(":navigation"))
-  implementation(project(":core"))
+  implementation(project(":core-model"))
+  implementation(project(":core-movie"))
 
   api(libs.androidx.constraintlayout)
   api(libs.androidx.coordinatorlayout)
@@ -67,7 +68,6 @@ dependencies {
   api(libs.google.hilt.core)
   api(libs.javax.inject)
   implementation(libs.androidx.activity)
-  implementation(libs.androidx.activity.ktx)
   implementation(libs.androidx.annotation)
   implementation(libs.androidx.cardview)
   implementation(libs.androidx.lifecycle.common)

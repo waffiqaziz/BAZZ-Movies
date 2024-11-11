@@ -10,13 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.movie.utils.common.Event
+import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
-import com.waffiq.bazz_movies.core.utils.common.Constants
-import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
@@ -54,6 +54,14 @@ class TvSeriesFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    popularAdapter = TvAdapter(navigator)
+    nowPlayingAdapter = TvAdapter(navigator)
+    onTvAdapter = TvAdapter(navigator)
+    topRatedAdapter = TvAdapter(navigator)
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -63,14 +71,8 @@ class TvSeriesFragment : Fragment() {
     return binding.root
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-
-    popularAdapter = TvAdapter(navigator)
-    nowPlayingAdapter = TvAdapter(navigator)
-    onTvAdapter = TvAdapter(navigator)
-    topRatedAdapter = TvAdapter(navigator)
+  override fun onStart() {
+    super.onStart()
 
     // Set up RecyclerViews with shimmer
     binding.apply {
@@ -79,7 +81,10 @@ class TvSeriesFragment : Fragment() {
       rvOnTv.setupShimmer(requireContext(), onTvAdapter)
       rvTopRated.setupShimmer(requireContext(), topRatedAdapter)
     }
+  }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     setData()
   }
 
@@ -123,7 +128,7 @@ class TvSeriesFragment : Fragment() {
   private fun combinedLoadStatesHandle(adapter: TvAdapter) {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_SHORT).distinctUntilChanged()
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
             (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
@@ -142,7 +147,7 @@ class TvSeriesFragment : Fragment() {
               isUnveil(true)
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
+                mSnackbar = uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
               }
             }
           }

@@ -10,7 +10,9 @@
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:ignore="UselessParent">
 
     <!-- Photo actor/actress or poster movie/tv -->
     <com.google.android.material.imageview.ShapeableImageView
@@ -38,7 +40,8 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:text="Avenger Endgame"
-        app:layout_constrainedWidth="true" />
+        app:layout_constrainedWidth="true"
+        tools:ignore="HardcodedText" />
 
       <!-- Released year/department-->
       <TextView
@@ -47,7 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="2021" />
+        android:text="2021"
+        tools:ignore="HardcodedText" />
 
       <!-- Genre/playing as -->
       <TextView
@@ -59,7 +63,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Action, Adventure, Superhero, MCU, Sci-fi"
-        app:layout_constrainedWidth="true" />
+        app:layout_constrainedWidth="true"
+        tools:ignore="HardcodedText" />
 
     </LinearLayout>
   </LinearLayout>

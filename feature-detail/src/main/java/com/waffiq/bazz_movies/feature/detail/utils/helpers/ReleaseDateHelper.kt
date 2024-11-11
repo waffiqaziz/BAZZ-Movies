@@ -1,10 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
 
 /**
  * Used to get release date and its region

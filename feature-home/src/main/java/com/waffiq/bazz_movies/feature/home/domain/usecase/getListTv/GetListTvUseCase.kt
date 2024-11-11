@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.model.ResultItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetListTvUseCase {

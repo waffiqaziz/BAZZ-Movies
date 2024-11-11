@@ -16,21 +16,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_LINK_SIGNUP
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.CustomTypefaceSpan
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.ui.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.ui.R.string.guest_user
 import com.waffiq.bazz_movies.core.ui.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.ui.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.CustomTypefaceSpan
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.SnackBarManager
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
       )
       binding.btnLogin.isEnabled = true
       binding.tvGuest.isEnabled = true
-      SnackBarManager.snackBarWarning(
+      snackBarWarning(
         binding.constraintLayout,
         null,
         errorMessage

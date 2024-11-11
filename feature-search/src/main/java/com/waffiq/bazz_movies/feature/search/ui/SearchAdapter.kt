@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
+import com.waffiq.bazz_movies.core.model.MovieTvCastItem
+import com.waffiq.bazz_movies.core.model.ResultItem
+import com.waffiq.bazz_movies.core.model.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.PERSON_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.core.utils.common.Constants.PERSON_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.getKnownFor
-import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
 import com.waffiq.bazz_movies.navigation.Navigator
 
 class SearchAdapter(private val navigator: Navigator) :

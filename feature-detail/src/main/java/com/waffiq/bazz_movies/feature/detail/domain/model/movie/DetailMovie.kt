@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
-import com.waffiq.bazz_movies.core.domain.model.GenresItem
+import com.waffiq.bazz_movies.core.model.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 
 data class DetailMovie(
   val originalLanguage: String? = null,

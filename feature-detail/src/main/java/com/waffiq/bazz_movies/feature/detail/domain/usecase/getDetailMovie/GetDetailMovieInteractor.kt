@@ -1,10 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreIDs
-import com.waffiq.bazz_movies.core.utils.helpers.GenreHelper.getTransformGenreName
+import com.waffiq.bazz_movies.core.model.utils.GenreHelper.getTransformGenreIDs
+import com.waffiq.bazz_movies.core.model.utils.GenreHelper.getTransformGenreName
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -61,6 +60,6 @@ class GetDetailMovieInteractor @Inject constructor(
   override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
     detailRepository.getCreditMovies(movieId)
 
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
+  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)
 }

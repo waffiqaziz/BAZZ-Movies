@@ -10,18 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.movie.utils.common.Event
+import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
 import com.waffiq.bazz_movies.core.ui.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.ui.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.common.Constants
-import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
@@ -63,6 +63,14 @@ class MovieFragment : Fragment() {
 
   private var mSnackbar: Snackbar? = null
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    popularAdapter = MovieHomeAdapter(navigator)
+    nowPlayingAdapter = MovieHomeAdapter(navigator)
+    upComingAdapter = MovieHomeAdapter(navigator)
+    topRatedAdapter = MovieHomeAdapter(navigator)
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -74,11 +82,6 @@ class MovieFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    popularAdapter = MovieHomeAdapter(navigator)
-    nowPlayingAdapter = MovieHomeAdapter(navigator)
-    upComingAdapter = MovieHomeAdapter(navigator)
-    topRatedAdapter = MovieHomeAdapter(navigator)
 
     // Set up RecyclerViews with shimmer
     binding.apply {
@@ -164,7 +167,7 @@ class MovieFragment : Fragment() {
   private fun combinedLoadStatesHandle(adapter: MovieHomeAdapter) {
     viewLifecycleOwner.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(Constants.DEBOUNCE_SHORT).distinctUntilChanged()
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
         .collectLatest { loadState ->
           when {
             (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
@@ -183,7 +186,7 @@ class MovieFragment : Fragment() {
               isUnveil(true)
               pagingErrorState(loadState)?.let {
                 showView(adapter.itemCount > 0)
-                mSnackbar = uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
+                mSnackbar = uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
               }
             }
           }

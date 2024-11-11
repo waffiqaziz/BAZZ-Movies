@@ -1,7 +1,7 @@
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -48,6 +48,11 @@ dependencies {
   api(libs.androidx.appcompat)
   api(libs.google.material)
 
+  api(libs.androidx.fragment)
+  api(libs.androidx.lifecycle.common)
+  api(libs.androidx.viewpager2)
+
+  implementation(libs.shimmer)
   implementation(libs.androidx.annotation)
   implementation(libs.androidx.core.splashscreen)
 }

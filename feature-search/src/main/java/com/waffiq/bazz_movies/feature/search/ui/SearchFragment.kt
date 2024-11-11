@@ -26,15 +26,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.core.domain.model.search.ResultsItemSearch
+import com.waffiq.bazz_movies.core.movie.utils.common.Event
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.core.ui.R.color.yellow
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_search
-import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
@@ -217,7 +215,7 @@ class SearchFragment : Fragment() {
 
           // show snackbar
           pagingErrorState(loadState)?.let {
-            uiController?.showSnackbar(Event(pagingErrorHandling(it.error)))
+            uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
           }
         }
       }

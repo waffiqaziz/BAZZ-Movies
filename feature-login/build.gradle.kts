@@ -2,12 +2,12 @@ import org.gradle.kotlin.dsl.android
 import org.gradle.kotlin.dsl.libs
 
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -51,11 +51,11 @@ android {
 }
 
 dependencies {
-  api(project(":core"))
   api(project(":core-user"))
-  api(project(":core-network"))
   api(project(":core-ui"))
   api(project(":navigation"))
+  implementation(project(":core-network"))
+  implementation(project(":core-movie"))
 
   implementation(libs.androidx.core.ktx)
   api(libs.androidx.appcompat)

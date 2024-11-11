@@ -21,7 +21,7 @@
     tools:targetApi="34">
 
     <activity
-      android:name=".pages.AboutActivity"
+      android:name=".AboutActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
@@ -33,7 +33,7 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".pages.MainActivity"
+      android:name=".MainActivity"
       android:exported="false"
       android:label="@string/app_name_release"
       android:windowSoftInputMode="adjustPan" />
@@ -46,7 +46,7 @@
       android:name=".feature.login.ui.LoginActivity"
       android:exported="false" />
     <activity
-      android:name=".pages.RoutingActivity"
+      android:name=".RoutingActivity"
       android:exported="true"
       android:theme="@style/SplashScreenTheme">
       <intent-filter>

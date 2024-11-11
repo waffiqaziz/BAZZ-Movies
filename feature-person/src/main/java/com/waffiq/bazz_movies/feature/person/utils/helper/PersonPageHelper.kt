@@ -5,9 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.dateFormatterStandard
 import com.waffiq.bazz_movies.core.ui.R.string.no_data
 import com.waffiq.bazz_movies.core.ui.R.string.years_old
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
@@ -51,7 +51,7 @@ object PersonPageHelper {
   }
 
   fun formatBirthInfo(birthday: String?, placeOfBirth: String?): String {
-    var birthText = birthday?.let { GeneralHelper.dateFormatterStandard(it) }
+    var birthText = birthday?.let { dateFormatterStandard(it) }
     return if (birthText == null) {
       placeOfBirth.orEmpty()
     } else {
@@ -63,7 +63,7 @@ object PersonPageHelper {
   fun Context.formatDeathInfo(birthday: String?, deathday: String?): String {
     return deathday?.let { deathdayStr ->
       val ageAtDeath = birthday?.let { getAgeDeath(it, deathdayStr) } ?: ""
-      "${GeneralHelper.dateFormatterStandard(deathdayStr)} ($ageAtDeath ${getString(years_old)})"
+      "${dateFormatterStandard(deathdayStr)} ($ageAtDeath ${getString(years_old)})"
     } ?: getString(no_data)
   }
 

@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
-import com.waffiq.bazz_movies.core.domain.model.post.Post
+import com.waffiq.bazz_movies.core.model.Post
+import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
@@ -15,7 +16,6 @@ import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDet
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
-import com.waffiq.bazz_movies.core.utils.mappers.PostMapper.toPost
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

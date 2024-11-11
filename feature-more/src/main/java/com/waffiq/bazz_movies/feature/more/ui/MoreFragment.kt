@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_logo
@@ -31,21 +32,20 @@ import com.waffiq.bazz_movies.core.ui.R.string.yes
 import com.waffiq.bazz_movies.core.ui.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.common.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_VERY_LONG
-import com.waffiq.bazz_movies.core.utils.common.Constants.FAQ_LINK
-import com.waffiq.bazz_movies.core.utils.common.Constants.FORM_HELPER
-import com.waffiq.bazz_movies.core.utils.common.Constants.GRAVATAR_LINK
-import com.waffiq.bazz_movies.core.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.utils.common.Constants.PRIVACY_POLICY_LINK
-import com.waffiq.bazz_movies.core.utils.common.Constants.TERMS_CONDITIONS_LINK
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_AVATAR
-import com.waffiq.bazz_movies.core.utils.common.Event
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeInAlpha50
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.Animation.fadeOut
-import com.waffiq.bazz_movies.core.utils.helpers.uihelpers.UIController
-import com.waffiq.bazz_movies.core.utils.result.DbResult
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.ANIM_DURATION
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_VERY_LONG
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.FAQ_LINK
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.FORM_HELPER
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.GRAVATAR_LINK
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.NAN
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.PRIVACY_POLICY_LINK
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TERMS_CONDITIONS_LINK
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_AVATAR
+import com.waffiq.bazz_movies.core.movie.utils.common.Event
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.toastShort
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeOut
+import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.UIController
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -116,7 +116,7 @@ class MoreFragment : Fragment() {
               fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
               btnSignOutIsEnable(true)
               progressIsVisible(false)
-              mSnackbar = uiController?.showSnackbar(Event(networkResult.message))
+              mSnackbar = uiController?.showSnackbarWarning(Event(networkResult.message))
             }
 
             else -> {}
@@ -134,7 +134,7 @@ class MoreFragment : Fragment() {
 
             is DbResult.Error -> {
               progressIsVisible(false)
-              mSnackbar = uiController?.showSnackbar(Event(it.errorMessage))
+              mSnackbar = uiController?.showSnackbarWarning(Event(it.errorMessage))
             }
 
             else -> {}

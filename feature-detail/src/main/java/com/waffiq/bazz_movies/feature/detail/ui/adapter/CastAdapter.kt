@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
+import com.waffiq.bazz_movies.core.model.MovieTvCastItem
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.ui.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.navigation.Navigator
 
 class CastAdapter(private val navigator: Navigator) :

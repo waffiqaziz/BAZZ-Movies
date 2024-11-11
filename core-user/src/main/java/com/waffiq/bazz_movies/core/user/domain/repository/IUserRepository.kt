@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.user.domain.repository
 
-import com.waffiq.bazz_movies.core.domain.model.post.Post
+import com.waffiq.bazz_movies.core.model.Post
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel

@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.model.ResultItem
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.ui.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.core.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.navigation.Navigator
 
 class TrendingAdapter(private val navigator: Navigator) :

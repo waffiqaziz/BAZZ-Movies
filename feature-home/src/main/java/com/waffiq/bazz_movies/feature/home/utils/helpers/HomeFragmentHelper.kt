@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
 import com.skydoves.androidveil.VeilRecyclerFrameView
+import com.waffiq.bazz_movies.core.movie.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.ui.R.layout.item_poster
 import com.waffiq.bazz_movies.core.ui.R.string.data
 import com.waffiq.bazz_movies.core.ui.R.string.no_data
-import com.waffiq.bazz_movies.core.ui.adapter.LoadingStateAdapter
-import com.waffiq.bazz_movies.core.utils.common.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -103,7 +103,7 @@ object HomeFragmentHelper {
   }
 
   fun VeilRecyclerFrameView.setupShimmer(context: Context, adapter: PagingDataAdapter<*, *>) {
-    this.run {
+    this.apply {
       setVeilLayout(layout = item_poster)
       setAdapter(adapter.withLoadStateFooter(footer = LoadingStateAdapter { adapter.retry() }))
       setLayoutManager(initLinearLayoutManagerHorizontal(context))

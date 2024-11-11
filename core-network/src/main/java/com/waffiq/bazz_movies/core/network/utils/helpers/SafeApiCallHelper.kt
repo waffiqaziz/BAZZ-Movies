@@ -80,10 +80,10 @@ object SafeApiCallHelper {
     } catch (e: SocketTimeoutException) {
       Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
       NetworkResult.Error("Connection timed out. Please try again.")
-    } catch (e: retrofit2.HttpException) {
+    } catch (e: HttpException) {
       Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
       NetworkResult.Error("Something went wrong")
-    } catch (e: okio.IOException) {
+    } catch (e: IOException) {
       Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
       NetworkResult.Error("Please check your network connection")
     } catch (e: Exception) {

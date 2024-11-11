@@ -1,9 +1,9 @@
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -33,6 +33,8 @@ android {
     }
   }
   compileOptions {
+    isCoreLibraryDesugaringEnabled = true
+
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
@@ -46,25 +48,39 @@ android {
 
 dependencies {
   api(project(":core-ui"))
-  implementation(project(":core"))
-  implementation(project(":core-user"))
+  api(project(":core-network"))
+  api(project(":core-movie"))
+  api(project(":core-user"))
+  api(project(":navigation"))
+  api(project(":core-database"))
 
-  implementation(libs.country.picker.android)
+  api(libs.androidx.coordinatorlayout)
+  api(libs.androidx.fragment)
+  api(libs.androidx.lifecycle.livedata.core)
+  api(libs.androidx.lifecycle.viewmodel)
+  api(libs.jetbrains.coroutines.core)
+  implementation(libs.androidx.annotation)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.core)
+  implementation(libs.androidx.lifecycle.common)
+
+  api(libs.country.picker.android)
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
-  implementation(libs.google.material)
+  api(libs.google.material)
+
+  coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // glide
   implementation(libs.glide)
-  implementation(project(":navigation"))
   ksp(libs.glide.compiler)
 
   // Hilt
   api(libs.google.dagger)
   api(libs.javax.inject)
   api(libs.hilt.android)
-  implementation(libs.google.hilt.core)
+  api(libs.google.hilt.core)
   ksp(libs.hilt.android.compiler)
 }

@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
+import com.waffiq.bazz_movies.core.model.GenresItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
@@ -28,7 +29,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieTvCastMapper.toM
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieTvCastMapper.toMovieTvCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
-import com.waffiq.bazz_movies.core.domain.model.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem

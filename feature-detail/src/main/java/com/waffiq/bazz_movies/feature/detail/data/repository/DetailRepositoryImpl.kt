@@ -2,14 +2,13 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.utils.mappers.UniversalMapper.toResultItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
+import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -98,12 +97,12 @@ class DetailRepositoryImpl @Inject constructor(
       }
     }
 
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
+  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>> =
     movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
 
-  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
+  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>> =
     movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }

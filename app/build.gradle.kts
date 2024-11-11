@@ -1,12 +1,12 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 plugins {
+  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.dependency.analysis)
 }
 
 // apply the Google Services and Crashlytics if exist
@@ -94,12 +94,16 @@ android {
 }
 
 dependencies {
-  implementation(project(":core"))
+  implementation(project(":core-movie"))
   implementation(project(":core-user"))
   implementation(project(":core-network"))
   implementation(project(":core-ui"))
+  implementation(project(":core-model"))
+  implementation(project(":core-database"))
   implementation(project(":feature-detail"))
   implementation(project(":feature-home"))
+  implementation(project(":feature-favorite"))
+  implementation(project(":feature-watchlist"))
   implementation(project(":feature-login"))
   implementation(project(":feature-more"))
   implementation(project(":feature-person"))
@@ -108,20 +112,15 @@ dependencies {
 
   // jetpack library
   implementation(libs.androidx.core)
-  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.fragment)
-  implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.annotation)
   implementation(libs.androidx.coordinatorlayout)
   implementation(libs.androidx.constraintlayout)
-  implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.core.splashscreen)
-  implementation(libs.androidx.viewpager2)
-  implementation(libs.androidx.recyclerview)
 
   implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.livedata)
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)
   implementation(libs.androidx.lifecycle.viewmodel.savedstate)
@@ -140,7 +139,6 @@ dependencies {
   debugImplementation(libs.leakcanary)
 
   // glide
-  implementation(libs.glide)
   ksp(libs.glide.compiler)
 
   // third-party library
@@ -157,10 +155,10 @@ dependencies {
   implementation(libs.androidx.datastore.core)
   implementation(libs.androidx.datastore.preferences.core)
 
-  implementation(libs.jetbrains.coroutines.core)
   implementation(libs.okhttp)
 
   // hilt
+  implementation(libs.guava)
   implementation(libs.google.dagger)
   implementation(libs.google.hilt.core)
   implementation(libs.javax.inject)

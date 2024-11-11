@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -15,5 +14,5 @@ interface GetDetailMovieUseCase {
 
   suspend fun getLinkVideoMovies(movieId: Int): Flow<NetworkResult<String>>
   suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>>
-  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>>
+  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>>
 }
