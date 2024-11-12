@@ -1,7 +1,8 @@
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.hilt
 import org.gradle.kotlin.dsl.libs
 
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -50,43 +51,27 @@ android {
 }
 
 dependencies {
-  api(project(":core-movie"))
-  api(project(":core-user"))
-  api(project(":core-model"))
-  api(project(":core-database"))
-  api(project(":core-network"))
-  api(project(":core-ui"))
-  api(project(":navigation"))
+  implementation(project(":core-movie"))
+  implementation(project(":core-user"))
+  implementation(project(":core-model"))
+  implementation(project(":core-database"))
+  implementation(project(":core-network"))
+  implementation(project(":core-ui"))
+  implementation(project(":navigation"))
 
-  api(libs.androidx.coordinatorlayout)
-  api(libs.androidx.fragment)
-  api(libs.androidx.lifecycle.livedata.core)
-  api(libs.androidx.lifecycle.viewmodel)
-  api(libs.androidx.recyclerview)
-  api(libs.androidx.viewpager2)
-  api(libs.jetbrains.coroutines.core)
-  implementation(libs.androidx.annotation)
-  implementation(libs.androidx.core)
-  implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.livedata)
-
-  implementation(libs.androidx.appcompat)
-  api(libs.google.material)
-  api(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
-
+  implementation(libs.androidx.viewpager2)
+  implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.google.material)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
   // room & paging
-  api(libs.androidx.paging.common)
-  runtimeOnly(libs.androidx.paging.runtime)
-  api(libs.androidx.room.runtime)
+  implementation(libs.androidx.paging.runtime)
+  implementation(libs.androidx.room.common)
   ksp(libs.androidx.room.room.compiler)
 
   // Hilt
-  api(libs.google.dagger)
-  api(libs.javax.inject)
-  api(libs.hilt.android)
-  api(libs.google.hilt.core)
+  implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

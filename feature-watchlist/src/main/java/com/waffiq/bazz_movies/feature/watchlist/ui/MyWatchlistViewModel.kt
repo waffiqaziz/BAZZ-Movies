@@ -15,8 +15,8 @@ import com.waffiq.bazz_movies.core.model.ResultItem
 import com.waffiq.bazz_movies.core.model.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.movie.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.get_stated.GetStatedTvUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.get_watchlist.GetWatchlistMovieUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.get_watchlist.GetWatchlistTvUseCase
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistMovieUseCase
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.post_method.PostMethodUseCase
 import com.waffiq.bazz_movies.core.movie.utils.common.Event
 import com.waffiq.bazz_movies.core.movie.utils.result.SnackBarUserLoginData

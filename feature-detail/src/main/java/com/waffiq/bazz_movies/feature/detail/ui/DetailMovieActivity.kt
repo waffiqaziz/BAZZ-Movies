@@ -55,11 +55,13 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_hearth
+import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.core.ui.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core.ui.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core.ui.R.string.item_added_to_watchlist
-import com.waffiq.bazz_movies.core.ui.R.string.item_deleted_from_favorite
-import com.waffiq.bazz_movies.core.ui.R.string.item_deleted_from_watchlist
+import com.waffiq.bazz_movies.core.ui.R.string.item_removed_from_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.ui.R.string.no_overview
 import com.waffiq.bazz_movies.core.ui.R.string.not_available
 import com.waffiq.bazz_movies.core.ui.R.string.not_available_full
@@ -115,11 +117,11 @@ class DetailMovieActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
+    initTag()
+    showLoadingDim(true)
 
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
-
-    showLoadingDim(true)
 
     detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     errorStateObserver()
@@ -136,6 +138,11 @@ class DetailMovieActivity : AppCompatActivity() {
     viewListener()
   }
 
+  private fun initTag() {
+    binding.btnFavorite.tag = ic_hearth
+    binding.btnWatchlist.tag = ic_bookmark
+  }
+
   private fun favWatchlistHandler() {
     detailViewModel.postModelState.observe(this) { eventResult ->
       eventResult.getContentIfNotHandled()?.let { postModelState ->
@@ -148,9 +155,9 @@ class DetailMovieActivity : AppCompatActivity() {
             }
           } else {
             if (postModelState.isFavorite) {
-              showToast(getString(item_deleted_from_favorite))
+              showToast(getString(item_removed_from_favorite))
             } else {
-              showToast(getString(item_deleted_from_watchlist))
+              showToast(getString(item_removed_from_watchlist))
             }
           }
         }
@@ -597,19 +604,19 @@ class DetailMovieActivity : AppCompatActivity() {
           favorite = it.favorite
           watchlist = it.watchlist
           showRatingUserLogin(it)
-          changeBtnFavoriteBG(this, binding.btnFavorite, it.favorite)
-          changeBtnWatchlistBG(this, binding.btnWatchlist, it.watchlist)
+          changeBtnFavoriteBG(binding.btnFavorite, it.favorite)
+          changeBtnWatchlistBG(binding.btnWatchlist, it.watchlist)
         }
       }
     } else { // guest user
       detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
       detailViewModel.isFavorite.observe(this) {
-        changeBtnFavoriteBG(this, binding.btnFavorite, it)
+        changeBtnFavoriteBG(binding.btnFavorite, it)
         favorite = it
       }
       detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
       detailViewModel.isWatchlist.observe(this) {
-        changeBtnWatchlistBG(this, binding.btnWatchlist, it)
+        changeBtnWatchlistBG(binding.btnWatchlist, it)
         watchlist = it
       }
     }

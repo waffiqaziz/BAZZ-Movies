@@ -239,6 +239,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_parent_20"
             android:layout_marginTop="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
             app:animDuration="1000"
             app:collapsedLines="3"
             app:ellipsizeTextColor="@color/yellow"

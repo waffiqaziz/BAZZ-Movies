@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 /**
  * Used to retrieving age ratings based on the user's or others region
  */
+@Suppress("unused")
 object AgeRatingHelper {
   // region CALCULATE AGE RATING MOVIE
   fun getAgeRating(

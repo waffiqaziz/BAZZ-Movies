@@ -35,7 +35,7 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_trash
 import com.waffiq.bazz_movies.core.ui.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.ui.R.string.binding_error
-import com.waffiq.bazz_movies.core.ui.R.string.deleted_from_favorite
+import com.waffiq.bazz_movies.core.ui.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.ui.R.string.undo
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentMyFavoriteTvSeriesBinding
@@ -250,7 +250,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
         requireActivity().findViewById(snackbarAnchor),
         HtmlCompat.fromHtml(
           "<b>$title</b> " +
-            if (delete) getString(deleted_from_favorite) else getString(added_to_watchlist),
+            if (delete) getString(removed_from_favorite) else getString(added_to_watchlist),
           HtmlCompat.FROM_HTML_MODE_LEGACY
         ),
         Snackbar.LENGTH_LONG
@@ -317,7 +317,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       requireActivity().findViewById(snackbarAnchor),
       HtmlCompat.fromHtml(
         "<b>$title</b> " +
-          if (isWantToDelete) getString(deleted_from_favorite) else getString(added_to_watchlist),
+          if (isWantToDelete) getString(removed_from_favorite) else getString(added_to_watchlist),
         HtmlCompat.FROM_HTML_MODE_LEGACY
       ),
       Snackbar.LENGTH_LONG

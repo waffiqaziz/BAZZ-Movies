@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.model.MovieTvCastItem
 import com.waffiq.bazz_movies.core.model.ResultItem
-import com.waffiq.bazz_movies.core.model.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.model.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.core.movie.utils.common.Constants.PERSON_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_IMG_LINK_POSTER_W185
@@ -121,7 +121,7 @@ class SearchAdapter(private val navigator: Navigator) :
       if (data.listGenreIds?.isEmpty() == true) {
         view.context.getString(not_available)
       } else {
-        data.listGenreIds?.let { getGenreName(it) }
+        data.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
       }
   }
 

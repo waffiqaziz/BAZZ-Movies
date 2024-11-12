@@ -1,5 +1,4 @@
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -42,23 +41,16 @@ android {
 }
 
 dependencies {
-  api(project(":core-model"))
+  implementation(project(":core-model"))
 
   // room & paging
   implementation(libs.androidx.room.ktx)
-  api(libs.androidx.room.runtime)
-  implementation(libs.androidx.room.common)
-  implementation(libs.androidx.sqlite)
+  implementation(libs.androidx.room.paging)
+  implementation(libs.androidx.paging.runtime.ktx)
   ksp(libs.androidx.room.room.compiler)
-  implementation(libs.jetbrains.parcelize.runtime)
-  api(libs.jetbrains.coroutines.core)
 
   // Hilt
-  implementation(libs.androidx.annotation)
-  api(libs.google.dagger)
-  api(libs.javax.inject)
-  api(libs.hilt.android)
-  implementation(libs.google.hilt.core)
+  implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }
 

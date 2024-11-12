@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.movie.domain.usecase.get_favorite
+package com.waffiq.bazz_movies.feature.favorite.domain.usecase
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.model.ResultItem

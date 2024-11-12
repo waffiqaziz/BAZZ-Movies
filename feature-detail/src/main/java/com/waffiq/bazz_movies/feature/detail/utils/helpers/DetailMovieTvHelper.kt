@@ -47,11 +47,11 @@ object DetailMovieTvHelper {
     return job to name
   }
 
-  fun transformLink(video: Video): String {
-    return video.results
+  fun Video.toLink(): String {
+    return this.results
       .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) }
       .map { it.key }.firstOrNull()?.trim()
-      ?: video.results.map { it.key }.firstOrNull()?.trim()
+      ?: this.results.map { it.key }.firstOrNull()?.trim()
       ?: ""
   }
 

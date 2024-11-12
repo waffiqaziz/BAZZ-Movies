@@ -43,7 +43,7 @@ object GenreHelper {
     return genreNameMap[int] ?: ""
   }
 
-  fun getGenreName(data: List<Int>): String {
+  fun transformListGenreIdsToJoinName(data: List<Int>): String {
     return data
       .map { getGenreName(it) }
       .filter { it.isNotEmpty() }
@@ -88,7 +88,7 @@ object GenreHelper {
   }
 
   @Suppress("UNUSED")
-  fun getGenreCode(data: List<String>): String {
+  fun transformToGenreCode(data: List<String>): String {
     var temp = ""
 
     /**
@@ -102,9 +102,9 @@ object GenreHelper {
     return temp
   }
 
-  fun getTransformGenreName(list: List<GenresItem>?): String? =
+  fun transformListGenreToJoinString(list: List<GenresItem>?): String? =
     list?.map { it.name }?.joinToString(separator = ", ")
 
-  fun getTransformGenreIDs(list: List<GenresItem>?): List<Int>? =
+  fun transformToGenreIDs(list: List<GenresItem>?): List<Int>? =
     list?.map { it.id ?: 0 }
 }

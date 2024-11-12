@@ -1,5 +1,4 @@
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
 }
@@ -40,5 +39,5 @@ android {
 }
 
 dependencies {
-  api(project(":core-model"))
+  implementation(project(":core-model"))
 }

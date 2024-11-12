@@ -2,7 +2,6 @@ import org.gradle.kotlin.dsl.android
 import org.gradle.kotlin.dsl.libs
 
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -51,38 +50,20 @@ android {
 }
 
 dependencies {
-  api(project(":core-movie"))
-  api(project(":core-network"))
-  api(project(":core-ui"))
-  api(project(":navigation"))
+  implementation(project(":core-movie"))
+  implementation(project(":core-network"))
+  implementation(project(":core-ui"))
+  implementation(project(":navigation"))
   implementation(project(":core-model"))
-
-  api(libs.androidx.coordinatorlayout)
-  api(libs.androidx.fragment)
-  api(libs.androidx.lifecycle.livedata.core)
-  api(libs.androidx.lifecycle.viewmodel)
-  api(libs.androidx.paging.runtime)
-  api(libs.androidx.recyclerview)
-  api(libs.google.dagger)
-  api(libs.google.hilt.core)
-  api(libs.javax.inject)
-  api(libs.jetbrains.coroutines.core)
-  implementation(libs.androidx.annotation)
-  implementation(libs.androidx.core)
-  implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.runtime)
-  implementation(libs.androidx.paging.common)
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
-  implementation(libs.androidx.appcompat)
-  api(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.swiperefreshlayout)
 
-  api(libs.google.material)
-  api(libs.android.veil)
+  implementation(libs.androidx.paging.runtime)
 
-  api(libs.google.material)
-  api(libs.android.veil)
+  implementation(libs.google.material)
+  implementation(libs.android.veil)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
@@ -91,6 +72,6 @@ dependencies {
   ksp(libs.glide.compiler)
 
   // hilt
-  api(libs.hilt.android)
+  implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

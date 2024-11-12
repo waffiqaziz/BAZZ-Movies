@@ -1,5 +1,4 @@
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -44,23 +43,16 @@ android {
 }
 
 dependencies {
-  api(project(":core-ui"))
-  api(project(":core-model"))
-  api(project(":core-network"))
-  api(project(":core-database"))
-  api(project(":navigation"))
+  implementation(project(":core-ui"))
+  implementation(project(":core-model"))
+  implementation(project(":core-network"))
+  implementation(project(":core-database"))
+  implementation(project(":navigation"))
 
-  api(libs.androidx.core)
-  api(libs.androidx.fragment)
-  api(libs.androidx.lifecycle.common)
+  implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.core.ktx)
+  implementation(libs.google.material)
 
-  api(libs.jetbrains.coroutines.core)
-
-  // for item layout
-  api(libs.androidx.recyclerview)
-  api(libs.google.material)
-  implementation(libs.androidx.constraintlayout)
   coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 //  testImplementation(libs.junit)
@@ -70,20 +62,14 @@ dependencies {
 //  androidTestImplementation(libs.androidx.test.ext.junit)
 //  androidTestImplementation(libs.espresso.core)
 
-  // room & paging
-  api(libs.androidx.paging.common)
-  api(libs.androidx.paging.runtime)
-  runtimeOnly(libs.androidx.room.runtime)
-  ksp(libs.androidx.room.room.compiler)
+  // paging
+  implementation(libs.androidx.paging.runtime)
 
   // glide
   implementation(libs.glide)
   ksp(libs.glide.compiler)
 
   // Hilt
-  api(libs.google.dagger)
-  api(libs.javax.inject)
   implementation(libs.hilt.android)
-  implementation(libs.google.hilt.core)
   ksp(libs.hilt.android.compiler)
 }

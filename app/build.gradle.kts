@@ -1,7 +1,8 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.hilt
 
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -94,52 +95,36 @@ android {
 }
 
 dependencies {
+  implementation(project(":core-database"))
+  implementation(project(":core-model"))
   implementation(project(":core-movie"))
-  implementation(project(":core-user"))
   implementation(project(":core-network"))
   implementation(project(":core-ui"))
-  implementation(project(":core-model"))
-  implementation(project(":core-database"))
+  implementation(project(":core-user"))
   implementation(project(":feature-detail"))
-  implementation(project(":feature-home"))
   implementation(project(":feature-favorite"))
-  implementation(project(":feature-watchlist"))
+  implementation(project(":feature-home"))
   implementation(project(":feature-login"))
   implementation(project(":feature-more"))
   implementation(project(":feature-person"))
   implementation(project(":feature-search"))
+  implementation(project(":feature-watchlist"))
   implementation(project(":navigation"))
 
   // jetpack library
-  implementation(libs.androidx.core)
+  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
-  implementation(libs.androidx.fragment)
-  implementation(libs.androidx.annotation)
-  implementation(libs.androidx.coordinatorlayout)
-  implementation(libs.androidx.constraintlayout)
   implementation(libs.androidx.core.splashscreen)
-
-  implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.livedata.core)
-  implementation(libs.androidx.lifecycle.viewmodel)
-  implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
   implementation(libs.androidx.navigation.ui)
   implementation(libs.androidx.navigation.fragment)
-  implementation(libs.androidx.navigation.runtime)
-
-  implementation(libs.androidx.paging.common)
-  implementation(libs.androidx.paging.runtime)
+  implementation(libs.google.material)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-  implementation(libs.google.material)
 
   // leakcanary
   debugImplementation(libs.leakcanary)
-
-  // glide
-  ksp(libs.glide.compiler)
 
   // third-party library
   implementation(libs.expandable.textview)
@@ -152,16 +137,7 @@ dependencies {
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
-  implementation(libs.androidx.datastore.core)
-  implementation(libs.androidx.datastore.preferences.core)
-
-  implementation(libs.okhttp)
-
-  // hilt
-  implementation(libs.guava)
-  implementation(libs.google.dagger)
-  implementation(libs.google.hilt.core)
-  implementation(libs.javax.inject)
+  // Hilt
   implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

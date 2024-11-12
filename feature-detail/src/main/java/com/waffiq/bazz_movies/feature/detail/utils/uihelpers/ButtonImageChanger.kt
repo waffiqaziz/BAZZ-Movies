@@ -4,11 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
-import androidx.core.app.ActivityCompat
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.core.ui.R.drawable.ic_hearth
@@ -19,23 +17,19 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_hearth_selected
  */
 object ButtonImageChanger {
   fun changeBtnWatchlistBG(
-    context: Context,
     btnWatchlist: ImageButton,
     isActivated: Boolean
   ) {
-    if (isActivated && btnWatchlist.drawable.constantState ==
-      ActivityCompat.getDrawable(context, ic_bookmark_selected)?.constantState
-    ) {
-      return
-    }
+    // Determine the resource ID for the target drawable based on isActivated state
+    val targetRes = if (isActivated) ic_bookmark_selected else ic_bookmark
 
-    if (!isActivated && btnWatchlist.drawable.constantState ==
-      ActivityCompat.getDrawable(context, ic_bookmark)?.constantState
-    ) {
-      return
-    }
+    // Check if btnFavorite already has the correct resource by using the tag
+    val currentDrawableRes = btnWatchlist.tag as? Int
+    if (currentDrawableRes == targetRes) return
 
-    val toRes = if (isActivated) ic_bookmark_selected else ic_bookmark
+    // Update the tag with the new resource ID
+    btnWatchlist.tag = targetRes
+
     val scaleXAnimator =
       ObjectAnimator.ofFloat(btnWatchlist, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
         duration = 300
@@ -60,7 +54,7 @@ object ButtonImageChanger {
 
     set.addListener(object : AnimatorListenerAdapter() {
       override fun onAnimationEnd(animation: Animator) {
-        btnWatchlist.setImageResource(toRes)
+        btnWatchlist.setImageResource(targetRes)
         ObjectAnimator.ofFloat(btnWatchlist, View.ALPHA, 0f, 1f).apply {
           duration = 150
           interpolator = AccelerateDecelerateInterpolator()
@@ -72,23 +66,20 @@ object ButtonImageChanger {
   }
 
   fun changeBtnFavoriteBG(
-    context: Context,
     btnFavorite: ImageButton,
     isActivated: Boolean
   ) {
-    if (isActivated && btnFavorite.drawable.constantState ==
-      ActivityCompat.getDrawable(context, ic_hearth_selected)?.constantState
-    ) {
-      return
-    }
 
-    if (!isActivated && btnFavorite.drawable.constantState ==
-      ActivityCompat.getDrawable(context, ic_hearth)?.constantState
-    ) {
-      return
-    }
+    // Determine the resource ID for the target drawable based on isActivated state
+    val targetRes = if (isActivated) ic_hearth_selected else ic_hearth
 
-    val toRes = if (isActivated) ic_hearth_selected else ic_hearth
+    // Check if btnFavorite already has the correct resource by using the tag
+    val currentDrawableRes = btnFavorite.tag as? Int
+    if (currentDrawableRes == targetRes) return
+
+    // Update the tag with the new resource ID
+    btnFavorite.tag = targetRes
+
     val scaleXAnimator =
       ObjectAnimator.ofFloat(btnFavorite, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
         duration = 300
@@ -113,7 +104,7 @@ object ButtonImageChanger {
 
     set.addListener(object : AnimatorListenerAdapter() {
       override fun onAnimationEnd(animation: Animator) {
-        btnFavorite.setImageResource(toRes)
+        btnFavorite.setImageResource(targetRes)
         ObjectAnimator.ofFloat(btnFavorite, View.ALPHA, 0f, 1f).apply {
           duration = 150
           interpolator = AccelerateDecelerateInterpolator()

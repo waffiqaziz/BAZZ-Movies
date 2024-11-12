@@ -13,8 +13,8 @@ import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalD
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.model.ResultItem
 import com.waffiq.bazz_movies.core.model.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.movie.domain.usecase.get_favorite.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.get_favorite.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.get_stated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.get_stated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.post_method.PostMethodUseCase

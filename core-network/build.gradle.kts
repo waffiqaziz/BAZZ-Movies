@@ -1,8 +1,9 @@
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.hilt
 import java.util.Properties
 import kotlin.apply
 
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.hilt)
@@ -62,22 +63,17 @@ android {
 }
 
 dependencies {
-  api(libs.androidx.paging.common)
-  api(libs.jetbrains.coroutines.core)
+  implementation(libs.androidx.paging.common)
+  implementation(libs.jetbrains.coroutines.core)
 
   // retrofit & moshi
-  api(libs.retrofit)
-  api(libs.okhttp)
+  implementation(libs.retrofit)
   implementation(libs.retrofit.converter.moshi)
-  implementation(libs.okhttp.logging.interceptor)
-  api(libs.moshi)
   implementation(libs.moshi.kotlin)
   ksp(libs.moshi.kotlin.codegen)
+  implementation(libs.okhttp.logging.interceptor)
 
   // Hilt
-  api(libs.google.dagger)
-  api(libs.javax.inject)
-  api(libs.hilt.android)
-  implementation(libs.google.hilt.core)
+  implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

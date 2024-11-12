@@ -1,8 +1,8 @@
 import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.hilt
 import org.gradle.kotlin.dsl.libs
 
 plugins {
-  alias(libs.plugins.dependency.analysis)
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   id("kotlin-parcelize")
@@ -51,49 +51,30 @@ android {
 }
 
 dependencies {
-  api(project(":core-movie"))
-  api(project(":core-user"))
-  api(project(":core-model"))
-  api(project(":core-database"))
-  api(project(":core-network"))
-  api(project(":core-ui"))
-  api(project(":navigation"))
+  implementation(project(":core-movie"))
+  implementation(project(":core-user"))
+  implementation(project(":core-model"))
+  implementation(project(":core-database"))
+  implementation(project(":core-network"))
+  implementation(project(":core-ui"))
+  implementation(project(":navigation"))
 
-  api(libs.androidx.core)
   implementation(libs.androidx.core.ktx)
-  api(libs.androidx.coordinatorlayout)
-  api(libs.androidx.constraintlayout)
-  api(libs.androidx.lifecycle.livedata.core)
-  api(libs.androidx.lifecycle.viewmodel)
-  api(libs.androidx.recyclerview)
-  api(libs.androidx.cardview)
-  api(libs.androidx.appcompat)
-  api(libs.google.material)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.cardview)
+  implementation(libs.androidx.swiperefreshlayout)
 
-  api(libs.androidx.paging.runtime)
-
-  api(libs.jetbrains.coroutines.core)
+  implementation(libs.androidx.paging.runtime)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-  api(libs.androidx.swiperefreshlayout)
-  implementation(libs.androidx.activity)
-  implementation(libs.androidx.annotation)
-  implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.livedata)
-  implementation(libs.androidx.lifecycle.runtime)
-  implementation(libs.androidx.paging.common)
 
   // glide
   implementation(libs.glide)
   ksp(libs.glide.compiler)
 
-  api(libs.expandable.textview)
+  implementation(libs.expandable.textview)
 
-  // hilt
-  api(libs.google.hilt.core)
-  api(libs.hilt.android)
-  api(libs.google.dagger)
-  api(libs.javax.inject)
+  // Hilt
+  implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }

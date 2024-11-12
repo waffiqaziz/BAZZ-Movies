@@ -80,6 +80,7 @@ cpa = "0.1.2"
 
 coroutinesCore = "1.9.0"
 parcelize = "2.0.21"
+pagingCommonAndroid = "3.3.2"
 
 [libraries]
 # AndroidX Libraries
@@ -184,6 +185,7 @@ guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 jetbrains-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
 jetbrains-parcelize-runtime = { group = "org.jetbrains.kotlin", name = "kotlin-parcelize-runtime", version.ref = "parcelize" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
 
 [plugins]
 # Core

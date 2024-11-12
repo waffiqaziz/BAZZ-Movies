@@ -50,9 +50,9 @@ dependencies {
   androidTestImplementation(libs.androidx.espresso.core)
 
   // Hilt
-  api(libs.google.dagger)
-  api(libs.javax.inject)
-  api(libs.hilt.android)
+  implementation(libs.google.dagger)
+  implementation(libs.javax.inject)
+  implementation(libs.hilt.android)
   implementation(libs.google.hilt.core)
   ksp(libs.hilt.android.compiler)
 }

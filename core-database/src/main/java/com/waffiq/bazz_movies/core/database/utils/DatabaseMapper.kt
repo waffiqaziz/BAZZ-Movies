@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.model.ResultItem
 import com.waffiq.bazz_movies.core.model.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.model.utils.GenreHelper.getGenreName
+import com.waffiq.bazz_movies.core.model.utils.GenreHelper.transformListGenreIdsToJoinName
 
 object DatabaseMapper {
 
@@ -20,7 +20,7 @@ object DatabaseMapper {
     rating = voteAverage ?: 0.0f,
     backDrop = backdropPath ?: NOT_AVAILABLE,
     poster = posterPath ?: NOT_AVAILABLE,
-    genre = getGenreName(listGenreIds ?: listOf()),
+    genre = transformListGenreIdsToJoinName(listGenreIds ?: listOf()),
     popularity = popularity ?: 0.0,
     overview = overview ?: NOT_AVAILABLE,
     isFavorite = isFavorite,
