@@ -22,6 +22,7 @@ playIntegrity = "1.4.0"
 # Development tools
 leakcanary = "2.14"
 dependencyAnalysis = "2.4.2"
+detekt = "1.23.7"
 
 # AndroidX Libraries
 coreKtx = "1.13.1"
@@ -151,6 +152,8 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 
 # Development tools
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
 # Tools and Testing Libraries
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
@@ -201,3 +204,5 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 # Others
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

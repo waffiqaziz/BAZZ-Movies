@@ -23,7 +23,8 @@ object ReleaseDateHelper {
    * 2. If no matching region is found, it falls back to using the production country's release date.
    * 3. If the above options are unavailable, it searches for any valid release date in any region.
    *
-   * @param data A `DetailMovie` object containing details about the movie, including its release dates and production countries.
+   * @param data A `DetailMovie` object containing details about the movie, including its release
+   *        dates and production countries.
    * @param userRegion A string representing the user's desired region code.
    * @return A `ReleaseDateRegion` object that contains the selected release date and region.
    */
@@ -91,7 +92,8 @@ object ReleaseDateHelper {
    * Finds any valid release date and associated region when no specific match is found.
    *
    * @param data A list of `ReleaseDatesItem` objects representing release dates and their regions.
-   * @return A pair containing the region code and the release date, or a pair of empty strings if no valid data is found.
+   * @return A pair containing the region code and the release date, or a pair of empty strings if
+   *        no valid data is found.
    */
   private fun getAnyValidRegionAndReleaseDate(data: List<ReleaseDatesItem?>?): Pair<String, String> {
     return data?.firstOrNull { isValidRegionAndReleaseDate(it) }

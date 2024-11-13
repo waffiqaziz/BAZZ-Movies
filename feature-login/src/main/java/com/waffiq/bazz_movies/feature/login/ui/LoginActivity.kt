@@ -18,8 +18,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.movie.utils.common.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.movie.utils.common.Constants.NAN
-import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
-import com.waffiq.bazz_movies.core.movie.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.movie.utils.helpers.uihelpers.Animation.fadeOut
@@ -34,6 +32,8 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
+import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
+import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

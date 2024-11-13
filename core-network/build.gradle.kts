@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.hilt
 import java.util.Properties
 import kotlin.apply
 

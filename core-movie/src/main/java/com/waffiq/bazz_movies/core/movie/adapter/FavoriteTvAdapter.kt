@@ -46,22 +46,7 @@ class FavoriteTvAdapter(private val navigator: Navigator) :
 
     fun bind(resultItem: ResultItem) {
       data = resultItem
-      binding.ivPicture.contentDescription =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-
-      Glide.with(binding.ivPicture)
-        .load(
-          if (!resultItem.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
-          } else {
-            ic_poster_error
-          }
-        )
-        .placeholder(ic_bazz_placeholder_poster)
-        .transform(CenterCrop())
-        .transition(withCrossFade())
-        .error(ic_poster_error)
-        .into(binding.ivPicture)
+      showImage(binding, resultItem)
 
       binding.tvTitle.text =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
@@ -81,6 +66,25 @@ class FavoriteTvAdapter(private val navigator: Navigator) :
       binding.container.setOnClickListener {
         navigator.openDetails(itemView.context, resultItem.copy(mediaType = TV_MEDIA_TYPE))
       }
+    }
+
+    private fun showImage(binding: ItemMulmedBinding, resultItem: ResultItem) {
+      binding.ivPicture.contentDescription =
+        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+
+      Glide.with(binding.ivPicture)
+        .load(
+          if (!resultItem.posterPath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
+          } else {
+            ic_poster_error
+          }
+        )
+        .placeholder(ic_bazz_placeholder_poster)
+        .transform(CenterCrop())
+        .transition(withCrossFade())
+        .error(ic_poster_error)
+        .into(binding.ivPicture)
     }
   }
 

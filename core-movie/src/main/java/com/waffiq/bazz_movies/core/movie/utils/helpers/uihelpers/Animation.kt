@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
 import androidx.core.view.isVisible
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.FADE_ALPHA
 
 /**
  * Used as animation fade in and fade out
@@ -25,7 +26,7 @@ object Animation {
       alpha = 0f
       isVisible = true
       animate()
-        .alpha(0.5f)
+        .alpha(FADE_ALPHA)
         .setDuration(duration)
         .setListener(null) // Remove listener if needed
     }

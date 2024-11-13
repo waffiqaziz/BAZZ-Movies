@@ -16,6 +16,10 @@ import com.waffiq.bazz_movies.core.ui.R.drawable.ic_hearth_selected
  * Used to update the drawable images for the favorite and watchlist buttons.
  */
 object ButtonImageChanger {
+  const val DURATION_SCALING = 300L
+  const val DURATION_ALPHA = 150L
+  const val SCALE_SIZE = 1.2f
+
   fun changeBtnWatchlistBG(
     btnWatchlist: ImageButton,
     isActivated: Boolean
@@ -31,20 +35,20 @@ object ButtonImageChanger {
     btnWatchlist.tag = targetRes
 
     val scaleXAnimator =
-      ObjectAnimator.ofFloat(btnWatchlist, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
+      ObjectAnimator.ofFloat(btnWatchlist, View.SCALE_X, 1.0f, SCALE_SIZE, 1.0f).apply {
+        duration = DURATION_SCALING
         interpolator = AccelerateDecelerateInterpolator()
       }
 
     val scaleYAnimator =
-      ObjectAnimator.ofFloat(btnWatchlist, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
+      ObjectAnimator.ofFloat(btnWatchlist, View.SCALE_Y, 1.0f, SCALE_SIZE, 1.0f).apply {
+        duration = DURATION_SCALING
         interpolator = AccelerateDecelerateInterpolator()
       }
 
     val alphaAnimator = ObjectAnimator.ofFloat(btnWatchlist, View.ALPHA, 1f, 0f).apply {
-      duration = 150
-      startDelay = 150 // Delay the alpha animation for smooth transition
+      duration = DURATION_ALPHA
+      startDelay = DURATION_ALPHA // Delay the alpha animation for smooth transition
       interpolator = AccelerateDecelerateInterpolator()
     }
 
@@ -56,7 +60,7 @@ object ButtonImageChanger {
       override fun onAnimationEnd(animation: Animator) {
         btnWatchlist.setImageResource(targetRes)
         ObjectAnimator.ofFloat(btnWatchlist, View.ALPHA, 0f, 1f).apply {
-          duration = 150
+          duration = DURATION_ALPHA
           interpolator = AccelerateDecelerateInterpolator()
         }.start()
       }
@@ -81,20 +85,20 @@ object ButtonImageChanger {
     btnFavorite.tag = targetRes
 
     val scaleXAnimator =
-      ObjectAnimator.ofFloat(btnFavorite, View.SCALE_X, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
+      ObjectAnimator.ofFloat(btnFavorite, View.SCALE_X, 1.0f, SCALE_SIZE, 1.0f).apply {
+        duration = DURATION_SCALING
         interpolator = AccelerateDecelerateInterpolator()
       }
 
     val scaleYAnimator =
-      ObjectAnimator.ofFloat(btnFavorite, View.SCALE_Y, 1.0f, 1.2f, 1.0f).apply {
-        duration = 300
+      ObjectAnimator.ofFloat(btnFavorite, View.SCALE_Y, 1.0f, SCALE_SIZE, 1.0f).apply {
+        duration = DURATION_SCALING
         interpolator = AccelerateDecelerateInterpolator()
       }
 
     val alphaAnimator = ObjectAnimator.ofFloat(btnFavorite, View.ALPHA, 1f, 0f).apply {
-      duration = 150
-      startDelay = 150 // Delay the alpha animation for smooth transition
+      duration = DURATION_ALPHA
+      startDelay = DURATION_ALPHA // Delay the alpha animation for smooth transition
       interpolator = AccelerateDecelerateInterpolator()
     }
 
@@ -106,7 +110,7 @@ object ButtonImageChanger {
       override fun onAnimationEnd(animation: Animator) {
         btnFavorite.setImageResource(targetRes)
         ObjectAnimator.ofFloat(btnFavorite, View.ALPHA, 0f, 1f).apply {
-          duration = 150
+          duration = DURATION_ALPHA
           interpolator = AccelerateDecelerateInterpolator()
         }.start()
       }

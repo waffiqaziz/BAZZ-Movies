@@ -60,6 +60,7 @@ class GetDetailMovieInteractor @Inject constructor(
   override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
     detailRepository.getCreditMovies(movieId)
 
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>> =
+  override fun getPagingMovieRecommendation(movieId: Int)
+    : Flow<PagingData<com.waffiq.bazz_movies.core.model.ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)
 }

@@ -16,6 +16,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
+import com.waffiq.bazz_movies.core.movie.utils.common.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.ui.R.color.gray_1000
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -61,7 +62,7 @@ object GeneralHelper {
 
   fun animFadeOutLong(context: Context): Animation {
     val animation = AnimationUtils.loadAnimation(context, fade_out)
-    animation.duration = 750
+    animation.duration = DEBOUNCE_VERY_LONG
     return animation
   }
 

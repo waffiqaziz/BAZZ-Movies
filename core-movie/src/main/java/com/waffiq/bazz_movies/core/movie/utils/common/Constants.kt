@@ -6,31 +6,23 @@ import com.waffiq.bazz_movies.core.ui.R.string.tv_series
 
 object Constants {
   const val SWIPE_THRESHOLD = 0.3f
+  const val FADE_ALPHA = 0.5f
 
-  const val TMDB_LINK_SIGNUP = "https://www.themoviedb.org/signup"
-  const val TMDB_LINK_FORGET_PASSWORD = "https://www.themoviedb.org/reset-password"
   const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300/"
   const val TMDB_IMG_LINK_BACKDROP_W780 = "https://image.tmdb.org/t/p/w780/"
   const val TMDB_IMG_LINK_POSTER_W185 = "https://image.tmdb.org/t/p/w185/"
   const val TMDB_IMG_LINK_POSTER_W500 = "https://image.tmdb.org/t/p/w500/"
-  const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200/"
   const val YOUTUBE_LINK_VIDEO = "https://www.youtube.com/watch?v="
+  const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200/"
   const val GRAVATAR_LINK = "https://secure.gravatar.com/avatar/"
 
-  const val INSTAGRAM_LINK = "https://www.instagram.com/"
-  const val X_LINK = "https://x.com/"
-  const val FACEBOOK_LINK = "https://www.facebook.com/"
-  const val TIKTOK_PERSON_LINK = "https://www.tiktok.com/@"
-  const val YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/"
-  const val WIKIDATA_PERSON_LINK = "https://www.wikidata.org/wiki/"
-  const val IMDB_PERSON_LINK = "https://www.imdb.com/name/"
+
 
   const val DEBOUNCE_SHORT = 200L
   const val DEBOUNCE_LONG = 350L
   const val DEBOUNCE_VERY_LONG = 500L
   const val ANIM_DURATION = 200L
 
-  const val PERSON_MEDIA_TYPE = "person"
 //  const val NOT_AVAILABLE = "N/A"
 
   const val NAN = "NaN"
