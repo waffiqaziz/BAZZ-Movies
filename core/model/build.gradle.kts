@@ -1,10 +1,11 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  id("kotlin-parcelize")
 }
 
 android {
-  namespace = "com.waffiq.bazz_movies.navigation"
+  namespace = "com.waffiq.bazz_movies.core.model"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
@@ -13,7 +14,6 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
-
   buildTypes {
     getByName("debug") {
       isMinifyEnabled = false
@@ -25,7 +25,7 @@ android {
     }
 
     getByName("release") {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -37,7 +37,5 @@ android {
     jvmTarget = "1.8"
   }
 }
-dependencies {
-  implementation(project(":core:model"))
-}
 
+dependencies {}

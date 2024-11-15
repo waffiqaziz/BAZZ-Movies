@@ -4,16 +4,12 @@ plugins {
 }
 
 android {
-  namespace = "com.waffiq.bazz_movies.navigation"
+  namespace = "com.waffiq.bazz_movies.core.ui"
   compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
     minSdk = libs.versions.minSdk.get().toInt()
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    consumerProguardFiles("consumer-rules.pro")
   }
-
   buildTypes {
     getByName("debug") {
       isMinifyEnabled = false
@@ -25,7 +21,7 @@ android {
     }
 
     getByName("release") {
-      isMinifyEnabled = false
+      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -36,8 +32,19 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
-}
-dependencies {
-  implementation(project(":core:model"))
+  buildFeatures {
+    viewBinding = true
+  }
 }
 
+dependencies {
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.cardview)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.google.material)
+
+  implementation(libs.androidx.viewpager2)
+
+  implementation(libs.shimmer)
+  implementation(libs.androidx.core.splashscreen)
+}

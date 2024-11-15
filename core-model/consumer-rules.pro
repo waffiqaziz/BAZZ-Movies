@@ -1,1 +1,0 @@
--keep class com.waffiq.bazz_movies.core.model.** { *; }
