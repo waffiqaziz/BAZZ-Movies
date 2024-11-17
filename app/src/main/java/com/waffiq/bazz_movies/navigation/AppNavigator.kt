@@ -9,16 +9,17 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import com.waffiq.bazz_movies.core.domain.model.MovieTvCastItem
-import com.waffiq.bazz_movies.core.domain.model.ResultItem
+import com.waffiq.bazz_movies.core.model.ResultItem
+import com.waffiq.bazz_movies.core.model.MovieTvCastItem
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.core.ui.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.core.ui.R.string.login_successful
-import com.waffiq.bazz_movies.core.utils.helpers.GeneralHelper.toastShort
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
-import com.waffiq.bazz_movies.pages.AboutActivity
-import com.waffiq.bazz_movies.pages.MainActivity
+import com.waffiq.bazz_movies.AboutActivity
+import com.waffiq.bazz_movies.MainActivity
+import com.waffiq.bazz_movies.R.id.bottom_navigation
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -70,4 +71,6 @@ class AppNavigator @Inject constructor() : Navigator {
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
     ActivityCompat.startActivity(context, intent, options.toBundle())
   }
+
+  override fun snackbarAnchor(): Int = bottom_navigation
 }

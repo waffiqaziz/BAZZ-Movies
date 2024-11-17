@@ -1,7 +1,6 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.dependency.analysis)
 }
 
 android {
@@ -31,8 +30,6 @@ android {
     }
   }
   compileOptions {
-    isCoreLibraryDesugaringEnabled = true
-
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
@@ -40,8 +37,7 @@ android {
     jvmTarget = "1.8"
   }
 }
-
 dependencies {
-  api(project(":core"))
-  coreLibraryDesugaring(libs.desugar.jdk.libs)
+  implementation(project(":core:model"))
 }
+

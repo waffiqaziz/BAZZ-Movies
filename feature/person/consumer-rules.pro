@@ -1,0 +1,1 @@
+-keep class com.waffiq.bazz_movies.feature.person.domain.model.** { *; }

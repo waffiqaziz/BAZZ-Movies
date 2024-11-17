@@ -12,19 +12,6 @@
   public static *** e(...);
 }
 
-##---------------Begin: proguard configuration for Glide  ----------
--keep public class * implements com.bumptech.glide.module.GlideModule{ <init>(...);}
--keep class * extends com.bumptech.glide.module.AppGlideModule { <init>(...);}
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
--keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
-  *** rewind();
-}
-##---------------End: proguard configuration for Glide  ----------
-
-
 ##---------------Begin: proguard configuration for Firebase crashlytics  ----------
 -keep class com.google.android.gms.** { *; }
 -keep class com.google.firebase.** { *; }

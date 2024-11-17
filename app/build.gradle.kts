@@ -1,4 +1,5 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.gradle.kotlin.dsl.android
 
 plugins {
   alias(libs.plugins.android.application)
@@ -6,7 +7,7 @@ plugins {
   id("kotlin-parcelize")
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.dependency.analysis)
+  alias(libs.plugins.detekt)
 }
 
 // apply the Google Services and Crashlytics if exist
@@ -93,55 +94,82 @@ android {
   }
 }
 
+detekt {
+  toolVersion = libs.versions.detekt.get()
+  parallel = true
+  config.setFrom("$rootDir/config/detekt/detekt.yml")
+  buildUponDefaultConfig = true
+  baseline = file("${rootProject.projectDir}/config/baseline.xml")
+  allRules = true // Enable all rules
+  buildUponDefaultConfig = true
+}
+
+// Disabling detekt from the check task
+tasks.named("check").configure {
+  this.setDependsOn(this.dependsOn.filterNot {
+    it is TaskProvider<*> && it.name == "detekt"
+  })
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+  // Specify input source files to analyze
+  setSource(files("src/main/java", "src/main/kotlin"))
+
+  // Specify config file(s) if necessary
+  config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+
+  // Customize reports here
+  reports {
+    xml {
+      required.set(true) // Generates an XML report (set to false if not needed)
+      outputLocation.set(file("$buildDir/reports/detekt/detekt-report.xml"))
+    }
+    html {
+      required.set(true) // Generates an HTML report (set to false if not needed)
+      outputLocation.set(file("$buildDir/reports/detekt/detekt-report.html"))
+    }
+    txt {
+      required.set(false) // Optional: Generates a text report
+      outputLocation.set(file("$buildDir/reports/detekt/detekt-report.txt"))
+    }
+    sarif {
+      required.set(false) // Optional: SARIF report (used for integrations)
+      outputLocation.set(file("$buildDir/reports/detekt/detekt-report.sarif"))
+    }
+  }
+}
+
 dependencies {
-  implementation(project(":core"))
-  implementation(project(":core-user"))
-  implementation(project(":core-network"))
-  implementation(project(":core-ui"))
-  implementation(project(":feature-detail"))
-  implementation(project(":feature-home"))
-  implementation(project(":feature-login"))
-  implementation(project(":feature-more"))
-  implementation(project(":feature-person"))
-  implementation(project(":feature-search"))
+  implementation(project(":core:database"))
+  implementation(project(":core:model"))
+  implementation(project(":core:movie"))
+  implementation(project(":core:network"))
+  implementation(project(":core:ui"))
+  implementation(project(":core:user"))
+  implementation(project(":feature:detail"))
+  implementation(project(":feature:favorite"))
+  implementation(project(":feature:home"))
+  implementation(project(":feature:login"))
+  implementation(project(":feature:more"))
+  implementation(project(":feature:person"))
+  implementation(project(":feature:search"))
+  implementation(project(":feature:watchlist"))
   implementation(project(":navigation"))
 
   // jetpack library
-  implementation(libs.androidx.core)
   implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
-  implementation(libs.androidx.fragment)
-  implementation(libs.androidx.fragment.ktx)
-  implementation(libs.androidx.annotation)
-  implementation(libs.androidx.coordinatorlayout)
-  implementation(libs.androidx.constraintlayout)
-  implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.core.splashscreen)
-  implementation(libs.androidx.viewpager2)
-  implementation(libs.androidx.recyclerview)
-
-  implementation(libs.androidx.lifecycle.common)
-  implementation(libs.androidx.lifecycle.livedata)
-  implementation(libs.androidx.lifecycle.livedata.core)
-  implementation(libs.androidx.lifecycle.viewmodel)
-  implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
   implementation(libs.androidx.navigation.ui)
   implementation(libs.androidx.navigation.fragment)
-  implementation(libs.androidx.navigation.runtime)
-
-  implementation(libs.androidx.paging.common)
-  implementation(libs.androidx.paging.runtime)
+  implementation(libs.google.material)
 
   coreLibraryDesugaring(libs.desugar.jdk.libs)
-  implementation(libs.google.material)
 
   // leakcanary
   debugImplementation(libs.leakcanary)
-
-  // glide
-  implementation(libs.glide)
-  ksp(libs.glide.compiler)
 
   // third-party library
   implementation(libs.expandable.textview)
@@ -154,16 +182,7 @@ dependencies {
   implementation(libs.firebase.crashlytics)
   implementation(libs.firebase.analytics)
 
-  implementation(libs.androidx.datastore.core)
-  implementation(libs.androidx.datastore.preferences.core)
-
-  implementation(libs.jetbrains.coroutines.core)
-  implementation(libs.okhttp)
-
-  // hilt
-  implementation(libs.google.dagger)
-  implementation(libs.google.hilt.core)
-  implementation(libs.javax.inject)
+  // Hilt
   implementation(libs.hilt.android)
   ksp(libs.hilt.android.compiler)
 }
