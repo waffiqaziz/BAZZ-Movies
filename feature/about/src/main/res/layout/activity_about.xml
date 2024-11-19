@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.AboutActivity">
+
+  <!-- ========================== -->
+  <!--        HEADER SECTION      -->
+  <!-- ========================== -->
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <include layout="@layout/custom_toolbar_scroll_snap" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+  <!-- End of HEADER SECTION -->
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical"
+    tools:context=".ui.AboutActivity">
+
+    <!-- ========================== -->
+    <!--         BODY SECTION       -->
+    <!-- ========================== -->
+    <TextView
+      android:id="@+id/tv_about_header"
+      style="@style/TextHeader1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/about" />
+
+    <TextView
+      android:id="@+id/tv_tmdb_attribute"
+      style="@style/TextBody"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="@string/tmdb_endorse" />
+
+    <!-- ====== TMDB logo ====== -->
+    <ImageView
+      android:id="@+id/iv_tmdb_logo"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:layout_gravity="center"
+      android:contentDescription="@string/tmdb_full"
+      android:src="@drawable/ic_tmdb" />
+
+    <TextView
+      android:id="@+id/tv_about_text"
+      style="@style/TextBody"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/about_text" />
+
+    <!-- ====== About button ====== -->
+    <Button
+      android:id="@+id/btn_about_us"
+      style="@style/MyTransparentButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/about_us" />
+    <!-- End of BODY SECTION -->
+  </LinearLayout>
+
+  <!-- ====== Back button ====== -->
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab"
+    style="@style/MyFAB"
+    android:layout_marginEnd="@dimen/default_margin_parent_20"
+    android:layout_marginBottom="32dp"
+    android:contentDescription="@string/submit"
+    app:rippleColor="@color/yellow_alpha_80"
+    app:srcCompat="@drawable/ic_left_icon"
+    app:tint="@color/black" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

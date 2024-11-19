@@ -114,3 +114,5 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
 ##---------------End: proguard configuration for Okio  ----------
+
+-dontwarn java.lang.invoke.StringConcatFactory

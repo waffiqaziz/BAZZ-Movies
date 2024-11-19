@@ -1,19 +1,13 @@
 plugins {
-  alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
+  id("bazzmovies.android.feature")
   id("kotlin-parcelize")
-  alias(libs.plugins.ksp)
-  alias(libs.plugins.hilt)
+  id("bazzmovies.glide")
 }
 
 android {
   namespace = "com.waffiq.bazz_movies.feature.home"
-  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -32,24 +26,14 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
-  compileOptions {
-    isCoreLibraryDesugaringEnabled = true
-
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
   buildFeatures {
     viewBinding = true
   }
 }
 
 dependencies {
-  implementation(project(":core:network"))
-  implementation(project(":core:ui"))
-  implementation(project(":core:model"))
+  implementation(project(":core:common"))
+  implementation(project(":core:uihelper"))
   implementation(project(":navigation"))
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
@@ -67,14 +51,4 @@ dependencies {
 
   implementation(libs.google.material)
   implementation(libs.android.veil)
-
-  coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-  // glide
-  implementation(libs.glide)
-  ksp(libs.glide.compiler)
-
-  // hilt
-  implementation(libs.hilt.android)
-  ksp(libs.hilt.android.compiler)
 }

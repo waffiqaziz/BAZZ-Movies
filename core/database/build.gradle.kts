@@ -1,13 +1,12 @@
 plugins {
-  alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
+  id("bazzmovies.android.library")
+  id("bazzmovies.android.room")
+  id("bazzmovies.hilt")
   id("kotlin-parcelize")
-  alias(libs.plugins.ksp)
 }
 
 android {
   namespace = "com.waffiq.bazz_movies.core.database"
-  compileSdk = libs.versions.compileSdk.get().toInt()
 
   buildTypes {
     getByName("debug") {
@@ -25,33 +24,11 @@ android {
     }
   }
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
 }
-
 dependencies {
-  implementation(project(":core:model"))
-
-  // room & paging
-  implementation(libs.androidx.room.ktx)
-  implementation(libs.androidx.room.paging)
-  implementation(libs.androidx.paging.runtime.ktx)
-  ksp(libs.androidx.room.room.compiler)
-
-  // Hilt
-  implementation(libs.hilt.android)
-  ksp(libs.hilt.android.compiler)
+  api(project(":core:data"))
+  api(project(":core:common"))
 }
 
-ksp {
-  arg("room.schemaLocation", "$projectDir/schemas")
-}

@@ -3,6 +3,8 @@
 build/
 reports/
 
+*.log
+
 # kotlin files
 .kotlin
 
