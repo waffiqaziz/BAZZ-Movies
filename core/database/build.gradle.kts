@@ -27,6 +27,7 @@ android {
     consumerProguardFiles("consumer-rules.pro")
   }
 }
+
 dependencies {
   api(project(":core:data"))
   api(project(":core:common"))

@@ -1,15 +1,14 @@
 [versions]
-shimmer = "0.5.0"
 targetSdk = "34"
 compileSdk = "34"
 minSdk = "23"
 ndkVersion = "27.2.12479018"
 
 # Plugin versions
-agp = "8.7.2"
+agp = "8.3.2"
 androidTools = "31.7.2"
 kotlin = "2.0.21"
-ksp = "2.0.21-1.0.25"
+ksp = "2.0.21-1.0.28"
 hilt = "2.52"
 
 # Google services
@@ -74,6 +73,7 @@ glide = "4.16.0"
 # Third-party libraries
 expandableTextView = "1.0.4"
 cpa = "0.1.2"
+shimmer = "0.5.0"
 
 coroutinesCore = "1.9.0"
 recyclerview = "1.3.2"
@@ -189,7 +189,6 @@ firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "fireb
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
-
 
 # Others
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }

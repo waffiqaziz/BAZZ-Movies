@@ -43,19 +43,17 @@ We use this approach because of this offers many benefits, including:
 
 ### Modularization pitfalls
 
-Modularization is a valuable architectural pattern but can be prone to misuse, with potential
-pitfalls to consider when modularizing an app. One common issue we face is:
+Modularization is a valuable architectural pattern but can be prone to misuse, with potential pitfalls to consider when modularizing an app. One common issue we face is:
 
-**Too Many Modules** - Each module introduces additional overhead in terms of build configuration
-complexity. This can lead to increased Gradle sync times and ongoing maintenance costs. Furthermore,
-adding more modules may complicate the project’s Gradle setup compared to a single monolithic
-module. To address this, we create [convention plugins](/build-logic/convention/build.gradle.kts) to
-extract reusable build configurations into type-safe Kotlin code. In the Now in Android app, these
-convention plugins are located in the [`build-logic` folder](/build-logic/).
+**Too Many Modules** - Each module introduces additional overhead in terms of build configuration complexity. This can lead to increased Gradle sync times and ongoing maintenance costs. Furthermore, adding more modules may complicate the project’s Gradle setup compared to a single monolithic module. 
+>To address this, we create [convention plugins](/build-logic/convention/build.gradle.kts) to extract reusable build configurations into type-safe Kotlin code. In the Now in Android app, these convention plugins are located in the [`build-logic` folder](/build-logic/).
+
 
 ## Types of modules in BAZZ Movies
 
-*Note: This explanatory content is inspired by
-the [Now in Android](https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md).
-For further insights and detailed examples of modularization, you can explore the repository
-directly.*
+![Diagram showing types of modules and their dependencies in Now in Android](/docs/Modularization.drawio.svg "Diagram showing types of modules and their dependencies in BAZZ Movies")
+
+<hr>
+
+>*Note: This explanatory content is inspired by the [Now in Android](https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md) by Google. For further insights and detailed examples of modularization, you can explore the repository directly.*
+

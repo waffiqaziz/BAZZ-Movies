@@ -1,1 +1,3 @@
 -keep class com.waffiq.bazz_movies.core.database.data.model.** { *; }
+-keep class com.waffiq.bazz_movies.core.database.utils.DbResult { *; }
+-keep class com.waffiq.bazz_movies.core.database.domain.usecase.local_database.** { *; }

@@ -22,8 +22,8 @@ modules can use to configure themselves.
 which is most useful for configuring Android components (libraries vs applications) with shared
 code.
 
-These plugins are *additive* and *composable*, and try to only accomplish a single responsibility.
-Modules can then pick and choose the configurations they need.
+These plugins are *additive* and try to accomplish a single responsibility.
+Modules can then pick and choose the configurations they need via `libs.version.toml`.
 If there is one-off logic for a module without shared code, it's preferable to define that directly
 in the module's `build.gradle`, as opposed to creating a convention plugin with module-specific
 setup.
@@ -38,5 +38,4 @@ Current list of convention plugins:
 - [`bazzmovies.android.room`](convention/src/main/kotlin/AndroidRoomConventionPlugin.kt)
 - [`bazzmovies.hilt`](convention/src/main/kotlin/HiltConventionPlugin.kt)
 - [`bazzmovies.glide`](convention/src/main/kotlin/GlideConventionPlugin.kt)
-- [`bazzmovies.ksp`](convention/src/main/kotlin/KSPConventionPlugin.kt)
 - [`bazzmovies.jvm.library`](convention/src/main/kotlin/JvmLibraryConventionPlugin.kt)
