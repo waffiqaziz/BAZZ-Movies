@@ -1,6 +1,7 @@
 # BAZZ Movies
 
-![Header](/assets/images/featured-picture.png)
+![Header](/docs/images/featured-picture.png)
+![Build Status](https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg)
 
 BAZZ Movies is an Android app build with Kotlin, offering comprehensive movie and TV catalog. BAZZ
 Movies allows users to discover, explore, and manage their favorite and watchlist with ease.
@@ -41,6 +42,13 @@ personal and educational use as part of my portfolio.
    ```
 6. Build the project (`Ctrl + F9`).
 7. Run with your virtual or phone devices
+
+# Architecture
+
+The **BAZZ Movies** app follows the
+[official architecture guidance](https://developer.android.com/topic/architecture)
+and is described in detail in the
+[BAZZ Movies modularization](docs/BAZZMoviesModularization.md).
 
 ## Licenses and Usage
 

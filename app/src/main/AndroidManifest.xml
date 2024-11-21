@@ -21,7 +21,7 @@
     tools:targetApi="34">
 
     <activity
-      android:name=".AboutActivity"
+      android:name=".feature.about.ui.AboutActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity

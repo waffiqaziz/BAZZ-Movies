@@ -1,4 +1,5 @@
 pluginManagement {
+  includeBuild("build-logic")
   repositories {
     google()
     mavenCentral()
@@ -8,7 +9,7 @@ pluginManagement {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+  repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
   repositories {
     google()
     mavenCentral()
@@ -16,10 +17,11 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "BAZZ Movies"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "BAZZ-Movies"
 include(":app")
-include(":core:model")
-include(":core:ui")
+include(":core:data")
+include(":core:designsystem")
 include(":core:user")
 include(":core:network")
 include(":core:movie")
@@ -30,6 +32,10 @@ include(":feature:search")
 include(":feature:favorite")
 include(":feature:watchlist")
 include(":feature:more")
+include(":feature:about")
 include(":feature:person")
 include(":feature:detail")
 include(":navigation")
+include(":core:uihelper")
+include(":core:common")
+include(":core:favoritewatchlist")

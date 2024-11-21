@@ -3,20 +3,14 @@ import java.util.Properties
 import kotlin.apply
 
 plugins {
-  alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.hilt)
-  alias(libs.plugins.ksp)
+  id("bazzmovies.android.library")
+  id("bazzmovies.hilt")
 }
 
 android {
   namespace = "com.waffiq.bazz_movies.core.network"
-  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = libs.versions.minSdk.get().toInt()
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
 
     val properties = Properties().apply {
@@ -44,17 +38,10 @@ android {
       }
 
       getByName("release") {
-        isMinifyEnabled = false
+        isMinifyEnabled = true
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       }
     }
-  }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
   }
   buildFeatures {
     buildConfig = true
@@ -69,10 +56,6 @@ dependencies {
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.moshi)
   implementation(libs.moshi.kotlin)
-  ksp(libs.moshi.kotlin.codegen)
   implementation(libs.okhttp.logging.interceptor)
-
-  // Hilt
-  implementation(libs.hilt.android)
-  ksp(libs.hilt.android.compiler)
+  ksp(libs.moshi.kotlin.codegen)
 }
