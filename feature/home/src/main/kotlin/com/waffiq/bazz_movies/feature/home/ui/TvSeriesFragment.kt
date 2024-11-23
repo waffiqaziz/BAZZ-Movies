@@ -7,30 +7,24 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
+import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +40,7 @@ class TvSeriesFragment : Fragment() {
   private lateinit var nowPlayingAdapter: TvAdapter
   private lateinit var onTvAdapter: TvAdapter
   private lateinit var topRatedAdapter: TvAdapter
+  private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -60,6 +55,7 @@ class TvSeriesFragment : Fragment() {
     nowPlayingAdapter = TvAdapter(navigator)
     onTvAdapter = TvAdapter(navigator)
     topRatedAdapter = TvAdapter(navigator)
+    shimmerAdapter = ShimmerAdapter()
   }
 
   override fun onCreateView(
@@ -76,20 +72,62 @@ class TvSeriesFragment : Fragment() {
 
     // Set up RecyclerViews with shimmer
     binding.apply {
-      rvPopular.setupShimmer(requireContext(), popularAdapter)
-      rvAiringToday.setupShimmer(requireContext(), nowPlayingAdapter)
-      rvOnTv.setupShimmer(requireContext(), onTvAdapter)
-      rvTopRated.setupShimmer(requireContext(), topRatedAdapter)
+      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvAiringToday.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvOnTv.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
     }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    showShimmer()
     setData()
   }
 
+  private fun showShimmer() {
+    binding.apply {
+      rvPopular.adapter = shimmerAdapter
+      rvAiringToday.adapter = shimmerAdapter
+      rvOnTv.adapter = shimmerAdapter
+      rvTopRated.adapter = shimmerAdapter
+    }
+  }
+
+  private fun showActualData() {
+    binding.apply {
+      rvPopular.setupRecyclerView(requireContext(), popularAdapter)
+      rvAiringToday.setupRecyclerView(requireContext(), nowPlayingAdapter)
+      rvOnTv.setupRecyclerView(requireContext(), onTvAdapter)
+      rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
+    }
+  }
+
   private fun setData() {
-    combinedLoadStatesHandle(topRatedAdapter)
+    observeLoadState(
+      lifecycleOwner = viewLifecycleOwner,
+      loadStateFlow = topRatedAdapter.loadStateFlow,
+      onLoading = { showShimmer() },
+      onSuccess = {
+        binding.illustrationError.apply {
+          progressCircular.isVisible = false
+          btnTryAgain.isVisible = true
+        }
+        showActualData()
+        showView(true)
+      },
+      onError = { error ->
+        binding.illustrationError.apply {
+          progressCircular.isVisible = false
+          btnTryAgain.isVisible = true
+        }
+        pagingErrorHandling(error).let {
+          showActualData()
+          showView(topRatedAdapter.itemCount > 0)
+          mSnackbar = uiController?.showSnackbarWarning(Event(it))
+        }
+      }
+    )
 
     // Observe ViewModel data and submit to adapters
     collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv() }, popularAdapter)
@@ -117,42 +155,12 @@ class TvSeriesFragment : Fragment() {
 
     // Set up retry button
     setupRetryButton(
-      binding.illustrationError.btnTryAgain,
+      binding.illustrationError,
       popularAdapter,
       topRatedAdapter,
       nowPlayingAdapter,
       onTvAdapter
     )
-  }
-
-  private fun combinedLoadStatesHandle(adapter: TvAdapter) {
-    viewLifecycleOwner.lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
-        .collectLatest { loadState ->
-          when {
-            (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
-              loadState.append.endOfPaginationReached -> {
-              isUnveil(false)
-            }
-
-            loadState.refresh is LoadState.NotLoading &&
-              loadState.prepend is LoadState.NotLoading &&
-              loadState.append is LoadState.NotLoading -> {
-              isUnveil(true)
-              showView(true)
-            }
-
-            loadState.refresh is LoadState.Error -> {
-              isUnveil(true)
-              pagingErrorState(loadState)?.let {
-                showView(adapter.itemCount > 0)
-                mSnackbar = uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
-              }
-            }
-          }
-        }
-    }
   }
 
   private fun showView(isVisible: Boolean) {
@@ -167,24 +175,6 @@ class TvSeriesFragment : Fragment() {
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
-    }
-  }
-
-  private fun isUnveil(isUnveil: Boolean) {
-    if (isUnveil) {
-      binding.apply {
-        rvPopular.unVeil()
-        rvAiringToday.unVeil()
-        rvOnTv.unVeil()
-        rvTopRated.unVeil()
-      }
-    } else {
-      binding.apply {
-        rvPopular.veil()
-        rvAiringToday.veil()
-        rvOnTv.veil()
-        rvTopRated.veil()
-      }
     }
   }
 

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.detail.utils.helpers
+package com.waffiq.bazz_movies.core.movie.utils.helpers
 
 import android.content.Context
 import android.os.Build

@@ -42,6 +42,15 @@ class TrendingAdapter(private val navigator: Navigator) :
       binding.imgPoster.contentDescription =
         data.name ?: data.title ?: data.originalTitle ?: data.originalName
 
+      showImage(data)
+
+      // image OnClickListener
+      binding.imgPoster.setOnClickListener {
+        navigator.openDetails(itemView.context, data)
+      }
+    }
+
+    private fun showImage(data: ResultItem) {
       Glide.with(binding.imgPoster)
         .load(
           if (!data.posterPath.isNullOrEmpty()) {
@@ -55,11 +64,6 @@ class TrendingAdapter(private val navigator: Navigator) :
         .transition(withCrossFade())
         .error(ic_poster_error)
         .into(binding.imgPoster)
-
-      // image OnClickListener
-      binding.imgPoster.setOnClickListener {
-        navigator.openDetails(itemView.context, data)
-      }
     }
   }
 
