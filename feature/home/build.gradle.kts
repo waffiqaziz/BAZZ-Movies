@@ -37,9 +37,7 @@ dependencies {
   implementation(project(":navigation"))
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
-  implementation(project(":feature:detail"))
 
-  implementation(libs.shimmer)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
@@ -50,5 +48,5 @@ dependencies {
   implementation(libs.expandable.textview)
 
   implementation(libs.google.material)
-  implementation(libs.android.veil)
+  implementation(libs.facebook.shimmer)
 }

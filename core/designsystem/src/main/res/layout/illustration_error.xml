@@ -44,4 +44,13 @@
     android:text="@string/try_again"
     android:textColor="@color/gray_1000" />
 
+  <ProgressBar
+    android:id="@+id/progress_circular"
+    style="@style/MyProgressBar"
+    android:visibility="gone"
+    android:layout_marginTop="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:indicatorColor="@color/yellow" />
+
 </LinearLayout>

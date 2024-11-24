@@ -50,7 +50,6 @@ paging = "3.3.4"
 
 # UI components
 material = "1.12.0"
-androidVeil = "1.1.4"
 
 # Networking
 retrofit = "2.11.0"
@@ -117,7 +116,6 @@ androidx-room-room-compiler = { group = "androidx.room", name = "room-compiler",
 
 # UI components
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-android-veil = { group = "com.github.skydoves", name = "androidveil", version.ref = "androidVeil" }
 
 # Networking
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
@@ -153,6 +151,7 @@ firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 # Third-party libraries
 expandable-textview = { group = "io.github.glailton.expandabletextview", name = "expandabletextview", version.ref = "expandableTextView" }
 country-picker-android = { group = "com.github.waffiqaziz", name = "country-picker-android", version.ref = "cpa" }
+facebook-shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 # Hilt-dagger
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -161,7 +160,6 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 
 jetbrains-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
-shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

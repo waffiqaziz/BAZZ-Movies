@@ -46,5 +46,5 @@ dependencies {
   implementation(libs.androidx.paging.runtime)
 
   implementation(libs.google.material)
-  implementation(libs.android.veil)
+  implementation(libs.facebook.shimmer)
 }

@@ -31,6 +31,4 @@ dependencies {
   implementation(libs.androidx.core.splashscreen)
 
   api(libs.google.material)
-
-  implementation(libs.shimmer)
 }

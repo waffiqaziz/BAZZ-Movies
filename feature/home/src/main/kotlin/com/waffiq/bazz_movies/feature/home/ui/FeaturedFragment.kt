@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -22,30 +19,27 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TrendingAdapter
+import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupShimmer
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -61,6 +55,7 @@ class FeaturedFragment : Fragment() {
   private lateinit var adapterTrending: TrendingAdapter
   private lateinit var adapterUpcoming: MovieHomeAdapter
   private lateinit var adapterPlayingNow: MovieHomeAdapter
+  private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -77,6 +72,7 @@ class FeaturedFragment : Fragment() {
     adapterTrending = TrendingAdapter(navigator)
     adapterUpcoming = MovieHomeAdapter(navigator)
     adapterPlayingNow = MovieHomeAdapter(navigator)
+    shimmerAdapter = ShimmerAdapter()
   }
 
   override fun onCreateView(
@@ -91,15 +87,37 @@ class FeaturedFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // Set up RecyclerViews with shimmer
     binding.apply {
-      rvUpcoming.setupShimmer(requireContext(), adapterUpcoming)
-      rvPlayingNow.setupShimmer(requireContext(), adapterPlayingNow)
-      rvTrending.setupShimmer(requireContext(), adapterTrending)
+      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvPlayingNow.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
+      rvTrending.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
     }
 
+    showShimmer()
     setRegion()
     showMainPicture()
+  }
+
+  private fun showShimmer() {
+    binding.apply {
+      if (rvUpcoming.adapter != shimmerAdapter) rvUpcoming.adapter = shimmerAdapter
+      if (rvPlayingNow.adapter != shimmerAdapter) rvPlayingNow.adapter = shimmerAdapter
+      if (rvTrending.adapter != shimmerAdapter) rvTrending.adapter = shimmerAdapter
+    }
+  }
+
+  private fun showActualData() {
+    binding.apply {
+      if (rvUpcoming.adapter != adapterUpcoming) {
+        rvUpcoming.setupRecyclerView(requireContext(), adapterUpcoming)
+      }
+      if (rvPlayingNow.adapter != adapterPlayingNow) {
+        rvPlayingNow.setupRecyclerView(requireContext(), adapterPlayingNow)
+      }
+      if (rvTrending.adapter != adapterTrending) {
+        rvTrending.setupRecyclerView(requireContext(), adapterTrending)
+      }
+    }
   }
 
   private fun showMainPicture() {
@@ -136,7 +154,30 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData(region: String) {
-    combinedLoadStatesHandle(adapterTrending)
+    observeLoadState(
+      lifecycleOwner = viewLifecycleOwner,
+      loadStateFlow = adapterTrending.loadStateFlow,
+      onLoading = { showShimmer() },
+      onSuccess = {
+        binding.illustrationError.apply {
+          progressCircular.isVisible = false
+          btnTryAgain.isVisible = true
+        }
+        showActualData()
+        showView(true)
+      },
+      onError = { error ->
+        binding.illustrationError.apply {
+          progressCircular.isVisible = false
+          btnTryAgain.isVisible = true
+        }
+        pagingErrorHandling(error).let {
+          showActualData()
+          showView(adapterTrending.itemCount > 0)
+          mSnackbar = uiController?.showSnackbarWarning(Event(it))
+        }
+      }
+    )
 
     // Observe ViewModel data and submit to adapters
     observeTrendingMovies(region, adapterTrending)
@@ -168,10 +209,11 @@ class FeaturedFragment : Fragment() {
       adapterPlayingNow,
       adapterUpcoming
     )
+    binding.illustrationError
 
     // Set up retry button
     setupRetryButton(
-      binding.illustrationError.btnTryAgain,
+      binding.illustrationError,
       adapterTrending,
       adapterPlayingNow,
       adapterUpcoming
@@ -192,36 +234,6 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun combinedLoadStatesHandle(adapter: TrendingAdapter) {
-    viewLifecycleOwner.lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
-        .collectLatest { loadState ->
-          when {
-            (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
-              loadState.append.endOfPaginationReached -> {
-              isUnveil(false)
-            }
-
-            loadState.refresh is LoadState.NotLoading &&
-              loadState.prepend is LoadState.NotLoading &&
-              loadState.append is LoadState.NotLoading -> {
-              isUnveil(true)
-              showView(true)
-            }
-
-            loadState.refresh is LoadState.Error -> {
-              isUnveil(true)
-              pagingErrorState(loadState)?.let {
-                showView(adapter.itemCount > 0)
-                mSnackbar = uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
-              }
-            }
-          }
-        }
-    }
-  }
-
   private fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
@@ -234,22 +246,6 @@ class FeaturedFragment : Fragment() {
       rvPlayingNow.isVisible = isVisible
       tvPlayingNow.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
-    }
-  }
-
-  private fun isUnveil(isUnveil: Boolean) {
-    if (isUnveil) {
-      binding.apply {
-        rvUpcoming.unVeil()
-        rvTrending.unVeil()
-        rvPlayingNow.unVeil()
-      }
-    } else {
-      binding.apply {
-        rvUpcoming.veil()
-        rvTrending.veil()
-        rvPlayingNow.veil()
-      }
     }
   }
 

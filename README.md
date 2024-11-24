@@ -43,7 +43,7 @@ personal and educational use as part of my portfolio.
 6. Build the project (`Ctrl + F9`).
 7. Run with your virtual or phone devices
 
-# Architecture
+### Architecture
 
 The **BAZZ Movies** app follows the
 [official architecture guidance](https://developer.android.com/topic/architecture)
@@ -64,7 +64,7 @@ This application is released under the [MIT License](LICENSE).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
 4. ExpandableTextView: An expandable Android TextView (MIT
    License) - [GitHub](https://github.com/glailton/ExpandableTextView).
-5. AndroidVeil: Skeletons and shimmering effects - [GitHub](https://github.com/skydoves/AndroidVeil)
+5. Shimmer Android: Library shimmering effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
 6. Country Picker Android: (Apache
    2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
 7. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).

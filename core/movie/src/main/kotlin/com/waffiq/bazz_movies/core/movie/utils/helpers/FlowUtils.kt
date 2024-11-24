@@ -1,7 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.utils.helpers
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import kotlinx.coroutines.flow.Flow
@@ -19,8 +21,10 @@ object FlowUtils {
     adapter: PagingDataAdapter<T, *>
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
-      flowProvider().collectLatest { pagingData ->
-        adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
+      fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        flowProvider().collectLatest { pagingData ->
+          adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
+        }
       }
     }
   }

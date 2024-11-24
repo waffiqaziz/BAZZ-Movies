@@ -38,22 +38,13 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/popular" />
 
-        <com.skydoves.androidveil.VeilRecyclerFrameView
+        <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_popular"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
-          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
-          app:veilFrame_baseColor="@color/gray_800"
-          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
-          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
-          app:veilFrame_highlightColor="@color/gray_700"
-          app:veilFrame_isItemWrapContentWidth="true"
-          app:veilFrame_radius="@dimen/button_radius"
-          app:veilFrame_shimmerEnable="true"
-          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
@@ -69,22 +60,13 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/now_playing" />
 
-        <com.skydoves.androidveil.VeilRecyclerFrameView
+        <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_now_playing"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
-          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
-          app:veilFrame_baseColor="@color/gray_800"
-          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
-          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
-          app:veilFrame_highlightColor="@color/gray_700"
-          app:veilFrame_isItemWrapContentWidth="true"
-          app:veilFrame_radius="@dimen/button_radius"
-          app:veilFrame_shimmerEnable="true"
-          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
@@ -100,22 +82,13 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/upcoming" />
 
-        <com.skydoves.androidveil.VeilRecyclerFrameView
+        <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_upcoming"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
-          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
-          app:veilFrame_baseColor="@color/gray_800"
-          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
-          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
-          app:veilFrame_highlightColor="@color/gray_700"
-          app:veilFrame_isItemWrapContentWidth="true"
-          app:veilFrame_radius="@dimen/button_radius"
-          app:veilFrame_shimmerEnable="true"
-          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"
@@ -131,22 +104,13 @@
           android:layout_marginTop="@dimen/default_margin_parent_20"
           android:text="@string/top_rated" />
 
-        <com.skydoves.androidveil.VeilRecyclerFrameView
+        <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_top_rated"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:nestedScrollingEnabled="false"
-          app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
-          app:veilFrame_baseColor="@color/gray_800"
-          app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
-          app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
-          app:veilFrame_highlightColor="@color/gray_700"
-          app:veilFrame_isItemWrapContentWidth="true"
-          app:veilFrame_radius="@dimen/button_radius"
-          app:veilFrame_shimmerEnable="true"
-          app:veilFrame_veiled="true"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster"

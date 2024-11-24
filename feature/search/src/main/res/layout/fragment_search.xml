@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.skydoves.androidveil.VeilRecyclerFrameView
+    <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv_search"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -23,17 +23,7 @@
       android:contentDescription="@string/search_results"
       android:paddingTop="?attr/actionBarSize"
       android:paddingBottom="50dp"
-      android:visibility="gone"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      app:veilFrame_baseAlpha="@dimen/veilFrame_baseAlpha"
-      app:veilFrame_baseColor="@color/gray_800"
-      app:veilFrame_dropOff="@dimen/veilFrame_dropOff"
-      app:veilFrame_highlightAlpha="@dimen/veilFrame_highlightAlpha"
-      app:veilFrame_highlightColor="@color/gray_700"
-      app:veilFrame_isItemWrapContentWidth="true"
-      app:veilFrame_radius="@dimen/button_radius"
-      app:veilFrame_shimmerEnable="true"
-      app:veilFrame_veiled="true"
+      android:visibility="visible"
       tools:listitem="@layout/item_result"
       tools:visibility="visible" />
 
