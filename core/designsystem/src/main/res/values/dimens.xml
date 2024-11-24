@@ -7,9 +7,4 @@
   <dimen name="margin_reduce_20">-20dp</dimen>
   <dimen name="button_radius">5dp</dimen>
   <dimen name="bottom_padding">48dp</dimen>
-
-  <!-- Default veil attr -->
-  <dimen name="veilFrame_baseAlpha">0.6</dimen>
-  <dimen name="veilFrame_dropOff">0.5</dimen>
-  <dimen name="veilFrame_highlightAlpha">0.6</dimen>
 </resources>

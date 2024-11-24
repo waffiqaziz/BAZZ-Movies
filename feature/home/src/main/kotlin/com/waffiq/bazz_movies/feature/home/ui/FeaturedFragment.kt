@@ -100,17 +100,23 @@ class FeaturedFragment : Fragment() {
 
   private fun showShimmer() {
     binding.apply {
-      rvUpcoming.adapter = shimmerAdapter
-      rvPlayingNow.adapter = shimmerAdapter
-      rvTrending.adapter = shimmerAdapter
+      if (rvUpcoming.adapter != shimmerAdapter) rvUpcoming.adapter = shimmerAdapter
+      if (rvPlayingNow.adapter != shimmerAdapter) rvPlayingNow.adapter = shimmerAdapter
+      if (rvTrending.adapter != shimmerAdapter) rvTrending.adapter = shimmerAdapter
     }
   }
 
   private fun showActualData() {
     binding.apply {
-      rvUpcoming.setupRecyclerView(requireContext(), adapterUpcoming)
-      rvPlayingNow.setupRecyclerView(requireContext(), adapterPlayingNow)
-      rvTrending.setupRecyclerView(requireContext(), adapterTrending)
+      if (rvUpcoming.adapter != adapterUpcoming) {
+        rvUpcoming.setupRecyclerView(requireContext(), adapterUpcoming)
+      }
+      if (rvPlayingNow.adapter != adapterPlayingNow) {
+        rvPlayingNow.setupRecyclerView(requireContext(), adapterPlayingNow)
+      }
+      if (rvTrending.adapter != adapterTrending) {
+        rvTrending.setupRecyclerView(requireContext(), adapterTrending)
+      }
     }
   }
 

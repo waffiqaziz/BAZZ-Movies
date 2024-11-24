@@ -87,19 +87,27 @@ class TvSeriesFragment : Fragment() {
 
   private fun showShimmer() {
     binding.apply {
-      rvPopular.adapter = shimmerAdapter
-      rvAiringToday.adapter = shimmerAdapter
-      rvOnTv.adapter = shimmerAdapter
-      rvTopRated.adapter = shimmerAdapter
+      if (rvPopular.adapter != shimmerAdapter) rvPopular.adapter = shimmerAdapter
+      if (rvAiringToday.adapter != shimmerAdapter) rvAiringToday.adapter = shimmerAdapter
+      if (rvOnTv.adapter != shimmerAdapter) rvOnTv.adapter = shimmerAdapter
+      if (rvTopRated.adapter != shimmerAdapter) rvTopRated.adapter = shimmerAdapter
     }
   }
 
   private fun showActualData() {
     binding.apply {
-      rvPopular.setupRecyclerView(requireContext(), popularAdapter)
-      rvAiringToday.setupRecyclerView(requireContext(), nowPlayingAdapter)
-      rvOnTv.setupRecyclerView(requireContext(), onTvAdapter)
-      rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
+      if (rvPopular.adapter != popularAdapter) {
+        rvPopular.setupRecyclerView(requireContext(), popularAdapter)
+      }
+      if (rvAiringToday.adapter != nowPlayingAdapter) {
+        rvAiringToday.setupRecyclerView(requireContext(), nowPlayingAdapter)
+      }
+      if (rvOnTv.adapter != onTvAdapter) {
+        rvOnTv.setupRecyclerView(requireContext(), onTvAdapter)
+      }
+      if (rvTopRated.adapter != topRatedAdapter) {
+        rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
+      }
     }
   }
 

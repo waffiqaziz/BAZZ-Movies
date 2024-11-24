@@ -93,19 +93,27 @@ class MovieFragment : Fragment() {
 
   private fun showShimmer() {
     binding.apply {
-      rvPopular.adapter = shimmerAdapter
-      rvNowPlaying.adapter = shimmerAdapter
-      rvUpcoming.adapter = shimmerAdapter
-      rvTopRated.adapter = shimmerAdapter
+      if (rvPopular.adapter != shimmerAdapter) rvPopular.adapter = shimmerAdapter
+      if (rvNowPlaying.adapter != shimmerAdapter) rvNowPlaying.adapter = shimmerAdapter
+      if (rvUpcoming.adapter != shimmerAdapter) rvUpcoming.adapter = shimmerAdapter
+      if (rvTopRated.adapter != shimmerAdapter) rvTopRated.adapter = shimmerAdapter
     }
   }
 
   private fun showActualData() {
     binding.apply {
-      rvPopular.setupRecyclerView(requireContext(), popularAdapter)
-      rvNowPlaying.setupRecyclerView(requireContext(), nowPlayingAdapter)
-      rvUpcoming.setupRecyclerView(requireContext(), upComingAdapter)
-      rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
+      if (rvPopular.adapter != popularAdapter) {
+        rvPopular.setupRecyclerView(requireContext(), popularAdapter)
+      }
+      if (rvNowPlaying.adapter != nowPlayingAdapter) {
+        rvNowPlaying.setupRecyclerView(requireContext(), nowPlayingAdapter)
+      }
+      if (rvUpcoming.adapter != upComingAdapter) {
+        rvUpcoming.setupRecyclerView(requireContext(), upComingAdapter)
+      }
+      if (rvTopRated.adapter != topRatedAdapter) {
+        rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
+      }
     }
   }
 

@@ -23,23 +23,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.recyclerview.widget.ConcatAdapter
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_search
+import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
-import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupShimmer
+import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
 import com.waffiq.bazz_movies.navigation.Navigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -57,8 +63,15 @@ class SearchFragment : Fragment() {
 
   private val searchViewModel: SearchViewModel by viewModels()
   private lateinit var searchAdapter: SearchAdapter
+  private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var lastQuery: String? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    searchAdapter = SearchAdapter(navigator)
+    shimmerAdapter = ShimmerAdapter()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -75,11 +88,13 @@ class SearchFragment : Fragment() {
     (activity as AppCompatActivity).supportActionBar?.title = null
     binding.appBarLayout.setExpanded(true, true)
 
-    searchAdapter = SearchAdapter(navigator)
-    binding.rvSearch.setupShimmer(requireContext(), searchAdapter)
+    binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
       searchAdapter.refresh()
+      binding.illustrationError.btnTryAgain.isVisible = false
+      binding.illustrationError.progressCircular.isVisible = true
+      showShimmer()
     }
     binding.swipeRefresh.setOnRefreshListener {
       searchAdapter.refresh()
@@ -88,7 +103,18 @@ class SearchFragment : Fragment() {
 
     adapterLoadStateListener()
     setupSearchView()
-    observeSearchResult()
+    collectAndSubmitData(this, { searchViewModel.searchResults }, searchAdapter)
+  }
+
+  private fun showShimmer() {
+    binding.rvSearch.adapter = shimmerAdapter
+  }
+
+  private fun showActualData() {
+    val currentAdapter = binding.rvSearch.adapter
+    if (currentAdapter !is ConcatAdapter || !currentAdapter.adapters.contains(searchAdapter)) {
+      binding.rvSearch.setupRecyclerView(requireContext(), searchAdapter)
+    }
   }
 
   private fun setupSearchView() {
@@ -127,6 +153,8 @@ class SearchFragment : Fragment() {
                 searchAdapter.refresh()
                 lastQuery = query
                 searchViewModel.search(query)
+                binding.illustrationSearchView.root.isVisible = false
+                showShimmer()
               } else {
                 return true
               }
@@ -134,9 +162,7 @@ class SearchFragment : Fragment() {
               return false
             }
 
-            override fun onQueryTextChange(query: String?): Boolean {
-              return true
-            }
+            override fun onQueryTextChange(query: String?): Boolean = true
           })
 
           // Restore query if available
@@ -157,65 +183,60 @@ class SearchFragment : Fragment() {
     )
   }
 
-  private fun observeSearchResult() {
-    viewLifecycleOwner.lifecycleScope.launch {
-      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        searchViewModel.searchResults.collectLatest { resultItemSearch ->
-          searchAdapter.submitData(lifecycle, resultItemSearch)
-        }
-      }
-    }
-  }
-
   private fun adapterLoadStateListener() {
-    searchAdapter.addLoadStateListener { loadState ->
-      when (loadState.source.refresh) {
-        is LoadState.Loading -> {
-          // Data is loading; keep showing the containerSearch
-          isUnveil(false)
-          binding.illustrationSearchView.root.isVisible = false
-          binding.illustrationError.root.isVisible = false
-          binding.illustrationSearchNoResultView.root.isVisible = false
-          binding.rvSearch.isVisible = true
-        }
-
-        is LoadState.NotLoading -> {
-          isUnveil(true)
-          binding.illustrationError.root.isVisible = false
-          if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
-            // No results found; displaying empty view instead.
-            binding.rvSearch.isVisible = false
-            binding.illustrationSearchNoResultView.root.isVisible = true
+    lifecycleScope.launch {
+      searchAdapter.loadStateFlow.debounce(DEBOUNCE_VERY_LONG).collectLatest { loadState ->
+        when (loadState.source.refresh) {
+          is LoadState.Loading -> {
+            // Data is loading; keep showing the containerSearch
             binding.illustrationSearchView.root.isVisible = false
-          } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
-            // No search operation; show illustration search
-            binding.rvSearch.isVisible = false
-            binding.illustrationSearchView.root.isVisible = true
-            binding.illustrationSearchNoResultView.root.isVisible = false
-          } else {
-            // Data is loaded; show the results
-            binding.rvSearch.isVisible = true
-            binding.illustrationSearchView.root.isVisible = false
-            binding.illustrationSearchNoResultView.root.isVisible = false
-          }
-        }
-
-        is LoadState.Error -> {
-          // Error occurred; handle error state and hide loading view
-          lastQuery = null
-          isUnveil(true)
-          if (searchAdapter.itemCount < 1) {
-            binding.illustrationError.root.isVisible = true
-            binding.rvSearch.isVisible = false
-          } else {
             binding.illustrationError.root.isVisible = false
+            binding.illustrationSearchNoResultView.root.isVisible = false
             binding.rvSearch.isVisible = true
           }
-          binding.illustrationSearchView.root.isVisible = false
 
-          // show snackbar
-          pagingErrorState(loadState)?.let {
-            uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
+          is LoadState.NotLoading -> {
+            binding.illustrationError.root.isVisible = false
+            binding.illustrationError.btnTryAgain.isVisible = false
+            if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+              // No results found; displaying empty view instead.
+              binding.rvSearch.isVisible = false
+              binding.illustrationSearchNoResultView.root.isVisible = true
+              binding.illustrationSearchView.root.isVisible = false
+            } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+              // No search operation; show illustration search
+              binding.rvSearch.isVisible = false
+              binding.illustrationSearchView.root.isVisible = true
+              binding.illustrationSearchNoResultView.root.isVisible = false
+            } else {
+              // Data is loaded; show the results
+              delay(DEBOUNCE_SHORT)
+              showActualData()
+              binding.rvSearch.isVisible = true
+              binding.illustrationSearchView.root.isVisible = false
+              binding.illustrationSearchNoResultView.root.isVisible = false
+            }
+          }
+
+          is LoadState.Error -> {
+            // Error occurred; handle error state
+            lastQuery = null
+            showActualData()
+            if (searchAdapter.itemCount < 1) {
+              binding.illustrationError.root.isVisible = true
+              binding.rvSearch.isVisible = false
+            } else {
+              binding.illustrationError.root.isVisible = false
+              binding.rvSearch.isVisible = true
+            }
+            binding.illustrationSearchView.root.isVisible = false
+            binding.illustrationError.progressCircular.isVisible = false
+            binding.illustrationError.btnTryAgain.isVisible = true
+
+            // show snackbar
+            pagingErrorState(loadState)?.let {
+              uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
+            }
           }
         }
       }
@@ -227,14 +248,6 @@ class SearchFragment : Fragment() {
     (requireActivity() as AppCompatActivity).supportActionBar?.show()
     binding.appBarLayout.setExpanded(true)
     searchViewModel.setExpandSearchView(true)
-  }
-
-  fun isUnveil(isUnveil: Boolean) {
-    if (isUnveil) {
-      binding.rvSearch.unVeil()
-    } else {
-      binding.rvSearch.veil()
-    }
   }
 
   override fun onConfigurationChanged(newConfig: Configuration) {
