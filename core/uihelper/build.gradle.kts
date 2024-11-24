@@ -27,10 +27,9 @@ android {
 }
 
 dependencies {
-  implementation(project(":core:designsystem"))
+  api(project(":core:designsystem"))
   api(project(":core:common"))
 
   implementation(libs.androidx.core.ktx)
-
   implementation(libs.androidx.paging.runtime)
 }

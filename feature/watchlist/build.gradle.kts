@@ -34,8 +34,6 @@ android {
 }
 
 dependencies {
-  implementation(project(":core:movie"))
-  implementation(project(":core:user"))
   implementation(project(":core:favoritewatchlist"))
 
   implementation(libs.androidx.core.ktx)

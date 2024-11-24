@@ -32,13 +32,11 @@ android {
 }
 
 dependencies {
-  api(project(":core:common"))
-  api(project(":core:database"))
-  api(project(":core:data"))
+//  api(project(":core:database"))
   api(project(":navigation"))
   api(project(":core:uihelper"))
-  api(project(":core:network"))
-  implementation(project(":core:designsystem"))
+  api(project(":core:movie"))
+  api(project(":core:user"))
 
   implementation(libs.androidx.recyclerview)
   api(libs.androidx.paging.runtime)
