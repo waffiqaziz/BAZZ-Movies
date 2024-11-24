@@ -24,8 +24,8 @@ object ActionBarBehavior {
     statusBarColor = Color.TRANSPARENT
   }
 
-  fun handleOverHeightAppBar(appBarLayout: AppBarLayout) {
-    ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { v, windowInsets ->
+  fun AppBarLayout.handleOverHeightAppBar() {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, windowInsets ->
       val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
       v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
         topMargin = insets.top

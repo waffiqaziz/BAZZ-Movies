@@ -65,12 +65,13 @@ class PersonActivity : AppCompatActivity() {
   lateinit var navigator: Navigator
 
   private lateinit var binding: ActivityPersonBinding
+
   private lateinit var dataExtra: MovieTvCastItem
   private val personViewModel: PersonViewModel by viewModels()
 
-  private var dialog: Dialog? = null
   private val handler = Handler(Looper.getMainLooper())
 
+  private var dialog: Dialog? = null
   private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,11 +81,12 @@ class PersonActivity : AppCompatActivity() {
 
     // action bar behavior
     window.transparentStatusBar()
-    handleOverHeightAppBar(binding.appBarLayout)
+    binding.appBarLayout.handleOverHeightAppBar()
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollViewPerson)
-
     addPaddingWhenNavigationEnable(binding.root)
+
     justifyTextView(binding.tvBiography)
+
     showLoading(true)
     getDataExtra()
     setupView()

@@ -30,6 +30,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
@@ -70,6 +71,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNa
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
@@ -99,43 +101,77 @@ class DetailMovieActivity : AppCompatActivity() {
   lateinit var navigator: Navigator
 
   private lateinit var binding: ActivityDetailMovieBinding
+
   private lateinit var dataExtra: ResultItem
+
   private val detailViewModel: DetailMovieViewModel by viewModels()
   private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterRecommendation: RecommendationAdapter
-  private var mSnackbar: Snackbar? = null
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
   private var isLogin = false // is login as user or not
 
+  private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
-    initTag()
-    showLoadingDim(true)
-
-    adapterCast = CastAdapter(navigator)
-    adapterRecommendation = RecommendationAdapter(navigator)
-
-    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
-    errorStateObserver()
 
     // action bar behavior
     window.transparentStatusBar()
-    handleOverHeightAppBar(binding.appBarLayout)
+    binding.appBarLayout.handleOverHeightAppBar()
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
-
     addPaddingWhenNavigationEnable(binding.root)
+
     justifyTextView(binding.tvOverview as TextView)
-    loadData()
+
+    showLoadingDim(true)
+    setupRecyclerView()
+    stateObserver()
+    initTag()
+
+
+    checkUser()
+    getDataExtra()
+    showDetailData()
     favWatchlistHandler()
     viewListener()
+  }
+
+  private fun showLoadingDim(isLoading: Boolean) {
+    if (isLoading) {
+      binding.progressBar.isVisible = true
+    } else {
+      binding.appBarLayout.isVisible = true
+      binding.progressBar.isVisible = false
+      fadeOut(binding.backgroundDimMovie, DEBOUNCE_SHORT)
+    }
+  }
+
+  private fun setupRecyclerView() {
+    // setup adapter
+    adapterCast = CastAdapter(navigator)
+    adapterRecommendation = RecommendationAdapter(navigator)
+
+    // setup rv cast
+    binding.rvCast.itemAnimator = DefaultItemAnimator()
+    binding.rvCast.layoutManager =
+      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    binding.rvCast.adapter = adapterCast
+
+    // setup rv recommendation
+    binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
+    binding.rvRecommendation.layoutManager =
+      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+    binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
+      footer = LoadingStateAdapter { adapterRecommendation.retry() }
+    )
   }
 
   private fun initTag() {
@@ -163,12 +199,6 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
     }
-  }
-
-  private fun loadData() {
-    checkUser()
-    getDataExtra()
-    showDetailData()
   }
 
   private fun checkUser() {
@@ -208,47 +238,35 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showDetailData() {
-    setupRecyclerView()
-    showRecommendation()
     showGeneralInfo()
+    showRecommendation()
     getDetailBasedMediaType()
 
     // show detail data based media type
-    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-      observeDetailMovie()
-    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) {
-      observeDetailTv()
-    }
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) observeDetailMovie()
+    else if (dataExtra.mediaType == TV_MEDIA_TYPE) observeDetailTv()
   }
 
   private fun getDetailBasedMediaType() {
-    showBackdrop()
-    showPoster()
-    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-      getDetailMovie()
-    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) {
-      getDetailTv()
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) getDetailMovie()
+    else if (dataExtra.mediaType == TV_MEDIA_TYPE) getDetailTv()
+  }
+
+  // show data (backdrop, poster, title, released year, media type, and overview) based @params DATA_EXTRA
+  private fun showGeneralInfo() {
+    showBackdropAndPoster()
+    binding.apply {
+      dataExtra.apply {
+        tvTitle.text = name ?: title ?: originalTitle ?: originalName
+        tvMediaType.text = mediaType.uppercase()
+        tvYearReleased.text =
+          dateFormatterStandard(releaseDate.toString().ifEmpty { firstAirDate.toString() })
+        tvOverview.text = overview?.takeIf { it.isNotBlank() } ?: getString(no_overview)
+      }
     }
   }
 
-  private fun setupRecyclerView() {
-    // setup rv cast
-    binding.rvCast.itemAnimator = DefaultItemAnimator()
-    binding.rvCast.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-    binding.rvCast.adapter = adapterCast
-
-    // setup rv recommendation
-    binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
-    binding.rvRecommendation.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-    binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterRecommendation.retry() }
-    )
-  }
-
-  private fun showBackdrop() {
+  private fun showBackdropAndPoster() {
     Glide.with(binding.ivPictureBackdrop)
       .load(
         if (dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE) {
@@ -269,9 +287,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     binding.tvBackdropNotFound.isVisible =
       dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == NOT_AVAILABLE
-  }
 
-  private fun showPoster() {
     Glide.with(binding.ivPoster)
       .load(
         if (dataExtra.posterPath == NOT_AVAILABLE) {
@@ -288,19 +304,7 @@ class DetailMovieActivity : AppCompatActivity() {
       .into(binding.ivPoster)
   }
 
-  private fun showGeneralInfo() {
-    // show data (title, released year, media type, and overview) based DATA_EXTRA
-    binding.apply {
-      dataExtra.apply {
-        tvTitle.text = name ?: title ?: originalTitle ?: originalName
-        tvMediaType.text = mediaType.uppercase()
-        tvYearReleased.text =
-          dateFormatterStandard(releaseDate.toString().ifEmpty { firstAirDate.toString() })
-        tvOverview.text = overview?.takeIf { it.isNotBlank() } ?: getString(no_overview)
-      }
-    }
-  }
-
+  // region MOVIE
   private fun getDetailMovie() {
     // shows crew and cast
     detailViewModel.getMovieCredits(dataExtra.id)
@@ -390,7 +394,9 @@ class DetailMovieActivity : AppCompatActivity() {
       adapterRecommendation.submitData(lifecycle, recommendations)
     }
   }
+  // endregion MOVIE
 
+  // region TV
   private fun getDetailTv() {
     // show crew & cast
     detailViewModel.getTvCredits(dataExtra.id)
@@ -475,6 +481,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     }
   }
+  // endregion TV
 
   private fun getStated(token: String) {
     if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
@@ -500,14 +507,14 @@ class DetailMovieActivity : AppCompatActivity() {
         startActivity(intent)
       } catch (e: ActivityNotFoundException) {
         Log.e(TAG, "YouTube app not installed", e)
-        SnackBarManager.snackBarWarning(
+        snackBarWarning(
           binding.coordinatorLayout,
           null,
           getString(yt_not_installed)
         )
       } catch (e: Exception) {
         Log.e(TAG, "Unknown error occurred while trying to play video", e)
-        SnackBarManager.snackBarWarning(
+        snackBarWarning(
           binding.coordinatorLayout,
           null,
           getString(unknown_error)
@@ -622,7 +629,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  // region toast, snackbar, dialog
+  // region toast, snackbar, dialog, states
   private fun showDialogNotRated() {
     MaterialAlertDialogBuilder(this, CustomAlertDialogTheme).apply {
       setTitle(resources.getString(not_available_full))
@@ -679,7 +686,8 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   @OptIn(FlowPreview::class) // Allows using the debounce function
-  private fun errorStateObserver() {
+  private fun stateObserver() {
+    detailViewModel.loadingState.observe(this) { showLoadingDim(it) }
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         detailViewModel.errorState.debounce(DEBOUNCE_LONG) // Prevent multiple emissions within 500ms
@@ -704,7 +712,7 @@ class DetailMovieActivity : AppCompatActivity() {
     )
     toast?.show()
   }
-  // endregion toast, snackbar, dialog
+  // endregion toast, snackbar, dialog, states
 
   // region VIEW HANDLER
   private fun showRecommendation() {
@@ -720,16 +728,6 @@ class DetailMovieActivity : AppCompatActivity() {
         binding.tvRecommendationHeader.isVisible = true
         binding.rvRecommendation.isVisible = true
       }
-    }
-  }
-
-  private fun showLoadingDim(isLoading: Boolean) {
-    if (isLoading) {
-      binding.progressBar.isVisible = true
-    } else {
-      binding.appBarLayout.isVisible = true
-      binding.progressBar.isVisible = false
-      fadeOut(binding.backgroundDimMovie, 200L)
     }
   }
 
