@@ -334,32 +334,32 @@ class DetailMovieActivity : AppCompatActivity() {
     }
   }
 
-  private fun updateMovieDetailsUI(data: DetailMovieTvUsed) {
+  private fun updateMovieDetailsUI(movie: DetailMovieTvUsed) {
     // show genre, duration, tmdb score
-    binding.tvGenre.text = data.genre ?: getString(not_available)
-    binding.tvDuration.text = data.duration ?: getString(not_available)
-    binding.tvScoreTmdb.text = data.tmdbScore ?: getString(not_available)
+    binding.tvGenre.text = movie.genre ?: getString(not_available)
+    binding.tvDuration.text = movie.duration ?: getString(not_available)
+    binding.tvScoreTmdb.text = movie.tmdbScore ?: getString(not_available)
 
     // set age rating
-    if (!data.ageRating.isNullOrEmpty()) {
+    if (!movie.ageRating.isNullOrEmpty()) {
       showViewAgeRating(true)
-      binding.tvAgeRating.text = data.ageRating
+      binding.tvAgeRating.text = movie.ageRating
     } else {
       showViewAgeRating(false)
     }
 
     // set region release
-    if (data.releaseDateRegion.regionRelease.isNotEmpty()) {
+    if (movie.releaseDateRegion.regionRelease.isNotEmpty()) {
       showViewRegionReleaseDate(true)
-      binding.tvRegionRelease.text = data.releaseDateRegion.regionRelease
+      binding.tvRegionRelease.text = movie.releaseDateRegion.regionRelease
     } else {
       showViewRegionReleaseDate(false)
     }
 
     // set date release based on user region
-    if (data.releaseDateRegion.releaseDate.isNotEmpty()) {
+    if (movie.releaseDateRegion.releaseDate.isNotEmpty()) {
       showViewReleaseDate(true)
-      binding.tvYearReleased.text = data.releaseDateRegion.releaseDate
+      binding.tvYearReleased.text = movie.releaseDateRegion.releaseDate
     } else {
       showViewReleaseDate(false)
     }
@@ -435,15 +435,21 @@ class DetailMovieActivity : AppCompatActivity() {
         showViewAgeRating(false)
       }
 
-      // release date
+      // set origin country
       if (tv.releaseDateRegion.regionRelease.isNotEmpty()) {
+        showViewRegionReleaseDate(true)
+        binding.tvRegionRelease.text = tv.releaseDateRegion.regionRelease
+      } else {
+        showViewRegionReleaseDate(false)
+      }
+
+      // release date
+      if (tv.releaseDateRegion.releaseDate.isNotEmpty()) {
         showViewReleaseDate(true)
-        binding.tvYearReleased.text = tv.releaseDateRegion.regionRelease
+        binding.tvYearReleased.text = tv.releaseDateRegion.releaseDate
       } else {
         showViewReleaseDate(false)
       }
-
-      showViewRegionReleaseDate(false)
     }
   }
 

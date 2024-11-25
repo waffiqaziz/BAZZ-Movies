@@ -6,12 +6,12 @@ import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.toLink
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class GetDetailTvInteractor @Inject constructor(
               imdbId = "",
               ageRating = getAgeRating(networkResult.data, userRegion),
               tmdbScore = getTransformTMDBScore(networkResult.data.voteAverage),
-              releaseDateRegion = ReleaseDateRegion("", "")
+              releaseDateRegion = getReleaseDateRegion(networkResult.data)
             )
           )
         }
