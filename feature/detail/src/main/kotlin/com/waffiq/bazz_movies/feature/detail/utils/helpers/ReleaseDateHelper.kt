@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterSta
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 
 /**
  * Helper object responsible for retrieving release dates and their associated regions for movies.
@@ -17,6 +18,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 object ReleaseDateHelper {
 
   /**
+   * For Movie
+   *
    * Determines and returns the most relevant release date and its associated region for a given movie.
    *
    * The function employs a multi-step search strategy to locate a release date:
@@ -34,7 +37,7 @@ object ReleaseDateHelper {
 
     // Step 1: Look for a release date in the user's specified region.
     val userRegionAndDate =
-      getMatchingRegionAndReleaseDate(data?.releaseDates?.listReleaseDatesItem, userRegion)
+      getMatchingRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem, userRegion)
     if (userRegionAndDate != null) {
       releaseDateRegion = ReleaseDateRegion(
         regionRelease = userRegionAndDate.first,
@@ -59,7 +62,7 @@ object ReleaseDateHelper {
 
     // Step 3: Final Fallback - Retrieve any available valid region and release date.
     if (releaseDateRegion == null) {
-      val fallback = getAnyValidRegionAndReleaseDate(data?.releaseDates?.listReleaseDatesItem)
+      val fallback = getAnyValidRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem)
       releaseDateRegion = ReleaseDateRegion(
         regionRelease = fallback.first,
         releaseDate = dateFormatterISO8601(fallback.second)
@@ -76,7 +79,7 @@ object ReleaseDateHelper {
    * @param region A string specifying the desired region code.
    * @return A pair containing the region code and the release date, or `null` if no match is found.
    */
-  private fun getMatchingRegionAndReleaseDate(
+  private fun getMatchingRegionAndReleaseDateMovie(
     data: List<ReleaseDatesItem?>?,
     region: String
   ): Pair<String, String>? {
@@ -96,7 +99,7 @@ object ReleaseDateHelper {
    * @return A pair containing the region code and the release date, or a pair of empty strings if
    *        no valid data is found.
    */
-  private fun getAnyValidRegionAndReleaseDate(data: List<ReleaseDatesItem?>?): Pair<String, String> {
+  private fun getAnyValidRegionAndReleaseDateMovie(data: List<ReleaseDatesItem?>?): Pair<String, String> {
     return data?.firstOrNull { isValidRegionAndReleaseDate(it) }
       ?.let {
         Pair(
@@ -121,5 +124,51 @@ object ReleaseDateHelper {
     return item?.iso31661 != null &&
       (region == null || item.iso31661 == region) &&
       item.listReleaseDatesitemValue?.any { !it.releaseDate.isNullOrEmpty() } == true
+  }
+
+  /**
+   * For TV-Series
+   *
+   * Determines and returns the most relevant release date and its associated region for a given
+   * tv-series.
+   *
+   * @param data A `DetailTv` object containing details about the tv-series, including its release
+   *        dates and original country.
+   * @return A `ReleaseDateRegion` object that contains the release date and original country.
+   */
+  fun getReleaseDateRegion(data: DetailTv): ReleaseDateRegion {
+    return ReleaseDateRegion(
+      "(${getOriginalCountryTv(data)})",
+      getYearRangeTv(data)
+    )
+  }
+
+  /**
+   * Finds tv-series release date
+   *
+   * @param data A list of `DetailTv` objects representing tv data.
+   *
+   * @return string of selected year.
+   *
+   * Example: return `2017-2019` for multiple seasons, return `2017` if only one season`
+   */
+  private fun getYearRangeTv(data: DetailTv): String {
+    val filteredSeasons = data.listSeasonsItem?.filter { it?.name?.startsWith("Season ") == true }
+    val years = filteredSeasons?.mapNotNull { it?.airDate?.take(4)?.toIntOrNull() }
+
+    return if (years.isNullOrEmpty()) ""
+    else if (filteredSeasons.size > 1) "${years.minOrNull()}-${years.maxOrNull()}"
+    else years.first().toString()
+  }
+
+  /**
+   * Get origin country of the series
+   *
+   * @param data A list of `DetailTv` objects representing tv data.
+   *
+   * @return string of origin country.
+   */
+  private fun getOriginalCountryTv(data: DetailTv): String {
+    return data.listOriginCountry?.firstOrNull() ?: ""
   }
 }

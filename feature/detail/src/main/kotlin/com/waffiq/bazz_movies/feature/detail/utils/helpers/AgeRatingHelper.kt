@@ -44,7 +44,7 @@ object AgeRatingHelper {
     data: DetailTv?,
     userRegion: String,
   ): String {
-    // if age rating based on user region return empty, get age rating from US
+    // if age rating based on user region return empty, get age rating from any region
     return getTransformAgeRatingTv(data, userRegion).takeIf { it.isNotEmpty() }
       ?: getTransformAgeRatingTv(data, "false")
   }
@@ -55,14 +55,12 @@ object AgeRatingHelper {
         ?.filter { it?.iso31661 == "US" || it?.iso31661 == region } // Filter by US or specific region
         ?.mapNotNull { contentRatingsItem -> // Map to ratings and exclude empty/null values
           contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        }
-        ?.joinToString(separator = ", ") ?: ""
+        }?.firstOrNull() ?: "" // get the first
     } else {
       data?.contentRatings?.contentRatingsItem
         ?.mapNotNull { contentRatingsItem -> // Map to ratings and exclude empty/null values
           contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        }
-        ?.joinToString(separator = ", ") ?: ""
+        }?.firstOrNull() ?: "" // get the first
     }
   // endregion CALCULATE AGE RATING TV
 }
