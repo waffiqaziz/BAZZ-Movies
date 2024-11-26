@@ -85,7 +85,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.detailCrew
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -98,7 +98,7 @@ import kotlin.text.isEmpty
 class DetailMovieActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
   private lateinit var binding: ActivityDetailMovieBinding
 
@@ -699,7 +699,7 @@ class DetailMovieActivity : AppCompatActivity() {
         detailViewModel.errorState.debounce(DEBOUNCE_LONG) // Prevent multiple emissions within 500ms
           .collect { errorMessage ->
             mSnackbar =
-              SnackBarManager.snackBarWarning(binding.coordinatorLayout, null, errorMessage)
+              snackBarWarning(binding.coordinatorLayout, null, errorMessage)
           }
       }
     }

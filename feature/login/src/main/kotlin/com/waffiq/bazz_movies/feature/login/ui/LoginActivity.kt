@@ -31,7 +31,7 @@ import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.feature.login.utils.CustomTypefaceSpan
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
   private lateinit var binding: ActivityLoginBinding
   private val authenticationViewModel: AuthenticationViewModel by viewModels()

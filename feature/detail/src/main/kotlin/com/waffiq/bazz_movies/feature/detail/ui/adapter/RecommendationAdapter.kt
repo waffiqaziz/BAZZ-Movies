@@ -15,9 +15,9 @@ import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 
-class RecommendationAdapter(private val navigator: Navigator) :
+class RecommendationAdapter(private val navigator: INavigator) :
   PagingDataAdapter<ResultItem, RecommendationAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

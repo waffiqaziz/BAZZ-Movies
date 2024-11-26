@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
+import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.data
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.databinding.IllustrationErrorBinding
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import kotlinx.coroutines.FlowPreview
@@ -99,14 +101,13 @@ object HomeFragmentHelper {
   }
 
   @OptIn(FlowPreview::class)
-  fun observeLoadState(
-    lifecycleOwner: LifecycleOwner,
+  fun LifecycleOwner.observeLoadState(
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,
     onSuccess: () -> Unit,
-    onError: (Throwable) -> Unit
+    onError: (Event<String>?) -> Unit
   ) {
-    lifecycleOwner.lifecycleScope.launch {
+    lifecycleScope.launch {
       loadStateFlow
         .debounce(DEBOUNCE_VERY_LONG)
         .distinctUntilChanged()
@@ -126,7 +127,7 @@ object HomeFragmentHelper {
 
             loadState.refresh is LoadState.Error -> {
               val error = (loadState.refresh as LoadState.Error).error
-              onError(error)
+              onError(Event(pagingErrorHandling(error)))
             }
           }
         }

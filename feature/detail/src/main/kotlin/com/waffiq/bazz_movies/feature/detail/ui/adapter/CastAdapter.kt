@@ -13,9 +13,9 @@ import com.waffiq.bazz_movies.core.data.MovieTvCastItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 
-class CastAdapter(private val navigator: Navigator) :
+class CastAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<MovieTvCastItem>()

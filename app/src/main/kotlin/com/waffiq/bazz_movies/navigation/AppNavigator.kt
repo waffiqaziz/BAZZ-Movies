@@ -24,7 +24,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppNavigator @Inject constructor() : Navigator {
+class AppNavigator @Inject constructor() : INavigator {
   override fun openPersonDetails(context: Context, cast: MovieTvCastItem) {
     val intent = Intent(context, PersonActivity::class.java).apply {
       putExtra(PersonActivity.EXTRA_PERSON, cast)

@@ -4,19 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
-import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
 import com.waffiq.bazz_movies.feature.search.ui.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), UIController {
+class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
 
@@ -52,13 +48,5 @@ class MainActivity : AppCompatActivity(), UIController {
     supportFragmentManager.fragments.forEach { fragment ->
       supportFragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss()
     }
-  }
-
-  override fun showSnackbarWarning(message: Event<String>): Snackbar? {
-    return snackBarWarning(binding.root, binding.bottomNavigation, message)
-  }
-
-  override fun showSnackbarWarning(message: String): Snackbar? {
-    return snackBarWarning(binding.root, binding.bottomNavigation, message)
   }
 }

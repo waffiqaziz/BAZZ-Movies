@@ -112,9 +112,7 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
 }
 
 dependencies {
-  implementation(project(":core:common"))
   implementation(project(":core:data"))
-  implementation(project(":core:designsystem"))
   implementation(project(":core:user"))
   implementation(project(":core:uihelper"))
   implementation(project(":feature:about"))

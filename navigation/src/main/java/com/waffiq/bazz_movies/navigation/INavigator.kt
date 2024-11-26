@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.navigation
 
 import android.app.Activity
 import android.content.Context
-import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.data.MovieTvCastItem
+import com.waffiq.bazz_movies.core.data.ResultItem
 
-interface Navigator {
+interface INavigator {
   fun openPersonDetails(context: Context, cast: MovieTvCastItem)
   fun openDetails(context: Context, resultItem: ResultItem)
   fun openMainActivity(isGuest: Boolean, activity: Activity, context: Context)
