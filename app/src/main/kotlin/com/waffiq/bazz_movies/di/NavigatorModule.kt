@@ -1,8 +1,7 @@
 package com.waffiq.bazz_movies.di
 
-
 import com.waffiq.bazz_movies.navigation.AppNavigator
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +14,5 @@ object NavigatorModule {
 
   @Provides
   @Singleton
-  fun provideNavigator(): Navigator = AppNavigator()
+  fun provideNavigator(): INavigator = AppNavigator()
 }

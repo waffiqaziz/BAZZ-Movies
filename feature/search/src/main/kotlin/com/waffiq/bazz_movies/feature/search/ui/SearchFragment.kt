@@ -36,12 +36,12 @@ import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmi
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
+import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -53,10 +53,10 @@ import javax.inject.Inject
 class SearchFragment : Fragment() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
-  private var uiController: UIController? = null
-    get() = activity as? UIController
+  @Inject
+  lateinit var snackbar: ISnackbar
 
   private var _binding: FragmentSearchBinding? = null
   private val binding get() = _binding!!
@@ -235,7 +235,7 @@ class SearchFragment : Fragment() {
 
             // show snackbar
             pagingErrorState(loadState)?.let {
-              uiController?.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
+              snackbar.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
             }
           }
         }
@@ -262,11 +262,6 @@ class SearchFragment : Fragment() {
     searchAdapter.refresh()
     binding.appBarLayout.setExpanded(true)
     searchViewModel.setExpandSearchView(false)
-  }
-
-  override fun onDetach() {
-    super.onDetach()
-    uiController = null
   }
 
   override fun onDestroyView() {

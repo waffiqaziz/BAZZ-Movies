@@ -33,15 +33,14 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistH
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentMyWatchlistMoviesBinding
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -49,11 +48,12 @@ import javax.inject.Inject
 class MyWatchlistMoviesFragment : Fragment() {
 
   @Inject
-  lateinit var navigator: Navigator
-  private var snackbarAnchor: Int = 0
+  lateinit var navigator: INavigator
 
-  private var uiController: UIController? = null
-    get() = activity as? UIController
+  @Inject
+  lateinit var snackbar: ISnackbar
+
+  private var snackbarAnchor: Int = 0
 
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -196,9 +196,7 @@ class MyWatchlistMoviesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
-            uiController?.showSnackbarWarning(
-              Event(it.title)
-            )
+            mSnackbar = snackbar.showSnackbarWarning(Event(it.title))
           } else {
             // add to favorite success
             showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
@@ -207,18 +205,17 @@ class MyWatchlistMoviesFragment : Fragment() {
       }
     }
 
-    handlePagingLoadState(
+    viewLifecycleOwner.handlePagingLoadState(
       adapterPaging = adapterPaging,
       loadStateFlow = adapterPaging.loadStateFlow,
       recyclerView = binding.rvWatchlistMovies,
       progressBar = binding.progressBar,
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.containerNoData,
-      lifecycleOwner = viewLifecycleOwner,
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = uiController?.showSnackbarWarning(pagingErrorHandling(it))
+            mSnackbar = snackbar.showSnackbarWarning(error)
             baseViewModel.markSnackbarShown()
           }
         }

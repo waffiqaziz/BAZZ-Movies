@@ -17,9 +17,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 
-class FavoriteAdapterDB(private val navigator: Navigator) :
+class FavoriteAdapterDB(private val navigator: INavigator) :
   RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   private val listItemDB = ArrayList<Favorite>()

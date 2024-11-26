@@ -16,9 +16,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 
-class KnownForAdapter(private val navigator: Navigator) :
+class KnownForAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<CastItem>()

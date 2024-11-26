@@ -54,7 +54,7 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.forma
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -62,7 +62,7 @@ import javax.inject.Inject
 class PersonActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
   private lateinit var binding: ActivityPersonBinding
 

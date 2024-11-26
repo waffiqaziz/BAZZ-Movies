@@ -8,12 +8,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
+import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
@@ -23,7 +21,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.obse
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,10 +29,10 @@ import javax.inject.Inject
 class TvSeriesFragment : Fragment() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
-  private var uiController: UIController? = null
-    get() = activity as? UIController
+  @Inject
+  lateinit var snackbar: ISnackbar
 
   private lateinit var popularAdapter: TvAdapter
   private lateinit var nowPlayingAdapter: TvAdapter
@@ -112,8 +110,7 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setData() {
-    observeLoadState(
-      lifecycleOwner = viewLifecycleOwner,
+    viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
       onLoading = { showShimmer() },
       onSuccess = {
@@ -129,10 +126,10 @@ class TvSeriesFragment : Fragment() {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        pagingErrorHandling(error).let {
+        error?.let {
           showActualData()
           showView(topRatedAdapter.itemCount > 0)
-          mSnackbar = uiController?.showSnackbarWarning(Event(it))
+          mSnackbar = snackbar.showSnackbarWarning(error)
         }
       }
     )

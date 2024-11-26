@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
+import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -71,17 +72,16 @@ object FavWatchlistHelper {
     return mSnackbar
   }
 
-  fun handlePagingLoadState(
+  fun LifecycleOwner.handlePagingLoadState(
     adapterPaging: PagingDataAdapter<*, *>,
     loadStateFlow: Flow<CombinedLoadStates>,
     recyclerView: RecyclerView,
     progressBar: ProgressBar,
     errorView: View,
     emptyView: View,
-    lifecycleOwner: LifecycleOwner,
-    onError: (Throwable?) -> Unit // A callback for when there’s an error
+    onError: (Event<String>?) -> Unit // A callback for when there’s an error
   ) {
-    lifecycleOwner.lifecycleScope.launch {
+    lifecycleScope.launch {
       @OptIn(FlowPreview::class)
       loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->
         when {
@@ -97,9 +97,10 @@ object FavWatchlistHelper {
             recyclerView.isVisible = adapterPaging.itemCount > 0
             errorView.isVisible = adapterPaging.itemCount <= 0
             emptyView.isVisible = false
+
             // Trigger the error callback
-            val error = (loadState.refresh as? LoadState.Error)?.error
-            onError(error)
+            val error = (loadState.refresh as LoadState.Error).error
+            onError(Event(pagingErrorHandling(error)))
           }
 
           loadState.append.endOfPaginationReached && adapterPaging.itemCount < 1 -> {

@@ -12,7 +12,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
@@ -21,8 +20,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
+import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
@@ -37,7 +35,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.obse
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import javax.inject.Inject
@@ -46,10 +44,10 @@ import javax.inject.Inject
 class FeaturedFragment : Fragment() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
-  private var uiController: UIController? = null
-    get() = activity as? UIController
+  @Inject
+  lateinit var snackbar: ISnackbar
 
   // Initialize adapters
   private lateinit var adapterTrending: TrendingAdapter
@@ -154,8 +152,7 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData(region: String) {
-    observeLoadState(
-      lifecycleOwner = viewLifecycleOwner,
+    viewLifecycleOwner.observeLoadState(
       loadStateFlow = adapterTrending.loadStateFlow,
       onLoading = { showShimmer() },
       onSuccess = {
@@ -171,10 +168,10 @@ class FeaturedFragment : Fragment() {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        pagingErrorHandling(error).let {
+        error?.let {
           showActualData()
           showView(adapterTrending.itemCount > 0)
-          mSnackbar = uiController?.showSnackbarWarning(Event(it))
+          mSnackbar = snackbar.showSnackbarWarning(error)
         }
       }
     )

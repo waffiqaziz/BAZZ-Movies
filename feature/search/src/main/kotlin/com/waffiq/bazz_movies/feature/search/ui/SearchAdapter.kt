@@ -23,9 +23,9 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 
-class SearchAdapter(private val navigator: Navigator) :
+class SearchAdapter(private val navigator: INavigator) :
   PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

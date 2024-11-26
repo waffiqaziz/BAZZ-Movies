@@ -25,6 +25,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_AVATAR
+import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
@@ -39,14 +40,14 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -58,10 +59,10 @@ import javax.inject.Inject
 class MoreFragment : Fragment() {
 
   @Inject
-  lateinit var navigator: Navigator
+  lateinit var navigator: INavigator
 
-  private var uiController: UIController? = null
-    get() = activity as? UIController
+  @Inject
+  lateinit var snackbar: ISnackbar
 
   private var _binding: FragmentMoreBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -74,7 +75,7 @@ class MoreFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null
 
-  private var isCancelSignout = false
+  private var isCancelSignOut = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -115,12 +116,7 @@ class MoreFragment : Fragment() {
               fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
               btnSignOutIsEnable(true)
               progressIsVisible(false)
-              mSnackbar =
-                uiController?.showSnackbarWarning(
-                  com.waffiq.bazz_movies.core.common.utils.Event(
-                    networkResult.message
-                  )
-                )
+              mSnackbar = snackbar.showSnackbarWarning(Event(networkResult.message))
             }
 
             else -> {}
@@ -138,12 +134,7 @@ class MoreFragment : Fragment() {
 
             is DbResult.Error -> {
               progressIsVisible(false)
-              mSnackbar =
-                uiController?.showSnackbarWarning(
-                  com.waffiq.bazz_movies.core.common.utils.Event(
-                    it.errorMessage
-                  )
-                )
+              mSnackbar = snackbar.showSnackbarWarning(Event(it.errorMessage))
             }
 
             else -> {}
@@ -171,9 +162,9 @@ class MoreFragment : Fragment() {
     }
 
     binding.btnSignout.setOnClickListener {
-      isCancelSignout = false
+      isCancelSignOut = false
       userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        if (!isCancelSignout) {
+        if (!isCancelSignOut) {
           if (user.token == NAN) {
             dialogSignOutGuestMode()
           } else {
@@ -199,7 +190,7 @@ class MoreFragment : Fragment() {
           HtmlCompat.FROM_HTML_MODE_LEGACY
         )
       ) { dialog, _ ->
-        isCancelSignout = !isCancelSignout
+        isCancelSignOut = !isCancelSignOut
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
@@ -229,7 +220,7 @@ class MoreFragment : Fragment() {
           HtmlCompat.FROM_HTML_MODE_LEGACY
         )
       ) { dialog, _ ->
-        isCancelSignout = !isCancelSignout
+        isCancelSignOut = !isCancelSignOut
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->

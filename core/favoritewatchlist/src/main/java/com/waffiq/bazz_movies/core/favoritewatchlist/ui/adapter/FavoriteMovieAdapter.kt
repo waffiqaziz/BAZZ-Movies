@@ -18,10 +18,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.navigation.Navigator
+import com.waffiq.bazz_movies.navigation.INavigator
 import java.text.DecimalFormat
 
-class FavoriteMovieAdapter(private val navigator: Navigator) :
+class FavoriteMovieAdapter(private val navigator: INavigator) :
   androidx.paging.PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
