@@ -28,16 +28,17 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterD
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.titleHandler
-import com.waffiq.bazz_movies.core.uihelper.utils.UIController
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
+import com.waffiq.bazz_movies.core.uihelper.utils.UIController
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentMyWatchlistMoviesBinding
 import com.waffiq.bazz_movies.navigation.Navigator
@@ -180,7 +181,12 @@ class MyWatchlistMoviesFragment : Fragment() {
 
   private fun handleSnackbarLoginUser() {
     viewModel.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar = uiController?.showSnackbarWarning(it)
+      mSnackbar = snackBarAlreadyFavorite(
+        requireContext(),
+        requireActivity().findViewById(snackbarAnchor),
+        requireActivity().findViewById(snackbarAnchor),
+        it
+      )
     }
 
     viewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
@@ -292,8 +298,12 @@ class MyWatchlistMoviesFragment : Fragment() {
       showSnackBarUndoGuest(fav.title, pos)
     } else { // add to favorite action
       if (fav.isFavorite) {
-        mSnackbar =
-          uiController?.showSnackbarWarning(Event(fav.title))
+        mSnackbar = snackBarAlreadyFavorite(
+          requireContext(),
+          requireActivity().findViewById(snackbarAnchor),
+          requireActivity().findViewById(snackbarAnchor),
+          Event(fav.title)
+        )
       } else {
         viewModel.updateToFavoriteDB(fav)
         showSnackBarUndoGuest(fav.title, pos)
