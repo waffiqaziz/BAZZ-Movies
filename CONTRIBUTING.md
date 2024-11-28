@@ -154,13 +154,13 @@ and given **push access**. :tada:
 Please [write a great commit message](https://chris.beams.io/posts/git-commit/).
 
 1. Separate subject from body with a blank line
-1. Limit the subject line to 50 characters
-1. Capitalize the subject line
-1. Do not end the subject line with a period
-1. Use the imperative mood in the subject line (example: "Fix networking issue")
-1. Wrap the body at about 72 characters
-1. Use the body to explain **why**, *not what and how* (the code shows that!)
-1. If applicable, prefix the title with the relevant component name. (examples: "[Docs] Fix
+2. Limit the subject line to 50 characters
+3. Capitalize the subject line
+4. Do not end the subject line with a period
+5. Use the imperative mood in the subject line (example: "Fix networking issue")
+6. Wrap the body at about 72 characters
+7. Use the body to explain **why**, *not what and how* (the code shows that!)
+8. If applicable, prefix the title with the relevant component name. (examples: "[Docs] Fix
    typo", "[Profile] Fix missing avatar")
 
 ```
