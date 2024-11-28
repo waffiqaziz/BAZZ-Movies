@@ -19,7 +19,7 @@
 	</strong>
 </p>
 <p align="center">
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
 		alt="Build Status"
 		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
