@@ -4,6 +4,7 @@ build/
 reports/
 
 *.log
+*.dm
 
 # kotlin files
 .kotlin

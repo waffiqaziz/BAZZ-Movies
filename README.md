@@ -1,7 +1,48 @@
-# BAZZ Movies
+<h1 align="center">
+	<img
+		width="300"
+		alt="The Lounge"
+		src="docs/images/bazz-movies.svg">
+</h1>
 
-![Header](/docs/images/featured-picture.png)
-![Build Status](https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg)
+<h3 align="center">
+	Movies Catalog Android App
+</h3>
+
+<p align="center">
+	<strong>
+		<a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
+		•
+		<a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
+		•
+		<a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
+	</strong>
+</p>
+<p align="center">
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+		alt="Build Status"
+		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+		alt="Build Status"
+		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
+		    <a href="https://github.com/badges/shields/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/shields" /></a>
+	<a href="https://opensource.org/licenses/MIT"><img
+		alt="license"
+		src="https://img.shields.io/badge/License-MIT-green.svg"></a>
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
+		alt="Issue Opened"
+		src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
+	<a href=""><img
+		alt="Contribution welcome"
+		src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg"></a>
+</p>
+
+<p align="center">
+	<img src="docs/images/featured-picture.png" width="550">
+</p>
+
+## 🚀 About
 
 BAZZ Movies is an Android app build with Kotlin, offering comprehensive movie and TV catalog. BAZZ
 Movies allows users to discover, explore, and manage their favorite and watchlist with ease.
@@ -9,9 +50,9 @@ Movies allows users to discover, explore, and manage their favorite and watchlis
 This project is a non-commercial application for showcasing movies and TV shows, intended for
 personal and educational use as part of my portfolio.
 
-*BAZZ Movies use TMDB API, but not endorsed, certified, or approved by TMDB*
+_BAZZ Movies use TMDB API, but not endorsed, certified, or approved by TMDB_
 
-## Features
+## 🌟 Features
 
 - Integrated with TMDB account
 - Save favorites and watchlist on local
@@ -20,13 +61,15 @@ personal and educational use as part of my portfolio.
 - Search movies, tv-series, and actors
 - Detailed information
 
-## Download
+## ⬇️ Download
+
+BAZZ Movies available downloaded via Google Play Store
 
 <a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies" target="_blank">
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=200  alt="Get BAZZ Movies on Google Play"/>
 </a>
 
-## Installation
+## 📝 Installation
 
 1. Install Android Studio.
 2. Clone the project.
@@ -43,18 +86,26 @@ personal and educational use as part of my portfolio.
 6. Build the project (`Ctrl + F9`).
 7. Run with your virtual or phone devices
 
-### Architecture
+## 🛠️ Architecture
 
 The **BAZZ Movies** app follows the
 [official architecture guidance](https://developer.android.com/topic/architecture)
 and is described in detail in the
 [BAZZ Movies modularization](docs/BAZZMoviesModularization.md).
 
-## Licenses and Usage
+## 🤝 How to Contribute
+
+Please read this [page](CONTRIBUTING.md)
+
+## 📜 Licenses and Usage
 
 This application is released under the [MIT License](LICENSE).
 
-[![license](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+**Note**
+
+- BAZZ Movies uses third-party API to function.
+- Developers must secure their own API key and adhere to the API's terms of service.
+- If the app is used commercially, developers must obtain the proper commercial API license.
 
 ### Third-Party Libraries
 
@@ -64,18 +115,12 @@ This application is released under the [MIT License](LICENSE).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
 4. ExpandableTextView: An expandable Android TextView (MIT
    License) - [GitHub](https://github.com/glailton/ExpandableTextView).
-5. Shimmer Android: Library shimmering effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
+5. Shimmer Android: Library shimmering
+   effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
 6. Country Picker Android: (Apache
    2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
 7. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
 8. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
-
-### Full License Texts
-
-- [BAZZ Movies License](LICENSE)
-- [ExpandableTextView License](/licences/MIT-LICENSE-ExpandableTextView.txt)
-- [Apache 2.0 License](/licences/Apache-2.0-LICENSE.txt)
-- [Glide License](/licences/General-Google-License.txt)
 
 ### Fonts
 
