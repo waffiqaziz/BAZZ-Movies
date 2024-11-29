@@ -27,9 +27,9 @@
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
 		    <a href="https://github.com/badges/shields/pulse" alt="Activity">
         <img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/shields" /></a>
-	<a href="https://opensource.org/licenses/MIT"><img
+	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
 		alt="license"
-		src="https://img.shields.io/badge/License-MIT-green.svg"></a>
+		src="https://img.shields.io/badge/License-Apache%20Version%202.0-green.svg"></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
 		alt="Issue Opened"
 		src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
@@ -99,13 +99,26 @@ Please read this [page](CONTRIBUTING.md)
 
 ## 📜 Licenses and Usage
 
-This application is released under the [MIT License](LICENSE).
+This application is released under the [Apache Version 2.0 License](LICENSE).
+
+    Copyright (C) 2024 Waffiq Aziz
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 **Note**
 
 - BAZZ Movies uses third-party API to function.
 - Developers must secure their own API key and adhere to the API's terms of service.
-- If the app is used commercially, developers must obtain the proper commercial API license.
 
 ### Third-Party Libraries
 
@@ -113,8 +126,7 @@ This application is released under the [MIT License](LICENSE).
    See [TMDB Terms](https://www.themoviedb.org/api-terms-of-use).
 2. OMDb API: RESTful service for movie info. See [OMDb Terms](https://www.omdbapi.com/legal.htm).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
-4. ExpandableTextView: An expandable Android TextView (MIT
-   License) - [GitHub](https://github.com/glailton/ExpandableTextView).
+4. ExpandableTextView: An expandable Android TextView - [GitHub](https://github.com/glailton/ExpandableTextView).
 5. Shimmer Android: Library shimmering
    effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
 6. Country Picker Android: (Apache
