@@ -26,8 +26,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
@@ -43,9 +41,6 @@ import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -185,7 +180,7 @@ class SearchFragment : Fragment() {
 
   private fun adapterLoadStateListener() {
     lifecycleScope.launch {
-      searchAdapter.loadStateFlow.debounce(DEBOUNCE_VERY_LONG).collectLatest { loadState ->
+      searchAdapter.loadStateFlow.collect { loadState ->
         when (loadState.source.refresh) {
           is LoadState.Loading -> {
             // Data is loading; keep showing the containerSearch
@@ -209,8 +204,6 @@ class SearchFragment : Fragment() {
               binding.illustrationSearchView.root.isVisible = true
               binding.illustrationSearchNoResultView.root.isVisible = false
             } else {
-              // Data is loaded; show the results
-              delay(DEBOUNCE_SHORT)
               showActualData()
               binding.rvSearch.isVisible = true
               binding.illustrationSearchView.root.isVisible = false
