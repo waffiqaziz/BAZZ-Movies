@@ -22,11 +22,11 @@
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
 		alt="Build Status"
 		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse" alt="Activity">
+        	<img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
 		alt="Build Status"
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
-		    <a href="https://github.com/badges/shields/pulse" alt="Activity">
-        <img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/shields" /></a>
 	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
 		alt="license"
 		src="https://img.shields.io/badge/License-Apache%20Version%202.0-green.svg"></a>
