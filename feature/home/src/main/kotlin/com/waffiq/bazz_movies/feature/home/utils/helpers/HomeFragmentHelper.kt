@@ -11,6 +11,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
@@ -19,9 +20,9 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.data
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.databinding.IllustrationErrorBinding
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
+import com.waffiq.bazz_movies.core.uihelper.utils.CustomSnapHelper
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -90,10 +91,9 @@ object HomeFragmentHelper {
     parentViewGroup?.removeView(this)
   }
 
-  fun RecyclerView.setupRecyclerView(context: Context, pagingDataAdapter: PagingDataAdapter<*, *>) {
+  fun RecyclerView.setupLoadState(pagingDataAdapter: PagingDataAdapter<*, *>) {
     this.apply {
       itemAnimator = DefaultItemAnimator()
-      layoutManager = initLinearLayoutManagerHorizontal(context)
       adapter = pagingDataAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter { pagingDataAdapter.retry() }
       )
@@ -131,6 +131,19 @@ object HomeFragmentHelper {
             }
           }
         }
+    }
+  }
+
+  fun setupRecyclerWideItem(
+    recyclerView: RecyclerView,
+    layoutManager: LinearLayoutManager? = null
+  ) {
+    // Safely attach SnapHelper
+    if (recyclerView.onFlingListener == null) {
+      recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(
+        recyclerView.context, LinearLayoutManager.HORIZONTAL, false
+      )
+      CustomSnapHelper(-18).attachToRecyclerView(recyclerView)
     }
   }
 }

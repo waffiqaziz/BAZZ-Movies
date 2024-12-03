@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:paddingEnd="10dp"
+  android:paddingBottom="6dp"
+  app:cardCornerRadius="@dimen/button_radius">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="350dp"
+        android:layout_height="197dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/picture"
+        android:foreground="@drawable/bg_gradient_shape"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+        tools:src="@color/red_matte" />
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/black_alpha"
+        android:elevation="0dp"
+        app:cardCornerRadius="5dp"
+        app:strokeWidth="0dp">
+
+        <TextView
+          android:id="@+id/tv_year"
+          style="@style/TextBody"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="6dp"
+          app:layout_constraintCircleRadius="@dimen/button_radius"
+          tools:text="2023" />
+
+      </com.google.android.material.card.MaterialCardView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <TextView
+      android:id="@+id/tv_title"
+      style="@style/TextHeader3"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="8dp"
+      android:layout_marginTop="-25dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      tools:text="Transformers: Rise of The Beast" />
+
+    <RatingBar
+      android:id="@+id/rating_bar"
+      style="?android:attr/ratingBarStyleSmall"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="4dp"
+      android:progressBackgroundTint="@color/yellow"
+      android:progressTint="@color/yellow"
+      android:secondaryProgressTint="@color/yellow"
+      tools:rating="2.4" />
+
+    <TextView
+      android:id="@+id/tv_genre"
+      style="@style/TextBody"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="8dp"
+      android:layout_marginTop="4dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      tools:text="Action, Superhero, Sci-fi, Marvel Cinematic Universe" />
+
+  </LinearLayout>
+</LinearLayout>

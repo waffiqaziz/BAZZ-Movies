@@ -228,7 +228,7 @@
 
   <!-- Style button on more page -->
   <style name="ButtonMoreStyle">
-    <item name="android:paddingStart">20dp</item>
+    <item name="android:paddingStart">@dimen/default_margin_parent_20</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:background">?attr/selectableItemBackground</item>
