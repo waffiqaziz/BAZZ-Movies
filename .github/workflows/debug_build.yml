@@ -2,11 +2,13 @@ name: Android Build (Debug)
 
 on:
   push:
+    branches:
+      - main
     paths-ignore:
-      - 'README.md'
+      - '**/*.md'
   pull_request:
     paths-ignore:
-      - 'README.md'
+      - '**/*.md'
 
 jobs:
   build:

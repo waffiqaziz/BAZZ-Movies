@@ -34,13 +34,13 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
@@ -131,9 +131,8 @@ class PersonActivity : AppCompatActivity() {
     }
 
     // setup layout
-    binding.rvKnownFor.layoutManager = initLinearLayoutManagerHorizontal(this)
+    setupRecyclerViewsWithSnap(listOf(binding.rvKnownFor, binding.rvPhotos))
     binding.rvKnownFor.adapter = adapterKnownFor
-    binding.rvPhotos.layoutManager = initLinearLayoutManagerHorizontal(this)
     binding.rvPhotos.adapter = adapterImage
 
     binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)

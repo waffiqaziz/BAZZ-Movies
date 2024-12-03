@@ -10,15 +10,15 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -68,13 +68,10 @@ class TvSeriesFragment : Fragment() {
   override fun onStart() {
     super.onStart()
 
-    // Set up RecyclerViews with shimmer
-    binding.apply {
-      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvAiringToday.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvOnTv.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-    }
+    // Set up RecyclerViews
+    setupRecyclerViewsWithSnap(
+      listOf(binding.rvPopular, binding.rvAiringToday, binding.rvOnTv, binding.rvTopRated)
+    )
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,18 +91,10 @@ class TvSeriesFragment : Fragment() {
 
   private fun showActualData() {
     binding.apply {
-      if (rvPopular.adapter != popularAdapter) {
-        rvPopular.setupRecyclerView(requireContext(), popularAdapter)
-      }
-      if (rvAiringToday.adapter != nowPlayingAdapter) {
-        rvAiringToday.setupRecyclerView(requireContext(), nowPlayingAdapter)
-      }
-      if (rvOnTv.adapter != onTvAdapter) {
-        rvOnTv.setupRecyclerView(requireContext(), onTvAdapter)
-      }
-      if (rvTopRated.adapter != topRatedAdapter) {
-        rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
-      }
+      if (rvPopular.adapter != popularAdapter) rvPopular.setupLoadState(popularAdapter)
+      if (rvAiringToday.adapter != nowPlayingAdapter) rvAiringToday.setupLoadState(nowPlayingAdapter)
+      if (rvOnTv.adapter != onTvAdapter) rvOnTv.setupLoadState(onTvAdapter)
+      if (rvTopRated.adapter != topRatedAdapter) rvTopRated.setupLoadState(topRatedAdapter)
     }
   }
 

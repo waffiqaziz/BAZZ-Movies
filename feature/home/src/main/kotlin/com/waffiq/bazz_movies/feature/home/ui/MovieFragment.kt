@@ -13,19 +13,23 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
+import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
+import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerWideItem
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -41,11 +45,12 @@ class MovieFragment : Fragment() {
   @Inject
   lateinit var snackbar: ISnackbar
 
-  private lateinit var popularAdapter: MovieHomeAdapter
+  private lateinit var popularAdapter: ItemWIdeAdapter
   private lateinit var nowPlayingAdapter: MovieHomeAdapter
   private lateinit var upComingAdapter: MovieHomeAdapter
   private lateinit var topRatedAdapter: MovieHomeAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
+  private lateinit var shimmerWideAdapter: ShimmerItemWideAdapter
 
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -58,11 +63,12 @@ class MovieFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    popularAdapter = MovieHomeAdapter(navigator)
+    popularAdapter = ItemWIdeAdapter(navigator)
     nowPlayingAdapter = MovieHomeAdapter(navigator)
     upComingAdapter = MovieHomeAdapter(navigator)
     topRatedAdapter = MovieHomeAdapter(navigator)
     shimmerAdapter = ShimmerAdapter()
+    shimmerWideAdapter = ShimmerItemWideAdapter()
   }
 
   override fun onCreateView(
@@ -77,13 +83,10 @@ class MovieFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // Set up RecyclerViews with shimmer
-    binding.apply {
-      rvPopular.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvNowPlaying.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTopRated.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-    }
+    // Set up RecyclerViews
+    setupRecyclerViewsWithSnap(listOf(binding.rvUpcoming, binding.rvTopRated))
+    setupRecyclerWideItem(binding.rvPopular)
+    setupRecyclerViewsWithSnapGridLayout(listOf(binding.rvNowPlaying))
 
     showShimmer()
     showData()
@@ -91,7 +94,7 @@ class MovieFragment : Fragment() {
 
   private fun showShimmer() {
     binding.apply {
-      if (rvPopular.adapter != shimmerAdapter) rvPopular.adapter = shimmerAdapter
+      if (rvPopular.adapter != shimmerWideAdapter) rvPopular.adapter = shimmerWideAdapter
       if (rvNowPlaying.adapter != shimmerAdapter) rvNowPlaying.adapter = shimmerAdapter
       if (rvUpcoming.adapter != shimmerAdapter) rvUpcoming.adapter = shimmerAdapter
       if (rvTopRated.adapter != shimmerAdapter) rvTopRated.adapter = shimmerAdapter
@@ -100,18 +103,10 @@ class MovieFragment : Fragment() {
 
   private fun showActualData() {
     binding.apply {
-      if (rvPopular.adapter != popularAdapter) {
-        rvPopular.setupRecyclerView(requireContext(), popularAdapter)
-      }
-      if (rvNowPlaying.adapter != nowPlayingAdapter) {
-        rvNowPlaying.setupRecyclerView(requireContext(), nowPlayingAdapter)
-      }
-      if (rvUpcoming.adapter != upComingAdapter) {
-        rvUpcoming.setupRecyclerView(requireContext(), upComingAdapter)
-      }
-      if (rvTopRated.adapter != topRatedAdapter) {
-        rvTopRated.setupRecyclerView(requireContext(), topRatedAdapter)
-      }
+      if (rvPopular.adapter != popularAdapter) rvPopular.setupLoadState(popularAdapter)
+      if (rvNowPlaying.adapter != nowPlayingAdapter) rvNowPlaying.setupLoadState(nowPlayingAdapter)
+      if (rvUpcoming.adapter != upComingAdapter) rvUpcoming.setupLoadState(upComingAdapter)
+      if (rvTopRated.adapter != topRatedAdapter) rvTopRated.setupLoadState(topRatedAdapter)
     }
   }
 

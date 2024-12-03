@@ -24,7 +24,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -70,7 +69,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterSta
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.scrollActionBarBehavior
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
@@ -135,7 +134,6 @@ class DetailMovieActivity : AppCompatActivity() {
     stateObserver()
     initTag()
 
-
     checkUser()
     getDataExtra()
     showDetailData()
@@ -154,21 +152,20 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun setupRecyclerView() {
+    setupRecyclerViewsWithSnap(
+      listOf(binding.rvCast, binding.rvRecommendation)
+    )
+
     // setup adapter
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
 
     // setup rv cast
     binding.rvCast.itemAnimator = DefaultItemAnimator()
-    binding.rvCast.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     binding.rvCast.adapter = adapterCast
 
     // setup rv recommendation
     binding.rvRecommendation.itemAnimator = DefaultItemAnimator()
-    binding.rvRecommendation.layoutManager =
-      LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
     binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterRecommendation.retry() }
     )

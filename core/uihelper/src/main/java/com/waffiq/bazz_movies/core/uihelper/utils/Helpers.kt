@@ -12,9 +12,13 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
+import kotlin.collections.forEach
 
 object Helpers {
   fun justifyTextView(textView: TextView) {
@@ -75,5 +79,48 @@ object Helpers {
     val animation = AnimationUtils.loadAnimation(context, fade_out)
     animation.duration = DEBOUNCE_VERY_LONG
     return animation
+  }
+
+  fun setupRecyclerViewWithSnap(
+    recyclerView: RecyclerView,
+    layoutManager: LinearLayoutManager? = null
+  ) {
+    setupRecyclerViewsWithSnap(listOf(recyclerView), layoutManager)
+  }
+
+  fun setupRecyclerViewsWithSnap(
+    recyclerViews: List<RecyclerView>,
+    layoutManager: LinearLayoutManager? = null
+  ) {
+    recyclerViews.forEach { recyclerView ->
+
+      // Safely attach SnapHelper
+      if (recyclerView.onFlingListener == null) {
+        recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(
+          recyclerView.context, LinearLayoutManager.HORIZONTAL, false
+        )
+        CustomSnapHelper().attachToRecyclerView(recyclerView)
+      }
+    }
+  }
+
+  fun setupRecyclerViewsWithSnapGridLayout(
+    recyclerViews: List<RecyclerView>,
+    layoutManager: LinearLayoutManager? = null
+  ) {
+    recyclerViews.forEach { recyclerView ->
+
+      // Safely attach SnapHelper
+      if (recyclerView.onFlingListener == null) {
+        recyclerView.layoutManager =
+          layoutManager ?: GridLayoutManager(
+            recyclerView.context,
+            2,
+            GridLayoutManager.HORIZONTAL,
+            false
+          )
+        CustomSnapHelper().attachToRecyclerView(recyclerView)
+      }
+    }
   }
 }

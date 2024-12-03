@@ -4,7 +4,8 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:paddingEnd="10dp">
+  android:paddingBottom="@dimen/margin_between_item"
+  android:paddingEnd="@dimen/margin_between_item">
 
   <!-- Poster -->
   <com.google.android.material.imageview.ShapeableImageView

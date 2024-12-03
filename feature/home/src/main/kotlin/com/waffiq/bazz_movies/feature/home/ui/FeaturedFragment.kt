@@ -18,9 +18,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movie_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerHorizontal
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAn
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -85,11 +85,9 @@ class FeaturedFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding.apply {
-      rvUpcoming.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvPlayingNow.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-      rvTrending.layoutManager = initLinearLayoutManagerHorizontal(requireContext())
-    }
+    setupRecyclerViewsWithSnap(
+      listOf(binding.rvUpcoming, binding.rvPlayingNow, binding.rvTrending)
+    )
 
     showShimmer()
     setRegion()
@@ -106,15 +104,9 @@ class FeaturedFragment : Fragment() {
 
   private fun showActualData() {
     binding.apply {
-      if (rvUpcoming.adapter != adapterUpcoming) {
-        rvUpcoming.setupRecyclerView(requireContext(), adapterUpcoming)
-      }
-      if (rvPlayingNow.adapter != adapterPlayingNow) {
-        rvPlayingNow.setupRecyclerView(requireContext(), adapterPlayingNow)
-      }
-      if (rvTrending.adapter != adapterTrending) {
-        rvTrending.setupRecyclerView(requireContext(), adapterTrending)
-      }
+      if (rvUpcoming.adapter != adapterUpcoming) rvUpcoming.setupLoadState(adapterUpcoming)
+      if (rvPlayingNow.adapter != adapterPlayingNow) rvPlayingNow.setupLoadState(adapterPlayingNow)
+      if (rvTrending.adapter != adapterTrending) rvTrending.setupLoadState(adapterTrending)
     }
   }
 
