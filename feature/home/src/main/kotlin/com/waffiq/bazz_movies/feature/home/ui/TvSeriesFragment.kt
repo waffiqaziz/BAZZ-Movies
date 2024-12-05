@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
+import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
@@ -43,6 +44,7 @@ class TvSeriesFragment : Fragment() {
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
+  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private val tvSeriesViewModel: TvSeriesViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -77,7 +79,8 @@ class TvSeriesFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     showShimmer()
-    setData()
+
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { setData(it) }
   }
 
   private fun showShimmer() {
@@ -98,7 +101,7 @@ class TvSeriesFragment : Fragment() {
     }
   }
 
-  private fun setData() {
+  private fun setData(region: String) {
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
       onLoading = { showShimmer() },
@@ -124,8 +127,8 @@ class TvSeriesFragment : Fragment() {
     )
 
     // Observe ViewModel data and submit to adapters
-    collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv() }, popularAdapter)
-    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv() }, nowPlayingAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv(region) }, popularAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv(region) }, nowPlayingAdapter)
     collectAndSubmitData(this, { tvSeriesViewModel.getOnTv() }, onTvAdapter)
     collectAndSubmitData(this, { tvSeriesViewModel.getTopRatedTv() }, topRatedAdapter)
 

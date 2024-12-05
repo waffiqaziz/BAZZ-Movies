@@ -53,17 +53,7 @@ interface TMDBApiService {
   ): Response<AccountDetailsResponse>
   // endregion
 
-  // region PAGING
-  @GET("3/movie/top_rated?language=en-US")
-  suspend fun getTopRatedMovies(
-    @Query("page") page: Int
-  ): MovieTvResponse
-
-  @GET("3/tv/top_rated?language=en-US")
-  suspend fun getTopRatedTv(
-    @Query("page") page: Int
-  ): MovieTvResponse
-
+  // region TRENDING
   @GET("3/trending/all/week")
   suspend fun getTrendingWeek(
     @Query("region") region: String,
@@ -75,26 +65,11 @@ interface TMDBApiService {
     @Query("region") region: String,
     @Query("page") page: Int
   ): MovieTvResponse
+  // endregion TRENDING
 
-  @GET("3/movie/{movieId}/recommendations")
-  suspend fun getRecommendedMovie(
-    @Path("movieId") movieId: Int,
-    @Query("page") page: Int
-  ): MovieTvResponse
-
-  @GET("3/tv/{tvId}/recommendations")
-  suspend fun getRecommendedTv(
-    @Path("tvId") movieId: Int,
-    @Query("page") page: Int
-  ): MovieTvResponse
-
-  @GET("3/tv/on_the_air?language=en-US")
-  suspend fun getTvOnTheAir(
-    @Query("page") page: Int
-  ): MovieTvResponse
-
-  @GET("3/tv/airing_today?language=en-US")
-  suspend fun getTvAiringToday(
+  // region MOVIE
+  @GET("3/movie/popular?language=en-US")
+  suspend fun getPopularMovies(
     @Query("page") page: Int
   ): MovieTvResponse
 
@@ -110,24 +85,67 @@ interface TMDBApiService {
     @Query("page") page: Int
   ): MovieTvResponse
 
-  @GET("3/movie/popular?language=en-US")
-  suspend fun getPopularMovies(
+  @GET("3/movie/top_rated?language=en-US")
+  suspend fun getTopRatedMovies(
     @Query("page") page: Int
+  ): MovieTvResponse
+  // endregion
+
+  // region TV
+  @GET(
+    "3/discover/tv?language=en-US" +
+      "&sort_by=popularity.desc" +
+      "&with_runtime.gte=0" +
+      "&with_runtime.lte=400" +
+      "&with_watch_monetization_types=flatrate|free"
+  )
+  suspend fun getPopularTv(
+    @Query("page") page: Int,
+    @Query("watch_region") region: String,
+    @Query("air_date.lte") dateTime: String
   ): MovieTvResponse
 
   @GET(
     "3/discover/tv?language=en-US" +
-      "&sort_by=popularity.desc" +
-      "&watch_region=CA" +
       "&with_runtime.gte=0" +
       "&with_runtime.lte=400" +
-      "&with_watch_monetization_types=flatrate|free|ads|rent|buy"
+      "&with_watch_monetization_types=flatrate|free" +
+      "&watch_region=ID" +
+      "&with_release_type=2|3"
   )
-  suspend fun getPopularTv(
-    @Query("page") page: Int,
-    @Query("air_date.lte") dateTime: String
+  suspend fun getTvAiringToday(
+    @Query("watch_region") region: String,
+    @Query("air_date.lte") airDateLte: String,
+    @Query("air_date.gte") airDateGte: String,
+    @Query("page") page: Int
   ): MovieTvResponse
 
+  @GET("3/tv/on_the_air?language=en-US")
+  suspend fun getTvOnTheAir(
+    @Query("page") page: Int
+  ): MovieTvResponse
+
+  @GET("3/tv/top_rated?language=en-US")
+  suspend fun getTopRatedTv(
+    @Query("page") page: Int
+  ): MovieTvResponse
+  // endregion TV
+
+  // region RECOMMENDATION
+  @GET("3/movie/{movieId}/recommendations")
+  suspend fun getRecommendedMovie(
+    @Path("movieId") movieId: Int,
+    @Query("page") page: Int
+  ): MovieTvResponse
+
+  @GET("3/tv/{tvId}/recommendations")
+  suspend fun getRecommendedTv(
+    @Path("tvId") movieId: Int,
+    @Query("page") page: Int
+  ): MovieTvResponse
+  // endregion RECOMMENDATION
+
+  // region FAVORITES & WATCHLIST
   @GET("3/account/{account_id}/favorite/movies?language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteMovies(
     @Query("session_id") sessionId: String,

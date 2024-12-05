@@ -5,8 +5,8 @@ import com.waffiq.bazz_movies.core.data.ResultItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetListTvUseCase {
-  fun getPagingPopularTv(): Flow<PagingData<ResultItem>>
+  fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingOnTv(): Flow<PagingData<ResultItem>>
-  fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>>
+  fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>
 }

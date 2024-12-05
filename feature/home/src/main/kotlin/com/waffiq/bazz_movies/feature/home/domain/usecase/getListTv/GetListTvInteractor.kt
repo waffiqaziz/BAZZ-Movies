@@ -9,14 +9,14 @@ import javax.inject.Inject
 class GetListTvInteractor @Inject constructor(
   private val homeRepository: IHomeRepository
 ) : GetListTvUseCase {
-  override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingPopularTv()
+  override fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>> =
+    homeRepository.getPagingPopularTv(region)
 
   override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
     homeRepository.getPagingOnTv()
 
-  override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingAiringTodayTv()
+  override fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>> =
+    homeRepository.getPagingAiringTodayTv(region)
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
     homeRepository.getPagingTopRatedTv()
