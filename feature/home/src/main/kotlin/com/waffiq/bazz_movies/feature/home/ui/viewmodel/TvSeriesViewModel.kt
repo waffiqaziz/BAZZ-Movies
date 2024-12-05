@@ -17,8 +17,8 @@ class TvSeriesViewModel @Inject constructor(
   fun getPopularTv(region: String): Flow<PagingData<ResultItem>> =
     getListTvUseCase.getPagingPopularTv(region).cachedIn(viewModelScope)
 
-  fun getOnTv(): Flow<PagingData<ResultItem>> =
-    getListTvUseCase.getPagingOnTv().cachedIn(viewModelScope)
+  fun getAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
+    getListTvUseCase.getPagingAiringThisWeekTv(region).cachedIn(viewModelScope)
 
   fun getAiringTodayTv(region: String): Flow<PagingData<ResultItem>> =
     getListTvUseCase.getPagingAiringTodayTv(region).cachedIn(viewModelScope)

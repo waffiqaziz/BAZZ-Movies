@@ -82,20 +82,22 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="6dp"
-          android:text="@string/on_tv" />
+          android:text="@string/airing_this_week" />
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_on_tv"
+          android:id="@+id/rv_airing_this_week"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:paddingTop="8dp"
           android:layout_marginTop="8dp"
           android:clipToPadding="false"
           android:nestedScrollingEnabled="false"
           android:paddingStart="@dimen/default_margin_parent_20"
-          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-          tools:layout_height="150dp"
+          tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+          tools:layout_height="330dp"
           tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:orientation="horizontal"
+          tools:spanCount="2" />
 
         <!-- Top rated -->
         <TextView

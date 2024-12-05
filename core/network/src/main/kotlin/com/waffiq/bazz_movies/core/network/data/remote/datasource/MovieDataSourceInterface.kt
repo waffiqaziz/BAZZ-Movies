@@ -37,7 +37,12 @@ interface MovieDataSourceInterface {
     twoWeeksFromToday: String
   ): Flow<PagingData<ResultItemResponse>>
 
-  fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>>
+  fun getPagingAiringThisWeekTv(
+    region: String,
+    airDateLte: String,
+    airDateGte: String,
+  ): Flow<PagingData<ResultItemResponse>>
+
   fun getPagingAiringTodayTv(
     region: String, airDateLte: String,
     airDateGte: String,

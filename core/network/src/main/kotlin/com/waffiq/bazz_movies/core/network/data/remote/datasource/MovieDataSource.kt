@@ -143,12 +143,16 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(Dispatchers.IO)
   }
 
-  override fun getPagingOnTv(): Flow<PagingData<ResultItemResponse>> {
+  override fun getPagingAiringThisWeekTv(
+    region: String,
+    airDateLte: String,
+    airDateGte: String
+  ): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getTvOnTheAir(page).results
+          tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
         }
       }
     ).flow.flowOn(Dispatchers.IO)
@@ -163,7 +167,7 @@ class MovieDataSource @Inject constructor(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getTvAiringToday(region, airDateLte, airDateGte, page).results
+          tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
         }
       }
     ).flow.flowOn(Dispatchers.IO)

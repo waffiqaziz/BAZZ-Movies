@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetListTvUseCase {
   fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingOnTv(): Flow<PagingData<ResultItem>>
+  fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>
 }

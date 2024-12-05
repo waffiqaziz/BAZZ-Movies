@@ -12,8 +12,8 @@ class GetListTvInteractor @Inject constructor(
   override fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>> =
     homeRepository.getPagingPopularTv(region)
 
-  override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingOnTv()
+  override fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
+    homeRepository.getPagingAiringThisWeekTv(region)
 
   override fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>> =
     homeRepository.getPagingAiringTodayTv(region)

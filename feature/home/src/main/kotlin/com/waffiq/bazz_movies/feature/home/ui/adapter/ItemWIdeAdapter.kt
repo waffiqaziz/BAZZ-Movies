@@ -63,7 +63,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
         movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
       binding.tvGenre.text = movie.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
         ?: itemView.context.getString(not_available)
-      binding.tvYear.text = movie.releaseDate?.take(4).toString()
+      binding.tvYear.text = movie.releaseDate?.take(4) ?: movie.firstAirDate?.take(4).toString()
       binding.ratingBar.rating = (movie.voteAverage ?: 0F) / 2
 
       // image OnClickListener

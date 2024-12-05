@@ -11,7 +11,7 @@ interface IHomeRepository {
   fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>>
   fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>>
   fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingOnTv(): Flow<PagingData<ResultItem>>
+  fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>>
   fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>>

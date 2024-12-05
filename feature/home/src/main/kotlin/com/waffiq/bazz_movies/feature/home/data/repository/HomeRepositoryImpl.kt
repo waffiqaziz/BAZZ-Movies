@@ -61,10 +61,11 @@ class HomeRepositoryImpl @Inject constructor(
       pagingData.map { it.toResultItem() }
     }
 
-  override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingOnTv().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
+  override fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingAiringThisWeekTv(region, getDateTwoWeeksFromToday(), getDateToday())
+      .map { pagingData ->
+        pagingData.map { it.toResultItem() }
+      }
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTopRatedTv().map { pagingData ->

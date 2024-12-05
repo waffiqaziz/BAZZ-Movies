@@ -86,7 +86,7 @@ class MovieFragment : Fragment() {
     // Set up RecyclerViews
     setupRecyclerViewsWithSnap(listOf(binding.rvUpcoming, binding.rvTopRated))
     setupRecyclerWideItem(binding.rvPopular)
-    setupRecyclerViewsWithSnapGridLayout(listOf(binding.rvNowPlaying))
+    setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvNowPlaying))
 
     showShimmer()
     showData()

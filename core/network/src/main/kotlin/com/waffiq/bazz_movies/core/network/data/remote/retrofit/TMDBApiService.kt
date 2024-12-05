@@ -110,18 +110,12 @@ interface TMDBApiService {
       "&with_runtime.gte=0" +
       "&with_runtime.lte=400" +
       "&with_watch_monetization_types=flatrate|free" +
-      "&watch_region=ID" +
       "&with_release_type=2|3"
   )
-  suspend fun getTvAiringToday(
+  suspend fun getTvAiring(
     @Query("watch_region") region: String,
     @Query("air_date.lte") airDateLte: String,
     @Query("air_date.gte") airDateGte: String,
-    @Query("page") page: Int
-  ): MovieTvResponse
-
-  @GET("3/tv/on_the_air?language=en-US")
-  suspend fun getTvOnTheAir(
     @Query("page") page: Int
   ): MovieTvResponse
 
