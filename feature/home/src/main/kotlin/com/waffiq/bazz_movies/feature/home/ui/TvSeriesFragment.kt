@@ -23,6 +23,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerWideItem
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -76,9 +77,8 @@ class TvSeriesFragment : Fragment() {
     super.onStart()
 
     // Set up RecyclerViews
-    setupRecyclerViewsWithSnap(
-      listOf(binding.rvPopular, binding.rvAiringToday, binding.rvTopRated)
-    )
+    setupRecyclerViewsWithSnap(listOf(binding.rvAiringToday, binding.rvTopRated))
+    setupRecyclerWideItem(binding.rvPopular)
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvAiringThisWeek))
   }
 
