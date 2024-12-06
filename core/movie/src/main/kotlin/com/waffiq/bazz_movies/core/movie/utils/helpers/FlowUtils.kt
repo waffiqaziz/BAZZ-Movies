@@ -21,7 +21,7 @@ object FlowUtils {
     adapter: PagingDataAdapter<T, *>
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
-      fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+      fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
         flowProvider().collectLatest { pagingData ->
           adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
         }

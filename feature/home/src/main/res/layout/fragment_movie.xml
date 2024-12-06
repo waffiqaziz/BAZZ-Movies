@@ -61,6 +61,12 @@
           android:layout_marginTop="16dp"
           android:text="@string/now_playing" />
 
+        <include
+          android:id="@+id/layout_no_playing"
+          layout="@layout/no_found_layout"
+          android:visibility="gone"
+          tools:visibility="visible" />
+
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_now_playing"
           android:layout_width="match_parent"
@@ -84,6 +90,12 @@
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="12dp"
           android:text="@string/upcoming" />
+
+        <include
+          android:id="@+id/layout_no_upcoming"
+          layout="@layout/no_found_layout"
+          android:visibility="gone"
+          tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_upcoming"

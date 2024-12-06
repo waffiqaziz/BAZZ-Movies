@@ -15,8 +15,9 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_movie_currently_playing
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_trending
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
@@ -38,6 +39,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -175,20 +177,22 @@ class FeaturedFragment : Fragment() {
 
     // Handle LoadState for RecyclerViews
     viewLifecycleOwner.handleLoadState(
-      requireContext(),
       adapterPlayingNow,
       binding.rvPlayingNow,
-      binding.tvPlayingNow,
-      no_movie_currently_playing,
-      region
+      getString(no_movies_currently_playing, Locale("", region).displayCountry),
+      binding.layoutNoPlaying
     )
     viewLifecycleOwner.handleLoadState(
-      requireContext(),
       adapterUpcoming,
       binding.rvUpcoming,
-      binding.tvUpcomingMovie,
-      no_upcoming_movie,
-      region
+      getString(no_upcoming_movies, Locale("", region).displayCountry),
+      binding.layoutNoUpcoming
+    )
+    viewLifecycleOwner.handleLoadState(
+      adapterTrending,
+      binding.rvTrending,
+      getString(no_trending, Locale("", region).displayCountry),
+      binding.layoutNoUpcoming
     )
 
     // Set up swipe-to-refresh
