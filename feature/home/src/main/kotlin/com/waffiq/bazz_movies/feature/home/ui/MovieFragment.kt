@@ -10,8 +10,8 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_movie_currently_playing
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movie
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
@@ -34,6 +34,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -167,20 +168,16 @@ class MovieFragment : Fragment() {
 
     // Handle LoadState for RecyclerViews
     viewLifecycleOwner.handleLoadState(
-      requireContext(),
       nowPlayingAdapter,
       binding.rvNowPlaying,
-      binding.tvAiringToday,
-      no_movie_currently_playing,
-      region
+      getString(no_movies_currently_playing, Locale("", region).displayCountry),
+      binding.layoutNoPlaying
     )
     viewLifecycleOwner.handleLoadState(
-      requireContext(),
       upComingAdapter,
       binding.rvUpcoming,
-      binding.tvUpcoming,
-      no_upcoming_movie,
-      region
+      getString(no_upcoming_movies, Locale("", region).displayCountry),
+      binding.layoutNoUpcoming
     )
 
     // Set up swipe-to-refresh

@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_popular_series
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_this_week
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_today
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
@@ -21,6 +24,7 @@ import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
+import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerWideItem
@@ -28,6 +32,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,7 +45,7 @@ class TvSeriesFragment : Fragment() {
   lateinit var snackbar: ISnackbar
 
   private lateinit var popularAdapter: ItemWIdeAdapter
-  private lateinit var nowPlayingAdapter: TvAdapter
+  private lateinit var airingTodayAdapter: TvAdapter
   private lateinit var airingThisWeekAdapter: TvAdapter
   private lateinit var topRatedAdapter: TvAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
@@ -57,7 +62,7 @@ class TvSeriesFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     popularAdapter = ItemWIdeAdapter(navigator)
-    nowPlayingAdapter = TvAdapter(navigator)
+    airingTodayAdapter = TvAdapter(navigator)
     airingThisWeekAdapter = TvAdapter(navigator)
     topRatedAdapter = TvAdapter(navigator)
     shimmerAdapter = ShimmerAdapter()
@@ -101,7 +106,9 @@ class TvSeriesFragment : Fragment() {
   private fun showActualData() {
     binding.apply {
       if (rvPopular.adapter != popularAdapter) rvPopular.setupLoadState(popularAdapter)
-      if (rvAiringToday.adapter != nowPlayingAdapter) rvAiringToday.setupLoadState(nowPlayingAdapter)
+      if (rvAiringToday.adapter != airingTodayAdapter) rvAiringToday.setupLoadState(
+        airingTodayAdapter
+      )
       if (rvAiringThisWeek.adapter != airingThisWeekAdapter) rvAiringThisWeek.setupLoadState(
         airingThisWeekAdapter
       )
@@ -136,7 +143,7 @@ class TvSeriesFragment : Fragment() {
 
     // Observe ViewModel data and submit to adapters
     collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv(region) }, popularAdapter)
-    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv(region) }, nowPlayingAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv(region) }, airingTodayAdapter)
     collectAndSubmitData(
       this,
       { tvSeriesViewModel.getAiringThisWeekTv(region) },
@@ -144,11 +151,31 @@ class TvSeriesFragment : Fragment() {
     )
     collectAndSubmitData(this, { tvSeriesViewModel.getTopRatedTv() }, topRatedAdapter)
 
+    // Handle LoadState for RecyclerViews
+    viewLifecycleOwner.handleLoadState(
+      popularAdapter,
+      binding.rvPopular,
+      getString(no_popular_series, Locale("", region).displayCountry),
+      binding.layoutNoPopular
+    )
+    viewLifecycleOwner.handleLoadState(
+      airingTodayAdapter,
+      binding.rvAiringToday,
+      getString(no_series_airing_today, Locale("", region).displayCountry),
+      binding.layoutNoAiringToday
+    )
+    viewLifecycleOwner.handleLoadState(
+      airingThisWeekAdapter,
+      binding.rvAiringThisWeek,
+      getString(no_series_airing_this_week, Locale("", region).displayCountry),
+      binding.layoutNoAiringThisWeek
+    )
+
     // refresh whe swipe down
     binding.swipeRefresh.setOnRefreshListener {
       popularAdapter.refresh()
       topRatedAdapter.refresh()
-      nowPlayingAdapter.refresh()
+      airingTodayAdapter.refresh()
       airingThisWeekAdapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
@@ -158,7 +185,7 @@ class TvSeriesFragment : Fragment() {
       binding.swipeRefresh,
       popularAdapter,
       topRatedAdapter,
-      nowPlayingAdapter,
+      airingTodayAdapter,
       airingThisWeekAdapter
     )
 
@@ -167,7 +194,7 @@ class TvSeriesFragment : Fragment() {
       binding.illustrationError,
       popularAdapter,
       topRatedAdapter,
-      nowPlayingAdapter,
+      airingTodayAdapter,
       airingThisWeekAdapter
     )
   }
@@ -179,7 +206,7 @@ class TvSeriesFragment : Fragment() {
       rvPopular.isVisible = isVisible
       tvAiringToday.isVisible = isVisible
       rvAiringToday.isVisible = isVisible
-      tvOnTv.isVisible = isVisible
+      tvAiringThisWeek.isVisible = isVisible
       rvAiringThisWeek.isVisible = isVisible
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
@@ -201,7 +228,7 @@ class TvSeriesFragment : Fragment() {
     super.onDestroyView()
 
     popularAdapter.removeLoadStateListener { }
-    nowPlayingAdapter.removeLoadStateListener { }
+    airingTodayAdapter.removeLoadStateListener { }
     airingThisWeekAdapter.removeLoadStateListener { }
     topRatedAdapter.removeLoadStateListener { }
 

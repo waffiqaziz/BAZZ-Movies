@@ -1,8 +1,6 @@
 package com.waffiq.bazz_movies.feature.home.utils.helpers
 
-import android.content.Context
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -17,13 +15,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.designsystem.R.string.data
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.databinding.IllustrationErrorBinding
 import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.CustomSnapHelper
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
+import com.waffiq.bazz_movies.feature.home.databinding.NoFoundLayoutBinding
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -31,19 +27,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 /**
  * Used as loadStateFlow listener on HomeFragment child (Featured, Movie, TvSeries fragments)
  */
 object HomeFragmentHelper {
   fun LifecycleOwner.handleLoadState(
-    context: Context,
     adapter: PagingDataAdapter<*, *>,
     recyclerView: RecyclerView,
-    textView: TextView,
-    noMoviesStringRes: Int,
-    region: String,
+    message: String,
+    view: NoFoundLayoutBinding,
   ) {
     this.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
@@ -53,13 +46,9 @@ object HomeFragmentHelper {
             loadState.append.endOfPaginationReached &&
             adapter.itemCount < 1
           ) {
-            context.toastShort(
-              context.getString(noMoviesStringRes, Locale("", region).displayCountry)
-            )
+            view.root.isVisible = true
+            view.tvMessage.text = message
             recyclerView.isGone = true
-            if (!textView.text.contains(context.getString(data))) {
-              textView.append(" (${context.getString(no_data)})")
-            }
           }
         }
     }
