@@ -146,7 +146,7 @@ class FeaturedFragment : Fragment() {
   private fun setData(region: String) {
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = adapterTrending.loadStateFlow,
-      onLoading = { showShimmer() },
+      onLoading = { if (adapterTrending.itemCount <= 0) showShimmer() },
       onSuccess = {
         binding.illustrationError.apply {
           progressCircular.isVisible = false

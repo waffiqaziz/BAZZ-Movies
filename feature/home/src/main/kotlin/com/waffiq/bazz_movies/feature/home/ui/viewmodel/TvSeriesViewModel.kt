@@ -14,14 +14,14 @@ import javax.inject.Inject
 class TvSeriesViewModel @Inject constructor(
   private val getListTvUseCase: GetListTvUseCase
 ) : ViewModel() {
-  fun getPopularTv(): Flow<PagingData<ResultItem>> =
-    getListTvUseCase.getPagingPopularTv().cachedIn(viewModelScope)
+  fun getPopularTv(region: String): Flow<PagingData<ResultItem>> =
+    getListTvUseCase.getPagingPopularTv(region).cachedIn(viewModelScope)
 
-  fun getOnTv(): Flow<PagingData<ResultItem>> =
-    getListTvUseCase.getPagingOnTv().cachedIn(viewModelScope)
+  fun getAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
+    getListTvUseCase.getPagingAiringThisWeekTv(region).cachedIn(viewModelScope)
 
-  fun getAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    getListTvUseCase.getPagingAiringTodayTv().cachedIn(viewModelScope)
+  fun getAiringTodayTv(region: String): Flow<PagingData<ResultItem>> =
+    getListTvUseCase.getPagingAiringTodayTv(region).cachedIn(viewModelScope)
 
   fun getTopRatedTv(): Flow<PagingData<ResultItem>> =
     getListTvUseCase.getPagingTopRatedTv().cachedIn(viewModelScope)

@@ -47,9 +47,9 @@
   <string name="upcoming">Upcoming</string>
   <string name="airing_today">Airing Today</string>
   <string name="playing_now_on_theater">Playing now on Theater</string>
-  <string name="on_tv">On Tv</string>
-  <string name="no_upcoming_movie">No upcoming movies are available in %1$s.\nPlease consider selecting a different country.</string>
-  <string name="no_movie_currently_playing">No movies are currently playing in %1$s.\nPlease consider selecting a different country.</string>
+  <string name="airing_this_week">Airing This Week</string>
+  <string name="no_upcoming_movie">Sorry we haven\'t found any upcoming movies that available in %1$s.\nPlease consider selecting a different country.</string>
+  <string name="no_movie_currently_playing">Sorry we haven\'t found any movies that currently playing in %1$s.\nPlease consider selecting a different country.</string>
 
   <!-- MORE -->
   <string name="guest_user">Guest User</string>

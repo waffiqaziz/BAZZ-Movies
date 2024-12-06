@@ -105,6 +105,7 @@ object Helpers {
   }
 
   fun setupRecyclerViewsWithSnapGridLayout(
+    n: Int = 2,
     recyclerViews: List<RecyclerView>,
     layoutManager: LinearLayoutManager? = null
   ) {
@@ -115,7 +116,7 @@ object Helpers {
         recyclerView.layoutManager =
           layoutManager ?: GridLayoutManager(
             recyclerView.context,
-            2,
+            n,
             GridLayoutManager.HORIZONTAL,
             false
           )

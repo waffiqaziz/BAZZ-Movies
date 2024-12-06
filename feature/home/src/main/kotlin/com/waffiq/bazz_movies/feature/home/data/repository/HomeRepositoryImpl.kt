@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getDateToday
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getDateTwoWeeksFromToday
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -47,20 +48,24 @@ class HomeRepositoryImpl @Inject constructor(
       pagingData.map { it.toResultItem() }
     }
 
-  override fun getPagingAiringTodayTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingAiringTodayTv().map { pagingData ->
+  override fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>> {
+    val date = getDateToday()
+    return movieDataSource.getPagingAiringTodayTv(region, date, date)
+      .map { pagingData ->
+        pagingData.map { it.toResultItem() }
+      }
+  }
+
+  override fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingPopularTv(region, getDateTwoWeeksFromToday()).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
 
-  override fun getPagingPopularTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularTv(getDateTwoWeeksFromToday()).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingOnTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingOnTv().map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
+  override fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
+    movieDataSource.getPagingAiringThisWeekTv(region, getDateTwoWeeksFromToday(), getDateToday())
+      .map { pagingData ->
+        pagingData.map { it.toResultItem() }
+      }
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTopRatedTv().map { pagingData ->

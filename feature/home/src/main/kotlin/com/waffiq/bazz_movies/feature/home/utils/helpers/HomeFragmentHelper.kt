@@ -143,7 +143,7 @@ object HomeFragmentHelper {
       recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(
         recyclerView.context, LinearLayoutManager.HORIZONTAL, false
       )
-      CustomSnapHelper(-18).attachToRecyclerView(recyclerView)
+      CustomSnapHelper(-15).attachToRecyclerView(recyclerView)
     }
   }
 }
