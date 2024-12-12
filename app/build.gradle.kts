@@ -1,67 +1,58 @@
-import org.gradle.kotlin.dsl.android
-
 plugins {
   id("bazzmovies.android.application")
   id("bazzmovies.android.application.firebase")
   id("bazzmovies.hilt")
+  id("bazzmovies.hilt.test")
   id("kotlin-parcelize")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies"
-  ndkVersion = libs.versions.ndkVersion.get()
+dependencies {
+  implementation(project(":core:data"))
+  implementation(project(":core:user"))
+  implementation(project(":core:uihelper"))
+  implementation(project(":feature:about"))
+  implementation(project(":feature:detail"))
+  implementation(project(":feature:favorite"))
+  implementation(project(":feature:home"))
+  implementation(project(":feature:login"))
+  implementation(project(":feature:more"))
+  implementation(project(":feature:person"))
+  implementation(project(":feature:search"))
+  implementation(project(":feature:watchlist"))
+  implementation(project(":navigation"))
 
-  defaultConfig {
-    applicationId = "com.bazz.bazz_movies"
-    versionCode = 13
-    versionName = "1.1.1"
+  // jetpack library
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.activity)
+  implementation(libs.androidx.core.splashscreen)
 
-    signingConfig = signingConfigs.getByName("debug")
+  implementation(libs.androidx.navigation.ui)
+  implementation(libs.androidx.navigation.fragment)
+  implementation(libs.play.integrity)
 
-    javaCompileOptions {
-      annotationProcessorOptions {
-        arguments["room.schemaLocation"] = "$projectDir/src/main/schemas"
-      }
-    }
-  }
+  // leakcanary
+  debugImplementation(libs.leakcanary)
 
-  buildTypes {
-    getByName("debug") {
-      isDebuggable = true
-      isShrinkResources = false
-      isMinifyEnabled = false
+  // third-party library
+  implementation(libs.expandable.textview)
 
-      resValue("string", "app_name", "BAZZ Movies Debug")
-      applicationIdSuffix = ".debug"
-      versionNameSuffix = "-debug"
-    }
+  // testing
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.intents)
 
-    create("staging") {
-      isDebuggable = true
-      isShrinkResources = false
-      isMinifyEnabled = false
+  testImplementation(libs.mockk)
+  androidTestImplementation(libs.mockk.android)
+  androidTestImplementation(libs.mockk.agent)
+  androidTestImplementation(libs.androidx.datastore.core)
+  androidTestImplementation(libs.androidx.datastore.preferences)
+}
 
-      resValue("string", "app_name", "BAZZ Movies Debug")
-      applicationIdSuffix = ".debug"
-      versionNameSuffix = "-debug"
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("debug")
-    }
-
-    getByName("release") {
-      isDebuggable = false
-      isShrinkResources = true
-      isMinifyEnabled = true
-
-      resValue("string", "app_name", "@string/app_name_release")
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
-
-  buildFeatures {
-    viewBinding = true
-    buildConfig = true
-  }
+dependencyGuard {
+  configuration("releaseCompileClasspath")
+  configuration("releaseRuntimeClasspath")
 }
 
 detekt {
@@ -109,40 +100,4 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
       outputLocation.set(layout.buildDirectory.file("reports/detekt/detekt-report.sarif"))
     }
   }
-}
-
-dependencies {
-  implementation(project(":core:data"))
-  implementation(project(":core:user"))
-  implementation(project(":core:uihelper"))
-  implementation(project(":feature:about"))
-  implementation(project(":feature:detail"))
-  implementation(project(":feature:favorite"))
-  implementation(project(":feature:home"))
-  implementation(project(":feature:login"))
-  implementation(project(":feature:more"))
-  implementation(project(":feature:person"))
-  implementation(project(":feature:search"))
-  implementation(project(":feature:watchlist"))
-  implementation(project(":navigation"))
-
-  // jetpack library
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.activity)
-  implementation(libs.androidx.core.splashscreen)
-
-  implementation(libs.androidx.navigation.ui)
-  implementation(libs.androidx.navigation.fragment)
-
-  // leakcanary
-  debugImplementation(libs.leakcanary)
-
-  // third-party library
-  implementation(libs.expandable.textview)
-}
-
-dependencyGuard {
-  configuration("releaseCompileClasspath")
-  configuration("releaseRuntimeClasspath")
 }

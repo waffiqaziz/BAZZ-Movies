@@ -6,7 +6,7 @@ ndkVersion = "27.2.12479018"
 
 # Plugin versions
 agp = "8.3.2"
-androidTools = "31.7.2"
+androidTools = "31.7.3"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
 hilt = "2.52"
@@ -14,7 +14,7 @@ hilt = "2.52"
 # Google services
 gms = "4.4.2"
 crashlytics = "3.0.2"
-firebaseBom = "33.6.0"
+firebaseBom = "33.7.0"
 firebasePerfPlugin = "1.4.2"
 playIntegrity = "1.4.0"
 
@@ -34,7 +34,7 @@ constraintlayout = "2.2.0"
 swiperefreshlayout = "1.2.0-alpha01"
 coreSplashscreen = "1.0.1"
 viewpager2 = "1.1.0"
-navigation = "2.8.4"
+navigation = "2.8.5"
 
 # Lifecycle Libraries
 lifecycle = "2.8.7"
@@ -46,7 +46,7 @@ datastore = "1.1.1"
 room = "2.6.1"
 
 # Paging3
-paging = "3.3.4"
+paging = "3.3.5"
 
 # UI components
 material = "1.12.0"
@@ -60,11 +60,14 @@ okhttp = "5.0.0-alpha.14"
 desugarJdkLibs = "2.1.3"
 
 # Testing
+androidxJunit = "1.2.1"
+espresso = "3.6.1"
+junitVersion = "4.13.2"
 testRules = "1.6.1"
 testRunner = "1.6.2"
-junitVersion = "4.13.2"
-androidxJunit = "1.2.1"
-espressoCore = "3.6.1"
+mockk = "1.13.13"
+mockitoAndroid = "5.2.0"
+mockitoCore = "5.14.2"
 
 # Image loading
 glide = "4.16.0"
@@ -129,13 +132,21 @@ leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.re
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
-# Tools and Testing Libraries
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+
+# Tools and Testing Libraries
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoAndroid" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
 
 # Image loading
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
@@ -154,6 +165,7 @@ country-picker-android = { group = "com.github.waffiqaziz", name = "country-pick
 facebook-shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 # Hilt-dagger
+hilt-test = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -202,6 +214,7 @@ bazzmovies-android-feature = { id = "bazzmovies.android.feature" }
 bazzmovies-android-core = { id = "bazzmovies.android.core" }
 bazzmovies-android-room = { id = "bazzmovies.android.room" }
 bazzmovies-hilt = { id = "bazzmovies.hilt" }
+bazzmovies-hilt-test = { id = "bazzmovies.hilt.test" }
 bazzmovies-glide = { id = "bazzmovies.glide" }
 bazzmovies-android-application-firebase = { id = "bazzmovies.android.application.firebase" }
 bazzmovies-jvm-library = { id = "bazzmovies.jvm.library" }

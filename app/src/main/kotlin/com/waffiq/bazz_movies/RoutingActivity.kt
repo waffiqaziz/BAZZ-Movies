@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -27,6 +28,7 @@ class RoutingActivity : AppCompatActivity() {
     window.navigationBarColor = ContextCompat.getColor(this, gray_900)
 
     userPreferenceViewModel.getUserPref().observe(this) {
+      Log.d("RoutingActivity", "User is  $it")
       if (it.isLogin) gotoMainActivity(true) else gotoMainActivity(false)
     }
   }
