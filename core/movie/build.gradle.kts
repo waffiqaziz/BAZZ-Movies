@@ -5,30 +5,7 @@ plugins {
   id("bazzmovies.glide")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies.core.movie"
-
-  defaultConfig {
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    consumerProguardFiles("consumer-rules.pro")
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isMinifyEnabled = false
-    }
-
-    create("staging") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-
-    getByName("release") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.core.movie"
 
 dependencies {
   api(project(":core:common"))

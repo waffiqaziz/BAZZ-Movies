@@ -11,8 +11,6 @@ android {
   namespace = "com.waffiq.bazz_movies.core.network"
 
   defaultConfig {
-    consumerProguardFiles("consumer-rules.pro")
-
     val properties = Properties().apply {
       load(project.rootProject.file("local.properties").inputStream())
     }
@@ -26,23 +24,6 @@ android {
     buildConfigField("String", "OMDb_API_URL", "\"https://www.omdbapi.com/\"")
   }
 
-  buildTypes {
-    buildTypes {
-      getByName("debug") {
-        isMinifyEnabled = false
-      }
-
-      create("staging") {
-        isMinifyEnabled = true
-        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      }
-
-      getByName("release") {
-        isMinifyEnabled = true
-        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      }
-    }
-  }
   buildFeatures {
     buildConfig = true
   }

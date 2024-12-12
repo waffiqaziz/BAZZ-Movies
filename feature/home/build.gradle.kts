@@ -4,32 +4,7 @@ plugins {
   id("bazzmovies.glide")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies.feature.home"
-
-  defaultConfig {
-    consumerProguardFiles("consumer-rules.pro")
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isMinifyEnabled = false
-    }
-
-    create("staging") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-
-    getByName("release") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
-  buildFeatures {
-    viewBinding = true
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.feature.home"
 
 dependencies {
   implementation(project(":core:common"))
@@ -38,7 +13,6 @@ dependencies {
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
 
-  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.swiperefreshlayout)

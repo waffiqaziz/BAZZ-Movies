@@ -16,7 +16,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
       extensions.configure<LibraryExtension> {
         configureKotlinAndroid(this)
         defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
-
+        defaultConfig.consumerProguardFiles("consumer-rules.pro")
         // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // testOptions.animationsDisabled = true
         // The resource prefix is derived from the module name,
@@ -24,11 +24,29 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         resourcePrefix =
           path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
             .lowercase() + "_"
+
+        buildTypes {
+          getByName("debug") {
+            isMinifyEnabled = false
+          }
+
+          create("staging") {
+            isMinifyEnabled = true
+            proguardFiles(
+              getDefaultProguardFile("proguard-android-optimize.txt"),
+              "proguard-rules.pro"
+            )
+          }
+
+          getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(
+              getDefaultProguardFile("proguard-android-optimize.txt"),
+              "proguard-rules.pro"
+            )
+          }
+        }
       }
-      // dependencies {
-      //   add("androidTestImplementation", kotlin("test"))
-      //   add("testImplementation", kotlin("test"))
-      // }
     }
   }
 }

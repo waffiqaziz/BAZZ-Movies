@@ -6,41 +6,14 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies.feature.favorite"
-
-  defaultConfig {
-    consumerProguardFiles("consumer-rules.pro")
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isMinifyEnabled = false
-    }
-
-    create("staging") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-
-    getByName("release") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
-  buildFeatures {
-    viewBinding = true
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.feature.favorite"
 
 dependencies {
   implementation(project(":core:favoritewatchlist"))
 
-  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.viewpager2)
   implementation(libs.androidx.swiperefreshlayout)
-  implementation(libs.google.material)
 
   // room
   implementation(libs.androidx.room.common)
