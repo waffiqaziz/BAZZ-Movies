@@ -29,7 +29,7 @@
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
 	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
 		alt="license"
-		src="https://img.shields.io/badge/License-Apache%20Version%202.0-green.svg"></a>
+		src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
 		alt="Issue Opened"
 		src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
