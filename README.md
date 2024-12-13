@@ -20,13 +20,16 @@
 </p>
 <p align="center">
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
-		alt="Build Status"
+		alt="Releases"
 		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse" alt="Activity">
         	<img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
 		alt="Build Status"
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+		alt="Test Status"
+		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
 	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
 		alt="license"
 		src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
