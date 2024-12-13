@@ -13,8 +13,8 @@ on:
 
 jobs:
   android_test:
-    name: Running Android Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     continue-on-error: true
     steps:
       - name: Checkout
@@ -29,6 +29,9 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
       - name: Google Service
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -41,30 +44,26 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-          cache: gradle
+          cache: 'gradle'
 
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Run Test
+      - name: Run instrumentation test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          target: default
-          ndk: 27.2.12479018
-          arch: x86_64
-          profile: Nexus 6
-          emulator-options: -no-window -no-boot-anim -no-audio -no-snapshot-load
+          arch: x86
+          disable-animations: true
           script: |
             adb wait-for-device
-            adb shell input keyevent 82
-            ./gradlew :app:connectedAndroidTest --continue
+            ./gradlew :app:connectedCheck --stacktrace
 
       - name: Upload Test Reports
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: android-test-report
