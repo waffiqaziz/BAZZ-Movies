@@ -179,21 +179,16 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun favWatchlistHandler() {
     detailViewModel.postModelState.observe(this) { eventResult ->
       eventResult.getContentIfNotHandled()?.let { postModelState ->
-        if (postModelState.isSuccess) {
-          if (!postModelState.isDelete) {
-            if (!postModelState.isFavorite) {
-              showToast(getString(item_added_to_watchlist))
-            } else {
-              showToast(getString(item_added_to_favorite))
-            }
-          } else {
-            if (postModelState.isFavorite) {
-              showToast(getString(item_removed_from_favorite))
-            } else {
-              showToast(getString(item_removed_from_watchlist))
-            }
-          }
+        if (!postModelState.isSuccess) return@let
+
+        val messageResId = when {
+          postModelState.isDelete && postModelState.isFavorite -> item_removed_from_favorite
+          postModelState.isDelete -> item_removed_from_watchlist
+          postModelState.isFavorite -> item_added_to_favorite
+          else -> item_added_to_watchlist
         }
+
+        showToast(getString(messageResId))
       }
     }
   }
@@ -210,6 +205,7 @@ class DetailMovieActivity : AppCompatActivity() {
           }
         }
         getStated(token)
+        binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
       }
 
       // shor or hide user score
@@ -555,20 +551,14 @@ class DetailMovieActivity : AppCompatActivity() {
         }
       }
 
-      yourScoreViewGroup.setOnClickListener { showDialogRate() }
-
-      imdbViewGroup.setOnClickListener {
-        if (!tvScoreImdb.text.contains("[0-9]".toRegex())) showDialogNotRated()
-      }
-      tmdbViewGroup.setOnClickListener {
-        if (!tvScoreTmdb.text.contains("[0-9]".toRegex())) showDialogNotRated()
-      }
-      metascoreViewGroup.setOnClickListener {
-        if (!tvScoreMetascore.text.contains("[0-9]".toRegex())) {
-          showDialogNotRated()
-        }
-      }
+      imdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreImdb.text.toString()) }
+      tmdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreTmdb.text.toString()) }
+      metascoreViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreMetascore.text.toString()) }
     }
+  }
+
+  private val showDialogIfNotRated: (String) -> Unit = { scoreText ->
+    if (!scoreText.contains("[0-9]".toRegex())) showDialogNotRated()
   }
 
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {

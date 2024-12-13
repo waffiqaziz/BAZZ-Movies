@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_trash
@@ -141,8 +140,6 @@ class MyFavoriteMoviesFragment : Fragment() {
       context = requireContext(),
       deleteIconResId = ic_trash,
       actionIconResId = ic_bookmark_dark,
-      deleteColor = red_matte,
-      actionColor = yellow
     )
 
     val itemTouchHelper = ItemTouchHelper(swipeCallback)
@@ -240,7 +237,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkStatedThenPostWatchlist(MOVIE_MEDIA_TYPE, user, movieId, title)
+      viewModelFav.checkMovieStatedThenPostWatchlist( user, movieId, title)
     }
   }
 

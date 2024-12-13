@@ -42,11 +42,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
       dependencies {
         add("implementation", project(":core:designsystem"))
-
-        // add(
-        //   "androidTestImplementation",
-        //   libs.findLibrary("androidx.lifecycle.runtimeTesting").get()
-        // )
       }
     }
   }

@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_dark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_trash
@@ -141,8 +140,6 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       context = requireContext(),
       deleteIconResId = ic_trash,
       actionIconResId = ic_hearth_dark,
-      deleteColor = red_matte,
-      actionColor = yellow
     )
 
     val itemTouchHelper = ItemTouchHelper(swipeCallback)
@@ -240,7 +237,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
   private fun postToAddFavoriteTMDB(title: String, tvId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModel.checkStatedThenPostFavorite(TV_MEDIA_TYPE, user, tvId, title)
+      viewModel.checkTvStatedThenPostFavorite(user, tvId, title)
     }
   }
 
