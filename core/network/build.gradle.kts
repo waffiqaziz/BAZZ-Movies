@@ -9,23 +9,20 @@ plugins {
 
 android {
   namespace = "com.waffiq.bazz_movies.core.network"
+  buildFeatures.buildConfig = true
 
   defaultConfig {
     val properties = Properties().apply {
       load(project.rootProject.file("local.properties").inputStream())
     }
 
-    // API KEY inside local.properties
-    buildConfigField("String", "API_KEY", "\"${properties["API_KEY"]}\"")
-    buildConfigField("String", "API_KEY_OMDb", "\"${properties["API_KEY_OMDb"]}\"")
+    // API KEY
+    buildConfigField("String", "TMDB_API_KEY", "\"${properties["TMDB_API_KEY"]}\"")
+    buildConfigField("String", "OMDB_API_KEY", "\"${properties["OMDB_API_KEY"]}\"")
 
     // BASE URL
     buildConfigField("String", "TMDB_API_URL", "\"https://api.themoviedb.org/\"")
     buildConfigField("String", "OMDb_API_URL", "\"https://www.omdbapi.com/\"")
-  }
-
-  buildFeatures {
-    buildConfig = true
   }
 }
 

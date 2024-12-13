@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.network.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.waffiq.bazz_movies.core.network.BuildConfig.API_KEY
-import com.waffiq.bazz_movies.core.network.BuildConfig.API_KEY_OMDb
+import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
+import com.waffiq.bazz_movies.core.network.BuildConfig.OMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.DEBUG
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDb_API_URL
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_URL
@@ -69,7 +69,7 @@ class NetworkModule {
   @Provides
   fun provideOMDBApiService(client: OkHttpClient): OMDbApiService {
     val newClient = client.newBuilder()
-      .addInterceptor(ApiKeyInterceptorOMDb(API_KEY_OMDb))
+      .addInterceptor(ApiKeyInterceptorOMDb(OMDB_API_KEY))
       .build()
     val retrofit = Retrofit.Builder()
       .baseUrl(OMDb_API_URL)
@@ -82,7 +82,7 @@ class NetworkModule {
   @Provides
   fun provideTMDBApiService(client: OkHttpClient): TMDBApiService {
     val newClient = client.newBuilder()
-      .addInterceptor(ApiKeyInterceptorTMDB(API_KEY))
+      .addInterceptor(ApiKeyInterceptorTMDB(TMDB_API_KEY))
       .build()
     val retrofit = Retrofit.Builder()
       .baseUrl(TMDB_API_URL)
