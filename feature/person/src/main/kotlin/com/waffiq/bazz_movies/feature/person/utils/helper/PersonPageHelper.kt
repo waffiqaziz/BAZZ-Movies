@@ -18,14 +18,6 @@ import java.util.Calendar
  * Used for person fragment
  */
 object PersonPageHelper {
-  // fun getAgeBirth(date: String): Int {
-  //   val dateParts = date.split("-").toTypedArray()
-  //   val year = dateParts[0].toInt()
-  //   val month = dateParts[1].toInt()
-  //   val day = dateParts[2].toInt()
-  //
-  //   return Period.between(LocalDate.of(year, month, day), LocalDate.now()).years
-  // }
 
   private fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
     var dateParts = dateBirth.split("-").toTypedArray()

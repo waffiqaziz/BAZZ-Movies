@@ -19,6 +19,9 @@ class ShimmerAdapter(private val itemCount: Int = SHIMMER_DATA) :
   }
 
   override fun onBindViewHolder(holder: ShimmerViewHolder, position: Int) {
+    /**
+     * not used as this adapter only shows as placeholder
+     */
   }
 
   override fun getItemCount(): Int = itemCount

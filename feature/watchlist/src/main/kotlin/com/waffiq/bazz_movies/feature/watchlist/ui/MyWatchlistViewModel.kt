@@ -9,15 +9,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
@@ -142,56 +143,61 @@ class MyWatchlistViewModel @Inject constructor(
     }
   }
 
-  fun checkStatedThenPostFavorite(
-    mediaType: String,
+  fun checkTvStatedThenPostFavorite(
     user: UserModel,
     id: Int,
     title: String
   ) {
     viewModelScope.launch {
-      if (mediaType == MOVIE_MEDIA_TYPE) {
-        getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
-          when (networkResult) {
-            is NetworkResult.Success -> {
-              if (networkResult.data.favorite) {
-                _snackBarAlready.value = Event(title)
-              } else {
-                postFavorite(
-                  user.token,
-                  user.userId,
-                  FavoritePostModel(mediaType, id, true),
-                  title
-                )
-              }
+      getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
+        when (networkResult) {
+          is NetworkResult.Success -> {
+            if (networkResult.data.favorite) {
+              _snackBarAlready.value = Event(title)
+            } else {
+              postFavorite(
+                user.token,
+                user.userId,
+                FavoritePostModel(TV_MEDIA_TYPE, id, true),
+                title
+              )
             }
-
-            is NetworkResult.Loading -> {}
-            is NetworkResult.Error ->
-              _snackBarAdded.value =
-                Event(SnackBarUserLoginData(false, networkResult.message, null, null))
           }
+
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
         }
-      } else {
-        getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
-          when (networkResult) {
-            is NetworkResult.Success -> {
-              if (networkResult.data.favorite) {
-                _snackBarAlready.value = Event(title)
-              } else {
-                postFavorite(
-                  user.token,
-                  user.userId,
-                  FavoritePostModel(mediaType, id, true),
-                  title
-                )
-              }
-            }
+      }
+    }
+  }
 
-            is NetworkResult.Loading -> {}
-            is NetworkResult.Error ->
-              _snackBarAdded.value =
-                Event(SnackBarUserLoginData(false, networkResult.message, null, null))
+  fun checkMovieStatedThenPostFavorite(
+    user: UserModel,
+    id: Int,
+    title: String
+  ) {
+    viewModelScope.launch {
+      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
+        when (networkResult) {
+          is NetworkResult.Success -> {
+            if (networkResult.data.favorite) {
+              _snackBarAlready.value = Event(title)
+            } else {
+              postFavorite(
+                user.token,
+                user.userId,
+                FavoritePostModel(MOVIE_MEDIA_TYPE, id, true),
+                title
+              )
+            }
           }
+
+          is NetworkResult.Loading -> {}
+          is NetworkResult.Error ->
+            _snackBarAdded.value =
+              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
         }
       }
     }

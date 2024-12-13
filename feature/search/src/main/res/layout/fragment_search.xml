@@ -78,14 +78,4 @@
     tools:visibility="visible" />
   <!-- End of HEADER SECTION -->
 
-  <!--  &lt;!&ndash; Progress bar &ndash;&gt;-->
-  <!--  <ProgressBar-->
-  <!--    android:id="@+id/progress_bar"-->
-  <!--    android:layout_width="wrap_content"-->
-  <!--    android:layout_height="wrap_content"-->
-  <!--    android:layout_gravity="center"-->
-  <!--    android:indeterminateTint="@color/yellow"-->
-  <!--    android:visibility="gone"-->
-  <!--    tools:visibility="visible" />-->
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
