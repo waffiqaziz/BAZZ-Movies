@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/constraint_layout"
+  android:id="@+id/fragment_more"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.MoreFragment">
@@ -90,7 +90,6 @@
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="@dimen/button_radius"
         app:cardElevation="0dp"
-        app:rippleColor="@color/gray_1000"
         app:cpa_dialogApplyBorderSearch="true"
         app:cpa_dialogBackgroundColor="@color/gray_800"
         app:cpa_dialogSearchBackgroundColor="@color/gray_800"
@@ -101,6 +100,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/btn_region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_region"
+        app:rippleColor="@color/gray_1000"
         app:strokeWidth="0dp" />
 
       <!-- FAQ -->

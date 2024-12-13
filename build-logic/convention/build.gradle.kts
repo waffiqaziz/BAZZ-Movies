@@ -54,6 +54,10 @@ gradlePlugin {
       id = "bazzmovies.hilt"
       implementationClass = "HiltConventionPlugin"
     }
+    register("hiltTest") {
+      id = "bazzmovies.hilt.test"
+      implementationClass = "HiltTestConventionPlugin"
+    }
     register("ksp") {
       id = "bazzmovies.glide"
       implementationClass = "GlideConventionPlugin"

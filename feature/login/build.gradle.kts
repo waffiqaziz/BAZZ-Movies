@@ -6,32 +6,7 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies.feature.login"
-
-  defaultConfig {
-    consumerProguardFiles("consumer-rules.pro")
-  }
-
-  buildTypes {
-    getByName("debug") {
-      isMinifyEnabled = false
-    }
-
-    create("staging") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-
-    getByName("release") {
-      isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
-  buildFeatures {
-    viewBinding = true
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.feature.login"
 
 dependencies {
   implementation(project(":core:uihelper"))
@@ -39,7 +14,6 @@ dependencies {
   implementation(project(":core:movie"))
   implementation(project(":navigation"))
 
-  implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.google.material)
   implementation(libs.androidx.activity)
