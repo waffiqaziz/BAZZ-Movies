@@ -5,7 +5,6 @@ plugins {
   id("bazzmovies.android.library")
   id("kotlin-parcelize")
   id("bazzmovies.hilt")
-  id("bazzmovies.hilt.test")
 }
 
 android.namespace = "com.waffiq.bazz_movies.core.user"
