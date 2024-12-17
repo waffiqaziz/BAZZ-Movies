@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.model
 
+import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -65,15 +66,16 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     }
   }
 
-  companion object {
-    private val NAME_KEY = stringPreferencesKey("name")
-    private val USERNAME_KEY = stringPreferencesKey("username")
-    private val PASSWORD_KEY = stringPreferencesKey("password")
-    private val USERID_KEY = intPreferencesKey("userId")
-    private val TOKEN_KEY = stringPreferencesKey("token")
-    private val REGION_KEY = stringPreferencesKey("region")
-    private val STATE_KEY = booleanPreferencesKey("state")
-    private val GRAVATAR_KEY = stringPreferencesKey("gravatar")
-    private val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal companion object TestingKeys {
+    val NAME_KEY = stringPreferencesKey("name")
+    val USERNAME_KEY = stringPreferencesKey("username")
+    val PASSWORD_KEY = stringPreferencesKey("password")
+    val USERID_KEY = intPreferencesKey("userId")
+    val TOKEN_KEY = stringPreferencesKey("token")
+    val REGION_KEY = stringPreferencesKey("region")
+    val STATE_KEY = booleanPreferencesKey("state")
+    val GRAVATAR_KEY = stringPreferencesKey("gravatar")
+    val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
   }
 }

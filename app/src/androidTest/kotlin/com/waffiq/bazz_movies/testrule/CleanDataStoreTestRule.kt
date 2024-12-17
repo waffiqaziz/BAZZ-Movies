@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies
+package com.waffiq.bazz_movies.testrule
 
 import android.content.Context
 import androidx.datastore.dataStoreFile

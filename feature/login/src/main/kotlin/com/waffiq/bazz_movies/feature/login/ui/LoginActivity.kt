@@ -23,6 +23,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
+import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
@@ -59,11 +61,7 @@ class LoginActivity : AppCompatActivity() {
       )
       binding.btnLogin.isEnabled = true
       binding.tvGuest.isEnabled = true
-      com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning(
-        binding.constraintLayout,
-        null,
-        errorMessage
-      )
+      snackBarWarning(binding.activityLogin, null, errorMessage)
     }
     authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
     binding.progressBar.isVisible = false
@@ -140,10 +138,7 @@ class LoginActivity : AppCompatActivity() {
       if (formNotEmpty()) {
         binding.tvGuest.isEnabled = false
         binding.btnLogin.isEnabled = false
-        com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50(
-          binding.layoutBackground.bgAlpha,
-          ANIM_DURATION
-        )
+        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         loginAsUserRegistered()
       }
     }

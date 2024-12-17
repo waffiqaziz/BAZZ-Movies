@@ -3,6 +3,7 @@ import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.kotlin.dsl.configure
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
@@ -44,6 +45,23 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
               getDefaultProguardFile("proguard-android-optimize.txt"),
               "proguard-rules.pro"
             )
+          }
+        }
+
+        @Suppress("UnstableApiUsage")
+        testOptions {
+          unitTests.apply {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = true
+          }
+          unitTests.all {
+            it.testLogging {
+              events("passed", "skipped", "failed")
+              showExceptions = true
+              showCauses = true
+              showStackTraces = true
+              exceptionFormat = TestExceptionFormat.FULL
+            }
           }
         }
       }

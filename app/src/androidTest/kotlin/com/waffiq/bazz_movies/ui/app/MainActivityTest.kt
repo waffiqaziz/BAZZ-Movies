@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.ui
+package com.waffiq.bazz_movies.ui.app
 
 import android.view.View
 import androidx.fragment.app.FragmentContainerView
@@ -12,9 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.waffiq.bazz_movies.CleanDataStoreTestRule
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
@@ -28,6 +26,7 @@ import com.waffiq.bazz_movies.feature.home.R.id.fragment_featured
 import com.waffiq.bazz_movies.feature.more.R.id.fragment_more
 import com.waffiq.bazz_movies.feature.search.R.id.fragment_search
 import com.waffiq.bazz_movies.feature.watchlist.R.id.fragment_watchlist
+import com.waffiq.bazz_movies.testrule.CleanDataStoreTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
@@ -37,10 +36,8 @@ import org.hamcrest.Matcher
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
   @get:Rule(order = 0)

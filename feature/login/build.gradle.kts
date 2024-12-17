@@ -3,6 +3,7 @@ import org.gradle.kotlin.dsl.libs
 
 plugins {
   id("bazzmovies.android.feature")
+  id("bazzmovies.hilt.test")
   id("kotlin-parcelize")
 }
 
@@ -17,4 +18,12 @@ dependencies {
   implementation(libs.androidx.appcompat)
   implementation(libs.google.material)
   implementation(libs.androidx.activity)
+
+  // testing
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockk)
+  testImplementation(libs.turbine)
+  testImplementation(libs.truth)
 }

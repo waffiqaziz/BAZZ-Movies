@@ -22,14 +22,18 @@
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
 		alt="Releases"
 		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse" alt="Activity">
-        	<img src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
+	<a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse"><img 
+		alt="Activity"
+		src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
 		alt="Build Status"
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
 	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
-		alt="Test Status"
+		alt="Instrumented Test Status"
 		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
+	<a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
+		alt="SonarQube Status"
+		src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>	
 	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
 		alt="license"
 		src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
@@ -77,10 +81,10 @@ BAZZ Movies available downloaded via Google Play Store
 1. Install Android Studio.
 2. Clone the project.
 3. (Optional)
-   Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
-   and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
+	 Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
+	 and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
 4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started)
-   and [OMDb](https://www.omdbapi.com/apikey.aspx).
+	 and [OMDb](https://www.omdbapi.com/apikey.aspx).
 5. Create or edit `local.properties` and put your API keys:
    ```properties
    API_KEY = { TMDB_API_KEY }
@@ -126,14 +130,15 @@ This application is released under the [Apache Version 2.0 License](LICENSE).
 ### Third-Party Libraries
 
 1. TMDB API: Provides movie and TV data.
-   See [TMDB Terms](https://www.themoviedb.org/api-terms-of-use).
+	 See [TMDB Terms](https://www.themoviedb.org/api-terms-of-use).
 2. OMDb API: RESTful service for movie info. See [OMDb Terms](https://www.omdbapi.com/legal.htm).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
-4. ExpandableTextView: An expandable Android TextView - [GitHub](https://github.com/glailton/ExpandableTextView).
+4. ExpandableTextView: An expandable Android
+	 TextView - [GitHub](https://github.com/glailton/ExpandableTextView).
 5. Shimmer Android: Library shimmering
-   effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
+	 effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
 6. Country Picker Android: (Apache
-   2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
+	 2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
 7. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
 8. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
 
