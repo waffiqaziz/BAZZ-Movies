@@ -263,7 +263,7 @@
 
   <style name="roundedCornersPoster" parent="">
     <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">3%</item>
+    <item name="cornerSize">@dimen/button_radius</item>
   </style>
 
   <style name="circleImage" parent="">

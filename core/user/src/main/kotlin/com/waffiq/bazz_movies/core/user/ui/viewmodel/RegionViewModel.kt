@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.user.domain.usecase.get_region.GetRegionUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

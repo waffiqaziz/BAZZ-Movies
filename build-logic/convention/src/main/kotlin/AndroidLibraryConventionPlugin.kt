@@ -1,9 +1,11 @@
 import com.android.build.gradle.LibraryExtension
+import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import kotlin.text.contains
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -15,6 +17,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
       extensions.configure<LibraryExtension> {
         configureKotlinAndroid(this)
+        configureCommonAndroidSettings(this)
         defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
         defaultConfig.consumerProguardFiles("consumer-rules.pro")
         // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,16 +31,17 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         buildTypes {
           getByName("debug") {
             isMinifyEnabled = false
+            isShrinkResources = false
           }
-
-          create("staging") {
-            isMinifyEnabled = true
-            proguardFiles(
-              getDefaultProguardFile("proguard-android-optimize.txt"),
-              "proguard-rules.pro"
-            )
+          if (!buildTypes.names.contains("staging")) {
+            create("staging") {
+              isMinifyEnabled = true
+              proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+              )
+            }
           }
-
           getByName("release") {
             isMinifyEnabled = true
             proguardFiles(

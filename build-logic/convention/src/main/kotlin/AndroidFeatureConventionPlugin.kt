@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -12,14 +13,15 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         apply("bazzmovies.hilt")
       }
       extensions.configure<LibraryExtension> {
+        configureCommonAndroidSettings(this)
+        buildFeatures.viewBinding = true
         testOptions.animationsDisabled = true
         defaultConfig.consumerProguardFiles("consumer-rules.pro")
-        buildFeatures.viewBinding = true
         buildTypes {
           getByName("debug") {
             isMinifyEnabled = false
+            isShrinkResources = false
           }
-
           if (!buildTypes.names.contains("staging")) {
             create("staging") {
               isMinifyEnabled = true
@@ -29,7 +31,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
               )
             }
           }
-
           getByName("release") {
             isMinifyEnabled = true
             proguardFiles(

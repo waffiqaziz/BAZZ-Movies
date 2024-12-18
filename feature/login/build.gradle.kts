@@ -17,4 +17,11 @@ dependencies {
   implementation(libs.androidx.appcompat)
   implementation(libs.google.material)
   implementation(libs.androidx.activity)
+
+  // testing
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockk)
+  testImplementation(libs.truth)
 }

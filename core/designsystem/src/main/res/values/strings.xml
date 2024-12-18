@@ -16,7 +16,7 @@
   <string name="guest_session"><u>Guest Session</u></string>
   <string name="retry">Retry</string>
   <string name="login_as_guest_successful">Login as Guest Successful</string>
-  <string name="login_successful">Login Successful</string>
+  <string name="login_as_user_successful">Login Successful</string>
 
   <!-- BOTTOM NAVIGATION -->
   <string name="title_home">Home</string>

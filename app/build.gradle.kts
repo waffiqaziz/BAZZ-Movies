@@ -1,3 +1,6 @@
+import java.util.Properties
+import kotlin.apply
+
 plugins {
   id("bazzmovies.android.application")
   id("bazzmovies.android.application.firebase")
@@ -48,6 +51,10 @@ dependencies {
   androidTestImplementation(libs.mockk.agent)
   androidTestImplementation(libs.androidx.datastore.core)
   androidTestImplementation(libs.androidx.datastore.preferences)
+
+  androidTestImplementation(libs.mockito.core)
+  androidTestImplementation(libs.mockito.android)
+  androidTestImplementation(libs.mockito.android.kotlin)
 }
 
 dependencyGuard {

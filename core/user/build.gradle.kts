@@ -5,7 +5,6 @@ plugins {
   id("bazzmovies.android.library")
   id("kotlin-parcelize")
   id("bazzmovies.hilt")
-  id("bazzmovies.hilt.test")
 }
 
 android.namespace = "com.waffiq.bazz_movies.core.user"
@@ -21,4 +20,13 @@ dependencies {
 
   implementation(libs.androidx.datastore.core)
   implementation(libs.androidx.datastore.preferences)
+
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.androidx.junit)
+  testImplementation(libs.junit)
+  testImplementation(libs.mockk)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockito.android.kotlin)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.turbine)
 }
