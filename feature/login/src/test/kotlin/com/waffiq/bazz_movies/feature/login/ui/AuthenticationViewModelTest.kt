@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
-import com.waffiq.bazz_movies.core.user.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence

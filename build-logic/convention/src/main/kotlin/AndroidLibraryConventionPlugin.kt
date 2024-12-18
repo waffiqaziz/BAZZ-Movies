@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import kotlin.text.contains
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -26,6 +27,29 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         resourcePrefix =
           path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
             .lowercase() + "_"
+
+        buildTypes {
+          getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+          }
+          if (!buildTypes.names.contains("staging")) {
+            create("staging") {
+              isMinifyEnabled = true
+              proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+              )
+            }
+          }
+          getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(
+              getDefaultProguardFile("proguard-android-optimize.txt"),
+              "proguard-rules.pro"
+            )
+          }
+        }
       }
     }
   }

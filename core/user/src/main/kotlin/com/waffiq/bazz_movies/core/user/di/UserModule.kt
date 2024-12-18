@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.user.di
 
-import com.waffiq.bazz_movies.core.user.domain.usecase.get_region.GetRegionInteractor
-import com.waffiq.bazz_movies.core.user.domain.usecase.get_region.GetRegionUseCase
-import com.waffiq.bazz_movies.core.user.domain.usecase.user_pref.UserPrefInteractor
-import com.waffiq.bazz_movies.core.user.domain.usecase.user_pref.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionInteractor
+import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefInteractor
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

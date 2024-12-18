@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
-import com.waffiq.bazz_movies.core.user.domain.usecase.get_region.GetRegionUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow

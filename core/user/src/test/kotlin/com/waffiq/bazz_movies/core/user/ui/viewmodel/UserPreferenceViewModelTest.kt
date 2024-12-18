@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.user.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
-import com.waffiq.bazz_movies.core.user.domain.usecase.user_pref.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.core.user.testutils.MainCoroutineRule
 import io.mockk.Runs
 import io.mockk.coEvery

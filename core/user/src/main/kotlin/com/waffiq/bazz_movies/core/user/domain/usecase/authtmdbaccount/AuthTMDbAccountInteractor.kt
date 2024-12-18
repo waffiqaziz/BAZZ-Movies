@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.user.domain.usecase.auth_tmdb_account
+package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
 import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel

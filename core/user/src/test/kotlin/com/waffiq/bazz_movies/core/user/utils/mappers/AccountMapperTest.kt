@@ -7,6 +7,10 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Av
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
+import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
+import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
+import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
+import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
@@ -25,7 +29,7 @@ class AccountMapperTest {
       requestToken = "request_token"
     )
 
-    val authentication = response.toAuthentication()
+    val authentication: Authentication = response.toAuthentication()
     assertEquals(true, authentication.success)
     assertEquals("date_expire", authentication.expireAt)
     assertEquals("request_token", authentication.requestToken)
@@ -38,7 +42,7 @@ class AccountMapperTest {
       sessionId = "session_id"
     )
 
-    val authentication = response.toCreateSession()
+    val authentication: CreateSession = response.toCreateSession()
     assertEquals(true, authentication.success)
     assertEquals("session_id", authentication.sessionId)
   }
@@ -62,7 +66,7 @@ class AccountMapperTest {
       username = "waffiq1234",
     )
 
-    val accountDetails = response.toAccountDetails()
+    val accountDetails: AccountDetails = response.toAccountDetails()
     assertEquals(513176325, accountDetails.id)
     assertEquals("ID", accountDetails.iso6391)
     assertEquals("en", accountDetails.iso31661)
@@ -71,6 +75,11 @@ class AccountMapperTest {
     assertEquals("347589074283054", accountDetails.avatarItem?.avatarTMDb?.avatarPath)
     assertEquals("325987423659432", accountDetails.avatarItem?.gravatar?.hash)
     assertFalse(accountDetails.includeAdult == true)
+
+    assertEquals(
+      response.avatarItemResponse?.avatarTMDbResponse?.avatarPath,
+      accountDetails.avatarItem?.avatarTMDb?.avatarPath
+    )
   }
 
   @Test
@@ -80,7 +89,7 @@ class AccountMapperTest {
       ip = "ip_country"
     )
 
-    val countryIp = response.toCountryIP()
+    val countryIp: CountryIP = response.toCountryIP()
     assertEquals("ID", countryIp.country)
     assertEquals("ip_country", countryIp.ip)
   }

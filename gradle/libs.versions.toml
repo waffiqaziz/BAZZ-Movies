@@ -24,7 +24,6 @@ playIntegrity = "1.4.0"
 
 # Development tools
 leakcanary = "2.14"
-dependencyAnalysis = "2.4.2"
 detekt = "1.23.7"
 dependencyGuard = "0.5.0"
 

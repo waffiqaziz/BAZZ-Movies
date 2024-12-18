@@ -1,4 +1,4 @@
-name: Instrumentation and Unit Test
+name: Testing
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ on:
       - '**/*.md'
 
 jobs:
-  android_test:
+  instrumentation_test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true
@@ -38,7 +38,7 @@ jobs:
           cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
           echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
-      - name: Change wrapper permissions
+      - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
 
       - name: Set up JDK 17
@@ -46,7 +46,16 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-          cache: 'gradle'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -77,7 +86,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Change wrapper permissions
+      - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
 
       - name: Get local.properties from secrets
@@ -91,14 +100,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Run unit tests
         run: ./gradlew test
 
-      - name: Upload test reports (if needed)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-reports
-          path: app/build/reports/tests/testDebugUnitTest/

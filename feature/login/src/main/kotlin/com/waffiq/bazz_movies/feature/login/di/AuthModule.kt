@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.login.di
 
-import com.waffiq.bazz_movies.core.user.domain.usecase.auth_tmdb_account.AuthTMDbAccountInteractor
-import com.waffiq.bazz_movies.core.user.domain.usecase.auth_tmdb_account.AuthTMDbAccountUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountInteractor
+import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -28,4 +28,5 @@ dependencies {
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.android.kotlin)
   testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.turbine)
 }

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.user.domain.usecase.user_pref
+package com.waffiq.bazz_movies.core.user.domain.usecase.userpreference
 
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
