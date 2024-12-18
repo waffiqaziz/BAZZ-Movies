@@ -4,6 +4,10 @@ compileSdk = "34"
 minSdk = "23"
 ndkVersion = "27.2.12479018"
 
+#app version
+versionCode = "14"
+versionName = "1.1.2"
+
 # Plugin versions
 agp = "8.3.2"
 androidTools = "31.7.3"

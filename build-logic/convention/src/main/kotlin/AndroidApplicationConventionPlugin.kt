@@ -1,9 +1,9 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.kotlin.dsl.configure
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
@@ -17,13 +17,18 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
       }
       extensions.configure<ApplicationExtension> {
         configureKotlinAndroid(this)
+        configureCommonAndroidSettings(this)
+        buildFeatures {
+          viewBinding = true
+          buildConfig = true
+        }
         defaultConfig {
           applicationId = "com.bazz.bazz_movies"
           namespace = "com.waffiq.bazz_movies"
           ndkVersion = libs.findVersion("ndkVersion").get().toString()
           targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
-          versionCode = 13
-          versionName = "1.1.1"
+          versionCode = libs.findVersion("versionCode").get().toString().toInt()
+          versionName = libs.findVersion("versionName").get().toString()
 
           testInstrumentationRunner = "com.waffiq.bazz_movies.testrunner.CustomTestRunner"
 
@@ -72,40 +77,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
               getDefaultProguardFile("proguard-android-optimize.txt"),
               "proguard-rules.pro"
             )
-          }
-        }
-
-        buildFeatures {
-          viewBinding = true
-          buildConfig = true
-        }
-
-        @Suppress("UnstableApiUsage")
-        testOptions.animationsDisabled = true
-        packaging {
-          resources {
-            excludes.add("META-INF/LICENSE.md")
-            excludes.add("META-INF/LICENSE.txt")
-            excludes.add("META-INF/NOTICE.md")
-            excludes.add("META-INF/NOTICE.txt")
-            excludes.add("META-INF/LICENSE-notice.md")
-          }
-        }
-
-        @Suppress("UnstableApiUsage")
-        testOptions {
-          unitTests.apply {
-            isReturnDefaultValues = true
-            isIncludeAndroidResources = true
-          }
-          unitTests.all {
-            it.testLogging {
-              events("passed", "skipped", "failed")
-              showExceptions = true
-              showCauses = true
-              showStackTraces = true
-              exceptionFormat = TestExceptionFormat.FULL
-            }
           }
         }
       }
