@@ -15,4 +15,9 @@ dependencies {
   implementation(libs.google.material)
 
   implementation(libs.country.picker.android)
+
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.junit)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockk)
 }
