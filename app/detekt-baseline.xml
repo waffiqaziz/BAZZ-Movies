@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues />
   <CurrentIssues>
     <ID>NewLineAtEndOfFile:AppNavigator.kt$com.waffiq.bazz_movies.navigation.AppNavigator.kt</ID>
     <ID>NewLineAtEndOfFile:NavigatorModule.kt$com.waffiq.bazz_movies.di.NavigatorModule.kt</ID>

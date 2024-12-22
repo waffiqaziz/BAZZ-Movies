@@ -16,11 +16,11 @@ Please seek support in the following ways:
    out on your own. These should be already on [README.md](README.md). Please read fires to learn
    how it works to see if you can answer your question.
 
-1. :bulb: **Search for answers and ask questions on [Stack Overflow](https://stackoverflow.com).**
+2. :bulb: **Search for answers and ask questions on [Stack Overflow](https://stackoverflow.com).**
    This is the most appropriate place for debugging issues specific to your use of the project, or
    figuring out how to use the project in a specific way.
 
-1. :memo: As a **last resort**, if the question regarding this project you may open
+3. :memo: As a **last resort**, if the question regarding this project you may open
    new [discussion](https://github.com/waffiqaziz/BAZZ-Movies/discussions) on GitHub to ask for
    help. However, please clearly explain what you are trying to do, and list what you have already
    attempted to solve the problem. Provide code samples, but **do not** attach your entire project
@@ -31,7 +31,7 @@ Please seek support in the following ways:
 Please **do not** do any the following:
 
 1. :x: Do not reach out to the author or contributor on Twitter (or other social media) by tweeting
-   or sending a direct message.
+	 or sending a direct message.
 
 2. :x: Do not email the author or contributor.
 
