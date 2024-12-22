@@ -81,13 +81,6 @@ object Helpers {
     return animation
   }
 
-  fun setupRecyclerViewWithSnap(
-    recyclerView: RecyclerView,
-    layoutManager: LinearLayoutManager? = null
-  ) {
-    setupRecyclerViewsWithSnap(listOf(recyclerView), layoutManager)
-  }
-
   fun setupRecyclerViewsWithSnap(
     recyclerViews: List<RecyclerView>,
     layoutManager: LinearLayoutManager? = null
