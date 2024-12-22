@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import kotlin.text.contains
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {

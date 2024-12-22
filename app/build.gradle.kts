@@ -1,6 +1,3 @@
-import java.util.Properties
-import kotlin.apply
-
 plugins {
   id("bazzmovies.android.application")
   id("bazzmovies.android.application.firebase")

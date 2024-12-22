@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
  * Used as general helper
  */
 object GeneralHelper {
-  fun initLinearLayoutManagerHorizontal(context: Context) =
-    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
   fun initLinearLayoutManagerVertical(context: Context) =
     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

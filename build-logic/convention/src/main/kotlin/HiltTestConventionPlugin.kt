@@ -1,4 +1,3 @@
-import com.android.build.gradle.api.AndroidBasePlugin
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
