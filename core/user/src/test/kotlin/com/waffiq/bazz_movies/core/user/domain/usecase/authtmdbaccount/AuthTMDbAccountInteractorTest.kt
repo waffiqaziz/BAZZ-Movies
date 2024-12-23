@@ -14,7 +14,6 @@ import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -27,7 +26,6 @@ import org.mockito.kotlin.whenever
 /**
  * Test AuthTMDbAccountInteractor using mockito
  */
-@ExperimentalCoroutinesApi
 class AuthTMDbAccountInteractorTest {
 
   private val mockRepository: IUserRepository = mock()

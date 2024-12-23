@@ -8,7 +8,6 @@ import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbA
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
@@ -23,7 +22,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class MoreUserViewModelTest {
 
   // Rule to allow LiveData to work properly in tests
