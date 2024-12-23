@@ -19,6 +19,7 @@ dependencies {
   implementation(libs.androidx.activity)
 
   // testing
+  testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito.core)

@@ -11,9 +11,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Cr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
-import com.waffiq.bazz_movies.core.user.testutils.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -49,7 +49,6 @@ class UserRepositoryTest {
     tmdbAvatar = "avatar.jpg"
   )
 
-  // Rule to set the main dispatcher
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 

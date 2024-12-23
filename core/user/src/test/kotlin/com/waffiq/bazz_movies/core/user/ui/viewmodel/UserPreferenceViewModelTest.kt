@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.user.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.waffiq.bazz_movies.core.test.MainCoroutineRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
-import com.waffiq.bazz_movies.core.user.testutils.MainCoroutineRule
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,7 +20,6 @@ import org.junit.Test
 
 class UserPreferenceViewModelTest {
 
-  // Mock dependencies
   private val userPrefUseCase: UserPrefUseCase = mockk(relaxed = true)
   private lateinit var viewModel: UserPreferenceViewModel
   private val userModel = UserModel(
@@ -35,13 +34,11 @@ class UserPreferenceViewModelTest {
     tmdbAvatar = null
   )
 
-  // For coroutines
-  @get:Rule
-  val mainDispatcherRule = MainCoroutineRule()
-
-  // For LiveData
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+  @get:Rule
+  val mainDispatcherRule = MainCoroutineRule()
 
   @Before
   fun setUp() {
@@ -50,15 +47,12 @@ class UserPreferenceViewModelTest {
 
   @Test
   fun `getUserPref emits UserModel`() = runTest {
-    // Arrange
     every { userPrefUseCase.getUser() } returns flowOf(userModel) // Mocking getUser()
 
-    // Act
     val observer = mockk<Observer<UserModel>>(relaxed = true) // Relaxed mock for observer
     viewModel.getUserPref().observeForever(observer)
     advanceUntilIdle() // Ensure all coroutines have completed
 
-    // Assert
     coVerify { observer.onChanged(userModel) } // Verify observer was called with the expected value
   }
 
