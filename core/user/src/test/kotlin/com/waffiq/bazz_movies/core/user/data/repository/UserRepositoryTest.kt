@@ -11,9 +11,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Cr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
-import com.waffiq.bazz_movies.core.user.testutils.MainDispatcherRule
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -24,8 +24,6 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
-import junit.framework.TestCase.fail
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
@@ -34,7 +32,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class UserRepositoryTest {
 
   private lateinit var userRepository: UserRepository
@@ -52,7 +49,6 @@ class UserRepositoryTest {
     tmdbAvatar = "avatar.jpg"
   )
 
-  // Rule to set the main dispatcher
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 

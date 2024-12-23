@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.user.testutils
+package com.waffiq.bazz_movies.core.test
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher

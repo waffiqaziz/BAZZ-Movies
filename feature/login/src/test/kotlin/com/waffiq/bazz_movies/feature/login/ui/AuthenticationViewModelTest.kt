@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.login.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
@@ -11,41 +12,28 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class AuthenticationViewModelTest {
-
-  @get:Rule
-  val instantExecutorRule = InstantTaskExecutorRule() // For LiveData testing
 
   private lateinit var viewModel: AuthenticationViewModel
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase = mockk()
 
-  // Setup the test dispatcher
-  private val testDispatcher = StandardTestDispatcher()
+  @get:Rule
+  val instantExecutorRule = InstantTaskExecutorRule() // For LiveData testing
+
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   fun setup() {
-    Dispatchers.setMain(testDispatcher) // Set the test dispatcher
     viewModel = AuthenticationViewModel(authTMDbAccountUseCase)
-  }
-
-  @After
-  fun tearDown() {
-    Dispatchers.resetMain() // Reset the dispatcher after tests
   }
 
   @Test

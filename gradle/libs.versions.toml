@@ -67,11 +67,13 @@ coreTesting = "2.2.0"
 androidxJunit = "1.2.1"
 espresso = "3.6.1"
 junitVersion = "4.13.2"
+testCore = "1.6.1"
 testRules = "1.6.1"
 testRunner = "1.6.2"
 mockk = "1.13.13"
 mockitoAndroid = "5.2.0"
 mockitoCore = "5.14.2"
+robolectric = "4.14.1"
 truth = "1.4.2"
 turbine = "1.1.0"
 kotlinxCoroutinesTest = "1.9.0"
@@ -143,6 +145,7 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 
 # Tools and Testing Libraries
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "testCore" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
@@ -156,6 +159,7 @@ mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }

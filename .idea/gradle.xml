@@ -33,6 +33,7 @@
             <option value="$PROJECT_DIR$/core/favoritewatchlist" />
             <option value="$PROJECT_DIR$/core/movie" />
             <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/test" />
             <option value="$PROJECT_DIR$/core/uihelper" />
             <option value="$PROJECT_DIR$/core/user" />
             <option value="$PROJECT_DIR$/feature" />
