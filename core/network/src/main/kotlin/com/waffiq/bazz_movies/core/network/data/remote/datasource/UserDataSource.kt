@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -32,22 +31,22 @@ class UserDataSource @Inject constructor(
     )
   }.flowOn(Dispatchers.IO)
 
-  override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<PostResponse>> =
+  override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.delSession(data.sessionID)
+          tmdbApiService.delSession(sessionId)
         }
       )
     }.flowOn(Dispatchers.IO)
 
-  override suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSessionResponse>> =
+  override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSessionResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.createSessionLogin(token)
+          tmdbApiService.createSessionLogin(requestToken)
         }
       )
     }.flowOn(Dispatchers.IO)
@@ -74,12 +73,12 @@ class UserDataSource @Inject constructor(
   override suspend fun login(
     username: String,
     pass: String,
-    token: String
+    sessionId: String
   ): Flow<NetworkResult<AuthenticationResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.login(username, pass, token)
+        tmdbApiService.login(username, pass, sessionId)
       }
     )
   }.flowOn(Dispatchers.IO)

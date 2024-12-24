@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.user.data.repository
 import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
@@ -50,8 +49,8 @@ class UserRepository @Inject constructor(
       }
     }
 
-  override suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSession>> =
-    userDataSource.createSessionLogin(token).map { networkResult ->
+  override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSession>> =
+    userDataSource.createSessionLogin(requestToken).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCreateSession())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
@@ -59,8 +58,8 @@ class UserRepository @Inject constructor(
       }
     }
 
-  override suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<Post>> =
-    userDataSource.deleteSession(data).map { networkResult ->
+  override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<Post>> =
+    userDataSource.deleteSession(sessionId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)

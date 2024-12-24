@@ -60,8 +60,8 @@ class AuthenticationViewModel @Inject constructor(
       authTMDbAccountUseCase.login(username, password, requestToken).collect { resultLogin ->
         when (resultLogin) {
           is NetworkResult.Success -> {
-            resultLogin.data.requestToken.let { token ->
-              if (token != null) createSession(token) else _loginState.value = false
+            resultLogin.data.requestToken.let {
+              if (it != null) createSession(it) else _loginState.value = false
             }
           }
 
@@ -77,9 +77,9 @@ class AuthenticationViewModel @Inject constructor(
   }
 
   // 3. Create a new session id with the authorized request token
-  private fun createSession(token: String) {
+  private fun createSession(requestToken: String) {
     viewModelScope.launch {
-      authTMDbAccountUseCase.createSessionLogin(token).collect { result ->
+      authTMDbAccountUseCase.createSessionLogin(requestToken).collect { result ->
         when (result) {
           is NetworkResult.Success -> {
             result.data.let {
