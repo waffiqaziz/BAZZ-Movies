@@ -13,7 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class WatchlistModule {
+abstract class WatchlistUseCaseModule {
 
   @Binds
   @ViewModelScoped

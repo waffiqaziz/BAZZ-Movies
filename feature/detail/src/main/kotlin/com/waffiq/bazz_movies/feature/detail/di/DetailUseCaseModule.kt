@@ -15,7 +15,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class DetailModule {
+abstract class DetailUseCaseModule {
 
   @Binds
   @ViewModelScoped
