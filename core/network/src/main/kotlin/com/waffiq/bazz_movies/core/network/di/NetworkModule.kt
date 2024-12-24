@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.core.network.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
-import com.waffiq.bazz_movies.core.network.BuildConfig.OMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.DEBUG
+import com.waffiq.bazz_movies.core.network.BuildConfig.OMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDb_API_URL
+import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_URL
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorOMDb
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorTMDB
@@ -49,9 +49,9 @@ class NetworkModule {
   @Provides
   fun provideOkHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
-      .connectTimeout(30, TimeUnit.SECONDS)
-      .readTimeout(30, TimeUnit.SECONDS)
-      .writeTimeout(30, TimeUnit.SECONDS)
+      .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+      .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+      .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
       .addInterceptor(loggingInterceptor)
       .build()
   }
@@ -90,5 +90,9 @@ class NetworkModule {
       .client(newClient)
       .build()
     return retrofit.create(TMDBApiService::class.java)
+  }
+
+  companion object {
+    private const val TIME_OUT = 30L
   }
 }
