@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
@@ -23,13 +22,13 @@ interface PostMethodUseCase {
 
   suspend fun postMovieRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     movieId: Int
   ): Flow<NetworkResult<Post>>
 
   suspend fun postTvRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     tvId: Int
   ): Flow<NetworkResult<Post>>
 }

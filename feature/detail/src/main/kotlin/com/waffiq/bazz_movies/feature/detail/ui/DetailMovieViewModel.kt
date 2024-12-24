@@ -22,7 +22,6 @@ import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovie
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
@@ -498,9 +497,9 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
+  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postMovieRate(sessionId, data, movieId).collect { networkResult ->
+      postMethodUseCase.postMovieRate(sessionId, rating, movieId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
             _rateState.value = Event(true)
@@ -518,9 +517,9 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
+  fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postTvRate(sessionId, data, tvId).collect { networkResult ->
+      postMethodUseCase.postTvRate(sessionId, rating, tvId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
             _rateState.value = Event(true)

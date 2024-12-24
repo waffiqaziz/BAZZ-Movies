@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
@@ -29,15 +28,15 @@ class PostMethodInteractor @Inject constructor(
 
   override suspend fun postMovieRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     movieId: Int
   ): Flow<NetworkResult<Post>> =
-    postMethodRepository.postMovieRate(sessionId, data, movieId)
+    postMethodRepository.postMovieRate(sessionId, rating, movieId)
 
   override suspend fun postTvRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     tvId: Int
   ): Flow<NetworkResult<Post>> =
-    postMethodRepository.postTvRate(sessionId, data, tvId)
+    postMethodRepository.postTvRate(sessionId, rating, tvId)
 }

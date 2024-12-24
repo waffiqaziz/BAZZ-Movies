@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.core.movie.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.data.Stated
-import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
@@ -13,7 +13,6 @@ import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.
 import com.waffiq.bazz_movies.core.movie.utils.mappers.StateMapper.toStated
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
@@ -99,10 +98,10 @@ class MoviesRepository @Inject constructor(
 
   override suspend fun postMovieRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     movieId: Int
   ): Flow<NetworkResult<Post>> =
-    movieDataSource.postMovieRate(sessionId, data, movieId).map { networkResult ->
+    movieDataSource.postMovieRate(sessionId, rating, movieId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
@@ -112,10 +111,10 @@ class MoviesRepository @Inject constructor(
 
   override suspend fun postTvRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     tvId: Int
   ): Flow<NetworkResult<Post>> =
-    movieDataSource.postTvRate(sessionId, data, tvId).map { networkResult ->
+    movieDataSource.postTvRate(sessionId, rating, tvId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)

@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
 data class RatePostModel(
-  @Json(name = "value") val value: Any,
+  @Json(name = "value") val value: Float,
 )

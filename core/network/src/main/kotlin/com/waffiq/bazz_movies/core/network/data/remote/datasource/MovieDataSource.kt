@@ -405,28 +405,28 @@ class MovieDataSource @Inject constructor(
 
   override suspend fun postTvRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     tvId: Int
   ): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.postTvRate(tvId, sessionId, data)
+          tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating))
         }
       )
     }.flowOn(Dispatchers.IO)
 
   override suspend fun postMovieRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     movieId: Int
   ): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.postMovieRate(movieId, sessionId, data)
+          tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating))
         }
       )
     }.flowOn(Dispatchers.IO)
