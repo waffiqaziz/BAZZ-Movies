@@ -19,8 +19,8 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserL
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase

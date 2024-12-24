@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.post_body
+package com.waffiq.bazz_movies.core.network.data.remote.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

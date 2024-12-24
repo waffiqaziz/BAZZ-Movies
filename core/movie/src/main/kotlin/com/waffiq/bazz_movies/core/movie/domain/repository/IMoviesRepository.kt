@@ -5,9 +5,9 @@ import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.data.Stated
 import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 

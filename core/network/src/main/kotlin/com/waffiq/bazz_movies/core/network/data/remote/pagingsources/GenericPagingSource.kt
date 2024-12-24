@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.paging_sources
+package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

@@ -1,11 +1,11 @@
-package com.waffiq.bazz_movies.core.network.data.remote.post_body
+package com.waffiq.bazz_movies.core.network.data.remote.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
-data class FavoritePostModel(
+data class WatchlistPostModel(
   @Json(name = "media_type") val mediaType: String,
   @Json(name = "media_id") val mediaId: Int,
-  @Json(name = "favorite") val favorite: Boolean,
+  @Json(name = "watchlist") val watchlist: Boolean,
 )

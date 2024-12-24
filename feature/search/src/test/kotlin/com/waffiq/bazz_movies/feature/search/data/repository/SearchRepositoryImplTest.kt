@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingSource.LoadResult
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.paging_sources.SearchPagingSource
+import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.TMDBApiService
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
