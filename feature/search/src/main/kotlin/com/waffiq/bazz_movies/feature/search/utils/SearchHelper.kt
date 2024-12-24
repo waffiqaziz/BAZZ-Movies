@@ -18,10 +18,12 @@ object SearchHelper {
     }
   }
 
-  fun getKnownFor(knownForItemResponse: List<KnownForItem>): String {
+  fun getKnownFor(knownForItem: List<KnownForItem>): String {
     var temp = ""
-    knownForItemResponse.forEach { temp = temp + it.title + ", " }
-    temp = temp.dropLast(2)
-    return temp
+    knownForItem.forEach { item ->
+      (item.title ?: item.name ?: item.originalName)
+        ?.let { temp += "$it, " } // Use title, fallback to name inline
+    }
+    return if (temp.isNotEmpty()) temp.dropLast(2) else temp // Remove the trailing ", " if any
   }
 }
