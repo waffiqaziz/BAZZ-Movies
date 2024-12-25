@@ -12,6 +12,7 @@ dependencies {
   api(project(":core:data"))
   api(project(":core:network"))
   api(project(":core:database"))
+  implementation(project(":core:domain"))
 
   implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.core.ktx)

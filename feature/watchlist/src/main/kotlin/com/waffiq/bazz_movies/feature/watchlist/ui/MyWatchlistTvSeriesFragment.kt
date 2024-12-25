@@ -23,6 +23,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
@@ -32,8 +34,6 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistH
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
@@ -190,13 +190,13 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       event.getContentIfNotHandled()?.let {
         if (!isUndo) {
           if (it.isSuccess && isWantToDelete) { // success to remove item
-            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
+            showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
             mSnackbar = snackbar.showSnackbarWarning(Event(it.title))
           } else {
             // add to favorite success
-            showSnackBarUserLogin(it.title, it.favoritePostModel, it.watchlistPostModel)
+            showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
           }
         } else if (it.isSuccess) adapterPagingRefresh() // refresh when undo remove item triggered
       }
@@ -225,7 +225,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       viewModel.postWatchlist(
         user.token,
         user.userId,
-        WatchlistPostModel(
+        WatchlistModel(
           mediaType = TV_MEDIA_TYPE,
           mediaId = tvId,
           watchlist = false
@@ -243,8 +243,8 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
   private fun showSnackBarUserLogin(
     title: String,
-    fav: FavoritePostModel?,
-    wtc: WatchlistPostModel?
+    fav: FavoriteModel?,
+    wtc: WatchlistModel?
   ) {
     val delete = isWantToDelete && wtc != null
     val addToFavorite = !isWantToDelete && fav != null

@@ -15,12 +15,12 @@ import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
@@ -107,7 +107,7 @@ class MyFavoriteViewModel @Inject constructor(
   fun favoriteTvSeries(sesId: String): Flow<PagingData<ResultItem>> =
     getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope)
 
-  fun postFavorite(sesId: String, userId: Int, data: FavoritePostModel, title: String) {
+  fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sesId, data, userId).collect { networkResult ->
         when (networkResult) {
@@ -125,7 +125,7 @@ class MyFavoriteViewModel @Inject constructor(
     }
   }
 
-  fun postWatchlist(sesId: String, userId: Int, data: WatchlistPostModel, title: String) {
+  fun postWatchlist(sesId: String, userId: Int, data: WatchlistModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sesId, data, userId).collect { networkResult ->
         when (networkResult) {
@@ -158,7 +158,7 @@ class MyFavoriteViewModel @Inject constructor(
               postWatchlist(
                 user.token,
                 user.userId,
-                WatchlistPostModel(MOVIE_MEDIA_TYPE, id, true),
+                WatchlistModel(MOVIE_MEDIA_TYPE, id, true),
                 title
               )
             }
@@ -189,7 +189,7 @@ class MyFavoriteViewModel @Inject constructor(
               postWatchlist(
                 user.token,
                 user.userId,
-                WatchlistPostModel(TV_MEDIA_TYPE, id, true),
+                WatchlistModel(TV_MEDIA_TYPE, id, true),
                 title
               )
             }

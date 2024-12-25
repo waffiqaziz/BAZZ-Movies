@@ -58,8 +58,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
@@ -564,7 +564,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) { // for favorite
       favorite = !state
-      val fav = FavoritePostModel(
+      val fav = FavoriteModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -574,7 +574,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     } else { // for watchlist
       watchlist = !state
-      val wtc = WatchlistPostModel(
+      val wtc = WatchlistModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state

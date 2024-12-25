@@ -24,12 +24,14 @@ include(":core:common")
 include(":core:data")
 include(":core:database")
 include(":core:designsystem")
+include(":core:domain")
 include(":core:favoritewatchlist")
 include(":core:movie")
 include(":core:network")
 include(":core:test")
 include(":core:uihelper")
 include(":core:user")
+
 include(":feature:about")
 include(":feature:detail")
 include(":feature:favorite")
@@ -40,3 +42,11 @@ include(":feature:person")
 include(":feature:search")
 include(":feature:watchlist")
 include(":navigation")
+
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
+  """
+    BAZZ Movies is using JDK 17 but it is currently using JDK ${JavaVersion.current()}.
+    Java Home: [${System.getProperty("java.home")}]
+    https://developer.android.com/build/jdks#jdk-config-in-studio
+  """.trimIndent()
+}

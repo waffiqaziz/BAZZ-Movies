@@ -1,22 +1,22 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 
 import com.waffiq.bazz_movies.core.data.Post
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface PostMethodUseCase {
   suspend fun postFavorite(
     sessionId: String,
-    fav: FavoritePostModel,
+    fav: FavoriteModel,
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>>
 
   suspend fun postWatchlist(
     sessionId: String,
-    wtc: WatchlistPostModel,
+    wtc: WatchlistModel,
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>>
 

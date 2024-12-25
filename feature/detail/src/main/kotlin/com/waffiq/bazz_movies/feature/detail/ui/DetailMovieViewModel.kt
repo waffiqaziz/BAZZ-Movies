@@ -18,11 +18,11 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchli
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -421,7 +421,7 @@ class DetailMovieViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
+  fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
@@ -459,7 +459,7 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
+  fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
