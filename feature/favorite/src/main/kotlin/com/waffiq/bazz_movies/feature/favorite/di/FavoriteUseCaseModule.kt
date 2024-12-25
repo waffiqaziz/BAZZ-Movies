@@ -13,7 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class FavoriteModule {
+abstract class FavoriteUseCaseModule {
 
   // region MOVIE
   @Binds

@@ -58,9 +58,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
@@ -89,6 +88,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.text.isBlank
 import kotlin.text.isEmpty
@@ -564,7 +564,7 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) { // for favorite
       favorite = !state
-      val fav = FavoritePostModel(
+      val fav = FavoriteModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -574,7 +574,7 @@ class DetailMovieActivity : AppCompatActivity() {
       }
     } else { // for watchlist
       watchlist = !state
-      val wtc = WatchlistPostModel(
+      val wtc = WatchlistModel(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -655,19 +655,21 @@ class DetailMovieActivity : AppCompatActivity() {
 
     val btnSubmit: Button = dialogView.findViewById(btn_submit)
     btnSubmit.setOnClickListener {
-      val ratePostModel = RatePostModel(value = ratingBar.rating * 2)
+      val rating: Float = ratingBar.rating * 2
       prefViewModel.getUserToken().observe(this) { token ->
         if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-          detailViewModel.postMovieRate(token, ratePostModel, dataExtra.id)
+          detailViewModel.postMovieRate(token, rating, dataExtra.id)
         } else {
-          detailViewModel.postTvRate(token, ratePostModel, dataExtra.id)
+          detailViewModel.postTvRate(token, rating, dataExtra.id)
         }
       }
 
       // change rating
       detailViewModel.rateState.observe(this) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
-          if (isRateSuccessful) binding.tvScoreYourScore.text = ratePostModel.value.toString()
+          if (isRateSuccessful) {
+            binding.tvScoreYourScore.text = String.format(Locale.getDefault(), "%.1f", rating)
+          }
         }
       }
       dialog.dismiss()

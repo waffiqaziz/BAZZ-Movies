@@ -38,7 +38,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_m
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
@@ -179,7 +178,7 @@ class MoreFragment : Fragment() {
     }
   }
 
-  private fun dialogSignOutLoggedIn(token: String) {
+  private fun dialogSignOutLoggedIn(sessionId: String) {
 
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
@@ -197,7 +196,7 @@ class MoreFragment : Fragment() {
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
         progressIsVisible(true)
-        moreUserViewModel.deleteSession(SessionIDPostModel(token)) // revoke session for login user
+        moreUserViewModel.deleteSession(sessionId) // revoke session for login user
         dialog.dismiss()
       }
     }

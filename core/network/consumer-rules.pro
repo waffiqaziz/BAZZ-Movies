@@ -3,7 +3,7 @@
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.** { *; }
 -keep class com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.** { *; }
--keep class com.waffiq.bazz_movies.core.network.data.remote.post_body.** { *; }
+-keep class com.waffiq.bazz_movies.core.network.data.remote.models.** { *; }
 
 # Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call

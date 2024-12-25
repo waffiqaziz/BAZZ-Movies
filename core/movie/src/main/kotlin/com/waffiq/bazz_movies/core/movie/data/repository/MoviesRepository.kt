@@ -2,9 +2,11 @@ package com.waffiq.bazz_movies.core.movie.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.data.Stated
-import com.waffiq.bazz_movies.core.data.Post
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
@@ -12,9 +14,8 @@ import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPostFavorite
 import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
 import com.waffiq.bazz_movies.core.movie.utils.mappers.StateMapper.toStated
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -73,36 +74,38 @@ class MoviesRepository @Inject constructor(
   // region POST FAVORITE AND WATCHLIST
   override suspend fun postFavorite(
     sessionId: String,
-    fav: FavoritePostModel,
+    fav: FavoriteModel,
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>> =
-    movieDataSource.postFavorite(sessionId, fav, userId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+    movieDataSource.postFavorite(sessionId, fav.toFavoritePostModel(), userId)
+      .map { networkResult ->
+        when (networkResult) {
+          is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
+          is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+          is NetworkResult.Loading -> NetworkResult.Loading
+        }
       }
-    }
 
   override suspend fun postWatchlist(
     sessionId: String,
-    wtc: WatchlistPostModel,
+    wtc: WatchlistModel,
     userId: Int
   ): Flow<NetworkResult<PostFavoriteWatchlist>> =
-    movieDataSource.postWatchlist(sessionId, wtc, userId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+    movieDataSource.postWatchlist(sessionId, wtc.toWatchlistPostModel(), userId)
+      .map { networkResult ->
+        when (networkResult) {
+          is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
+          is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
+          is NetworkResult.Loading -> NetworkResult.Loading
+        }
       }
-    }
 
   override suspend fun postMovieRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     movieId: Int
   ): Flow<NetworkResult<Post>> =
-    movieDataSource.postMovieRate(sessionId, data, movieId).map { networkResult ->
+    movieDataSource.postMovieRate(sessionId, rating, movieId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
@@ -112,10 +115,10 @@ class MoviesRepository @Inject constructor(
 
   override suspend fun postTvRate(
     sessionId: String,
-    data: RatePostModel,
+    rating: Float,
     tvId: Int
   ): Flow<NetworkResult<Post>> =
-    movieDataSource.postTvRate(sessionId, data, tvId).map { networkResult ->
+    movieDataSource.postTvRate(sessionId, rating, tvId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
         is NetworkResult.Error -> NetworkResult.Error(networkResult.message)

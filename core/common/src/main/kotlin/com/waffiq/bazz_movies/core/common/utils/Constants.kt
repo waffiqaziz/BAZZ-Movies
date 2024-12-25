@@ -1,9 +1,5 @@
 package com.waffiq.bazz_movies.core.common.utils
 
-import com.waffiq.bazz_movies.core.designsystem.R.string.featured
-import com.waffiq.bazz_movies.core.designsystem.R.string.movies
-import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
-
 object Constants {
   const val SWIPE_THRESHOLD = 0.3f
   const val FADE_ALPHA = 0.5f
@@ -46,7 +42,4 @@ object Constants {
     "https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing"
   const val TMDB_LINK_MAIN = "https://www.themoviedb.org/"
   const val BAZZ_MOVIES_LINK = "https://waffiqaziz.github.io/bazzmovies"
-
-  val tabHomeHeadingArray = intArrayOf(featured, movies, tv_series)
-  val tabMoviesTvHeadingArray = intArrayOf(movies, tv_series)
 }

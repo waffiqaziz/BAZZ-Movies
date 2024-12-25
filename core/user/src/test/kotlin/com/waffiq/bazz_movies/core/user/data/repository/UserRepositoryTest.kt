@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -33,10 +32,7 @@ import org.junit.Rule
 import org.junit.Test
 
 class UserRepositoryTest {
-
-  private lateinit var userRepository: UserRepository
-  private val mockUserPreference: UserPreference = mockk()
-  private val mockUserDataSource: UserDataSource = mockk()
+  private val sessionId = "session_id"
   private val user = UserModel(
     userId = 123456789,
     name = "John Doe",
@@ -48,6 +44,10 @@ class UserRepositoryTest {
     gravatarHast = "hash123",
     tmdbAvatar = "avatar.jpg"
   )
+
+  private lateinit var userRepository: UserRepository
+  private val mockUserPreference: UserPreference = mockk()
+  private val mockUserDataSource: UserDataSource = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -135,21 +135,17 @@ class UserRepositoryTest {
       statusMessage = "Success"
     )
 
-    val postModel = SessionIDPostModel(
-      sessionID = "session_ID_model"
-    )
-
     val flowResult = flowOf(NetworkResult.Success(deleteSessionResponse))
-    coEvery { mockUserDataSource.deleteSession(postModel) } returns flowResult
+    coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
 
-    val result = userRepository.deleteSession(postModel).first()
+    val result = userRepository.deleteSession(sessionId).first()
 
     assertTrue(result is NetworkResult.Success)
     result as NetworkResult.Success
     assertEquals(true, result.data.success)
     assertEquals(200, result.data.statusCode)
     assertEquals("Success", result.data.statusMessage)
-    coVerify { mockUserDataSource.deleteSession(postModel) }
+    coVerify { mockUserDataSource.deleteSession(sessionId) }
   }
 
   @Test
@@ -160,21 +156,17 @@ class UserRepositoryTest {
       statusMessage = "Internal error: Something went wrong, contact TMDb."
     )
 
-    val postModel = SessionIDPostModel(
-      sessionID = "session_ID_model"
-    )
-
     val flowResult = flowOf(NetworkResult.Success(failedResponse))
-    coEvery { mockUserDataSource.deleteSession(postModel) } returns flowResult
+    coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
 
-    val result = userRepository.deleteSession(postModel).first()
+    val result = userRepository.deleteSession(sessionId).first()
 
     assertTrue(result is NetworkResult.Success)
     result as NetworkResult.Success
     assertEquals(false, result.data.success)
     assertEquals(11, result.data.statusCode)
     assertEquals("Internal error: Something went wrong, contact TMDb.", result.data.statusMessage)
-    coVerify { mockUserDataSource.deleteSession(postModel) }
+    coVerify { mockUserDataSource.deleteSession(sessionId) }
   }
 
   @Test

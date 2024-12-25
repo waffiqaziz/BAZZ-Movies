@@ -18,12 +18,11 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchli
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -422,7 +421,7 @@ class DetailMovieViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: FavoritePostModel, userId: Int) {
+  fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
@@ -460,7 +459,7 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postWatchlist(sessionId: String, data: WatchlistPostModel, userId: Int) {
+  fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
         when (networkResult) {
@@ -498,9 +497,9 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postMovieRate(sessionId: String, data: RatePostModel, movieId: Int) {
+  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postMovieRate(sessionId, data, movieId).collect { networkResult ->
+      postMethodUseCase.postMovieRate(sessionId, rating, movieId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
             _rateState.value = Event(true)
@@ -518,9 +517,9 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun postTvRate(sessionId: String, data: RatePostModel, tvId: Int) {
+  fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postTvRate(sessionId, data, tvId).collect { networkResult ->
+      postMethodUseCase.postTvRate(sessionId, rating, tvId).collect { networkResult ->
         when (networkResult) {
           is NetworkResult.Success -> {
             _rateState.value = Event(true)

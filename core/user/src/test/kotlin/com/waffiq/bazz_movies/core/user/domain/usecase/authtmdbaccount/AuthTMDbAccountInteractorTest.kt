@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.Post
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -27,6 +26,9 @@ import org.mockito.kotlin.whenever
  * Test AuthTMDbAccountInteractor using mockito
  */
 class AuthTMDbAccountInteractorTest {
+  private val sessionId = "session_id"
+  private val errorMessage = "Network error"
+  private val requestToken = "request_token"
 
   private val mockRepository: IUserRepository = mock()
   private lateinit var authTMDbAccountInteractor: AuthTMDbAccountInteractor
@@ -45,12 +47,11 @@ class AuthTMDbAccountInteractorTest {
     )
     val username = "username"
     val pass = "password"
-    val token = "token_verified"
 
     val flow = flowOf(NetworkResult.Success(response))
-    whenever(mockRepository.login(username, pass, token)).thenReturn(flow)
+    whenever(mockRepository.login(username, pass, requestToken)).thenReturn(flow)
 
-    authTMDbAccountInteractor.login(username, pass, token).test {
+    authTMDbAccountInteractor.login(username, pass, requestToken).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Success)
       emission as NetworkResult.Success
@@ -59,27 +60,26 @@ class AuthTMDbAccountInteractorTest {
       assertEquals("request_token_verified", emission.data.requestToken)
       awaitComplete()
     }
-    verify(mockRepository, times(1)).login(username, pass, token)
+    verify(mockRepository, times(1)).login(username, pass, requestToken)
   }
 
   @Test
   fun `login failed should returns error message`() = runTest {
-    val errorMessage = "Network error"
     val username = "username"
     val pass = "password"
-    val token = "token_verified"
+    val sessionId = "session_id"
 
     val flow = flowOf(NetworkResult.Error(message = errorMessage))
-    whenever(mockRepository.login(username, pass, token)).thenReturn(flow)
+    whenever(mockRepository.login(username, pass, sessionId)).thenReturn(flow)
 
-    authTMDbAccountInteractor.login(username, pass, token).test {
+    authTMDbAccountInteractor.login(username, pass, sessionId).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Error)
       emission as NetworkResult.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }
-    verify(mockRepository, times(1)).login(username, pass, token)
+    verify(mockRepository, times(1)).login(username, pass, sessionId)
   }
 
   @Test
@@ -104,8 +104,6 @@ class AuthTMDbAccountInteractorTest {
 
   @Test
   fun `create token failed should returns error message`() = runTest {
-    val errorMessage = "Network error"
-
     val flow = flowOf(NetworkResult.Error(message = errorMessage))
     whenever(mockRepository.createToken()).thenReturn(flow)
 
@@ -122,12 +120,10 @@ class AuthTMDbAccountInteractorTest {
   @Test
   fun `delete session success should returns success result`() = runTest {
     val response = Post(success = true, statusCode = 200, statusMessage = "Delete session success")
-    val sessionIDPostModel = SessionIDPostModel("session_id")
-
     val flow = flowOf(NetworkResult.Success(response))
-    whenever(mockRepository.deleteSession(sessionIDPostModel)).thenReturn(flow)
+    whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
 
-    authTMDbAccountInteractor.deleteSession(sessionIDPostModel).test {
+    authTMDbAccountInteractor.deleteSession(sessionId).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Success)
       emission as NetworkResult.Success
@@ -136,18 +132,15 @@ class AuthTMDbAccountInteractorTest {
       assertEquals("Delete session success", emission.data.statusMessage)
       awaitComplete()
     }
-    verify(mockRepository, times(1)).deleteSession(sessionIDPostModel)
+    verify(mockRepository, times(1)).deleteSession(sessionId)
   }
 
   @Test
   fun `delete session failed should returns error message`() = runTest {
-    val errorMessage = "Network error"
-    val sessionIDPostModel = SessionIDPostModel("session_id")
-
     val flow = flowOf(NetworkResult.Error(message = errorMessage))
-    whenever(mockRepository.deleteSession(sessionIDPostModel)).thenReturn(flow)
+    whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
 
-    authTMDbAccountInteractor.deleteSession(sessionIDPostModel).test {
+    authTMDbAccountInteractor.deleteSession(sessionId).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Error)
       emission as NetworkResult.Error
@@ -159,12 +152,11 @@ class AuthTMDbAccountInteractorTest {
   @Test
   fun `create session login success should returns success result`() = runTest {
     val response = CreateSession(success = true, sessionId = "session_id")
-    val token = "token"
 
     val flow = flowOf(NetworkResult.Success(response))
-    whenever(mockRepository.createSessionLogin(token)).thenReturn(flow)
+    whenever(mockRepository.createSessionLogin(requestToken)).thenReturn(flow)
 
-    authTMDbAccountInteractor.createSessionLogin(token).test {
+    authTMDbAccountInteractor.createSessionLogin(requestToken).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Success)
       emission as NetworkResult.Success
@@ -176,13 +168,10 @@ class AuthTMDbAccountInteractorTest {
 
   @Test
   fun `create session login failed should returns error message`() = runTest {
-    val errorMessage = "Network error"
-    val token = "token"
-
     val flow = flowOf(NetworkResult.Error(message = errorMessage))
-    whenever(mockRepository.createSessionLogin(token)).thenReturn(flow)
+    whenever(mockRepository.createSessionLogin(requestToken)).thenReturn(flow)
 
-    authTMDbAccountInteractor.createSessionLogin(token).test {
+    authTMDbAccountInteractor.createSessionLogin(requestToken).test {
       val emission = awaitItem()
       assertTrue(emission is NetworkResult.Error)
       emission as NetworkResult.Error
@@ -210,8 +199,6 @@ class AuthTMDbAccountInteractorTest {
       username = "waffiq12345",
     )
 
-    val sessionId = "session_id"
-
     val flow = flowOf(NetworkResult.Success(response))
     whenever(mockRepository.getUserDetail(sessionId)).thenReturn(flow)
 
@@ -233,9 +220,6 @@ class AuthTMDbAccountInteractorTest {
 
   @Test
   fun `get user details failed should returns error message`() = runTest {
-    val errorMessage = "Network error"
-    val sessionId = "session_id"
-
     val flow = flowOf(NetworkResult.Error(message = errorMessage))
     whenever(mockRepository.getUserDetail(sessionId)).thenReturn(flow)
 

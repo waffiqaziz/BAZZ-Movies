@@ -13,7 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class HomeModule {
+abstract class HomeUseCaseModule {
 
   @Binds
   @ViewModelScoped

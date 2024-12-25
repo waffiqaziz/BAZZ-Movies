@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.user.domain.repository
 
 import com.waffiq.bazz_movies.core.data.Post
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
@@ -14,12 +13,12 @@ interface IUserRepository {
   suspend fun login(
     username: String,
     pass: String,
-    token: String
+    sessionId: String
   ): Flow<NetworkResult<Authentication>>
 
   suspend fun createToken(): Flow<NetworkResult<Authentication>>
-  suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<Post>>
-  suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSession>>
+  suspend fun deleteSession(sessionId: String): Flow<NetworkResult<Post>>
+  suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSession>>
   suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetails>>
 
   suspend fun saveUserPref(userModel: UserModel)

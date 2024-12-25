@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.post_body.SessionIDPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -11,13 +10,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserDataSourceInterface {
   suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>>
-  suspend fun deleteSession(data: SessionIDPostModel): Flow<NetworkResult<PostResponse>>
-  suspend fun createSessionLogin(token: String): Flow<NetworkResult<CreateSessionResponse>>
+  suspend fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>>
+  suspend fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>>
   suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
   suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>>
   suspend fun login(
     username: String,
     pass: String,
-    token: String
+    sessionId: String
   ): Flow<NetworkResult<AuthenticationResponse>>
 }
