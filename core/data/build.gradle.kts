@@ -3,7 +3,7 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android.namespace = "com.waffiq.bazz_movies.core.model"
+android.namespace = "com.waffiq.bazz_movies.core.data"
 
 dependencies {
   api(project(":core:common"))
