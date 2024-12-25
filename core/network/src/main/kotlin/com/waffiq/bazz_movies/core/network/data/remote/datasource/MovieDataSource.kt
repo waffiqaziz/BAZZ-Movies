@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
-import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
+import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.StatedResponse
@@ -25,9 +25,10 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostR
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.TMDBApiService
+import com.waffiq.bazz_movies.core.network.di.IoDispatcher
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -37,7 +38,8 @@ import javax.inject.Singleton
 @Singleton
 class MovieDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
-  private val omDbApiService: OMDbApiService
+  private val omDbApiService: OMDbApiService,
+  @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : MovieDataSourceInterface {
 
   // region PAGING FUNCTION
@@ -49,7 +51,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTopRatedMovies(page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>> {
@@ -60,7 +62,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTrendingWeek(region, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>> {
@@ -71,7 +73,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTrendingDay(region, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>> {
@@ -82,7 +84,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getPopularMovies(page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
@@ -93,7 +95,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getFavoriteMovies(sessionId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
@@ -104,7 +106,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getFavoriteTv(sessionId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
@@ -115,7 +117,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getWatchlistTv(sessionId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
@@ -126,7 +128,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getWatchlistMovies(sessionId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingPopularTv(
@@ -140,7 +142,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getPopularTv(page, region, twoWeeksFromToday).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingAiringThisWeekTv(
@@ -155,7 +157,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingAiringTodayTv(
@@ -170,7 +172,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>> {
@@ -181,7 +183,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getRecommendedMovie(movieId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>> {
@@ -192,7 +194,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getRecommendedTv(tvId, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>> {
@@ -203,7 +205,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getUpcomingMovies(region, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>> {
@@ -214,7 +216,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getPlayingNowMovies(region, page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>> {
@@ -225,14 +227,14 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getTopRatedTv(page).results
         }
       }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
 
   override fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
-    ).flow.flowOn(Dispatchers.IO)
+    ).flow.flowOn(ioDispatcher)
   }
   // endregion PAGING FUNCTION
 
@@ -245,7 +247,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getCreditMovies(movieId)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -254,7 +256,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getCreditTv(tvId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
     flow {
@@ -264,7 +266,7 @@ class MovieDataSource @Inject constructor(
           omDbApiService.getMovieDetailOMDb(imdbId)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<VideoResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -273,7 +275,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getVideoMovies(movieId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<VideoResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -282,7 +284,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getVideoTv(tvId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovieResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -291,7 +293,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getDetailMovie(id)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getDetailTv(id: Int): Flow<NetworkResult<DetailTvResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -300,7 +302,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getDetailTv(id)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -309,7 +311,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getExternalId(id)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getStatedMovie(
     sessionId: String,
@@ -321,7 +323,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getStatedMovie(id, sessionId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getStatedTv(
     sessionId: String,
@@ -333,7 +335,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getStatedTv(id, sessionId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
   // endregion DETAIL
 
   // region PERSON
@@ -344,7 +346,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getDetailPerson(id)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -353,7 +355,7 @@ class MovieDataSource @Inject constructor(
         tmdbApiService.getImagePerson(id)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
     flow {
@@ -363,7 +365,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getKnownForPersonCombinedMovieTv(id)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
     flow {
@@ -373,7 +375,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.getExternalIdPerson(id)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun postFavorite(
     sessionId: String,
@@ -387,7 +389,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.postFavoriteTMDB(userId, sessionId, fav)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun postWatchlist(
     sessionId: String,
@@ -401,7 +403,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun postTvRate(
     sessionId: String,
@@ -415,7 +417,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating))
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun postMovieRate(
     sessionId: String,
@@ -429,7 +431,7 @@ class MovieDataSource @Inject constructor(
           tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating))
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
   // endregion PERSON
 
   companion object {
