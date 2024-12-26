@@ -19,7 +19,7 @@ import java.util.Calendar
  */
 object PersonPageHelper {
 
-  private fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
+  internal fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
     var dateParts = dateBirth.split("-").toTypedArray()
     val yearBirth = dateParts[0].toInt()
     val monthBirth = dateParts[1].toInt()
@@ -85,9 +85,7 @@ object PersonPageHelper {
     if (!socialId.isNullOrEmpty()) {
       imageView.isVisible = true
       imageView.setOnClickListener {
-        startActivity(
-          Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl + socialId))
-        )
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl + socialId)))
       }
     } else {
       imageView.isVisible = false

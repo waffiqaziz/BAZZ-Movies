@@ -4,6 +4,7 @@ import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,6 +21,9 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
   RecyclerView.Adapter<ImagePersonAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<ProfilesItem>()
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getListCast(): List<ProfilesItem> = listCast
 
   fun setImage(itemPerson: List<ProfilesItem>) {
     val diffCallback = DiffCallback(this.listCast, itemPerson)
