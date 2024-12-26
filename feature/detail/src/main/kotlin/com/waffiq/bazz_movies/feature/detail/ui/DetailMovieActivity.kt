@@ -644,14 +644,7 @@ class DetailMovieActivity : AppCompatActivity() {
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
     val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
-    detailViewModel.itemState.observe(this) {
-      if (it?.rated != null && it.rated != false) {
-        ratingBar.rating = it.rated
-          .toString()
-          .replace("{value=", "").replace("}", "")
-          .toFloat() / 2
-      }
-    }
+    ratingBar.rating = binding.tvScoreYourScore.text.toString().toFloat() / 2
 
     val btnSubmit: Button = dialogView.findViewById(btn_submit)
     btnSubmit.setOnClickListener {
