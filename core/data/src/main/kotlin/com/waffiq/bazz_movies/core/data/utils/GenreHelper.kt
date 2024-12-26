@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.data.GenresItem
 /**
  * Used to retrieve genre names and codes.
  */
+@Suppress("MagicNumber")
 object GenreHelper {
   private val genreNameMap = mapOf(
     // movie genres
