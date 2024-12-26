@@ -4,6 +4,7 @@ import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,6 +23,9 @@ class KnownForAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<KnownForAdapter.ViewHolder>() {
 
   private val listCast = ArrayList<CastItem>()
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getListCast(): List<CastItem> = listCast
 
   fun setCast(itemCast: List<CastItem>) {
     val diffCallback = DiffCallback(this.listCast, itemCast)
