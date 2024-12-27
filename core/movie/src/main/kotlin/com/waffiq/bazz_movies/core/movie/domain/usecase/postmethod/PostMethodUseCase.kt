@@ -7,6 +7,9 @@ import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Used for detail, favorite and watchlist module
+ */
 interface PostMethodUseCase {
   suspend fun postFavorite(
     sessionId: String,

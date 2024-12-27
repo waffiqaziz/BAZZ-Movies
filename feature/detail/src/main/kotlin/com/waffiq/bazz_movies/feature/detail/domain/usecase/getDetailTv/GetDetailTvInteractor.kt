@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
@@ -62,6 +63,6 @@ class GetDetailTvInteractor @Inject constructor(
   override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
     detailRepository.getCreditTv(tvId)
 
-  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<com.waffiq.bazz_movies.core.data.ResultItem>> =
+  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
     detailRepository.getPagingTvRecommendation(tvId)
 }

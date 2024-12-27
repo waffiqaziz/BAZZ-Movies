@@ -9,7 +9,6 @@ plugins {
 dependencies {
   implementation(project(":core:user"))
   implementation(project(":core:uihelper"))
-  implementation(project(":core:data"))
   implementation(project(":core:domain"))
   implementation(project(":feature:about"))
   implementation(project(":feature:detail"))

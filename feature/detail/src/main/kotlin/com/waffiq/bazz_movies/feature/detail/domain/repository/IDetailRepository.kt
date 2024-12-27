@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.data.ResultItem
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
