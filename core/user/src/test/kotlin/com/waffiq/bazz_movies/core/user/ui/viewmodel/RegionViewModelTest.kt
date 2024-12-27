@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.user.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.test.MainCoroutineRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
@@ -38,7 +38,7 @@ class RegionViewModelTest {
   @Test
   fun `getCountryCode emits country code when use case returns success`() = runTest {
     val mockCountryIP = CountryIP(country = "US", ip = "192.168.0.1")
-    val mockResult = NetworkResult.Success(mockCountryIP)
+    val mockResult = Outcome.Success(mockCountryIP)
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
     val observer = mock<Observer<String>>()
@@ -52,7 +52,7 @@ class RegionViewModelTest {
 
   @Test
   fun `getCountryCode emits error state when use case returns error`() = runTest {
-    val mockResult = NetworkResult.Error(message = "Network error")
+    val mockResult = Outcome.Error(message = "Network error")
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
     val observer = mock<Observer<Event<String>>>()
@@ -66,7 +66,7 @@ class RegionViewModelTest {
 
   @Test
   fun `getCountryCode sets countryCode to empty when use case returns error`() = runTest {
-    val mockResult = NetworkResult.Error(message = "Error")
+    val mockResult = Outcome.Error(message = "Error")
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
     val observer = mock<Observer<String>>()
@@ -81,7 +81,7 @@ class RegionViewModelTest {
   @Test
   fun `getCountryCode sets countryCode to empty when country is null`() = runTest {
     val mockCountryIP = CountryIP(country = null, ip = "192.168.0.1")
-    val mockResult = NetworkResult.Success(mockCountryIP)
+    val mockResult = Outcome.Success(mockCountryIP)
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
     val observer = mock<Observer<String>>()

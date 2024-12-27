@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
@@ -16,18 +16,18 @@ class AuthTMDbAccountInteractor @Inject constructor(
     username: String,
     pass: String,
     sessionId: String
-  ): Flow<NetworkResult<Authentication>> =
+  ): Flow<Outcome<Authentication>> =
     authTMDbAccountRepository.login(username, pass, sessionId)
 
-  override suspend fun createToken(): Flow<NetworkResult<Authentication>> =
+  override suspend fun createToken(): Flow<Outcome<Authentication>> =
     authTMDbAccountRepository.createToken()
 
-  override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<Post>> =
+  override suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
     authTMDbAccountRepository.deleteSession(sessionId)
 
-  override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSession>> =
+  override suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
     authTMDbAccountRepository.createSessionLogin(requestToken)
 
-  override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetails>> =
+  override suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
     authTMDbAccountRepository.getUserDetail(sessionId)
 }

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.domain.usecase
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
@@ -111,14 +111,14 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getDetailPerson emits success`() = runTest {
-    val flow = flowOf(NetworkResult.Success(detailPerson))
+    val flow = flowOf(Outcome.Success(detailPerson))
     coEvery { mockRepository.getDetailPerson(personId) } returns flow
 
     getDetailPersonInteractor.getDetailPerson(personId).test {
       // Assert the first emission is success with correct data
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Success)
-      emission as NetworkResult.Success
+      assertTrue(emission is Outcome.Success)
+      emission as Outcome.Success
       assertEquals(listOf("name1", "name2"), emission.data.alsoKnownAs)
       assertEquals("2008-01-22", emission.data.birthday)
       assertEquals(2, emission.data.gender)
@@ -145,13 +145,13 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getDetailPerson emits error`() = runTest {
-    val flow = flowOf(NetworkResult.Error(message = errorMessage))
+    val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getDetailPerson(personId) } returns flow
 
     getDetailPersonInteractor.getDetailPerson(personId).test {
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Error)
-      emission as NetworkResult.Error
+      assertTrue(emission is Outcome.Error)
+      emission as Outcome.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }
@@ -160,15 +160,15 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getKnownForPerson emits success`() = runTest {
-    val flow = flowOf(NetworkResult.Success(combinedCreditPerson))
+    val flow = flowOf(Outcome.Success(combinedCreditPerson))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
     getDetailPersonInteractor.getKnownForPerson(personId).test {
       // Assert the first emission is success with correct data
       val emission = awaitItem() // NetworkResult<List<CastItem>>
 
-      assertTrue(emission is NetworkResult.Success)
-      emission as NetworkResult.Success
+      assertTrue(emission is Outcome.Success)
+      emission as Outcome.Success
       assertEquals("2014-02-17", emission.data[0].firstAirDate)
       assertEquals("lorem_ipsum", emission.data[0].overview)
       assertEquals("en", emission.data[0].originalLanguage)
@@ -204,13 +204,13 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getKnownForPerson emits error`() = runTest {
-    val flow = flowOf(NetworkResult.Error(message = errorMessage))
+    val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
     getDetailPersonInteractor.getKnownForPerson(personId).test {
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Error)
-      emission as NetworkResult.Error
+      assertTrue(emission is Outcome.Error)
+      emission as Outcome.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }
@@ -233,7 +233,7 @@ class GetDetailPersonInteractorTest {
     val combinedCreditPerson = CombinedCreditPerson(cast = castItems, id = 12345678, crew = null)
 
     // Mock the repository to return the unsorted list wrapped in NetworkResult.Success
-    val flow = flowOf(NetworkResult.Success(combinedCreditPerson))
+    val flow = flowOf(Outcome.Success(combinedCreditPerson))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
     // Test the interactor's getKnownForPerson method
@@ -241,8 +241,8 @@ class GetDetailPersonInteractorTest {
       // Assert the first emission is success with sorted data
       val emission = awaitItem() // NetworkResult<List<CastItem>>
 
-      assertTrue(emission is NetworkResult.Success)
-      emission as NetworkResult.Success
+      assertTrue(emission is Outcome.Success)
+      emission as Outcome.Success
 
       // Assert the sorted order matches the expected order
       assertEquals(sortedCastItems, emission.data)
@@ -256,14 +256,14 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getImagePerson emits success`() = runTest {
-    val flow = flowOf(NetworkResult.Success(imagePerson))
+    val flow = flowOf(Outcome.Success(imagePerson))
     coEvery { mockRepository.getImagePerson(personId) } returns flow
 
     getDetailPersonInteractor.getImagePerson(personId).test {
       // Assert the first emission is success with correct data
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Success)
-      emission as NetworkResult.Success
+      assertTrue(emission is Outcome.Success)
+      emission as Outcome.Success
       assertEquals(listOf(profilesItem), emission.data.profiles)
       assertEquals(12345, emission.data.id)
       assertEquals(0.667, emission.data.profiles?.get(0)?.aspectRatio)
@@ -285,13 +285,13 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getImagePerson emits error`() = runTest {
-    val flow = flowOf(NetworkResult.Error(message = errorMessage))
+    val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getImagePerson(personId) } returns flow
 
     getDetailPersonInteractor.getImagePerson(personId).test {
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Error)
-      emission as NetworkResult.Error
+      assertTrue(emission is Outcome.Error)
+      emission as Outcome.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }
@@ -300,14 +300,14 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getExternalIDPerson emits success`() = runTest {
-    val flow = flowOf(NetworkResult.Success(externalIdPerson))
+    val flow = flowOf(Outcome.Success(externalIdPerson))
     coEvery { mockRepository.getExternalIDPerson(personId) } returns flow
 
     getDetailPersonInteractor.getExternalIDPerson(personId).test {
       // Assert the first emission is success with correct data
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Success)
-      emission as NetworkResult.Success
+      assertTrue(emission is Outcome.Success)
+      emission as Outcome.Success
       assertEquals("imdb_id", emission.data.imdbId)
       assertEquals("freebase_m_id", emission.data.freebaseMid)
       assertEquals("tiktok_id", emission.data.tiktokId)
@@ -331,13 +331,13 @@ class GetDetailPersonInteractorTest {
 
   @Test
   fun `getExternalIDPerson emits error`() = runTest {
-    val flow = flowOf(NetworkResult.Error(message = errorMessage))
+    val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getExternalIDPerson(personId) } returns flow
 
     getDetailPersonInteractor.getExternalIDPerson(personId).test {
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Error)
-      emission as NetworkResult.Error
+      assertTrue(emission is Outcome.Error)
+      emission as Outcome.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }

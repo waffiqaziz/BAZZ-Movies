@@ -17,13 +17,13 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
@@ -93,13 +93,13 @@ class DetailMovieViewModel @Inject constructor(
   // region MOVIE
   fun getLinkVideoMovie(movieId: Int) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getLinkVideoMovies(movieId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _linkVideo.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailMovieUseCase.getLinkVideoMovies(movieId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -108,13 +108,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun detailMovie(id: Int, userRegion: String) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getDetailMovie(id, userRegion).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _detailMovieTv.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailMovieUseCase.getDetailMovie(id, userRegion).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _detailMovieTv.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -123,13 +123,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getMovieCredits(movieId: Int) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getCreditMovies(movieId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _movieTvCreditsResult.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailMovieUseCase.getCreditMovies(movieId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _movieTvCreditsResult.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -146,13 +146,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getStatedMovie(sessionId: String, id: Int) {
     viewModelScope.launch {
-      getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _itemState.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _itemState.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -163,13 +163,13 @@ class DetailMovieViewModel @Inject constructor(
   // region TV-SERIES
   private fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getTrailerLinkTv(tvId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _linkVideo.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailTvUseCase.getTrailerLinkTv(tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -178,13 +178,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun detailTv(id: Int, userRegion: String) {
     viewModelScope.launch {
-      getDetailTvUseCase.getDetailTv(id, userRegion).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _detailMovieTv.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailTvUseCase.getDetailTv(id, userRegion).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _detailMovieTv.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -193,13 +193,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getTvCredits(tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getCreditTv(tvId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _movieTvCreditsResult.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailTvUseCase.getCreditTv(tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _movieTvCreditsResult.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -208,11 +208,11 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getImdbVideoTv(id: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getExternalTvId(id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            networkResult.data.imdbId.let { _tvImdbID.value = it }
-            networkResult.data.let { externalId ->
+      getDetailTvUseCase.getExternalTvId(id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            outcome.data.imdbId.let { _tvImdbID.value = it }
+            outcome.data.let { externalId ->
               externalId.imdbId?.let { imdbId ->
                 getScoreOMDb(imdbId)
                 getLinkTv(id)
@@ -220,9 +220,9 @@ class DetailMovieViewModel @Inject constructor(
             }
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
-            _errorState.emit(networkResult.message)
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -234,13 +234,13 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
-      getStatedTvUseCase.getStatedTv(sessionId, id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _itemState.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getStatedTvUseCase.getStatedTv(sessionId, id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _itemState.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -250,17 +250,17 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
-      getDetailOMDbUseCase.getDetailOMDb(imdbId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            networkResult.data.let { _omdbResult.value = it }
+      getDetailOMDbUseCase.getDetailOMDb(imdbId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            outcome.data.let { _omdbResult.value = it }
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -423,9 +423,9 @@ class DetailMovieViewModel @Inject constructor(
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postFavorite(sessionId, data, userId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
+      postMethodUseCase.postFavorite(sessionId, data, userId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             if (data.mediaType == MOVIE_MEDIA_TYPE) {
               getStatedMovie(sessionId, data.mediaId)
             } else {
@@ -441,8 +441,8 @@ class DetailMovieViewModel @Inject constructor(
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = false,
@@ -451,7 +451,7 @@ class DetailMovieViewModel @Inject constructor(
               )
             )
             data.favorite.let { _isFavorite.value = it }
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
             _loadingState.value = false
           }
         }
@@ -461,9 +461,9 @@ class DetailMovieViewModel @Inject constructor(
 
   fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postWatchlist(sessionId, data, userId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
+      postMethodUseCase.postWatchlist(sessionId, data, userId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             if (data.mediaType == MOVIE_MEDIA_TYPE) {
               getStatedMovie(sessionId, data.mediaId)
             } else {
@@ -480,8 +480,8 @@ class DetailMovieViewModel @Inject constructor(
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _postModelState.value = Event(
               PostModelState(
                 isSuccess = false,
@@ -489,7 +489,7 @@ class DetailMovieViewModel @Inject constructor(
                 isFavorite = false
               )
             )
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
             _loadingState.value = false
           }
         }
@@ -499,18 +499,18 @@ class DetailMovieViewModel @Inject constructor(
 
   fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postMovieRate(sessionId, rating, movieId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
+      postMethodUseCase.postMovieRate(sessionId, rating, movieId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             _rateState.value = Event(true)
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }
@@ -519,18 +519,18 @@ class DetailMovieViewModel @Inject constructor(
 
   fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
     viewModelScope.launch {
-      postMethodUseCase.postTvRate(sessionId, rating, tvId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
+      postMethodUseCase.postTvRate(sessionId, rating, tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             _rateState.value = Event(true)
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loadingState.value = false
             _rateState.value = Event(false)
-            _errorState.emit(networkResult.message)
+            _errorState.emit(outcome.message)
           }
         }
       }

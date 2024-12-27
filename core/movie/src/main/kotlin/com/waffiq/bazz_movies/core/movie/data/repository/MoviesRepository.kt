@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.movie.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.domain.Stated
@@ -52,21 +53,21 @@ class MoviesRepository @Inject constructor(
   override suspend fun getStatedMovie(
     sessionId: String,
     movieId: Int
-  ): Flow<NetworkResult<Stated>> =
+  ): Flow<Outcome<Stated>> =
     movieDataSource.getStatedMovie(sessionId, movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toStated())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toStated())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<NetworkResult<Stated>> =
+  override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<Stated>> =
     movieDataSource.getStatedTv(sessionId, tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toStated())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toStated())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
   // endregion DETAIL
@@ -76,13 +77,13 @@ class MoviesRepository @Inject constructor(
     sessionId: String,
     fav: FavoriteModel,
     userId: Int
-  ): Flow<NetworkResult<PostFavoriteWatchlist>> =
+  ): Flow<Outcome<PostFavoriteWatchlist>> =
     movieDataSource.postFavorite(sessionId, fav.toFavoritePostModel(), userId)
       .map { networkResult ->
         when (networkResult) {
-          is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
-          is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-          is NetworkResult.Loading -> NetworkResult.Loading
+          is NetworkResult.Success -> Outcome.Success(networkResult.data.toPostFavoriteWatchlist())
+          is NetworkResult.Error -> Outcome.Error(networkResult.message)
+          is NetworkResult.Loading -> Outcome.Loading
         }
       }
 
@@ -90,13 +91,13 @@ class MoviesRepository @Inject constructor(
     sessionId: String,
     wtc: WatchlistModel,
     userId: Int
-  ): Flow<NetworkResult<PostFavoriteWatchlist>> =
+  ): Flow<Outcome<PostFavoriteWatchlist>> =
     movieDataSource.postWatchlist(sessionId, wtc.toWatchlistPostModel(), userId)
       .map { networkResult ->
         when (networkResult) {
-          is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPostFavoriteWatchlist())
-          is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-          is NetworkResult.Loading -> NetworkResult.Loading
+          is NetworkResult.Success -> Outcome.Success(networkResult.data.toPostFavoriteWatchlist())
+          is NetworkResult.Error -> Outcome.Error(networkResult.message)
+          is NetworkResult.Loading -> Outcome.Loading
         }
       }
 
@@ -104,12 +105,12 @@ class MoviesRepository @Inject constructor(
     sessionId: String,
     rating: Float,
     movieId: Int
-  ): Flow<NetworkResult<Post>> =
+  ): Flow<Outcome<Post>> =
     movieDataSource.postMovieRate(sessionId, rating, movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
@@ -117,12 +118,12 @@ class MoviesRepository @Inject constructor(
     sessionId: String,
     rating: Float,
     tvId: Int
-  ): Flow<NetworkResult<Post>> =
+  ): Flow<Outcome<Post>> =
     movieDataSource.postTvRate(sessionId, rating, tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
   // endregion POST FAVORITE AND WATCHLIST

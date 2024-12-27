@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
@@ -50,9 +50,8 @@ class PersonViewModelTest {
       name = "John Doe",
       biography = "Sample biography"
     )
-
     coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(
-      NetworkResult.Success(expectedDetailPerson)
+      Outcome.Success(expectedDetailPerson)
     )
 
     // observe loading state changes
@@ -94,7 +93,7 @@ class PersonViewModelTest {
   @Test
   fun `getDetailPerson emits error`() = runTest {
     coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(
-      NetworkResult.Error(errorMessage)
+      Outcome.Error(errorMessage)
     )
 
     val errorObserver = mockk<Observer<Event<String>>>(relaxed = true)
@@ -117,9 +116,9 @@ class PersonViewModelTest {
     )
     val expectedCastItem =
       listOf(castItem.copy(id = 1), castItem.copy(id = 2), castItem.copy(id = 3))
-    val flow = flowOf(NetworkResult.Success(expectedCastItem))
-
-    coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns flow
+    coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns flowOf(
+      Outcome.Success(expectedCastItem)
+    )
 
     val loadingState = mutableListOf<Boolean>()
     personViewModel.loadingState.observeForever { loadingState.add(it) }
@@ -156,7 +155,7 @@ class PersonViewModelTest {
   @Test
   fun `getKnownFor emits error`() = runTest {
     coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns flowOf(
-      NetworkResult.Error(errorMessage)
+      Outcome.Error(errorMessage)
     )
 
     val errorObserver = mockk<Observer<Event<String>>>(relaxed = true)
@@ -184,9 +183,9 @@ class PersonViewModelTest {
       id = 12345,
     )
     val listProfilesItem = listOf(profilesItem)
-    val flow = flowOf(NetworkResult.Success(expectedImagePerson))
-
-    coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns flow
+    coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns flowOf(
+      Outcome.Success(expectedImagePerson)
+    )
 
     val loadingState = mutableListOf<Boolean>()
     personViewModel.loadingState.observeForever { loadingState.add(it) }
@@ -223,7 +222,7 @@ class PersonViewModelTest {
   @Test
   fun `getImagePerson emits error`() = runTest {
     coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns flowOf(
-      NetworkResult.Error(errorMessage)
+      Outcome.Error(errorMessage)
     )
 
     val errorObserver = mockk<Observer<Event<String>>>(relaxed = true)
@@ -244,9 +243,9 @@ class PersonViewModelTest {
       id = 3254153,
       instagramId = "instagram_id"
     )
-    val flow = flowOf(NetworkResult.Success(expectedExternalIDPerson))
-
-    coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns flow
+    coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns flowOf(
+      Outcome.Success(expectedExternalIDPerson)
+    )
 
     val loadingState = mutableListOf<Boolean>()
     personViewModel.loadingState.observeForever { loadingState.add(it) }
@@ -280,7 +279,7 @@ class PersonViewModelTest {
   @Test
   fun `getExternalIDPerson emits error`() = runTest {
     coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns flowOf(
-      NetworkResult.Error(errorMessage)
+      Outcome.Error(errorMessage)
     )
 
     val errorObserver = mockk<Observer<Event<String>>>(relaxed = true)

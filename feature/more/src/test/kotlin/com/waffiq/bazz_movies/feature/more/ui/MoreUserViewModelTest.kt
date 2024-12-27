@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -42,12 +42,12 @@ class MoreUserViewModelTest {
 
   @Test
   fun `deleteSession emits NetworkResult success`() = testScope.runTest {
-    val expectedResult = NetworkResult.Success(Post(success = true))
+    val expectedResult = Outcome.Success(Post(success = true))
     coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
       emit(expectedResult)
     }
 
-    val results = mutableListOf<NetworkResult<Post>?>()
+    val results = mutableListOf<Outcome<Post>?>()
     val job = launch { viewModel.signOutState.toList(results) }
     viewModel.deleteSession(sessionId)
     advanceUntilIdle()
@@ -58,12 +58,12 @@ class MoreUserViewModelTest {
 
   @Test
   fun `deleteSession emits NetworkResult error`() = testScope.runTest {
-    val expectedError = NetworkResult.Error("Error deleting session")
+    val expectedError = Outcome.Error("Error deleting session")
     coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
       emit(expectedError)
     }
 
-    val results = mutableListOf<NetworkResult<Post>?>()
+    val results = mutableListOf<Outcome<Post>?>()
     val job = launch { viewModel.signOutState.toList(results) }
     viewModel.deleteSession(sessionId)
     advanceUntilIdle()
@@ -78,6 +78,6 @@ class MoreUserViewModelTest {
     advanceUntilIdle()
 
     val result = viewModel.signOutState.first() // `first()` collects the first emitted value
-    assertEquals(NetworkResult.Loading, result)
+    assertEquals(Outcome.Loading, result)
   }
 }

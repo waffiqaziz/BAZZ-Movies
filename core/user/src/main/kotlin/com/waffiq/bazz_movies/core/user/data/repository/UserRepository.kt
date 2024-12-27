@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
@@ -29,12 +30,12 @@ class UserRepository @Inject constructor(
 ) : IUserRepository {
 
   // region AUTH
-  override suspend fun createToken(): Flow<NetworkResult<Authentication>> =
+  override suspend fun createToken(): Flow<Outcome<Authentication>> =
     userDataSource.createToken().map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAuthentication())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAuthentication())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
@@ -42,39 +43,39 @@ class UserRepository @Inject constructor(
     username: String,
     pass: String,
     token: String
-  ): Flow<NetworkResult<Authentication>> =
+  ): Flow<Outcome<Authentication>> =
     userDataSource.login(username, pass, token).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAuthentication())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAuthentication())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSession>> =
+  override suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
     userDataSource.createSessionLogin(requestToken).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCreateSession())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toCreateSession())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<Post>> =
+  override suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
     userDataSource.deleteSession(sessionId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toPost())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toPost())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetails>> =
+  override suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
     userDataSource.getUserDetail(sessionId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toAccountDetails())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAccountDetails())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
   // endregion AUTH
@@ -94,12 +95,12 @@ class UserRepository @Inject constructor(
   override suspend fun removeUserDataPref() = pref.removeUserData()
   // endregion PREF
 
-  override suspend fun getCountryCode(): Flow<NetworkResult<CountryIP>> =
+  override suspend fun getCountryCode(): Flow<Outcome<CountryIP>> =
     userDataSource.getCountryCode().map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toCountryIP())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toCountryIP())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 }

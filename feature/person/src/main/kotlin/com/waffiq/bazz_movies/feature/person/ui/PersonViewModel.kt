@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -40,17 +40,17 @@ class PersonViewModel @Inject constructor(
 
   fun getDetailPerson(id: Int) {
     viewModelScope.launch {
-      getDetailPersonUseCase.getDetailPerson((id)).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
+      getDetailPersonUseCase.getDetailPerson((id)).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             _loadingState.value = false
-            networkResult.data.let { _detailPerson.value = it }
+            outcome.data.let { _detailPerson.value = it }
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message)
+            _errorState.value = Event(outcome.message)
           }
         }
       }
@@ -59,13 +59,13 @@ class PersonViewModel @Inject constructor(
 
   fun getKnownFor(id: Int) {
     viewModelScope.launch {
-      getDetailPersonUseCase.getKnownForPerson(id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _knownFor.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailPersonUseCase.getKnownForPerson(id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _knownFor.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message)
+            _errorState.value = Event(outcome.message)
           }
         }
       }
@@ -74,16 +74,16 @@ class PersonViewModel @Inject constructor(
 
   fun getImagePerson(id: Int) {
     viewModelScope.launch {
-      getDetailPersonUseCase.getImagePerson((id)).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let {
+      getDetailPersonUseCase.getImagePerson((id)).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let {
             _imagePerson.value = it.profiles ?: emptyList()
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message)
+            _errorState.value = Event(outcome.message)
           }
         }
       }
@@ -92,13 +92,13 @@ class PersonViewModel @Inject constructor(
 
   fun getExternalIDPerson(id: Int) {
     viewModelScope.launch {
-      getDetailPersonUseCase.getExternalIDPerson(id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> networkResult.data.let { _externalIdPerson.value = it }
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+      getDetailPersonUseCase.getExternalIDPerson(id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _externalIdPerson.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _loadingState.value = false
-            _errorState.value = Event(networkResult.message)
+            _errorState.value = Event(outcome.message)
           }
         }
       }

@@ -1,6 +1,5 @@
 plugins {
   id("bazzmovies.android.library")
-  id("kotlin-parcelize")
   id("bazzmovies.hilt")
   id("bazzmovies.glide")
 }

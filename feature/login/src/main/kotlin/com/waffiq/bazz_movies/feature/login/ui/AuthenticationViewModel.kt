@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -33,21 +33,21 @@ class AuthenticationViewModel @Inject constructor(
   fun userLogin(username: String, password: String) {
     _loginState.value = false
     viewModelScope.launch {
-      authTMDbAccountUseCase.createToken().collect { resultCreateToken ->
-        when (resultCreateToken) {
-          is NetworkResult.Success -> {
-            if (resultCreateToken.data.success) {
-              resultCreateToken.data.requestToken?.let { login(username, password, it) }
+      authTMDbAccountUseCase.createToken().collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            if (outcome.data.success) {
+              outcome.data.requestToken?.let { login(username, password, it) }
             } else {
               _loginState.value = false
             }
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value = resultCreateToken.message
+            _errorState.value = outcome.message
           }
         }
       }
@@ -57,19 +57,19 @@ class AuthenticationViewModel @Inject constructor(
   // 2. authorize the request token
   private fun login(username: String, password: String, requestToken: String) {
     viewModelScope.launch {
-      authTMDbAccountUseCase.login(username, password, requestToken).collect { resultLogin ->
-        when (resultLogin) {
-          is NetworkResult.Success -> {
-            resultLogin.data.requestToken.let {
+      authTMDbAccountUseCase.login(username, password, requestToken).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            outcome.data.requestToken.let {
               if (it != null) createSession(it) else _loginState.value = false
             }
           }
 
-          is NetworkResult.Loading -> _loadingState.postValue(true)
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.postValue(true)
+          is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value = resultLogin.message
+            _errorState.value = outcome.message
           }
         }
       }
@@ -79,19 +79,19 @@ class AuthenticationViewModel @Inject constructor(
   // 3. Create a new session id with the authorized request token
   private fun createSession(requestToken: String) {
     viewModelScope.launch {
-      authTMDbAccountUseCase.createSessionLogin(requestToken).collect { result ->
-        when (result) {
-          is NetworkResult.Success -> {
-            result.data.let {
+      authTMDbAccountUseCase.createSessionLogin(requestToken).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            outcome.data.let {
               if (it.success) getUserDetail(it.sessionId) else _loginState.value = false
             }
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value = result.message
+            _errorState.value = outcome.message
           }
         }
       }
@@ -100,29 +100,29 @@ class AuthenticationViewModel @Inject constructor(
 
   private fun getUserDetail(sessionId: String) {
     viewModelScope.launch {
-      authTMDbAccountUseCase.getUserDetail(sessionId).collect { result ->
-        when (result) {
-          is NetworkResult.Success -> {
+      authTMDbAccountUseCase.getUserDetail(sessionId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
             _userModel.value = UserModel(
-              userId = result.data.id ?: 0,
-              name = result.data.name.toString(),
-              username = result.data.username.toString(),
+              userId = outcome.data.id ?: 0,
+              name = outcome.data.name.toString(),
+              username = outcome.data.username.toString(),
               password = NAN,
               region = NAN,
               token = sessionId,
               isLogin = true,
-              gravatarHast = result.data.avatarItem?.gravatar?.hash,
-              tmdbAvatar = result.data.avatarItem?.avatarTMDb?.avatarPath
+              gravatarHast = outcome.data.avatarItem?.gravatar?.hash,
+              tmdbAvatar = outcome.data.avatarItem?.avatarTMDb?.avatarPath
             )
             _loginState.value = true
             _loadingState.value = false
           }
 
-          is NetworkResult.Loading -> _loadingState.value = true
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
-            _errorState.value = result.message
+            _errorState.value = outcome.message
           }
         }
       }

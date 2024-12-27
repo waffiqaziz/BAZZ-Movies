@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
@@ -87,8 +88,8 @@ class UserRepositoryTest {
     val result = userRepository.createToken().first()
 
     // Assert
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals(true, result.data.success)
     assertEquals("request_token", result.data.requestToken)
     assertEquals("date_expired", result.data.expireAt)
@@ -112,8 +113,8 @@ class UserRepositoryTest {
 
     val result = userRepository.login(username, password, token).first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals("request_token_verified", result.data.requestToken)
     coVerify { mockUserDataSource.login(username, password, token) }
   }
@@ -132,8 +133,8 @@ class UserRepositoryTest {
 
     val result = userRepository.createSessionLogin(requestToken).first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertTrue(result.data.success)
     assertEquals("session_id", result.data.sessionId)
     coVerify { mockUserDataSource.createSessionLogin(requestToken) }
@@ -152,8 +153,8 @@ class UserRepositoryTest {
 
     val result = userRepository.deleteSession(sessionId).first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals(true, result.data.success)
     assertEquals(200, result.data.statusCode)
     assertEquals("Success", result.data.statusMessage)
@@ -173,8 +174,8 @@ class UserRepositoryTest {
 
     val result = userRepository.deleteSession(sessionId).first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals(false, result.data.success)
     assertEquals(11, result.data.statusCode)
     assertEquals("Internal error: Something went wrong, contact TMDb.", result.data.statusMessage)
@@ -207,8 +208,8 @@ class UserRepositoryTest {
 
     val result = userRepository.getUserDetail(sessionId).first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals(513176325, result.data.id)
     assertEquals("ID", result.data.iso6391)
     assertEquals("en", result.data.iso31661)
@@ -227,9 +228,11 @@ class UserRepositoryTest {
     coEvery { mockUserDataSource.createToken() } returns errorFlow
 
     val result = userRepository.createToken().first()
-    assertTrue(result is NetworkResult.Error)
-    result as NetworkResult.Error
+    @Suppress("REMOVE_USE")
+    assertTrue(result is Outcome.Error)
+    result as Outcome.Error
     assertEquals(errorMessage, result.message)
+    coVerify { mockUserDataSource.createToken() }
   }
 
   @Test
@@ -300,8 +303,8 @@ class UserRepositoryTest {
 
     val result = userRepository.getCountryCode().first()
 
-    assertTrue(result is NetworkResult.Success)
-    result as NetworkResult.Success
+    assertTrue(result is Outcome.Success)
+    result as Outcome.Success
     assertEquals("ID", result.data.country)
     coVerify { mockUserDataSource.getCountryCode() }
   }

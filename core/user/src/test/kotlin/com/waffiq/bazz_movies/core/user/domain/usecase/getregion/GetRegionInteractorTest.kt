@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.getregion
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import io.mockk.coEvery
@@ -31,14 +31,14 @@ class GetRegionInteractorTest {
   @Test
   fun `getCountryCode emits success`() = runTest {
     val expectedCountryIP = CountryIP(country = "US")
-    val flow = flowOf(NetworkResult.Success(expectedCountryIP))
+    val flow = flowOf(Outcome.Success(expectedCountryIP))
     coEvery { mockRepository.getCountryCode() } returns flow
 
     getRegionInteractor.getCountryCode().test {
       // Assert the first emission is success with correct data
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Success)
-      assertEquals("US", (emission as NetworkResult.Success).data.country)
+      assertTrue(emission is Outcome.Success)
+      assertEquals("US", (emission as Outcome.Success).data.country)
 
       // Assert no further emissions
       awaitComplete()
@@ -52,13 +52,13 @@ class GetRegionInteractorTest {
   @Test
   fun `getCountryCode emits error`() = runTest {
     val errorMessage = "Network error"
-    val flow = flowOf(NetworkResult.Error(message = errorMessage))
+    val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getCountryCode() } returns flow
 
     getRegionInteractor.getCountryCode().test {
       val emission = awaitItem()
-      assertTrue(emission is NetworkResult.Error)
-      emission as NetworkResult.Error
+      assertTrue(emission is Outcome.Error)
+      emission as Outcome.Error
       assertEquals(errorMessage, emission.message)
       awaitComplete()
     }

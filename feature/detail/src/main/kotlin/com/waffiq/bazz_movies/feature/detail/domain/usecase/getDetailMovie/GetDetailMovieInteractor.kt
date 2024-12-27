@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
@@ -24,44 +24,43 @@ class GetDetailMovieInteractor @Inject constructor(
   override suspend fun getDetailMovie(
     movieId: Int,
     userRegion: String
-  ): Flow<NetworkResult<DetailMovieTvUsed>> =
-    detailRepository.getDetailMovie(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> {
-          val releaseDateRegion = getReleaseDateRegion(networkResult.data, userRegion)
+  ): Flow<Outcome<DetailMovieTvUsed>> =
+    detailRepository.getDetailMovie(movieId).map { outcome ->
+      when (outcome) {
+        is Outcome.Success -> {
+          val releaseDateRegion = getReleaseDateRegion(outcome.data, userRegion)
 
-          NetworkResult.Success(
+          Outcome.Success(
             DetailMovieTvUsed(
-              id = networkResult.data.id ?: 0,
-              genre = transformListGenreToJoinString(networkResult.data.listGenres), // for view
-              genreId = transformToGenreIDs(networkResult.data.listGenres),
-              duration = getTransformDuration(networkResult.data.runtime),
-              imdbId = networkResult.data.imdbId,
-              ageRating = getAgeRating(networkResult.data, releaseDateRegion.regionRelease),
-              tmdbScore = getTransformTMDBScore(networkResult.data.voteAverage),
+              id = outcome.data.id ?: 0,
+              genre = transformListGenreToJoinString(outcome.data.listGenres), // for view
+              genreId = transformToGenreIDs(outcome.data.listGenres),
+              duration = getTransformDuration(outcome.data.runtime),
+              imdbId = outcome.data.imdbId,
+              ageRating = getAgeRating(outcome.data, releaseDateRegion.regionRelease),
+              tmdbScore = getTransformTMDBScore(outcome.data.voteAverage),
               releaseDateRegion = releaseDateRegion
             )
           )
         }
 
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getLinkVideoMovies(movieId: Int): Flow<NetworkResult<String>> =
-    detailRepository.getTrailerLinkMovie(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toLink())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+  override suspend fun getLinkVideoMovies(movieId: Int): Flow<Outcome<String>> =
+    detailRepository.getTrailerLinkMovie(movieId).map { outcome ->
+      when (outcome) {
+        is Outcome.Success -> Outcome.Success(outcome.data.toLink())
+        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
+  override suspend fun getCreditMovies(movieId: Int): Flow<Outcome<MovieTvCredits>> =
     detailRepository.getCreditMovies(movieId)
 
-  override fun getPagingMovieRecommendation(movieId: Int)
-    : Flow<PagingData<ResultItem>> =
+  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)
 }

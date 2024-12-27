@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalD
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
@@ -22,7 +23,6 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserL
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -109,17 +109,17 @@ class MyFavoriteViewModel @Inject constructor(
 
   fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
     viewModelScope.launch {
-      postMethodUseCase.postFavorite(sesId, data, userId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success ->
+      postMethodUseCase.postFavorite(sesId, data, userId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(true, title, data, null))
 
-          is NetworkResult.Error ->
+          is Outcome.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
+              Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is NetworkResult.Loading -> {}
+          is Outcome.Loading -> {}
         }
       }
     }
@@ -127,17 +127,17 @@ class MyFavoriteViewModel @Inject constructor(
 
   fun postWatchlist(sesId: String, userId: Int, data: WatchlistModel, title: String) {
     viewModelScope.launch {
-      postMethodUseCase.postWatchlist(sesId, data, userId).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success ->
+      postMethodUseCase.postWatchlist(sesId, data, userId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(true, title, null, data))
 
-          is NetworkResult.Error ->
+          is Outcome.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
+              Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is NetworkResult.Loading -> {}
+          is Outcome.Loading -> {}
         }
       }
     }
@@ -149,10 +149,10 @@ class MyFavoriteViewModel @Inject constructor(
     title: String
   ) {
     viewModelScope.launch {
-      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            if (networkResult.data.watchlist) {
+      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            if (outcome.data.watchlist) {
               _snackBarAlready.value = Event(title)
             } else {
               postWatchlist(
@@ -164,10 +164,10 @@ class MyFavoriteViewModel @Inject constructor(
             }
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error ->
+          is Outcome.Loading -> {}
+          is Outcome.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
+              Event(SnackBarUserLoginData(false, outcome.message, null, null))
         }
       }
 
@@ -180,10 +180,10 @@ class MyFavoriteViewModel @Inject constructor(
     title: String
   ) {
     viewModelScope.launch {
-      getStatedTvUseCase.getStatedTv(user.token, id).collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            if (networkResult.data.watchlist) {
+      getStatedTvUseCase.getStatedTv(user.token, id).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            if (outcome.data.watchlist) {
               _snackBarAlready.value = Event(title)
             } else {
               postWatchlist(
@@ -195,10 +195,10 @@ class MyFavoriteViewModel @Inject constructor(
             }
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error ->
+          is Outcome.Loading -> {}
+          is Outcome.Error ->
             _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, networkResult.message, null, null))
+              Event(SnackBarUserLoginData(false, outcome.message, null, null))
         }
       }
     }

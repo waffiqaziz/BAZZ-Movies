@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,23 +15,23 @@ interface PostMethodUseCase {
     sessionId: String,
     fav: FavoriteModel,
     userId: Int
-  ): Flow<NetworkResult<PostFavoriteWatchlist>>
+  ): Flow<Outcome<PostFavoriteWatchlist>>
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistModel,
     userId: Int
-  ): Flow<NetworkResult<PostFavoriteWatchlist>>
+  ): Flow<Outcome<PostFavoriteWatchlist>>
 
   suspend fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int
-  ): Flow<NetworkResult<Post>>
+  ): Flow<Outcome<Post>>
 
   suspend fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int
-  ): Flow<NetworkResult<Post>>
+  ): Flow<Outcome<Post>>
 }

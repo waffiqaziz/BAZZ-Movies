@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.domain.usecase
 
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -13,26 +13,26 @@ import javax.inject.Inject
 class GetDetailPersonInteractor @Inject constructor(
   private val personRepository: IPersonRepository
 ) : GetDetailPersonUseCase {
-  override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPerson>> =
+  override suspend fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
     personRepository.getDetailPerson(id)
 
-  override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<List<CastItem>>> =
-    personRepository.getKnownForPerson(id).mapNotNull { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> {
-          networkResult.data.cast?.let { castItems ->
-            NetworkResult.Success(castItems.sortedByDescending { it.voteCount })
+  override suspend fun getKnownForPerson(id: Int): Flow<Outcome<List<CastItem>>> =
+    personRepository.getKnownForPerson(id).mapNotNull { outcome ->
+      when (outcome) {
+        is Outcome.Success -> {
+          outcome.data.cast?.let { castItems ->
+            Outcome.Success(castItems.sortedByDescending { it.voteCount })
           }
         }
 
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePerson>> =
+  override suspend fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
     personRepository.getImagePerson(id)
 
-  override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPerson>> =
+  override suspend fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
     personRepository.getExternalIDPerson(id)
 }

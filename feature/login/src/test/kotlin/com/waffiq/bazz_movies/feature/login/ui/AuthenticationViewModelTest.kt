@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.login.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -40,8 +40,8 @@ class AuthenticationViewModelTest {
   fun `userLogin emits loading and error states on failure`() = runTest {
     // Mock the UseCase to emit a failure
     coEvery { authTMDbAccountUseCase.createToken() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(NetworkResult.Error("Token creation failed"))
+      emit(Outcome.Loading)
+      emit(Outcome.Error("Token creation failed"))
     }
 
     // Observe LiveData
@@ -68,27 +68,27 @@ class AuthenticationViewModelTest {
   fun `userLogin success triggers login and session creation`() = runTest {
     // Mock token creation
     coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      NetworkResult.Success(Authentication(success = true, requestToken = "test_token"))
+      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
     )
 
     // Mock login
     coEvery {
       authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
     } returns flowOf(
-      NetworkResult.Success(Authentication(success = true, requestToken = "test_token"))
+      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
     )
 
     // Mock session creation
     coEvery {
       authTMDbAccountUseCase.createSessionLogin("test_token")
     } returns flowOf(
-      NetworkResult.Success(CreateSession(success = true, sessionId = "test_session"))
+      Outcome.Success(CreateSession(success = true, sessionId = "test_session"))
     )
 
     // Mock user detail fetching
     coEvery {
       authTMDbAccountUseCase.getUserDetail("test_session")
-    } returns flowOf(NetworkResult.Success(AccountDetails(id = 1, username = "test_user")))
+    } returns flowOf(Outcome.Success(AccountDetails(id = 1, username = "test_user")))
 
     // Observe LiveData
     val loginStates = mutableListOf<Boolean>()
