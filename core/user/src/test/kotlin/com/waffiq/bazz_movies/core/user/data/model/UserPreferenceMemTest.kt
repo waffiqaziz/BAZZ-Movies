@@ -15,7 +15,7 @@ import java.io.File
 class UserPreferenceMemTest {
   private lateinit var userPreference: UserPreference
   private lateinit var dataStore: DataStore<Preferences>
-  private val user = UserModel(
+  private val userModelPref = UserModelPref(
     userId = 123456789,
     name = "John Doe",
     username = "johndoe",
@@ -38,7 +38,7 @@ class UserPreferenceMemTest {
   @Test
   fun `test saveUser stores correct data`() = runTest {
     // Save initial user data
-    userPreference.saveUser(user)
+    userPreference.saveUser(userModelPref)
 
     // Verify that all data is saved correctly
     val savedUser = userPreference.getUser().first()
@@ -56,7 +56,7 @@ class UserPreferenceMemTest {
   @Test
   fun `test save region then return updated region`() = runTest {
     // Save initial user data
-    userPreference.saveUser(user)
+    userPreference.saveUser(userModelPref)
 
     // Verify that data is saved correctly
     val savedUser = userPreference.getUser().first()
@@ -72,7 +72,7 @@ class UserPreferenceMemTest {
   @Test
   fun `test removeUserData will clears all fields`() = runTest {
     // Save initial user data
-    userPreference.saveUser(user)
+    userPreference.saveUser(userModelPref)
 
     // Verify that data is saved correctly
     val savedUser = userPreference.getUser().first()

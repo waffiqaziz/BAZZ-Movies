@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
 import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.user.data.model.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -15,6 +15,8 @@ import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDet
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModel
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModelPref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -78,11 +80,12 @@ class UserRepository @Inject constructor(
   // endregion AUTH
 
   // region PREF
-  override suspend fun saveUserPref(userModel: UserModel) = pref.saveUser(userModel)
+  override suspend fun saveUserPref(userModel: UserModel) =
+    pref.saveUser(userModel.toUserModelPref())
 
   override suspend fun saveRegionPref(region: String) = pref.saveRegion(region)
 
-  override fun getUserPref(): Flow<UserModel> = pref.getUser()
+  override fun getUserPref(): Flow<UserModel> = pref.getUser().map { it.toUserModel() }
 
   override fun getUserToken(): Flow<String> = pref.getToken()
 

@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.user.data.model
+package com.waffiq.bazz_movies.core.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

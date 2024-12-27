@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.utils.mappers
 
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -7,6 +8,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Av
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
+import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
@@ -15,11 +17,66 @@ import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDet
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModel
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModelPref
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class AccountMapperTest {
+
+  @Test
+  fun `map UserModelPref to UserModel`() {
+    val userModelPref = UserModelPref(
+      userId = 34567,
+      name = "name",
+      username = "username",
+      password = "password",
+      region = "region",
+      token = "token",
+      isLogin = false,
+      gravatarHast = "gravatar_hast",
+      tmdbAvatar = "tmdb_avatar",
+    )
+
+    val userModel: UserModel = userModelPref.toUserModel()
+    assertEquals(34567, userModel.userId)
+    assertEquals("name", userModel.name)
+    assertEquals("username", userModel.username)
+    assertEquals("password", userModel.password)
+    assertEquals("region", userModel.region)
+    assertEquals("token", userModel.token)
+    assertFalse(userModel.isLogin)
+    assertEquals("gravatar_hast", userModel.gravatarHast)
+    assertEquals("tmdb_avatar", userModel.tmdbAvatar)
+  }
+
+  @Test
+  fun `map UserModel to UserModelPref`() {
+    val userMode = UserModel(
+      userId = 12345,
+      name = "name_model",
+      username = "username_model",
+      password = "password_model",
+      region = "region_model",
+      token = "token_model",
+      isLogin = true,
+      gravatarHast = "gravatar_hast_model",
+      tmdbAvatar = "tmdb_avatar_model",
+    )
+
+    val userModelPref: UserModelPref = userMode.toUserModelPref()
+    assertEquals(12345, userModelPref.userId)
+    assertEquals("name_model", userModelPref.name)
+    assertEquals("username_model", userModelPref.username)
+    assertEquals("password_model", userModelPref.password)
+    assertEquals("region_model", userModelPref.region)
+    assertEquals("token_model", userModelPref.token)
+    assertTrue(userModelPref.isLogin)
+    assertEquals("gravatar_hast_model", userModelPref.gravatarHast)
+    assertEquals("tmdb_avatar_model", userModelPref.tmdbAvatar)
+  }
 
   @Test
   fun `map AuthenticationResponse to Authentication`() {

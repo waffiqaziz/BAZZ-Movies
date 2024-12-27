@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.model
 
+import com.waffiq.bazz_movies.core.domain.UserModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull

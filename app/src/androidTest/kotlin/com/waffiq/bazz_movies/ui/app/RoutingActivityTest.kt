@@ -7,7 +7,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.RoutingActivity
-import com.waffiq.bazz_movies.core.user.data.model.UserModel
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import dagger.hilt.android.testing.BindValue

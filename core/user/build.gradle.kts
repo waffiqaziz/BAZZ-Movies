@@ -3,7 +3,6 @@ import org.gradle.kotlin.dsl.libs
 
 plugins {
   id("bazzmovies.android.library")
-  id("kotlin-parcelize")
   id("bazzmovies.hilt")
 }
 
