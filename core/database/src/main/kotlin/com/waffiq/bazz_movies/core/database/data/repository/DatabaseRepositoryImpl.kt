@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.database.data.repository
 
 import com.waffiq.bazz_movies.core.database.data.datasource.LocalDataSource
-import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.domain.repository.IDatabaseRepository
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
+import com.waffiq.bazz_movies.core.domain.Favorite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

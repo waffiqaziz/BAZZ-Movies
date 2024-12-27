@@ -1,8 +1,11 @@
-package com.waffiq.bazz_movies.core.database.data.model
+package com.waffiq.bazz_movies.core.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Used as data class for guest user favorite n watchlist
+ */
 @Parcelize
 data class Favorite(
   val id: Int,

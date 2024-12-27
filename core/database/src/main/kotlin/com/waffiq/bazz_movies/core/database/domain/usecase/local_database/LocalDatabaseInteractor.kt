@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.database.domain.usecase.local_database
 
-import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.domain.repository.IDatabaseRepository
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.domain.Favorite
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
