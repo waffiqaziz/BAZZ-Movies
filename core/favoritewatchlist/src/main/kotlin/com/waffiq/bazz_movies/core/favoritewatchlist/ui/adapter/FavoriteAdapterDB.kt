@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.database.data.model.Favorite
-import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
+import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class FavoriteAdapterDB(private val navigator: INavigator) :

@@ -11,10 +11,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.data.MovieTvCastItem
-import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
+import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity

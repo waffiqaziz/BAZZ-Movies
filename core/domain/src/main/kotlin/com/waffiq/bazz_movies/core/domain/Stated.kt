@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.data
+package com.waffiq.bazz_movies.core.domain
 
 data class Stated(
   val id: Int,

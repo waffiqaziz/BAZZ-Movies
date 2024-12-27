@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class UserPreference @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
-  suspend fun saveUser(user: UserModel) {
+  suspend fun saveUser(user: UserModelPref) {
     dataStore.edit {
       it[USERID_KEY] = user.userId
       it[NAME_KEY] = user.name
@@ -29,9 +29,9 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     }
   }
 
-  fun getUser(): Flow<UserModel> =
+  fun getUser(): Flow<UserModelPref> =
     dataStore.data.map {
-      UserModel(
+      UserModelPref(
         it[USERID_KEY] ?: 0,
         it[NAME_KEY] ?: "",
         it[USERNAME_KEY] ?: "",

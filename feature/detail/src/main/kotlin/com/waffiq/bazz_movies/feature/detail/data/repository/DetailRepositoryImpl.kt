@@ -2,7 +2,8 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
+import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -99,14 +100,14 @@ class DetailRepositoryImpl @Inject constructor(
 
   override fun getPagingMovieRecommendation(
     movieId: Int
-  ): Flow<PagingData<com.waffiq.bazz_movies.core.data.ResultItem>> =
+  ): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTvRecommendation(
     tvId: Int
-  ): Flow<PagingData<com.waffiq.bazz_movies.core.data.ResultItem>> =
+  ): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }

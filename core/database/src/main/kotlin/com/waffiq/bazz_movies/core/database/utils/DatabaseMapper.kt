@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.database.utils
 
-import com.waffiq.bazz_movies.core.database.data.model.Favorite
-import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
-import com.waffiq.bazz_movies.core.data.ResultItem
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreIdsToJoinName
+import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
+import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 
 object DatabaseMapper {
 

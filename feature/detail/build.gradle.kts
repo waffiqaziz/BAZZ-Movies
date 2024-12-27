@@ -14,6 +14,7 @@ dependencies {
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
   implementation(project(":core:uihelper"))
+  implementation(project(":core:utils"))
   implementation(project(":navigation"))
 
   implementation(libs.androidx.activity)

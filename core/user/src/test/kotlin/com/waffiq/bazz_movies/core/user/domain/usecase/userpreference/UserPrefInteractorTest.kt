@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.user.domain.usecase.userpreference
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.user.data.model.UserModel
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import io.mockk.every

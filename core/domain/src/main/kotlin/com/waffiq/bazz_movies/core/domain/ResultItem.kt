@@ -1,9 +1,10 @@
-package com.waffiq.bazz_movies.core.data
+package com.waffiq.bazz_movies.core.domain
 
 import android.os.Parcelable
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import kotlinx.parcelize.Parcelize
 
-@kotlinx.parcelize.Parcelize
+@Parcelize
 data class ResultItem(
   val firstAirDate: String? = null,
   val overview: String? = null,

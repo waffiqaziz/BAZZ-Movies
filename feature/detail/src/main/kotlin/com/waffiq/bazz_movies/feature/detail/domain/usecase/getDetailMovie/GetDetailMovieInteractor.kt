@@ -1,9 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformToGenreIDs
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreToJoinString
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -61,6 +62,6 @@ class GetDetailMovieInteractor @Inject constructor(
     detailRepository.getCreditMovies(movieId)
 
   override fun getPagingMovieRecommendation(movieId: Int)
-    : Flow<PagingData<com.waffiq.bazz_movies.core.data.ResultItem>> =
+    : Flow<PagingData<ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)
 }

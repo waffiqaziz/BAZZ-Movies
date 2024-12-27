@@ -15,6 +15,7 @@ dependencies {
   api(project(":core:uihelper"))
   api(project(":core:movie"))
   api(project(":core:user"))
+  implementation(project(":core:utils"))
 
   implementation(libs.androidx.recyclerview)
   api(libs.androidx.paging.runtime)

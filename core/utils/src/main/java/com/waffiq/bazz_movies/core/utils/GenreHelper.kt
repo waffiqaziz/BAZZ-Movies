@@ -1,6 +1,6 @@
-package com.waffiq.bazz_movies.core.data.utils
+package com.waffiq.bazz_movies.core.utils
 
-import com.waffiq.bazz_movies.core.data.GenresItem
+import com.waffiq.bazz_movies.core.domain.GenresItem
 
 /**
  * Used to retrieve genre names and codes.
@@ -93,7 +93,7 @@ object GenreHelper {
     var temp = ""
 
     /**
-     *  "," Comma's are treated like an AND and query while "|"Pipe's are an OR.
+     *  "," Comma's are treated like an AND and query while "|" Pipe's are an OR.
      *  https://www.themoviedb.org/talk/635968b34a4bf6007c5997f3
      *
      *  used to get id genre

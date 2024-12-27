@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.data.ResultItem
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule

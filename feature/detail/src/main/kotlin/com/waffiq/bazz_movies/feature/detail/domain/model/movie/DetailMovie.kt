@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.movie
 
-import com.waffiq.bazz_movies.core.data.GenresItem
+import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem

@@ -11,13 +11,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.data.ResultItem
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreIdsToJoinName
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
 import java.text.DecimalFormat
 

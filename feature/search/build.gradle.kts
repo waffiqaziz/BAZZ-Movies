@@ -10,8 +10,9 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.feature.search"
 
 dependencies {
-  implementation(project(":core:uihelper"))
   implementation(project(":core:movie"))
+  implementation(project(":core:uihelper"))
+  implementation(project(":core:utils"))
   implementation(project(":navigation"))
 
   implementation(libs.androidx.fragment.ktx)

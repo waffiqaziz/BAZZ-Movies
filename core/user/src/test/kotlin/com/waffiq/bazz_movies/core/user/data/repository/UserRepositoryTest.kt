@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
@@ -11,7 +12,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Gr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.core.user.data.model.UserModel
+import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -34,6 +35,17 @@ import org.junit.Test
 class UserRepositoryTest {
   private val sessionId = "session_id"
   private val user = UserModel(
+    userId = 123456789,
+    name = "John Doe",
+    username = "johndoe",
+    password = "password123",
+    region = "US",
+    token = "sampleToken",
+    isLogin = true,
+    gravatarHast = "hash123",
+    tmdbAvatar = "avatar.jpg"
+  )
+  private val userModelPref = UserModelPref(
     userId = 123456789,
     name = "John Doe",
     username = "johndoe",
@@ -222,9 +234,9 @@ class UserRepositoryTest {
 
   @Test
   fun `saveUserPref should invoke UserPreference saveUser`() = runTest {
-    coEvery { mockUserPreference.saveUser(user) } just Runs
+    coEvery { mockUserPreference.saveUser(userModelPref) } just Runs
     userRepository.saveUserPref(user)
-    coVerify { mockUserPreference.saveUser(user) }
+    coVerify { mockUserPreference.saveUser(userModelPref) }
   }
 
   @Test
@@ -237,7 +249,7 @@ class UserRepositoryTest {
   @Test
   fun `getUserPref should emit user model`() = runTest {
     // Arrange
-    val flowResult = flowOf(user)
+    val flowResult = flowOf(userModelPref)
     every { mockUserPreference.getUser() } returns flowResult
 
     // Act

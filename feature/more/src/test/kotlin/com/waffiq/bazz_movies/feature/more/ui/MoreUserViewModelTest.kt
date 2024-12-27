@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.waffiq.bazz_movies.core.data.Post
+import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery

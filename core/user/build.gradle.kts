@@ -3,17 +3,16 @@ import org.gradle.kotlin.dsl.libs
 
 plugins {
   id("bazzmovies.android.library")
-  id("kotlin-parcelize")
   id("bazzmovies.hilt")
 }
 
 android.namespace = "com.waffiq.bazz_movies.core.user"
 
 dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:movie"))
+  api(project(":core:domain"))
   api(project(":core:network"))
-  api(project(":core:data"))
+  implementation(project(":core:common"))
+  implementation(project(":core:mappers"))
 
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)
