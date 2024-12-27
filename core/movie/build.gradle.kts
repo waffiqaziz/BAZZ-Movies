@@ -12,18 +12,10 @@ dependencies {
   api(project(":core:data"))
   api(project(":core:network"))
   api(project(":core:database"))
-  implementation(project(":core:domain"))
+  api(project(":core:domain"))
+  implementation(project(":core:mappers"))
 
-  implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.core.ktx)
-
-//  testImplementation(libs.junit)
-//  androidTestImplementation(libs.junit)
-//  androidTestImplementation(libs.androidx.test.rules)
-//  androidTestImplementation(libs.androidx.test.runner)
-//  androidTestImplementation(libs.androidx.test.ext.junit)
-//  androidTestImplementation(libs.espresso.core)
-
-  // paging
+  implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.paging.runtime)
 }

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.utils.result
 
 /**
- * A sealed class that represents the possible outcomes of a network operation.
+ * A sealed class that represents the possible outcomes of a network operation for data layer.
  *
  * @param T The type of the data returned when the operation is successful.
  *

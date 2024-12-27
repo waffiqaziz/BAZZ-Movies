@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
-import com.waffiq.bazz_movies.core.data.Post
-import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
+import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserModel

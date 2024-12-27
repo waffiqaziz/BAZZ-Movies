@@ -1,6 +1,6 @@
-package com.waffiq.bazz_movies.core.movie.utils.mappers
+package com.waffiq.bazz_movies.core.mappers
 
-import com.waffiq.bazz_movies.core.data.Stated
+import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.StatedResponse
 
 object StateMapper {

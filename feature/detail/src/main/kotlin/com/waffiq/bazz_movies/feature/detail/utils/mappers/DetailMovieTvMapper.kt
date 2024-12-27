@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.data.GenresItem
+import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse

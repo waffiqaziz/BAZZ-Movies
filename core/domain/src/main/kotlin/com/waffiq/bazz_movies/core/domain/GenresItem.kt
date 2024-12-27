@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.data
+package com.waffiq.bazz_movies.core.domain
 
 data class GenresItem(
   val name: String? = null,

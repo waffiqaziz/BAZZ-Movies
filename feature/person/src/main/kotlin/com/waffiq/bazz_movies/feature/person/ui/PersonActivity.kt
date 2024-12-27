@@ -27,13 +27,13 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.common.utils.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.X_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_CHANNEL_LINK
-import com.waffiq.bazz_movies.core.data.MovieTvCastItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable

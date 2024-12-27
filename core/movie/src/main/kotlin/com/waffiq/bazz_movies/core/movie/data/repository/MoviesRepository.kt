@@ -2,17 +2,17 @@ package com.waffiq.bazz_movies.core.movie.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.data.ResultItem
-import com.waffiq.bazz_movies.core.data.Stated
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
+import com.waffiq.bazz_movies.core.mappers.StateMapper.toStated
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPost
-import com.waffiq.bazz_movies.core.movie.utils.mappers.PostMapper.toPostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
-import com.waffiq.bazz_movies.core.movie.utils.mappers.StateMapper.toStated
+import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toPostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel

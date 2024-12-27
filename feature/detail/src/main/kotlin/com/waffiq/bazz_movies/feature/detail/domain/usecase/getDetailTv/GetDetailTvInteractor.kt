@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformToGenreIDs
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreToJoinString
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
@@ -20,6 +20,7 @@ class GetDetailTvInteractor @Inject constructor(
   private val detailRepository: IDetailRepository
 ) : GetDetailTvUseCase {
 
+  /** notes: for tv, imdb will null and get later using [getExternalTvId] **/
   override suspend fun getDetailTv(
     tvId: Int,
     userRegion: String
@@ -32,7 +33,7 @@ class GetDetailTvInteractor @Inject constructor(
               id = networkResult.data.id ?: 0,
               genre = transformListGenreToJoinString(networkResult.data.listGenres), // for view
               genreId = transformToGenreIDs(networkResult.data.listGenres),
-              duration = networkResult.data.status, // for tv duration set as status
+              duration = networkResult.data.status, // for tv, duration set as status
               imdbId = "",
               ageRating = getAgeRating(networkResult.data, userRegion),
               tmdbScore = getTransformTMDBScore(networkResult.data.voteAverage),

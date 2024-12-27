@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.getstated
 
-import com.waffiq.bazz_movies.core.data.Stated
+import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 

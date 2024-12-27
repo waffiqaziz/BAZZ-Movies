@@ -13,10 +13,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.data.ResultItem
-import com.waffiq.bazz_movies.core.data.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 

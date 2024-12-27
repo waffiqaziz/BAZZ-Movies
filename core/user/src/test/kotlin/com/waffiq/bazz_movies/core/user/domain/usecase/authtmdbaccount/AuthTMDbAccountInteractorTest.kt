@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.data.Post
+import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication

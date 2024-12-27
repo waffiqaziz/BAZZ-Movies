@@ -11,7 +11,6 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.data.ResultItem
-import com.waffiq.bazz_movies.core.data.Stated
 import com.waffiq.bazz_movies.core.database.data.model.Favorite
 import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchlistTrue
@@ -19,6 +18,7 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase

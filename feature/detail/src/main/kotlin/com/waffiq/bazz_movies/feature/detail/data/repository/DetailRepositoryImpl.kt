@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.movie.utils.mappers.ResultItemResponseMapper.toResultItem
+import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits

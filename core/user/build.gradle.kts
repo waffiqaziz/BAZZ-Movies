@@ -10,10 +10,11 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.core.user"
 
 dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:movie"))
-  api(project(":core:network"))
   api(project(":core:data"))
+  api(project(":core:domain"))
+  api(project(":core:network"))
+  implementation(project(":core:common"))
+  implementation(project(":core:mappers"))
 
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)

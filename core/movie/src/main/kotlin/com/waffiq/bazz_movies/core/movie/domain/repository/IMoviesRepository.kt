@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.domain.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.data.Post
 import com.waffiq.bazz_movies.core.data.ResultItem
-import com.waffiq.bazz_movies.core.data.Stated
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult

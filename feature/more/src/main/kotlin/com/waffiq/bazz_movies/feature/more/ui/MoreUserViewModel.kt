@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.data.Post
+import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
