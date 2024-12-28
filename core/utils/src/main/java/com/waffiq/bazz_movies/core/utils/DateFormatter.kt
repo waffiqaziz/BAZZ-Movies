@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.uihelper.utils
+package com.waffiq.bazz_movies.core.utils
 
 import android.util.Log
 import java.text.ParseException
@@ -40,5 +40,4 @@ object DateFormatter {
       ""
     }
   }
-
 }

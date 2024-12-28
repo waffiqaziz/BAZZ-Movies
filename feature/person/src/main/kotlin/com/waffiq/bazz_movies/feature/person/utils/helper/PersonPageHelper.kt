@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
-import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
