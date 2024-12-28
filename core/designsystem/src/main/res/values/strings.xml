@@ -58,7 +58,6 @@
   <string name="no_popular_series">Looks like there aren’t any popular series available in %1$s right now. Try switching to a different country to find more options.</string>
   <string name="no_series_airing_today">It looks like there are no series airing today in %1$s. Try choosing a different country to discover more options.</string>
   <string name="no_series_airing_this_week">It seems there are no series scheduled to air this week in %1$s. Try selecting a different country to explore more options.</string>
-  <string name="no_series_currently_playing">We couldn’t find any series currently playing in %1$s. Please try selecting a different country to see what\'s available.</string>
 
   <!-- MORE -->
   <string name="guest_user">Guest User</string>
@@ -91,7 +90,6 @@
   <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
 
-  <string name="data">Data</string>
   <string name="no_data_illustration">no data illustration</string>
   <string name="no_data_found">No data found!</string>
   <string name="no_data_explanation">We cannot find data you are looking for,\nmaybe add favorite or watchlist first</string>
