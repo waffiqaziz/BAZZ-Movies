@@ -10,7 +10,6 @@ dependencies {
   implementation(project(":core:common"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
-  implementation(project(":navigation"))
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
 

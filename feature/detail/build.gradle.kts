@@ -15,7 +15,6 @@ dependencies {
   implementation(project(":core:user"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
-  implementation(project(":navigation"))
 
   implementation(libs.androidx.activity)
   implementation(libs.androidx.cardview)

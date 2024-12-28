@@ -9,7 +9,6 @@ dependencies {
   implementation(project(":core:uihelper"))
   implementation(project(":core:database"))
   implementation(project(":core:user"))
-  implementation(project(":navigation"))
 
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.google.material)

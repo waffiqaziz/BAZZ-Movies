@@ -12,7 +12,6 @@ dependencies {
   implementation(project(":core:uihelper"))
   implementation(project(":core:user"))
   implementation(project(":core:movie"))
-  implementation(project(":navigation"))
 
   implementation(libs.androidx.appcompat)
   implementation(libs.google.material)

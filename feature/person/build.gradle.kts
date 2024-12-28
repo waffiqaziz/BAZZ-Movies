@@ -11,8 +11,8 @@ android.namespace = "com.waffiq.bazz_movies.feature.person"
 
 dependencies {
   implementation(project(":core:uihelper"))
-  implementation(project(":navigation"))
   implementation(project(":core:movie"))
+  implementation(project(":core:utils"))
 
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
