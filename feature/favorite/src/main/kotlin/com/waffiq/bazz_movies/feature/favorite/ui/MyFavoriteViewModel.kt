@@ -3,17 +3,12 @@ package com.waffiq.bazz_movies.feature.favorite.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
-import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.ResultItem
@@ -35,70 +30,15 @@ class MyFavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,
-  private val localDatabaseUseCase: LocalDatabaseUseCase,
   private val getStatedMovieUseCase: GetStatedMovieUseCase,
   private val getStatedTvUseCase: GetStatedTvUseCase
 ) : ViewModel() {
-
-  private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()
-  val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
-
-  private val _undoDB = MutableLiveData<Event<Favorite>>()
-  val undoDB: LiveData<Event<Favorite>> = _undoDB
 
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
   private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
-
-  // region LOCAL DATABASE
-  val favoriteTvFromDB =
-    localDatabaseUseCase.favoriteTvFromDB.asLiveData().distinctUntilChanged()
-  val favoriteMoviesFromDB =
-    localDatabaseUseCase.favoriteMoviesFromDB.asLiveData().distinctUntilChanged()
-
-  fun insertToDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.insertToDB(fav)))
-    }
-  }
-
-  fun delFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.deleteFromDB(fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToFavoriteDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(false, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToWatchlistDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(false, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToRemoveFromWatchlistDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateWatchlistItemDB(true, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-
-  fun updateToRemoveFromFavoriteDB(fav: Favorite) {
-    viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.updateFavoriteItemDB(true, fav)))
-    }
-    _undoDB.value = Event(fav)
-  }
-  // endregion LOCAL DATABASE
 
   // region NETWORK
   fun favoriteMovies(sesId: String): Flow<PagingData<ResultItem>> =
