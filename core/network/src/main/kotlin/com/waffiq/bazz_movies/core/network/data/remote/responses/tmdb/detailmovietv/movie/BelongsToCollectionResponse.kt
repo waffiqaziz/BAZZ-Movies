@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.movie
+package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

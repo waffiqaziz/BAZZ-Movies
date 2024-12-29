@@ -7,6 +7,14 @@ build:
   # style: 1
   # comments: 1
 
+formatting:
+  Indentation:
+    active: true
+    autoCorrect: true
+    indentSize: 2
+  NoWildcardImports:
+    active: true
+
 config:
   validation: true
   warningsAsErrors: false
@@ -131,8 +139,8 @@ complexity:
     threshold: 60
   LongParameterList:
     active: true
-    functionThreshold: 6
-    constructorThreshold: 7
+    functionThreshold: 8
+    constructorThreshold: 9
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]

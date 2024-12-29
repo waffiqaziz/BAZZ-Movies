@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.release_dates
+package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

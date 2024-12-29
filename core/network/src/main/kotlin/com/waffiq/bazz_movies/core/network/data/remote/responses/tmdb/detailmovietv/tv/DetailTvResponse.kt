@@ -1,9 +1,9 @@
-package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv
+package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.ProductionCountriesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.GenresItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.ProductionCountriesItemResponse
 
 @JsonClass(generateAdapter = false)
 data class DetailTvResponse(

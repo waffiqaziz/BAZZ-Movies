@@ -1,12 +1,12 @@
-package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.movie
+package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.GenresItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.ProductionCountriesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.release_dates.ReleaseDatesResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.ProductionCompaniesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.SpokenLanguagesItemReponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.GenresItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.ProductionCountriesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ProductionCompaniesItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemReponse
 
 @JsonClass(generateAdapter = false)
 data class DetailMovieResponse(
@@ -35,7 +35,7 @@ data class DetailMovieResponse(
   @Json(name = "popularity")
   val popularity: Double? = null,
 
-  @Json(name = "release_dates")
+  @Json(name = "releasedates")
   val releaseDatesResponse: ReleaseDatesResponse? = null,
 
   @Json(name = "production_countries")

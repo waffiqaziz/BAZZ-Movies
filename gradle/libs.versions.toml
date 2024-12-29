@@ -224,12 +224,13 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 # Plugins defined by this project
 bazzmovies-android-application = { id = "bazzmovies.android.application" }
+bazzmovies-android-application-firebase = { id = "bazzmovies.android.application.firebase" }
 bazzmovies-android-library = { id = "bazzmovies.android.library" }
 bazzmovies-android-feature = { id = "bazzmovies.android.feature" }
 bazzmovies-android-core = { id = "bazzmovies.android.core" }
 bazzmovies-android-room = { id = "bazzmovies.android.room" }
+bazzmovies-detekt = { id = "bazzmovies.detekt" }
+bazzmovies-glide = { id = "bazzmovies.glide" }
 bazzmovies-hilt = { id = "bazzmovies.hilt" }
 bazzmovies-hilt-test = { id = "bazzmovies.hilt.test" }
-bazzmovies-glide = { id = "bazzmovies.glide" }
-bazzmovies-android-application-firebase = { id = "bazzmovies.android.application.firebase" }
 bazzmovies-jvm-library = { id = "bazzmovies.jvm.library" }
