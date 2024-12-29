@@ -1,11 +1,8 @@
 package com.waffiq.bazz_movies.core.movie.data.repository
 
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
@@ -13,7 +10,6 @@ import com.waffiq.bazz_movies.core.mappers.StateMapper.toStated
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toPostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
@@ -27,28 +23,6 @@ import javax.inject.Singleton
 class MoviesRepository @Inject constructor(
   private val movieDataSource: MovieDataSource
 ) : IMoviesRepository {
-
-  // region PAGING FUNCTION
-  override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingFavoriteMovies(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingFavoriteTv(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingWatchlistMovies(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-
-  override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingWatchlistTv(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
-    }
-  // endregion PAGING FUNCTION
 
   override suspend fun getStatedMovie(
     sessionId: String,
@@ -70,7 +44,6 @@ class MoviesRepository @Inject constructor(
         is NetworkResult.Loading -> Outcome.Loading
       }
     }
-  // endregion DETAIL
 
   // region POST FAVORITE AND WATCHLIST
   override suspend fun postFavorite(

@@ -18,12 +18,12 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_trending
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
-import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.TrendingAdapter

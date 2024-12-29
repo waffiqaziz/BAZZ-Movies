@@ -30,11 +30,11 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_search
-import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorHandling
-import com.waffiq.bazz_movies.core.movie.utils.helpers.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
+import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
+import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding

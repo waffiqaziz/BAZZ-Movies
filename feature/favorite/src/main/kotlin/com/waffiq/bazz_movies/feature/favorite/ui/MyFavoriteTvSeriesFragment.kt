@@ -33,12 +33,12 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistH
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
-import com.waffiq.bazz_movies.core.movie.utils.helpers.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.movie.utils.helpers.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentMyFavoriteTvSeriesBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint

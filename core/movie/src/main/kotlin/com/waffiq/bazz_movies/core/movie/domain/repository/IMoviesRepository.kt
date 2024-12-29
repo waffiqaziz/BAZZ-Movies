@@ -12,16 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {
 
-  // region PAGING FUNCTION
-  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>>
-
-  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>>
-
-  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItem>>
-
-  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItem>>
-  // endregion PAGING FUNCTION
-
   suspend fun getStatedMovie(sessionId: String, movieId: Int): Flow<Outcome<Stated>>
 
   suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<Stated>>

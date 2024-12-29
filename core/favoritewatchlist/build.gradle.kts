@@ -14,8 +14,8 @@ dependencies {
   api(project(":core:uihelper"))
   api(project(":core:movie"))
   api(project(":core:user"))
+  api(project(":core:utils"))
   implementation(project(":core:designsystem"))
-  implementation(project(":core:utils"))
   implementation(project(":navigation"))
 
   implementation(libs.androidx.recyclerview)
