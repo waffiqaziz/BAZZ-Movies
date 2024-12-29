@@ -30,7 +30,6 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapte
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.snackBarAlreadyFavorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.snackBarAlreadyWatchlist
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.titleHandler
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
@@ -52,7 +51,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   lateinit var navigator: INavigator
 
   @Inject
-  lateinit var snackbar: ISnackbar
+  lateinit var iSnackbar: ISnackbar
 
   private var snackbarAnchor: Int = 0
 
@@ -100,12 +99,13 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != NAN) { // user login then show data from TMDB
         initAction(isLogin = true)
-        setupRefresh(true)
+        setupRefresh(isLogin = true)
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { // guest user then show data from database
         initAction(isLogin = false)
+        setupRefresh(isLogin = false)
+        insertDBObserver()
         setDataGuestUserProgressBarEmptyView()
-        setupRefresh(false)
       }
     }
   }
@@ -181,7 +181,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private fun handleSnackbarLoginUser() {
     viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar = snackBarAlreadyFavorite(
+      mSnackbar = snackBarAlreadyWatchlist(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
         requireActivity().findViewById(snackbarAnchor),
@@ -196,7 +196,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
-            mSnackbar = snackbar.showSnackbarWarning(Event(it.title))
+            mSnackbar = iSnackbar.showSnackbarWarning(Event(it.title))
           } else {
             // add to watchlist success
             showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
@@ -215,7 +215,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = snackbar.showSnackbarWarning(error)
+            mSnackbar = iSnackbar.showSnackbarWarning(error)
             baseViewModel.markSnackbarShown()
           }
         }
@@ -333,7 +333,6 @@ class MyFavoriteTvSeriesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      insertDBObserver()
       val fav = viewModelDBFav.undoDB.value?.getContentIfNotHandled() as Favorite
       if (isWantToDelete) { // undo remove from favorite
         if (fav.isWatchlist) {

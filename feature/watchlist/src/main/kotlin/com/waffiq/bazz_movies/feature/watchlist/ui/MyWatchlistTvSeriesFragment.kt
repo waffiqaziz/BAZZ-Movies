@@ -51,7 +51,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   lateinit var navigator: INavigator
 
   @Inject
-  lateinit var snackbar: ISnackbar
+  lateinit var iSnackbar: ISnackbar
 
   private var snackbarAnchor: Int = 0
 
@@ -99,11 +99,12 @@ class MyWatchlistTvSeriesFragment : Fragment() {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != NAN) { // user login then show favorite data from TMDB API
         initAction(isLogin = true)
-        setupRefresh(true)
+        setupRefresh(isLogin = true)
         setDataUserLoginProgressBarEmptyView(user.token)
       } else { // guest user then show favorite data from database
         initAction(isLogin = false)
-        setupRefresh(false)
+        setupRefresh(isLogin = false)
+        insertDBObserver()
         setDataGuestUserProgressBarEmptyView()
       }
     }
@@ -195,7 +196,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
             showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
             adapterPagingRefresh()
           } else if (!it.isSuccess) {
-            mSnackbar = snackbar.showSnackbarWarning(Event(it.title))
+            mSnackbar = iSnackbar.showSnackbarWarning(Event(it.title))
           } else {
             // add to favorite success
             showSnackBarUserLogin(it.title, it.favoriteModel, it.watchlistModel)
@@ -214,7 +215,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       onError = { error ->
         error?.let {
           if (baseViewModel.isSnackbarShown.value == false) {
-            mSnackbar = snackbar.showSnackbarWarning(error)
+            mSnackbar = iSnackbar.showSnackbarWarning(error)
             baseViewModel.markSnackbarShown()
           }
         }
@@ -332,7 +333,6 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      insertDBObserver()
       val fav = viewModelDB.undoDB.value?.getContentIfNotHandled() as Favorite
       if (isWantToDelete) { // undo remove from favorite
         if (fav.isFavorite) {
