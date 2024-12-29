@@ -10,8 +10,10 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.core.favoritewatchlist"
 
 dependencies {
+  api(project(":core:database"))
   api(project(":core:domain"))
   api(project(":core:uihelper"))
+  api(project(":core:mappers"))
   api(project(":core:movie"))
   api(project(":core:user"))
   api(project(":core:utils"))

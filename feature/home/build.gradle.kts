@@ -10,7 +10,7 @@ dependencies {
   implementation(project(":core:common"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
-  implementation(project(":core:movie"))
+  implementation(project(":core:mappers"))
   implementation(project(":core:user"))
 
   implementation(libs.androidx.fragment.ktx)

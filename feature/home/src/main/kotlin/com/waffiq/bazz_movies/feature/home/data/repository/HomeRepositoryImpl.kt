@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.home.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
+import com.waffiq.bazz_movies.core.mappers.ResultItemMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getDateToday

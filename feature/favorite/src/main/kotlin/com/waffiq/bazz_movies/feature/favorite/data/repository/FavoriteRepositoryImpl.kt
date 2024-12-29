@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.favorite.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
+import com.waffiq.bazz_movies.core.mappers.ResultItemMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.favorite.domain.repository.IFavoriteRepository
 import kotlinx.coroutines.flow.Flow
