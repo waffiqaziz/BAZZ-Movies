@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.user.domain.repository
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
@@ -14,12 +14,12 @@ interface IUserRepository {
     username: String,
     pass: String,
     sessionId: String
-  ): Flow<NetworkResult<Authentication>>
+  ): Flow<Outcome<Authentication>>
 
-  suspend fun createToken(): Flow<NetworkResult<Authentication>>
-  suspend fun deleteSession(sessionId: String): Flow<NetworkResult<Post>>
-  suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSession>>
-  suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetails>>
+  suspend fun createToken(): Flow<Outcome<Authentication>>
+  suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>>
+  suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>>
+  suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>>
 
   suspend fun saveUserPref(userModel: UserModel)
   suspend fun saveRegionPref(region: String)
@@ -28,5 +28,5 @@ interface IUserRepository {
   fun getUserRegionPref(): Flow<String>
   suspend fun removeUserDataPref()
 
-  suspend fun getCountryCode(): Flow<NetworkResult<CountryIP>>
+  suspend fun getCountryCode(): Flow<Outcome<CountryIP>>
 }

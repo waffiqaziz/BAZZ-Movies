@@ -15,7 +15,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       extensions.configure<LibraryExtension> {
         configureCommonAndroidSettings(this)
         buildFeatures.viewBinding = true
-        testOptions.animationsDisabled = true
         defaultConfig.consumerProguardFiles("consumer-rules.pro")
         buildTypes {
           getByName("debug") {
@@ -43,6 +42,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
       dependencies {
         add("implementation", project(":core:designsystem"))
+        add("implementation", project(":navigation"))
       }
     }
   }

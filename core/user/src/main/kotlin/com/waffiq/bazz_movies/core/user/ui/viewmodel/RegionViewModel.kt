@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,19 +28,19 @@ class RegionViewModel @Inject constructor(
 
   fun getCountryCode() =
     viewModelScope.launch {
-      getRegionUseCase.getCountryCode().collect { networkResult ->
-        when (networkResult) {
-          is NetworkResult.Success -> {
-            networkResult.data.let {
+      getRegionUseCase.getCountryCode().collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> {
+            outcome.data.let {
               _countryCode.value = it.country ?: ""
             }
           }
 
-          is NetworkResult.Loading -> {}
-          is NetworkResult.Error -> {
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
             _countryCode.value = ""
             _errorState.value =
-              Event(networkResult.message)
+              Event(outcome.message)
           }
         }
       }

@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.getstated
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Stated
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface GetStatedMovieUseCase {
-  suspend fun getStatedMovie(sessionId: String, movieId: Int): Flow<NetworkResult<Stated>>
+  suspend fun getStatedMovie(sessionId: String, movieId: Int): Flow<Outcome<Stated>>
 }

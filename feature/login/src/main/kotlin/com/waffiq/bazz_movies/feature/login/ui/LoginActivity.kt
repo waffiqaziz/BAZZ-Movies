@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
+import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -55,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
     window.transparentStatusBar()
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
-      com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut(
+      Animation.fadeOut(
         binding.layoutBackground.bgAlpha,
         ANIM_DURATION
       )

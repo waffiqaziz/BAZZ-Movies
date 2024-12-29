@@ -2,8 +2,9 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toResultItem
+import com.waffiq.bazz_movies.core.mappers.ResultItemMapper.toResultItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -26,75 +27,75 @@ import javax.inject.Inject
 class DetailRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource
 ) : IDetailRepository {
-  override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetails>> =
+  override suspend fun getDetailOMDb(imdbId: String): Flow<Outcome<OMDbDetails>> =
     movieDataSource.getDetailOMDb(imdbId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toOMDbDetails())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toOMDbDetails())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getDetailMovie(movieId: Int): Flow<NetworkResult<DetailMovie>> =
+  override suspend fun getDetailMovie(movieId: Int): Flow<Outcome<DetailMovie>> =
     movieDataSource.getDetailMovie(movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailMovie())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toDetailMovie())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getDetailTv(tvId: Int): Flow<NetworkResult<DetailTv>> =
+  override suspend fun getDetailTv(tvId: Int): Flow<Outcome<DetailTv>> =
     movieDataSource.getDetailTv(tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toDetailTv())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toDetailTv())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getExternalTvId(tvId: Int): Flow<NetworkResult<ExternalTvID>> =
+  override suspend fun getExternalTvId(tvId: Int): Flow<Outcome<ExternalTvID>> =
     movieDataSource.getExternalTvId(tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toExternalTvID())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toExternalTvID())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getTrailerLinkMovie(movieId: Int): Flow<NetworkResult<Video>> =
+  override suspend fun getTrailerLinkMovie(movieId: Int): Flow<Outcome<Video>> =
     movieDataSource.getVideoMovies(movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toVideo())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getTrailerLinkTv(tvId: Int): Flow<NetworkResult<Video>> =
+  override suspend fun getTrailerLinkTv(tvId: Int): Flow<Outcome<Video>> =
     movieDataSource.getVideoTv(tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toVideo())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCredits>> =
+  override suspend fun getCreditMovies(movieId: Int): Flow<Outcome<MovieTvCredits>> =
     movieDataSource.getCreditMovies(movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMovieTvCredits())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCredits>> =
+  override suspend fun getCreditTv(tvId: Int): Flow<Outcome<MovieTvCredits>> =
     movieDataSource.getCreditTv(tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> NetworkResult.Success(networkResult.data.toMovieTvCredits())
-        is NetworkResult.Error -> NetworkResult.Error(networkResult.message)
-        is NetworkResult.Loading -> NetworkResult.Loading
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMovieTvCredits())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
       }
     }
 

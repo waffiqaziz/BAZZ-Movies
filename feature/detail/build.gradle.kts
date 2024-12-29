@@ -10,12 +10,11 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.feature.detail"
 
 dependencies {
-  implementation(project(":core:domain"))
+  implementation(project(":core:database"))
   implementation(project(":core:movie"))
   implementation(project(":core:user"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
-  implementation(project(":navigation"))
 
   implementation(libs.androidx.activity)
   implementation(libs.androidx.cardview)

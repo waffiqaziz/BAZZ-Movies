@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterISO8601
-import com.waffiq.bazz_movies.core.uihelper.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterISO8601
+import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
  * to ensure that an appropriate release date and region are returned.
  */
 object ReleaseDateHelper {
+  private const val YEAR = 4
 
   /**
    * For Movie
@@ -154,7 +155,7 @@ object ReleaseDateHelper {
    */
   private fun getYearRangeTv(data: DetailTv): String {
     val filteredSeasons = data.listSeasonsItem?.filter { it?.name?.startsWith("Season ") == true }
-    val years = filteredSeasons?.mapNotNull { it?.airDate?.take(4)?.toIntOrNull() }
+    val years = filteredSeasons?.mapNotNull { it?.airDate?.take(YEAR)?.toIntOrNull() }
 
     return if (years.isNullOrEmpty()) ""
     else if (filteredSeasons.size > 1) "${years.minOrNull()}-${years.maxOrNull()}"

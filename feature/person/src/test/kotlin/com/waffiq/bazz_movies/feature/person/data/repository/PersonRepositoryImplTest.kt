@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
@@ -55,8 +56,8 @@ class PersonRepositoryImplTest {
     val result = repository.getDetailPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Success) // Check if the second emission is Success
-    val successResult = result[1] as NetworkResult.Success
+    assert(result[1] is Outcome.Success) // Check if the second emission is Success
+    val successResult = result[1] as Outcome.Success
     assertEquals(
       mockResponse.toDetailPerson(),
       successResult.data
@@ -80,8 +81,8 @@ class PersonRepositoryImplTest {
     val result = repository.getDetailPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Error) // Check if the second emission is Error
-    val errorResult = result[1] as NetworkResult.Error
+    assert(result[1] is Outcome.Error) // Check if the second emission is Error
+    val errorResult = result[1] as Outcome.Error
     assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
 
     // Verify that getDetailPerson was called exactly once with the expected id
@@ -99,7 +100,7 @@ class PersonRepositoryImplTest {
     val result = repository.getDetailPerson(id).first()
 
     // Assert
-    assert(result is NetworkResult.Loading) // Ensure the first emission is Loading
+    assert(result is Outcome.Loading) // Ensure the first emission is Loading
 
     // Verify that getDetailPerson was called exactly once with the expected id
     coVerify { movieDataSource.getDetailPerson(id) }
@@ -121,8 +122,8 @@ class PersonRepositoryImplTest {
     val result = repository.getKnownForPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Success) // Check if the second emission is Success
-    val successResult = result[1] as NetworkResult.Success
+    assert(result[1] is Outcome.Success) // Check if the second emission is Success
+    val successResult = result[1] as Outcome.Success
     assertEquals(
       combinedCreditResponse.toCombinedCredit(),
       successResult.data
@@ -147,8 +148,8 @@ class PersonRepositoryImplTest {
     val result = repository.getKnownForPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Error) // Check if the second emission is Error
-    val errorResult = result[1] as NetworkResult.Error
+    assert(result[1] is Outcome.Error) // Check if the second emission is Error
+    val errorResult = result[1] as Outcome.Error
     assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
 
     // Verify that getKnownForPerson was called exactly once with the expected id
@@ -166,7 +167,7 @@ class PersonRepositoryImplTest {
     val result = repository.getKnownForPerson(id).first()
 
     // Assert
-    assert(result is NetworkResult.Loading) // Ensure the first emission is Loading
+    assert(result is Outcome.Loading) // Ensure the first emission is Loading
 
     // Verify that getKnownForPerson was called exactly once with the expected id
     coVerify { movieDataSource.getKnownForPerson(id) }
@@ -188,8 +189,8 @@ class PersonRepositoryImplTest {
     val result = repository.getImagePerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Success) // Check if the second emission is Success
-    val successResult = result[1] as NetworkResult.Success
+    assert(result[1] is Outcome.Success) // Check if the second emission is Success
+    val successResult = result[1] as Outcome.Success
     assertEquals(
       imagePersonResponse.toImagePerson(),
       successResult.data
@@ -214,8 +215,8 @@ class PersonRepositoryImplTest {
     val result = repository.getImagePerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Error) // Check if the second emission is Error
-    val errorResult = result[1] as NetworkResult.Error
+    assert(result[1] is Outcome.Error) // Check if the second emission is Error
+    val errorResult = result[1] as Outcome.Error
     assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
 
     // Verify that getImagePerson was called exactly once with the expected id
@@ -233,7 +234,7 @@ class PersonRepositoryImplTest {
     val result = repository.getImagePerson(id).first()
 
     // Assert
-    assert(result is NetworkResult.Loading) // Ensure the first emission is Loading
+    assert(result is Outcome.Loading) // Ensure the first emission is Loading
 
     // Verify that getImagePerson was called exactly once with the expected id
     coVerify { movieDataSource.getImagePerson(id) }
@@ -255,8 +256,8 @@ class PersonRepositoryImplTest {
     val result = repository.getExternalIDPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Success) // Check if the second emission is Success
-    val successResult = result[1] as NetworkResult.Success
+    assert(result[1] is Outcome.Success) // Check if the second emission is Success
+    val successResult = result[1] as Outcome.Success
     assertEquals(
       externalIDPersonResponse.toExternalIDPerson(),
       successResult.data
@@ -281,8 +282,8 @@ class PersonRepositoryImplTest {
     val result = repository.getExternalIDPerson(id).toList()
 
     // Assert
-    assert(result[1] is NetworkResult.Error) // Check if the second emission is Error
-    val errorResult = result[1] as NetworkResult.Error
+    assert(result[1] is Outcome.Error) // Check if the second emission is Error
+    val errorResult = result[1] as Outcome.Error
     assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
 
     // Verify that getExternalIDPerson was called exactly once with the expected id
@@ -300,7 +301,7 @@ class PersonRepositoryImplTest {
     val result = repository.getExternalIDPerson(id).first()
 
     // Assert
-    assert(result is NetworkResult.Loading) // Ensure the first emission is Loading
+    assert(result is Outcome.Loading) // Ensure the first emission is Loading
 
     // Verify that getExternalIDPerson was called exactly once with the expected id
     coVerify { movieDataSource.getExternalIDPerson(id) }

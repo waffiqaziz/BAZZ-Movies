@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.movie.utils.helpers
+package com.waffiq.bazz_movies.core.utils
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

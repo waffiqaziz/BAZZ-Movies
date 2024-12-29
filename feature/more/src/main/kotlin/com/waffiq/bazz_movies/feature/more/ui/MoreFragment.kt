@@ -38,7 +38,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_m
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
@@ -101,21 +101,21 @@ class MoreFragment : Fragment() {
     if (isLogin) {
       viewLifecycleOwner.lifecycleScope.launch {
         @OptIn(FlowPreview::class)
-        moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { networkResult ->
-          when (networkResult) {
-            is NetworkResult.Success -> {
+        moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { outcome ->
+          when (outcome) {
+            is Outcome.Success -> {
               progressIsVisible(false)
               requireContext().toastShort(getString(sign_out_success))
               removePrefUserData() // remove preference user data
             }
 
-            is NetworkResult.Loading -> {}
+            is Outcome.Loading -> {}
 
-            is NetworkResult.Error -> {
+            is Outcome.Error -> {
               fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
               btnSignOutIsEnable(true)
               progressIsVisible(false)
-              mSnackbar = snackbar.showSnackbarWarning(Event(networkResult.message))
+              mSnackbar = snackbar.showSnackbarWarning(Event(outcome.message))
             }
 
             else -> {}

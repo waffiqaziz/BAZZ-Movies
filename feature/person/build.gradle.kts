@@ -10,13 +10,15 @@ plugins {
 android.namespace = "com.waffiq.bazz_movies.feature.person"
 
 dependencies {
+  implementation(project(":core:common"))
+  implementation(project(":core:domain"))
+  implementation(project(":core:network"))
   implementation(project(":core:uihelper"))
-  implementation(project(":navigation"))
-  implementation(project(":core:movie"))
+  implementation(project(":core:utils"))
 
-  implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
-  implementation(libs.androidx.viewpager2)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.swiperefreshlayout)
 
   implementation(libs.google.material)

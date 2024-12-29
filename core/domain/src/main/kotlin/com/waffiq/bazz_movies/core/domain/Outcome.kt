@@ -13,8 +13,8 @@ package com.waffiq.bazz_movies.core.domain
  * This sealed class helps in handling network responses in a type-safe and exhaustive manner,
  * ensuring that all possible states are handled in a structured way.
  */
-sealed class Result<out T> {
-  data class Success<out T>(val data: T) : Result<T>()
-  data class Error(val message: String) : Result<Nothing>()
-  data object Loading : Result<Nothing>()
+sealed class Outcome<out T> {
+  data class Success<out T>(val data: T) : Outcome<T>()
+  data class Error(val message: String) : Outcome<Nothing>()
+  data object Loading : Outcome<Nothing>()
 }
