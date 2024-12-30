@@ -4,7 +4,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomSnapHelper(private val offsetPx: Int = -50) : LinearSnapHelper() {
+class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapHelper() {
+
+  companion object {
+    private const val DEFAULT_OFFSET = -50
+  }
 
   override fun calculateDistanceToFinalSnap(
     layoutManager: RecyclerView.LayoutManager,

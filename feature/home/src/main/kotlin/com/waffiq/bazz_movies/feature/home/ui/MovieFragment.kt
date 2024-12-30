@@ -136,6 +136,7 @@ class MovieFragment : Fragment() {
   }
 
   private fun setData(region: String) {
+    refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
       onLoading = { showShimmer() },
@@ -179,7 +180,9 @@ class MovieFragment : Fragment() {
       getString(no_upcoming_movies, Locale("", region).displayCountry),
       binding.layoutNoUpcoming
     )
+  }
 
+  private fun refreshHandle() {
     // Set up swipe-to-refresh
     setupSwipeRefresh(
       binding.swipeRefresh,

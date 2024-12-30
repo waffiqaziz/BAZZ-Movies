@@ -110,7 +110,6 @@ class MyFavoriteViewModel @Inject constructor(
               Event(SnackBarUserLoginData(false, outcome.message, null, null))
         }
       }
-
     }
   }
 

@@ -5,16 +5,20 @@ import androidx.recyclerview.widget.ListUpdateCallback
 
 object HelperTest {
   class TestListCallback : ListUpdateCallback {
-    override fun onChanged(position: Int, count: Int, payload: Any?) { /* unused */
+    override fun onChanged(position: Int, count: Int, payload: Any?) {
+      /* unused */
     }
 
-    override fun onMoved(fromPosition: Int, toPosition: Int) { /* unused */
+    override fun onMoved(fromPosition: Int, toPosition: Int) {
+      /* unused */
     }
 
-    override fun onInserted(position: Int, count: Int) { /* unused */
+    override fun onInserted(position: Int, count: Int) {
+      /* unused */
     }
 
-    override fun onRemoved(position: Int, count: Int) { /* unused */
+    override fun onRemoved(position: Int, count: Int) {
+      /* unused */
     }
   }
 

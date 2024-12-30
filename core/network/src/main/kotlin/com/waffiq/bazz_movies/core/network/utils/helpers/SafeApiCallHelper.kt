@@ -14,6 +14,8 @@ import java.net.UnknownHostException
  */
 object SafeApiCallHelper {
 
+  private const val ERROR_CODE = 404
+
   /**
    * Safely executes an API call, handling any exceptions and returning a wrapped result.
    * This helper function ensures that common network-related exceptions (such as timeouts,
@@ -45,7 +47,7 @@ object SafeApiCallHelper {
         } ?: NetworkResult.Error("Response body is null")
       } else {
         val errorBody = response.errorBody()?.string()
-        if (response.code() == 404) {
+        if (response.code() == ERROR_CODE) {
           NetworkResult.Error("Bad Request")
         } else if (!errorBody.isNullOrEmpty()) {
           return NetworkResult.Error(

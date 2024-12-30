@@ -65,4 +65,3 @@ class GetRegionInteractorTest {
     coVerify { mockRepository.getCountryCode() }
   }
 }
-

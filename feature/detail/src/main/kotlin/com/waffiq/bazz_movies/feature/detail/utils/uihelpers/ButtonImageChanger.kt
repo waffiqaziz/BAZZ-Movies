@@ -73,7 +73,6 @@ object ButtonImageChanger {
     btnFavorite: ImageButton,
     isActivated: Boolean
   ) {
-
     // Determine the resource ID for the target drawable based on isActivated state
     val targetRes = if (isActivated) ic_hearth_selected else ic_hearth
 

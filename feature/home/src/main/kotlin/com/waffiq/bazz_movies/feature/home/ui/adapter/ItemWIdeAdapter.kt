@@ -12,10 +12,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
-import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -63,7 +63,8 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
         movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
       binding.tvGenre.text = movie.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
         ?: itemView.context.getString(not_available)
-      binding.tvYear.text = movie.releaseDate?.take(4) ?: movie.firstAirDate?.take(4).toString()
+      binding.tvYear.text =
+        movie.releaseDate?.take(n = 4) ?: movie.firstAirDate?.take(n = 4).toString()
       binding.ratingBar.rating = (movie.voteAverage ?: 0F) / 2
 
       // image OnClickListener

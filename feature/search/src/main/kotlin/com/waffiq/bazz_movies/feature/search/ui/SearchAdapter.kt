@@ -13,12 +13,12 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
@@ -110,10 +110,9 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     setImageMovieTv(binding, data)
-    binding.tvYearReleased.text = data.releaseDate
-      ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-      ?: data.firstAirDate
-        ?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+    binding.tvYearReleased.text =
+      data.releaseDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+        ?: data.firstAirDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
         ?: view.context.getString(not_available)
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName

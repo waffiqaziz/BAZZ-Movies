@@ -11,11 +11,11 @@ import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagin
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.StatedResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse

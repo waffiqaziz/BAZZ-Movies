@@ -228,7 +228,6 @@ class UserRepositoryTest {
     coEvery { mockUserDataSource.createToken() } returns errorFlow
 
     val result = userRepository.createToken().first()
-    @Suppress("REMOVE_USE")
     assertTrue(result is Outcome.Error)
     result as Outcome.Error
     assertEquals(errorMessage, result.message)

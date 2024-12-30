@@ -16,7 +16,7 @@ class UserPreferenceMockTest {
 
   private lateinit var userPreference: UserPreference
   private lateinit var mockDataStore: DataStore<Preferences>
-  private lateinit var mockPreferences :Preferences
+  private lateinit var mockPreferences: Preferences
 
   @Before
   fun setup() {
