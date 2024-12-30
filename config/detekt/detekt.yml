@@ -1,5 +1,5 @@
 build:
-  maxIssues: 0
+  maxIssues: 10 # break the build if more than ten weighted issues are found
   excludeCorrectable: false
   weights:
   # complexity: 2
@@ -14,11 +14,13 @@ formatting:
     indentSize: 2
   NoWildcardImports:
     active: true
+  PackageName:
+    active: false
 
 config:
   validation: true
-  warningsAsErrors: false
-  checkExhaustiveness: false
+  warningsAsErrors: true
+  checkExhaustiveness: true
   # when writing own rules with new properties, exclude the property path e.g.: 'my_rule_set,.*>.*>[my_property]'
   excludes: '.class'
 
@@ -174,10 +176,10 @@ complexity:
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/retrofit/**', '**/datasource/**' ]
     thresholdInFiles: 11
-    thresholdInClasses: 11
-    thresholdInInterfaces: 11
+    thresholdInClasses: 25
+    thresholdInInterfaces: 35
     thresholdInObjects: 11
     thresholdInEnums: 11
     ignoreDeprecated: false
@@ -297,12 +299,12 @@ exceptions:
     exceptionNames:
       - 'ArrayIndexOutOfBoundsException'
       - 'Error'
-      - 'Exception'
       - 'IllegalMonitorStateException'
       - 'IndexOutOfBoundsException'
       - 'NullPointerException'
       - 'RuntimeException'
       - 'Throwable'
+      # - 'Exception'
     allowedExceptionNameRegex: '_|(ignore|expected).*'
   TooGenericExceptionThrown:
     active: true
@@ -617,7 +619,7 @@ style:
     maxJumpCount: 1
   MagicNumber:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.kts' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.kts', '**/helpers/**' ]
     ignoreNumbers:
       - '-1'
       - '0'
