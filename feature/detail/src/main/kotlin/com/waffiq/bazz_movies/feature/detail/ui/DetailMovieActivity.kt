@@ -59,6 +59,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
@@ -496,10 +497,9 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun showRatingUserLogin(state: Stated) {
-    binding.tvScoreYourScore.text = if (state.rated.toString() == "false") {
-      getString(not_available)
-    } else {
-      state.rated.toString().replace("{value=", "").replace("}", "")
+    binding.tvScoreYourScore.text = when (val rating = state.rated) {
+      is Rated.Unrated -> getString(not_available)
+      is Rated.Value -> rating.value.toString()
     }
   }
 

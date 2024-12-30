@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.retrofit
+package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import retrofit2.Response

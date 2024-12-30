@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
