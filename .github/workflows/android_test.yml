@@ -36,6 +36,9 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Check Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
