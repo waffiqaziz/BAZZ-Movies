@@ -7,13 +7,15 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
+
+  @Suppress("LongMethod")
   override fun apply(target: Project) {
     with(target) {
       with(pluginManager) {
         apply("com.android.application")
         apply("org.jetbrains.kotlin.android")
         apply("com.dropbox.dependency-guard")
-        apply("io.gitlab.arturbosch.detekt")
+        apply("bazzmovies.detekt")
       }
       extensions.configure<ApplicationExtension> {
         configureKotlinAndroid(this)

@@ -11,10 +11,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
+import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class TrendingAdapter(private val navigator: INavigator) :

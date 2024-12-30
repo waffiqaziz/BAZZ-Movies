@@ -86,7 +86,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel password isBlank`() {
+  fun `test UserModel edge case password isBlank`() {
     val user = UserModel(
       userId = 5,
       name = "Test User",
@@ -105,7 +105,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge cases`() {
+  fun `test UserModel edge cases empty`() {
     // Empty Strings for required fields
     val emptyUser = UserModel(
       userId = 0,
@@ -126,8 +126,10 @@ class UserModelTest {
     assertEquals("", emptyUser.region)
     assertEquals("", emptyUser.token)
     assertFalse(emptyUser.isLogin)
+  }
 
-    // Very large userId
+  @Test
+  fun `test UserModel edge cases large userId`() {
     val largeIdUser = UserModel(
       userId = Int.MAX_VALUE,
       name = "Max User",
@@ -141,8 +143,10 @@ class UserModelTest {
     )
 
     assertEquals(Int.MAX_VALUE, largeIdUser.userId)
+  }
 
-    // Special Characters in Strings
+  @Test
+  fun `test UserModel edge cases special Characters`() {
     val specialCharUser = UserModel(
       userId = 5,
       name = "John@Doe",
@@ -162,8 +166,10 @@ class UserModelTest {
     assertEquals("tok#en$123", specialCharUser.token)
     assertEquals("!hash*special", specialCharUser.gravatarHast)
     assertEquals("https://example.com/@vatar?special=chars", specialCharUser.tmdbAvatar)
+  }
 
-    // Null values with optional fields
+  @Test
+  fun `test UserModel edge cases null values with optional fields`() {
     val nullFieldsUser = UserModel(
       userId = 6,
       name = "Null Tester",
@@ -178,8 +184,10 @@ class UserModelTest {
 
     assertNull(nullFieldsUser.gravatarHast)
     assertNull(nullFieldsUser.tmdbAvatar)
+  }
 
-    // Empty fields with spaces
+  @Test
+  fun `test UserModel edge cases empty fields with spaces`() {
     val spaceUser = UserModel(
       userId = 7,
       name = "   ",

@@ -157,9 +157,13 @@ object ReleaseDateHelper {
     val filteredSeasons = data.listSeasonsItem?.filter { it?.name?.startsWith("Season ") == true }
     val years = filteredSeasons?.mapNotNull { it?.airDate?.take(YEAR)?.toIntOrNull() }
 
-    return if (years.isNullOrEmpty()) ""
-    else if (filteredSeasons.size > 1) "${years.minOrNull()}-${years.maxOrNull()}"
-    else years.first().toString()
+    return if (years.isNullOrEmpty()) {
+      ""
+    } else if (filteredSeasons.size > 1) {
+      "${years.minOrNull()}-${years.maxOrNull()}"
+    } else {
+      years.first().toString()
+    }
   }
 
   /**

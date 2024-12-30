@@ -219,7 +219,6 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun applyWindowInsetsListener() {
-
     val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (isLandscape) {

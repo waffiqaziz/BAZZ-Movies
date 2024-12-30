@@ -106,17 +106,22 @@ class TvSeriesFragment : Fragment() {
   private fun showActualData() {
     binding.apply {
       if (rvPopular.adapter != popularAdapter) rvPopular.setupLoadState(popularAdapter)
-      if (rvAiringToday.adapter != airingTodayAdapter) rvAiringToday.setupLoadState(
-        airingTodayAdapter
-      )
-      if (rvAiringThisWeek.adapter != airingThisWeekAdapter) rvAiringThisWeek.setupLoadState(
-        airingThisWeekAdapter
-      )
+      if (rvAiringToday.adapter != airingTodayAdapter) {
+        rvAiringToday.setupLoadState(
+          airingTodayAdapter
+        )
+      }
+      if (rvAiringThisWeek.adapter != airingThisWeekAdapter) {
+        rvAiringThisWeek.setupLoadState(
+          airingThisWeekAdapter
+        )
+      }
       if (rvTopRated.adapter != topRatedAdapter) rvTopRated.setupLoadState(topRatedAdapter)
     }
   }
 
   private fun setData(region: String) {
+    refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
       onLoading = { showShimmer() },
@@ -170,7 +175,9 @@ class TvSeriesFragment : Fragment() {
       getString(no_series_airing_this_week, Locale("", region).displayCountry),
       binding.layoutNoAiringThisWeek
     )
+  }
 
+  private fun refreshHandle() {
     // refresh whe swipe down
     binding.swipeRefresh.setOnRefreshListener {
       popularAdapter.refresh()

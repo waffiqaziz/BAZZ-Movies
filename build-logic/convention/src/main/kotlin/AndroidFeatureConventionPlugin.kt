@@ -11,6 +11,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       pluginManager.apply {
         apply("bazzmovies.android.library")
         apply("bazzmovies.hilt")
+        apply("bazzmovies.detekt")
       }
       extensions.configure<LibraryExtension> {
         configureCommonAndroidSettings(this)

@@ -96,6 +96,8 @@
 
   <!-- DETAIL MOVIE/TV -->
   <string name="yt_not_installed">Youtube App Not Installed</string>
+  <string name="security_error">Security error when trying open Youtube App</string>
+  <string name="invalid_url">Invalid URL</string>
   <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
   <string name="_divider">|</string>
   <string name="overview">Overview</string>

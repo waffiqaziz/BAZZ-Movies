@@ -14,12 +14,12 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toDetailMovie
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toDetailTv
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toMovieTvCredits
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

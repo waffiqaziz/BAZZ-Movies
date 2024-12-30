@@ -8,11 +8,11 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.StatedResp
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.cast_crew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detail_movie_tv.video_media.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
@@ -188,7 +188,7 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int
   ): Response<MovieTvCreditsResponse>
 
-  @GET("3/movie/{movieId}?language=en-US&append_to_response=release_dates")
+  @GET("3/movie/{movieId}?language=en-US&append_to_response=releasedates")
   suspend fun getDetailMovie(
     @Path("movieId") movieId: Int
   ): Response<DetailMovieResponse>

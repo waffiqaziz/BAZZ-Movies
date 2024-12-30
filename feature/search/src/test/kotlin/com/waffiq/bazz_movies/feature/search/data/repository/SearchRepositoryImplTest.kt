@@ -91,7 +91,7 @@ class SearchRepositoryImplTest {
     val resultFlow = repository.getPagingSearch(QUERY)
     // act & assert: Collect the flow and check the results
     resultFlow.test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 

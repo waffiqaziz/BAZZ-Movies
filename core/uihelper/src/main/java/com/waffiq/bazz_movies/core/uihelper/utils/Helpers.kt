@@ -21,8 +21,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
 import kotlin.collections.forEach
 
 object Helpers {
+
+  @Suppress("WrongConstant")
   fun justifyTextView(textView: TextView) {
-    @Suppress("WrongConstant")
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       textView.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

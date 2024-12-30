@@ -95,8 +95,5 @@ class UserPrefInteractorTest {
     verify { mockRepository.getUserToken() }
   }
 
-  /*
-   TODO : Create other tests for `saveRegionPref`, `saveUserPref`, and `removeUserDataPref` in
-         `UserPrefInteractor`
-  */
+  // TODO : Create other tests for `saveRegionPref`, `saveUserPref`, and `removeUserDataPref` for `UserPrefInteractor`
 }

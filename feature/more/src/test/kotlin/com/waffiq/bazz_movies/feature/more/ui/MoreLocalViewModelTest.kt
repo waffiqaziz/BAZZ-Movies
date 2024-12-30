@@ -55,9 +55,11 @@ class MoreLocalViewModelTest {
 
     // Assert
     verify {
-      observer.onChanged(match {
-        it.getContentIfNotHandled() == expectedResult
-      })
+      observer.onChanged(
+        match {
+          it.getContentIfNotHandled() == expectedResult
+        }
+      )
     }
 
     // Cleanup
@@ -75,9 +77,11 @@ class MoreLocalViewModelTest {
     testDispatcher.scheduler.advanceUntilIdle()
 
     verify {
-      observer.onChanged(match {
-        it.getContentIfNotHandled() == expectedError
-      })
+      observer.onChanged(
+        match {
+          it.getContentIfNotHandled() == expectedError
+        }
+      )
     }
 
     viewModel.dbResult.removeObserver(observer)

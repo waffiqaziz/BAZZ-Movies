@@ -58,7 +58,7 @@ class MultiSearchInteractorTest {
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
     multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
@@ -100,7 +100,7 @@ class MultiSearchInteractorTest {
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
     multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
@@ -132,7 +132,7 @@ class MultiSearchInteractorTest {
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
     multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
@@ -170,7 +170,7 @@ class MultiSearchInteractorTest {
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
     multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
@@ -208,7 +208,7 @@ class MultiSearchInteractorTest {
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
     multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()// Collect first item
+      val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 

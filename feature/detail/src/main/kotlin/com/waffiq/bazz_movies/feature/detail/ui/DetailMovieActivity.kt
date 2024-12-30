@@ -44,6 +44,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
+import com.waffiq.bazz_movies.core.designsystem.R.string.invalid_url
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
@@ -52,6 +53,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available_full
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
+import com.waffiq.bazz_movies.core.designsystem.R.string.security_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
@@ -93,6 +95,7 @@ import javax.inject.Inject
 import kotlin.text.isBlank
 import kotlin.text.isEmpty
 
+@Suppress("TooManyFunctions")
 @AndroidEntryPoint
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -236,13 +239,15 @@ class DetailMovieActivity : AppCompatActivity() {
     getDetailBasedMediaType()
 
     // show detail data based media type
-    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) observeDetailMovie()
-    else if (dataExtra.mediaType == TV_MEDIA_TYPE) observeDetailTv()
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
+      observeDetailMovie()
+    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) observeDetailTv()
   }
 
   private fun getDetailBasedMediaType() {
-    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) getDetailMovie()
-    else if (dataExtra.mediaType == TV_MEDIA_TYPE) getDetailTv()
+    if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
+      getDetailMovie()
+    } else if (dataExtra.mediaType == TV_MEDIA_TYPE) getDetailTv()
   }
 
   // show data (backdrop, poster, title, released year, media type, and overview) based @params DATA_EXTRA
@@ -501,23 +506,23 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun btnTrailer(link: String) {
     binding.ibPlay.setOnClickListener {
       try {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("$YOUTUBE_LINK_VIDEO$link")
-        startActivity(intent)
+        startActivity(
+          Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("$YOUTUBE_LINK_VIDEO$link")
+          }
+        )
       } catch (e: ActivityNotFoundException) {
         Log.e(TAG, "YouTube app not installed", e)
-        snackBarWarning(
-          binding.coordinatorLayout,
-          null,
-          getString(yt_not_installed)
-        )
+        snackBarWarning(binding.coordinatorLayout, null, getString(yt_not_installed))
+      } catch (e: SecurityException) {
+        Log.e(TAG, "SecurityException while trying to start activity", e)
+        snackBarWarning(binding.coordinatorLayout, null, getString(security_error))
+      } catch (e: IllegalArgumentException) {
+        Log.e(TAG, "Invalid URL format: $link", e)
+        snackBarWarning(binding.coordinatorLayout, null, getString(invalid_url))
       } catch (e: Exception) {
         Log.e(TAG, "Unknown error occurred while trying to play video", e)
-        snackBarWarning(
-          binding.coordinatorLayout,
-          null,
-          getString(unknown_error)
-        )
+        snackBarWarning(binding.coordinatorLayout, null, getString(unknown_error))
       }
     }
   }

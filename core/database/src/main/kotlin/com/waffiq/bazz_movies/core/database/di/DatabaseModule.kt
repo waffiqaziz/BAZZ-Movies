@@ -23,7 +23,8 @@ class DatabaseModule {
   fun provideDatabase(@ApplicationContext context: Context): FavoriteDatabase =
     Room.databaseBuilder(
       context,
-      FavoriteDatabase::class.java, "$TABLE_NAME.db"
+      FavoriteDatabase::class.java,
+      "$TABLE_NAME.db"
     ).addMigrations(migrationOneTwo)
       .build()
 
@@ -49,7 +50,7 @@ class DatabaseModule {
                 is_favorited INTEGER NOT NULL,
                 is_watchlist INTEGER NOT NULL
             )
-          """.trimIndent()
+        """.trimIndent()
       )
 
       // Step 2: Copy data from the old table to the new table
@@ -70,7 +71,7 @@ class DatabaseModule {
                    COALESCE(is_favorited, 0) AS is_favorited, 
                    COALESCE(is_watchlist, 0) AS is_watchlist
             FROM $TABLE_NAME
-          """.trimIndent()
+        """.trimIndent()
       )
 
       // Step 3: Drop the old table

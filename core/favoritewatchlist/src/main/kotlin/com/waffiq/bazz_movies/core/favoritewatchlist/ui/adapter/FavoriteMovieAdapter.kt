@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter
 
 import android.R.anim.fade_in
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -45,26 +46,32 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
 
     fun bind(resultItem: ResultItem) {
       data = resultItem
-      binding.ivPicture.contentDescription =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
       setImagePoster(binding, data)
-      binding.tvTitle.text =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
-        dateFormatterStandard(it)
-      } ?: itemView.context.getString(not_available)
-      binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-        ?: itemView.context.getString(not_available)
-      binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
-
-      (DecimalFormat("#.#").format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
-        binding.tvRating.text = it
-      }
+      setTitleYearGenreRating(binding, resultItem, itemView.context)
 
       // OnClickListener
       binding.container.setOnClickListener {
         navigator.openDetails(itemView.context, resultItem.copy(mediaType = MOVIE_MEDIA_TYPE))
       }
+    }
+  }
+
+  private fun setTitleYearGenreRating(
+    binding: ItemMulmedBinding,
+    resultItem: ResultItem,
+    context: Context
+  ) {
+    binding.tvTitle.text =
+      resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+    binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
+      dateFormatterStandard(it)
+    } ?: context.getString(not_available)
+    binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
+      ?: context.getString(not_available)
+    binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
+
+    (DecimalFormat("#.#").format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
+      binding.tvRating.text = it
     }
   }
 
@@ -82,6 +89,9 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
       .transition(withCrossFade())
       .error(ic_poster_error)
       .into(binding.ivPicture)
+
+    binding.ivPicture.contentDescription =
+      data.name ?: data.title ?: data.originalTitle ?: data.originalName
   }
 
   companion object {

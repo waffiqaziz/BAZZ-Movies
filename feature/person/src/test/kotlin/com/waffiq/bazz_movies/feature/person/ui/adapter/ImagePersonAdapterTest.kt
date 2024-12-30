@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.ui.adapter
 
-
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
@@ -70,7 +69,6 @@ class ImagePersonAdapterTest {
     // Check animation (we're ensuring the animation was set on the itemView)
     assertNotNull(viewHolder.itemView.animation)
   }
-
 
   @Test
   fun `setImage should update list and notify adapter`() {

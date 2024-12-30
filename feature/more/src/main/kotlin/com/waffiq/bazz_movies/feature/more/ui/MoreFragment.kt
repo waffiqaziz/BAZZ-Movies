@@ -179,7 +179,6 @@ class MoreFragment : Fragment() {
   }
 
   private fun dialogSignOutLoggedIn(sessionId: String) {
-
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_logged_user))

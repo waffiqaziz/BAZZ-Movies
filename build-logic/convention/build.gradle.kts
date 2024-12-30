@@ -21,10 +21,11 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
   compileOnly(libs.android.gradlePlugin)
-  compileOnly(libs.kotlin.gradlePlugin)
   compileOnly(libs.android.tools.common)
+  compileOnly(libs.detekt.gradlePlugin)
   compileOnly(libs.firebase.crashlytics.gradlePlugin)
   compileOnly(libs.firebase.performance.gradlePlugin)
+  compileOnly(libs.kotlin.gradlePlugin)
   compileOnly(libs.ksp.gradlePlugin)
   compileOnly(libs.room.gradlePlugin)
 }
@@ -77,6 +78,10 @@ gradlePlugin {
     register("jvmLibrary") {
       id = "bazzmovies.jvm.library"
       implementationClass = "JvmLibraryConventionPlugin"
+    }
+    register("kotlinDetekt") {
+      id = "bazzmovies.detekt"
+      implementationClass = "DetektConventionPlugin"
     }
   }
 }

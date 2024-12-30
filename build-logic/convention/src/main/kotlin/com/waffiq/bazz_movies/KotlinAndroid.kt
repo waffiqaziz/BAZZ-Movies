@@ -53,6 +53,7 @@ internal fun Project.configureKotlinJvm() {
 /**
  * Configure base Kotlin options
  */
+@Suppress("ComplexCondition")
 private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin() = configure<T> {
   // Treat all Kotlin warnings as errors (disabled by default)
   // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
@@ -68,7 +69,11 @@ private inline fun <reified T : KotlinTopLevelExtension> Project.configureKotlin
     allWarningsAsErrors = warningsAsErrors.toBoolean()
 
     // Directly adding to the freeCompilerArgs list
-    if (project.path != ":core:model" && project.path != ":core:data") {
+    if (project.path != ":core:domain" &&
+      project.path != ":core:data" &&
+      project.path != ":core:common" &&
+      project.path != ":core:mappers"
+    ) {
       freeCompilerArgs.addAll(
         listOf(
           // Enable experimental coroutines APIs, including Flow
