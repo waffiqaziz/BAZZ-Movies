@@ -56,12 +56,33 @@ module.
 
 ## Types of modules in BAZZ Movies
 
-![Diagram showing types of modules and their dependencies in Now in Android](/docs/Modularization.drawio.svg "Diagram showing types of modules and their dependencies in BAZZ Movies")
+Basically BAZZ Movies using [feature modules](https://developer.android.com/topic/modularization/patterns#feature-modules),
+which each module has their layer(ui, domain, and data), but also for shared logic we created shared 
+module for each of them. Each feature module has pattern like below:
+
+![Diagram Feature Module](/docs/architecture.png)
+1. **Data Layer**
+   - Depends on the Domain layer.Responsible for communicating with the Database or Remote.
+      - **Data Source**: Write about Local(Room..), Remote(Retrofit..) etc.
+      - **Repository(implements)**: Write an implementation of the repository interface of the Domain Layer. Write a code to communicate with Remote.
+      - **Data Model**: Create a DTO to be used in the Repository
+      - **Mapper**: A class that converts the Data Model to an Domain Model.
+
+2. **Domain Layer**
+   - Consists purely of Kotlin code and has no dependencies on other layers or Android. Usecase and Repository interface, Domain Model exist. 
+      - **Usecase**: The smallest unit of action
+      - **Repository(interface)**: Interface that defines the behavior of the repository.
+      - **Domain Model**: Definition of an object to be used in the project.
+
+3. **UI Layer**
+   - Handles processing for UI and has dependency on Domain Layer, View, ViewModel, Presenter, etc.
+   - Usecases of Domain Layer are injected into ViewModel through dependency injection ([Hilt](https://dagger.dev/hilt/)) to create business logic.
+
+and for overall modularization can see below:
+![Diagram showing types of modules and their dependencies in Now in Android](/docs/modularization.png "Diagram showing types of modules and their dependencies in BAZZ Movies")
 
 <hr>
 
-> *Note: This explanatory content is inspired by
-the [Now in Android](https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md)
+> *Note: This explanatory content is inspired by [Now in Android](https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md)
 by Google. For further insights and detailed examples of modularization, you can explore the
 repository directly.*
-
