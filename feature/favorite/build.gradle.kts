@@ -17,5 +17,5 @@ dependencies {
 
   // room
   implementation(libs.androidx.room.common)
-  ksp(libs.androidx.room.room.compiler)
+  ksp(libs.androidx.room.compiler)
 }

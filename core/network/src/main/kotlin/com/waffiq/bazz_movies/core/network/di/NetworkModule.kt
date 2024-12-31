@@ -9,9 +9,10 @@ import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_URL
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorOMDb
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorTMDB
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.CountryIPApiService
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.OMDbApiService
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.TMDBApiService
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.adapter.RatedResponseAdapter
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.CountryIPApiService
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.network.utils.common.Constants.COUNTRY_API_LINK
 import dagger.Module
 import dagger.Provides
@@ -42,6 +43,7 @@ class NetworkModule {
   @Provides
   fun provideMoshi(): Moshi {
     return Moshi.Builder()
+      .add(RatedResponseAdapter())
       .add(KotlinJsonAdapterFactory())
       .build()
   }

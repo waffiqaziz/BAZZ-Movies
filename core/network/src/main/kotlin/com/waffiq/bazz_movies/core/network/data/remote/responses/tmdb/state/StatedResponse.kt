@@ -1,9 +1,9 @@
-package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb
+package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = false)
+@JsonClass(generateAdapter = true)
 data class StatedResponse(
   @Json(name = "id")
   val id: Int,
@@ -12,7 +12,7 @@ data class StatedResponse(
   val favorite: Boolean,
 
   @Json(name = "rated")
-  val rated: Any,
+  val ratedResponse: RatedResponse,
 
   @Json(name = "watchlist")
   val watchlist: Boolean,
