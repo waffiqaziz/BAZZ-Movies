@@ -43,11 +43,7 @@ class RatedResponseAdapter {
 
       is Boolean -> {
         // handle cases where `rated` is a boolean (e.g., false)
-        if (rated) {
-          RatedResponse.Unrated
-        } else {
-          RatedResponse.Unrated
-        }
+        RatedResponse.Unrated
       }
 
       else -> {
