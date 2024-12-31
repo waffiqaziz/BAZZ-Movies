@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MovieTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
@@ -20,6 +19,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Ima
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

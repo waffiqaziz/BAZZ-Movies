@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagi
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
@@ -23,6 +22,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Ima
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.network.di.IoDispatcher

@@ -8,6 +8,16 @@ build:
   # comments: 1
 
 formatting:
+  ArgumentListWrapping:
+    indentSize: 2
+  CommentWrapping:
+    indentSize: 2
+  KdocWrapping:
+    indentSize: 2
+  Wrapping:
+    indentSize: 2
+  FunctionSignature:
+    indentSize: 2
   Indentation:
     active: true
     autoCorrect: true
@@ -655,7 +665,7 @@ style:
     active: false
   MultilineRawStringIndentation:
     active: false
-    indentSize: 4
+    indentSize: 2
     trimmingMethods:
       - 'trimIndent'
       - 'trimMargin'
