@@ -15,6 +15,7 @@ import java.net.UnknownHostException
 object SafeApiCallHelper {
 
   private const val ERROR_CODE = 404
+  private const val TAG = "SafeApiCall"
 
   /**
    * Safely executes an API call, handling any exceptions and returning a wrapped result.
@@ -25,8 +26,8 @@ object SafeApiCallHelper {
    *                This function should return a [Response] object or null if no response is received.
    *
    * @return A [NetworkResult] wrapping the outcome of the network request:
-   *         - [NetworkResult.Success] if the API call is successful and the response body is not null.
-   *         - [NetworkResult.Error] if the API call fails due to an exception or null/unsuccessful response.
+   * - [NetworkResult.Success] if the API call is successful and the response body is not null.
+   * - [NetworkResult.Error] if the API call fails due to an exception or null/unsuccessful response.
    *
    * Exception Handling:
    * - [UnknownHostException]: Indicates a failure to resolve the server's hostname, likely due to network issues.
@@ -51,6 +52,7 @@ object SafeApiCallHelper {
           NetworkResult.Error("Bad Request")
         } else if (!errorBody.isNullOrEmpty()) {
           return NetworkResult.Error(
+            // handle an error to get the message error form response
             errorBody.let {
               try {
                 JSONObject(it).getString("status_message")
@@ -77,19 +79,19 @@ object SafeApiCallHelper {
         NetworkResult.Error("Received null response")
       }
     } catch (e: UnknownHostException) {
-      Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
+      Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Unable to resolve server hostname. Please check your internet connection.")
     } catch (e: SocketTimeoutException) {
-      Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
+      Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Connection timed out. Please try again.")
     } catch (e: HttpException) {
-      Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
+      Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Something went wrong")
     } catch (e: IOException) {
-      Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
+      Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Please check your network connection")
     } catch (e: Exception) {
-      Log.e("SafeApiCall", "An error occurred: ${e.message}", e)
+      Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Unknown error")
     }
   }
