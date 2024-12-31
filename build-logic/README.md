@@ -31,12 +31,13 @@ setup.
 Current list of convention plugins:
 
 - [`bazzmovies.android.application`](convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt)
+- [`bazzmovies.android.application.firebase`](convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt)
 - [`bazzmovies.android.feature`](convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt)
 - [`bazzmovies.android.library`](convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt)
-- [`bazzmovies.android.application.firebase`](convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt)
 - [`bazzmovies.android.lint`](convention/src/main/kotlin/AndroidLintConventionPlugin.kt)
 - [`bazzmovies.android.room`](convention/src/main/kotlin/AndroidRoomConventionPlugin.kt)
+- [`bazzmovies.detekt`](convention/src/main/kotlin/DetektConventionPlugin.kt)
+- [`bazzmovies.glide`](convention/src/main/kotlin/GlideConventionPlugin.kt)
 - [`bazzmovies.hilt`](convention/src/main/kotlin/HiltConventionPlugin.kt)
 - [`bazzmovies.hilt.test`](convention/src/main/kotlin/HiltTestConventionPlugin.kt)
-- [`bazzmovies.glide`](convention/src/main/kotlin/GlideConventionPlugin.kt)
 - [`bazzmovies.jvm.library`](convention/src/main/kotlin/JvmLibraryConventionPlugin.kt)
