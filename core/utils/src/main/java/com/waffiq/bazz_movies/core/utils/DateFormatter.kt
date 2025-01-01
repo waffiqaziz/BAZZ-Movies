@@ -11,7 +11,10 @@ object DateFormatter {
   fun dateFormatterStandard(date: String?): String {
     if (date.isNullOrEmpty()) return ""
     return try {
-      val oldFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+      val oldFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
+        // non-lenient, throw a ParseException if the input doesn't strictly match the expected format.
+        isLenient = false
+      }
       val newFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
       val parsedDate = oldFormatter.parse(date)
       parsedDate?.let { newFormatter.format(it) } ?: ""
