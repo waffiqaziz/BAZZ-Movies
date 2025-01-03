@@ -88,7 +88,6 @@ object GenreHelper {
     return genreCodeMap[genreName] ?: 0
   }
 
-  @Suppress("UNUSED")
   fun transformToGenreCode(data: List<String>): String {
     var temp = ""
 
@@ -99,8 +98,8 @@ object GenreHelper {
      *  used to get id genre
      */
     data.forEach { temp = temp + getGenreCode(it) + "|" } // using OR
-    temp = temp.dropLast(2)
-    return temp
+    temp = temp.dropLast(1)
+    return if (temp == "0") "" else temp
   }
 
   fun transformListGenreToJoinString(list: List<GenresItem>?): String? =
