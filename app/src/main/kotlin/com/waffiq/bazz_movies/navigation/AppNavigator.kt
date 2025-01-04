@@ -41,23 +41,10 @@ class AppNavigator @Inject constructor() : INavigator {
     ActivityCompat.startActivity(context, intent, options.toBundle())
   }
 
-  override fun openMainActivity(isGuest: Boolean, activity: Activity, context: Context) {
-    activity.startActivity(Intent(context, MainActivity::class.java))
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      activity.overrideActivityTransition(
-        OVERRIDE_TRANSITION_OPEN,
-        fade_in,
-        fade_out
-      )
-    } else {
-      @Suppress("DEPRECATION")
-      activity.overridePendingTransition(fade_in, fade_out)
-    }
-    if (isGuest) {
-      context.toastShort(ActivityCompat.getString(context, login_as_guest_successful))
-    } else {
-      context.toastShort(ActivityCompat.getString(context, login_as_user_successful))
-    }
+  override fun openMainActivity(context: Context) {
+    val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
+    val intent = Intent(context, MainActivity::class.java)
+    ActivityCompat.startActivity(context, intent, options.toBundle())
   }
 
   override fun openLoginActivity(context: Context) {

@@ -11,6 +11,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,6 +21,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
+import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
+import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.domain.UserModel
@@ -27,6 +30,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentS
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
@@ -171,8 +175,17 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun goToMainActivity(isGuest: Boolean) {
-    navigator.openMainActivity(isGuest, this@LoginActivity, this)
-
+    navigator.openMainActivity(this)
+    toastShort(
+      ActivityCompat.getString(
+        this,
+        if (isGuest) {
+          login_as_guest_successful
+        } else {
+          login_as_user_successful
+        }
+      )
+    )
     finishAffinity()
   }
 
