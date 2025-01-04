@@ -86,9 +86,10 @@ BAZZ Movies available downloaded via Google Play Store
 4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started)
 	 and [OMDb](https://www.omdbapi.com/apikey.aspx).
 5. Create or edit `local.properties` and put your API keys:
-	  ```properties
-		API_KEY = { TMDB_API_KEY }
-		API_KEY_OMDb = { OMDB_API_KEY }
+	  
+ 	  ```properties
+		TMDB_API_KEY = { TMDB_API_KEY }
+		OMDB_API_KEY = { OMDB_API_KEY }
 		```
 6. Build the project (`Ctrl + F9`).
 7. Run with your virtual or phone devices
