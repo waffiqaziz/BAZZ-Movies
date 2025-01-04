@@ -2,20 +2,14 @@ package com.waffiq.bazz_movies.navigation
 
 import android.R.anim.fade_in
 import android.R.anim.fade_out
-import android.app.Activity
-import android.app.Activity.OVERRIDE_TRANSITION_OPEN
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
-import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
 import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
