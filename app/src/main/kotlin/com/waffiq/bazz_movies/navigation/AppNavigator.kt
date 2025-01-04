@@ -2,20 +2,14 @@ package com.waffiq.bazz_movies.navigation
 
 import android.R.anim.fade_in
 import android.R.anim.fade_out
-import android.app.Activity
-import android.app.Activity.OVERRIDE_TRANSITION_OPEN
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
-import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
 import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
 import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
@@ -41,23 +35,10 @@ class AppNavigator @Inject constructor() : INavigator {
     ActivityCompat.startActivity(context, intent, options.toBundle())
   }
 
-  override fun openMainActivity(isGuest: Boolean, activity: Activity, context: Context) {
-    activity.startActivity(Intent(context, MainActivity::class.java))
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      activity.overrideActivityTransition(
-        OVERRIDE_TRANSITION_OPEN,
-        fade_in,
-        fade_out
-      )
-    } else {
-      @Suppress("DEPRECATION")
-      activity.overridePendingTransition(fade_in, fade_out)
-    }
-    if (isGuest) {
-      context.toastShort(ActivityCompat.getString(context, login_as_guest_successful))
-    } else {
-      context.toastShort(ActivityCompat.getString(context, login_as_user_successful))
-    }
+  override fun openMainActivity(context: Context) {
+    val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
+    val intent = Intent(context, MainActivity::class.java)
+    ActivityCompat.startActivity(context, intent, options.toBundle())
   }
 
   override fun openLoginActivity(context: Context) {
