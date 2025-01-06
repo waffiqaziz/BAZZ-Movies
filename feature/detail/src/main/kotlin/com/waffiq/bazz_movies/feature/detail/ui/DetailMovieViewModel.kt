@@ -10,7 +10,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue

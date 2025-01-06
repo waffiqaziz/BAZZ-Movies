@@ -20,8 +20,21 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
 import kotlin.collections.forEach
 
+/**
+ * A utility object that provides various helper functions for UI customization and behavior in an
+ * Android app. These helpers include [justifyTextView], [scrollActionBarBehavior], [animateColorChange],
+ * [setStatusBarColorWithAnimation], [animFadeOutLong], [setupRecyclerViewsWithSnap], and
+ * [setupRecyclerViewsWithSnapGridLayout].
+ */
 object Helpers {
 
+  /**
+   * Justifies the text in a [TextView] based on the Android version. It uses
+   * `LineBreaker.JUSTIFICATION_MODE_INTER_WORD` on Android Q and above, and
+   * `Layout.JUSTIFICATION_MODE_INTER_WORD` on Android O to P.
+   *
+   * @param textView The [TextView] whose text will be justified.
+   */
   @Suppress("WrongConstant")
   fun justifyTextView(textView: TextView) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -31,6 +44,15 @@ object Helpers {
     }
   }
 
+  /**
+   * Sets up a scroll listener to change the background color of the AppBarLayout and the status bar color
+   * based on the scroll position of the [NestedScrollView].
+   * This creates a smooth color transition effect when the user scrolls the content.
+   *
+   * @param window The [Window] where the status bar color will be modified.
+   * @param appBarLayout The [AppBarLayout] whose background color will change as the user scrolls.
+   * @param nestedScrollView The [NestedScrollView] that triggers the scroll behavior.
+   */
   fun Context.scrollActionBarBehavior(
     window: Window,
     appBarLayout: AppBarLayout,
@@ -49,22 +71,38 @@ object Helpers {
     )
   }
 
+  /**
+   * Animates the color change of the AppBarLayout based on the scroll percentage.
+   *
+   * @param appBarLayout The [AppBarLayout] whose background color will change.
+   * @param fromColor The starting color of the animation.
+   * @param toColor The ending color of the animation.
+   * @param percentage The scroll percentage that dictates the color interpolation.
+   */
   private fun animateColorChange(
     appBarLayout: AppBarLayout,
     fromColor: Int,
     toColor: Int,
     percentage: Float
   ) {
-    // Calculate the adjusted progress based on the percentage scrolled
+    // calculate the adjusted progress based on the percentage scrolled
     val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
 
-    // Calculate the interpolated color based on the adjusted progress
+    // calculate the interpolated color based on the adjusted progress
     val interpolatedColor = ArgbEvaluator().evaluate(adjustedProgress, fromColor, toColor) as Int
 
-    // Set the interpolated color as the background color of the AppBarLayout
+    // set the interpolated color as the background color of the AppBarLayout
     appBarLayout.setBackgroundColor(interpolatedColor)
   }
 
+  /**
+   * Animates the status bar color change based on the scroll percentage.
+   *
+   * @param window The [Window] whose status bar color will be animated.
+   * @param fromColor The starting color of the animation.
+   * @param toColor The ending color of the animation.
+   * @param percentage The scroll percentage that dictates the color interpolation.
+   */
   private fun setStatusBarColorWithAnimation(
     window: Window,
     fromColor: Int,
@@ -76,12 +114,25 @@ object Helpers {
     window.statusBarColor = interpolatedColor
   }
 
+  /**
+   * Returns a long-duration fade-out animation.
+   *
+   * @param context The [Context] used to load the animation.
+   * @return The [Animation] object with the specified duration.
+   */
   fun animFadeOutLong(context: Context): Animation {
     val animation = AnimationUtils.loadAnimation(context, fade_out)
     animation.duration = DEBOUNCE_VERY_LONG
     return animation
   }
 
+  /**
+   * Sets up a list of RecyclerViews with horizontal snap behavior using a [CustomSnapHelper].
+   * This enables smooth snapping of items when the user scrolls the RecyclerView.
+   *
+   * @param recyclerViews A list of [RecyclerView]s to apply the snap behavior.
+   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the RecyclerView.
+   */
   fun setupRecyclerViewsWithSnap(
     recyclerViews: List<RecyclerView>,
     layoutManager: LinearLayoutManager? = null
@@ -98,6 +149,14 @@ object Helpers {
     }
   }
 
+  /**
+   * Sets up a list of RecyclerViews with horizontal snap behavior using a [GridLayoutManager].
+   * This enables snapping with a grid layout configuration.
+   *
+   * @param n The number of columns in the grid layout (default is 2).
+   * @param recyclerViews A list of [RecyclerView]s to apply the snap behavior.
+   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the RecyclerView.
+   */
   fun setupRecyclerViewsWithSnapGridLayout(
     n: Int = 2,
     recyclerViews: List<RecyclerView>,

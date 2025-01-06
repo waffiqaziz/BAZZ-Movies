@@ -5,9 +5,25 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * Utility object that provides functions for formatting date strings into a human-readable format.
+ * It includes methods to handle standard date formats and ISO 8601 date strings.
+ *
+ * - [dateFormatterStandard] method takes a date string in the format "yyyy-MM-dd" and converts it to
+ *   a more readable format, "MMM dd, yyyy".
+ * - [dateFormatterISO8601] method takes an ISO 8601 formatted date string (e.g., "2025-01-06T15:30:00.000+0000")
+ *   and converts it to "MMM dd, yyyy".
+ */
 object DateFormatter {
   const val TAG = "DateFormatter"
 
+  /**
+   * Converts a date string in the format "yyyy-MM-dd" to the format "MMM dd, yyyy".
+   * This method ensures that the date is strictly parsed and handled accurately.
+   *
+   * @param date The date string in "yyyy-MM-dd" format to be parsed.
+   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
+   */
   fun dateFormatterStandard(date: String?): String {
     if (date.isNullOrEmpty()) return ""
     return try {
@@ -27,6 +43,14 @@ object DateFormatter {
     }
   }
 
+  /**
+   * Converts an ISO 8601 formatted date string (e.g., "2025-01-06T15:30:00.000+0000")
+   * to the format "MMM dd, yyyy".
+   * This method adjusts for the "Z" (UTC) and ensures the date is parsed and formatted correctly.
+   *
+   * @param date The ISO 8601 date string to be parsed.
+   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
+   */
   fun dateFormatterISO8601(date: String?): String {
     if (date.isNullOrEmpty()) return ""
     return try {

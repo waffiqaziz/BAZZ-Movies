@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import io.mockk.coEvery
 import io.mockk.mockk

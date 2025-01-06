@@ -3,10 +3,14 @@ package com.waffiq.bazz_movies.core.utils
 import com.waffiq.bazz_movies.core.domain.GenresItem
 
 /**
- * Used to retrieve genre names and codes.
+ * A utility object for handling movie and TV show genres.
+ * It includes functions to convert genre IDs to genre names and vice versa,
+ * as well as other transformations related to genre data.
  */
 @Suppress("MagicNumber")
 object GenreHelper {
+
+  // a map that associates genre IDs with genre names for movies and TV shows.
   private val genreNameMap = mapOf(
     // movie genres
     28 to "Action",
@@ -40,10 +44,19 @@ object GenreHelper {
     10768 to "War & Politics"
   )
 
+  // Private function to retrieve the genre name for a given genre ID.
+  // If no matching genre is found, it returns an empty string.
   private fun getGenreName(int: Int): String {
     return genreNameMap[int] ?: ""
   }
 
+  /**
+   * Transforms a list of genre IDs into a comma-separated string of genre names.
+   * It filters out empty genre names (for invalid genre IDs).
+   *
+   * @param data A list of genre IDs to be transformed.
+   * @return A string of genre names separated by commas.
+   */
   fun transformListGenreIdsToJoinName(data: List<Int>): String {
     return data
       .map { getGenreName(it) }
@@ -51,6 +64,7 @@ object GenreHelper {
       .joinToString(", ")
   }
 
+  // a map that associates genre names with their respective genre IDs for movies and TV shows.
   private val genreCodeMap = mapOf(
     // movie genres
     "Action" to 28,
@@ -84,10 +98,21 @@ object GenreHelper {
     "War & Politics" to 10768
   )
 
+  // Private function to retrieve the genre ID for a given genre name.
+  // If no matching genre is found, it returns 0.
   private fun getGenreCode(genreName: String): Int {
     return genreCodeMap[genreName] ?: 0
   }
 
+  /**
+   * Transforms a list of genre names into a string of genre IDs.
+   * The genre IDs are joined by a pipe ("|") for use in queries (OR condition).
+   *
+   * A comma (",") is treated as an AND operator, and pipes ("|") represent OR in the context of genre queries.
+   *
+   * @param data A list of genre names to be transformed into genre IDs.
+   * @return A string of genre IDs joined by a pipe ("|"), or an empty string if no valid genre codes are found.
+   */
   fun transformToGenreCode(data: List<String>): String {
     var temp = ""
 
@@ -102,9 +127,21 @@ object GenreHelper {
     return if (temp == "0") "" else temp
   }
 
+  /**
+   * Transforms a list of `GenresItem` objects into a comma-separated string of genre names.
+   *
+   * @param list A list of `GenresItem` objects, each containing a genre name.
+   * @return A comma-separated string of genre names, or null if the list is null.
+   */
   fun transformListGenreToJoinString(list: List<GenresItem>?): String? =
     list?.map { it.name }?.joinToString(separator = ", ")
 
+  /**
+   * Transforms a list of `GenresItem` objects into a list of genre IDs.
+   *
+   * @param list A list of `GenresItem` objects, each containing a genre ID.
+   * @return A list of genre IDs, or null if the list is null.
+   */
   fun transformToGenreIDs(list: List<GenresItem>?): List<Int>? =
     list?.map { it.id ?: 0 }
 }

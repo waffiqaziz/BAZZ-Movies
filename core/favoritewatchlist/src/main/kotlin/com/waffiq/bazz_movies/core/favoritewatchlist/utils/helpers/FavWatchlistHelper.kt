@@ -27,13 +27,36 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
- * Used for watchlist and favorite fragments
+ * A utility object that provides helper functions for managing favorite and watchlist items,
+ * as well as handling UI interactions like displaying snackbars and managing load states during paging.
  */
 object FavWatchlistHelper {
+
+  /**
+   * Returns the title for a given `ResultItem`. The function checks the following properties in order:
+   * - `name`
+   * - `title`
+   * - `originalTitle`
+   *
+   * If none of those properties are available, it defaults to "Item".
+   *
+   * @param item The `ResultItem` whose title is to be determined.
+   * @return The title of the item, or "Item" if no title is found.
+   */
   fun titleHandler(item: ResultItem): String {
     return item.name ?: item.title ?: item.originalTitle ?: "Item"
   }
 
+  /**
+   * Displays a Snackbar indicating that an item is already in the watchlist.
+   * The message is styled with bold text and a predefined message that includes the item's name.
+   *
+   * @param context The context in which the Snackbar is displayed.
+   * @param view The view to associate with the Snackbar.
+   * @param viewGuide A view to anchor the Snackbar to.
+   * @param eventMessage The message event to be displayed in the Snackbar.
+   * @return The Snackbar instance, or null if no content is available to display.
+   */
   fun snackBarAlreadyWatchlist(
     context: Context,
     view: View,
@@ -53,6 +76,16 @@ object FavWatchlistHelper {
     return mSnackbar
   }
 
+  /**
+   * Displays a Snackbar indicating that an item is already marked as a favorite.
+   * The message is styled with bold text and a predefined message that includes the item's name.
+   *
+   * @param context The context in which the Snackbar is displayed.
+   * @param view The view to associate with the Snackbar.
+   * @param viewGuide A view to anchor the Snackbar to.
+   * @param eventMessage The message event to be displayed in the Snackbar.
+   * @return The Snackbar instance, or null if no content is available to display.
+   */
   fun snackBarAlreadyFavorite(
     context: Context,
     view: View,
@@ -72,6 +105,24 @@ object FavWatchlistHelper {
     return mSnackbar
   }
 
+  /**
+   * Handles the paging load state for a PagingDataAdapter.
+   * Based on the load state, it shows or hides the progress bar, recycler view, error view, and empty view.
+   * The function listens to changes in the load state and updates the UI accordingly.
+   *
+   * - If the data is loading, it shows the progress bar and the recycler view.
+   * - If an error occurs during loading, it hides the progress bar and shows the error view.
+   * - If the end of the pagination is reached and there are no items, it shows the empty view.
+   * - Otherwise, it hides the progress bar and shows the recycler view (real data).
+   *
+   * @param adapterPaging The `PagingDataAdapter` that handles the data.
+   * @param loadStateFlow The flow of load states to monitor.
+   * @param recyclerView The `RecyclerView` that displays the data.
+   * @param progressBar The `ProgressBar` that shows when data is loading.
+   * @param errorView The view that shows when an error occurs.
+   * @param emptyView The view that shows when no data is available.
+   * @param onError A callback function to handle errors, passing the error message inside an `Event`.
+   */
   fun LifecycleOwner.handlePagingLoadState(
     adapterPaging: PagingDataAdapter<*, *>,
     loadStateFlow: Flow<CombinedLoadStates>,
