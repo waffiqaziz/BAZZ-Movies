@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.domain.di
 
-import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseInteractor
-import com.waffiq.bazz_movies.core.database.domain.usecase.local_database.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseInteractor
+import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

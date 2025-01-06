@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.database.domain.usecase.local_database
+package com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase
 
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
