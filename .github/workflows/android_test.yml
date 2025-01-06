@@ -64,7 +64,7 @@ jobs:
         run: ./gradlew detekt
 
   instrumentation_test:
-    needs: check
+    needs: detekt_checks
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true
@@ -136,7 +136,7 @@ jobs:
           path: '**/build/reports/androidTests/connected/'
 
   unit_test:
-    needs: check
+    needs: detekt_checks
     runs-on: ubuntu-latest
     permissions:
       contents: read
