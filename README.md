@@ -61,7 +61,7 @@ _BAZZ Movies use TMDB API, but not endorsed, certified, or approved by TMDB_
 
 ## 🌟 Features
 
-- Integrated with TMDB account
+- Integrated with [TMDB](https://themoviedb.org/) account
 - Save favorites and watchlist on local
 - Swipe action for easy to organize between favorite and watchlist
 - Guest session (no need to login)
@@ -78,21 +78,47 @@ BAZZ Movies available downloaded via Google Play Store
 
 ## 📝 Installation
 
-1. Install Android Studio.
-2. Clone the project.
+1. Make sure already install [Android Studio](https://developer.android.com/studio).
+2. Clone this project.
 3. (Optional)
-	 Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
-	 and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
+   Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
+   and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
 4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started)
-	 and [OMDb](https://www.omdbapi.com/apikey.aspx).
+   and [OMDb](https://www.omdbapi.com/apikey.aspx).
 5. Create or edit `local.properties` and put your API keys:
-	  
- 	  ```properties
-		TMDB_API_KEY = { TMDB_API_KEY }
-		OMDB_API_KEY = { OMDB_API_KEY }
-		```
+
+   ```
+   MDB_API_KEY = { TMDB_API_KEY }
+   OMDB_API_KEY = { OMDB_API_KEY }
+   ```
+
 6. Build the project (`Ctrl + F9`).
 7. Run with your virtual or phone devices
+
+## 🧪 Testing
+
+We use testing to ensure the stability and quality of our code. Here’s how you can run different
+types of tests in the project:
+
+1. **Unit Tests (Still in Progress)**
+
+   For unit tests, you can easily run them with the following command:
+   ```
+   ./gradlew test
+   ```
+   This will execute all the unit tests in the project to ensure everything is functioning as
+   expected. Tests are also automatically run on GitHub Actions with each push or pull request, so
+   you can see if everything is passing directly in the GitHub interface.
+
+2. **UI Tests (Still in Progress)**
+
+   While we’re still working on Android UI test coverage, you can run some of the Android-specific
+   tests that are available using:
+   ```
+   ./gradlew connectedAndroidTest
+   ```
+   This command runs the tests on a connected Android device or emulator. Keep in mind that this is
+   still a work in progress, so we may not have full test coverage just yet.
 
 ## 🛠️ Architecture
 
@@ -131,15 +157,15 @@ This application is released under the [Apache Version 2.0 License](LICENSE).
 ### Third-Party Libraries
 
 1. TMDB API: Provides movie and TV data.
-	 See [TMDB Terms](https://www.themoviedb.org/api-terms-of-use).
+   See [TMDB Terms](https://www.themoviedb.org/api-terms-of-use).
 2. OMDb API: RESTful service for movie info. See [OMDb Terms](https://www.omdbapi.com/legal.htm).
 3. GLide: Image loading library - [GitHub](https://github.com/bumptech/glide).
 4. ExpandableTextView: An expandable Android
-	 TextView - [GitHub](https://github.com/glailton/ExpandableTextView).
+   TextView - [GitHub](https://github.com/glailton/ExpandableTextView).
 5. Shimmer Android: Library shimmering
-	 effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
+   effects - [GitHub](https://github.com/facebookarchive/shimmer-android)
 6. Country Picker Android: (Apache
-	 2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
+   2.0) - [GitHub](https://github.com/waffiqaziz/country-picker-android).
 7. okhttp, retrofit, moshi: (Apache 2.0) - [GitHub](https://github.com/square).
 8. country: IP-to-country geolocation API - [Github](https://github.com/hakanensari/country).
 
