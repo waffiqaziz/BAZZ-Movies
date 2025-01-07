@@ -40,33 +40,33 @@ object SafeApiCallHelper {
     performApiCall(apiCall)
 
   private fun <T> processApiResponse(response: retrofit2.Response<T>?): NetworkResult<T> {
-    return if (response != null) {
-      if (response.isSuccessful) {
-        // if the response is successful but the body is null, return Error
-        response.body()?.let {
-          NetworkResult.Success(it)
-        } ?: NetworkResult.Error("Response body is null")
+    if (response == null) return NetworkResult.Error("No response received from the server")
+
+    if (response.isSuccessful) {
+      val responseBody = response.body()
+      return if (responseBody != null) {
+        NetworkResult.Success(responseBody)
       } else {
-        val errorBody = response.errorBody()?.string()
-        if (response.code() == ERROR_CODE) {
-          NetworkResult.Error("Bad Request")
-        } else if (!errorBody.isNullOrEmpty()) {
-          return NetworkResult.Error(
-            // handle an error to get the message error form response
-            errorBody.let {
-              try {
-                JSONObject(it).getString("status_message")
-              } catch (e: JSONException) {
-                e.toString()
-              }
-            } ?: "Error in fetching data"
-          )
-        } else {
-          NetworkResult.Error(response.errorBody()?.string() ?: "Unknown error")
-        }
+        NetworkResult.Error("Response received but body is null")
       }
-    } else {
-      NetworkResult.Error("Error in fetching data")
+    }
+
+    // handle error responses
+    val errorBody = response.errorBody()?.string()
+    return when {
+      response.code() == ERROR_CODE -> NetworkResult.Error("Invalid request (400)")
+      !errorBody.isNullOrEmpty() -> parseErrorBody(errorBody)
+      else -> NetworkResult.Error("Server error: No error details provided")
+    }
+  }
+
+  private fun parseErrorBody(errorBody: String): NetworkResult.Error {
+    return try {
+      val errorMessage =
+        JSONObject(errorBody).optString("status_message", "Error details not available")
+      NetworkResult.Error(errorMessage)
+    } catch (e: JSONException) {
+      NetworkResult.Error("Malformed error response from the server")
     }
   }
 
@@ -76,7 +76,7 @@ object SafeApiCallHelper {
       if (response != null) {
         processApiResponse(response)
       } else {
-        NetworkResult.Error("Received null response")
+        NetworkResult.Error("No response from server")
       }
     } catch (e: UnknownHostException) {
       Log.e(TAG, "An error occurred: ${e.message}", e)
@@ -92,7 +92,7 @@ object SafeApiCallHelper {
       NetworkResult.Error("Please check your network connection")
     } catch (e: Exception) {
       Log.e(TAG, "An error occurred: ${e.message}", e)
-      NetworkResult.Error("Unknown error")
+      NetworkResult.Error("An unknown error occurred")
     }
   }
 }
