@@ -23,6 +23,7 @@ object ResultItemMapper {
     originalTitle = originalTitle,
     video = video == true,
     title = title,
-    releaseDate = releaseDate
+    releaseDate = releaseDate,
+    originCountry = originCountry
   )
 }
