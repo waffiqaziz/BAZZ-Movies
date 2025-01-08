@@ -1,9 +1,10 @@
-package com.waffiq.bazz_movies.feature.search.testutils
+package com.waffiq.bazz_movies.core.test
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 
-object HelperTest {
+object PagingDataHelperTest {
   class TestListCallback : ListUpdateCallback {
     override fun onChanged(position: Int, count: Int, payload: Any?) {
       /* unused */
@@ -27,6 +28,7 @@ object HelperTest {
       return oldItem == newItem
     }
 
+    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(
       oldItem: T & Any,
       newItem: T & Any
