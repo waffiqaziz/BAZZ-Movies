@@ -58,5 +58,8 @@ data class ResultItemResponse(
   val title: String? = null,
 
   @Json(name = "release_date")
-  val releaseDate: String? = null
+  val releaseDate: String? = null,
+
+  @Json(name = "origin_country")
+  val originCountry: List<String>? = null
 )

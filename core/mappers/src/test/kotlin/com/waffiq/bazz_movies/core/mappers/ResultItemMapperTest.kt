@@ -28,7 +28,8 @@ class ResultItemMapperTest {
       originalTitle = "Original Title",
       video = true,
       title = "Title",
-      releaseDate = "2023-12-01"
+      releaseDate = "2023-12-01",
+      originCountry = listOf("ID", "MY")
     )
 
     val resultItem = resultItemResponse.toResultItem()
@@ -51,6 +52,7 @@ class ResultItemMapperTest {
     assertEquals(true, resultItem.video)
     assertEquals("Title", resultItem.title)
     assertEquals("2023-12-01", resultItem.releaseDate)
+    assertEquals(listOf("ID", "MY"), resultItem.originCountry)
   }
 
   @Test
@@ -77,6 +79,7 @@ class ResultItemMapperTest {
     assertEquals(false, resultItem.video) // default value
     assertNull(resultItem.title)
     assertNull(resultItem.releaseDate)
+    assertNull(resultItem.originCountry)
   }
 
   @Test
@@ -99,7 +102,8 @@ class ResultItemMapperTest {
       originalTitle = "",
       video = false,
       title = "",
-      releaseDate = ""
+      releaseDate = "",
+      originCountry = emptyList()
     )
 
     val resultItem = resultItemResponse.toResultItem()
@@ -122,6 +126,7 @@ class ResultItemMapperTest {
     assertEquals(false, resultItem.video)
     assertEquals("", resultItem.title)
     assertEquals("", resultItem.releaseDate)
+    assertEquals(emptyList<String>(), resultItem.listGenreIds)
   }
 
   @Test
@@ -174,5 +179,6 @@ class ResultItemMapperTest {
     assertEquals("movie", resultItem.mediaType) // default value
     assertEquals(0, resultItem.id) // default value
     assertEquals(0, resultItem.voteCount) // default value
+    assertNull(resultItem.originCountry)
   }
 }
