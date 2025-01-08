@@ -40,8 +40,8 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
     layoutManager: RecyclerView.LayoutManager,
     targetView: View
   ): IntArray? {
-    // ensure the targetView is part of the RecyclerView and is a child of the RecyclerView
-    if (layoutManager.childCount == 0 || layoutManager.getPosition(targetView) == RecyclerView.NO_POSITION) {
+    // ensure the targetView is a child of the RecyclerView
+    if (layoutManager.childCount == 0) {
       return null
     }
 
