@@ -31,7 +31,7 @@ data class LastEpisodeToAirResponse(
   val seasonNumber: Int? = null,
 
   @Json(name = "episode_type")
-  val episodeType: Int? = null,
+  val episodeType: String? = null,
 
   @Json(name = "runtime")
   val runtime: Int? = null,
