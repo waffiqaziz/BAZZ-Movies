@@ -5,6 +5,7 @@ data class LastEpisodeToAir(
   val airDate: String? = null,
   val overview: String? = null,
   val episodeNumber: Int? = null,
+  val episodeType: String? = null,
   val showId: Int? = null,
   val voteAverage: Double? = null,
   val name: String? = null,
