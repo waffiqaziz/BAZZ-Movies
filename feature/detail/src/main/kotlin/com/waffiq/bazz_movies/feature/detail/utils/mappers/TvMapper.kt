@@ -100,6 +100,7 @@ object TvMapper {
     airDate = airDate,
     overview = overview,
     episodeNumber = episodeNumber,
+    episodeType = episodeType,
     showId = showId,
     voteAverage = voteAverage,
     name = name,
