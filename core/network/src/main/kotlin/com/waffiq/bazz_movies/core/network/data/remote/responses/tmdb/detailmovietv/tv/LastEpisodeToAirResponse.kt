@@ -30,6 +30,9 @@ data class LastEpisodeToAirResponse(
   @Json(name = "season_number")
   val seasonNumber: Int? = null,
 
+  @Json(name = "episode_type")
+  val episodeType: Int? = null,
+
   @Json(name = "runtime")
   val runtime: Int? = null,
 
