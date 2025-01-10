@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
@@ -11,12 +12,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
   @Suppress("LongMethod")
   override fun apply(target: Project) {
     with(target) {
-      with(pluginManager) {
-        apply("com.android.application")
-        apply("org.jetbrains.kotlin.android")
-        apply("com.dropbox.dependency-guard")
-        apply("bazzmovies.detekt")
-      }
+      apply(plugin = "com.android.application")
+      apply(plugin = "org.jetbrains.kotlin.android")
+      apply(plugin = "com.dropbox.dependency-guard")
+      apply(plugin = "bazzmovies.detekt")
+
       extensions.configure<ApplicationExtension> {
         configureKotlinAndroid(this)
         configureCommonAndroidSettings(this)

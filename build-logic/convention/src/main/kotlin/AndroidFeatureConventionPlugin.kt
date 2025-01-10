@@ -2,17 +2,16 @@ import com.android.build.gradle.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
-      pluginManager.apply {
-        apply("bazzmovies.android.library")
-        apply("bazzmovies.hilt")
-        apply("bazzmovies.detekt")
-      }
+      apply(plugin = "bazzmovies.android.library")
+      apply(plugin = "bazzmovies.hilt")
+      apply(plugin = "bazzmovies.detekt")
       extensions.configure<LibraryExtension> {
         configureCommonAndroidSettings(this)
         buildFeatures.viewBinding = true
