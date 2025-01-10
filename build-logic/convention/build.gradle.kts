@@ -40,47 +40,43 @@ tasks {
 gradlePlugin {
   plugins {
     register("androidApplication") {
-      id = "bazzmovies.android.application"
+      id = libs.plugins.bazzmovies.android.application.asProvider().get().pluginId
       implementationClass = "AndroidApplicationConventionPlugin"
     }
     register("androidLibrary") {
-      id = "bazzmovies.android.library"
+      id = libs.plugins.bazzmovies.android.library.get().pluginId
       implementationClass = "AndroidLibraryConventionPlugin"
     }
     register("androidFeature") {
-      id = "bazzmovies.android.feature"
+      id = libs.plugins.bazzmovies.android.feature.get().pluginId
       implementationClass = "AndroidFeatureConventionPlugin"
     }
     register("hilt") {
-      id = "bazzmovies.hilt"
+      id = libs.plugins.bazzmovies.hilt.asProvider().get().pluginId
       implementationClass = "HiltConventionPlugin"
     }
     register("hiltTest") {
-      id = "bazzmovies.hilt.test"
+      id = libs.plugins.bazzmovies.hilt.test.get().pluginId
       implementationClass = "HiltTestConventionPlugin"
     }
     register("ksp") {
-      id = "bazzmovies.glide"
+      id = libs.plugins.bazzmovies.glide.get().pluginId
       implementationClass = "GlideConventionPlugin"
     }
     register("androidRoom") {
-      id = "bazzmovies.android.room"
+      id = libs.plugins.bazzmovies.android.room.get().pluginId
       implementationClass = "AndroidRoomConventionPlugin"
     }
     register("androidFirebase") {
-      id = "bazzmovies.android.application.firebase"
+      id = libs.plugins.bazzmovies.android.application.firebase.get().pluginId
       implementationClass = "AndroidApplicationFirebaseConventionPlugin"
     }
-    register("androidLint") {
-      id = "bazzmovies.android.lint"
-      implementationClass = "AndroidLintConventionPlugin"
-    }
     register("jvmLibrary") {
-      id = "bazzmovies.jvm.library"
+      id = libs.plugins.bazzmovies.jvm.library.get().pluginId
       implementationClass = "JvmLibraryConventionPlugin"
     }
     register("kotlinDetekt") {
-      id = "bazzmovies.detekt"
+      id = libs.plugins.bazzmovies.detekt.get().pluginId
       implementationClass = "DetektConventionPlugin"
     }
   }

@@ -90,7 +90,6 @@ glide = "4.16.0"
 expandableTextView = "1.0.4"
 cpa = "0.1.2"
 shimmer = "0.5.0"
-recyclerviewVersion = "1.2.1"
 
 
 [libraries]
@@ -202,16 +201,15 @@ firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "per
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerviewVersion" }
 
 
 [plugins]
 # Core
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-android-test = { id = "com.android.test", version.ref = "agp" }
 
 # Google
 gms-googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
@@ -230,7 +228,6 @@ bazzmovies-android-application = { id = "bazzmovies.android.application" }
 bazzmovies-android-application-firebase = { id = "bazzmovies.android.application.firebase" }
 bazzmovies-android-library = { id = "bazzmovies.android.library" }
 bazzmovies-android-feature = { id = "bazzmovies.android.feature" }
-bazzmovies-android-core = { id = "bazzmovies.android.core" }
 bazzmovies-android-room = { id = "bazzmovies.android.room" }
 bazzmovies-detekt = { id = "bazzmovies.detekt" }
 bazzmovies-glide = { id = "bazzmovies.glide" }
