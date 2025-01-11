@@ -1,5 +1,5 @@
 plugins {
-  id("bazzmovies.android.feature")
+  alias(libs.plugins.bazzmovies.android.feature)
 }
 
 android.namespace = "com.waffiq.bazz_movies.feature.about"

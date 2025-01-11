@@ -1,9 +1,8 @@
 import org.gradle.kotlin.dsl.android
 import org.gradle.kotlin.dsl.libs
-
 plugins {
-  id("bazzmovies.android.library")
-  id("bazzmovies.hilt")
+  alias(libs.plugins.bazzmovies.android.library)
+  alias(libs.plugins.bazzmovies.hilt)
 }
 
 android.namespace = "com.waffiq.bazz_movies.core.user"

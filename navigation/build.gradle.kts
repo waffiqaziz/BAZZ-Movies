@@ -1,5 +1,5 @@
 plugins {
-  id("bazzmovies.android.library")
+  alias(libs.plugins.bazzmovies.android.library)
   id("bazzmovies.hilt")
 }
 

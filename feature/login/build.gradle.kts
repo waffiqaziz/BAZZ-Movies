@@ -2,7 +2,7 @@ import org.gradle.kotlin.dsl.android
 import org.gradle.kotlin.dsl.libs
 
 plugins {
-  id("bazzmovies.android.feature")
+  alias(libs.plugins.bazzmovies.android.feature)
   id("kotlin-parcelize")
 }
 
