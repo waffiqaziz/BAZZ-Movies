@@ -40,18 +40,25 @@ object SafeApiCallHelper {
     performApiCall(apiCall)
 
   private fun <T> processApiResponse(response: retrofit2.Response<T>?): NetworkResult<T> {
-    if (response == null) return NetworkResult.Error("No response received from the server")
+    return when {
+      response == null -> NetworkResult.Error("No response received from the server")
 
-    if (response.isSuccessful) {
-      val responseBody = response.body()
-      return if (responseBody != null) {
-        NetworkResult.Success(responseBody)
-      } else {
-        NetworkResult.Error("Response received but body is null")
+      response.isSuccessful -> {
+        val responseBody = response.body()
+        if (responseBody != null) {
+          NetworkResult.Success(responseBody)
+        } else {
+          NetworkResult.Error("Response received but body is null")
+        }
+      }
+
+      else -> {
+        handleErrorBody(response)
       }
     }
+  }
 
-    // handle error responses
+  private fun <T> handleErrorBody(response: retrofit2.Response<T>): NetworkResult.Error {
     val errorBody = response.errorBody()?.string()
     return when {
       response.code() == ERROR_CODE -> NetworkResult.Error("Invalid request (400)")
@@ -66,6 +73,7 @@ object SafeApiCallHelper {
         JSONObject(errorBody).optString("status_message", "Error details not available")
       NetworkResult.Error(errorMessage)
     } catch (e: JSONException) {
+      Log.e(TAG, "An error occurred:  ${e.message}")
       NetworkResult.Error("Malformed error response from the server")
     }
   }
