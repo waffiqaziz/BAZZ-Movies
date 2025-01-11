@@ -12,8 +12,8 @@ import java.util.TimeZone
  * Helper object to determine the user's region using SIM card information or default phone settings.
  *
  * [GetRegionHelper] provides a mechanism to detect the user's region based on the state of the SIM card
- * in the device's telephony system using [getNetworkLocation]. If no valid region can be derived from the SIM card, it falls back
- * to using the phone's locale settings.
+ * in the device's telephony system using [getNetworkLocation]. If no valid region can be derived
+ * from the SIM card, it falls back to using the phone's locale settings.
  */
 object GetRegionHelper {
 

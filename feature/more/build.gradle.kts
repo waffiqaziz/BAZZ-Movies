@@ -1,6 +1,6 @@
 plugins {
-  id("bazzmovies.android.feature")
-  id("bazzmovies.glide")
+  alias(libs.plugins.bazzmovies.android.feature)
+  alias(libs.plugins.bazzmovies.glide)
 }
 
 android.namespace = "com.waffiq.bazz_movies.feature.more"

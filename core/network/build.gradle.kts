@@ -3,8 +3,8 @@ import java.util.Properties
 import kotlin.apply
 
 plugins {
-  id("bazzmovies.android.library")
-  id("bazzmovies.hilt")
+  alias(libs.plugins.bazzmovies.android.library)
+  alias(libs.plugins.bazzmovies.hilt)
 }
 
 android {
