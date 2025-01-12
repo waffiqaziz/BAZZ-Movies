@@ -41,8 +41,6 @@ object SafeApiCallHelper {
 
   private fun <T> processApiResponse(response: retrofit2.Response<T>): NetworkResult<T> {
     return when {
-      false -> NetworkResult.Error("No response received from the server")
-
       response.isSuccessful -> {
         val responseBody = response.body()
         if (responseBody != null) {
