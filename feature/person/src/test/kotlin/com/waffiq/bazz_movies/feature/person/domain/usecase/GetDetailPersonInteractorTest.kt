@@ -110,7 +110,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getDetailPerson emits success`() = runTest {
+  fun getDetailPerson_emitsSuccess() = runTest {
     val flow = flowOf(Outcome.Success(detailPerson))
     coEvery { mockRepository.getDetailPerson(personId) } returns flow
 
@@ -144,7 +144,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getDetailPerson emits error`() = runTest {
+  fun getDetailPerson_emitsError() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getDetailPerson(personId) } returns flow
 
@@ -159,7 +159,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getKnownForPerson emits success`() = runTest {
+  fun getKnownForPerson_emitsSuccess() = runTest {
     val flow = flowOf(Outcome.Success(combinedCreditPerson))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
@@ -203,7 +203,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getKnownForPerson emits error`() = runTest {
+  fun getKnownForPerson_emitsError() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
@@ -218,7 +218,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getKnownForPerson sorts cast items by voteCount in descending order`() = runTest {
+  fun getKnownForPerson_sortsCastItemsByVoteCountDescending() = runTest {
     // Create a list of CastItem with varying voteCount values
     val castItems = listOf(
       castItem.copy(voteCount = 100, id = 1),
@@ -255,7 +255,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getImagePerson emits success`() = runTest {
+  fun getImagePerson_emitsSuccess() = runTest {
     val flow = flowOf(Outcome.Success(imagePerson))
     coEvery { mockRepository.getImagePerson(personId) } returns flow
 
@@ -284,7 +284,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getImagePerson emits error`() = runTest {
+  fun getImagePerson_emitsError() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getImagePerson(personId) } returns flow
 
@@ -299,7 +299,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getExternalIDPerson emits success`() = runTest {
+  fun getExternalIDPerson_emitsSuccess() = runTest {
     val flow = flowOf(Outcome.Success(externalIdPerson))
     coEvery { mockRepository.getExternalIDPerson(personId) } returns flow
 
@@ -330,7 +330,7 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
-  fun `getExternalIDPerson emits error`() = runTest {
+  fun getExternalIDPerson_emitsError() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getExternalIDPerson(personId) } returns flow
 

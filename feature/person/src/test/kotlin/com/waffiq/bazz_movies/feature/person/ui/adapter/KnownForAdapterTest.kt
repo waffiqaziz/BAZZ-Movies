@@ -35,7 +35,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun `setCast should update list and notify changes`() {
+  fun setCast_updatesListAndNotifiesChanges() {
     val oldList = listOf(CastItem(id = 1, name = "Old Cast"))
     val newList = listOf(
       CastItem(id = 2, name = "New Cast"),
@@ -51,7 +51,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun `onBindViewHolder should bind correct data`() {
+  fun onBindViewHolder_bindsCorrectData() {
     val castItem = CastItem(id = 1, name = "Test Name", character = "Bjorn")
     val context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme

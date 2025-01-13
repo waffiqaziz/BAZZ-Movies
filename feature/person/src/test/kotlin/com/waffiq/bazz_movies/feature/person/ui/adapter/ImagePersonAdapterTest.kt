@@ -36,7 +36,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun `onBindViewHolder should bind data and handle clicks`() {
+  fun onBindViewHolder_bindsDataAndHandlesClicks() {
     val context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies)
     }
@@ -71,7 +71,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun `setImage should update list and notify adapter`() {
+  fun setImage_updatesListAndNotifiesAdapter() {
     val initialProfiles = listOf(
       ProfilesItem(filePath = "/path1.jpg"),
       ProfilesItem(filePath = "/path2.jpg"),
