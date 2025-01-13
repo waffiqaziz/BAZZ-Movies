@@ -36,7 +36,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R]) // API 30+
-  fun `addPaddingWhenNavigationEnable should apply padding when button navigation is enabled on API 30 or higher`() {
+  fun addPaddingWhenNavigationEnabled_applyPadding_whenButtonNavigationEnabled_API30OrHigher() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns 0 // Simulate button navigation
 
@@ -53,7 +53,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R]) // Test on API 30+
-  fun `addPaddingWhenNavigationEnable should not apply padding when gesture navigation is enabled on API 30 or higher`() {
+  fun addPaddingWhenNavigationEnabled_noPadding_whenGestureNavigationEnabled_API30OrHigher() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns
       WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -71,7 +71,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R])
-  fun `isButtonNavigation Enabled should call ViewCompat setOnApplyWindowInsetsListener`() {
+  fun isButtonNavigationEnabled_callsViewCompatSetOnApplyWindowInsetsListener() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns 1
 
@@ -84,7 +84,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R])
-  fun `isButtonNavigation not enabled should not call ViewCompat setOnApplyWindowInsetsListener`() {
+  fun isButtonNavigationNotEnabled_doesNotCallViewCompatSetOnApplyWindowInsetsListener() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns
       WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -98,7 +98,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun `addPaddingWhenNavigationEnable should apply padding when button navigation is enabled on API 29 or lower`() {
+  fun addPaddingWhenNavigationEnabled_applyPadding_whenButtonNavigationEnabled_API29OrLower() {
     // set button navigation enabled
     shadowSettingsSecure.setSecureSetting("secure_gesture_navigation", 0)
     activity.addPaddingWhenNavigationEnable(view)
@@ -119,7 +119,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun `addPaddingWhenNavigationEnable should not apply padding when gesture navigation is enabled on API 29 or lower`() {
+  fun addPaddingWhenNavigationEnabled_noPadding_whenGestureNavigationEnabled_API29OrLower() {
     // set gesture navigation enabled
     shadowSettingsSecure.setSecureSetting("secure_gesture_navigation", 1)
     activity.addPaddingWhenNavigationEnable(view)

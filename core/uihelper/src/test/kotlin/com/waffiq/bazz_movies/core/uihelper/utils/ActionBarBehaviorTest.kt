@@ -43,7 +43,7 @@ class ActionBarBehaviorTest {
   @Test
   @Suppress("DEPRECATION")
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun `transparentStatusBar should use systemUI flags for API 29 and lower`() {
+  fun transparentStatusBar_useSystemUIFlagsForApi29AndLower() {
     window.transparentStatusBar()
 
     // verify that systemUiVisibility has the correct flags
@@ -56,7 +56,7 @@ class ActionBarBehaviorTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R])
-  fun `transparentStatusBar should use setDecorFitsSystemWindows for API 30 and above`() {
+  fun transparentStatusBar_useSetDecorFitsSystemWindowsForApi30AndAbove() {
     window.transparentStatusBar()
 
     // verify that setDecorFitsSystemWindows(false) was called on the window
@@ -68,13 +68,13 @@ class ActionBarBehaviorTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q, Build.VERSION_CODES.R])
-  fun `not called transparentStatusBar should use default color BLACK`() {
+  fun notCalledTransparentStatusBar_useDefaultColorBlack() {
     assertFalse(window.decorView.fitsSystemWindows)
     assertEquals(Color.BLACK, window.statusBarColor)
   }
 
   @Test
-  fun `handleOverHeightAppBar should update margins with insets`() {
+  fun handleOverHeightAppBar_updateMarginsWithInsets() {
     appBarLayout.layoutParams = ViewGroup.MarginLayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT,
       ViewGroup.LayoutParams.WRAP_CONTENT
