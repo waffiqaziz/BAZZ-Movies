@@ -10,6 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -36,6 +37,12 @@ class GetRegionHelperTest {
   fun setup() {
     every { context.resources } returns resources
     every { resources.configuration } returns configuration
+  }
+
+  @After
+  fun cleanup() {
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+    unmockkObject(TimeZoneHelper)
   }
 
   @Test
@@ -108,8 +115,6 @@ class GetRegionHelperTest {
     val expectedOutput = ""
     val actualOutput = GetRegionHelper.getLocation(context)
     assertEquals(expectedOutput, actualOutput)
-
-    unmockkObject(TimeZoneHelper)
   }
 
 
@@ -126,8 +131,6 @@ class GetRegionHelperTest {
     val expectedOutput = "us"
     val actualOutput = GetRegionHelper.getLocation(context)
     assertEquals(expectedOutput, actualOutput)
-
-    unmockkObject(TimeZoneHelper)
   }
 
   @Test
@@ -155,8 +158,6 @@ class GetRegionHelperTest {
     val expectedOutput = ""
     val actualOutput = GetRegionHelper.getLocation(context)
     assertEquals(expectedOutput, actualOutput)
-
-    unmockkObject(TimeZoneHelper)
   }
 
   @Test
