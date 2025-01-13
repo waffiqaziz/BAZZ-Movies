@@ -11,7 +11,7 @@ import org.junit.Test
 class PostMapperTest {
 
   @Test
-  fun `map PostResponse with success then Post should return success`() {
+  fun postResponse_withSuccess_returnsPostWithSuccess() {
     val postResponse = PostResponse(true, 200, "Success")
 
     val post = postResponse.toPost()
@@ -21,7 +21,7 @@ class PostMapperTest {
   }
 
   @Test
-  fun `map PostResponse with failed then Post should return failed`() {
+  fun postResponse_withFailure_returnsPostWithFailure() {
     val postResponse = PostResponse(false, 404, "Not Found")
 
     val post = postResponse.toPost()
@@ -31,7 +31,7 @@ class PostMapperTest {
   }
 
   @Test
-  fun `map PostResponse with null value then Post should return null`() {
+  fun postResponse_withNullValues_returnsPostWithNulls() {
     val postResponse = PostResponse(null, null, null)
 
     val post = postResponse.toPost()
@@ -41,7 +41,7 @@ class PostMapperTest {
   }
 
   @Test
-  fun `map PostResponse with empty message then Post should return empty`() {
+  fun postResponse_withEmptyMessage_returnsPostWithEmptyMessage() {
     val postResponse = PostResponse(true, 200, "")
 
     val post = postResponse.toPost()
@@ -51,7 +51,7 @@ class PostMapperTest {
   }
 
   @Test
-  fun `map PostResponse with blank message then Post should return blank`() {
+  fun postResponse_withBlankMessage_returnsPostWithBlankMessage() {
     val postResponse = PostResponse(true, 201, "  ")
 
     val post = postResponse.toPost()

@@ -11,7 +11,7 @@ import org.junit.Test
 class StateMapperTest {
 
   @Test
-  fun `map StatedResponse with valid rated value then Stated should return mapped values`() {
+  fun statedResponse_withValidRatedValue_returnsMappedValues() {
     val statedResponse = StatedResponse(
       id = 123,
       favorite = true,
@@ -28,7 +28,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with null rated value then Stated should return Unrated`() {
+  fun statedResponse_withNullRatedValue_returnsUnrated() {
     val statedResponse = StatedResponse(
       id = 456,
       favorite = false,
@@ -45,7 +45,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with rated as a string value then Stated should handle custom type`() {
+  fun statedResponse_withRatedAsStringValue_returnsMappedValues() {
     val statedResponse = StatedResponse(
       id = 789,
       favorite = true,
@@ -62,7 +62,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with rated as a complex object then Stated should handle it`() {
+  fun statedResponse_withRatedAsComplexObject_returnsMappedValues() {
     val complexRated = RatedResponse.Value(8.5)
     val statedResponse = StatedResponse(
       id = 321,
@@ -80,7 +80,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with extreme ID values`() {
+  fun statedResponse_withExtremeIdValues_returnsMappedValues() {
     val statedResponse = StatedResponse(
       id = Int.MAX_VALUE,
       favorite = true,
@@ -97,7 +97,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with zero ID`() {
+  fun statedResponse_withZeroId_returnsMappedValues() {
     val statedResponse = StatedResponse(
       id = 0,
       favorite = false,
@@ -114,7 +114,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with rated as boolean then Stated should handle boolean rating`() {
+  fun statedResponse_withRatedAsBoolean_returnsUnrated() {
     val statedResponse = StatedResponse(
       id = 111,
       favorite = true,
@@ -131,7 +131,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun `map StatedResponse with extreme boolean combinations`() {
+  fun statedResponse_withExtremeBooleanCombinations_returnsMappedValues() {
     val statedResponse = StatedResponse(
       id = 999,
       favorite = true,
@@ -147,4 +147,3 @@ class StateMapperTest {
     assertEquals(true, stated.watchlist)
   }
 }
-

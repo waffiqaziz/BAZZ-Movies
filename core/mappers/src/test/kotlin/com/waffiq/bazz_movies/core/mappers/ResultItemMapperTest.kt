@@ -9,7 +9,7 @@ import org.junit.Test
 class ResultItemMapperTest {
 
   @Test
-  fun `map ResultItemResponse with valid values then ResultItem should return mapped values`() {
+  fun resultItemResponse_withValidValues_returnsMappedResultItem() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "2023-12-01",
       overview = "This is an overview",
@@ -56,7 +56,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun `map ResultItemResponse with null values then ResultItem should return default values`() {
+  fun resultItemResponse_withNullValues_returnsDefaultValues() {
     val resultItemResponse = ResultItemResponse()
 
     val resultItem = resultItemResponse.toResultItem()
@@ -83,7 +83,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun `map ResultItemResponse with empty strings and zero values`() {
+  fun resultItemResponse_withEmptyStringsAndZeroValues_returnsMappedValues() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "",
       overview = "",
@@ -130,7 +130,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun `map ResultItemResponse with blank strings`() {
+  fun resultItemResponse_withBlankStrings_returnsMappedValues() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "  ",
       overview = "  ",
@@ -161,7 +161,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun `map ResultItemResponse with partial null values`() {
+  fun resultItemResponse_withPartialNullValues_returnsMappedValuesWithDefaults() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = null,
       overview = "Overview",
