@@ -39,7 +39,7 @@ class GetRegionHelperTest {
   }
 
   @Test
-  fun `test getNetworkLocation with SIM state absent`() {
+  fun getNetworkLocation_SIMStateAbsent_returnCorrectLocation() {
     val originalTimeZone = TimeZone.getDefault()
     val testTimeZone = TimeZone.getTimeZone("America/New_York")
     TimeZone.setDefault(testTimeZone) // Set the default time zone for the test
@@ -55,7 +55,7 @@ class GetRegionHelperTest {
   }
 
   @Test
-  fun `test getNetworkLocation with SIM state ready`() {
+  fun getNetworkLocation_SIMStateReady_returnCorrectLocation() {
     val countryIso = "us"
     mockTelephonyManager(TelephonyManager.SIM_STATE_READY, countryIso)
     val actualOutput = GetRegionHelper.getLocation(context)
@@ -63,7 +63,7 @@ class GetRegionHelperTest {
   }
 
   @Test
-  fun `test getNetworkLocation with SIM state unknown`() {
+  fun getNetworkLocation_SIMStateUnknown_returnCorrectLocation() {
     mockTelephonyManager(TelephonyManager.SIM_STATE_UNKNOWN, null)
     val expectedOutput = ""
     val actualOutput = GetRegionHelper.getLocation(context)
@@ -71,7 +71,7 @@ class GetRegionHelperTest {
   }
 
   @Test
-  fun `test getLocation fallback to device locale`() {
+  fun getLocation_SIMAbsent_fallbackToDeviceLocale() {
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
     mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
@@ -93,7 +93,7 @@ class GetRegionHelperTest {
   }
 
   @Test
-  fun `test getLocation edge case with no SIM and no locale`() {
+  fun getLocation_noSIM_noLocale_handleCorrectly() {
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
     mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
@@ -115,7 +115,7 @@ class GetRegionHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
-  fun `test getLocation on API 24 and above with locale`() {
+  fun getLocation_onApi24AndAbove_withLocale_returnCorrectLocation() {
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
 
@@ -132,7 +132,7 @@ class GetRegionHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.M])
-  fun `test getLocation on API 21 with locale`() {
+  fun getLocation_onApi21_withLocale_returnCorrectLocation() {
     // TODO: Not yet fixed
 
 //    Locale.setDefault( Locale("es", "ES"))
@@ -145,7 +145,7 @@ class GetRegionHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
-  fun `test getLocation on API 24 with empty locale`() {
+  fun getLocation_onApi24_withEmptyLocale_shouldHandleCorrectly() {
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
 
@@ -162,7 +162,7 @@ class GetRegionHelperTest {
   @Test
   @Suppress("DEPRECATION")
   @Config(sdk = [Build.VERSION_CODES.M])
-  fun `test getLocation on API 21 with null locale`() {
+  fun getLocation_onApi21_withNullLocale_shouldHandleCorrectly() {
 
     // TODO : not yet fixed
 
