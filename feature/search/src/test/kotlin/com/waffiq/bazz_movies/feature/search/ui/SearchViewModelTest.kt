@@ -37,7 +37,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun search_shouldUpdateSearchResultsFlowAndQueryLiveDataCorrectly() {
+  fun search_shouldUpdateSearchResultsFlowAndQueryLiveDataCorrectly() = runTest {
     val fakePagingData = PagingData.from(
       listOf(
         ResultsItemSearch(
