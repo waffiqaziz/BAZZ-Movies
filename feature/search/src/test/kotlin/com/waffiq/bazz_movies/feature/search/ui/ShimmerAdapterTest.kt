@@ -25,19 +25,19 @@ class ShimmerAdapterTest {
   }
 
   @Test
-  fun `getItemCount returns default shimmer data count`() {
+  fun getItemCount_returnsDefaultShimmerDataCount() {
     assertEquals(ShimmerAdapter.SHIMMER_DATA, adapter.itemCount)
   }
 
   @Test
-  fun `getItemCount returns custom item count`() {
+  fun getItemCount_returnsCustomItemCount() {
     val customItemCount = 15
     val customAdapter = ShimmerAdapter(itemCount = customItemCount)
     assertEquals(customItemCount, customAdapter.itemCount)
   }
 
   @Test
-  fun `onCreateViewHolder creates ShimmerViewHolder`() {
+  fun onCreateViewHolder_createsShimmerViewHolder() {
     val parent = FrameLayout(ApplicationProvider.getApplicationContext())
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
 
@@ -45,7 +45,7 @@ class ShimmerAdapterTest {
   }
 
   @Test
-  fun `recyclerView binds correct number of view holders`() {
+  fun recyclerView_bindsCorrectNumberOfViewHolders() {
     recyclerView.layoutManager = LinearLayoutManager(ApplicationProvider.getApplicationContext())
     recyclerView.measure(0, 0)
     recyclerView.layout(0, 0, 1000, 3000)

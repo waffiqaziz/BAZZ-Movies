@@ -39,7 +39,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun `search result should returns data correctly`() = runTest {
+  fun searchResult_shouldReturnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -89,7 +89,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun `search result picture path null should returns null`() = runTest {
+  fun searchResultPicturePathNull_shouldReturnNull() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -115,7 +115,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun `search result backdrop null should returns data correctly`() = runTest {
+  fun searchResultBackdropNull_shouldReturnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -153,7 +153,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun `search result poster null should returns data correctly`() = runTest {
+  fun searchResultPosterNull_shouldReturnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -191,7 +191,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun `search result profile null should returns data correctly`() = runTest {
+  fun searchResultProfileNull_shouldReturnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(

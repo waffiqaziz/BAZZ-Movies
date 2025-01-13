@@ -37,7 +37,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun `search should update searchResults flow and query livedata correctly`() = runTest {
+  fun search_shouldUpdateSearchResultsFlowAndQueryLiveDataCorrectly() {
     val fakePagingData = PagingData.from(
       listOf(
         ResultsItemSearch(
@@ -100,7 +100,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun `setExpandSearchView should update live data`() {
+  fun setExpandSearchView_shouldUpdateLiveData() {
     searchViewModel.setExpandSearchView(true)
     assertEquals(true, searchViewModel.expandSearchView.value)
 
