@@ -7,7 +7,7 @@ import org.junit.Test
 class GenreHelperTest {
 
   @Test
-  fun `test transformListGenreIdsToJoinName with valid genre IDs`() {
+  fun transformListGenreIdsToJoinName_withValidGenreNames_returnCorrectString() {
     val input = listOf(28, 12, 16)
     val expectedOutput = "Action, Adventure, Animation"
     val actualOutput = GenreHelper.transformListGenreIdsToJoinName(input)
@@ -15,7 +15,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformListGenreIdsToJoinName with empty list`() {
+  fun transformListGenreIdsToJoinName_withEmptyList_returnEmptyString() {
     val input = emptyList<Int>()
     val expectedOutput = ""
     val actualOutput = GenreHelper.transformListGenreIdsToJoinName(input)
@@ -23,7 +23,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformListGenreIdsToJoinName with invalid genre ID`() {
+  fun transformListGenreIdsToJoinName_withValidGenreItems_handleInvalidGenreId() {
     val input = listOf(999) // Non-existent genre ID
     val expectedOutput = ""
     val actualOutput = GenreHelper.transformListGenreIdsToJoinName(input)
@@ -31,7 +31,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformToGenreCode with valid genre names`() {
+  fun transformToGenreCode_withNullList_returnCorrectCode() {
     val input = listOf("Action", "Comedy", "Romance")
     val expectedOutput = "28|35|10749"
     val actualOutput = GenreHelper.transformToGenreCode(input)
@@ -39,7 +39,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformToGenreCode with empty list`() {
+  fun transformToGenreCode_withValidGenreItems_returnEmptyList() {
     val input = emptyList<String>()
     val expectedOutput = ""
     val actualOutput = GenreHelper.transformToGenreCode(input)
@@ -47,7 +47,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformToGenreCode with invalid genre name`() {
+  fun transformToGenreCode_with_handleInvalidGenreName() {
     val input = listOf("NonExistentGenre")
     val expectedOutput = ""
     val actualOutput = GenreHelper.transformToGenreCode(input)
@@ -55,7 +55,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformListGenreToJoinString with valid genre items`() {
+  fun transformListGenreToJoinString_withNullList_returnCorrectString() {
     val input = listOf(
       GenresItem("Action", 28),
       GenresItem("Mystery", 9648)
@@ -66,7 +66,7 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformListGenreToJoinString with null list`() {
+  fun transformListGenreToJoinString_withNullList_returnNull() {
     val input: List<GenresItem>? = null
     val expectedOutput: String? = null
     val actualOutput = GenreHelper.transformListGenreToJoinString(input)
@@ -74,19 +74,19 @@ class GenreHelperTest {
   }
 
   @Test
-  fun `test transformToGenreIDs with valid genre items`() {
+  fun transformToGenreIDs_withValidGenreList_returnCorrectIds() {
     val input = listOf(
       GenresItem("News", 10763),
       GenresItem("Talk", 10767),
       GenresItem("Invalid", null)
     )
-    val expectedOutput = listOf(10763, 10767, 0) // IDs, with null mapped to 0
+    val expectedOutput = listOf(10763, 10767, 0) // IDs, null mapped to 0
     val actualOutput = GenreHelper.transformToGenreIDs(input)
     assertEquals(expectedOutput, actualOutput)
   }
 
   @Test
-  fun `test transformToGenreIDs with null list`() {
+  fun transformToGenreIDs_withNullList_returnEmptyList() {
     val input: List<GenresItem>? = null
     val expectedOutput: List<Int>? = null
     val actualOutput = GenreHelper.transformToGenreIDs(input)

@@ -47,7 +47,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `submitData should update the adapter with PagingData`() = runTest {
+  fun submitData_shouldUpdateAdapterWithPagingData() = runTest {
     val pagingData = PagingData.from(
       listOf(
         ResultsItemSearch(id = 1, title = "Movie 1"),
@@ -60,7 +60,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `onBindViewHolder should bind correct movie data from PagingData`() = runTest {
+  fun onBindViewHolder_shouldBindCorrectMovieDataFromPagingData() = runTest {
     val movieData = ResultsItemSearch(
       mediaType = "movie",
       id = 1,
@@ -86,7 +86,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `onBindViewHolder should bind correct tv data from PagingData`() = runTest {
+  fun onBindViewHolder_shouldBindCorrectTvDataFromPagingData() = runTest {
     val tvData = ResultsItemSearch(
       mediaType = "tv",
       id = 12345,
@@ -112,7 +112,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `onBindViewHolder should bind correct person data from PagingData`() = runTest {
+  fun onBindViewHolder_shouldBindCorrectPersonDataFromPagingData() = runTest {
     val personData = ResultsItemSearch(
       mediaType = "person",
       id = 134321,
@@ -143,7 +143,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `onClick should trigger openDetails in navigator from PagingData`() = runTest {
+  fun onClick_shouldTriggerOpenDetailsInNavigatorFromPagingData() = runTest {
     val data = ResultsItemSearch(
       id = 1,
       title = "Test Movie",
@@ -178,24 +178,23 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun `submitData with empty PagingData should not crash`() = runTest {
+  fun submitDataWithEmptyPagingData_shouldNotCrash() = runTest {
     val emptyPagingData = PagingData.from(emptyList<ResultsItemSearch>())
     adapter.submitData(emptyPagingData)
     assertEquals(0, adapter.itemCount)
   }
 
   @Test
-  fun `submitData with multiple PagingData items should update item count correctly`() =
-    runTest {
-      val pagingData = PagingData.from(
-        listOf(
-          ResultsItemSearch(id = 1, title = "Movie 1"),
-          ResultsItemSearch(id = 2, title = "Movie 2"),
-          ResultsItemSearch(id = 3, title = "Movie 3")
-        )
+  fun submitDataWithMultiplePagingDataItems_shouldUpdateItemCountCorrectly() = runTest {
+    val pagingData = PagingData.from(
+      listOf(
+        ResultsItemSearch(id = 1, title = "Movie 1"),
+        ResultsItemSearch(id = 2, title = "Movie 2"),
+        ResultsItemSearch(id = 3, title = "Movie 3")
       )
+    )
 
-      adapter.submitData(pagingData)
-      assertEquals(3, adapter.itemCount)
-    }
+    adapter.submitData(pagingData)
+    assertEquals(3, adapter.itemCount)
+  }
 }

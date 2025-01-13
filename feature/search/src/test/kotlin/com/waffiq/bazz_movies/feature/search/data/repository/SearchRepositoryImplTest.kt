@@ -44,7 +44,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun `movieDataSource getPagingSearch returns data correctly`() = runTest {
+  fun movieDataSource_getPagingSearchReturnsDataCorrectly() = runTest {
     coEvery { mockTMDBApiService.search(QUERY, 1) } returns multiSearchResponse
     val pagingSource = SearchPagingSource(mockTMDBApiService, QUERY)
 
@@ -65,7 +65,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun `movieDataSource getPagingSearch throws IOException`() = runTest {
+  fun movieDataSource_getPagingSearchThrowsIOException() = runTest {
     coEvery { mockTMDBApiService.search(QUERY, 1) } throws IOException("Network Error")
     val pagingSource = SearchPagingSource(mockTMDBApiService, QUERY)
 
@@ -83,7 +83,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun `repository getPagingSearch returns data correctly`() = runTest {
+  fun repository_getPagingSearchReturnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(listOf(resultsItemSearchResponse, resultsItemSearchResponse2))
     every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(fakePagingData)

@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner
 class ImagePagerAdapterTest {
 
   @Test
-  fun `onBindViewHolder should bind data and apply animation`() {
+  fun onBindViewHolder_bindsDataAndAppliesAnimation() {
     val images = listOf("image1")
     val adapter = ImagePagerAdapter(images)
 
@@ -39,7 +39,7 @@ class ImagePagerAdapterTest {
   }
 
   @Test
-  fun `getItemCount should return correct size`() {
+  fun getItemCount_returnsCorrectSize() {
     val images = listOf("image1", "image2", "image3")
     val adapter = ImagePagerAdapter(images)
 

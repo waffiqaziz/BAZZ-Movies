@@ -7,7 +7,7 @@ import org.junit.Test
 class SearchHelperTest {
 
   @Test
-  fun `getKnownFor should return concatenated titles`() {
+  fun getKnownFor_returnsConcatenatedTitles() {
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),
       KnownForItem(title = "Movie 2"),
@@ -21,7 +21,7 @@ class SearchHelperTest {
   }
 
   @Test
-  fun `getKnownFor should return empty string for empty list`() {
+  fun getKnownFor_returnsEmptyStringForEmptyList() {
     val result = SearchHelper.getKnownFor(emptyList())
 
     // verify the result is an empty string
@@ -29,7 +29,7 @@ class SearchHelperTest {
   }
 
   @Test
-  fun `getKnownFor should handle null titles gracefully`() {
+  fun getKnownFor_handlesNullTitlesGracefully() {
     // prepare mock KnownForItem list with null titles
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),

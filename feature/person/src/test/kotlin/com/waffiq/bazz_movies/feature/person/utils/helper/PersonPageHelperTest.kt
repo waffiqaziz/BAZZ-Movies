@@ -18,21 +18,21 @@ import org.junit.Test
 class PersonPageHelperTest {
 
   @Test
-  fun `test hasAnySocialMediaIds returns true when any ID is not null or empty`() {
+  fun hasAnySocialMediaIds_returnsTrue_ifAnyIdNotNullOrEmpty() {
     val externalId = ExternalIDPerson(instagramId = "instagram_id", twitterId = null)
     val result = hasAnySocialMediaIds(externalId)
     assertTrue(result)
   }
 
   @Test
-  fun `test hasAnySocialMediaIds returns false when all IDs are null or empty`() {
+  fun hasAnySocialMediaIds_returnsFalse_ifAllIdsNullOrEmpty() {
     val externalId = ExternalIDPerson(instagramId = null, twitterId = null)
     val result = hasAnySocialMediaIds(externalId)
     assertFalse(result)
   }
 
   @Test
-  fun `test formatBirthInfo formats birthdate and place of birth correctly`() {
+  fun formatBirthInfo_formatsBirthdateAndPlaceCorrectly() {
     val birthDate = "1990-05-15"
     val placeOfBirth = "New York"
     val result = formatBirthInfo(birthDate, placeOfBirth)
@@ -40,7 +40,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun `test formatBirthInfo returns place of birth when birthdate is null`() {
+  fun formatBirthInfo_returnsPlaceIfBirthdateNull() {
     val birthDate: String? = null
     val placeOfBirth = "New York"
     val result = formatBirthInfo(birthDate, placeOfBirth)
@@ -48,7 +48,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun `test formatDeathInfo formats death date and age at death correctly`() {
+  fun formatDeathInfo_formatsDeathDateAndAgeCorrectly() {
     val context: Context = mockk()
     val birthDate = "1990-05-15"
     val deathDate = "2020-10-10"
@@ -68,7 +68,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun `test formatDeathInfo returns no data when death date is null`() {
+  fun formatDeathInfo_returnsNoData_ifDeathDateNull() {
     val context: Context = mockk()
 
     // Mock the behavior of getString to return "no data" for any input

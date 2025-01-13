@@ -37,7 +37,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun `userLogin emits loading and error states on failure`() = runTest {
+  fun userLogin_emitsLoadingAndErrorStates_onFailure() = runTest {
     // Mock the UseCase to emit a failure
     coEvery { authTMDbAccountUseCase.createToken() } returns flow {
       emit(Outcome.Loading)
@@ -65,7 +65,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun `userLogin success triggers login and session creation`() = runTest {
+  fun userLogin_success_triggersLoginAndSessionCreation() = runTest {
     // Mock token creation
     coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = "test_token"))

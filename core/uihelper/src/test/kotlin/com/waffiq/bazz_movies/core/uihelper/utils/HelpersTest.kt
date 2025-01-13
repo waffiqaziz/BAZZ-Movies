@@ -54,20 +54,20 @@ class HelpersTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun `test justifyTextView on Android Q and above`() {
+  fun justifyTextView_shouldWork_onAndroidQAndAbove() {
     justifyTextView(textView)
     assertEquals(textView.justificationMode, LineBreaker.JUSTIFICATION_MODE_INTER_WORD)
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.O, Build.VERSION_CODES.P])
-  fun `test justifyTextView on Android O to P`() {
+  fun justifyTextView_shouldWork_onAndroidOToP() {
     justifyTextView(textView)
     assertEquals(textView.justificationMode, Layout.JUSTIFICATION_MODE_INTER_WORD)
   }
 
   @Test
-  fun `test scrollActionBarBehavior should change status bar color and appbar color correctly`() {
+  fun scrollActionBarBehavior_changesStatusBarColorAndAppBarColor_correctly() {
     // setup nested scroll and app bar
     val appBarLayout = AppBarLayout(context)
     val nestedScrollView = NestedScrollView(context).apply {
@@ -144,7 +144,7 @@ class HelpersTest {
   }
 
   @Test
-  fun `test setupRecyclerViewsWithSnap attaches CustomSnapHelper`() {
+  fun setupRecyclerViewsWithSnap_attachesCustomSnapHelper() {
     setupRecyclerViewsWithSnap(listOf(recyclerView))
 
     assertNotNull(recyclerView.onFlingListener)
@@ -152,7 +152,7 @@ class HelpersTest {
   }
 
   @Test
-  fun `test setupRecyclerViewsWithSnapGridLayout attaches CustomSnapHelper to GridLayoutManager`() {
+  fun setupRecyclerViewsWithSnapGridLayout_attachesCustomSnapHelperToGridLayoutManager() {
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(recyclerView))
 
     assertNotNull(recyclerView.onFlingListener)
@@ -160,7 +160,7 @@ class HelpersTest {
   }
 
   @Test
-  fun `test animFadeOutLong duration`() {
+  fun animFadeOutLong_hasCorrectDuration() {
     val animation = animFadeOutLong(context)
     assertEquals(animation.duration, DEBOUNCE_VERY_LONG)
   }

@@ -14,7 +14,7 @@ import org.robolectric.RuntimeEnvironment
 class GeneralHelperTest {
 
   @Test
-  fun `test initLinearLayoutManagerVertical with valid context`() {
+  fun initLinearLayoutManagerVertical_shouldInitialize_withValidContext() {
     val context: Context = RuntimeEnvironment.getApplication()
     val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(context)
 
@@ -24,7 +24,7 @@ class GeneralHelperTest {
   }
 
   @Test
-  fun `test initLinearLayoutManagerVertical with invalid context`() {
+  fun initLinearLayoutManagerVertical_shouldThrowFalse_withInvalidContext() {
     // simulate a scenario with a mocked or invalid context
     val invalidContext: Context = RuntimeEnvironment.getApplication().applicationContext
     val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(invalidContext)
@@ -40,7 +40,7 @@ class GeneralHelperTest {
   }
 
   @Test
-  fun `test initLinearLayoutManagerVertical with unexpected LinearLayoutManager properties`() {
+  fun initLinearLayoutManagerVertical_shouldHandleUnexpectedProperties() {
     val context: Context = RuntimeEnvironment.getApplication()
     val layoutManager = GeneralHelper.initLinearLayoutManagerVertical(context)
 

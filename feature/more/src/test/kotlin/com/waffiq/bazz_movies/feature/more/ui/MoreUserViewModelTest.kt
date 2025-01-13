@@ -41,7 +41,7 @@ class MoreUserViewModelTest {
   }
 
   @Test
-  fun `deleteSession emits NetworkResult success`() = testScope.runTest {
+  fun deleteSession_emitsNetworkResultSuccess() = testScope.runTest {
     val expectedResult = Outcome.Success(Post(success = true))
     coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
       emit(expectedResult)
@@ -57,7 +57,7 @@ class MoreUserViewModelTest {
   }
 
   @Test
-  fun `deleteSession emits NetworkResult error`() = testScope.runTest {
+  fun deleteSession_emitsNetworkResultError() = testScope.runTest {
     val expectedError = Outcome.Error("Error deleting session")
     coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
       emit(expectedError)
@@ -73,7 +73,7 @@ class MoreUserViewModelTest {
   }
 
   @Test
-  fun `removeState updates signOutState to loading`() = testScope.runTest {
+  fun removeState_updatesSignOutStateToLoading() = testScope.runTest {
     viewModel.removeState()
     advanceUntilIdle()
 

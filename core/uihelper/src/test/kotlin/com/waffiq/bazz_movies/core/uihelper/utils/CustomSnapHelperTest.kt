@@ -40,7 +40,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun `test calculateDistanceToFinalSnap with default offset`() {
+  fun calculateDistanceToFinalSnap_withDefaultOffset() {
     val snapHelper = CustomSnapHelper()
     snapHelper.attachToRecyclerView(recyclerView)
 
@@ -56,7 +56,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun `test calculateDistanceToFinalSnap with custom offset 0`() {
+  fun calculateDistanceToFinalSnap_withCustomOffset0() {
     val snapHelper = CustomSnapHelper(0)
     snapHelper.attachToRecyclerView(recyclerView)
 
@@ -68,7 +68,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun `test calculateDistanceToFinalSnap with custom offset 90`() {
+  fun calculateDistanceToFinalSnap_withCustomOffset90() {
     val customOffset = 90
     val snapHelper = CustomSnapHelper(customOffset)
     snapHelper.attachToRecyclerView(recyclerView)
@@ -84,7 +84,7 @@ class CustomSnapHelperTest {
 
   // edge case
   @Test
-  fun `test calculateDistanceToFinalSnap with last item`() {
+  fun calculateDistanceToFinalSnap_withLastItem() {
     val lastItem = TextView(context).apply {
       layoutParams = RecyclerView.LayoutParams(
         RecyclerView.LayoutParams.MATCH_PARENT,
@@ -105,7 +105,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun `test calculateDistanceToFinalSnap with empty RecyclerView`() {
+  fun calculateDistanceToFinalSnap_withEmptyRecyclerView() {
     val emptyRecyclerView = RecyclerView(context)
     emptyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 

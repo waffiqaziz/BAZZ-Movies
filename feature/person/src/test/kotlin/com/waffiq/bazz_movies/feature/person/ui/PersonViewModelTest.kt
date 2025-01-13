@@ -44,7 +44,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getDetailPerson emits success`() = runTest {
+  fun getDetailPerson_emitsSuccess() = runTest {
     val expectedDetailPerson = DetailPerson(
       id = personId,
       name = "John Doe",
@@ -91,7 +91,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getDetailPerson emits error`() = runTest {
+  fun getDetailPerson_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -108,7 +108,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getKnownFor emits success`() = runTest {
+  fun getKnownFor_emitsSuccess() = runTest {
     val castItem = CastItem(
       name = "name_person",
       id = 45678,
@@ -153,7 +153,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getKnownFor emits error`() = runTest {
+  fun getKnownFor_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -170,7 +170,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getImagePerson emits success`() = runTest {
+  fun getImagePerson_emitsSuccess() = runTest {
     val profilesItem = ProfilesItem(
       aspectRatio = 0.667,
       filePath = "/file_path_profile.jpg",
@@ -220,7 +220,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getImagePerson emits error`() = runTest {
+  fun getImagePerson_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -238,7 +238,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getExternalIDPerson emits success`() = runTest {
+  fun getExternalIDPerson_emitsSuccess() = runTest {
     val expectedExternalIDPerson = ExternalIDPerson(
       id = 3254153,
       instagramId = "instagram_id"
@@ -277,7 +277,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun `getExternalIDPerson emits error`() = runTest {
+  fun getExternalIDPerson_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )

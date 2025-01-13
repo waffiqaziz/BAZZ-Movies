@@ -27,7 +27,7 @@ class PersonPageHelperRoboTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.O])
-  fun `test getAgeDeath with LocalDate for API 26 and up`() {
+  fun getAgeDeath_LocalDate_API26Up() {
     val birthDate = "1990-05-15"
     val deathDate = "2020-10-10"
 
@@ -37,7 +37,7 @@ class PersonPageHelperRoboTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.M])
-  fun `test getAgeDeath with Calendar for API lower than 26`() {
+  fun getAgeDeath_Calendar_API26Down() {
     val birthDate = "1990-05-15"
     val deathDate = "2024-10-10"
 
@@ -46,7 +46,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun `test setupSocialLink when social ID is not null`() {
+  fun setupSocialLink_socialIdNotNull() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val imageView = ImageView(activity)
     val socialId = "12345"
@@ -68,7 +68,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun `test setupSocialLink when social ID is null`() {
+  fun setupSocialLink_socialIdNull() {
     val context: Context = mockk(relaxed = true)
     val imageView: ImageView = mockk(relaxed = true)
     val socialId: String? = null

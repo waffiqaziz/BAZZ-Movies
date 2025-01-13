@@ -76,7 +76,6 @@ class PagingLoadStateHelperTest {
     assertEquals(refreshError, result)
   }
 
-
   @Test
   fun testPagingErrorState_noError() {
     val notLoadingState = mockk<LoadState.NotLoading>()
