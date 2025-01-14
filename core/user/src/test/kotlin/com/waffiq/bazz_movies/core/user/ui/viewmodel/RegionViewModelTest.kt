@@ -13,7 +13,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.never
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -62,6 +64,21 @@ class RegionViewModelTest {
 
     verify(observer).onChanged(argThat { event -> event.peekContent() == "Network error" })
     viewModel.errorState.removeObserver(observer)
+  }
+
+  @Test
+  fun `getCountryCode processes loading state`() = runTest {
+    val mockResult = Outcome.Loading
+    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+
+    val observer = mock<Observer<String>>()
+    viewModel.countryCode.observeForever(observer)
+    viewModel.getCountryCode()
+    advanceUntilIdle()
+
+    // verify that the observer is not called since no value is emitted for loading state
+    verify(observer, never()).onChanged(any())
+    viewModel.countryCode.removeObserver(observer)
   }
 
   @Test

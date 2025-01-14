@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.user.data.repository
 
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
@@ -15,6 +16,13 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
+import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testOutcome
+import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testResult
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModel
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -27,7 +35,8 @@ import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -65,15 +74,13 @@ class UserRepositoryTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
-  private val testScope = TestScope() // Updated TestScope for structured coroutine tests
-
   @Before
   fun setup() {
     userRepository = UserRepository(mockUserPreference, mockUserDataSource)
   }
 
   @Test
-  fun `createToken success should return mapped result`() = testScope.runTest {
+  fun `createToken success should return mapped result`() = runTest {
     val createTokenResponse = AuthenticationResponse(
       success = true,
       expireAt = "date_expired",
@@ -94,6 +101,11 @@ class UserRepositoryTest {
     assertEquals("request_token", result.data.requestToken)
     assertEquals("date_expired", result.data.expireAt)
     coVerify { mockUserDataSource.createToken() }
+
+    // inline test
+    userRepository.createToken().testOutcome(
+      expectedData = createTokenResponse.toAuthentication()
+    )
   }
 
   @Test
@@ -117,6 +129,11 @@ class UserRepositoryTest {
     result as Outcome.Success
     assertEquals("request_token_verified", result.data.requestToken)
     coVerify { mockUserDataSource.login(username, password, token) }
+
+    // inline test
+    userRepository.login(username, password, token).testOutcome(
+      expectedData = loginResponse.toAuthentication()
+    )
   }
 
   @Test
@@ -138,6 +155,11 @@ class UserRepositoryTest {
     assertTrue(result.data.success)
     assertEquals("session_id", result.data.sessionId)
     coVerify { mockUserDataSource.createSessionLogin(requestToken) }
+
+    // inline test
+    userRepository.createSessionLogin(requestToken).testOutcome(
+      expectedData = sessionResponse.toCreateSession()
+    )
   }
 
   @Test
@@ -159,6 +181,11 @@ class UserRepositoryTest {
     assertEquals(200, result.data.statusCode)
     assertEquals("Success", result.data.statusMessage)
     coVerify { mockUserDataSource.deleteSession(sessionId) }
+
+    // inline test
+    userRepository.deleteSession(sessionId).testOutcome(
+      expectedData = deleteSessionResponse.toPost()
+    )
   }
 
   @Test
@@ -219,10 +246,15 @@ class UserRepositoryTest {
     assertEquals("325987423659432", result.data.avatarItem?.gravatar?.hash)
     assertFalse(result.data.includeAdult == true)
     coVerify { mockUserDataSource.getUserDetail(sessionId) }
+
+    // inline test
+    userRepository.getUserDetail(sessionId).testOutcome(
+      expectedData = accountDetailsResponse.toAccountDetails()
+    )
   }
 
   @Test
-  fun `edge test`() = runTest {
+  fun `createToken error should return error message correctly`() = runTest {
     val errorMessage = "Network error"
     val errorFlow = flowOf(NetworkResult.Error(errorMessage))
     coEvery { mockUserDataSource.createToken() } returns errorFlow
@@ -250,15 +282,21 @@ class UserRepositoryTest {
 
   @Test
   fun `getUserPref should emit user model`() = runTest {
-    // Arrange
     val flowResult = flowOf(userModelPref)
     every { mockUserPreference.getUser() } returns flowResult
 
-    // Act
-    val result = userRepository.getUserPref().first()
+    val resultPref = mockUserPreference.getUser().map { it.toUserModel() }.first()
+    val resultRepo = userRepository.getUserPref().first()
+    assertEquals(resultPref, resultRepo)
 
-    // Assert
-    assertEquals(user, result)
+    val resultsList = userRepository.getUserPref().toList()
+    assertEquals(listOf(userModelPref.toUserModel()), resultsList)
+
+    assertEquals(user, resultPref)
+    verify { mockUserPreference.getUser() }
+
+    // inline test
+    userRepository.getUserPref().testResult(userModelPref.toUserModel())
     verify { mockUserPreference.getUser() }
   }
 
@@ -271,6 +309,9 @@ class UserRepositoryTest {
     val resultToken = userRepository.getUserToken().first()
     assertEquals(token, resultToken)
     verify { mockUserPreference.getToken() }
+
+    // inline test
+    userRepository.getUserToken().testResult(expectedData = "token")
   }
 
   @Test
@@ -282,6 +323,9 @@ class UserRepositoryTest {
     val resultRegion = userRepository.getUserRegionPref().first()
     assertEquals(region, resultRegion)
     verify { mockUserPreference.getRegion() }
+
+    // inline test
+    userRepository.getUserRegionPref().testResult(expectedData = "ID")
   }
 
   @Test
@@ -306,5 +350,10 @@ class UserRepositoryTest {
     result as Outcome.Success
     assertEquals("ID", result.data.country)
     coVerify { mockUserDataSource.getCountryCode() }
+
+    // inline test
+    userRepository.getCountryCode().testOutcome(
+      expectedData = countryIPResponse.toCountryIP()
+    )
   }
 }

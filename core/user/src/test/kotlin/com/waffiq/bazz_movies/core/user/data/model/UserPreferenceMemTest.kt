@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.core.user.data.model
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -10,22 +12,13 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
 import java.io.File
 
 class UserPreferenceMemTest {
   private lateinit var userPreference: UserPreference
   private lateinit var dataStore: DataStore<Preferences>
-  private val userModelPref = UserModelPref(
-    userId = 123456789,
-    name = "John Doe",
-    username = "johndoe",
-    password = "password123",
-    region = "US",
-    token = "sampleToken",
-    isLogin = true,
-    gravatarHast = "hash123",
-    tmdbAvatar = "avatar.jpg"
-  )
 
   @Before
   fun setup() {
@@ -36,7 +29,36 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun `test saveUser stores correct data`() = runTest {
+  fun `saveUser with all data available should stores correct data`() = runTest {
+    // Save initial user data
+    val severalData = UserModelPref(
+      userId = 123456789,
+      name = "John Doe",
+      username = "johndoe",
+      password = "password123",
+      region = "US",
+      token = "sampleToken",
+      isLogin = true,
+      gravatarHast = null,
+      tmdbAvatar = null
+    )
+    userPreference.saveUser(severalData)
+
+    // Verify that all data is saved correctly
+    val savedUser = userPreference.getUser().first()
+    assertEquals(123456789, savedUser.userId)
+    assertEquals("John Doe", savedUser.name)
+    assertEquals("johndoe", savedUser.username)
+    assertEquals("password123", savedUser.password)
+    assertEquals("US", savedUser.region)
+    assertEquals("sampleToken", savedUser.token)
+    assertTrue(savedUser.isLogin)
+    assertEquals("", savedUser.gravatarHast)
+    assertEquals("", savedUser.tmdbAvatar)
+  }
+
+  @Test
+  fun `saveUser with only several data available should stores correct data`() = runTest {
     // Save initial user data
     userPreference.saveUser(userModelPref)
 
@@ -54,7 +76,7 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun `test save region then return updated region`() = runTest {
+  fun `saveRegion should updated region correctly`() = runTest {
     // Save initial user data
     userPreference.saveUser(userModelPref)
 
@@ -70,7 +92,7 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun `test removeUserData will clears all fields`() = runTest {
+  fun `removeUserData should clears all data correctly`() = runTest {
     // Save initial user data
     userPreference.saveUser(userModelPref)
 

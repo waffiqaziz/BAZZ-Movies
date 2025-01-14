@@ -11,7 +11,7 @@ import org.junit.Test
 class UserModelTest {
 
   @Test
-  fun `test UserModel with null optional fields`() {
+  fun userModel_withSomeNullValues_setsPropertiesCorrectly() {
     val user = UserModel(
       userId = 2,
       name = "Jane Doe",
@@ -26,6 +26,7 @@ class UserModelTest {
 
     assertNull(user.gravatarHast)
     assertNull(user.tmdbAvatar)
+    assertFalse(user.isLogin)
     assertEquals(2, user.userId)
     assertEquals("Jane Doe", user.name)
     assertEquals("janedoe", user.username)
@@ -33,7 +34,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel equality and hashCode`() {
+  fun userModel_withIdenticalProperties_isEqualAndHasSameHashCode() {
     val user1 = UserModel(
       userId = 3,
       name = "Alice",
@@ -63,7 +64,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel copy functionality`() {
+  fun userModel_copyFunction_updatesSpecifiedFields() {
     val user = UserModel(
       userId = 4,
       name = "Bob",
@@ -86,7 +87,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge case password isBlank`() {
+  fun userModel_withBlankPassword_isNotNull() {
     val user = UserModel(
       userId = 5,
       name = "Test User",
@@ -105,7 +106,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge cases empty`() {
+  fun userModel_withEmptyStrings_setsFieldsToEmpty() {
     // Empty Strings for required fields
     val emptyUser = UserModel(
       userId = 0,
@@ -129,7 +130,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge cases large userId`() {
+  fun userModel_withLargeUserId_setsUserIdToMaxValue() {
     val largeIdUser = UserModel(
       userId = Int.MAX_VALUE,
       name = "Max User",
@@ -146,7 +147,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge cases special Characters`() {
+  fun userModel_withSpecialCharacters_setsFieldsCorrectly() {
     val specialCharUser = UserModel(
       userId = 5,
       name = "John@Doe",
@@ -169,25 +170,7 @@ class UserModelTest {
   }
 
   @Test
-  fun `test UserModel edge cases null values with optional fields`() {
-    val nullFieldsUser = UserModel(
-      userId = 6,
-      name = "Null Tester",
-      username = "nulltest",
-      password = "test123",
-      region = "NullRegion",
-      token = "nullToken",
-      isLogin = false,
-      gravatarHast = null,
-      tmdbAvatar = null
-    )
-
-    assertNull(nullFieldsUser.gravatarHast)
-    assertNull(nullFieldsUser.tmdbAvatar)
-  }
-
-  @Test
-  fun `test UserModel edge cases empty fields with spaces`() {
+  fun userModel_withEmptySpaceValues_setsPropertiesCorrectly() {
     val spaceUser = UserModel(
       userId = 7,
       name = "   ",

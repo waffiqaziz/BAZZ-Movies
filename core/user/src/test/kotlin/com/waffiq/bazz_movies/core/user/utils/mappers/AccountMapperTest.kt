@@ -11,16 +11,23 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Gr
 import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
+import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarItem
+import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarTMDb
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
+import com.waffiq.bazz_movies.core.user.domain.model.account.Gravatar
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAuthentication
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAvatarItem
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAvatarTMDb
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCountryIP
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toCreateSession
+import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toGravatar
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModel
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toUserModelPref
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
@@ -79,7 +86,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun `map AuthenticationResponse to Authentication`() {
+  fun `map AuthenticationResponse to Authentication non null response`() {
     val response = AuthenticationResponse(
       success = true,
       expireAt = "date_expire",
@@ -93,11 +100,22 @@ class AccountMapperTest {
   }
 
   @Test
-  fun `map CreateSessionResponse to CreateSession`() {
-    val response = CreateSessionResponse(
+  fun `map AuthenticationResponse to Authentication null response`() {
+    val response = AuthenticationResponse(
       success = true,
-      sessionId = "session_id"
+      expireAt = null,
+      requestToken = null
     )
+
+    val authentication: Authentication = response.toAuthentication()
+    assertTrue(authentication.success)
+    assertNull(authentication.expireAt)
+    assertNull(authentication.requestToken)
+  }
+
+  @Test
+  fun `map CreateSessionResponse to CreateSession`() {
+    val response = CreateSessionResponse(success = true, sessionId = "session_id")
 
     val authentication: CreateSession = response.toCreateSession()
     assertEquals(true, authentication.success)
@@ -105,18 +123,14 @@ class AccountMapperTest {
   }
 
   @Test
-  fun `map AccountDetailsResponse to AccountDetails`() {
+  fun `map AccountDetailsResponse to AccountDetails with non-null responses`() {
     val response = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "en",
       name = "Waffiq",
       avatarItemResponse = AvatarItemResponse(
-        gravatarResponse = GravatarResponse(
-          hash = "325987423659432"
-        ),
-        avatarTMDbResponse = AvatarTMDbResponse(
-          avatarPath = "347589074283054"
-        )
+        gravatarResponse = GravatarResponse(hash = "325987423659432"),
+        avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "347589074283054")
       ),
       id = 513176325,
       iso6391 = "ID",
@@ -138,6 +152,116 @@ class AccountMapperTest {
       accountDetails.avatarItem?.avatarTMDb?.avatarPath
     )
   }
+
+  @Test
+  fun `map AccountDetailsResponse to AccountDetails with null avatarItemResponse`() {
+    val response = AccountDetailsResponse(
+      includeAdult = false,
+      iso31661 = "id",
+      name = "people",
+      avatarItemResponse = null,
+      id = 5637195,
+      iso6391 = "MY",
+      username = "someone",
+    )
+
+    val accountDetails: AccountDetails = response.toAccountDetails()
+    assertEquals(5637195, accountDetails.id)
+    assertEquals("MY", accountDetails.iso6391)
+    assertEquals("id", accountDetails.iso31661)
+    assertEquals("people", accountDetails.name)
+    assertEquals("someone", accountDetails.username)
+    assertNull(accountDetails.avatarItem)
+    assertFalse(accountDetails.includeAdult == true)
+  }
+
+  @Test
+  fun `map AccountDetailsResponse to AccountDetails null responses`() {
+    val response = AccountDetailsResponse(
+      includeAdult = null,
+      iso31661 = null,
+      name = null,
+      avatarItemResponse = null,
+      id = null,
+      iso6391 = null,
+      username = null,
+    )
+
+    val accountDetails: AccountDetails = response.toAccountDetails()
+    assertNull(accountDetails.id)
+    assertNull(accountDetails.iso6391)
+    assertNull(accountDetails.iso31661)
+    assertNull(accountDetails.name)
+    assertNull(accountDetails.username)
+    assertNull(accountDetails.avatarItem?.avatarTMDb?.avatarPath)
+    assertNull(accountDetails.avatarItem?.gravatar?.hash)
+    assertNull(accountDetails.includeAdult)
+  }
+
+  @Test
+  fun `map AvatarItemResponse to AvatarItem with non-null responses`() {
+    val response = AvatarItemResponse(
+      gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
+      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
+    )
+
+    val avatarItem: AvatarItem = response.toAvatarItem()
+    assertEquals("/617956749353.jpg", avatarItem.gravatar?.hash)
+    assertEquals("/27359679153253.jpg", avatarItem.avatarTMDb?.avatarPath)
+  }
+
+  @Test
+  fun `map AvatarItemResponse to AvatarItem with null gravatarResponse`() {
+    val response = AvatarItemResponse(
+      gravatarResponse = null,
+      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
+    )
+
+    val avatarItem: AvatarItem = response.toAvatarItem()
+
+    assertNull(avatarItem.gravatar)
+    assertEquals("/27359679153253.jpg", avatarItem.avatarTMDb?.avatarPath)
+  }
+
+  @Test
+  fun `map AvatarItemResponse to AvatarItem with null avatarTMDbResponse`() {
+    val response = AvatarItemResponse(
+      gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
+      avatarTMDbResponse = null
+    )
+
+    val avatarItem: AvatarItem = response.toAvatarItem()
+
+    assertEquals("/617956749353.jpg", avatarItem.gravatar?.hash)
+    assertNull(avatarItem.avatarTMDb)
+  }
+
+  @Test
+  fun `map AvatarItemResponse to AvatarItem with null responses`() {
+    val response = AvatarItemResponse(gravatarResponse = null, avatarTMDbResponse = null)
+
+    val avatarItem: AvatarItem = response.toAvatarItem()
+
+    assertNull(avatarItem.gravatar)
+    assertNull(avatarItem.avatarTMDb)
+  }
+
+  @Test
+  fun `map AvatarTMDbResponse to AvatarTMD`() {
+    val response = AvatarTMDbResponse(avatarPath = "/32154543587943.jpg")
+
+    val avatarTmdb: AvatarTMDb = response.toAvatarTMDb()
+    assertEquals("/32154543587943.jpg", avatarTmdb.avatarPath)
+  }
+
+  @Test
+  fun `map GravatarResponse to Gravatar`() {
+    val response = GravatarResponse(hash = "/325987423659432.jpg")
+
+    val gravatar: Gravatar = response.toGravatar()
+    assertEquals("/325987423659432.jpg", gravatar.hash)
+  }
+
 
   @Test
   fun `map CountryIPResponse to CountryIP`() {
