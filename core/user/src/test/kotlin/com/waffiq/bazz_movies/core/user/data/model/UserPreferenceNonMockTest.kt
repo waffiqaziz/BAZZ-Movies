@@ -39,7 +39,7 @@ class UserPreferenceNonMockTest {
 
 
   @Test
-  fun `saveUser and getUser should stores and return same data`() = runTest {
+  fun saveUser_and_getUser_storeAndReturnSameData() = runTest {
     userPreference.saveUser(userModelPref)
 
     val savedUser = userPreference.getUser().first()
@@ -47,7 +47,7 @@ class UserPreferenceNonMockTest {
   }
 
   @Test
-  fun `saveRegion should stores correct region`() = runTest {
+  fun saveRegion_storesCorrectRegion() = runTest {
     userPreference.saveUser(userModelPref)
     userPreference.saveRegion("MY")
 
@@ -56,14 +56,14 @@ class UserPreferenceNonMockTest {
   }
 
   @Test
-  fun `saveRegion empty region should stores empty region`() = runTest {
+  fun saveRegion_emptyRegion_storesEmptyRegion() = runTest {
     userPreference.saveUser(userModelPref)
     userPreference.saveRegion("")
     assertEquals("", userPreference.getUser().first().region)
   }
 
   @Test
-  fun `getToken should return correct token`() = runTest {
+  fun getToken_returnsCorrectToken() = runTest {
     userPreference.saveUser(userModelPref)
 
     val userToken = userPreference.getToken().first()
@@ -71,7 +71,7 @@ class UserPreferenceNonMockTest {
   }
 
   @Test
-  fun `getRegion should return correct region`() = runTest {
+  fun getRegion_returnsCorrectRegion() = runTest {
     userPreference.saveUser(userModelPref)
 
     val userToken = userPreference.getRegion().first()
@@ -79,7 +79,7 @@ class UserPreferenceNonMockTest {
   }
 
   @Test
-  fun `removeDataUser should remove all data`() = runTest {
+  fun removeDataUser_removesAllData() = runTest {
     userPreference.saveUser(userModelPref)
 
     // check first if data is valid

@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.core.user.data.model
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -12,8 +11,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.verify
 import java.io.File
 
 class UserPreferenceMemTest {
@@ -22,15 +19,14 @@ class UserPreferenceMemTest {
 
   @Before
   fun setup() {
-    // Use a test-specific in-memory DataStore implementation
+    // use a test-specific in-memory DataStore implementation
     val testDataStoreFile = File.createTempFile("test_datastore", ".preferences_pb")
     dataStore = PreferenceDataStoreFactory.create { testDataStoreFile }
     userPreference = UserPreference(dataStore)
   }
 
   @Test
-  fun `saveUser with all data available should stores correct data`() = runTest {
-    // Save initial user data
+  fun saveUser_withAllDataAvailable_storesCorrectData() = runTest {
     val severalData = UserModelPref(
       userId = 123456789,
       name = "John Doe",
@@ -44,7 +40,6 @@ class UserPreferenceMemTest {
     )
     userPreference.saveUser(severalData)
 
-    // Verify that all data is saved correctly
     val savedUser = userPreference.getUser().first()
     assertEquals(123456789, savedUser.userId)
     assertEquals("John Doe", savedUser.name)
@@ -58,11 +53,9 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun `saveUser with only several data available should stores correct data`() = runTest {
-    // Save initial user data
+  fun saveUser_withPartialDataAvailable_storesCorrectData() = runTest {
     userPreference.saveUser(userModelPref)
 
-    // Verify that all data is saved correctly
     val savedUser = userPreference.getUser().first()
     assertEquals(123456789, savedUser.userId)
     assertEquals("John Doe", savedUser.name)
@@ -76,35 +69,28 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun `saveRegion should updated region correctly`() = runTest {
-    // Save initial user data
+  fun saveRegion_updatesRegionCorrectly() = runTest {
     userPreference.saveUser(userModelPref)
 
-    // Verify that data is saved correctly
     val savedUser = userPreference.getUser().first()
     assertEquals(123456789, savedUser.userId)
     assertEquals("John Doe", savedUser.name)
 
-    // Save updated region
     userPreference.saveRegion("ID")
     val updatedRegion = userPreference.getRegion().first()
     assertEquals("ID", updatedRegion)
   }
 
   @Test
-  fun `removeUserData should clears all data correctly`() = runTest {
-    // Save initial user data
+  fun removeUserData_clearsAllDataCorrectly() = runTest {
     userPreference.saveUser(userModelPref)
 
-    // Verify that data is saved correctly
     val savedUser = userPreference.getUser().first()
     assertEquals(123456789, savedUser.userId)
     assertEquals("John Doe", savedUser.name)
 
-    // Call removeUserData
     userPreference.removeUserData()
 
-    // Verify that all fields are cleared
     val clearedUser = userPreference.getUser().first()
     assertEquals(0, clearedUser.userId)
     assertEquals("", clearedUser.name)

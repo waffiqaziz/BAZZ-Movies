@@ -19,7 +19,6 @@ import org.junit.Test
  */
 class GetRegionInteractorTest {
 
-  // Mock dependencies
   private val mockRepository: IUserRepository = mockk()
   private lateinit var getRegionInteractor: GetRegionInteractor
 
@@ -29,28 +28,28 @@ class GetRegionInteractorTest {
   }
 
   @Test
-  fun `getCountryCode emits success`() = runTest {
+  fun getCountryCode_EmitsSuccess() = runTest {
     val expectedCountryIP = CountryIP(country = "US")
     val flow = flowOf(Outcome.Success(expectedCountryIP))
     coEvery { mockRepository.getCountryCode() } returns flow
 
     getRegionInteractor.getCountryCode().test {
-      // Assert the first emission is success with correct data
+      // assert the first emission is success with correct data
       val emission = awaitItem()
       assertTrue(emission is Outcome.Success)
       assertEquals("US", (emission as Outcome.Success).data.country)
 
-      // Assert no further emissions
+      // assert no further emissions
       awaitComplete()
     }
 
-    // Verify repository interaction
+    // verify repository interaction
     coVerify(exactly = 1) { mockRepository.getCountryCode() }
     coVerify { mockRepository.getCountryCode() }
   }
 
   @Test
-  fun `getCountryCode emits error`() = runTest {
+  fun getCountryCode_EmitsError() = runTest {
     val errorMessage = "Network error"
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getCountryCode() } returns flow

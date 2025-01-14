@@ -80,7 +80,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `createToken success should return mapped result`() = runTest {
+  fun createToken_success_returnsMappedResult() = runTest {
     val createTokenResponse = AuthenticationResponse(
       success = true,
       expireAt = "date_expired",
@@ -109,7 +109,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `login success should return mapped authentication`() = runTest {
+  fun login_success_returnsMappedAuthentication() = runTest {
     val loginResponse = AuthenticationResponse(
       success = true,
       expireAt = "date_expired",
@@ -137,7 +137,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `create session login success should return mapped session`() = runTest {
+  fun createSession_loginSuccess_returnsMappedSession() = runTest {
     val sessionResponse = CreateSessionResponse(
       success = true,
       sessionId = "session_id"
@@ -163,7 +163,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `delete session success should return success`() = runTest {
+  fun deleteSession_success_returnsSuccess() = runTest {
     val deleteSessionResponse = PostResponse(
       success = true,
       statusCode = 200,
@@ -189,7 +189,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `delete session failed should return error message`() = runTest {
+  fun deleteSession_failed_returnsErrorMessage() = runTest {
     val failedResponse = PostResponse(
       success = false,
       statusCode = 11,
@@ -210,7 +210,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `get detail user should return mapped user detail`() = runTest {
+  fun getDetailUser_returnsMappedUserDetail() = runTest {
     val accountDetailsResponse = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "en",
@@ -254,7 +254,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `createToken error should return error message correctly`() = runTest {
+  fun createToken_error_returnsErrorMessage() = runTest {
     val errorMessage = "Network error"
     val errorFlow = flowOf(NetworkResult.Error(errorMessage))
     coEvery { mockUserDataSource.createToken() } returns errorFlow
@@ -267,21 +267,21 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `saveUserPref should invoke UserPreference saveUser`() = runTest {
+  fun saveUserPref_invokesUserPreferenceSaveUser() = runTest {
     coEvery { mockUserPreference.saveUser(userModelPref) } just Runs
     userRepository.saveUserPref(user)
     coVerify { mockUserPreference.saveUser(userModelPref) }
   }
 
   @Test
-  fun `saveRegionPref should invoke UserPreference saveRegion`() = runTest {
+  fun saveRegionPref_invokesUserPreferenceSaveRegion() = runTest {
     coEvery { mockUserPreference.saveRegion("ID") } just Runs
     userRepository.saveRegionPref("ID")
     coVerify { mockUserPreference.saveRegion("ID") }
   }
 
   @Test
-  fun `getUserPref should emit user model`() = runTest {
+  fun getUserPref_emitsUserModel() = runTest {
     val flowResult = flowOf(userModelPref)
     every { mockUserPreference.getUser() } returns flowResult
 
@@ -301,7 +301,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `getUserToken should emit user token`() = runTest {
+  fun getUserToken_emitsUserToken() = runTest {
     val token = "token"
     val flowResult = flowOf(token)
     every { mockUserPreference.getToken() } returns flowResult
@@ -315,7 +315,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `getUserRegionPref should emit user region`() = runTest {
+  fun getUserRegionPref_emitsUserRegion() = runTest {
     val region = "ID"
     val flowResult = flowOf(region)
     every { mockUserPreference.getRegion() } returns flowResult
@@ -329,14 +329,14 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun `removeUserDataPref should call removeUserData in UserPreference`() = runTest {
+  fun removeUserDataPref_callsRemoveUserDataInUserPreference() = runTest {
     coEvery { mockUserPreference.removeUserData() } just Runs
     userRepository.removeUserDataPref()
     coVerify { mockUserPreference.removeUserData() }
   }
 
   @Test
-  fun `getCountryCode should return mapped country code`() = runTest {
+  fun getCountryCode_returnsMappedCountryCode() = runTest {
     val countryIPResponse = CountryIPResponse(
       country = "ID"
     )

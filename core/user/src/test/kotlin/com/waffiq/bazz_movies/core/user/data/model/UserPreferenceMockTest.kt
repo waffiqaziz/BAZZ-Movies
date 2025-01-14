@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import app.cash.turbine.test
-import com.ibm.icu.impl.ValidIdentifiers.Datatype.unit
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -43,7 +42,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun `getUser should returns correct UserModel`() = runTest {
+  fun getUser_returnsCorrectUserModel() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val user = userPreference.getUser().first()
@@ -67,7 +66,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun `getToken should returns correct token`() = runTest {
+  fun getToken_returnsCorrectToken() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val token = userPreference.getToken().first()
@@ -76,7 +75,6 @@ class UserPreferenceMockTest {
 
     val listOfToken = userPreference.getToken().toList()
 
-    // Assert that the transformation was applied
     assertEquals(listOf("sampleToken"), listOfToken)
 
     // inline test
@@ -89,7 +87,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun `getRegion should returns correct region`() = runTest {
+  fun getRegion_returnsCorrectRegion() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val region = userPreference.getRegion().first().toString().uppercase()
@@ -104,7 +102,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun `getRegion should handles null region`() = runTest {
+  fun getRegion_handlesNullRegion() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))  // Explicitly mock preferences object
 
     // Inline test with Turbine
@@ -116,7 +114,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun `saveRegion edit should call edit`() = runTest {
+  fun saveRegion_edit_callsEdit() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))  // Explicitly mock preferences object
     `when`(mockDataStore.edit(any())).thenAnswer {
       // Simulate that edit does nothing (since it returns Unit)

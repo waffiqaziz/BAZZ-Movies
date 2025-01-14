@@ -88,15 +88,12 @@ class SearchRepositoryImplTest {
       PagingData.from(listOf(resultsItemSearchResponse, resultsItemSearchResponse2))
     every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    val resultFlow = repository.getPagingSearch(QUERY)
-    // act & assert: Collect the flow and check the results
-    resultFlow.test {
+    repository.getPagingSearch(QUERY).test {
       val pagingData = awaitItem() // Collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
-      // assert on the actual items
-      val pagingList = differ.snapshot().items // this is the data you wanted
+      val pagingList = differ.snapshot().items
       assertTrue(pagingList.isEmpty().not())
       job.cancel()
 

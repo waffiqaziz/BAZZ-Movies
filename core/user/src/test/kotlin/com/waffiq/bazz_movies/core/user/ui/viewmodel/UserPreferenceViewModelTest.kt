@@ -46,7 +46,7 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun `getUserPref emits UserModel`() = runTest {
+  fun getUserPref_emitsUserModel() = runTest {
     every { userPrefUseCase.getUser() } returns flowOf(userModel) // Mocking getUser()
 
     val observer = mockk<Observer<UserModel>>(relaxed = true) // Relaxed mock for observer
@@ -57,7 +57,7 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun `getUserRegionPref emits region string`() = runTest {
+  fun getUserRegionPref_emitsRegionString() = runTest {
     val region = "US"
     every { userPrefUseCase.getUserRegionPref() } returns flowOf(region)
 
@@ -68,7 +68,7 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun `saveUserPref calls use case with correct data`() = runTest {
+  fun saveUserPref_callsUseCaseWithCorrectData() = runTest {
     coEvery { userPrefUseCase.saveUserPref(userModel) } just Runs
     viewModel.saveUserPref(userModel)
     advanceUntilIdle()
@@ -76,7 +76,7 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun `saveRegionPref calls saveRegionPref on UserPrefUseCase`() = runTest {
+  fun saveRegionPref_callsSaveRegionPrefOnUserPrefUseCase() = runTest {
     val region = "US"
     viewModel.saveRegionPref(region)
     advanceUntilIdle()
@@ -84,7 +84,7 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun `removeUserDataPref calls use case`() = runTest {
+  fun removeUserDataPref_callsUseCase() = runTest {
     coEvery { userPrefUseCase.removeUserDataPref() } just Runs
     viewModel.removeUserDataPref()
     advanceUntilIdle()
