@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.utils.mappers
 
+import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
@@ -64,16 +65,19 @@ object AccountMapper {
     username = username
   )
 
-  private fun AvatarItemResponse.toAvatarItem() = AvatarItem(
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun AvatarItemResponse.toAvatarItem() = AvatarItem(
     avatarTMDb = avatarTMDbResponse?.toAvatarTMDb(),
     gravatar = gravatarResponse?.toGravatar()
   )
 
-  private fun AvatarTMDbResponse.toAvatarTMDb() = AvatarTMDb(
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun AvatarTMDbResponse.toAvatarTMDb() = AvatarTMDb(
     avatarPath = avatarPath
   )
 
-  private fun GravatarResponse.toGravatar() = Gravatar(
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun GravatarResponse.toGravatar() = Gravatar(
     hash = hash
   )
 

@@ -6,7 +6,11 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
@@ -95,5 +99,36 @@ class UserPrefInteractorTest {
     verify { mockRepository.getUserToken() }
   }
 
-  // TODO : Create other tests for `saveRegionPref`, `saveUserPref`, and `removeUserDataPref` for `UserPrefInteractor`
+  @Test
+  fun `saveRegionPref saves user region`() = runTest {
+    val region = "ID"
+    coEvery { mockRepository.saveRegionPref(region) } just Runs
+    userPrefInteractor.saveRegionPref(region)
+    coVerify { mockRepository.saveRegionPref(region) }
+  }
+
+  @Test
+  fun `saveUserPref saves user data`() = runTest {
+    val userModel = UserModel(
+      userId = 3,
+      name = "Alice",
+      username = "alice123",
+      password = "",
+      region = "UK",
+      token = "token123",
+      isLogin = true,
+      gravatarHast = "hash123",
+      tmdbAvatar = "https://example.com/avatar2.jpg"
+    )
+    coEvery { mockRepository.saveUserPref(userModel) } just Runs
+    userPrefInteractor.saveUserPref(userModel)
+    coVerify { mockRepository.saveUserPref(userModel) }
+  }
+
+  @Test
+  fun `removeUserDataPref removes user data`() = runTest {
+    coEvery { mockRepository.removeUserDataPref() } just Runs
+    userPrefInteractor.removeUserDataPref()
+    coVerify { mockRepository.removeUserDataPref() }
+  }
 }
