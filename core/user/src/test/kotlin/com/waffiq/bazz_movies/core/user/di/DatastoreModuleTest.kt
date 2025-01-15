@@ -18,7 +18,7 @@ class DatastoreModuleTest {
   private val datastoreModule : DatastoreModule = DatastoreModule()
 
   @Test
-  fun `provideDataStore should return a DataStore instance`() = runTest {
+  fun provideDataStore_returnsDataStoreInstance() = runTest {
     val actualDatastore = datastoreModule.provideDataStore(mockContext)
     val expectedDatastore = PreferenceDataStoreFactory.create(produceFile = {
       mockContext.preferencesDataStoreFile(DATASTORE_NAME)
@@ -30,7 +30,7 @@ class DatastoreModuleTest {
 
 
   @Test
-  fun `provideUserPreference should return a UserPreference instance`() = runTest {
+  fun provideUserPreference_returnsUserPreferenceInstance() = runTest {
     val dataStore: DataStore<Preferences> = datastoreModule.provideDataStore(mockContext)
     val userPreference = datastoreModule.provideUserPreference(dataStore)
 
