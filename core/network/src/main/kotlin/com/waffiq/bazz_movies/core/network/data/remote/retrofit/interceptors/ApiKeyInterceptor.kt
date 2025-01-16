@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.data.remote.retrofit
+package com.waffiq.bazz_movies.core.network.data.remote.retrofit.interceptors
 
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.ProductionCountriesItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ProductionCompaniesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemReponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
@@ -48,7 +48,7 @@ object DetailMovieTvMapper {
     id = id
   )
 
-  fun SpokenLanguagesItemReponse.toSpokenLanguagesItem() = SpokenLanguagesItem(
+  fun SpokenLanguagesItemResponse.toSpokenLanguagesItem() = SpokenLanguagesItem(
     name = name,
     iso6391 = iso6391,
     englishName = englishName
