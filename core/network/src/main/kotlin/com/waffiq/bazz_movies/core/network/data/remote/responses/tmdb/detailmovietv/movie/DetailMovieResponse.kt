@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.ProductionCountriesItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ProductionCompaniesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemReponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemResponse
 
 @JsonClass(generateAdapter = false)
 data class DetailMovieResponse(
@@ -63,7 +63,7 @@ data class DetailMovieResponse(
   val posterPath: String? = null,
 
   @Json(name = "spoken_languages")
-  val listSpokenLanguagesItemResponse: List<SpokenLanguagesItemReponse?>? = null,
+  val listSpokenLanguagesItemResponse: List<SpokenLanguagesItemResponse?>? = null,
 
   @Json(name = "production_companies")
   val listProductionCompaniesItemResponse: List<ProductionCompaniesItemResponse?>? = null,

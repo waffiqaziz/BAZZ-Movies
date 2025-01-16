@@ -66,7 +66,7 @@ data class DetailTvResponse(
   val originCountry: List<String?>? = null,
 
   @Json(name = "spoken_languages")
-  val spokenLanguagesResponse: List<SpokenLanguagesItemReponse?>? = null,
+  val spokenLanguagesResponse: List<SpokenLanguagesItemResponse?>? = null,
 
   @Json(name = "production_companies")
   val productionCompaniesResponse: List<ProductionCompaniesItemResponse?>? = null,

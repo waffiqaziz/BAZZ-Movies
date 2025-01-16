@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
-data class SpokenLanguagesItemReponse(
+data class SpokenLanguagesItemResponse(
 
   @Json(name = "name")
   val name: String? = null,
