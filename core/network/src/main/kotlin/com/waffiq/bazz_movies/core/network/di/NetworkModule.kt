@@ -2,17 +2,17 @@ package com.waffiq.bazz_movies.core.network.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.waffiq.bazz_movies.core.network.BuildConfig.DEBUG
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.OMDb_API_URL
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_KEY
 import com.waffiq.bazz_movies.core.network.BuildConfig.TMDB_API_URL
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorOMDb
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.ApiKeyInterceptorTMDB
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.adapter.RatedResponseAdapter
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.interceptors.ApiKeyInterceptorOMDb
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.interceptors.ApiKeyInterceptorTMDB
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.CountryIPApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
+import com.waffiq.bazz_movies.core.network.domain.IDebugConfig
 import com.waffiq.bazz_movies.core.network.utils.common.Constants.COUNTRY_API_LINK
 import dagger.Module
 import dagger.Provides
@@ -28,15 +28,14 @@ import java.util.concurrent.TimeUnit
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-  private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
-
-  init {
-    if (DEBUG) {
-      // Enable logging for debug builds
-      loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-    } else {
-      // Disable logging for release builds
-      loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+  @Provides
+  fun provideLoggingInterceptor(debugConfig: IDebugConfig): HttpLoggingInterceptor {
+    return HttpLoggingInterceptor().apply {
+      level = if (debugConfig.isDebug()) {
+        HttpLoggingInterceptor.Level.BODY
+      } else {
+        HttpLoggingInterceptor.Level.NONE
+      }
     }
   }
 
@@ -49,7 +48,7 @@ class NetworkModule {
   }
 
   @Provides
-  fun provideOkHttpClient(): OkHttpClient {
+  fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
       .readTimeout(TIME_OUT, TimeUnit.SECONDS)
