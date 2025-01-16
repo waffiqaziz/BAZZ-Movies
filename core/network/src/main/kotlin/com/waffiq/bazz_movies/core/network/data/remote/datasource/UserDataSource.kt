@@ -7,9 +7,10 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Cr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.CountryIPApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
+import com.waffiq.bazz_movies.core.network.di.IoDispatcher
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class UserDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
-  private val countryIPApiService: CountryIPApiService
+  private val countryIPApiService: CountryIPApiService,
+  @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : UserDataSourceInterface {
 
   override suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = flow {
@@ -29,7 +31,7 @@ class UserDataSource @Inject constructor(
         tmdbApiService.createToken()
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
     flow {
@@ -39,7 +41,7 @@ class UserDataSource @Inject constructor(
           tmdbApiService.delSession(sessionId)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSessionResponse>> =
     flow {
@@ -49,7 +51,7 @@ class UserDataSource @Inject constructor(
           tmdbApiService.createSessionLogin(requestToken)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     flow {
@@ -59,7 +61,7 @@ class UserDataSource @Inject constructor(
           tmdbApiService.getAccountDetails(sessionId)
         }
       )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
   override suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = flow {
     emit(NetworkResult.Loading)
@@ -68,7 +70,7 @@ class UserDataSource @Inject constructor(
         countryIPApiService.getIP()
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 
   override suspend fun login(
     username: String,
@@ -81,5 +83,5 @@ class UserDataSource @Inject constructor(
         tmdbApiService.login(username, pass, sessionId)
       }
     )
-  }.flowOn(Dispatchers.IO)
+  }.flowOn(ioDispatcher)
 }
