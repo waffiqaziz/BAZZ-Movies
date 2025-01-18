@@ -1,1 +1,0 @@
-# This will apply the ProGuard rules only to the core module
