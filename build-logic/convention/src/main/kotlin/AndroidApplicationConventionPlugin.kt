@@ -54,25 +54,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             versionNameSuffix = "-debug"
           }
 
-          create("staging") {
-            isDebuggable = true
-            isShrinkResources = true
-            isMinifyEnabled = true
-
-            resValue("string", "app_name", "BAZZ Movies Debug")
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-            proguardFiles(
-              getDefaultProguardFile("proguard-android-optimize.txt"),
-              "proguard-rules.pro"
-            )
-            signingConfig = signingConfigs.getByName("debug")
-          }
-
           getByName("release") {
             isDebuggable = false
             isShrinkResources = true
             isMinifyEnabled = true
+            signingConfig = signingConfigs.named("debug").get()
 
             resValue("string", "app_name", "@string/app_name_release")
             proguardFiles(

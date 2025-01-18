@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.login.ui
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
@@ -9,6 +10,8 @@ import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,7 +29,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successfu
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
@@ -53,11 +55,11 @@ class LoginActivity : AppCompatActivity() {
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     super.onCreate(savedInstanceState)
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
     applyWindowInsetsListener()
-    window.transparentStatusBar()
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(

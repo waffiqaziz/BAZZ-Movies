@@ -15,6 +15,8 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -65,7 +67,6 @@ import com.waffiq.bazz_movies.core.domain.Stated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
@@ -121,12 +122,12 @@ class DetailMovieActivity : AppCompatActivity() {
   private var toast: Toast? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     // action bar behavior
-    window.transparentStatusBar()
     binding.appBarLayout.handleOverHeightAppBar()
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
     addPaddingWhenNavigationEnable(binding.root)

@@ -26,29 +26,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         resourcePrefix =
           path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
             .lowercase() + "_"
-
-        buildTypes {
-          getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-          }
-          if (!buildTypes.names.contains("staging")) {
-            create("staging") {
-              isMinifyEnabled = true
-              proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-              )
-            }
-          }
-          getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(
-              getDefaultProguardFile("proguard-android-optimize.txt"),
-              "proguard-rules.pro"
-            )
-          }
-        }
       }
     }
   }

@@ -16,12 +16,6 @@
     <!-- Color for all background -->
     <item name="android:windowBackground">@color/gray_900</item>
 
-    <!-- Color divider recycle view -->
-    <item name="android:listDivider">@color/yellow_alpha_80</item>
-
-    <!-- Status Bar -->
-    <item name="android:statusBarColor">?attr/colorPrimary</item>
-
     <!-- Search View -->
     <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
 

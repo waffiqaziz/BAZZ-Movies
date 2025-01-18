@@ -11,6 +11,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import android.widget.ImageButton
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -35,7 +37,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.transparentStatusBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
@@ -75,12 +76,12 @@ class PersonActivity : AppCompatActivity() {
   private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     super.onCreate(savedInstanceState)
     binding = ActivityPersonBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     // action bar behavior
-    window.transparentStatusBar()
     binding.appBarLayout.handleOverHeightAppBar()
     scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollViewPerson)
     addPaddingWhenNavigationEnable(binding.root)
