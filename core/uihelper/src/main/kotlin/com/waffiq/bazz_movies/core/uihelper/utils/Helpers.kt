@@ -7,6 +7,8 @@ import android.graphics.text.LineBreaker
 import android.os.Build
 import android.text.Layout
 import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -22,7 +24,7 @@ import kotlin.collections.forEach
 
 /**
  * A utility object that provides various helper functions for UI customization and behavior in an
- * Android app. These helpers include [justifyTextView], [scrollActionBarBehavior], [animateColorChange],
+ * Android app. These helpers include [justifyTextView], [scrollActionBarBehavior], [setAppBarColor],
  * [setStatusBarColorWithAnimation], [animFadeOutLong], [setupRecyclerViewsWithSnap], and
  * [setupRecyclerViewsWithSnapGridLayout].
  */
@@ -65,7 +67,7 @@ object Helpers {
       NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
         val maxScroll = nestedScrollView.getChildAt(0).height - nestedScrollView.height
         val percentage = if (maxScroll > 0) scrollY.toFloat() / maxScroll.toFloat() else 0f
-        animateColorChange(appBarLayout, fromColor, toColor, percentage)
+        setAppBarColor(appBarLayout, fromColor, toColor, percentage)
         setStatusBarColorWithAnimation(window, fromColor, toColor, percentage)
       }
     )
@@ -79,7 +81,7 @@ object Helpers {
    * @param toColor The ending color of the animation.
    * @param percentage The scroll percentage that dictates the color interpolation.
    */
-  private fun animateColorChange(
+  private fun setAppBarColor(
     appBarLayout: AppBarLayout,
     fromColor: Int,
     toColor: Int,
@@ -111,7 +113,22 @@ object Helpers {
   ) {
     val interpolatedColor =
       ArgbEvaluator().evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
-    window.statusBarColor = interpolatedColor
+
+    // set status bar color based on API level
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+      // For Android 14 and below
+      @Suppress("DEPRECATION")
+      window.statusBarColor = interpolatedColor
+    } else { // Android 15 and up
+      window.decorView.setOnApplyWindowInsetsListener { view, insets ->
+        val statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars())
+        view.setBackgroundColor(interpolatedColor)
+
+        // adjust padding to avoid overlap
+        view.setPadding(0, statusBarInsets.top, 0, 0)
+        insets
+      }
+    }
   }
 
   /**
