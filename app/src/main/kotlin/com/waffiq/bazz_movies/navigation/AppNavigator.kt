@@ -24,7 +24,7 @@ class AppNavigator @Inject constructor() : INavigator {
       putExtra(PersonActivity.EXTRA_PERSON, cast)
     }
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
-    ActivityCompat.startActivity(context, intent, options.toBundle())
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
   override fun openDetails(context: Context, resultItem: ResultItem) {
@@ -32,25 +32,25 @@ class AppNavigator @Inject constructor() : INavigator {
       putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
     }
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
-    ActivityCompat.startActivity(context, intent, options.toBundle())
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
   override fun openMainActivity(context: Context) {
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
     val intent = Intent(context, MainActivity::class.java)
-    ActivityCompat.startActivity(context, intent, options.toBundle())
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
   override fun openLoginActivity(context: Context) {
     val intent = Intent(context, LoginActivity::class.java)
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
-    ActivityCompat.startActivity(context, intent, options.toBundle())
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
   override fun openAboutActivity(context: Context) {
     val intent = Intent(context, AboutActivity::class.java)
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
-    ActivityCompat.startActivity(context, intent, options.toBundle())
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
   override fun snackbarAnchor(): Int = bottom_navigation
