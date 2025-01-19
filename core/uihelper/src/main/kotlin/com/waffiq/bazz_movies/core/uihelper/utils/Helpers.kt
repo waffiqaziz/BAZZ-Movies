@@ -146,10 +146,13 @@ object Helpers {
     }
   }
 
+  @Suppress("MagicNumber")
   private fun isLightColor(color: Int): Boolean {
-    val darkness = 1 - (0.299 * ((color shr 16 and 0xFF) / 255.0) +
-      0.587 * ((color shr 8 and 0xFF) / 255.0) +
-      0.114 * ((color and 0xFF) / 255.0))
+    val darkness = 1 - (
+      0.299 * ((color shr 16 and 0xFF) / 255.0) +
+        0.587 * ((color shr 8 and 0xFF) / 255.0) +
+        0.114 * ((color and 0xFF) / 255.0)
+      )
     return darkness < 0.5
   }
 
