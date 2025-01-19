@@ -14,7 +14,7 @@
     <item name="colorOnError">@color/white</item>
 
     <!-- Color for all background -->
-    <item name="android:windowBackground">@color/gray_900</item>
+    <item name="android:windowBackground">@color/gray_1000</item>
 
     <!-- Search View -->
     <item name="drawerArrowStyle">@style/MySearchViewTheme</item>

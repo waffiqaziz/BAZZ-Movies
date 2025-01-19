@@ -6,13 +6,16 @@ import android.content.Context
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.text.Layout
+import android.view.View
+import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowInsetsController
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,7 +108,7 @@ object Helpers {
    * @param toColor The ending color of the animation.
    * @param percentage The scroll percentage that dictates the color interpolation.
    */
-  private fun setStatusBarColorWithAnimation(
+  private fun Context.setStatusBarColorWithAnimation(
     window: Window,
     fromColor: Int,
     toColor: Int,
@@ -120,15 +123,40 @@ object Helpers {
       @Suppress("DEPRECATION")
       window.statusBarColor = interpolatedColor
     } else { // Android 15 and up
-      window.decorView.setOnApplyWindowInsetsListener { view, insets ->
-        val statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars())
-        view.setBackgroundColor(interpolatedColor)
+      val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+      insetsController.isAppearanceLightStatusBars = isLightColor(interpolatedColor)
 
-        // adjust padding to avoid overlap
-        view.setPadding(0, statusBarInsets.top, 0, 0)
-        insets
+      // add a colored background to the status bar area
+      val rootView = window.decorView as ViewGroup
+      val statusBarBackgroundView = View(this).apply {
+        setBackgroundColor(interpolatedColor)
+        layoutParams = ViewGroup.LayoutParams(
+          ViewGroup.LayoutParams.MATCH_PARENT,
+          window.getStatusBarHeight()
+        )
       }
+
+      // remove existing status bar background if present
+      val existingBackground = rootView.findViewWithTag<View>("statusBarBackground")
+      if (existingBackground != null) rootView.removeView(existingBackground)
+
+      // add the new status bar background view
+      statusBarBackgroundView.tag = "statusBarBackground"
+      rootView.addView(statusBarBackgroundView)
     }
+  }
+
+  private fun isLightColor(color: Int): Boolean {
+    val darkness = 1 - (0.299 * ((color shr 16 and 0xFF) / 255.0) +
+      0.587 * ((color shr 8 and 0xFF) / 255.0) +
+      0.114 * ((color and 0xFF) / 255.0))
+    return darkness < 0.5
+  }
+
+  // helper to get the status bar height
+  private fun Window.getStatusBarHeight(): Int {
+    val insets = ViewCompat.getRootWindowInsets(decorView) ?: return 0
+    return insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
   }
 
   /**
