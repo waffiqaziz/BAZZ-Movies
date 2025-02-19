@@ -1,9 +1,9 @@
-## Overview
+# Overview
 
 Modularization is the practice of breaking the concept of a monolithic, one-module codebase into
 loosely coupled, self contained modules.
 
-### Benefits of modularization
+## Benefits of modularization
 
 We use this approach because of this offers many benefits, including:
 <table>
@@ -41,7 +41,7 @@ We use this approach because of this offers many benefits, including:
   </tr>
 </table>
 
-### Modularization pitfalls
+## Modularization pitfalls
 
 Modularization is a valuable architectural pattern but can be prone to misuse, with potential
 pitfalls to consider when modularizing an app. One common issue we face is:
@@ -57,10 +57,11 @@ module.
 ## Types of modules in BAZZ Movies
 
 Basically BAZZ Movies using [feature modules](https://developer.android.com/topic/modularization/patterns#feature-modules),
-which each module has their layer(ui, domain, and data), but also for shared logic we created shared 
+which each module has their layer(ui, domain, and data), but also for shared logic we created shared
 module for each of them. Each feature module has pattern like below:
 
 ![Diagram Feature Module](/docs/architecture.png)
+
 1. **Data Layer**
    - Depends on the Domain layer.Responsible for communicating with the Database or Remote.
       - **Data Source**: Write about Local(Room..), Remote(Retrofit..) etc.
@@ -69,7 +70,7 @@ module for each of them. Each feature module has pattern like below:
       - **Mapper**: A class that converts the Data Model to an Domain Model.
 
 2. **Domain Layer**
-   - Consists purely of Kotlin code and has no dependencies on other layers or Android. Usecase and Repository interface, Domain Model exist. 
+   - Consists purely of Kotlin code and has no dependencies on other layers or Android. Usecase and Repository interface, Domain Model exist.
       - **Usecase**: The smallest unit of action
       - **Repository(interface)**: Interface that defines the behavior of the repository.
       - **Domain Model**: Definition of an object to be used in the project.
