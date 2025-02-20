@@ -53,5 +53,5 @@ types of tests in the project:
    - The generate report available on
 
      ``` terminal
-     core/network/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
+     core/user/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
      ```
