@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.libs
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.glide)
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
   alias(libs.plugins.bazzmovies.hilt)
 }
 

@@ -45,12 +45,20 @@ gradlePlugin {
       implementationClass = "AndroidApplicationConventionPlugin"
     }
     register("androidLibrary") {
-      id = libs.plugins.bazzmovies.android.library.get().pluginId
+      id = libs.plugins.bazzmovies.android.library.asProvider().get().pluginId
       implementationClass = "AndroidLibraryConventionPlugin"
     }
     register("androidFeature") {
       id = libs.plugins.bazzmovies.android.feature.get().pluginId
       implementationClass = "AndroidFeatureConventionPlugin"
+    }
+    register("androidApplicationJacoco") {
+      id = libs.plugins.bazzmovies.android.application.jacoco.get().pluginId
+      implementationClass = "AndroidApplicationJacocoConventionPlugin"
+    }
+    register("androidLibraryJacoco") {
+      id = libs.plugins.bazzmovies.android.library.jacoco.get().pluginId
+      implementationClass = "AndroidLibraryJacocoConventionPlugin"
     }
     register("hilt") {
       id = libs.plugins.bazzmovies.hilt.asProvider().get().pluginId

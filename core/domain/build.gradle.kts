@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
   id("kotlin-parcelize")
 }
 

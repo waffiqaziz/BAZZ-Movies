@@ -1,7 +1,8 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
-  id("kotlin-parcelize")
   alias(libs.plugins.bazzmovies.glide)
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
+  id("kotlin-parcelize")
 }
 
 android.namespace = "com.waffiq.bazz_movies.feature.home"
