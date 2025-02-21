@@ -4,6 +4,7 @@ import kotlin.apply
 
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
   alias(libs.plugins.bazzmovies.hilt)
 }
 
@@ -38,4 +39,14 @@ dependencies {
   implementation(libs.moshi.kotlin)
   implementation(libs.okhttp.logging.interceptor)
   ksp(libs.moshi.kotlin.codegen)
+
+  testImplementation(project(":core:test"))
+  testImplementation(libs.androidx.paging.runtime)
+  testImplementation(libs.junit)
+  testImplementation(libs.json) // using to test JSONObject
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockk)
+  testImplementation(libs.mockwebserver)
+  testImplementation(libs.truth)
+  testImplementation(libs.turbine)
 }

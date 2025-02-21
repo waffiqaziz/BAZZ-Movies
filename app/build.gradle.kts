@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.application)
   alias(libs.plugins.bazzmovies.android.application.firebase)
+  alias(libs.plugins.bazzmovies.android.application.jacoco)
   alias(libs.plugins.bazzmovies.hilt)
   alias(libs.plugins.bazzmovies.hilt.test)
   id("kotlin-parcelize")

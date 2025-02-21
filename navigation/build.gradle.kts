@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
-  id("bazzmovies.hilt")
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
+  alias(libs.plugins.bazzmovies.hilt)
 }
 
 android.namespace = "com.waffiq.bazz_movies.navigation"
