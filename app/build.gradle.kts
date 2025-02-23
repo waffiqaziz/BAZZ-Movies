@@ -8,9 +8,10 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":core:user"))
-  implementation(project(":core:uihelper"))
+  implementation(project(":core:designsystem"))
   implementation(project(":core:domain"))
+  implementation(project(":core:uihelper"))
+  implementation(project(":core:user"))
   implementation(project(":feature:about"))
   implementation(project(":feature:detail"))
   implementation(project(":feature:favorite"))
@@ -26,6 +27,8 @@ dependencies {
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.core.splashscreen)
+
+  implementation(libs.androidx.swiperefreshlayout)
 
   implementation(libs.androidx.navigation.ui)
   implementation(libs.androidx.navigation.fragment)
