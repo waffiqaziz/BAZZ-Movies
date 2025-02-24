@@ -1,52 +1,55 @@
 <h1 align="center">
-	<img
-		width="300"
-		alt="The Lounge"
-		src="docs/images/bazz-movies.svg">
+ <img
+  width="300"
+  alt="The Lounge"
+  src="docs/images/bazz-movies.svg">
 </h1>
 
 <h3 align="center">
-	Movies Catalog Android App
+ Movies Catalog Android App
 </h3>
 
 <p align="center">
-	<strong>
-		<a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
-		•
-		<a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
-		•
-		<a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
-	</strong>
+ <strong>
+  <a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
+  •
+  <a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
+  •
+  <a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
+ </strong>
 </p>
 <p align="center">
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
-		alt="Releases"
-		src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse"><img 
-		alt="Activity"
-		src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
-		alt="Build Status"
-		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
-		alt="Instrumented Test Status"
-		src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
-	<a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
-		alt="SonarQube Status"
-		src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>	
-	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img
-		alt="license"
-		src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
-	<a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
-		alt="Issue Opened"
-		src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
-	<a href=""><img
-		alt="Contribution welcome"
-		src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg"></a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
+  alt="Releases"
+  src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
+  alt="Change Log"
+  src="https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg"></a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse"><img
+  alt="Activity"
+  src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+  alt="Build Status"
+  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+  alt="Instrumented Test Status"
+  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
+ <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
+  alt="SonarQube Status"
+  src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a> 
+ <a href="https://www.apache.org/licenses/LICENSE-2.0"><img
+  alt="license"
+  src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
+  alt="Issue Opened"
+  src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
+ <a href=""><img
+  alt="Contribution welcome"
+  src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg"></a>
 </p>
 
 <p align="center">
-	<img src="docs/images/featured-picture.png" width="550">
+ <img src="docs/images/featured-picture.png" width="550">
 </p>
 
 ## 🚀 About
@@ -97,28 +100,7 @@ BAZZ Movies available downloaded via Google Play Store
 
 ## 🧪 Testing
 
-We use testing to ensure the stability and quality of our code. Here’s how you can run different
-types of tests in the project:
-
-1. **Unit Tests (Still in Progress)**
-
-   For unit tests, you can easily run them with the following command:
-   ```
-   ./gradlew test
-   ```
-   This will execute all the unit tests in the project to ensure everything is functioning as
-   expected. Tests are also automatically run on GitHub Actions with each push or pull request, so
-   you can see if everything is passing directly in the GitHub interface.
-
-2. **UI Tests (Still in Progress)**
-
-   While we’re still working on Android UI test coverage, you can run some of the Android-specific
-   tests that are available using:
-   ```
-   ./gradlew connectedAndroidTest
-   ```
-   This command runs the tests on a connected Android device or emulator. Keep in mind that this is
-   still a work in progress, so we may not have full test coverage just yet.
+Please read this [page](/docs/BAZZMoviesTesting.md)
 
 ## 🛠️ Architecture
 

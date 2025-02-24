@@ -161,7 +161,8 @@ and given **push access**. :tada:
 ## 📝 Writing Commit Messages
 
 Please
-read [commit guidelines](https://ec.europa.eu/component-library/v1.15.0/eu/docs/conventions/git/).
+read [commit guidelines](https://ec.europa.eu/component-library/v1.15.0/eu/docs/conventions/git/) and
+[commit guidelines addition](https://karma-runner.github.io/6.3/dev/git-commit-msg.html).
 
 ## :white_check_mark: Code Review
 

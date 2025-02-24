@@ -15,26 +15,27 @@ messy `subproject` configurations, without the pitfalls of the `buildSrc` direct
 `build-logic` is an included build, as configured in the root
 [`settings.gradle.kts`](../settings.gradle.kts).
 
-Inside `build-logic` is a `convention` module, which defines a set of plugins that all normal
-modules can use to configure themselves.
+Inside `build-logic` is a [`convention`](convention/src/main/kotlin) module, which defines a set of 
+plugins that all normal modules can use to configure themselves.
 
 `build-logic` also includes a set of `Kotlin` files used to share logic between plugins themselves,
 which is most useful for configuring Android components (libraries vs applications) with shared
 code.
 
-These plugins are *additive* and try to accomplish a single responsibility.
-Modules can then pick and choose the configurations they need via `libs.version.toml`.
-If there is one-off logic for a module without shared code, it's preferable to define that directly
-in the module's `build.gradle`, as opposed to creating a convention plugin with module-specific
+These plugins are *additive* and try to accomplish a single responsibility. Modules can then pick 
+and choose the configurations they need via [`libs.version.toml`](../gradle/libs.versions.toml).
+If there is one-off logic for a module without shared code, it's preferable to define that directly 
+in the module's `build.gradle`, as opposed to creating a convention plugin with module-specific 
 setup.
 
 Current list of convention plugins:
 
 - [`bazzmovies.android.application`](convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt)
+- [`bazzmovies.android.application.jacoco`](convention/src/main/kotlin/AndroidApplicationJacocoConventionPlugin.kt)
 - [`bazzmovies.android.application.firebase`](convention/src/main/kotlin/AndroidApplicationFirebaseConventionPlugin.kt)
 - [`bazzmovies.android.feature`](convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt)
 - [`bazzmovies.android.library`](convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt)
-- [`bazzmovies.android.lint`](convention/src/main/kotlin/AndroidLintConventionPlugin.kt)
+- [`bazzmovies.android.library.jacoco`](convention/src/main/kotlin/AndroidLibraryJacocoConventionPlugin.kt)
 - [`bazzmovies.android.room`](convention/src/main/kotlin/AndroidRoomConventionPlugin.kt)
 - [`bazzmovies.detekt`](convention/src/main/kotlin/DetektConventionPlugin.kt)
 - [`bazzmovies.glide`](convention/src/main/kotlin/GlideConventionPlugin.kt)
