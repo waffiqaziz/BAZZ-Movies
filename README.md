@@ -1,7 +1,7 @@
 <h1 align="center">
  <img
   width="300"
-  alt="The Lounge"
+  alt="BAZZ Movies"
   src="docs/images/bazz-movies.svg">
 </h1>
 
@@ -32,11 +32,15 @@
   alt="Build Status"
   src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
-  alt="Instrumented Test Status"
+  alt="Testing Status"
   src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
+ <a href="https://codecov.io/gh/waffiqaziz/BAZZ-Movies" ><img
+  alt="Code Coverage"
+  src="https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ"/>
+ </a>
  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
   alt="SonarQube Status"
-  src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a> 
+  src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>
  <a href="https://www.apache.org/licenses/LICENSE-2.0"><img
   alt="license"
   src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
@@ -90,8 +94,8 @@ BAZZ Movies available downloaded via Google Play Store
    and [OMDb](https://www.omdbapi.com/apikey.aspx).
 5. Create or edit `local.properties` and put your API keys:
 
-   ```
-   MDB_API_KEY = { TMDB_API_KEY }
+   ```properties
+   TMDB_API_KEY = { TMDB_API_KEY }
    OMDB_API_KEY = { OMDB_API_KEY }
    ```
 
@@ -100,7 +104,7 @@ BAZZ Movies available downloaded via Google Play Store
 
 ## 🧪 Testing
 
-Please read this [page](/docs/BAZZMoviesTesting.md)
+Please read this [page](/docs/BAZZMoviesTesting.md).
 
 ## 🛠️ Architecture
 
@@ -111,7 +115,7 @@ and is described in detail in the
 
 ## 🤝 How to Contribute
 
-Please read this [page](CONTRIBUTING.md)
+Please read this [page](CONTRIBUTING.md).
 
 ## 📜 Licenses and Usage
 
@@ -131,7 +135,7 @@ This application is released under the [Apache Version 2.0 License](LICENSE).
     See the License for the specific language governing permissions and
     limitations under the License.
 
-**Note**
+### Note
 
 - BAZZ Movies uses third-party API to function.
 - Developers must secure their own API key and adhere to the API's terms of service.
