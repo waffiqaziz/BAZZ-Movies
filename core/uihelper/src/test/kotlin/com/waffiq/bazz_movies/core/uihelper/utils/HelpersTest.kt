@@ -19,11 +19,11 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
-import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.getStatusBarHeight
-import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.isLightColor
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.getStatusBarHeight
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.isLightColor
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
