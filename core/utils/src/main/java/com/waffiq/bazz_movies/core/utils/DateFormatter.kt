@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.utils
 import android.util.Log
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -25,22 +26,7 @@ object DateFormatter {
    * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
    */
   fun dateFormatterStandard(date: String?): String {
-    if (date.isNullOrEmpty()) return ""
-    return try {
-      val oldFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).apply {
-        // non-lenient, throw a ParseException if the input doesn't strictly match the expected format.
-        isLenient = false
-      }
-      val newFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-      val parsedDate = oldFormatter.parse(date)
-      parsedDate?.let { newFormatter.format(it) } ?: ""
-    } catch (e: ParseException) {
-      Log.e(TAG, "Date parsing failed: ${e.message}")
-      ""
-    } catch (e: IllegalArgumentException) {
-      Log.e(TAG, "Invalid date pattern: ${e.message}")
-      ""
-    }
+    return formatDate(date, "yyyy-MM-dd")
   }
 
   /**
@@ -52,19 +38,28 @@ object DateFormatter {
    * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
    */
   fun dateFormatterISO8601(date: String?): String {
-    if (date.isNullOrEmpty()) return ""
+    val adjustedDate = date?.replace("Z", "+0000")
+    return formatDate(adjustedDate, "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+  }
+
+  internal fun parseDate(input: String?, pattern: String): Date? {
+    if (input.isNullOrEmpty()) return null
     return try {
-      val oldFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
-      val newFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-      val dateWithAdjustedFormat = date.replace("Z", "+0000")
-      val parsedDate = oldFormatter.parse(dateWithAdjustedFormat)
-      parsedDate?.let { newFormatter.format(it) } ?: ""
+      val formatter = try {
+        SimpleDateFormat(pattern, Locale.getDefault()).apply { isLenient = false }
+      } catch (_: IllegalArgumentException) {
+        Log.e(TAG, "Invalid date format pattern: $pattern")
+        return null
+      }
+      formatter.parse(input)
     } catch (e: ParseException) {
       Log.e(TAG, "Date parsing failed: ${e.message}")
-      ""
-    } catch (e: IllegalArgumentException) {
-      Log.e(TAG, "Invalid date pattern: ${e.message}")
-      ""
+      null
     }
+  }
+
+  internal fun formatDate(input: String?, pattern: String): String {
+    val parsedDate = parseDate(input, pattern) ?: return ""
+    return SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(parsedDate)
   }
 }

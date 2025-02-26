@@ -1,9 +1,19 @@
 package com.waffiq.bazz_movies.core.utils
 
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class DateFormatterTest {
+
+  @After
+  fun tearDown() {
+    unmockkAll()
+  }
 
   @Test
   fun dateFormatterStandard_shouldReturnFormattedDate_withValidInput() {
@@ -75,5 +85,38 @@ class DateFormatterTest {
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterISO8601(input)
     assertEquals(expectedOutput, actualOutput)
+  }
+
+  @Test
+  fun parseDate_shouldReturnNull_whenInputIsNull() {
+    val actual = DateFormatter.parseDate(null, "yyyy-MM-dd")
+    assertNull(actual)
+  }
+
+  @Test
+  fun parseDate_shouldReturnNull_whenInputIsEmpty() {
+    val actual = DateFormatter.parseDate("", "yyyy-MM-dd")
+    assertNull(actual)
+  }
+
+  @Test
+  fun formatDate_shouldReturnEmpty_whenParsedDateIsNull() {
+    mockkObject(DateFormatter)
+    every { DateFormatter.parseDate(any(), any()) } returns null
+
+    val result = DateFormatter.formatDate("2024-01-19", "yyyy-MM-dd")
+    assertEquals("", result)
+  }
+
+  @Test
+  fun parseDate_shouldReturnNull_whenPatternIsInvalid() {
+    val actual = DateFormatter.parseDate("2024-01-19", "invalid-pattern")
+    assertNull(actual)
+  }
+
+  @Test
+  fun parseDate_shouldReturnNull_whenInputDoesNotMatchPattern() {
+    val actual = DateFormatter.parseDate("2024/01/19", "yyyy-MM-dd")
+    assertNull(actual)
   }
 }
