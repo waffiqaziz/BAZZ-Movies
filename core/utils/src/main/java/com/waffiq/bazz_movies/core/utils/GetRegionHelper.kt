@@ -74,7 +74,7 @@ object GetRegionHelper {
    * Helper extension for getting a locale safely for API 24 and up
    */
   @RequiresApi(Build.VERSION_CODES.N)
-  private fun LocaleList.getOrNull(index: Int): Locale? {
+  internal fun LocaleList.getOrNull(index: Int): Locale? {
     return if (index in 0 until size()) get(index) else null
   }
 }
