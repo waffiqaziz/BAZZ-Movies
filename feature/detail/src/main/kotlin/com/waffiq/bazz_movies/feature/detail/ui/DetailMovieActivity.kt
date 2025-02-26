@@ -70,9 +70,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHe
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
-import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
-import com.waffiq.bazz_movies.core.uihelper.utils.NavigationBarHelper.setNavigationBarColorGrayed
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
@@ -127,7 +126,6 @@ class DetailMovieActivity : AppCompatActivity() {
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
       navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
     )
-    setNavigationBarColorGrayed(window)
 
     super.onCreate(savedInstanceState)
     binding = ActivityDetailMovieBinding.inflate(layoutInflater)

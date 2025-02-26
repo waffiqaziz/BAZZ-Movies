@@ -13,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
-import com.waffiq.bazz_movies.core.uihelper.utils.NavigationBarHelper.setNavigationBarColor
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
 import com.waffiq.bazz_movies.feature.search.ui.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
       navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
     )
-    setNavigationBarColor(window)
 
     super.onCreate(savedInstanceState)
     binding = ActivityMainBinding.inflate(layoutInflater)
