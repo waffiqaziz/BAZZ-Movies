@@ -20,7 +20,7 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
 
   companion object {
     // default offset value used if no custom value is provided
-    private const val DEFAULT_OFFSET = -50
+    private const val DEFAULT_OFFSET = -20
   }
 
   /**

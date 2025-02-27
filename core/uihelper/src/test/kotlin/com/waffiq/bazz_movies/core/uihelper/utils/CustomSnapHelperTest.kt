@@ -20,7 +20,7 @@ class CustomSnapHelperTest {
   private lateinit var recyclerView: RecyclerView
   private lateinit var targetView: TextView
   private lateinit var layoutManager: LinearLayoutManager
-  private val defaultOffset = -50
+  private val defaultOffset = -20
 
   @Before
   fun setup() {

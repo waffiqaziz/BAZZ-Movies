@@ -12,7 +12,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.scrollActionBarBehavior
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import org.junit.Assert.assertNotEquals
