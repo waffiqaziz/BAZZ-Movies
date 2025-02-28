@@ -1,3 +1,8 @@
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.hilt
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.test
+
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.glide)
@@ -16,4 +21,13 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.common)
   implementation(libs.androidx.paging.runtime)
+
+  testImplementation(project(":core:test"))
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.androidx.junit)
+  testImplementation(libs.junit)
+  testImplementation(libs.mockk)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.turbine)
 }
