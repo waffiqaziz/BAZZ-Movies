@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.ImageView
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
@@ -19,7 +20,8 @@ import java.util.Calendar
  */
 object PersonPageHelper {
 
-  internal fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getAgeDeath(dateBirth: String, dateDeath: String): Int {
     var dateParts = dateBirth.split("-").toTypedArray()
     val yearBirth = dateParts[0].toInt()
     val monthBirth = dateParts[1].toInt()

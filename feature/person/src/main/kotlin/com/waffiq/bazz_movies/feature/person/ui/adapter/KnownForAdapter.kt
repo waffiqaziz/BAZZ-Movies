@@ -55,6 +55,7 @@ class KnownForAdapter(private val navigator: INavigator) :
 
     fun bind(cast: CastItem) {
       binding.imgCastPhoto.contentDescription = cast.title
+      binding.imgCastPhoto.tag =  cast.id
 
       Glide.with(binding.imgCastPhoto)
         .load(

@@ -26,8 +26,19 @@ import org.robolectric.annotation.Config
 class PersonPageHelperRoboTest {
 
   @Test
+  @Config(sdk = [Build.VERSION_CODES.N])
+  fun getAgeDeath_deathBeforeBirthday_reducesAge() {
+    val birthDate = "2000-05-10"
+    val deathDate = "2021-03-15"
+
+    val age = getAgeDeath(birthDate, deathDate)
+
+    assertEquals(20, age) // should be 20 instead of 21
+  }
+
+  @Test
   @Config(sdk = [Build.VERSION_CODES.O])
-  fun getAgeDeath_LocalDate_API26Up() {
+  fun getAgeDeath_onAPI26Up_returnCorrectly() {
     val birthDate = "1990-05-15"
     val deathDate = "2020-10-10"
 
@@ -37,7 +48,7 @@ class PersonPageHelperRoboTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.M])
-  fun getAgeDeath_Calendar_API26Down() {
+  fun getAgeDeath_onAPI26Down_returnCorrectly() {
     val birthDate = "1990-05-15"
     val deathDate = "2024-10-10"
 
@@ -46,7 +57,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_socialIdNotNull() {
+  fun setupSocialLink_socialIdNotNull_showImageView() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val imageView = ImageView(activity)
     val socialId = "12345"
@@ -68,7 +79,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_socialIdNull() {
+  fun setupSocialLink_socialIdNull_hideImageView() {
     val context: Context = mockk(relaxed = true)
     val imageView: ImageView = mockk(relaxed = true)
     val socialId: String? = null
