@@ -7,17 +7,19 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Det
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
+import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCastItem
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNull
 import org.junit.Test
 
 class PersonMapperTest {
 
   @Test
-  fun mapCombinedCreditResponseToCombinedCredit() {
+  fun toCombinedCredit_withValidValue_mapCorrectly() {
     val listOfCastItemResponse = listOf(
       CastItemResponse(id = 1, name = "John", voteCount = 12345),
       CastItemResponse(id = 2, name = "Rex", voteCount = 2345)
@@ -45,7 +47,59 @@ class PersonMapperTest {
   }
 
   @Test
-  fun mapDetailPersonResponseToDetailPerson() {
+  fun toCombinedCredit_nullValue_mappedToDefaultValue() {
+    val response = CombinedCreditResponse(
+      id = 4376,
+      cast = null,
+      crew = null
+    )
+
+    val combinedCredit = response.toCombinedCredit()
+    assertEquals(4376, combinedCredit.id)
+    assertNull(combinedCredit.crew)
+    assertNull(combinedCredit.cast)
+  }
+
+  @Test
+  fun toCastItem_withValidValue_mapCorrectly() {
+    val response = CastItemResponse(
+      firstAirDate = "firstAirDate",
+      overview = "overview",
+      originalLanguage = "originalLanguage",
+      episodeCount = 12,
+      genreIds = emptyList(),
+      posterPath = "posterPath",
+      originCountry = emptyList(),
+      backdropPath = "backdropPath",
+      character = "character",
+      creditId = "creditId",
+      mediaType = "tv",
+      originalName = "originalName",
+      popularity = 1234.0,
+      voteAverage = 4123f,
+      name = "name",
+      id = null,
+      adult = false,
+      voteCount = null,
+      originalTitle = "originalTitle",
+      video = false,
+      title = "title",
+      releaseDate = "releaseDate",
+      order = 3
+    )
+
+    val castItem = response.toCastItem()
+    assertEquals(12, castItem.episodeCount)
+    assertEquals("tv", castItem.mediaType)
+    assertEquals(1234.0, castItem.popularity)
+    assertEquals(4123f, castItem.voteAverage)
+    assertEquals(0, castItem.id)
+    assertEquals(0, castItem.voteCount)
+    assertEquals(3, castItem.order)
+  }
+
+  @Test
+  fun toDetailPerson_withValidValue_mapCorrectly() {
     val response = DetailPersonResponse(imdbId = "nm123456", name = "Silverst", gender = 2)
     val detailPerson = response.toDetailPerson()
     assertEquals("nm123456", detailPerson.imdbId)
@@ -54,7 +108,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun mapImagePersonResponseToImagePerson() {
+  fun toImagePerson_withValidValue_mapCorrectly() {
     val listOfProfilesItemResponse = listOf(
       ProfilesItemResponse(
         width = 300,
@@ -82,7 +136,16 @@ class PersonMapperTest {
   }
 
   @Test
-  fun mapExternalIDPersonResponseToExternalIDPerson() {
+  fun toImagePerson_withSomeNullValue_mappedToDefaultValue() {
+    val response = ImagePersonResponse(profiles = null, id = 4531)
+    val imagePerson = response.toImagePerson()
+
+    assertEquals(4531, imagePerson.id)
+    assertNull(imagePerson.profiles)
+  }
+
+  @Test
+  fun mtoExternalIDPerson_withValidValue_mapCorrectly() {
     val response = ExternalIDPersonResponse(
       imdbId = "nm12345",
       instagramId = "instagram_id",
