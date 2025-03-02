@@ -35,16 +35,14 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val data = getItem(position)
-    if (data != null) {
-      when (data.mediaType) {
-        PERSON_MEDIA_TYPE -> holder.bindPerson(data)
-        else -> holder.bindMovieTv(data)
-      }
-      holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
-      )
+    val data = getItem(position) ?: return
+    when (data.mediaType) {
+      PERSON_MEDIA_TYPE -> holder.bindPerson(data)
+      else -> holder.bindMovieTv(data)
     }
+    holder.itemView.startAnimation(
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+    )
   }
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
@@ -101,7 +99,7 @@ class SearchAdapter(private val navigator: INavigator) :
       .transition(withCrossFade())
       .into(binding.ivPicture)
 
-    binding.tvTitle.text = data.name
+    binding.tvTitle.text = data.name ?: data.originalName
     binding.tvYearReleased.text = data.knownForDepartment
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
@@ -113,7 +111,7 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvYearReleased.text =
       data.releaseDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
         ?: data.firstAirDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-        ?: view.context.getString(not_available)
+          ?: view.context.getString(not_available)
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
     binding.tvGenre.text =
