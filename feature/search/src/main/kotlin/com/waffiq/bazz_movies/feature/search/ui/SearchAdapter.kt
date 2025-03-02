@@ -109,8 +109,8 @@ class SearchAdapter(private val navigator: INavigator) :
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     setImageMovieTv(binding, data)
     binding.tvYearReleased.text =
-      data.releaseDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
-        ?: data.firstAirDate?.takeIf { it.isNotBlank() || it.isNotEmpty() }
+      data.releaseDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
+        ?: data.firstAirDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
           ?: view.context.getString(not_available)
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName

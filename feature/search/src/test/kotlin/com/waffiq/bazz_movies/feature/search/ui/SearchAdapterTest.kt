@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.search.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -318,89 +319,180 @@ class SearchAdapterTest {
 
   @Test
   fun showDataMovieTv_handleNullData() {
-    val movie = ResultsItemSearch(
-      id = 1,
-      mediaType = "movie",
-      name = null,
-      originalName = "Avatar",
-      title = null,
-      originalTitle = null,
-      releaseDate = null,
-      firstAirDate = null,
-      listGenreIds = emptyList()
-    )
-
     val parent = FrameLayout(context)
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, parent, false)
 
-    adapter.showDataMovieTv(binding, movie, binding.root)
-
+    // release data all null, title using original name
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(
+        id = 1, mediaType = "movie", originalName = "Avatar",
+        listGenreIds = emptyList()
+      ),
+      binding.root
+    )
     assertEquals("Avatar", binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvYearReleased.text.toString())
-  }
+    assertEquals("N/A", binding.tvGenre.text.toString())
 
-  @Test
-  fun showDataMovieTv_handleDataEmptyCorrectly() {
-    val movie = ResultsItemSearch(
-      id = 1,
-      mediaType = "movie",
-      originalTitle = "Avatar Name",
-      originalName = "Avatar",
-      title = null,
-      releaseDate = "",
-      firstAirDate = "2010-10-10",
-      listGenreIds = emptyList()
+    // release data all null, title using original title
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", originalTitle = "Avatar Name"),
+      binding.root
     )
-
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
-
-    adapter.showDataMovieTv(binding, movie, binding.root)
-
     assertEquals("Avatar Name", binding.tvTitle.text.toString())
+  }
+
+  @Test
+  fun showDataMovieTv_handleYearReleased_allPossibility() {
+    val parent = FrameLayout(context)
+    val inflater = LayoutInflater.from(context)
+    val binding = ItemResultBinding.inflate(inflater, parent, false)
+
+    // releaseDate null, firstAirDate null
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie"),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate null, firstAirDate valid
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "2023-05-15"),
+      binding.root
+    )
+    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
+
+    // releaseDate null, firstAirDate empty
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = ""),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate null, firstAirDate blank
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = " "),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate valid, firstAirDate valid
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "movie",
+        firstAirDate = "2023-05-15",
+        releaseDate = "2023-05-15"
+      ),
+      binding.root
+    )
+    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
+
+    // releaseDate valid, firstAirDate null
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2023-05-15"),
+      binding.root
+    )
+    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
+
+    // releaseDate valid, firstAirDate empty
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2010-10-10", firstAirDate = ""),
+      binding.root
+    )
     assertEquals("2010-10-10", binding.tvYearReleased.text.toString())
-  }
 
-  @Test
-  fun showDataMovieTv_handleReleaseDateBlank() {
-    val movie = ResultsItemSearch(
-      id = 1,
-      mediaType = "movie",
-      originalTitle = "Blank Release Date",
-      releaseDate = " ",
-      firstAirDate = null
+    // releaseDate valid, firstAirDate blank
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "movie",
+        releaseDate = "2022-08-20",
+        firstAirDate = " "
+      ),
+      binding.root
     )
+    assertEquals("2022-08-20", binding.tvYearReleased.text.toString())
 
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
-
-    adapter.showDataMovieTv(binding, movie, binding.root)
-
-    assertEquals("Blank Release Date", binding.tvTitle.text.toString())
-    assertEquals(" ", binding.tvYearReleased.text.toString())
-  }
-
-  @Test
-  fun showDataMovieTv_handleFirstAirDateBlank() {
-    val movie = ResultsItemSearch(
-      id = 1,
-      mediaType = "movie",
-      originalTitle = "Blank First Air Date",
-      releaseDate = null,
-      firstAirDate = " "
+    // releaseDate empty, firstAirDate null
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = ""),
+      binding.root
     )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
+    // releaseDate empty, firstAirDate valid
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "2010-10-10"),
+      binding.root
+    )
+    assertEquals("2010-10-10", binding.tvYearReleased.text.toString())
 
-    adapter.showDataMovieTv(binding, movie, binding.root)
+    // releaseDate empty, firstAirDate empty
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = ""),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
-    assertEquals("Blank First Air Date", binding.tvTitle.text.toString())
-    assertEquals(" ", binding.tvYearReleased.text.toString())
+    // releaseDate empty, firstAirDate blank
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = " "),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate blank, firstAirDate null
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " "),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate blank, firstAirDate blank
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "  ", firstAirDate = "  "),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate blank, firstAirDate empty
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ", firstAirDate = ""),
+      binding.root
+    )
+    assertEquals("N/A", binding.tvYearReleased.text.toString())
+
+    // releaseDate blank, firstAirDate valid
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "movie",
+        releaseDate = " ",
+        firstAirDate = "2022-08-20"
+      ),
+      binding.root
+    )
+    assertEquals("2022-08-20", binding.tvYearReleased.text.toString())
   }
 
   @Test
@@ -410,7 +502,7 @@ class SearchAdapterTest {
       mediaType = "movie",
       originalTitle = "Valid Release Date",
       releaseDate = "2023-05-15",
-      firstAirDate = "2010-10-10"
+      firstAirDate = "2010-10-10",
     )
 
     val parent = FrameLayout(context)
@@ -421,6 +513,39 @@ class SearchAdapterTest {
 
     assertEquals("Valid Release Date", binding.tvTitle.text.toString())
     assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
+  }
+
+  @Test
+  fun showDataMovieTv_handleSetImageMovieTv_handleAllPossibility() {
+    val parent = FrameLayout(context)
+    val inflater = LayoutInflater.from(context)
+    val binding = ItemResultBinding.inflate(inflater, parent, false)
+
+    adapter.showDataMovieTv(
+      binding, ResultsItemSearch(id = 1, mediaType = "movie"),
+      binding.root
+    )
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = ""),
+      binding.root
+    )
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = " "),
+      binding.root
+    )
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", posterPath = ""),
+      binding.root
+    )
+    adapter.showDataMovieTv(
+      binding,
+      ResultsItemSearch(id = 1, mediaType = "movie", posterPath = " "),
+      binding.root
+    )
+    assertTrue(binding.ivPicture.isVisible)
   }
 
   @Test
