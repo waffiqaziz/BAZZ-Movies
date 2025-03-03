@@ -10,9 +10,14 @@ import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -37,7 +42,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun search_shouldUpdateSearchResultsFlowAndQueryLiveDataCorrectly() = runTest {
+  fun search_updateLiveDataCorrectly() = runTest {
     val fakePagingData = PagingData.from(
       listOf(
         ResultsItemSearch(
@@ -80,7 +85,6 @@ class SearchViewModelTest {
       differ.submitData(emittedPagingData)
       advanceUntilIdle()
 
-      // Extract the items for assertions
       val pagingList = differ.snapshot().items
       assertTrue(pagingList.isNotEmpty())
       assertEquals("Transformers TV-series", pagingList[0].title)
@@ -100,7 +104,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun setExpandSearchView_shouldUpdateLiveData() {
+  fun setExpandSearchView_updateLiveData() {
     searchViewModel.setExpandSearchView(true)
     assertEquals(true, searchViewModel.expandSearchView.value)
 
