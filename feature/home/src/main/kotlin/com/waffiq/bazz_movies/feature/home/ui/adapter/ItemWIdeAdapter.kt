@@ -75,20 +75,23 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
       }
     }
 
-    private fun adjustWidth(binding : ItemWideBinding){
+    private fun adjustWidth(binding: ItemWideBinding) {
       val context = binding.root.context
       val displayMetrics = context.resources.displayMetrics
       val screenWidth = displayMetrics.widthPixels
-      val maxWidth = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        350f,
-        displayMetrics
-      ).toInt()
-      val adjustedWidth = (screenWidth - TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        40f,
-        displayMetrics
-      ).toInt()).coerceAtMost(maxWidth)
+
+      val maxWidth =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MAX_WIDTH_DP, displayMetrics)
+          .toInt()
+
+      val adjustedWidth = (
+        screenWidth - TypedValue.applyDimension(
+          TypedValue.COMPLEX_UNIT_DIP,
+          PADDING_DP,
+          displayMetrics
+        ).toInt()
+        ).coerceAtMost(maxWidth)
+
       val params = binding.ivBackdrop.layoutParams
       params.width = adjustedWidth
       binding.ivBackdrop.layoutParams = params
@@ -96,6 +99,8 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
   }
 
   companion object {
+    private const val PADDING_DP = 40f
+    private const val MAX_WIDTH_DP = 350f
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
       override fun areItemsTheSame(
         oldItem: ResultItem,

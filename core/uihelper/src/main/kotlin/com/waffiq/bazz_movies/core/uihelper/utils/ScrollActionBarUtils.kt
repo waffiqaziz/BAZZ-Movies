@@ -18,7 +18,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
 /**
  * A utility object that provides scroll helper functions using [scrollActionBarBehavior],
  */
-object ScrollActionBarBehavior {
+object ScrollActionBarUtils {
+
   /**
    * Sets up a scroll listener to change the background color of the AppBarLayout and the status bar color
    * based on the scroll position of the [NestedScrollView].
