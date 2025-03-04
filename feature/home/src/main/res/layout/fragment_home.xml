@@ -53,6 +53,11 @@
 
     </com.google.android.material.tabs.TabLayout>
 
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/gray_700" />
+
   </com.google.android.material.appbar.AppBarLayout>
 
   <!-- ViewPager2 -->

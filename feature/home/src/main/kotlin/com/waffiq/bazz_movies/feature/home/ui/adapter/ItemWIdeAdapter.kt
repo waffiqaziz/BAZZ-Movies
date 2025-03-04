@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.home.ui.adapter
 
 import android.R.anim.fade_in
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -41,6 +42,8 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: ResultItem) {
+      adjustWidth(binding)
+
       binding.ivBackdrop.contentDescription =
         data.name ?: data.title ?: data.originalTitle ?: data.originalName
 
@@ -70,6 +73,25 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
       itemView.setOnClickListener {
         navigator.openDetails(itemView.context, data)
       }
+    }
+
+    private fun adjustWidth(binding : ItemWideBinding){
+      val context = binding.root.context
+      val displayMetrics = context.resources.displayMetrics
+      val screenWidth = displayMetrics.widthPixels
+      val maxWidth = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        350f,
+        displayMetrics
+      ).toInt()
+      val adjustedWidth = (screenWidth - TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        40f,
+        displayMetrics
+      ).toInt()).coerceAtMost(maxWidth)
+      val params = binding.ivBackdrop.layoutParams
+      params.width = adjustedWidth
+      binding.ivBackdrop.layoutParams = params
     }
   }
 

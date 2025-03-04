@@ -38,48 +38,52 @@
           tools:layout_height="250dp"
           tools:src="@color/red_matte" />
 
-        <LinearLayout
+        <HorizontalScrollView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="-20dp"
-          android:orientation="horizontal"
-          tools:ignore="NegativeMargin">
+          android:layout_marginTop="-20dp">
 
-          <!-- Trending -->
-          <TextView
-            android:id="@+id/tv_trending"
-            style="@style/TextHeader2"
+          <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:text="@string/trending_now" />
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/default_margin_parent_20"
+            tools:ignore="NegativeMargin">
 
-          <!-- Trending button -->
-          <RadioGroup
-            android:id="@+id/toggle"
-            android:layout_width="190dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/bg_switch_outline_button"
-            android:checkedButton="@+id/rb_this_week"
-            android:orientation="horizontal">
+            <!-- Trending -->
+            <TextView
+              android:id="@+id/tv_trending"
+              style="@style/TextHeader2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:layout_marginEnd="10dp"
+              android:text="@string/trending" />
 
-            <RadioButton
-              android:id="@+id/rb_today"
-              style="@style/MySwitchRadioButton"
-              android:layout_marginStart="1dp"
-              android:text="@string/today" />
+            <!-- Trending button -->
+            <RadioGroup
+              android:id="@+id/toggle"
+              android:layout_width="200dp"
+              android:layout_height="30dp"
+              android:layout_gravity="center_vertical"
+              android:background="@drawable/bg_switch_outline_button"
+              android:checkedButton="@+id/rb_this_week"
+              android:orientation="horizontal">
 
-            <RadioButton
-              android:id="@+id/rb_this_week"
-              style="@style/MySwitchRadioButton"
-              android:layout_marginEnd="1dp"
-              android:text="@string/this_week" />
-          </RadioGroup>
+              <RadioButton
+                android:id="@+id/rb_today"
+                style="@style/MySwitchRadioButton"
+                android:layout_marginStart="1dp"
+                android:text="@string/today" />
 
-        </LinearLayout>
+              <RadioButton
+                android:id="@+id/rb_this_week"
+                style="@style/MySwitchRadioButton"
+                android:layout_marginEnd="1dp"
+                android:text="@string/this_week" />
+            </RadioGroup>
+          </LinearLayout>
+        </HorizontalScrollView>
 
         <include
           android:id="@+id/layout_no_trending"
@@ -93,7 +97,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="10dp"
           android:clipToPadding="false"
-          android:contentDescription="@string/trending_now"
+          android:contentDescription="@string/trending"
           android:nestedScrollingEnabled="false"
           android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
