@@ -41,7 +41,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNa
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog

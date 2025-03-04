@@ -60,7 +60,6 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: ProfilesItem) {
-
       Glide.with(binding.imgPoster)
         .load(
           if (!cast.filePath.isNullOrEmpty()) {

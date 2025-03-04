@@ -22,8 +22,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.getStatusBarHeight
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarBehavior.isLightColor
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.getStatusBarHeight
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.isLightColor
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

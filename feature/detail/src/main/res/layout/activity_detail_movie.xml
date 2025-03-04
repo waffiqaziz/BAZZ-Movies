@@ -294,7 +294,7 @@
           android:layout_marginEnd="@dimen/default_margin_parent_20"
           android:layout_marginBottom="@dimen/margin_detail_info"
           android:ellipsize="end"
-          android:maxLines="2"
+          android:maxLines="1"
           android:text="@string/not_available"
           app:layout_constrainedWidth="true"
           app:layout_constraintBottom_toTopOf="@+id/tv_duration"
