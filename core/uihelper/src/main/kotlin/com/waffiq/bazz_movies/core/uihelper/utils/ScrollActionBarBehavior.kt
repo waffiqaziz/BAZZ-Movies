@@ -15,7 +15,6 @@ import androidx.core.widget.NestedScrollView
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
 
-
 /**
  * A utility object that provides scroll helper functions using [scrollActionBarBehavior],
  */

@@ -111,7 +111,7 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvYearReleased.text =
       data.releaseDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
         ?: data.firstAirDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
-          ?: view.context.getString(not_available)
+        ?: view.context.getString(not_available)
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
     binding.tvGenre.text =
