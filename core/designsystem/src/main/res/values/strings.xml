@@ -36,7 +36,7 @@
   <!-- FEATURED -->
   <string name="movies">Movies</string>
   <string name="tv_series">TV Series</string>
-  <string name="trending_now">Trending now</string>
+  <string name="trending">Trending</string>
   <string name="today">Today</string>
   <string name="this_week">This Week</string>
   <string name="featured">Featured</string>
