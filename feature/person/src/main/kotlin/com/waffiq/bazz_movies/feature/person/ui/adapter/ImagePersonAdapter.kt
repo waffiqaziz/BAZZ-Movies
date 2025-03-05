@@ -60,14 +60,17 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: ProfilesItem) {
+      if (!cast.filePath.isNullOrEmpty()) {
+        binding.imgPoster.tag = TMDB_IMG_LINK_POSTER_W185 + cast.filePath
+      } else {
+        binding.imgPoster.tag = null
+      }
       Glide.with(binding.imgPoster)
         .load(
           if (!cast.filePath.isNullOrEmpty()) {
             TMDB_IMG_LINK_POSTER_W185 + cast.filePath
-            binding.imgPoster.tag = TMDB_IMG_LINK_POSTER_W185 + cast.filePath
           } else {
             ic_poster_error
-            binding.imgPoster.tag = null
           }
         )
         .placeholder(ic_bazz_placeholder_poster)

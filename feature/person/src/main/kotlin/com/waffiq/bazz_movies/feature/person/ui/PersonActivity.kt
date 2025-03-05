@@ -15,11 +15,13 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.IMDB_PERSON_LINK
@@ -32,16 +34,15 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
+import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_bold
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
@@ -85,17 +86,21 @@ class PersonActivity : AppCompatActivity() {
     binding = ActivityPersonBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    // action bar behavior
-    binding.appBarLayout.handleOverHeightAppBar()
-    scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollViewPerson)
     addPaddingWhenNavigationEnable(binding.root)
+    setSupportActionBar(binding.toolbar)
 
     justifyTextView(binding.tvBiography)
+    typefaceTitle(binding.collapse)
 
     showLoading(true)
     getDataExtra()
     setupView()
     showData()
+  }
+
+  private fun typefaceTitle(collapse: CollapsingToolbarLayout) {
+    collapse.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, nunito_sans_bold))
+    collapse.setExpandedTitleTypeface(ResourcesCompat.getFont(this, nunito_sans_bold))
   }
 
   private fun getDataExtra() {
@@ -114,8 +119,9 @@ class PersonActivity : AppCompatActivity() {
   }
 
   private fun setupView() {
-    binding.btnBack.setOnClickListener { finish() }
-
+    binding.btnBack.setOnClickListener {
+      onBackPressedDispatcher.onBackPressed()
+    }
     binding.swipeRefresh.setOnRefreshListener {
       showData()
       binding.swipeRefresh.isRefreshing = false
@@ -140,7 +146,7 @@ class PersonActivity : AppCompatActivity() {
     binding.rvKnownFor.adapter = adapterKnownFor
     binding.rvPhotos.adapter = adapterImage
 
-    binding.tvName.text = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
+    binding.collapse.title = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
     Glide.with(binding.ivPicture)
       .load(
         if (!dataExtra.profilePath.isNullOrEmpty()) {
@@ -262,6 +268,11 @@ class PersonActivity : AppCompatActivity() {
     binding.tvBornHeader.isVisible = true
     val birthInfo = formatBirthInfo(person.birthday, person.placeOfBirth)
     binding.tvBorn.text = birthInfo.ifEmpty { getString(no_data) }
+  }
+
+  override fun onSupportNavigateUp(): Boolean {
+    onBackPressedDispatcher.onBackPressed()
+    return true
   }
 
   override fun onDestroy() {

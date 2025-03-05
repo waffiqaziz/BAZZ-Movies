@@ -6,38 +6,71 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/gray_900"
+  android:fitsSystemWindows="true"
   tools:context=".ui.PersonActivity">
 
   <!-- ========================== -->
   <!--       TOOLBAR SECTION      -->
   <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/app_bar_layout"
+    android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
+    android:fitsSystemWindows="true"
     android:translationZ="0.1dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-      android:id="@+id/toolbar"
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:id="@+id/collapse"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="match_parent"
+      android:fitsSystemWindows="true"
+      app:collapsedTitleGravity="fill_vertical"
+      app:collapsedTitleTextColor="@color/white"
+      app:contentScrim="@color/gray_1000"
+      app:expandedTitleGravity="bottom|center_horizontal"
+      app:expandedTitleTextColor="@color/white"
+      app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+      app:maxLines="1"
+      app:titleCollapseMode="fade"
+      tools:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
+      tools:title="Avengers">
 
-      <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="@dimen/default_margin_parent_20"
-        android:background="@drawable/bg_back_button_alpha_08"
-        android:contentDescription="@string/back"
-        android:foreground="?actionBarItemBackground"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_left_icon" />
+      <ImageView
+        android:id="@id/iv_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/poster"
+        android:fitsSystemWindows="true"
+        android:foreground="@drawable/bg_gradient_shape"
+        android:scaleType="centerCrop"
+        app:layout_collapseMode="parallax"
+        app:layout_collapseParallaxMultiplier="0.7"
+        tools:layout_height="450dp"
+        tools:src="@tools:sample/avatars" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+      <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <ImageButton
+          android:id="@+id/btn_back"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="start|center_vertical"
+          android:background="@drawable/bg_back_button_alpha_08"
+          android:contentDescription="@string/back"
+          android:foreground="?actionBarItemBackground"
+          android:minWidth="48dp"
+          android:minHeight="48dp"
+          android:src="@drawable/ic_left_icon" />
+
+      </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
   <!-- End of TOOLBAR SECTION -->
 
@@ -49,7 +82,8 @@
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
       android:id="@+id/nested_scroll_view_person"
@@ -60,51 +94,10 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/default_margin_parent_20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Image actor -->
-        <ImageView
-          android:id="@+id/iv_picture"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:adjustViewBounds="true"
-          android:contentDescription="@string/poster"
-          android:fitsSystemWindows="false"
-          android:foreground="@drawable/bg_gradient_shape"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:layout_height="450dp"
-          tools:src="@tools:sample/avatars" />
-
-        <!-- Name -->
-        <TextView
-          android:id="@+id/tv_Name"
-          style="@style/TextHeader1"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="-100dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/iv_picture"
-          tools:text="Leonardo DiCaprio" />
-
-        <com.google.android.material.divider.MaterialDivider
-          android:id="@+id/divider"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          app:dividerColor="@color/gray_800"
-          app:layout_constraintBottom_toTopOf="@+id/tv_known_for"
-          app:layout_constraintTop_toBottomOf="@+id/view_group_social_media" />
+        android:orientation="vertical">
 
         <!-- ========================== -->
         <!--    SOCIAL MEDIA SECTION    -->
@@ -113,11 +106,9 @@
           android:id="@+id/view_group_social_media"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_gravity="center"
           android:orientation="horizontal"
           android:visibility="gone"
-          app:layout_constraintEnd_toEndOf="@+id/tv_Name"
-          app:layout_constraintStart_toStartOf="@+id/tv_Name"
-          app:layout_constraintTop_toBottomOf="@+id/tv_Name"
           tools:visibility="visible">
 
           <ImageView
@@ -153,6 +144,14 @@
         </LinearLayout>
         <!-- End of SOCIAL MEDIA SECTION -->
 
+        <com.google.android.material.divider.MaterialDivider
+          android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+          android:layout_marginVertical="10dp"
+          app:dividerColor="@color/gray_800" />
+
         <!-- List playing on -->
         <TextView
           android:id="@+id/tv_known_for"
@@ -160,77 +159,79 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:text="@string/known_for"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/iv_picture" />
+          android:text="@string/known_for" />
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_known_for"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:clipToPadding="false"
           android:contentDescription="@string/playing_as"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_known_for"
+          android:nestedScrollingEnabled="false"
+          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
-        <!-- Biography text -->
-        <TextView
-          android:id="@+id/tv_biography_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:text="@string/biography"
-          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-          app:layout_constraintTop_toBottomOf="@+id/rv_known_for" />
-
-        <!-- Wikidata -->
         <LinearLayout
-          android:id="@+id/view_group_social_media2"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:orientation="horizontal"
-          app:layout_constraintBottom_toBottomOf="@+id/tv_biography_header"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@+id/tv_biography_header">
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+          android:orientation="horizontal">
 
-          <ImageView
-            android:id="@+id/iv_imdb"
-            style="@style/MySocialMediaButton"
-            android:contentDescription="@string/open_actor_actress_imdb_page"
-            android:src="@drawable/ic_imdb"
-            android:visibility="gone"
-            tools:visibility="visible" />
+          <TextView
+            android:id="@+id/tv_biography_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/biography" />
 
-          <ImageView
-            android:id="@+id/iv_wikidata"
-            style="@style/MySocialMediaButton"
-            android:contentDescription="@string/open_actor_actress_wikidata_page"
-            android:src="@drawable/ic_wikidata"
-            android:visibility="gone"
-            tools:visibility="visible" />
+          <!-- Wikidata -->
+          <LinearLayout
+            android:id="@+id/view_group_social_media2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-          <View
-            android:id="@+id/divider1"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:background="?android:attr/dividerVertical" />
+            <ImageView
+              android:id="@+id/iv_imdb"
+              style="@style/MySocialMediaButton"
+              android:contentDescription="@string/open_actor_actress_imdb_page"
+              android:src="@drawable/ic_imdb"
+              android:visibility="gone"
+              tools:visibility="visible" />
 
-          <ImageView
-            android:id="@+id/iv_link"
-            style="@style/MySocialMediaButton"
-            android:contentDescription="@string/open_actor_actress_home_page"
-            android:src="@drawable/ic_link"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            <ImageView
+              android:id="@+id/iv_wikidata"
+              style="@style/MySocialMediaButton"
+              android:contentDescription="@string/open_actor_actress_wikidata_page"
+              android:src="@drawable/ic_wikidata"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+            <View
+              android:id="@+id/divider1"
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:layout_margin="10dp"
+              android:background="?android:attr/dividerVertical" />
+
+            <ImageView
+              android:id="@+id/iv_link"
+              style="@style/MySocialMediaButton"
+              android:contentDescription="@string/open_actor_actress_home_page"
+              android:src="@drawable/ic_link"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+          </LinearLayout>
 
         </LinearLayout>
+        <!-- Biography text -->
 
         <!-- Biography -->
         <io.github.glailton.expandabletextview.ExpandableTextView
@@ -246,9 +247,6 @@
           app:collapsedLines="3"
           app:ellipsizeTextColor="@color/yellow"
           app:expandType="layout"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_biography_header"
           app:readLessText="@string/less_more"
           app:readMoreText="@string/read_more"
           app:textMode="line"
@@ -260,10 +258,9 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/born"
-          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-          app:layout_constraintTop_toBottomOf="@+id/tv_biography" />
+          android:text="@string/born" />
 
         <TextView
           android:id="@+id/tv_born"
@@ -283,10 +280,9 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/day_of_death"
-          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-          app:layout_constraintTop_toBottomOf="@+id/tv_born" />
+          android:text="@string/day_of_death" />
 
         <TextView
           android:id="@+id/tv_death"
@@ -306,26 +302,24 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/photos"
-          app:layout_constraintStart_toStartOf="@+id/tv_known_for"
-          app:layout_constraintTop_toBottomOf="@+id/tv_death" />
+          android:text="@string/photos" />
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_photos"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
+          android:clipToPadding="false"
           android:contentDescription="@string/playing_as"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_photos_header"
+          android:nestedScrollingEnabled="false"
+          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
