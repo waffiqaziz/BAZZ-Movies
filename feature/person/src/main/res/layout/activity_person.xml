@@ -174,28 +174,32 @@
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:orientation="horizontal">
+          android:layout_marginTop="@dimen/margin_between_item"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20">
 
           <TextView
             android:id="@+id/tv_biography_header"
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/biography" />
+            android:text="@string/biography"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
           <!-- Wikidata -->
           <LinearLayout
             android:id="@+id/view_group_social_media2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
               android:id="@+id/iv_imdb"
@@ -218,7 +222,7 @@
               android:layout_width="1dp"
               android:layout_height="match_parent"
               android:layout_margin="10dp"
-              android:background="?android:attr/dividerVertical" />
+              android:background="@color/gray_800" />
 
             <ImageView
               android:id="@+id/iv_link"
@@ -229,8 +233,7 @@
               tools:visibility="visible" />
 
           </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <!-- Biography text -->
 
         <!-- Biography -->
