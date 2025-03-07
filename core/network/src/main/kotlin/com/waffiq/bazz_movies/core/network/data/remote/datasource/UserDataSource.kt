@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
+import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -7,7 +8,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Cr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.CountryIPApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
-import com.waffiq.bazz_movies.core.network.di.IoDispatcher
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.CoroutineDispatcher

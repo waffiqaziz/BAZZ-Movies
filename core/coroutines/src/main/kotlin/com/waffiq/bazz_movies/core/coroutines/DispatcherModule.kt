@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.network.di
+package com.waffiq.bazz_movies.core.coroutines
 
 import dagger.Module
 import dagger.Provides

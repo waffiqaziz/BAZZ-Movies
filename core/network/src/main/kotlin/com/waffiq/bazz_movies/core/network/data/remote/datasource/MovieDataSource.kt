@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
@@ -25,7 +26,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.Res
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
-import com.waffiq.bazz_movies.core.network.di.IoDispatcher
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.CoroutineDispatcher
