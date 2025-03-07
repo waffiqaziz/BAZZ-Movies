@@ -1,9 +1,10 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
+import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -11,20 +12,21 @@ import javax.inject.Singleton
 
 @Singleton
 class LocalDataSource @Inject constructor(
-  private val favoriteDao: FavoriteDao
+  private val favoriteDao: FavoriteDao,
+  @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : LocalDataSourceInterface {
 
   override val getFavoriteMovies: Flow<List<FavoriteEntity>> =
-    favoriteDao.getFavoriteMovies().flowOn(Dispatchers.IO)
+    favoriteDao.getFavoriteMovies().flowOn(ioDispatcher)
 
   override val getFavoriteTv: Flow<List<FavoriteEntity>> =
-    favoriteDao.getFavoriteTv().flowOn(Dispatchers.IO)
+    favoriteDao.getFavoriteTv().flowOn(ioDispatcher)
 
   override val getWatchlistMovies: Flow<List<FavoriteEntity>> =
-    favoriteDao.getWatchlistMovies().flowOn(Dispatchers.IO)
+    favoriteDao.getWatchlistMovies().flowOn(ioDispatcher)
 
   override val getWatchlistTv: Flow<List<FavoriteEntity>> =
-    favoriteDao.getWatchlistTv().flowOn(Dispatchers.IO)
+    favoriteDao.getWatchlistTv().flowOn(ioDispatcher)
 
   override suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int> =
     executeDbOperation { favoriteDao.insert(favoriteEntityList).toInt() }

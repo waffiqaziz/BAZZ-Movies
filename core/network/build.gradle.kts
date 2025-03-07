@@ -29,6 +29,7 @@ android {
 
 dependencies {
   implementation(project(":core:domain"))
+  implementation(project(":core:coroutines"))
 
   implementation(libs.androidx.paging.common)
   implementation(libs.jetbrains.coroutines.core)
