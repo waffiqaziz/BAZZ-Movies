@@ -36,19 +36,19 @@ interface LocalDataSourceInterface {
       DbResult.Success(operation())
     } catch (e: SQLiteConstraintException) {
       Log.e("DatabaseError", "Unique constraint violation: ${e.message}")
-      DbResult.Error("Unique constraint violation: ${e.message}")
+      DbResult.Error("Unique constraint violation")
     } catch (e: SQLiteFullException) {
       Log.e("DatabaseError", "Database is full: ${e.message}")
-      DbResult.Error("Database is full: ${e.message}")
+      DbResult.Error("Database is full")
     } catch (e: SQLiteDiskIOException) {
       Log.e("DatabaseError", "Disk IO issue: ${e.message}")
-      DbResult.Error("Disk IO issue: ${e.message}")
+      DbResult.Error("Disk IO issue")
     } catch (e: SQLiteException) {
       Log.e("DatabaseError", "SQLite exception: ${e.message}")
-      DbResult.Error("SQLite exception: ${e.message}")
+      DbResult.Error("SQLite exception")
     } catch (e: Exception) {
       Log.e("DatabaseError", "Unknown error: ${e.message}")
-      DbResult.Error("Unknown error: ${e.message}")
+      DbResult.Error("Unknown error")
     }
   }
 }

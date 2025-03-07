@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoin
 
 object DatabaseMapper {
 
-  private fun ResultItem.toFavorite(
+  internal fun ResultItem.toFavorite(
     isFavorite: Boolean,
     isWatchlist: Boolean
   ) = Favorite(
