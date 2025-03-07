@@ -25,12 +25,12 @@ class DatabaseModule {
       context,
       FavoriteDatabase::class.java,
       "$TABLE_NAME.db"
-    ).addMigrations(migrationOneTwo)
+    ).addMigrations(getMigrationOneToTwo())
       .build()
 
   // Define the migration from version 1 to version 2
   // update app version from v1.0.7 to v1.0.8 and newer
-  private val migrationOneTwo = object : Migration(1, 2) {
+  internal fun getMigrationOneToTwo(): Migration = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
       // Step 1: Create a new table with the correct schema
       db.execSQL(

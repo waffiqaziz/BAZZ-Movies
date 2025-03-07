@@ -4,6 +4,7 @@ import com.waffiq.bazz_movies.core.database.data.datasource.LocalDataSource
 import com.waffiq.bazz_movies.core.database.domain.repository.IDatabaseRepository
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
+import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,31 +36,31 @@ class DatabaseRepositoryImpl @Inject constructor(
       list.map { it.toFavorite() }
     }
 
-  override suspend fun insertToDB(fav: Favorite): com.waffiq.bazz_movies.core.database.utils.DbResult<Int> =
+  override suspend fun insertToDB(fav: Favorite): DbResult<Int> =
     localDataSource.insert(fav.toFavoriteEntity())
 
-  override suspend fun deleteFromDB(fav: Favorite): com.waffiq.bazz_movies.core.database.utils.DbResult<Int> =
+  override suspend fun deleteFromDB(fav: Favorite): DbResult<Int> =
     localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
 
-  override suspend fun deleteAll(): com.waffiq.bazz_movies.core.database.utils.DbResult<Int> =
+  override suspend fun deleteAll(): DbResult<Int> =
     localDataSource.deleteAll()
 
   override suspend fun isFavoriteDB(
     id: Int,
     mediaType: String
-  ): com.waffiq.bazz_movies.core.database.utils.DbResult<Boolean> =
+  ): DbResult<Boolean> =
     localDataSource.isFavorite(id, mediaType)
 
   override suspend fun isWatchlistDB(
     id: Int,
     mediaType: String
-  ): com.waffiq.bazz_movies.core.database.utils.DbResult<Boolean> =
+  ): DbResult<Boolean> =
     localDataSource.isWatchlist(id, mediaType)
 
   override suspend fun updateFavoriteItemDB(
     isDelete: Boolean,
     fav: Favorite
-  ): com.waffiq.bazz_movies.core.database.utils.DbResult<Int> =
+  ): DbResult<Int> =
     if (isDelete) {
       // update set is_favorite = false (item on favorite to delete)
       localDataSource.update(
@@ -81,7 +82,7 @@ class DatabaseRepositoryImpl @Inject constructor(
   override suspend fun updateWatchlistItemDB(
     isDelete: Boolean,
     fav: Favorite
-  ): com.waffiq.bazz_movies.core.database.utils.DbResult<Int> =
+  ): DbResult<Int> =
     if (isDelete) { // update set is_watchlist = false (item on watchlist to delete)
       localDataSource.update(
         isFavorite = fav.isFavorite,
