@@ -9,7 +9,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagin
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponse
