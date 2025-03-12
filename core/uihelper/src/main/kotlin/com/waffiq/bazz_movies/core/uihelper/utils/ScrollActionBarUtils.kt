@@ -119,7 +119,7 @@ object ScrollActionBarUtils {
 
   @Suppress("MagicNumber")
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun isLightColor(color: Int): Boolean {
+  fun isLightColor(color: Int): Boolean {
     val darkness = 1 - (
       0.299 * ((color shr 16 and 0xFF) / 255.0) +
         0.587 * ((color shr 8 and 0xFF) / 255.0) +
@@ -130,7 +130,7 @@ object ScrollActionBarUtils {
 
   // helper to get the status bar height
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun Window.getStatusBarHeight(): Int {
+  fun Window.getStatusBarHeight(): Int {
     val insets = ViewCompat.getRootWindowInsets(decorView) ?: return 0
     return insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
   }

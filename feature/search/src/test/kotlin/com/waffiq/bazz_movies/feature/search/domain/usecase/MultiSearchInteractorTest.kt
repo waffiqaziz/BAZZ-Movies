@@ -1,15 +1,11 @@
 package com.waffiq.bazz_movies.feature.search.domain.usecase
 
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.paging.filter
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
@@ -24,10 +20,7 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -426,6 +419,88 @@ class MultiSearchInteractorTest {
 
       val pagingList = differ.snapshot().items
       assertEquals(emptyList<ResultsItemSearch>(), pagingList)
+
+      job.cancel()
+      awaitComplete()
+    }
+
+    verify { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  @Test
+  fun filter_allPathCombinations_ensureProperFilteringLogic() = runTest {
+    // total 9 elements - should only left 7 after filtering
+    val testCases = listOf(
+      // all null - should be filtered out
+      resultsItemSearchResponse.copy(backdropPath = null, posterPath = null, profilePath = null),
+
+      // one path present, others null
+      resultsItemSearchResponse.copy(
+        backdropPath = "/path.jpg",
+        posterPath = null,
+        profilePath = null
+      ),
+      resultsItemSearchResponse.copy(
+        backdropPath = null,
+        posterPath = "/path.jpg",
+        profilePath = null
+      ),
+      resultsItemSearchResponse.copy(
+        backdropPath = null,
+        posterPath = null,
+        profilePath = "/path.jpg"
+      ),
+
+      // two paths present, one null
+      resultsItemSearchResponse.copy(
+        backdropPath = "/path.jpg",
+        posterPath = "/path.jpg",
+        profilePath = null
+      ),
+      resultsItemSearchResponse.copy(
+        backdropPath = "/path.jpg",
+        posterPath = null,
+        profilePath = "/path.jpg"
+      ),
+      resultsItemSearchResponse.copy(
+        backdropPath = null,
+        posterPath = "/path.jpg",
+        profilePath = "/path.jpg"
+      ),
+
+      // all paths not null
+      resultsItemSearchResponse.copy(
+        backdropPath = "/path.jpg",
+        posterPath = "/path.jpg",
+        profilePath = "/path.jpg"
+      ),
+
+      // all empty - should be filtered out
+      resultsItemSearchResponse.copy(backdropPath = "", posterPath = "", profilePath = "")
+    ).map { it.toResultItemSearch() }
+
+    val fakePagingData = PagingData.from(testCases)
+    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
+
+    multiSearchInteractor.search(QUERY).test {
+      val pagingData = awaitItem()
+      val job = launch { differ.submitData(pagingData) }
+      advanceUntilIdle()
+
+      // get the filtered items
+      val pagingList = differ.snapshot().items
+
+      // should have filtered out 2 items (all null and all empty)
+      assertEquals(7, pagingList.size)
+
+      // verify that all items in the result have at least one path that is non-empty
+      pagingList.forEach { item ->
+        assertTrue(
+          !item.backdropPath.isNullOrEmpty() ||
+            !item.posterPath.isNullOrEmpty() ||
+            !item.profilePath.isNullOrEmpty()
+        )
+      }
 
       job.cancel()
       awaitComplete()

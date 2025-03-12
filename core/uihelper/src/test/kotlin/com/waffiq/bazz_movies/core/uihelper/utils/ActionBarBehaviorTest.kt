@@ -4,7 +4,6 @@ import android.app.Activity
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
@@ -41,28 +40,18 @@ class ActionBarBehaviorTest {
     )
     appBarLayout.handleOverHeightAppBar()
 
-    // simulated system bar insets (top, left, right)
+    // simulate system bar insets
     val systemBarInsets = android.graphics.Insets.of(10, 20, 30, 40)
     val windowInsets = android.view.WindowInsets.Builder()
       .setInsets(android.view.WindowInsets.Type.systemBars(), systemBarInsets)
       .build()
 
-    // trigger the insets listener directly using WindowInsets (not WindowInsetsCompat)
-    ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { v, insets ->
-      val params = v.layoutParams as ViewGroup.MarginLayoutParams
-      val systemInsets = insets.getInsets(android.view.WindowInsets.Type.systemBars())
-
-      // Update margins based on insets
-      params.topMargin = systemInsets.top
-      params.leftMargin = systemInsets.left
-      params.rightMargin = systemInsets.right
-
-      // Return the consumed insets
-      return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
-    }
-
+    // dispatch insets to the view to trigger listener
+    // that already set in `handleOverHeightAppBar`
+    WindowInsetsCompat.toWindowInsetsCompat(windowInsets)
     appBarLayout.dispatchApplyWindowInsets(windowInsets)
 
+    // verify margins is set correctly
     val layoutParams = appBarLayout.layoutParams as ViewGroup.MarginLayoutParams
     assertEquals(20, layoutParams.topMargin)
     assertEquals(10, layoutParams.leftMargin)

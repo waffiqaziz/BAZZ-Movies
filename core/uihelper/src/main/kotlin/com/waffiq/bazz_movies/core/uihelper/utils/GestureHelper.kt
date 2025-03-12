@@ -5,6 +5,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -48,7 +49,8 @@ object GestureHelper {
    *
    * @return `true` if button navigation is enabled, `false` if gesture navigation is enabled.
    */
-  private fun Activity.isButtonNavigationEnabled(): Boolean {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun Activity.isButtonNavigationEnabled(): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       // On API 30+ (Android 11 and later), check if gesture navigation is active using system bar behavior
       val controller = WindowInsetsControllerCompat(window, window.decorView)

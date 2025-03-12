@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -36,6 +37,7 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
    *         x-distance is adjusted by the custom [offsetPx] value if the
    *         layout manager supports horizontal scrolling.
    */
+  @Suppress("ReturnCount")
   override fun calculateDistanceToFinalSnap(
     layoutManager: RecyclerView.LayoutManager,
     targetView: View
@@ -46,14 +48,29 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
     }
 
     // get the default snap distances using the base class implementation
-    val distances = super.calculateDistanceToFinalSnap(layoutManager, targetView)
+    val distances = getSuperDistances(layoutManager, targetView) ?: return null
 
     // if the layout manager allows horizontal scrolling, apply the custom offset
-    distances?.let {
-      if (layoutManager.canScrollHorizontally()) {
-        it[0] -= offsetPx
-      }
+    if (canLayoutManagerScrollHorizontally(layoutManager)) {
+      distances[0] -= offsetPx
     }
+
     return distances
+  }
+
+  // methods to make easier for testing
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getSuperDistances(
+    layoutManager: RecyclerView.LayoutManager,
+    targetView: View
+  ): IntArray? {
+    return super.calculateDistanceToFinalSnap(layoutManager, targetView)
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun canLayoutManagerScrollHorizontally(
+    layoutManager: RecyclerView.LayoutManager
+  ): Boolean {
+    return layoutManager.canScrollHorizontally()
   }
 }
