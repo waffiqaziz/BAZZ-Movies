@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
@@ -68,6 +69,43 @@ class HelpersTest {
   }
 
   @Test
+  @Config(sdk = [Build.VERSION_CODES.N])
+  fun justifyTextView_shouldDoNothing_belowAndroidO() {
+    val textView = TextView(context)
+
+    val initialJustificationMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      try {
+        val field = TextView::class.java.getDeclaredField("mJustificationMode")
+        field.isAccessible = true
+        field.getInt(textView)
+      } catch (_: Exception) {
+        -1 // default value that doesn't match any justification mode
+      }
+    } else {
+      -1
+    }
+
+    justifyTextView(textView)
+
+    // on Android N, justification mode should not change as it's not supported
+    val finalJustificationMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      try {
+        val field = TextView::class.java.getDeclaredField("mJustificationMode")
+        field.isAccessible = true
+        field.getInt(textView)
+      } catch (_: Exception) {
+        -1
+      }
+    } else {
+      -1
+    }
+
+    // verify the justification mode hasn't changed
+    assertEquals(initialJustificationMode, finalJustificationMode)
+  }
+
+
+  @Test
   fun setupRecyclerViewsWithSnap_attachesCustomSnapHelper() {
     setupRecyclerViewsWithSnap(listOf(recyclerView))
 
@@ -81,6 +119,17 @@ class HelpersTest {
 
     setupRecyclerViewsWithSnap(listOf(recyclerView))
 
+    assertNotNull(recyclerView.onFlingListener)
+    assertTrue(recyclerView.onFlingListener is CustomSnapHelper)
+  }
+
+  @Test
+  fun setupRecyclerViewsWithSnap_usesProvidedLayoutManager() {
+    val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
+
+    setupRecyclerViewsWithSnap(listOf(recyclerView), layoutManager = customLayoutManager)
+
+    assertSame(customLayoutManager, recyclerView.layoutManager)
     assertNotNull(recyclerView.onFlingListener)
     assertTrue(recyclerView.onFlingListener is CustomSnapHelper)
   }
@@ -109,6 +158,20 @@ class HelpersTest {
 
     // ensure layoutManager remains unchanged
     assertSame(existingLayoutManager, recyclerView.layoutManager)
+  }
+
+  @Test
+  fun setupRecyclerViewsWithSnapGridLayout_usesProvidedLayoutManager() {
+    val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
+
+    setupRecyclerViewsWithSnapGridLayout(
+      recyclerViews = listOf(recyclerView),
+      layoutManager = customLayoutManager
+    )
+
+    assertSame(customLayoutManager, recyclerView.layoutManager)
+    assertNotNull(recyclerView.onFlingListener)
+    assertTrue(recyclerView.onFlingListener is CustomSnapHelper)
   }
 
   @Test

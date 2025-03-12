@@ -46,7 +46,7 @@ class LoadingStateAdapter(
    * A ViewHolder class that binds the layout to represent the loading, error, and retry states.
    * It includes a retry button that triggers the retry logic when clicked.
    */
-  class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) :
+  inner class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     init {

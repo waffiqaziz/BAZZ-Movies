@@ -5,6 +5,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -115,5 +118,44 @@ class CustomSnapHelperTest {
     val distances = snapHelper.calculateDistanceToFinalSnap(emptyRecyclerView.layoutManager!!, targetView)
 
     assertNull(distances) // no view to snap to, should return null
+  }
+
+  @Test
+  fun calculateDistanceToFinalSnap_withNullDistances() {
+    // Mock the helper to return null from getSuperDistances
+    val snapHelper = mockk<CustomSnapHelper>(relaxed = true)
+    every { snapHelper.getSuperDistances(any(), any()) } returns null
+    every { snapHelper.calculateDistanceToFinalSnap(any(), any()) } answers {
+      callOriginal()
+    }
+
+    val result = snapHelper.calculateDistanceToFinalSnap(layoutManager, targetView)
+
+    assertNull(result)
+    verify { snapHelper.getSuperDistances(layoutManager, targetView) }
+  }
+
+  @Test
+  fun calculateDistanceToFinalSnap_withVerticalLayoutManager() {
+    // Mock the helper to return false from canLayoutManagerScrollHorizontally
+    val snapHelper = mockk<CustomSnapHelper>(relaxed = true)
+    every { snapHelper.getSuperDistances(any(), any()) } returns intArrayOf(10, 20)
+    every { snapHelper.canLayoutManagerScrollHorizontally(any()) } returns false
+    every { snapHelper.calculateDistanceToFinalSnap(any(), any()) } answers {
+      callOriginal()
+    }
+
+    val distances = snapHelper.calculateDistanceToFinalSnap(layoutManager, targetView)
+
+    assertNotNull(distances)
+    assertEquals(2, distances?.size)
+    // Verify the offset was NOT applied
+    assertEquals(10, distances?.get(0))
+    assertEquals(20, distances?.get(1))
+
+    verify {
+      snapHelper.getSuperDistances(layoutManager, targetView)
+      snapHelper.canLayoutManagerScrollHorizontally(layoutManager)
+    }
   }
 }

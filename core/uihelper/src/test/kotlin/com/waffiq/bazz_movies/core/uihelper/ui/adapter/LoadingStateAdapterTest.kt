@@ -26,16 +26,18 @@ class LoadingStateAdapterTest {
   private lateinit var binding: ItemLoadingBinding
   private lateinit var inflater: LayoutInflater
   private lateinit var viewHolder: LoadingStateAdapter.LoadingStateViewHolder
+  private lateinit var parentView: FrameLayout
 
   @Before
   fun setUp() {
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
-    adapter = LoadingStateAdapter(retryMock)
     inflater = LayoutInflater.from(context)
-    binding = ItemLoadingBinding.inflate(inflater, null, false)
-    viewHolder = LoadingStateAdapter.LoadingStateViewHolder(binding, retryMock)
+    parentView = FrameLayout(context)
+    adapter = LoadingStateAdapter(retryMock)
+    binding = ItemLoadingBinding.inflate(inflater, parentView, false)
+    viewHolder = adapter.LoadingStateViewHolder(binding, retryMock)
   }
 
   @Test
@@ -50,7 +52,8 @@ class LoadingStateAdapterTest {
   @Test
   fun onBindViewHolder_bindsCorrectErrorState() {
     val errorState = LoadState.Error(Throwable("Test error message"))
-    viewHolder.bind(errorState)
+    adapter.onBindViewHolder(viewHolder, errorState)
+
     assertEquals("Test error message", binding.errorMsg.text.toString())
     assertEquals(true, binding.retryButton.isVisible)
     assertEquals(true, binding.errorMsg.isVisible)
@@ -59,7 +62,8 @@ class LoadingStateAdapterTest {
   @Test
   fun onBindViewHolder_bindsCorrectLoadingState() {
     val loadingState = LoadState.Loading
-    viewHolder.bind(loadingState)
+    adapter.onBindViewHolder(viewHolder, loadingState)
+
     assertEquals(false, binding.retryButton.isVisible)
     assertEquals(false, binding.errorMsg.isVisible)
   }
