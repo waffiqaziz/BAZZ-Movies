@@ -37,6 +37,7 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
    *         x-distance is adjusted by the custom [offsetPx] value if the
    *         layout manager supports horizontal scrolling.
    */
+  @Suppress("ReturnCount")
   override fun calculateDistanceToFinalSnap(
     layoutManager: RecyclerView.LayoutManager,
     targetView: View
