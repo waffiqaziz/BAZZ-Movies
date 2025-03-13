@@ -80,9 +80,7 @@ class SearchAdapterTest {
       listGenreIds = listOf(12, 878, 28),
       releaseDate = "2007-06-27"
     )
-    val context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies) // set the theme
-    }
+
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
@@ -106,9 +104,7 @@ class SearchAdapterTest {
       listGenreIds = listOf(10759, 16, 10765),
       releaseDate = "2004-10-05"
     )
-    val context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies) // set the theme
-    }
+
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
@@ -137,9 +133,7 @@ class SearchAdapterTest {
         KnownForItem(title = "Wrath of Man")
       )
     )
-    val context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies) // set the theme
-    }
+
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
@@ -207,9 +201,6 @@ class SearchAdapterTest {
       overview = "Test Overview",
       mediaType = "movie"
     )
-    val context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies)
-    }
 
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)
@@ -242,10 +233,6 @@ class SearchAdapterTest {
       originalName = "Original Actor Name",
       profilePath = "/profile/path.jpg"
     )
-
-    val context = ApplicationProvider.getApplicationContext<Context>().apply {
-      setTheme(Base_Theme_BAZZ_movies)
-    }
 
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)

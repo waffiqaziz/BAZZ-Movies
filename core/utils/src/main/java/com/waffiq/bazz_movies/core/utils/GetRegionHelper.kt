@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import java.util.Locale
 import java.util.TimeZone
 
@@ -74,7 +75,8 @@ object GetRegionHelper {
    * Helper extension for getting a locale safely for API 24 and up
    */
   @RequiresApi(Build.VERSION_CODES.N)
-  internal fun LocaleList.getOrNull(index: Int): Locale? {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun LocaleList.getOrNull(index: Int): Locale? {
     return if (index in 0 until size()) get(index) else null
   }
 }

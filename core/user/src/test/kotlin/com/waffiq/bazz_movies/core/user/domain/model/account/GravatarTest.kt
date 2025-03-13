@@ -7,19 +7,19 @@ import org.junit.Test
 class GravatarTest {
 
   @Test
-  fun gravatar_WithAllPropertiesSet() {
+  fun gravatar_withAllPropertiesSet() {
     val gravatar = Gravatar(hash = "/536978543976.jpg")
     assertEquals("/536978543976.jpg", gravatar.hash)
   }
 
   @Test
-  fun gravatar_WithAllPropertiesNull() {
+  fun gravatar_withAllPropertiesNull() {
     val gravatar = Gravatar(hash = null)
     assertNull(gravatar.hash)
   }
 
   @Test
-  fun gravatar_WithDefaultValues() {
+  fun gravatar_withDefaultValues() {
     val gravatar = Gravatar()
     assertNull(gravatar.hash)
   }

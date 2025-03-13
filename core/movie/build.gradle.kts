@@ -1,7 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.hilt
-import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.test
 
 plugins {
   alias(libs.plugins.bazzmovies.android.library)

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-open class BaseViewModel : ViewModel() {
+class BaseViewModel : ViewModel() {
   private val _isSnackbarShown = MutableLiveData<Boolean>()
   val isSnackbarShown: LiveData<Boolean> get() = _isSnackbarShown
 

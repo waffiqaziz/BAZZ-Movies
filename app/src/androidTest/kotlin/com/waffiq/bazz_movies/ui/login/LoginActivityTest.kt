@@ -23,9 +23,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
+import com.waffiq.bazz_movies.feature.login.R.id.btn_forget_password
 import com.waffiq.bazz_movies.feature.login.R.id.btn_login
 import com.waffiq.bazz_movies.feature.login.R.id.ed_pass
 import com.waffiq.bazz_movies.feature.login.R.id.ed_username
+import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
 import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
@@ -58,8 +60,10 @@ class LoginActivityTest {
   }
 
   @Test
-  fun testUIElementsVisible() {
+  fun allView_isVisible() {
     // Verify that all UI elements are visible
+    onView(withId(btn_forget_password)).check(matches(isDisplayed()))
+    onView(withId(layout_bazz_movies)).check(matches(isDisplayed()))
     onView(withId(ed_username)).check(matches(isDisplayed()))
     onView(withId(ed_pass)).check(matches(isDisplayed()))
     onView(withId(btn_eye)).check(matches(isDisplayed()))
@@ -69,7 +73,7 @@ class LoginActivityTest {
   }
 
   @Test
-  fun testEmptyUsernameAndPassword() {
+  fun login_withoutUsernameAndPassword_showsErrorMessage() {
     // Click login button without entering username/password
     onView(withId(btn_login)).perform(click())
 
@@ -81,7 +85,7 @@ class LoginActivityTest {
   }
 
   @Test
-  fun testPasswordVisibilityToggle() {
+  fun triggerPasswordToggle_showsPassword() {
     onView(withId(ed_pass)).perform(typeText("password123"))
 
     // unmask the edit text
@@ -106,7 +110,7 @@ class LoginActivityTest {
 //  }
 
   @Test
-  fun testLoginWithNotValidCredentials() {
+  fun login_withInvalidCredential_returnToLoginActivity() {
     // Enter valid credentials
     onView(withId(ed_username)).perform(typeText("random"))
     closeSoftKeyboard()
@@ -118,7 +122,7 @@ class LoginActivityTest {
   }
 
   @Test
-  fun testLoginAsGuest() {
+  fun login_asGuest_openMainActivity() {
     onView(withId(tv_guest)).perform(click())
     onView(withId(activity_main)).check(matches(isDisplayed()))
     onView(isRoot()).perform(waitFor())

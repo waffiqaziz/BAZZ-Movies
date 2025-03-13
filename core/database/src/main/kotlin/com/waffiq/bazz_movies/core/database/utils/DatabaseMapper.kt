@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.database.utils
 
+import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.domain.Favorite
@@ -8,7 +9,8 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoin
 
 object DatabaseMapper {
 
-  internal fun ResultItem.toFavorite(
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun ResultItem.toFavorite(
     isFavorite: Boolean,
     isWatchlist: Boolean
   ) = Favorite(

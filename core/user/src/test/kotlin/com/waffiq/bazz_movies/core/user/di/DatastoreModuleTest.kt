@@ -8,7 +8,6 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.waffiq.bazz_movies.core.user.utils.common.Constants.DATASTORE_NAME
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 
