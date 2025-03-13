@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -82,7 +83,8 @@ class SearchAdapter(private val navigator: INavigator) :
     }
   }
 
-  internal fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
     binding.ivPicture.contentDescription =
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -104,7 +106,8 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
-  internal fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     setImageMovieTv(binding, data)

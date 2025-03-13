@@ -14,7 +14,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
-import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import io.mockk.Runs

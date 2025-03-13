@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.database.di
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -30,7 +31,8 @@ class DatabaseModule {
 
   // Define the migration from version 1 to version 2
   // update app version from v1.0.7 to v1.0.8 and newer
-  internal fun getMigrationOneToTwo(): Migration = object : Migration(1, 2) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getMigrationOneToTwo(): Migration = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
       // Step 1: Create a new table with the correct schema
       db.execSQL(

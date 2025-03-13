@@ -66,18 +66,18 @@ object AccountMapper {
   )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun AvatarItemResponse.toAvatarItem() = AvatarItem(
+  fun AvatarItemResponse.toAvatarItem() = AvatarItem(
     avatarTMDb = avatarTMDbResponse?.toAvatarTMDb(),
     gravatar = gravatarResponse?.toGravatar()
   )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun AvatarTMDbResponse.toAvatarTMDb() = AvatarTMDb(
+  fun AvatarTMDbResponse.toAvatarTMDb() = AvatarTMDb(
     avatarPath = avatarPath
   )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun GravatarResponse.toGravatar() = Gravatar(
+  fun GravatarResponse.toGravatar() = Gravatar(
     hash = hash
   )
 

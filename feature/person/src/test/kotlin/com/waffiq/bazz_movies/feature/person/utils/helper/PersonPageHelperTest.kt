@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.feature.person.utils.helper
 
 import android.content.Context
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
-import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
-import com.waffiq.bazz_movies.core.utils.DateFormatter
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
@@ -12,13 +10,10 @@ import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAn
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import io.mockk.unmockkAll
-import io.mockk.unmockkObject
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
-import junit.framework.TestCase.fail
 import org.junit.Test
 
 class PersonPageHelperTest {
