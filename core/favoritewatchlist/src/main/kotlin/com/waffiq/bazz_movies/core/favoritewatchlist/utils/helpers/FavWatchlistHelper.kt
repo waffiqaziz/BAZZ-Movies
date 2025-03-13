@@ -27,8 +27,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
- * A utility object that provides helper functions for managing favorite and watchlist items,
- * as well as handling UI interactions like displaying snackbars and managing load states during paging.
+ * A utility object that provides helper functions for handling UI interactions
+ * and managing load states during paging.
  */
 object FavWatchlistHelper {
 
@@ -37,6 +37,7 @@ object FavWatchlistHelper {
    * - `name`
    * - `title`
    * - `originalTitle`
+   * - `originalName`
    *
    * If none of those properties are available, it defaults to "Item".
    *
@@ -44,65 +45,7 @@ object FavWatchlistHelper {
    * @return The title of the item, or "Item" if no title is found.
    */
   fun titleHandler(item: ResultItem): String {
-    return item.name ?: item.title ?: item.originalTitle ?: "Item"
-  }
-
-  /**
-   * Displays a Snackbar indicating that an item is already in the watchlist.
-   * The message is styled with bold text and a predefined message that includes the item's name.
-   *
-   * @param context The context in which the Snackbar is displayed.
-   * @param view The view to associate with the Snackbar.
-   * @param viewGuide A view to anchor the Snackbar to.
-   * @param eventMessage The message event to be displayed in the Snackbar.
-   * @return The Snackbar instance, or null if no content is available to display.
-   */
-  fun snackBarAlreadyWatchlist(
-    context: Context,
-    view: View,
-    viewGuide: View,
-    eventMessage: Event<String>
-  ): Snackbar? {
-    val result = eventMessage.getContentIfNotHandled() ?: return null
-    val mSnackbar = Snackbar.make(
-      view,
-      HtmlCompat.fromHtml(
-        "<b>$result</b> " + ContextCompat.getString(context, already_watchlist),
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      ),
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(viewGuide)
-    mSnackbar.show()
-    return mSnackbar
-  }
-
-  /**
-   * Displays a Snackbar indicating that an item is already marked as a favorite.
-   * The message is styled with bold text and a predefined message that includes the item's name.
-   *
-   * @param context The context in which the Snackbar is displayed.
-   * @param view The view to associate with the Snackbar.
-   * @param viewGuide A view to anchor the Snackbar to.
-   * @param eventMessage The message event to be displayed in the Snackbar.
-   * @return The Snackbar instance, or null if no content is available to display.
-   */
-  fun snackBarAlreadyFavorite(
-    context: Context,
-    view: View,
-    viewGuide: View,
-    eventMessage: Event<String>
-  ): Snackbar? {
-    val result = eventMessage.getContentIfNotHandled() ?: return null
-    val mSnackbar = Snackbar.make(
-      view,
-      HtmlCompat.fromHtml(
-        "<b>$result</b> " + ContextCompat.getString(context, already_favorite),
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      ),
-      Snackbar.LENGTH_SHORT
-    ).setAnchorView(viewGuide)
-    mSnackbar.show()
-    return mSnackbar
+    return item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
   }
 
   /**
@@ -149,7 +92,7 @@ object FavWatchlistHelper {
             errorView.isVisible = adapterPaging.itemCount <= 0
             emptyView.isVisible = false
 
-            // Trigger the error callback
+            // trigger the error callback
             val error = (loadState.refresh as LoadState.Error).error
             onError(Event(pagingErrorHandling(error)))
           }

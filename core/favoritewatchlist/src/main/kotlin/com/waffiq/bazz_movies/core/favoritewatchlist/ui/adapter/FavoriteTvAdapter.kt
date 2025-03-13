@@ -49,6 +49,7 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
 
       binding.tvTitle.text =
         resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+          ?: itemView.context.getString(not_available)
       binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
         dateFormatterStandard(it)
       } ?: itemView.context.getString(not_available)

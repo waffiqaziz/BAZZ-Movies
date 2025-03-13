@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,7 +25,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import java.text.DecimalFormat
 
 class FavoriteMovieAdapter(private val navigator: INavigator) :
-  androidx.paging.PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -63,6 +65,7 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
   ) {
     binding.tvTitle.text =
       resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
+        ?: context.getString(not_available)
     binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
       dateFormatterStandard(it)
     } ?: context.getString(not_available)
@@ -75,7 +78,8 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
     }
   }
 
-  internal fun setImagePoster(binding: ItemMulmedBinding, data: ResultItem) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun setImagePoster(binding: ItemMulmedBinding, data: ResultItem) {
     Glide.with(binding.ivPicture)
       .load(
         if (!data.posterPath.isNullOrEmpty()) {

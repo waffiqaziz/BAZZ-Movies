@@ -4,6 +4,7 @@ import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,6 +24,9 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
   RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
 
   private val listItemDB = ArrayList<Favorite>()
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getListItemDB() : List<Favorite> = listItemDB
 
   fun setFavorite(itemFavorite: List<Favorite>) {
     val diffCallback = DiffCallback(this.listItemDB, itemFavorite)
@@ -54,6 +58,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
     fun bind(fav: Favorite) {
       data = fav
       binding.ivPicture.contentDescription = fav.title
+      binding.ivPicture.tag = fav.title
 
       Glide.with(binding.ivPicture)
         .load(
