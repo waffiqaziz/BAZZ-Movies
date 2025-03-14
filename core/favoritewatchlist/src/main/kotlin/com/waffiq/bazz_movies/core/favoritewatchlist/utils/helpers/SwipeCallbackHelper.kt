@@ -91,9 +91,9 @@ class SwipeCallbackHelper(
     val gray = ContextCompat.getColor(context, gray_900) // Starting color
 
     if (dX > 0) { // swipe right
-      val deleteIcon = ContextCompat.getDrawable(context, deleteIconResId)
-      val intrinsicWidth = deleteIcon?.intrinsicWidth ?: 0
-      val intrinsicHeight = deleteIcon?.intrinsicHeight ?: 0
+      val deleteIcon = requireNotNull(ContextCompat.getDrawable(context, deleteIconResId))
+      val intrinsicWidth = deleteIcon.intrinsicWidth
+      val intrinsicHeight = deleteIcon.intrinsicHeight
 
       // Interpolate between gray and red matte for delete action
       background.color =
@@ -101,17 +101,17 @@ class SwipeCallbackHelper(
       background.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
       background.draw(c)
 
-      deleteIcon?.setBounds(
+      deleteIcon.setBounds(
         itemView.left + (itemHeight - intrinsicHeight) / BOUND_SIZE,
         itemView.top + (itemHeight - intrinsicHeight) / 2,
         itemView.left + (itemHeight - intrinsicHeight) / BOUND_SIZE + intrinsicWidth,
         itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight
       )
-      deleteIcon?.draw(c)
+      deleteIcon.draw(c)
     } else if (dX < 0) { // swipe left
-      val actionIcon = ContextCompat.getDrawable(context, actionIconResId)
-      val intrinsicWidth = actionIcon?.intrinsicWidth ?: 0
-      val intrinsicHeight = actionIcon?.intrinsicHeight ?: 0
+      val actionIcon = requireNotNull(ContextCompat.getDrawable(context, actionIconResId))
+      val intrinsicWidth = actionIcon.intrinsicWidth
+      val intrinsicHeight = actionIcon.intrinsicHeight
 
       // Interpolate between gray and yellow for add action
       background.color =
@@ -120,13 +120,13 @@ class SwipeCallbackHelper(
         .setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
       background.draw(c)
 
-      actionIcon?.setBounds(
+      actionIcon.setBounds(
         itemView.right - (itemHeight - intrinsicHeight) / BOUND_SIZE - intrinsicWidth,
         itemView.top + (itemHeight - intrinsicHeight) / 2,
         itemView.right - (itemHeight - intrinsicHeight) / BOUND_SIZE,
         itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight
       )
-      actionIcon?.draw(c)
+      actionIcon.draw(c)
     }
 
     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
