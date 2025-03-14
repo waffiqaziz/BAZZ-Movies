@@ -1,9 +1,10 @@
-<h1 align="center">
- <img
-  width="300"
-  alt="BAZZ Movies"
-  src="docs/images/bazz-movies.svg">
-</h1>
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/images/bazz-movies-light.svg">
+      <source media="(prefers-color-scheme: light)" srcset="docs/images/bazz-movies.svg">
+      <img alt="BAZZ Movies" src="docs/images/bazz-movies.svg">
+    </picture>
+</p>
 
 <h3 align="center">
  Movies Catalog Android App
@@ -31,9 +32,13 @@
  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
   alt="Build Status"
   src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml"><img
   alt="Testing Status"
-  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg"></a>
+  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg">
+ </a>
+ <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml"><img
+  alt="CodeQL Status"
+  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg"></a>
  <a href="https://codecov.io/gh/waffiqaziz/BAZZ-Movies" ><img
   alt="Code Coverage"
   src="https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ"/>
