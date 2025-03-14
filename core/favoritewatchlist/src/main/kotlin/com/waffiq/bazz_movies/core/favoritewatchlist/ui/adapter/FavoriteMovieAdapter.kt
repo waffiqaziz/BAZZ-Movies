@@ -63,14 +63,13 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
     resultItem: ResultItem,
     context: Context
   ) {
-    binding.tvTitle.text =
-      resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-        ?: context.getString(not_available)
-    binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
-      dateFormatterStandard(it)
-    } ?: context.getString(not_available)
+    binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle
+      ?: resultItem.originalName ?: context.getString(not_available)
+    binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)
+      ?.let { dateFormatterStandard(it) }
+      .takeUnless { it.isNullOrBlank() } ?: context.getString(not_available)
     binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-      ?: context.getString(not_available)
+      .takeUnless { it.isNullOrBlank() } ?: context.getString(not_available)
     binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
     (DecimalFormat("#.#").format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {

@@ -47,14 +47,13 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
       data = resultItem
       showImage(binding, resultItem)
 
-      binding.tvTitle.text =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-          ?: itemView.context.getString(not_available)
-      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)?.let {
-        dateFormatterStandard(it)
-      } ?: itemView.context.getString(not_available)
+      binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle
+        ?: resultItem.originalName ?: itemView.context.getString(not_available)
+      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)
+        ?.let { dateFormatterStandard(it) }
+        .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
       binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-        ?: itemView.context.getString(not_available)
+        .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
 
       val df = DecimalFormat("#.#")

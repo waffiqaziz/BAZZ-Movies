@@ -159,6 +159,7 @@ androidx-test-runner = { group = "androidx.test", name = "runner", version.ref =
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 json = { module = "org.json:json", version.ref = "json" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
 mockito-android-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoAndroid" }
