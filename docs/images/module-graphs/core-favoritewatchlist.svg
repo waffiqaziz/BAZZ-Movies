@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1261pt" height="116pt" viewBox="0.00 0.00 1260.75 116.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 1256.75,-112 1256.75,4 -4,4"/>
+<!-- :core:favoritewatchlist -->
+<g id="node1" class="node">
+<title>:core:favoritewatchlist</title>
+<ellipse fill="none" stroke="black" cx="646.26" cy="-90" rx="97.91" ry="18"/>
+<text text-anchor="middle" x="646.26" y="-85.8" font-family="Times,serif" font-size="14.00">:core:favoritewatchlist</text>
+</g>
+<!-- :core:database -->
+<g id="node2" class="node">
+<title>:core:database</title>
+<ellipse fill="none" stroke="black" cx="66.26" cy="-18" rx="66.26" ry="18"/>
+<text text-anchor="middle" x="66.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:database</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:database -->
+<g id="edge1" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:database</title>
+<path fill="none" stroke="black" d="M555.98,-82.76C454.61,-75.01 285.43,-59.82 141.26,-36 136.02,-35.13 130.6,-34.13 125.18,-33.04"/>
+<polygon fill="black" stroke="black" points="126.09,-29.66 115.59,-31.04 124.66,-36.51 126.09,-29.66"/>
+</g>
+<!-- :core:domain -->
+<g id="node3" class="node">
+<title>:core:domain</title>
+<ellipse fill="none" stroke="black" cx="212.26" cy="-18" rx="61.99" ry="18"/>
+<text text-anchor="middle" x="212.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:domain -->
+<g id="edge2" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:domain</title>
+<path fill="none" stroke="black" d="M565.89,-79.38C492.1,-70.04 379.89,-54.58 283.26,-36 278.64,-35.11 273.87,-34.12 269.08,-33.08"/>
+<polygon fill="black" stroke="black" points="269.96,-29.69 259.44,-30.91 268.43,-36.52 269.96,-29.69"/>
+</g>
+<!-- :core:uihelper -->
+<g id="node4" class="node">
+<title>:core:uihelper</title>
+<ellipse fill="none" stroke="black" cx="357.26" cy="-18" rx="64.66" ry="18"/>
+<text text-anchor="middle" x="357.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:uihelper</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:uihelper -->
+<g id="edge3" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:uihelper</title>
+<path fill="none" stroke="black" d="M588.82,-75.09C538.78,-62.97 466.52,-45.46 416.08,-33.25"/>
+<polygon fill="black" stroke="black" points="417.04,-29.88 406.5,-30.93 415.39,-36.68 417.04,-29.88"/>
+</g>
+<!-- :core:mappers -->
+<g id="node5" class="node">
+<title>:core:mappers</title>
+<ellipse fill="none" stroke="black" cx="505.26" cy="-18" rx="65.73" ry="18"/>
+<text text-anchor="middle" x="505.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:mappers</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:mappers -->
+<g id="edge4" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:mappers</title>
+<path fill="none" stroke="black" d="M613.2,-72.59C593.2,-62.66 567.53,-49.91 546.24,-39.34"/>
+<polygon fill="black" stroke="black" points="548.05,-36.34 537.54,-35.02 544.94,-42.61 548.05,-36.34"/>
+</g>
+<!-- :core:movie -->
+<g id="node6" class="node">
+<title>:core:movie</title>
+<ellipse fill="none" stroke="black" cx="646.26" cy="-18" rx="57.16" ry="18"/>
+<text text-anchor="middle" x="646.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:movie</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:movie -->
+<g id="edge5" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:movie</title>
+<path fill="none" stroke="red" stroke-width="2" d="M646.26,-71.7C646.26,-64.41 646.26,-55.73 646.26,-47.54"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="649.76,-49.13 646.26,-39.13 642.76,-49.13 649.76,-49.13"/>
+</g>
+<!-- :core:user -->
+<g id="node7" class="node">
+<title>:core:user</title>
+<ellipse fill="none" stroke="black" cx="770.26" cy="-18" rx="49.11" ry="18"/>
+<text text-anchor="middle" x="770.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:user</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:user -->
+<g id="edge6" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:user</title>
+<path fill="none" stroke="black" d="M675.65,-72.41C693.29,-62.45 715.86,-49.71 734.54,-39.17"/>
+<polygon fill="black" stroke="black" points="736.15,-42.28 743.13,-34.31 732.7,-36.18 736.15,-42.28"/>
+</g>
+<!-- :core:utils -->
+<g id="node8" class="node">
+<title>:core:utils</title>
+<ellipse fill="none" stroke="black" cx="887.26" cy="-18" rx="49.65" ry="18"/>
+<text text-anchor="middle" x="887.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:utils -->
+<g id="edge7" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:utils</title>
+<path fill="none" stroke="black" d="M697.08,-74.24C738.82,-62.12 797.57,-45.05 838.69,-33.11"/>
+<polygon fill="black" stroke="black" points="839.45,-36.53 848.07,-30.38 837.5,-29.81 839.45,-36.53"/>
+</g>
+<!-- :core:designsystem -->
+<g id="node9" class="node">
+<title>:core:designsystem</title>
+<ellipse fill="none" stroke="black" cx="1040.26" cy="-18" rx="85.06" ry="18"/>
+<text text-anchor="middle" x="1040.26" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:designsystem -->
+<g id="edge8" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:designsystem</title>
+<path fill="none" stroke="black" d="M715.39,-76.87C776.2,-66.18 867.12,-50.15 946.26,-36 952.64,-34.86 959.26,-33.67 965.91,-32.48"/>
+<polygon fill="black" stroke="black" points="966.35,-35.95 975.57,-30.73 965.11,-29.06 966.35,-35.95"/>
+</g>
+<!-- :navigation -->
+<g id="node10" class="node">
+<title>:navigation</title>
+<ellipse fill="none" stroke="black" cx="1198.26" cy="-18" rx="54.48" ry="18"/>
+<text text-anchor="middle" x="1198.26" y="-13.8" font-family="Times,serif" font-size="14.00">:navigation</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:navigation -->
+<g id="edge9" class="edge">
+<title>:core:favoritewatchlist-&gt;:navigation</title>
+<path fill="none" stroke="black" d="M737.7,-83.22C836.21,-76.03 997.28,-61.48 1134.26,-36 1138.53,-35.21 1142.93,-34.28 1147.32,-33.27"/>
+<polygon fill="black" stroke="black" points="1147.82,-36.75 1156.72,-31 1146.17,-29.95 1147.82,-36.75"/>
+</g>
+</g>
+</svg>

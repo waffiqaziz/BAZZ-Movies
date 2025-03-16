@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="519pt" height="116pt" viewBox="0.00 0.00 518.97 116.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 514.97,-112 514.97,4 -4,4"/>
+<!-- :feature:watchlist -->
+<g id="node1" class="node">
+<title>:feature:watchlist</title>
+<ellipse fill="none" stroke="black" cx="243.06" cy="-90" rx="78.07" ry="18"/>
+<text text-anchor="middle" x="243.06" y="-85.8" font-family="Times,serif" font-size="14.00">:feature:watchlist</text>
+</g>
+<!-- :core:designsystem -->
+<g id="node2" class="node">
+<title>:core:designsystem</title>
+<ellipse fill="none" stroke="black" cx="85.06" cy="-18" rx="85.06" ry="18"/>
+<text text-anchor="middle" x="85.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+</g>
+<!-- :feature:watchlist&#45;&gt;:core:designsystem -->
+<g id="edge1" class="edge">
+<title>:feature:watchlist-&gt;:core:designsystem</title>
+<path fill="none" stroke="black" d="M207.99,-73.46C185.34,-63.43 155.63,-50.27 131.09,-39.39"/>
+<polygon fill="black" stroke="black" points="132.52,-36.2 121.95,-35.35 129.68,-42.6 132.52,-36.2"/>
+</g>
+<!-- :navigation -->
+<g id="node3" class="node">
+<title>:navigation</title>
+<ellipse fill="none" stroke="black" cx="243.06" cy="-18" rx="54.48" ry="18"/>
+<text text-anchor="middle" x="243.06" y="-13.8" font-family="Times,serif" font-size="14.00">:navigation</text>
+</g>
+<!-- :feature:watchlist&#45;&gt;:navigation -->
+<g id="edge2" class="edge">
+<title>:feature:watchlist-&gt;:navigation</title>
+<path fill="none" stroke="black" d="M243.06,-71.7C243.06,-64.41 243.06,-55.73 243.06,-47.54"/>
+<polygon fill="black" stroke="black" points="246.56,-47.62 243.06,-37.62 239.56,-47.62 246.56,-47.62"/>
+</g>
+<!-- :core:favoritewatchlist -->
+<g id="node4" class="node">
+<title>:core:favoritewatchlist</title>
+<ellipse fill="none" stroke="black" cx="413.06" cy="-18" rx="97.91" ry="18"/>
+<text text-anchor="middle" x="413.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:favoritewatchlist</text>
+</g>
+<!-- :feature:watchlist&#45;&gt;:core:favoritewatchlist -->
+<g id="edge3" class="edge">
+<title>:feature:watchlist-&gt;:core:favoritewatchlist</title>
+<path fill="none" stroke="red" stroke-width="2" d="M279.94,-73.81C304.6,-63.66 337.31,-50.19 364.13,-39.15"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="363.76,-43.08 371.67,-36.04 361.09,-36.61 363.76,-43.08"/>
+</g>
+</g>
+</svg>

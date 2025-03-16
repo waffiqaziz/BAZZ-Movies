@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="132pt" height="116pt" viewBox="0.00 0.00 131.97 116.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 127.97,-112 127.97,4 -4,4"/>
+<!-- :core:utils -->
+<g id="node1" class="node">
+<title>:core:utils</title>
+<ellipse fill="none" stroke="black" cx="61.99" cy="-90" rx="49.65" ry="18"/>
+<text text-anchor="middle" x="61.99" y="-85.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+</g>
+<!-- :core:domain -->
+<g id="node2" class="node">
+<title>:core:domain</title>
+<ellipse fill="none" stroke="black" cx="61.99" cy="-18" rx="61.99" ry="18"/>
+<text text-anchor="middle" x="61.99" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+</g>
+<!-- :core:utils&#45;&gt;:core:domain -->
+<g id="edge1" class="edge">
+<title>:core:utils-&gt;:core:domain</title>
+<path fill="none" stroke="red" stroke-width="2" d="M61.99,-71.7C61.99,-64.41 61.99,-55.73 61.99,-47.54"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="65.49,-49.13 61.99,-39.13 58.49,-49.13 65.49,-49.13"/>
+</g>
+</g>
+</svg>
