@@ -46,6 +46,9 @@
  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
   alt="SonarQube Status"
   src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>
+ <a href="https://www.bestpractices.dev/projects/10186"><img 
+  alt="OpenSSF Best Practices"
+  src="https://www.bestpractices.dev/projects/10186/badge"></a>
  <a href="https://www.apache.org/licenses/LICENSE-2.0"><img
   alt="license"
   src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
@@ -69,7 +72,7 @@ Movies allows users to discover, explore, and manage their favorite and watchlis
 This project is a non-commercial application for showcasing movies and TV shows, intended for
 personal and educational use as part of my portfolio.
 
-_BAZZ Movies use TMDB API, but not endorsed, certified, or approved by TMDB_
+**_BAZZ Movies use TMDB API, but not endorsed, certified, or approved by TMDB_**
 
 ## 🌟 Features
 
@@ -126,7 +129,7 @@ Please read this [page](CONTRIBUTING.md).
 
 This application is released under the [Apache Version 2.0 License](LICENSE).
 
-    Copyright (C) 2024 Waffiq Aziz
+    Copyright (C) 2024-2025 Waffiq Aziz
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
