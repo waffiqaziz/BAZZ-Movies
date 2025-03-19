@@ -37,7 +37,11 @@ class AuthenticationViewModel @Inject constructor(
         when (outcome) {
           is Outcome.Success -> {
             if (outcome.data.success) {
-              outcome.data.requestToken?.let { login(username, password, it) }
+              outcome.data.requestToken?.also {
+                login(username, password, it)
+              } ?: run {
+                _loginState.value = false
+              }
             } else {
               _loginState.value = false
             }
@@ -82,10 +86,13 @@ class AuthenticationViewModel @Inject constructor(
       authTMDbAccountUseCase.createSessionLogin(requestToken).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> {
-            outcome.data.let {
-              if (it.success) getUserDetail(it.sessionId) else _loginState.value = false
+            if (outcome.data.success) {
+              getUserDetail(outcome.data.sessionId)
+            } else {
+              _loginState.value = false
             }
           }
+
 
           is Outcome.Loading -> _loadingState.value = true
           is Outcome.Error -> {

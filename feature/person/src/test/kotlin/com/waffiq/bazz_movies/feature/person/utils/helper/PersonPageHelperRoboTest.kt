@@ -28,31 +28,27 @@ class PersonPageHelperRoboTest {
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
   fun getAgeDeath_deathBeforeBirthday_reducesAge() {
-    val birthDate = "2000-05-10"
-    val deathDate = "2021-03-15"
-
-    val age = getAgeDeath(birthDate, deathDate)
-
+    val age = getAgeDeath(dateBirth = "2000-05-10", dateDeath = "2021-03-15")
     assertEquals(20, age) // should be 20 instead of 21
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.O])
   fun getAgeDeath_onAPI26Up_returnCorrectly() {
-    val birthDate = "1990-05-15"
-    val deathDate = "2020-10-10"
-
-    val age = getAgeDeath(birthDate, deathDate)
+    val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2020-10-10")
     assertEquals(30, age)
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.M])
   fun getAgeDeath_onAPI26Down_returnCorrectly() {
-    val birthDate = "1990-05-15"
-    val deathDate = "2024-10-10"
+    val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2024-10-10")
+    assertEquals(34, age)
+  }
 
-    val age = getAgeDeath(birthDate, deathDate)
+  @Test
+  fun getAgeDeath_deathDateNull_returnNoData() {
+    val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2024-10-10")
     assertEquals(34, age)
   }
 
@@ -72,7 +68,7 @@ class PersonPageHelperRoboTest {
     val shadowActivity = shadowOf(activity)
     val nextIntent = shadowActivity.nextStartedActivity
 
-    // assert that the intent is as expected after image clicked
+    // expected intent after image clicked
     assertNotNull(nextIntent)
     assertEquals(Intent.ACTION_VIEW, nextIntent?.action)
     assertEquals(Uri.parse("$baseUrl$socialId"), nextIntent?.data)
@@ -82,11 +78,23 @@ class PersonPageHelperRoboTest {
   fun setupSocialLink_socialIdNull_hideImageView() {
     val context: Context = mockk(relaxed = true)
     val imageView: ImageView = mockk(relaxed = true)
-    val socialId: String? = null
-    val baseUrl = "https://social.com/"
 
-    context.setupSocialLink(socialId, imageView, baseUrl)
-    verify { imageView.visibility = View.GONE } // Verify visibility is set to GONE
-    verify(exactly = 0) { imageView.setOnClickListener(any()) } // Verify no click listener is set
+    context.setupSocialLink(
+      socialId = null,
+      imageView = imageView,
+      baseUrl = "https://social.com/"
+    )
+    verify { imageView.visibility = View.GONE } // verify visibility is set to GONE
+    verify(exactly = 0) { imageView.setOnClickListener(any()) } // verify no click listener is set
+  }
+
+  @Test
+  fun setupSocialLink_socialIdEmpty_hideImageView() {
+    val context: Context = mockk(relaxed = true)
+    val imageView: ImageView = mockk(relaxed = true)
+
+    context.setupSocialLink(socialId = "", imageView = imageView, baseUrl = "https://social.com/")
+    verify { imageView.visibility = View.GONE }
+    verify(exactly = 0) { imageView.setOnClickListener(any()) }
   }
 }

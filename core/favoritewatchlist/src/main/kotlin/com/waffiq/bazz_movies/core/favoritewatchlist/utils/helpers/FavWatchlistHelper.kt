@@ -1,10 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
-import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -12,11 +9,8 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.designsystem.R.string.already_favorite
-import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import kotlinx.coroutines.FlowPreview
