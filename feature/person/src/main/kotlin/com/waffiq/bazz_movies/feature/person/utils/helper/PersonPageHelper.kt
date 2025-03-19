@@ -73,10 +73,12 @@ object PersonPageHelper {
   }
 
   fun Context.formatDeathInfo(birthday: String?, deathday: String?): String {
-    return deathday?.let { deathdayStr ->
-      val ageAtDeath = birthday?.let { getAgeDeath(it, deathdayStr) } ?: ""
-      "${dateFormatterStandard(deathdayStr)} ($ageAtDeath ${getString(years_old)})"
-    } ?: getString(no_data)
+    if (deathday == null || birthday == null) {
+      return getString(no_data)
+    } else {
+      val ageAtDeath = getAgeDeath(birthday, deathday).toString()
+      return "${dateFormatterStandard(deathday)} ($ageAtDeath ${getString(years_old)})"
+    }
   }
 
   fun Context.setupSocialLink(

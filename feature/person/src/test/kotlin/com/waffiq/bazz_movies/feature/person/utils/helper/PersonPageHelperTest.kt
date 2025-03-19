@@ -59,10 +59,10 @@ class PersonPageHelperTest {
     )
 
     // all null
-    assertEquals("", formatBirthInfo(null, null))
+    assertEquals("", formatBirthInfo(birthday = null, placeOfBirth = null))
 
     // all empty
-    assertEquals("\n", formatBirthInfo("", ""))
+    assertEquals("\n", formatBirthInfo(birthday = "", placeOfBirth = ""))
 
     // date null
     assertEquals("New York", formatBirthInfo(birthday = null, placeOfBirth = "New York"))
@@ -111,20 +111,19 @@ class PersonPageHelperTest {
     // getString(no_data)
     every { context.getString(no_data) } returns "no data"
 
-    val result = context.formatDeathInfo(null, null)
+    val result = context.formatDeathInfo(birthday = null, deathday = null)
     assertEquals("no data", result)
     verify { context.getString(any()) }
   }
 
   @Test
-  fun formatDeathInfo_nullBirthday_returnsOnlyDeathDate() {
+  fun formatDeathInfo_nullBirthday_returnsEmpty() {
     val context: Context = mockk()
-    val formattedDeathDate = "Oct 10, 2020"
 
-    every { context.getString(any()) } returns "years old"
+    every { context.getString(no_data) } returns "no data"
 
-    val result = context.formatDeathInfo(null, "2020-10-10")
-    assertEquals("$formattedDeathDate ( years old)", result)
+    val result = context.formatDeathInfo(birthday = null, deathday = "2020-10-10")
+    assertEquals("no data", result)
   }
 
   @Test
@@ -132,7 +131,18 @@ class PersonPageHelperTest {
     val context: Context = mockk()
     every { context.getString(no_data) } returns "no_data"
 
-    val result = context.formatDeathInfo(birthday = "1990-05-15", null)
+    val result = context.formatDeathInfo(birthday = "1990-05-15", deathday = null)
     assertEquals("no_data", result)
+  }
+
+  @Test
+  fun formatDeathInfo_onlyDeathDate_returnsEmpty() {
+    val context: Context = mockk()
+    val deathDate = "2020-10-10"
+
+    every { context.getString(no_data) } returns "no data"
+
+    val result = context.formatDeathInfo(birthday = null, deathday = deathDate)
+    assertEquals("no data", result)
   }
 }
