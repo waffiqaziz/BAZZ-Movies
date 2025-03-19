@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.adapter
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
@@ -74,7 +75,8 @@ class RatedResponseAdapter {
    *
    * @param message The error message to log.
    */
-  private fun logError(message: String) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun logError(message: String) {
     Log.e("RatedResponseAdapter", message)
   }
 }

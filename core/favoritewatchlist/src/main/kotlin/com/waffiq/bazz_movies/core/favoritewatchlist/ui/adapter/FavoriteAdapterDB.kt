@@ -26,7 +26,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
   private val listItemDB = ArrayList<Favorite>()
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun getListItemDB() : List<Favorite> = listItemDB
+  fun getListItemDB(): List<Favorite> = listItemDB
 
   fun setFavorite(itemFavorite: List<Favorite>) {
     val diffCallback = DiffCallback(this.listItemDB, itemFavorite)
