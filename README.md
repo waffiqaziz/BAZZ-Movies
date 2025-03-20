@@ -6,6 +6,8 @@
     </picture>
 </p>
 
+[![Known Vulnerabilities](https://snyk.io/test/github/waffiqaziz/BAZZ-Movies/badge.svg)](https://snyk.io/test/github/waffiqaziz/BAZZ-Movies)
+
 <h3 align="center">
  Movies Catalog Android App
 </h3>
@@ -46,6 +48,10 @@
  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
   alt="SonarQube Status"
   src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>
+ <a href="https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard?utm_source=gh&utm_medium=referral& utm_content=&utm_campaign=Badge_grade"><img 
+ alt="Qodacy Status"
+ src="https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff"/>
+ </a>
  <a href="https://www.bestpractices.dev/projects/10186"><img 
   alt="OpenSSF Best Practices"
   src="https://www.bestpractices.dev/projects/10186/badge"></a>
