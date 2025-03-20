@@ -6,8 +6,6 @@
     </picture>
 </p>
 
-[![Known Vulnerabilities](https://snyk.io/test/github/waffiqaziz/BAZZ-Movies/badge.svg)](https://snyk.io/test/github/waffiqaziz/BAZZ-Movies)
-
 <h3 align="center">
  Movies Catalog Android App
 </h3>
