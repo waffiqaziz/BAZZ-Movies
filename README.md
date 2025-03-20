@@ -46,7 +46,11 @@
  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
   alt="SonarQube Status"
   src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>
- <a href="https://www.bestpractices.dev/projects/10186"><img 
+ <a href="https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard?utm_source=gh&utm_medium=referral& utm_content=&utm_campaign=Badge_grade"><img
+  alt="Qodacy Status"
+  src="https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff"/>
+ </a>
+ <a href="https://www.bestpractices.dev/projects/10186"><img
   alt="OpenSSF Best Practices"
   src="https://www.bestpractices.dev/projects/10186/badge"></a>
  <a href="https://www.apache.org/licenses/LICENSE-2.0"><img

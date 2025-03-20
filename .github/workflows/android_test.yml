@@ -192,6 +192,12 @@ jobs:
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           token: ${{ secrets.CODECOV_TOKEN }}
+      
+      - name: Upload coverage reports to Codacy
+        uses: codacy/codacy-coverage-reporter-action@55c3b57cb3bb6833c8c1a6614fee4cebb140de2d
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
