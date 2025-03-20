@@ -13,14 +13,12 @@ name: "CodeQL"
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
     paths-ignore:
       - '**/*.md'
       - '**.md'
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
     paths-ignore:
       - '**/*.md'
       - '**.md'
@@ -29,12 +27,21 @@ on:
 
 jobs:
   analyze:
-    name: Analyze Kotlin
+    name: Analyze (${{ matrix.language }})
+    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
+    #   - https://gh.io/supported-runners-and-hardware-resources
+    #   - https://gh.io/using-larger-runners (GitHub.com only)
+    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     permissions:
+      # required for all workflows
       security-events: write
+
+      # required to fetch internal or private CodeQL packs
       packages: read
+
+      # only required for workflows in private repositories
       actions: read
       contents: read
 
@@ -47,13 +54,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: manual
-          dependency-caching: true
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
@@ -72,6 +72,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: manual
+
       # Custom build steps instead of autobuild
       - name: Build with Gradle
         run: |
@@ -80,3 +86,5 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
