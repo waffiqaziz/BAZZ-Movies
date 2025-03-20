@@ -66,6 +66,8 @@
 
 ## 🚀 About
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb6b9b60cb6942fabeee570e418f20b7)](https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies?utm_source=github.com&utm_medium=referral&utm_content=waffiqaziz/BAZZ-Movies&utm_campaign=Badge_Grade)
+
 BAZZ Movies is an Android app build with Kotlin, offering comprehensive movie and TV catalog. BAZZ
 Movies allows users to discover, explore, and manage their favorite and watchlist with ease.
 
