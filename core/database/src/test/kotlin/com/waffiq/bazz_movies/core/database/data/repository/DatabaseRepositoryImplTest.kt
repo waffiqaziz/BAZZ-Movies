@@ -220,11 +220,13 @@ class DatabaseRepositoryImplTest {
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
     coVerify {
-      localDataSource.insert(match {
-        it.mediaId == favoriteEntity.mediaId &&
-          it.mediaType == favoriteEntity.mediaType &&
-          it.title == favoriteEntity.title
-      })
+      localDataSource.insert(
+        match {
+          it.mediaId == favoriteEntity.mediaId &&
+            it.mediaType == favoriteEntity.mediaType &&
+            it.title == favoriteEntity.title
+        }
+      )
     }
   }
 

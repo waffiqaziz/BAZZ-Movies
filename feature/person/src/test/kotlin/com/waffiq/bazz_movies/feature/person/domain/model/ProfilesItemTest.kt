@@ -6,7 +6,7 @@ import org.junit.Test
 class ProfilesItemTest {
 
   @Test
-  fun profileItem_nullValue_returnDefaultValue(){
+  fun profileItem_nullValue_returnDefaultValue() {
     val profilesItem = ProfilesItem()
 
     assertNull(profilesItem.aspectRatio)

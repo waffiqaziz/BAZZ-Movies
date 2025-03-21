@@ -47,7 +47,6 @@ class HandlePagingLoadStateTest {
 
   @Before
   fun setup() {
-
     lifecycleOwner = TestLifecycleOwner()
     lifecycleOwner.registry.currentState = Lifecycle.State.RESUMED
 

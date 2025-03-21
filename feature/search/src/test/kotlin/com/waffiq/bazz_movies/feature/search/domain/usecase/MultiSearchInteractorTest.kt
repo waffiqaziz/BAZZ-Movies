@@ -232,7 +232,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_onePathOnly_returnDataCorrectly() = runTest {
+  fun search_backdropPathValid_showBackdrop() = runTest {
     // case 1: only backdropPath
     val fakePagingData1 = PagingData.from(
       listOf(
@@ -243,28 +243,7 @@ class MultiSearchInteractorTest {
         ).toResultItemSearch()
       )
     )
-    // case 2: only posterPath
-    val fakePagingData2 = PagingData.from(
-      listOf(
-        resultsItemSearchResponse.copy(
-          backdropPath = null,
-          posterPath = "/poster_path0.jpg",
-          profilePath = null
-        ).toResultItemSearch()
-      )
-    )
-    // case 3: only profilePath
-    val fakePagingData3 = PagingData.from(
-      listOf(
-        resultsItemSearchResponse.copy(
-          backdropPath = null,
-          posterPath = null,
-          profilePath = "/profile_path0.jpg"
-        ).toResultItemSearch()
-      )
-    )
 
-    // test case 1: only backdropPath
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData1)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -281,7 +260,22 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    // test case 2: only posterPath
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  @Test
+  fun search_posterPathValid_showPoster() = runTest {
+    // case 2: only posterPath
+    val fakePagingData2 = PagingData.from(
+      listOf(
+        resultsItemSearchResponse.copy(
+          backdropPath = null,
+          posterPath = "/poster_path0.jpg",
+          profilePath = null
+        ).toResultItemSearch()
+      )
+    )
+
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData2)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -298,7 +292,22 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    // test case 3: only profilePath
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  @Test
+  fun search_profilePathValid_showProfile() = runTest {
+    // case 3: only profilePath
+    val fakePagingData3 = PagingData.from(
+      listOf(
+        resultsItemSearchResponse.copy(
+          backdropPath = null,
+          posterPath = null,
+          profilePath = "/profile_path0.jpg"
+        ).toResultItemSearch()
+      )
+    )
+
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData3)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -315,11 +324,11 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    verify(exactly = 3) { mockRepository.getPagingSearch(QUERY) }
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
-  fun search_emptyStrings_returnEmptyList() = runTest {
+  fun search_allEmpty_returnEmptyList() = runTest {
     // case 1: empty strings (not null)
     val fakePagingDataEmpty = PagingData.from(
       listOf(
@@ -331,29 +340,6 @@ class MultiSearchInteractorTest {
       )
     )
 
-    // case 2: one path is empty string, one is null, one has content
-    val fakePagingDataMixed = PagingData.from(
-      listOf(
-        resultsItemSearchResponse.copy(
-          backdropPath = "",
-          posterPath = null,
-          profilePath = "/profile_path0.jpg"
-        ).toResultItemSearch()
-      )
-    )
-
-    // case 3: all are empty or null but in different ways
-    val fakePagingDataVariedEmpty = PagingData.from(
-      listOf(
-        resultsItemSearchResponse.copy(
-          backdropPath = "",
-          posterPath = null,
-          profilePath = ""
-        ).toResultItemSearch()
-      )
-    )
-
-    // test case 1: all empty strings
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataEmpty)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -367,7 +353,22 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    // test case 2: mixed (one empty, one null, one with content)
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  @Test
+  fun search_mixedValid_returnEmptyList() = runTest {
+    // case 2: one path is empty string, one is null, one has content
+    val fakePagingDataMixed = PagingData.from(
+      listOf(
+        resultsItemSearchResponse.copy(
+          backdropPath = "",
+          posterPath = null,
+          profilePath = "/profile_path0.jpg"
+        ).toResultItemSearch()
+      )
+    )
+
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataMixed)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -384,7 +385,22 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    // test case 3: various types of empty
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  @Test
+  fun search_mixedEmpty_returnEmptyList() = runTest {
+    // case 3: all are empty or null but in different ways
+    val fakePagingDataVariedEmpty = PagingData.from(
+      listOf(
+        resultsItemSearchResponse.copy(
+          backdropPath = "",
+          posterPath = null,
+          profilePath = ""
+        ).toResultItemSearch()
+      )
+    )
+
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataVariedEmpty)
     multiSearchInteractor.search(QUERY).test {
       val pagingData = awaitItem()
@@ -398,7 +414,7 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    verify(exactly = 3) { mockRepository.getPagingSearch(QUERY) }
+    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test

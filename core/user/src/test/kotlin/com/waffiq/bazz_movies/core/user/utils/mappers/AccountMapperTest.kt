@@ -262,7 +262,6 @@ class AccountMapperTest {
     assertEquals("/325987423659432.jpg", gravatar.hash)
   }
 
-
   @Test
   fun mapCountryIPResponse_ToCountryIP() {
     val response = CountryIPResponse(

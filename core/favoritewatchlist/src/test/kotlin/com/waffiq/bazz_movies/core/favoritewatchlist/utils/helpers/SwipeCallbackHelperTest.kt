@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.*
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -26,7 +28,8 @@ class SwipeCallbackHelperTest {
 
   // mocked callbacks for swipe actions
   private val mockSwipeLeft: (Boolean, RecyclerView.ViewHolder, Int) -> Unit = mockk(relaxed = true)
-  private val mockSwipeRight: (Boolean, RecyclerView.ViewHolder, Int) -> Unit = mockk(relaxed = true)
+  private val mockSwipeRight: (Boolean, RecyclerView.ViewHolder, Int) -> Unit =
+    mockk(relaxed = true)
   private val context: Context = ApplicationProvider.getApplicationContext()
 
   // actual objects for testing

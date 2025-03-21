@@ -5,7 +5,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
@@ -223,7 +222,7 @@ class FavoriteAdapterDBTest {
       rating = 10.0f,
       isFavorite = false,
       isWatchlist = false
-    )// different content
+    ) // different content
 
     val diffCallback = FavoriteAdapterDB(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
 

@@ -43,6 +43,10 @@ class SearchAdapterTest {
   lateinit var recyclerView: RecyclerView
 
   private lateinit var adapter: SearchAdapter
+  private lateinit var inflater: LayoutInflater
+  private lateinit var binding: ItemResultBinding
+  private lateinit var viewHolder: SearchAdapter.ViewHolder
+  private lateinit var parent: FrameLayout
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -55,6 +59,10 @@ class SearchAdapterTest {
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
+    parent = FrameLayout(context)
+    inflater = LayoutInflater.from(context)
+    binding = ItemResultBinding.inflate(inflater, parent, false)
+    viewHolder = adapter.ViewHolder(binding)
   }
 
   @Test
@@ -81,13 +89,7 @@ class SearchAdapterTest {
       releaseDate = "2007-06-27"
     )
 
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
-    val pagingData = PagingData.from(listOf(movieData))
-    adapter.submitData(pagingData)
-    adapter.onBindViewHolder(viewHolder, 0)
+    submitPagingAndWait(movieData)
 
     assertEquals("Transformers", binding.tvTitle.text.toString())
     assertEquals("Adventure, Science Fiction, Action", binding.tvGenre.text.toString())
@@ -105,13 +107,7 @@ class SearchAdapterTest {
       releaseDate = "2004-10-05"
     )
 
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
-    val pagingData = PagingData.from(listOf(tvData))
-    adapter.submitData(pagingData)
-    adapter.onBindViewHolder(viewHolder, 0)
+    submitPagingAndWait(tvData)
 
     assertEquals("Bleach", binding.tvTitle.text.toString())
     assertEquals("Action & Adventure, Animation, Sci-Fi & Fantasy", binding.tvGenre.text.toString())
@@ -134,13 +130,7 @@ class SearchAdapterTest {
       )
     )
 
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
-    val pagingData = PagingData.from(listOf(personData))
-    adapter.submitData(pagingData)
-    adapter.onBindViewHolder(viewHolder, 0)
+    submitPagingAndWait(personData)
 
     assertEquals("Jason Statham", binding.tvTitle.text.toString())
     assertEquals("The Meg, The Transporter, Wrath of Man", binding.tvGenre.text.toString())
@@ -149,12 +139,7 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_withNullData_doesNotCrash() = runTest {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
     val fakePagingData = PagingData.empty<ResultsItemSearch>()
-
-
     adapter.submitData(fakePagingData)
     advanceUntilIdle()
 
@@ -165,10 +150,6 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_withValidData_bindsCorrectly() = runTest {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
     val dummyData =
       listOf(ResultsItemSearch(id = 1, title = "Title", mediaType = "movie"))
     val pagingData = PagingData.from(dummyData)
@@ -182,8 +163,6 @@ class SearchAdapterTest {
 
   @Test
   fun onCreateViewHolder_createsViewHolderCorrectly() {
-    val parent = FrameLayout(context)
-    val adapter = SearchAdapter(navigator)
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
     assertNotNull(viewHolder)
 
@@ -194,23 +173,15 @@ class SearchAdapterTest {
 
   @Test
   fun onClick_openDetailsMovie() = runTest {
-    val data = ResultsItemSearch(
-      id = 1,
-      title = "Test Movie",
-      name = "Test Name",
-      overview = "Test Overview",
-      mediaType = "movie"
+    submitPagingAndWait(
+      ResultsItemSearch(
+        id = 1,
+        title = "Test Movie",
+        name = "Test Name",
+        overview = "Test Overview",
+        mediaType = "movie"
+      )
     )
-
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
-    val pagingData = PagingData.from(listOf(data))
-    adapter.submitData(pagingData)
-    advanceUntilIdle()
-
-    adapter.onBindViewHolder(viewHolder, 0)
     binding.containerResult.performClick()
 
     val expectedItem = ResultItem(
@@ -233,10 +204,6 @@ class SearchAdapterTest {
       originalName = "Original Actor Name",
       profilePath = "/profile/path.jpg"
     )
-
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
 
     val pagingData = PagingData.from(listOf(personData))
     adapter.submitData(pagingData)
@@ -278,260 +245,214 @@ class SearchAdapterTest {
 
   @Test
   fun showDataPerson_handleAllPossibility() {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, null, false)
-
     // test case 1: null name
-    val personData1 = ResultsItemSearch(
-      id = 1,
-      mediaType = "person",
-      name = null,
-      originalName = "Original Actor Name",
-      profilePath = "/profile/path.jpg"
+    submitPagingAndWait(
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "person",
+        name = null,
+        originalName = "Original Actor Name",
+        profilePath = "/profile/path.jpg"
+      )
     )
-    adapter.showDataPerson(binding, personData1)
 
     assertEquals("Original Actor Name", binding.ivPicture.contentDescription)
     assertEquals("Original Actor Name", binding.tvTitle.text.toString())
 
     // test case 2: null profile path
-    val personData2 = ResultsItemSearch(
-      id = 1,
-      mediaType = "person",
-      name = "Actor Name",
-      profilePath = ""
+    submitPagingAndWait(
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "person",
+        name = "Actor Name",
+        profilePath = ""
+      )
     )
-    adapter.showDataPerson(binding, personData2)
   }
 
   @Test
   fun showDataMovieTv_handleNullData() {
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
-
     // release data all null, title using original name
-    adapter.showDataMovieTv(
-      binding,
+    submitPagingAndWait(
       ResultsItemSearch(
-        id = 1, mediaType = "movie", originalName = "Avatar",
+        id = 1,
+        mediaType = "movie",
+        originalName = "Avatar",
         listGenreIds = emptyList()
-      ),
-      binding.root
+      )
     )
     assertEquals("Avatar", binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvYearReleased.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
 
     // release data all null, title using original title
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", originalTitle = "Avatar Name"),
-      binding.root
+    submitPagingAndWait(
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "movie",
+        originalTitle = "Avatar Name"
+      )
     )
     assertEquals("Avatar Name", binding.tvTitle.text.toString())
   }
 
-  @Test
-  fun showDataMovieTv_handleYearReleased_allPossibility() {
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
+  private fun submitPagingAndWait(item: ResultsItemSearch) = runTest {
+    adapter.submitData(PagingData.from(listOf(item)))
+    advanceUntilIdle()
+    adapter.onBindViewHolder(viewHolder, 0)
+  }
 
+  private fun submitDataYearReleased(expected: String, item: ResultsItemSearch) = runTest {
+    submitPagingAndWait(item)
+    assertEquals(expected, binding.tvYearReleased.text.toString())
+  }
+
+  @Test
+  fun showDataMovieTv_shouldDisplayNAForNullReleaseDate_exceptWithValidFirstAirDate() = runTest {
     // releaseDate null, firstAirDate null
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie"),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate null, firstAirDate valid
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "2023-05-15"),
-      binding.root
+    submitDataYearReleased(
+      "2023-05-15",
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "2023-05-15")
     )
-    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
 
     // releaseDate null, firstAirDate empty
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = ""),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate null, firstAirDate blank
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = " "),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = " ")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
+  }
 
+  @Test
+  fun showDataMovieTv_shouldDisplayReleaseDateWhenValid_regardlessOfFirstAirDate() {
     // releaseDate valid, firstAirDate valid
-    adapter.showDataMovieTv(
-      binding,
+    submitDataYearReleased(
+      "2023-05-15",
       ResultsItemSearch(
         id = 1,
         mediaType = "movie",
         firstAirDate = "2023-05-15",
         releaseDate = "2023-05-15"
-      ),
-      binding.root
+      )
     )
-    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
 
     // releaseDate valid, firstAirDate null
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2023-05-15"),
-      binding.root
+    submitDataYearReleased(
+      "2023-05-15",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2023-05-15")
     )
-    assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
 
     // releaseDate valid, firstAirDate empty
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2010-10-10", firstAirDate = ""),
-      binding.root
+    submitDataYearReleased(
+      "2010-10-10",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2010-10-10", firstAirDate = "")
     )
-    assertEquals("2010-10-10", binding.tvYearReleased.text.toString())
 
     // releaseDate valid, firstAirDate blank
-    adapter.showDataMovieTv(
-      binding,
+    submitDataYearReleased(
+      "2022-08-20",
       ResultsItemSearch(
         id = 1,
         mediaType = "movie",
         releaseDate = "2022-08-20",
         firstAirDate = " "
-      ),
-      binding.root
+      )
     )
-    assertEquals("2022-08-20", binding.tvYearReleased.text.toString())
+  }
 
+  @Test
+  fun showDataMovieTv_shouldFallbackToFirstAirDate_whenReleaseDateIsEmpty() {
     // releaseDate empty, firstAirDate null
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = ""),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate empty, firstAirDate valid
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "2010-10-10"),
-      binding.root
+    submitDataYearReleased(
+      "2010-10-10",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "2010-10-10")
     )
-    assertEquals("2010-10-10", binding.tvYearReleased.text.toString())
 
     // releaseDate empty, firstAirDate empty
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = ""),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate empty, firstAirDate blank
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = " "),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = " ")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
+  }
 
+  @Test
+  fun showDataMovieTv_shouldFallbackToFirstAirDate_whenReleaseDateIsBlank() {
     // releaseDate blank, firstAirDate null
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " "),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate blank, firstAirDate blank
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "  ", firstAirDate = "  "),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "  ", firstAirDate = "  ")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate blank, firstAirDate empty
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ", firstAirDate = ""),
-      binding.root
+    submitDataYearReleased(
+      "N/A",
+      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ", firstAirDate = "")
     )
-    assertEquals("N/A", binding.tvYearReleased.text.toString())
 
     // releaseDate blank, firstAirDate valid
-    adapter.showDataMovieTv(
-      binding,
+    submitDataYearReleased(
+      "2022-08-20",
       ResultsItemSearch(
         id = 1,
         mediaType = "movie",
         releaseDate = " ",
         firstAirDate = "2022-08-20"
-      ),
-      binding.root
+      )
     )
-    assertEquals("2022-08-20", binding.tvYearReleased.text.toString())
   }
 
   @Test
-  fun showDataMovieTv_handleValidReleaseDate() {
-    val movie = ResultsItemSearch(
-      id = 1,
-      mediaType = "movie",
-      originalTitle = "Valid Release Date",
-      releaseDate = "2023-05-15",
-      firstAirDate = "2010-10-10",
+  fun showDataMovieTv_handleValidReleaseDate() = runTest {
+    submitPagingAndWait(
+      ResultsItemSearch(
+        id = 1,
+        mediaType = "movie",
+        originalTitle = "Valid Release Date",
+        releaseDate = "2023-05-15",
+        firstAirDate = "2010-10-10",
+      )
     )
-
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
-
-    adapter.showDataMovieTv(binding, movie, binding.root)
 
     assertEquals("Valid Release Date", binding.tvTitle.text.toString())
     assertEquals("2023-05-15", binding.tvYearReleased.text.toString())
   }
 
   @Test
-  fun showDataMovieTv_handleSetImageMovieTv_handleAllPossibility() {
-    val parent = FrameLayout(context)
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemResultBinding.inflate(inflater, parent, false)
-
-    adapter.showDataMovieTv(
-      binding, ResultsItemSearch(id = 1, mediaType = "movie"),
-      binding.root
-    )
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = ""),
-      binding.root
-    )
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = " "),
-      binding.root
-    )
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", posterPath = ""),
-      binding.root
-    )
-    adapter.showDataMovieTv(
-      binding,
-      ResultsItemSearch(id = 1, mediaType = "movie", posterPath = " "),
-      binding.root
-    )
+  fun showDataMovieTv_handleSetImageMovieTv_handleAllPossibility() = runTest {
+    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie"))
+    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = ""))
+    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = " "))
+    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", posterPath = ""))
+    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", posterPath = " "))
     assertTrue(binding.ivPicture.isVisible)
   }
 
@@ -547,7 +468,7 @@ class SearchAdapterTest {
   fun diffCallback_areItemsTheSame_returnsFalseForDifferentIdOrMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
     val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
-    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv")   // different mediaType
+    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType
 
     assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
     assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem2))
@@ -565,7 +486,7 @@ class SearchAdapterTest {
   fun diffCallback_areContentsTheSame_returnsFalseForDifferentIdOrMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
     val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
-    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv")   // different mediaType
+    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType
 
     assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
     assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem2))

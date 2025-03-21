@@ -121,7 +121,7 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Run instrumentation test
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@50d5b10c0167135fd356722acdfaaef2542f8f1b
         with:
           api-level: 29
           arch: x86
@@ -188,7 +188,7 @@ jobs:
         run: ./gradlew createDebugCombinedCoverageReport
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -201,6 +201,6 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/test-results-action@f2dba722c67b86c6caa034178c6e4d35335f6706
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

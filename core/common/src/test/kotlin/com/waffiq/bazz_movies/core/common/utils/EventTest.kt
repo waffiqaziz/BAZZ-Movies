@@ -1,6 +1,9 @@
 package com.waffiq.bazz_movies.core.common.utils
 
-import org.junit.Assert.*
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNull
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class EventTest {
@@ -68,6 +71,7 @@ class EventTest {
 
     // custom object test
     data class TestObject(val id: Int, val name: String)
+
     val testObject = TestObject(1, "Test")
     val objectEvent = Event(testObject)
     assertEquals(testObject, objectEvent.getContentIfNotHandled())

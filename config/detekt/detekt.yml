@@ -7,6 +7,13 @@ build:
   # style: 1
   # comments: 1
 
+  excludes:
+    - '**/*.class'
+    - 'build/**'
+    - '**/build/**'
+    - '**/*.generated.kt'
+    - '**/generated/**'
+
 formatting:
   ArgumentListWrapping:
     indentSize: 2
@@ -37,6 +44,11 @@ config:
 processors:
   active: true
   exclude:
+    - "**/*.class"
+    - 'build/**'
+    - '**/build/**'
+    - '**/*.generated.kt'
+    - '**/generated/**'
     - 'DetektProgressListener'
   # - 'KtFileCountProcessor'
   # - 'PackageCountProcessor'

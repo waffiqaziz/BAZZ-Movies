@@ -93,9 +93,9 @@ class SearchRepositoryImplTestTwo {
 
   // No-op implementation of ListUpdateCallback for testing
   private class NoopListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {}
-    override fun onRemoved(position: Int, count: Int) {}
-    override fun onMoved(fromPosition: Int, toPosition: Int) {}
-    override fun onChanged(position: Int, count: Int, payload: Any?) {}
+    override fun onInserted(position: Int, count: Int) { /* no used */ }
+    override fun onRemoved(position: Int, count: Int) { /* no used */ }
+    override fun onMoved(fromPosition: Int, toPosition: Int) { /* no used */ }
+    override fun onChanged(position: Int, count: Int, payload: Any?) { /* no used */ }
   }
 }

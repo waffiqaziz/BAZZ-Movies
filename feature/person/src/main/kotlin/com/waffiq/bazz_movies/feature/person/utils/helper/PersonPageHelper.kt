@@ -73,11 +73,11 @@ object PersonPageHelper {
   }
 
   fun Context.formatDeathInfo(birthday: String?, deathday: String?): String {
-    if (deathday == null || birthday == null) {
-      return getString(no_data)
+    return if (deathday == null || birthday == null) {
+      getString(no_data)
     } else {
       val ageAtDeath = getAgeDeath(birthday, deathday).toString()
-      return "${dateFormatterStandard(deathday)} ($ageAtDeath ${getString(years_old)})"
+      "${dateFormatterStandard(deathday)} ($ageAtDeath ${getString(years_old)})"
     }
   }
 

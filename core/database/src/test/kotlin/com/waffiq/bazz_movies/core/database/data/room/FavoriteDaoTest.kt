@@ -207,7 +207,7 @@ class FavoriteDaoTest {
 
     val deleteCount = favoriteDao.deleteItem(7, "tv")
     assertEquals(1, deleteCount)
-    
+
     val favorites = favoriteDao.getFavoriteTv().first()
     assertEquals(0, favorites.size)
   }

@@ -273,14 +273,11 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showBackdropAndPoster() {
     Glide.with(binding.ivPictureBackdrop)
       .load(
-        if (dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE) {
-          ic_backdrop_error_filled
-        } else if (!dataExtra.backdropPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
-        } else if (!dataExtra.posterPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-        } else {
-          ic_backdrop_error_filled
+        when {
+          dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE -> ic_backdrop_error_filled
+          !dataExtra.backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+          !dataExtra.posterPath.isNullOrEmpty() -> TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
+          else -> ic_backdrop_error_filled
         }
       )
       .placeholder(ic_bazz_placeholder_backdrops)

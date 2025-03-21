@@ -111,7 +111,6 @@ class GetRegionHelperTest {
     assertEquals("", GetRegionHelper.getLocation(context))
   }
 
-
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
   fun getLocation_onApi24AndAbove_withLocale_returnCorrectLocation() {

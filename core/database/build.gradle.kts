@@ -5,7 +5,7 @@ plugins {
   alias(libs.plugins.bazzmovies.hilt)
 }
 
-android{
+android {
   namespace = "com.waffiq.bazz_movies.core.database"
 
   sourceSets {
