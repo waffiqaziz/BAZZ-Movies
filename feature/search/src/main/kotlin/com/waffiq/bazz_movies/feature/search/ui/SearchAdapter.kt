@@ -105,8 +105,6 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
-    binding.ivPicture.contentDescription =
-      data.name ?: data.title ?: data.originalTitle ?: data.originalName
     setImageMovieTv(binding, data)
     binding.tvYearReleased.text =
       data.releaseDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
@@ -123,6 +121,8 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   private fun setImageMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+    binding.ivPicture.contentDescription =
+      data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
         if (!data.backdropPath.isNullOrEmpty()) {

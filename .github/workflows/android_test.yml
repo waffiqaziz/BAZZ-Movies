@@ -121,7 +121,7 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Run instrumentation test
-        uses: reactivecircus/android-emulator-runner@50d5b10c0167135fd356722acdfaaef2542f8f1b
+        uses: reactivecircus/android-emulator-runner@c77bfe7c0bb57698e777375b61762daf9d578400
         with:
           api-level: 29
           arch: x86
