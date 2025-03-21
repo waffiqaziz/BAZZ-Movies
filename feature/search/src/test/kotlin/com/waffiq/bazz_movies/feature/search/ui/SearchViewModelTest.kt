@@ -24,6 +24,26 @@ class SearchViewModelTest {
 
   private val mockMultiSearchUseCase: MultiSearchUseCase = mockk()
   private lateinit var searchViewModel: SearchViewModel
+  private val tv = ResultsItemSearch(
+    title = "Transformers TV-series",
+    mediaType = "tv",
+    id = 12345,
+    voteCount = 2222.0,
+    backdropPath = "/backdrop_path0.jpg",
+    posterPath = "/poster_path0.jpg",
+    profilePath = "/profile_path0.jpg",
+    adult = false
+  )
+  private val movie = ResultsItemSearch(
+    title = "Transformers 2",
+    mediaType = "movie",
+    id = 333111,
+    voteCount = 3333.0,
+    backdropPath = "/backdrop_path1.jpg",
+    posterPath = "/poster_path1.jpg",
+    profilePath = "/profile_path1.jpg",
+    adult = false
+  )
 
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -39,28 +59,7 @@ class SearchViewModelTest {
   @Test
   fun search_updateLiveDataCorrectly() = runTest {
     val fakePagingData = PagingData.from(
-      listOf(
-        ResultsItemSearch(
-          title = "Transformers TV-series",
-          mediaType = "tv",
-          id = 12345,
-          voteCount = 2222.0,
-          backdropPath = "/backdrop_path0.jpg",
-          posterPath = "/poster_path0.jpg",
-          profilePath = "/profile_path0.jpg",
-          adult = false
-        ),
-        ResultsItemSearch(
-          title = "Transformers 2",
-          mediaType = "movie",
-          id = 333111,
-          voteCount = 3333.0,
-          backdropPath = "/backdrop_path1.jpg",
-          posterPath = "/poster_path1.jpg",
-          profilePath = "/profile_path1.jpg",
-          adult = false
-        )
-      )
+      listOf(tv, movie)
     )
 
     // mock the behavior of multiSearchUseCase.search

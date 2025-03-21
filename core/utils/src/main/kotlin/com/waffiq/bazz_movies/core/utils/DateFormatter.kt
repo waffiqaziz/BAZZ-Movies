@@ -49,9 +49,9 @@ object DateFormatter {
         SimpleDateFormat(pattern, Locale.getDefault()).apply { isLenient = false }
       } catch (_: IllegalArgumentException) {
         Log.e(TAG, "Invalid date format pattern: $pattern")
-        return null
+        null
       }
-      formatter.parse(input)
+      formatter?.parse(input)
     } catch (e: ParseException) {
       Log.e(TAG, "Date parsing failed: ${e.message}")
       null

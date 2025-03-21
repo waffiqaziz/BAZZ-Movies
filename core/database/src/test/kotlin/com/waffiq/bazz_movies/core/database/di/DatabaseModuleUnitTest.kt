@@ -47,7 +47,7 @@ class DatabaseModuleUnitTest {
 
     try {
       // verify the database was successfully created
-      assertNotNull( "Database should not be null", database)
+      assertNotNull("Database should not be null", database)
 
       // expect get a valid DAO object from the database
       val dao = database.favoriteDao()
@@ -102,7 +102,7 @@ class DatabaseModuleUnitTest {
     val helper = MigrationTestHelper(
       InstrumentationRegistry.getInstrumentation(),
       FavoriteDatabase::class.java,
-      emptyList(),  // no auto-migrations
+      emptyList(), // no auto-migrations
       FrameworkSQLiteOpenHelperFactory()
     )
 
@@ -126,7 +126,7 @@ class DatabaseModuleUnitTest {
                     is_favorited INTEGER,
                     is_watchlist INTEGER
                 )
-                """.trimIndent()
+        """.trimIndent()
       )
 
       // insert test data with NULL values

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.utils.mapper
 
-import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
@@ -25,8 +24,7 @@ object PersonMapper {
     crew = crew?.map { it.toCrewItem() },
   )
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun CastItemResponse.toCastItem() = CastItem(
+  private fun CastItemResponse.toCastItem() = CastItem(
     firstAirDate = firstAirDate,
     overview = overview,
     originalLanguage = originalLanguage,

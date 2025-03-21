@@ -103,7 +103,7 @@ class UserPreferenceMockTest {
 
   @Test
   fun getRegion_handlesNullRegion() = runTest {
-    `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))  // Explicitly mock preferences object
+    `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences)) // explicitly mock preferences object
 
     // Inline test with Turbine
     userPreference.getRegion().test {
@@ -115,7 +115,7 @@ class UserPreferenceMockTest {
 
   @Test
   fun saveRegion_edit_callsEdit() = runTest {
-    `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))  // Explicitly mock preferences object
+    `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences)) // explicitly mock preferences object
     `when`(mockDataStore.edit(any())).thenAnswer {
       // Simulate that edit does nothing (since it returns Unit)
       return@thenAnswer Unit

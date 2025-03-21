@@ -6,7 +6,7 @@ import org.junit.Test
 class ImagePersonTest {
 
   @Test
-  fun imagePerson_nullValue_returnDefaultValue(){
+  fun imagePerson_nullValue_returnDefaultValue() {
     val imagePeron = ImagePerson()
 
     assertNull(imagePeron.profiles)

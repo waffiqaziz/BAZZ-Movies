@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.annotation.VisibleForTesting
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -37,10 +36,7 @@ class SearchAdapter(private val navigator: INavigator) :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position) ?: return
-    when (data.mediaType) {
-      PERSON_MEDIA_TYPE -> holder.bindPerson(data)
-      else -> holder.bindMovieTv(data)
-    }
+    if (data.mediaType == PERSON_MEDIA_TYPE) holder.bindPerson(data) else holder.bindMovieTv(data)
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
@@ -83,8 +79,7 @@ class SearchAdapter(private val navigator: INavigator) :
     }
   }
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+  private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
     binding.ivPicture.contentDescription =
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -106,17 +101,19 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
-    binding.ivPicture.contentDescription =
-      data.name ?: data.title ?: data.originalTitle ?: data.originalName
+  private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     setImageMovieTv(binding, data)
-    binding.tvYearReleased.text =
-      data.releaseDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
-        ?: data.firstAirDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
-        ?: view.context.getString(not_available)
+    binding.tvYearReleased.text = when {
+      !data.releaseDate.isNullOrEmpty() && !data.releaseDate.isBlank() -> data.releaseDate
+      !data.firstAirDate.isNullOrEmpty() && !data.firstAirDate.isBlank() -> data.firstAirDate
+      else -> view.context.getString(not_available)
+    }
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
+    showGenreMovie(binding, data, view)
+  }
+
+  private fun showGenreMovie(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     binding.tvGenre.text =
       if (data.listGenreIds?.isEmpty() == true) {
         view.context.getString(not_available)
@@ -126,14 +123,14 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   private fun setImageMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+    binding.ivPicture.contentDescription =
+      data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
-        if (!data.backdropPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
-        } else if (!data.posterPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
-        } else {
-          ic_backdrop_error
+        when {
+          !data.backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
+          !data.posterPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
+          else -> ic_backdrop_error
         }
       )
       .transition(withCrossFade())

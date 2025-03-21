@@ -14,7 +14,7 @@ import org.junit.Test
 class DatastoreModuleTest {
 
   private val mockContext: Context = mockk(relaxed = true)
-  private val datastoreModule : DatastoreModule = DatastoreModule()
+  private val datastoreModule: DatastoreModule = DatastoreModule()
 
   @Test
   fun provideDataStore_BothReturnsDataStoreInstance() = runTest {
@@ -26,7 +26,6 @@ class DatastoreModuleTest {
     assertNotNull(actualDatastore.data)
     assertNotNull(expectedDatastore.data)
   }
-
 
   @Test
   fun provideUserPreference_ReturnsUserPreferenceInstance() = runTest {

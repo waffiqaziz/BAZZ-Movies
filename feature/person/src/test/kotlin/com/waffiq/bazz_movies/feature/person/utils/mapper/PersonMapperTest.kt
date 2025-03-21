@@ -7,7 +7,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Det
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ProfilesItemResponse
-import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCastItem
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
@@ -62,7 +61,7 @@ class PersonMapperTest {
 
   @Test
   fun toCastItem_withValidValue_mapCorrectly() {
-    val response = CastItemResponse(
+    val castItemResponse = CastItemResponse(
       firstAirDate = "firstAirDate",
       overview = "overview",
       originalLanguage = "originalLanguage",
@@ -87,15 +86,20 @@ class PersonMapperTest {
       releaseDate = "releaseDate",
       order = 3
     )
+    val combinedCreditResponse = CombinedCreditResponse(
+      id = 4376,
+      cast = listOf(castItemResponse),
+      crew = null
+    )
 
-    val castItem = response.toCastItem()
-    assertEquals(12, castItem.episodeCount)
-    assertEquals("tv", castItem.mediaType)
-    assertEquals(1234.0, castItem.popularity)
-    assertEquals(4123f, castItem.voteAverage)
-    assertEquals(0, castItem.id)
-    assertEquals(0, castItem.voteCount)
-    assertEquals(3, castItem.order)
+    val combinedCredit = combinedCreditResponse.toCombinedCredit()
+    assertEquals(12, combinedCredit.cast?.get(0)?.episodeCount)
+    assertEquals("tv", combinedCredit.cast?.get(0)?.mediaType)
+    assertEquals(1234.0, combinedCredit.cast?.get(0)?.popularity)
+    assertEquals(4123f, combinedCredit.cast?.get(0)?.voteAverage)
+    assertEquals(0, combinedCredit.cast?.get(0)?.id)
+    assertEquals(0, combinedCredit.cast?.get(0)?.voteCount)
+    assertEquals(3, combinedCredit.cast?.get(0)?.order)
   }
 
   @Test

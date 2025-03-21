@@ -1,17 +1,15 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
-import androidx.annotation.VisibleForTesting
 import androidx.paging.AsyncPagingDataDiffer
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
+import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import kotlinx.coroutines.Dispatchers
 
-@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 object SearchTestVariables {
 
   const val QUERY = "transformers"

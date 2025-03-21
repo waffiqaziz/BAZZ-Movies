@@ -104,7 +104,6 @@ class HelpersTest {
     assertEquals(initialJustificationMode, finalJustificationMode)
   }
 
-
   @Test
   fun setupRecyclerViewsWithSnap_attachesCustomSnapHelper() {
     setupRecyclerViewsWithSnap(listOf(recyclerView))

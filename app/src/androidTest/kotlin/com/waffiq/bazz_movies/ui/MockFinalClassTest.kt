@@ -14,13 +14,13 @@ import org.junit.runner.RunWith
 class MockFinalClassTest {
 
   internal class FinalClass {
-    fun method(): String = "original"
+    val method: String = "original"
   }
 
   @Test
   fun testMockingFinalClass() {
     val mockFinal = mockk<FinalClass>()
-    every { mockFinal.method() } returns "mocked"
-    assertEquals("mocked", mockFinal.method())
+    every { mockFinal.method } returns "mocked"
+    assertEquals("mocked", mockFinal.method)
   }
 }

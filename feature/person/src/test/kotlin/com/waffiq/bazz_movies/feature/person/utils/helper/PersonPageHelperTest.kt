@@ -20,7 +20,6 @@ class PersonPageHelperTest {
 
   @Test
   fun hasAnySocialMediaIds_returnsCorrectly_forAllPossibility() {
-
     // should return true if theres id
     assertTrue(hasAnySocialMediaIds(ExternalIDPerson(instagramId = "instagramId")))
     assertTrue(hasAnySocialMediaIds(ExternalIDPerson(twitterId = "twitterId")))

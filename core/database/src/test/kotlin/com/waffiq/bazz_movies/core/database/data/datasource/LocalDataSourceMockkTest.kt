@@ -129,7 +129,6 @@ class LocalDataSourceMockkTest {
     localDataSource.insert(createFavoriteEntity())
   }
 
-
   @Test
   fun deleteItemFromDB_throwSQLiteFullException() = runDbErrorTest(
     "Database is full",

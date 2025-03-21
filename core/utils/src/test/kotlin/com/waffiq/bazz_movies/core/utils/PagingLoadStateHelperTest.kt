@@ -1,10 +1,11 @@
 package com.waffiq.bazz_movies.core.utils
 
-import io.mockk.*
-import org.junit.Test
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
+import org.junit.Test
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -24,7 +25,10 @@ class PagingLoadStateHelperTest {
   fun testPagingErrorHandling_unknownHostException() {
     val exception = UnknownHostException("Unknown Host")
     val result = PagingLoadStateHelper.pagingErrorHandling(exception)
-    assertEquals("Unable to resolve server hostname. Please check your internet connection.", result)
+    assertEquals(
+      "Unable to resolve server hostname. Please check your internet connection.",
+      result
+    )
   }
 
   @Test

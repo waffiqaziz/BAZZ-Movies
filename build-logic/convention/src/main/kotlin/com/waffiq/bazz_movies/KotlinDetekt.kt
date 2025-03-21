@@ -13,7 +13,7 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
     toolVersion = "1.23.7"
     source.setFrom("src/main/java", "src/main/kotlin")
     config.setFrom("$rootDir/config/detekt/detekt.yml")
-    baseline = file("${rootDir}/config/baseline.xml")
+    baseline = file("$rootDir/config/baseline.xml")
     parallel = true
     buildUponDefaultConfig = true
     autoCorrect = true

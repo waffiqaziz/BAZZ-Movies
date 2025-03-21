@@ -30,6 +30,9 @@ class FavoriteTvAdapterTest {
   private lateinit var context: Context
   private lateinit var navigator: INavigator
   private lateinit var adapter: FavoriteTvAdapter
+  private lateinit var inflater: LayoutInflater
+  private lateinit var binding: ItemMulmedBinding
+  private lateinit var viewHolder: FavoriteTvAdapter.ViewHolder
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -51,6 +54,9 @@ class FavoriteTvAdapterTest {
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
+    inflater = LayoutInflater.from(context)
+    binding = ItemMulmedBinding.inflate(inflater, null, false)
+    viewHolder = adapter.ViewHolder(binding)
   }
 
   @Test
@@ -64,11 +70,7 @@ class FavoriteTvAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindCorrectTvData_allPossibility() = runTest {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemMulmedBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
+  fun onBindViewHolder_allDataValid_bindCorrectMovieData() = runTest {
     // test case 1: all valid
     adapter.submitData(
       PagingData.from(
@@ -94,7 +96,10 @@ class FavoriteTvAdapterTest {
     assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
     assertEquals("10/10", binding.tvRating.text.toString())
     assertEquals("5.0", binding.ratingBar.rating.toString())
+  }
 
+  @Test
+  fun onBindViewHolder_severalDataEmpty_bindCorrectMovieData() = runTest {
     // test case 2: title, releaseDate valid, posterPath empty, listGenre empty
     adapter.submitData(
       PagingData.from(
@@ -116,7 +121,10 @@ class FavoriteTvAdapterTest {
     assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
+  }
 
+  @Test
+  fun onBindViewHolder_originalTitleValid_bindCorrectMovieData() = runTest {
     // test case 3: originalTitle valid, posterPath null
     adapter.submitData(
       PagingData.from(
@@ -137,7 +145,10 @@ class FavoriteTvAdapterTest {
     assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
+  }
 
+  @Test
+  fun onBindViewHolder_originalNameValid_bindCorrectMovieData() = runTest {
     // test case 4: originalName valid, date invalid
     adapter.submitData(
       PagingData.from(
@@ -159,7 +170,10 @@ class FavoriteTvAdapterTest {
     assertEquals("N/A", binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
+  }
 
+  @Test
+  fun onBindViewHolder_allDataNull_bindCorrectMovieData() = runTest {
     // test case 5: all null
     adapter.submitData(
       PagingData.from(
@@ -189,17 +203,12 @@ class FavoriteTvAdapterTest {
 
   @Test
   fun onClick_openDetailsTv() = runTest {
-    val inflater = LayoutInflater.from(context)
-    val binding = ItemMulmedBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
-
     val pagingData = PagingData.from(listOf(tvData))
     adapter.submitData(pagingData)
     advanceUntilIdle()
 
     adapter.onBindViewHolder(viewHolder, 0)
     binding.container.performClick()
-
 
     verify { navigator.openDetails(eq(context), eq(tvData)) }
   }
