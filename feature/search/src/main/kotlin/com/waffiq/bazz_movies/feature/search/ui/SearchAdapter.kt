@@ -106,12 +106,17 @@ class SearchAdapter(private val navigator: INavigator) :
 
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     setImageMovieTv(binding, data)
-    binding.tvYearReleased.text =
-      data.releaseDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
-        ?: data.firstAirDate?.takeIf { it.isNotBlank() && it.isNotEmpty() }
-        ?: view.context.getString(not_available)
+    binding.tvYearReleased.text = when {
+      !data.releaseDate.isNullOrEmpty() -> data.releaseDate
+      !data.firstAirDate.isNullOrEmpty() -> data.firstAirDate
+      else -> view.context.getString(not_available)
+    }
 
     binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
+    showGenreMovie(binding, data, view)
+  }
+
+  private fun showGenreMovie(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     binding.tvGenre.text =
       if (data.listGenreIds?.isEmpty() == true) {
         view.context.getString(not_available)
