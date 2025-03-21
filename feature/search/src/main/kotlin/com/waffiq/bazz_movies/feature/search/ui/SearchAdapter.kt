@@ -36,10 +36,7 @@ class SearchAdapter(private val navigator: INavigator) :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position) ?: return
-    when (data.mediaType) {
-      PERSON_MEDIA_TYPE -> holder.bindPerson(data)
-      else -> holder.bindMovieTv(data)
-    }
+    if (data.mediaType == PERSON_MEDIA_TYPE) holder.bindPerson(data) else holder.bindMovieTv(data)
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
@@ -107,8 +104,8 @@ class SearchAdapter(private val navigator: INavigator) :
   private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
     setImageMovieTv(binding, data)
     binding.tvYearReleased.text = when {
-      !data.releaseDate.isNullOrEmpty() -> data.releaseDate
-      !data.firstAirDate.isNullOrEmpty() -> data.firstAirDate
+      !data.releaseDate.isNullOrEmpty() && !data.releaseDate.isBlank() -> data.releaseDate
+      !data.firstAirDate.isNullOrEmpty() && !data.firstAirDate.isBlank() -> data.firstAirDate
       else -> view.context.getString(not_available)
     }
 
@@ -130,12 +127,10 @@ class SearchAdapter(private val navigator: INavigator) :
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
       .load(
-        if (!data.backdropPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
-        } else if (!data.posterPath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
-        } else {
-          ic_backdrop_error
+        when {
+          !data.backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
+          !data.posterPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
+          else -> ic_backdrop_error
         }
       )
       .transition(withCrossFade())
