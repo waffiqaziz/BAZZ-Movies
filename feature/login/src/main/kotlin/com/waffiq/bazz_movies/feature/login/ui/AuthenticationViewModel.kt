@@ -93,7 +93,6 @@ class AuthenticationViewModel @Inject constructor(
             }
           }
 
-
           is Outcome.Loading -> _loadingState.value = true
           is Outcome.Error -> {
             _loginState.value = false

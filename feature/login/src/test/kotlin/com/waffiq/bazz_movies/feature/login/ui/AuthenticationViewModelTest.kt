@@ -319,7 +319,9 @@ class AuthenticationViewModelTest {
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
-          id = null, username = "test_user", avatarItem = AvatarItem(
+          id = null,
+          username = "test_user",
+          avatarItem = AvatarItem(
             avatarTMDb = AvatarTMDb(avatarPath = null),
             gravatar = Gravatar(hash = null)
           )
@@ -378,7 +380,9 @@ class AuthenticationViewModelTest {
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
-          id = null, username = "test_user", avatarItem = AvatarItem(
+          id = null,
+          username = "test_user",
+          avatarItem = AvatarItem(
             avatarTMDb = null,
             gravatar = null
           )
