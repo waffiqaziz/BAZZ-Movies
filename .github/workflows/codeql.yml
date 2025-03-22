@@ -71,6 +71,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
