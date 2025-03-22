@@ -166,14 +166,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache Gradle Cache
+      - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/gradle.properties') }}
-          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle
 
       - name: Cache Gradle Wrapper
         uses: actions/cache@v4
@@ -205,13 +203,16 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v5.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
         with:
-          args: >
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.organization=waffiqaziz
-            -Dsonar.coverage.jacoco.xmlReportPaths=${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Build and analyze with SonarCloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar --info
+

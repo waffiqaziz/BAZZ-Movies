@@ -13,4 +13,18 @@ plugins {
   alias(libs.plugins.detekt) apply false
   alias(libs.plugins.room) apply false
   alias(libs.plugins.ksp) apply false
+  id("org.sonarqube") version "6.0.1.5171"
+}
+
+@Suppress("MaxLineLength")
+sonar {
+  properties {
+    property("sonar.projectKey", "waffiqaziz_BAZZ-Movies")
+    property("sonar.organization", "waffiqaziz")
+    property("sonar.host.url", "https://sonarcloud.io")
+    property(
+      "sonar.coverage.jacoco.xmlReportPaths",
+      "${project.rootDir}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml"
+    )
+  }
 }
