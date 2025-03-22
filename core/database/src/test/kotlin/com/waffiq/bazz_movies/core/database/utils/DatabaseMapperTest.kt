@@ -54,7 +54,8 @@ class DatabaseMapperTest {
     assertEquals(favorite1.isFavorite, true)
     assertEquals(favorite1.isWatchlist, true)
 
-    // test case 2: title using originalName, release date using firstAirDate, popularity null, overView null, rating null
+    // test case 2: title using originalName, release date using firstAirDate, popularity null,
+    // overView null, rating null
     val resultItem2 = ResultItem(
       originalName = "originalName",
       firstAirDate = "firstAirDate",

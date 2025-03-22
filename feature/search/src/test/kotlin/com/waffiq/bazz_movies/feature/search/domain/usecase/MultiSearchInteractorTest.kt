@@ -29,6 +29,54 @@ import org.junit.Rule
 import org.junit.Test
 
 class MultiSearchInteractorTest {
+  private val testCases = listOf(
+    // all null - should be filtered out
+    resultsItemSearchResponse.copy(backdropPath = null, posterPath = null, profilePath = null),
+
+    // one path present, others null
+    resultsItemSearchResponse.copy(
+      backdropPath = "/path.jpg",
+      posterPath = null,
+      profilePath = null
+    ),
+    resultsItemSearchResponse.copy(
+      backdropPath = null,
+      posterPath = "/path.jpg",
+      profilePath = null
+    ),
+    resultsItemSearchResponse.copy(
+      backdropPath = null,
+      posterPath = null,
+      profilePath = "/path.jpg"
+    ),
+
+    // two paths present, one null
+    resultsItemSearchResponse.copy(
+      backdropPath = "/path.jpg",
+      posterPath = "/path.jpg",
+      profilePath = null
+    ),
+    resultsItemSearchResponse.copy(
+      backdropPath = "/path.jpg",
+      posterPath = null,
+      profilePath = "/path.jpg"
+    ),
+    resultsItemSearchResponse.copy(
+      backdropPath = null,
+      posterPath = "/path.jpg",
+      profilePath = "/path.jpg"
+    ),
+
+    // all paths not null
+    resultsItemSearchResponse.copy(
+      backdropPath = "/path.jpg",
+      posterPath = "/path.jpg",
+      profilePath = "/path.jpg"
+    ),
+
+    // all empty - should be filtered out
+    resultsItemSearchResponse.copy(backdropPath = "", posterPath = "", profilePath = "")
+  ).map { it.toResultItemSearch() }
 
   private val mockRepository: ISearchRepository = mockk()
   private lateinit var multiSearchInteractor: MultiSearchInteractor
@@ -446,55 +494,6 @@ class MultiSearchInteractorTest {
   @Test
   fun filter_allPathCombinations_ensureProperFilteringLogic() = runTest {
     // total 9 elements - should only left 7 after filtering
-    val testCases = listOf(
-      // all null - should be filtered out
-      resultsItemSearchResponse.copy(backdropPath = null, posterPath = null, profilePath = null),
-
-      // one path present, others null
-      resultsItemSearchResponse.copy(
-        backdropPath = "/path.jpg",
-        posterPath = null,
-        profilePath = null
-      ),
-      resultsItemSearchResponse.copy(
-        backdropPath = null,
-        posterPath = "/path.jpg",
-        profilePath = null
-      ),
-      resultsItemSearchResponse.copy(
-        backdropPath = null,
-        posterPath = null,
-        profilePath = "/path.jpg"
-      ),
-
-      // two paths present, one null
-      resultsItemSearchResponse.copy(
-        backdropPath = "/path.jpg",
-        posterPath = "/path.jpg",
-        profilePath = null
-      ),
-      resultsItemSearchResponse.copy(
-        backdropPath = "/path.jpg",
-        posterPath = null,
-        profilePath = "/path.jpg"
-      ),
-      resultsItemSearchResponse.copy(
-        backdropPath = null,
-        posterPath = "/path.jpg",
-        profilePath = "/path.jpg"
-      ),
-
-      // all paths not null
-      resultsItemSearchResponse.copy(
-        backdropPath = "/path.jpg",
-        posterPath = "/path.jpg",
-        profilePath = "/path.jpg"
-      ),
-
-      // all empty - should be filtered out
-      resultsItemSearchResponse.copy(backdropPath = "", posterPath = "", profilePath = "")
-    ).map { it.toResultItemSearch() }
-
     val fakePagingData = PagingData.from(testCases)
     every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 

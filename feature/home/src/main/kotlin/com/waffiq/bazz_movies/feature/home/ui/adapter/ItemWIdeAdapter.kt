@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_fil
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -43,11 +45,24 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
 
     fun bind(data: ResultItem) {
       adjustWidth(binding)
+      setImage(binding.ivBackdrop, data)
 
-      binding.ivBackdrop.contentDescription =
-        data.name ?: data.title ?: data.originalTitle ?: data.originalName
+      binding.tvTitle.text = itemView.context.titleHandler(data)
+      binding.tvGenre.text = data.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
+        ?: itemView.context.getString(not_available)
+      binding.tvYear.text =
+        data.releaseDate?.take(n = 4) ?: data.firstAirDate?.take(n = 4).toString()
+      binding.ratingBar.rating = (data.voteAverage ?: 0F) / 2
 
-      Glide.with(binding.ivBackdrop)
+      // image OnClickListener
+      itemView.setOnClickListener {
+        navigator.openDetails(itemView.context, data)
+      }
+    }
+
+    private fun setImage(ivBackdrop: ImageView, data: ResultItem) {
+      ivBackdrop.contentDescription = titleHandler(data)
+      Glide.with(ivBackdrop)
         .load(
           if (!data.posterPath.isNullOrEmpty()) {
             TMDB_IMG_LINK_BACKDROP_W780 + data.backdropPath
@@ -59,20 +74,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
         .transform(CenterCrop())
         .transition(withCrossFade())
         .error(ic_backdrop_error_filled)
-        .into(binding.ivBackdrop)
-
-      binding.tvTitle.text =
-        data.name ?: data.title ?: data.originalTitle ?: data.originalName
-      binding.tvGenre.text = data.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-        ?: itemView.context.getString(not_available)
-      binding.tvYear.text =
-        data.releaseDate?.take(n = 4) ?: data.firstAirDate?.take(n = 4).toString()
-      binding.ratingBar.rating = (data.voteAverage ?: 0F) / 2
-
-      // image OnClickListener
-      itemView.setOnClickListener {
-        navigator.openDetails(itemView.context, data)
-      }
+        .into(ivBackdrop)
     }
 
     private fun adjustWidth(binding: ItemWideBinding) {
