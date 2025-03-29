@@ -210,9 +210,13 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Build and analyze with SonarCloud
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarqube-scan-action@aa494459d7c39c106cc77b166de8b4250a32bb97
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar --info
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Must be set in GitHub Secrets
+        with:
+          args: >
+            -Dsonar.coverage.jacoco.xmlReportPaths=${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+            -Dsonar.java.binaries=${{ github.workspace }}/**/build/intermediates/javac/debug/classes
+            -Dsonar.kotlin.binaries=${{ github.workspace }}/**/build/tmp/kotlin-classes/debug
 
