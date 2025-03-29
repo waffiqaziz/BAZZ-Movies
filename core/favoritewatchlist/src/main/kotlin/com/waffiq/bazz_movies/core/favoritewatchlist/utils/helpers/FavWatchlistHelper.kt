@@ -11,7 +11,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 /**
  * A utility object that provides helper functions for handling UI interactions
@@ -27,19 +27,13 @@ import kotlinx.coroutines.launch
 object FavWatchlistHelper {
 
   /**
-   * Returns the title for a given `ResultItem`. The function checks the following properties in order:
-   * - `name`
-   * - `title`
-   * - `originalTitle`
-   * - `originalName`
+   * Handle rating and shows with format `rate/10`
+   * For example: 10/10 or 8.5/10
    *
-   * If none of those properties are available, it defaults to "Item".
-   *
-   * @param item The `ResultItem` whose title is to be determined.
-   * @return The title of the item, or "Item" if no title is found.
+   * @param voteAverage is user rating
    */
-  fun titleHandler(item: ResultItem): String {
-    return item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
+  fun ratingHandler(voteAverage: Float?): String {
+    return DecimalFormat("#.#").format((voteAverage ?: 0F)).toString() + "/10"
   }
 
   /**

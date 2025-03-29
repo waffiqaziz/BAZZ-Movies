@@ -16,10 +16,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
-import java.text.DecimalFormat
 
 class FavoriteTvAdapter(private val navigator: INavigator) :
   androidx.paging.PagingDataAdapter<ResultItem, FavoriteTvAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -47,19 +48,12 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
       data = resultItem
       showImage(binding, resultItem)
 
-      binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle
-        ?: resultItem.originalName ?: itemView.context.getString(not_available)
-      binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)
-        ?.let { dateFormatterStandard(it) }
-        .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
+      binding.tvTitle.text = itemView.context.titleHandler(resultItem)
+      binding.tvYearReleased.text = itemView.context.releaseDateHandler(resultItem)
       binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
         .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
       binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
-
-      val df = DecimalFormat("#.#")
-      (df.format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
-        binding.tvRating.text = it
-      }
+      binding.tvRating.text = ratingHandler(resultItem.voteAverage)
 
       // OnClickListener
       binding.container.setOnClickListener {
@@ -68,9 +62,7 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
     }
 
     private fun showImage(binding: ItemMulmedBinding, resultItem: ResultItem) {
-      binding.ivPicture.contentDescription =
-        resultItem.name ?: resultItem.title ?: resultItem.originalTitle ?: resultItem.originalName
-
+      binding.ivPicture.contentDescription = titleHandler(resultItem)
       Glide.with(binding.ivPicture)
         .load(
           if (!resultItem.posterPath.isNullOrEmpty()) {

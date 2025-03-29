@@ -75,7 +75,8 @@ class LoginActivity : AppCompatActivity() {
 
     showPassword()
     openTMDB()
-    btnListener()
+    btnLoginListener()
+    btnGuestListener()
   }
 
   private fun openTMDB() {
@@ -117,31 +118,23 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
-  private fun btnListener() {
+  private fun btnLoginListener() {
     // login as user
     binding.btnLogin.setOnClickListener {
-      // Check if the username and password fields are filled or not
-      if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
-        binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
-        binding.btnEye.visibility = View.GONE
-      }
-      if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank()) {
-        binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
-      }
+      validateFormFields()
 
       // listener to show button eye
       binding.edPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
-      }
-
-      // listener for autofill
-      if (binding.edUsername.text.isNotEmpty() && binding.edUsername.text.isNotBlank()) {
-        binding.edUsername.error = null
-      }
-      if (binding.edPass.text.isNotEmpty() && binding.edPass.text.isNotBlank()) {
         binding.edPass.error = null
       }
 
+      // listener to remove error on username
+      binding.edUsername.addTextChangedListener {
+        binding.edUsername.error = null
+      }
+
+      // process login if form is valid
       if (formNotEmpty()) {
         binding.tvGuest.isEnabled = false
         binding.btnLogin.isEnabled = false
@@ -149,7 +142,26 @@ class LoginActivity : AppCompatActivity() {
         loginAsUserRegistered()
       }
     }
+  }
 
+  private fun validateFormFields() {
+    // check password field
+    if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
+      binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
+      binding.btnEye.visibility = View.GONE
+    } else {
+      binding.edPass.error = null
+    }
+
+    // check username field
+    if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank()) {
+      binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
+    } else {
+      binding.edUsername.error = null
+    }
+  }
+
+  private fun btnGuestListener() {
     // login as guest
     binding.tvGuest.setOnClickListener {
       userPreferenceViewModel.saveUserPref(

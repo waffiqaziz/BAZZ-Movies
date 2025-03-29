@@ -19,10 +19,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
-import java.text.DecimalFormat
 
 class FavoriteMovieAdapter(private val navigator: INavigator) :
   PagingDataAdapter<ResultItem, FavoriteMovieAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -49,7 +50,7 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
     fun bind(resultItem: ResultItem) {
       data = resultItem
       setImagePoster(binding, data)
-      setTitleYearGenreRating(binding, resultItem, itemView.context)
+      itemView.context.setTitleYearGenreRating(binding, resultItem)
 
       // OnClickListener
       binding.container.setOnClickListener {
@@ -58,27 +59,21 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
     }
   }
 
-  private fun setTitleYearGenreRating(
+  private fun Context.setTitleYearGenreRating(
     binding: ItemMulmedBinding,
     resultItem: ResultItem,
-    context: Context
   ) {
-    binding.tvTitle.text = resultItem.name ?: resultItem.title ?: resultItem.originalTitle
-      ?: resultItem.originalName ?: context.getString(not_available)
-    binding.tvYearReleased.text = (resultItem.firstAirDate ?: resultItem.releaseDate)
-      ?.let { dateFormatterStandard(it) }
-      .takeUnless { it.isNullOrBlank() } ?: context.getString(not_available)
+    binding.tvTitle.text = titleHandler(resultItem)
+    binding.tvYearReleased.text = releaseDateHandler(resultItem)
     binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-      .takeUnless { it.isNullOrBlank() } ?: context.getString(not_available)
+      .takeUnless { it.isNullOrBlank() } ?: getString(not_available)
     binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
-
-    (DecimalFormat("#.#").format((resultItem.voteAverage ?: 0F)).toString() + "/10").also {
-      binding.tvRating.text = it
-    }
+    binding.tvRating.text = ratingHandler(resultItem.voteAverage)
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun setImagePoster(binding: ItemMulmedBinding, data: ResultItem) {
+    binding.ivPicture.contentDescription = titleHandler(data)
     Glide.with(binding.ivPicture)
       .load(
         if (!data.posterPath.isNullOrEmpty()) {
@@ -92,9 +87,6 @@ class FavoriteMovieAdapter(private val navigator: INavigator) :
       .transition(withCrossFade())
       .error(ic_poster_error)
       .into(binding.ivPicture)
-
-    binding.ivPicture.contentDescription =
-      data.name ?: data.title ?: data.originalTitle ?: data.originalName
   }
 
   companion object {
