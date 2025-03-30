@@ -174,7 +174,7 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@aa494459d7c39c106cc77b166de8b4250a32bb97
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Must be set in GitHub Secrets
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
         with:
           args: >
             -Dsonar.projectKey=waffiqaziz_BAZZ-Movies

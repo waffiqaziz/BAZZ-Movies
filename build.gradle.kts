@@ -13,4 +13,13 @@ plugins {
   alias(libs.plugins.detekt) apply false
   alias(libs.plugins.room) apply false
   alias(libs.plugins.ksp) apply false
+  id("org.sonarqube") version "6.0.1.5171"
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "waffiqaziz_BAZZ-Movies")
+    property("sonar.organization", "waffiqaziz")
+    property("sonar.host.url", "https://sonarcloud.io")
+  }
 }
