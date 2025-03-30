@@ -23,3 +23,12 @@ sonar {
     property("sonar.host.url", "https://sonarcloud.io")
   }
 }
+
+allprojects {
+  configurations.all {
+    resolutionStrategy {
+      force("org.bouncycastle:bcpkix-jdk18on:1.79")
+      force("org.bouncycastle:bcprov-jdk18on:1.79")
+    }
+  }
+}
