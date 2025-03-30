@@ -8,8 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlreadyFavorite
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlreadyWatchlist
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -41,6 +40,9 @@ class SnackbarAlreadyUtilsTest {
   @MockK
   private lateinit var mockEventMessage: Event<String>
 
+  @MockK
+  private lateinit var mockSnackBar: Snackbar
+
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
@@ -58,41 +60,38 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyWatchlist_returnNullWhenContentIsNotHandled() {
+  fun snackBarAlreadyFavorite_contentIsNotHandled_returnNull() {
     every { mockEventMessage.getContentIfNotHandled() } returns null
 
-    val result = snackBarAlreadyWatchlist(
+    val result = snackBarAlready(
       context,
       mockView,
       mockViewGuide,
-      mockEventMessage
+      mockEventMessage,
+      true
     )
 
     assertEquals(null, result)
   }
 
   @Test
-  fun snackBarAlreadyFavorite_returnNullWhenContentIsNotHandled() {
+  fun snackBarAlreadyWatchlist_contentIsNotHandled_returnNull() {
     every { mockEventMessage.getContentIfNotHandled() } returns null
 
-    val result = snackBarAlreadyFavorite(
+    val result = snackBarAlready(
       context,
       mockView,
       mockViewGuide,
-      mockEventMessage
+      mockEventMessage,
+      false
     )
 
     assertEquals(null, result)
   }
 
   @Test
-  fun snackBarAlreadyFavorite_showWhenContentIsAvailable() {
-    val view = mockk<View>(relaxed = true)
-    val viewGuide = mockk<View>(relaxed = true)
-    val eventMessage = mockk<Event<String>>()
-    val mockSnackbar = mockk<Snackbar>(relaxed = true)
-
-    every { eventMessage.getContentIfNotHandled() } returns "Test Item"
+  fun snackBarAlreadyFavorite_contentIsAvailable_showSnackbar() {
+    every { mockEventMessage.getContentIfNotHandled() } returns "Test Item"
 
     // directly mock the ContextCompat.getString call
     mockkStatic(ContextCompat::class)
@@ -107,22 +106,23 @@ class SnackbarAlreadyUtilsTest {
     // mock Snackbar
     mockkStatic(Snackbar::class)
     every {
-      Snackbar.make(view, any<CharSequence>(), Snackbar.LENGTH_SHORT)
-    } returns mockSnackbar
-    every { mockSnackbar.setAnchorView(viewGuide) } returns mockSnackbar
+      Snackbar.make(mockView, any<CharSequence>(), Snackbar.LENGTH_SHORT)
+    } returns mockSnackBar
+    every { mockSnackBar.setAnchorView(mockViewGuide) } returns mockSnackBar
 
-    val result = snackBarAlreadyFavorite(
+    val result = snackBarAlready(
       context,
-      view,
-      viewGuide,
-      eventMessage
+      mockView,
+      mockViewGuide,
+      mockEventMessage,
+      true
     )
 
     // verify the snackbar was shown
-    verify { mockSnackbar.show() }
+    verify { mockSnackBar.show() }
 
     // assert that the result is the mockSnackbar
-    assertEquals(mockSnackbar, result)
+    assertEquals(mockSnackBar, result)
   }
 
   @Test
@@ -136,7 +136,7 @@ class SnackbarAlreadyUtilsTest {
 
     // directly mock the ContextCompat.getString call
     mockkStatic(ContextCompat::class)
-    every { ContextCompat.getString(context, any<Int>()) } returns "is already in your favorites"
+    every { ContextCompat.getString(context, any<Int>()) } returns "is already in your watchlist"
 
     // mock HtmlCompat
     mockkStatic(HtmlCompat::class)
@@ -151,11 +151,12 @@ class SnackbarAlreadyUtilsTest {
     } returns mockSnackbar
     every { mockSnackbar.setAnchorView(viewGuide) } returns mockSnackbar
 
-    val result = snackBarAlreadyWatchlist(
+    val result = snackBarAlready(
       context,
       view,
       viewGuide,
-      eventMessage
+      eventMessage,
+      false
     )
 
     // verify the snackbar was shown
