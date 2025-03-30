@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.database.data.datasource.LocalDataSource
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
+import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -122,12 +123,12 @@ class DatabaseRepositoryImplTest {
 
   @Test
   fun insertToDB_returnsSuccessDbResult() = runTest {
-    coEvery { localDataSource.insert(favoriteMovieEntity) } returns DbResult.Success(1)
+    coEvery { localDataSource.insert(favoriteMovie.toFavoriteEntity()) } returns DbResult.Success(1)
     val result = repository.insertToDB(favoriteMovie)
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
 
-    coVerify { localDataSource.insert(favoriteMovieEntity) }
+    coVerify { localDataSource.insert(favoriteMovie.toFavoriteEntity()) }
   }
 
   @Test
