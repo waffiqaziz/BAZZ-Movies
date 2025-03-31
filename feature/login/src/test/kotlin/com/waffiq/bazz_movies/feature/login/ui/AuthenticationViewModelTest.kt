@@ -32,89 +32,138 @@ class AuthenticationViewModelTest {
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase = mockk()
 
   @get:Rule
-  val instantExecutorRule = InstantTaskExecutorRule() // For LiveData testing
+  val instantExecutorRule = InstantTaskExecutorRule() // for LiveData testing
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
+  // observer lists for LiveData
+  private val loadingStates = mutableListOf<Boolean>()
+  private val errorStates = mutableListOf<String?>()
+  private val loginStates = mutableListOf<Boolean>()
+  private val userModels = mutableListOf<UserModel?>()
+
+  // test constants
+  companion object {
+    private const val TEST_USER = "test_user"
+    private const val TEST_PASS = "test_pass"
+    private const val TEST_TOKEN = "test_token"
+    private const val TEST_SESSION = "test_session"
+  }
+
   @Before
   fun setup() {
     viewModel = AuthenticationViewModel(authTMDbAccountUseCase)
+
+    // reset observer lists
+    loadingStates.clear()
+    errorStates.clear()
+    loginStates.clear()
+    userModels.clear()
+
+    // set up observers
+    viewModel.loadingState.observeForever { loadingStates.add(it) }
+    viewModel.errorState.observeForever { errorStates.add(it) }
+    viewModel.loginState.observeForever { loginStates.add(it) }
+    viewModel.userModel.observeForever { userModels.add(it) }
+  }
+
+  // helper methods to reduce duplication
+  private fun mockSuccessfulTokenCreation() {
+    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
+      Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN))
+    )
+  }
+
+  private fun mockSuccessfulLogin() {
+    coEvery {
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+    } returns flowOf(
+      Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN))
+    )
+  }
+
+  private fun mockSuccessfulSessionCreation() {
+    coEvery {
+      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+    } returns flowOf(
+      Outcome.Success(CreateSession(success = true, sessionId = TEST_SESSION))
+    )
+  }
+
+  private fun mockSuccessfulUserDetail() {
+    coEvery {
+      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+    } returns flowOf(
+      Outcome.Success(AccountDetails(id = 1, username = TEST_USER))
+    )
+  }
+
+  // verification helper methods
+  private fun verifyTokenCreation() {
+    coVerify { authTMDbAccountUseCase.createToken() }
+  }
+
+  private fun verifyFullLoginSequence() {
+    coVerifySequence {
+      authTMDbAccountUseCase.createToken()
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+    }
+  }
+
+  private fun verifyUpToLoginSequence() {
+    coVerifySequence {
+      authTMDbAccountUseCase.createToken()
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+    }
+  }
+
+  private fun verifyUpToSessionCreationSequence() {
+    coVerifySequence {
+      authTMDbAccountUseCase.createToken()
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+    }
   }
 
   @Test
   fun userLogin_emitsLoadingAndErrorStates_onFailure() = runTest {
-    // Mock the UseCase to emit a failure
+    // mock the UseCase to emit a failure
     coEvery { authTMDbAccountUseCase.createToken() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Token creation failed"))
     }
 
-    // Observe LiveData
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    // Trigger the login function
-    viewModel.userLogin("test_user", "test_pass")
-
-    advanceUntilIdle() // Advance coroutine execution
+    // trigger the login function
+    viewModel.userLogin(TEST_USER, TEST_PASS)
+    advanceUntilIdle()
 
     // Verify the states
-    assertThat(loadingStates).containsExactly(true, false) // Loading started, then stopped
-    assertThat(errorStates).contains("Token creation failed") // Error message captured
+    assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
+    assertThat(errorStates).contains("Token creation failed") // error message captured
 
-    // Verify interactions with use case
-    coVerify { authTMDbAccountUseCase.createToken() }
+    // verify interactions with use case
+    verifyTokenCreation()
   }
 
   @Test
   fun userLogin_success_triggersLoginAndSessionCreation() = runTest {
-    // Mock token creation
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
+    mockSuccessfulSessionCreation()
+    mockSuccessfulUserDetail()
 
-    // Mock login
-    coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    // trigger
+    viewModel.userLogin(TEST_USER, TEST_PASS)
+    advanceUntilIdle()
 
-    // Mock session creation
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    } returns flowOf(
-      Outcome.Success(CreateSession(success = true, sessionId = "test_session"))
-    )
-
-    // Mock user detail fetching
-    coEvery {
-      authTMDbAccountUseCase.getUserDetail("test_session")
-    } returns flowOf(Outcome.Success(AccountDetails(id = 1, username = "test_user")))
-
-    // Observe LiveData
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-
-    // Trigger login
-    viewModel.userLogin("test_user", "test_pass")
-
-    advanceUntilIdle() // Ensure all coroutines complete
-
-    // Verify states
+    // verify states
     assertThat(loginStates).containsExactly(false, true)
 
-    // Verify calls to the use case
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-      authTMDbAccountUseCase.getUserDetail("test_session")
-    }
+    // verify call sequence
+    verifyFullLoginSequence()
   }
 
   @Test
@@ -123,19 +172,11 @@ class AuthenticationViewModelTest {
       Outcome.Success(Authentication(success = false, requestToken = null))
     )
 
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
-    assertEquals(
-      listOf(false, false),
-      loginStates
-    ) // list of false false, has an initial value of false
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-    }
+    assertEquals(listOf(false, false), loginStates) // initial value false + unchanged false
+    verifyTokenCreation()
   }
 
   @Test
@@ -144,183 +185,105 @@ class AuthenticationViewModelTest {
       Outcome.Success(Authentication(success = true, requestToken = null))
     )
 
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
-    assertEquals(
-      listOf(false, false),
-      loginStates
-    ) // list of false false, has an initial value of false
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-    }
+    assertEquals(listOf(false, false), loginStates) // initial value false + unchanged false
+    verifyTokenCreation()
   }
 
   @Test
   fun login_success_requestTokenNull() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = null))
     )
 
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
     assertThat(loginStates).containsExactly(false, false)
 
-    // Verify calls to the use case
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    }
+    // verify calls to the use case
+    verifyUpToLoginSequence()
   }
 
   @Test
   fun login_emitsLoadingAndErrorStates_onFailure() = runTest {
-    // Mock the UseCase to emit a failure
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
+      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Token creation failed"))
     }
 
-    // Observe LiveData
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    // Trigger the login function
-    viewModel.userLogin("test_user", "test_pass")
-
-    advanceUntilIdle() // Advance coroutine execution
+    viewModel.userLogin(TEST_USER, TEST_PASS)
+    advanceUntilIdle()
 
     assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
     assertThat(errorStates).contains("Token creation failed") // error message captured
 
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    }
+    verifyUpToLoginSequence()
   }
 
   @Test
   fun createSession_outcomeSuccessDataFailed_setLoginStateFalse() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
+      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
+      Outcome.Success(CreateSession(success = false, sessionId = TEST_SESSION)) // success false
     )
 
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    } returns flowOf(
-      Outcome.Success(CreateSession(success = false, sessionId = "test_session")) // success false
-    )
-
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
-    advanceUntilIdle() // ensure all coroutines complete
+    viewModel.userLogin(TEST_USER, TEST_PASS)
+    advanceUntilIdle()
 
     assertThat(loginStates).containsExactly(false, false)
 
-    // Verify calls to the use case
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    }
+    verifyUpToSessionCreationSequence()
   }
 
   @Test
   fun createSession_outcomeSuccess_setUserModelAllPossibility() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
+      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Create login token failed"))
     }
 
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
     assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
     assertThat(errorStates).contains("Create login token failed") // error message captured
 
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    }
+    verifyUpToSessionCreationSequence()
   }
 
   @Test
   fun getUserDetail_outcomeSuccess_setLoginStateTrue() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
+    mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    } returns flowOf(
-      Outcome.Success(CreateSession(success = true, sessionId = "test_session")) // success false
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.getUserDetail("test_session")
+      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
           id = null,
-          username = "test_user",
+          username = TEST_USER,
           avatarItem = AvatarItem(
             avatarTMDb = AvatarTMDb(avatarPath = null),
             gravatar = Gravatar(hash = null)
@@ -329,59 +292,29 @@ class AuthenticationViewModelTest {
       )
     )
 
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    val userModel = mutableListOf<UserModel?>()
-    viewModel.userModel.observeForever { userModel.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
     assertThat(loginStates).containsExactly(false, true)
     assertThat(loadingStates).containsExactly(false)
-    assertEquals(0, userModel[0]?.userId)
+    assertEquals(0, userModels[0]?.userId)
 
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-      authTMDbAccountUseCase.getUserDetail("test_session")
-    }
+    verifyFullLoginSequence()
   }
 
   @Test
   fun getUserDetail_outcomeSuccessAvatarNull() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
+    mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    } returns flowOf(
-      Outcome.Success(CreateSession(success = true, sessionId = "test_session")) // success false
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.getUserDetail("test_session")
+      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
           id = null,
-          username = "test_user",
+          username = TEST_USER,
           avatarItem = AvatarItem(
             avatarTMDb = null,
             gravatar = null
@@ -390,79 +323,37 @@ class AuthenticationViewModelTest {
       )
     )
 
-    val loginStates = mutableListOf<Boolean>()
-    viewModel.loginState.observeForever { loginStates.add(it) }
-
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    val userModel = mutableListOf<UserModel?>()
-    viewModel.userModel.observeForever { userModel.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
     assertThat(loginStates).containsExactly(false, true)
     assertThat(loadingStates).containsExactly(false)
-    assertEquals(0, userModel[0]?.userId)
-    assertNull(userModel[0]?.tmdbAvatar)
-    assertNull(userModel[0]?.gravatarHast)
+    assertEquals(0, userModels[0]?.userId)
+    assertNull(userModels[0]?.tmdbAvatar)
+    assertNull(userModels[0]?.gravatarHast)
 
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-      authTMDbAccountUseCase.getUserDetail("test_session")
-    }
+    verifyFullLoginSequence()
   }
 
   @Test
   fun getUserDetail_emitsLoadingAndErrorStates_onFailure() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
+    mockSuccessfulTokenCreation()
+    mockSuccessfulLogin()
+    mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-    } returns flowOf(
-      Outcome.Success(Authentication(success = true, requestToken = "test_token"))
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-    } returns flowOf(
-      Outcome.Success(CreateSession(success = true, sessionId = "test_session"))
-    )
-
-    coEvery {
-      authTMDbAccountUseCase.getUserDetail("test_session")
+      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Can't get user details"))
     }
 
-    val loadingStates = mutableListOf<Boolean>()
-    viewModel.loadingState.observeForever { loadingStates.add(it) }
-
-    val errorStates = mutableListOf<String?>()
-    viewModel.errorState.observeForever { errorStates.add(it) }
-
-    viewModel.userLogin("test_user", "test_pass")
-
+    viewModel.userLogin(TEST_USER, TEST_PASS)
     advanceUntilIdle()
 
     assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
     assertThat(errorStates).contains("Can't get user details") // error message captured
 
-    coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login("test_user", "test_pass", "test_token")
-      authTMDbAccountUseCase.createSessionLogin("test_token")
-      authTMDbAccountUseCase.getUserDetail("test_session")
-    }
+    verifyFullLoginSequence()
   }
 }
