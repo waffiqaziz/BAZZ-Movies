@@ -30,7 +30,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapte
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlreadyFavorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
@@ -181,11 +181,12 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
   private fun handleSnackbarUserLogin() {
     viewModel.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar = snackBarAlreadyFavorite(
+      mSnackbar = snackBarAlready(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
         requireActivity().findViewById(snackbarAnchor),
-        it
+        it,
+        true
       )
     }
 
@@ -295,11 +296,12 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       showSnackBarUndoGuest(fav.title, pos)
     } else { // add to favorite action
       if (fav.isFavorite) {
-        mSnackbar = snackBarAlreadyFavorite(
+        mSnackbar = snackBarAlready(
           requireContext(),
           requireActivity().findViewById(snackbarAnchor),
           requireActivity().findViewById(snackbarAnchor),
-          Event(fav.title)
+          Event(fav.title),
+          true
         )
       } else {
         viewModelDB.updateToFavoriteDB(fav)

@@ -89,6 +89,41 @@ class MultiSearchInteractorTest {
     multiSearchInteractor = MultiSearchInteractor(mockRepository)
   }
 
+  private fun mockGetPagingSearch(pagingData: PagingData<ResultsItemSearch>) {
+    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(pagingData)
+  }
+
+  private fun verifyGetPagingSearch() {
+    verify { mockRepository.getPagingSearch(QUERY) }
+  }
+
+  /**
+   * Helper function to run a test with a specific paging data and execute assertions on the results
+   */
+  private fun testSearchWithPagingData(
+    pagingData: PagingData<ResultsItemSearch>,
+    assertions: (List<ResultsItemSearch>) -> Unit,
+  ) = runTest {
+    mockGetPagingSearch(pagingData)
+
+    multiSearchInteractor.search(QUERY).test {
+      val actualPagingData = awaitItem() // collect first item
+      val job = launch { differ.submitData(actualPagingData) }
+      advanceUntilIdle()
+
+      // get the filtered items
+      val pagingList = differ.snapshot().items
+
+      // run the provided assertions
+      assertions(pagingList)
+
+      job.cancel()
+      awaitComplete()
+    }
+
+    verifyGetPagingSearch()
+  }
+
   @Test
   fun search_validValue_returnDataCorrectly() = runTest {
     val fakePagingData =
@@ -106,16 +141,8 @@ class MultiSearchInteractorTest {
           ).toResultItemSearch()
         )
       )
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem() // Collect first item
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // Assert on the actual items
-      val pagingList = differ.snapshot().items // this is the data you wanted
-      assertTrue(pagingList.isNotEmpty())
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertEquals("Transformers TV-series", pagingList[0].title)
       assertEquals(TV_MEDIA_TYPE, pagingList[0].mediaType)
       assertEquals(12345, pagingList[0].id)
@@ -132,11 +159,7 @@ class MultiSearchInteractorTest {
       assertEquals("/poster_path1.jpg", pagingList[1].posterPath)
       assertEquals("/profile_path1.jpg", pagingList[1].profilePath)
       assertFalse(pagingList[1].adult)
-      job.cancel()
-
-      awaitComplete()
     }
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -148,21 +171,10 @@ class MultiSearchInteractorTest {
           resultsItemSearchResponse2.toResultItemSearch()
         )
       )
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // assert on the actual items
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isEmpty())
-      job.cancel()
-
-      awaitComplete()
     }
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -180,15 +192,8 @@ class MultiSearchInteractorTest {
           ).toResultItemSearch()
         )
       )
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem() // Collect first item
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // Assert on the actual items
-      val pagingList = differ.snapshot().items // this is the data you wanted
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
       assertEquals("/poster_path0.jpg", pagingList[0].posterPath)
@@ -196,11 +201,7 @@ class MultiSearchInteractorTest {
       assertTrue(pagingList[1].backdropPath.isNullOrEmpty())
       assertEquals("/poster_path1.jpg", pagingList[1].posterPath)
       assertEquals("/profile_path1.jpg", pagingList[1].profilePath)
-      job.cancel()
-
-      awaitComplete()
     }
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -218,15 +219,8 @@ class MultiSearchInteractorTest {
           ).toResultItemSearch()
         )
       )
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem() // Collect first item
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // Assert on the actual items
-      val pagingList = differ.snapshot().items // this is the data you wanted
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
       assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
@@ -234,11 +228,7 @@ class MultiSearchInteractorTest {
       assertTrue(pagingList[1].posterPath.isNullOrEmpty())
       assertEquals("/backdrop_path1.jpg", pagingList[1].backdropPath)
       assertEquals("/profile_path1.jpg", pagingList[1].profilePath)
-      job.cancel()
-
-      awaitComplete()
     }
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -256,15 +246,8 @@ class MultiSearchInteractorTest {
           ).toResultItemSearch()
         )
       )
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem() // Collect first item
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // Assert on the actual items
-      val pagingList = differ.snapshot().items // this is the data you wanted
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
       assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
@@ -272,11 +255,7 @@ class MultiSearchInteractorTest {
       assertTrue(pagingList[1].profilePath.isNullOrEmpty())
       assertEquals("/backdrop_path1.jpg", pagingList[1].backdropPath)
       assertEquals("/poster_path1.jpg", pagingList[1].posterPath)
-      job.cancel()
-
-      awaitComplete()
     }
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -292,23 +271,12 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData1)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData1) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -324,23 +292,12 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData2)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData2) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
       assertEquals("/poster_path0.jpg", pagingList[0].posterPath)
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -356,23 +313,12 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData3)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData3) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
       assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -388,20 +334,9 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataEmpty)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingDataEmpty) { pagingList ->
       assertTrue(pagingList.isEmpty()) // Should be filtered out
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -417,23 +352,12 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataMixed)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingDataMixed) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertEquals("", pagingList[0].backdropPath)
       assertNull(pagingList[0].posterPath)
       assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -449,20 +373,9 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingDataVariedEmpty)
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingDataVariedEmpty) { pagingList ->
       assertTrue(pagingList.isEmpty())
-      job.cancel()
-
-      awaitComplete()
     }
-
-    verify(exactly = 1) { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
@@ -474,36 +387,17 @@ class MultiSearchInteractorTest {
       )
     )
 
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
-
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData) { pagingList ->
       assertEquals(emptyList<ResultsItemSearch>(), pagingList)
-
-      job.cancel()
-      awaitComplete()
     }
-
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 
   @Test
   fun filter_allPathCombinations_ensureProperFilteringLogic() = runTest {
     // total 9 elements - should only left 7 after filtering
     val fakePagingData = PagingData.from(testCases)
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
 
-    multiSearchInteractor.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      // get the filtered items
-      val pagingList = differ.snapshot().items
+    testSearchWithPagingData(fakePagingData) { pagingList ->
 
       // should have filtered out 2 items (all null and all empty)
       assertEquals(7, pagingList.size)
@@ -516,11 +410,6 @@ class MultiSearchInteractorTest {
             !item.profilePath.isNullOrEmpty()
         )
       }
-
-      job.cancel()
-      awaitComplete()
     }
-
-    verify { mockRepository.getPagingSearch(QUERY) }
   }
 }

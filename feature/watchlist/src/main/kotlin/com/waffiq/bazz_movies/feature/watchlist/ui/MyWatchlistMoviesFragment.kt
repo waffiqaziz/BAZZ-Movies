@@ -30,15 +30,15 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAda
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlreadyFavorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.uihelper.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentMyWatchlistMoviesBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -181,11 +181,12 @@ class MyWatchlistMoviesFragment : Fragment() {
 
   private fun handleSnackbarLoginUser() {
     viewModel.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar = snackBarAlreadyFavorite(
+      mSnackbar = snackBarAlready(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
         requireActivity().findViewById(snackbarAnchor),
-        it
+        it,
+        true
       )
     }
 
@@ -295,11 +296,12 @@ class MyWatchlistMoviesFragment : Fragment() {
       showSnackBarUndoGuest(fav.title, pos)
     } else { // add to favorite action
       if (fav.isFavorite) {
-        mSnackbar = snackBarAlreadyFavorite(
+        mSnackbar = snackBarAlready(
           requireContext(),
           requireActivity().findViewById(snackbarAnchor),
           requireActivity().findViewById(snackbarAnchor),
-          Event(fav.title)
+          Event(fav.title),
+          true
         )
       } else {
         viewModelDB.updateToFavoriteDB(fav)

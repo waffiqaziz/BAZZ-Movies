@@ -58,298 +58,169 @@ class HandlePagingLoadStateTest {
     mockEmptyView = mockk(relaxed = true)
     onErrorCallback = mockk(relaxed = true)
 
-    // setup load state flow with proper source parameter
-    loadStateFlow = MutableStateFlow(
-      CombinedLoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false),
-        source = LoadStates(
-          refresh = LoadState.NotLoading(false),
-          prepend = LoadState.NotLoading(false),
-          append = LoadState.NotLoading(false)
-        ),
-        mediator = null
-      )
+    // setup initial load state flow
+    loadStateFlow = MutableStateFlow(createLoadState(refresh = LoadState.NotLoading(false)))
+  }
+
+  private fun createLoadState(
+    refresh: LoadState = LoadState.NotLoading(false),
+    prepend: LoadState = LoadState.NotLoading(false),
+    append: LoadState = LoadState.NotLoading(false),
+  ): CombinedLoadStates {
+    return CombinedLoadStates(
+      refresh = refresh,
+      prepend = prepend,
+      append = append,
+      source = LoadStates(
+        refresh = refresh,
+        prepend = prepend,
+        append = append
+      ),
+      mediator = null
     )
+  }
+
+  private fun setupAndRunTest(
+    loadState: CombinedLoadStates,
+    itemCount: Int = 0,
+  ) = runTest {
+    every { mockAdapter.itemCount } returns itemCount
+
+    lifecycleOwner.handlePagingLoadState(
+      mockAdapter,
+      loadStateFlow,
+      mockRecyclerView,
+      mockProgressBar,
+      mockErrorView,
+      mockEmptyView,
+      onErrorCallback
+    )
+
+    loadStateFlow.value = loadState
+    advanceUntilIdle()
+  }
+
+  private fun verifyViewState(
+    progressVisible: Boolean,
+    recyclerVisible: Boolean,
+    errorVisible: Boolean,
+    emptyVisible: Boolean,
+    errorCallbackCalled: Boolean = false,
+  ) {
+    verify { mockProgressBar.isVisible = progressVisible }
+    verify { mockRecyclerView.isVisible = recyclerVisible }
+    verify { mockErrorView.isVisible = errorVisible }
+    verify { mockEmptyView.isVisible = emptyVisible }
+
+    if (errorCallbackCalled) {
+      verify { onErrorCallback(any()) }
+    }
   }
 
   @Test
   fun whenRefreshIsLoading_showProgressBarAndRecyclerView() = runTest {
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.Loading,
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Loading,
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
+    val loadState = createLoadState(refresh = LoadState.Loading)
+
+    setupAndRunTest(loadState)
+
+    verifyViewState(
+      progressVisible = true,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false
     )
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    verify { mockProgressBar.isVisible = true }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
   }
 
   @Test
   fun whenAppendIsLoading_showProgressBarAndRecyclerView() = runTest {
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.NotLoading(false),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.Loading,
-      source = LoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.Loading
-      ),
-      mediator = null
+    val loadState = createLoadState(append = LoadState.Loading)
+
+    setupAndRunTest(loadState)
+
+    verifyViewState(
+      progressVisible = true,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false
     )
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    verify { mockProgressBar.isVisible = true }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
   }
 
   @Test
   fun whenRefreshError_withEmptyAdapter_showErrorView() = runTest {
     val error = IOException("Network error")
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.Error(error),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Error(error),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
+    val loadState = createLoadState(refresh = LoadState.Error(error))
+
+    setupAndRunTest(loadState, itemCount = 0)
+
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = false,
+      errorVisible = true,
+      emptyVisible = false,
+      errorCallbackCalled = true
     )
-
-    every { mockAdapter.itemCount } returns 0
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = false }
-    verify { mockErrorView.isVisible = true }
-    verify { mockEmptyView.isVisible = false }
-    verify { onErrorCallback(any()) }
   }
 
   @Test
   fun whenRefreshError_withNonEmptyAdapter_showRecyclerView() = runTest {
-    val error = IOException("Network error")
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.Error(error),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Error(error),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
+    val loadState = createLoadState(refresh = LoadState.Error(IOException("Network error")))
+
+    setupAndRunTest(loadState, itemCount = 5)
+
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false,
+      errorCallbackCalled = true
     )
-
-    every { mockAdapter.itemCount } returns 5
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    // Then
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
-    verify { onErrorCallback(any()) }
   }
 
   @Test
   fun whenEndOfPaginationReached_withEmptyAdapter_showEmptyView() = runTest {
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.NotLoading(false),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(true),
-      source = LoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(true)
-      ),
-      mediator = null
+    val loadState = createLoadState(append = LoadState.NotLoading(true))
+
+    setupAndRunTest(loadState, itemCount = 0)
+
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = false,
+      errorVisible = false,
+      emptyVisible = true
     )
-
-    every { mockAdapter.itemCount } returns 0
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = false }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = true }
   }
 
   @Test
   fun whenEndOfPaginationReached_withNonEmptyAdapter_showRecyclerView() = runTest {
-    // Given
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.NotLoading(false),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(true),
-      source = LoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(true)
-      ),
-      mediator = null
+    val loadState = createLoadState(append = LoadState.NotLoading(true))
+
+    setupAndRunTest(loadState, itemCount = 5)
+
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false
     )
-
-    every { mockAdapter.itemCount } returns 5
-
-    // When
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    // Then
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
   }
 
   @Test
   fun whenNormalState_showOnlyRecyclerView() = runTest {
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.NotLoading(false),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
+    val loadState = createLoadState() // Uses default values for normal state
+
+    setupAndRunTest(loadState)
+
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false
     )
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
   }
 
   @Test
   fun tesDebounce_emitMultipleValuesQuickly() = runTest {
-    // Given - first state
-    val loadState1 = CombinedLoadStates(
-      refresh = LoadState.Loading,
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Loading,
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
-    )
-
-    // Second state that comes before debounce completes
-    val loadState2 = CombinedLoadStates(
-      refresh = LoadState.NotLoading(false),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.NotLoading(false),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
-    )
-
-    // When
+    // setup handler first
     lifecycleOwner.handlePagingLoadState(
       mockAdapter,
       loadStateFlow,
@@ -360,48 +231,37 @@ class HandlePagingLoadStateTest {
       onErrorCallback
     )
 
-    // Emit first value
-    loadStateFlow.value = loadState1
+    // first state - loading
+    loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
 
-    // Advance time but not enough to trigger debounce
+    // advance time but not enough to trigger debounce
     advanceTimeBy(DEBOUNCE_SHORT - 100)
 
-    // Emit second value before debounce completes
-    loadStateFlow.value = loadState2
+    // second state - normal - overwrites the first one before debounce completes
+    loadStateFlow.value = createLoadState()
 
-    // Now advance until all work is complete
+    // complete all pending work
     advanceUntilIdle()
 
-    // Then - should only see the effect of the second value
-    verify { mockProgressBar.isVisible = false }
-    verify { mockRecyclerView.isVisible = true }
-    verify { mockErrorView.isVisible = false }
-    verify { mockEmptyView.isVisible = false }
+    // only second state should take effect
+    verifyViewState(
+      progressVisible = false,
+      recyclerVisible = true,
+      errorVisible = false,
+      emptyVisible = false
+    )
 
-    // Verify we didn't set progress to visible (which would have happened for the first state)
+    // verify first state didn't take effect, progressbar is not visible
     verify(exactly = 0) { mockProgressBar.isVisible = true }
   }
 
   @Test
   fun testDistinctUntilChanged_emitSameValueTwice() = runTest {
-    // Given
-    val loadState = CombinedLoadStates(
-      refresh = LoadState.Loading,
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Loading,
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
-    )
-
-    // Track number of calls to a callback
+    // track number of calls to a callback
     var callCount = 0
     val trackingCallback: (Event<String>?) -> Unit = { callCount++ }
 
-    // When
+    // setup handler with tracking callback
     lifecycleOwner.handlePagingLoadState(
       mockAdapter,
       loadStateFlow,
@@ -412,38 +272,28 @@ class HandlePagingLoadStateTest {
       trackingCallback
     )
 
-    // Emit first value and wait for debounce
-    loadStateFlow.value = loadState
+    // emit loading state
+    loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
     advanceTimeBy(DEBOUNCE_SHORT * 2)
 
-    // Count should still be 0 since loading state doesn't trigger error callback
+    // loading state doesn't trigger error callback
     assertEquals(0, callCount)
 
-    // Create an error state
-    val errorState = CombinedLoadStates(
-      refresh = LoadState.Error(IOException("Test error")),
-      prepend = LoadState.NotLoading(false),
-      append = LoadState.NotLoading(false),
-      source = LoadStates(
-        refresh = LoadState.Error(IOException("Test error")),
-        prepend = LoadState.NotLoading(false),
-        append = LoadState.NotLoading(false)
-      ),
-      mediator = null
-    )
+    // create an error state
+    val errorState = createLoadState(refresh = LoadState.Error(IOException("Test error")))
 
-    // Emit error state and wait
+    // emit error state
     loadStateFlow.value = errorState
     advanceTimeBy(DEBOUNCE_SHORT * 2)
 
-    // Error callback should be called once
+    // error callback should be called once
     assertEquals(1, callCount)
 
-    // Emit identical error state again
+    // emit identical error state again
     loadStateFlow.value = errorState
     advanceTimeBy(DEBOUNCE_SHORT * 2)
 
-    // Count should still be 1 due to distinctUntilChanged
+    // count should still be 1 due to distinctUntilChanged
     assertEquals(1, callCount)
   }
 

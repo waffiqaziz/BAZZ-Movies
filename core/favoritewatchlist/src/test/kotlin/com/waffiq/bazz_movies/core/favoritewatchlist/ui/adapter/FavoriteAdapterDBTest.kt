@@ -266,4 +266,24 @@ class FavoriteAdapterDBTest {
       FavoriteAdapterDB(navigator).DiffCallback(listOf(favorite), listOf(favorite))
     assertTrue(diffCallbackSame.areItemsTheSame(0, 0))
   }
+
+  @Test
+  fun viewHolder_dataInitialization2() {
+    val binding = ItemResultBinding.inflate(LayoutInflater.from(context))
+    val viewHolder = adapter.ViewHolder(binding)
+
+    // Uninitialized access should throw exception
+    assertThrows(UninitializedPropertyAccessException::class.java) { viewHolder.data }
+
+    // Initialize with bind()
+    viewHolder.bind(favorite)
+
+    // Explicitly access data again to hit both branches
+    assertNotNull(viewHolder.data)
+    assertEquals(favorite, viewHolder.data)
+    assertEquals("movie", viewHolder.data.mediaType)
+
+    // If data is used inside other functions, call those functions too
+    viewHolder.itemView.performClick() // Example, if click depends on 'data'
+  }
 }
