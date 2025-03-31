@@ -179,7 +179,7 @@ jobs:
           args: >
             -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
             -Dsonar.organization=waffiqaziz
-            -Dsonar.coverage.jacoco.xmlReportPaths=${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
             -Dsonar.java.binaries=${{ github.workspace }}/**/build/intermediates/javac/debug/classes
             -Dsonar.kotlin.binaries=${{ github.workspace }}/**/build/tmp/kotlin-classes/debug
 
