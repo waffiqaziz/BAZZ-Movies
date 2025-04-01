@@ -45,5 +45,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Build with Gradle Wrapper
-        run: ./gradlew assembleDebug --stacktrace
+#      - name: Build with Gradle Wrapper
+#        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonar --info
