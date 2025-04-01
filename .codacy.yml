@@ -1,3 +1,9 @@
 exclude_paths:
   - "**/*.md"
   - "*.md"
+
+engines:
+  duplication:
+    enabled: true
+    exclude_paths:
+      - '**/*Response.kt'
