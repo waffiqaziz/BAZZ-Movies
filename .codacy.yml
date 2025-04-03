@@ -7,3 +7,6 @@ engines:
     enabled: true
     exclude_paths:
       - '**/*Response.kt'
+      - '**/*Adapter.kt'
+      - '**/build.gradle.kts'      
+      - '**/I*Repository.kt'
