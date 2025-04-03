@@ -71,7 +71,7 @@ desugarJdkLibs = "2.1.4"
 androidxJunit = "1.2.1"
 espresso = "3.6.1"
 coreTesting = "2.2.0"
-jacoco = "0.8.12"
+jacoco = "0.8.13"
 junitVersion = "4.13.2"
 json = "20241224"
 mockk = "1.13.13"
@@ -91,7 +91,7 @@ glide = "4.16.0"
 expandableTextView = "1.0.4"
 cpa = "0.1.2"
 shimmer = "0.5.0"
-
+moduleGraph = "2.8.0"
 
 [libraries]
 # AndroidX Libraries
@@ -226,6 +226,7 @@ room = { id = "androidx.room", version.ref = "room" }
 # Others
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
+module-graph = { id = "com.jraska.module.graph.assertion", version = "moduleGraph" }
 
 # Custom Plugins
 bazzmovies-android-application = { id = "bazzmovies.android.application" }
