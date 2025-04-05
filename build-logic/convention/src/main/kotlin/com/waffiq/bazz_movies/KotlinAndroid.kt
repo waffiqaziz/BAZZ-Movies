@@ -6,7 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
@@ -57,7 +56,9 @@ internal fun Project.configureKotlinJvm() {
 private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() = configure<T> {
   // Treat all Kotlin warnings as errors (disabled by default)
   // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-  val warningsAsErrors: String? by project
+  val warningsAsErrors = providers.gradleProperty("warningsAsErrors").map {
+    it.toBoolean()
+  }.orElse(false)
 
   // Accessing compiler options and ensuring freeCompilerArgs is properly configured
   when (this) {
@@ -66,7 +67,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     else -> error("Unsupported project extension $this ${T::class}")
   }.apply {
     jvmTarget = JvmTarget.JVM_17
-    allWarningsAsErrors = warningsAsErrors.toBoolean()
+    allWarningsAsErrors = warningsAsErrors
 
     // Directly adding to the freeCompilerArgs list
     if (project.path != ":core:domain" &&
