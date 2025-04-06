@@ -1,8 +1,9 @@
+package com.waffiq.bazz_movies.core.user.data.model
+
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
