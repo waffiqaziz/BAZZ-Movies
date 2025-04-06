@@ -43,12 +43,12 @@ class UserDataSource @Inject constructor(
       )
     }.flowOn(ioDispatcher)
 
-  override suspend fun createSessionLogin(requestToken: String): Flow<NetworkResult<CreateSessionResponse>> =
+  override suspend fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.createSessionLogin(requestToken)
+          tmdbApiService.createSessionLogin(sessionId)
         }
       )
     }.flowOn(ioDispatcher)

@@ -7,6 +7,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 internal fun Project.configureCommonAndroidSettings(
   extension: CommonExtension<*, *, *, *, *, *>
 ) {
+  group = "com.waffiq.bazzmovies"
   with(extension) {
     packaging {
       resources {
