@@ -12,8 +12,8 @@ versionName = "1.2.0"
 # Plugin Versions
 agp = "8.7.3"
 androidTools = "31.8.0"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+kotlin = "2.1.20"
+ksp = "2.1.20-1.0.32"
 hilt = "2.56"
 
 # Google Services
