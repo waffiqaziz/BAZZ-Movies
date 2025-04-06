@@ -42,9 +42,9 @@ class UserRepository @Inject constructor(
   override suspend fun login(
     username: String,
     pass: String,
-    token: String
+    sessionId: String
   ): Flow<Outcome<Authentication>> =
-    userDataSource.login(username, pass, token).map { networkResult ->
+    userDataSource.login(username, pass, sessionId).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> Outcome.Success(networkResult.data.toAuthentication())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
