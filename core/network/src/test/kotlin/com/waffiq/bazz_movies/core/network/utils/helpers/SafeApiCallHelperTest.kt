@@ -74,7 +74,6 @@ class SafeApiCallHelperTest {
     )
   }
 
-
   @Test
   fun safeApiCall_shouldError404ResponseInvalidRequest() = runTest {
     val mockResponse = mockk<Response<String>> {
@@ -274,6 +273,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
+  @Suppress("TooGenericExceptionThrown")
   fun safeApiCall_shouldHandlesUnknownException() = runTest {
     val result = safeApiCall<String> { throw Exception("Unexpected error") }
     assert(result is NetworkResult.Error)

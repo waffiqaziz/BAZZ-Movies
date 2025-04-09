@@ -30,7 +30,7 @@ class SearchPagingSourceTest {
   private val query = "test query"
 
   @Test
-  fun load_ReturnsPage_OnSuccessfulApiCall() = runTest {
+  fun fetchPage_withSuccessfulApiCall_returnsCorrectPageData() = runTest {
     val resultItems = listOf(ResultsItemSearchResponse("item1"), ResultsItemSearchResponse("item2"))
     testLoadReturnsPage(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
@@ -47,7 +47,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsError_OnIOException() = runTest {
+  fun fetchPage_withIOException_returnsError() = runTest {
     testLoadReturnsErrorOnException(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = {
@@ -59,7 +59,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsError_OnHttpException() = runTest {
+  fun fetchPage_withHttpException_returnsError() = runTest {
     testLoadReturnsErrorOnHttpException(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = {
@@ -72,7 +72,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsError_OnNullResponseData() = runTest {
+  fun fetchPage_withNullResponseData_returnsError() = runTest {
     coEvery {
       apiServiceMock.search(query, INITIAL_PAGE_INDEX)
     } returns MultiSearchResponse(results = null)
@@ -89,7 +89,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsPage_WithNonNullPrevKey_OnSubsequentPage() = runTest {
+  fun loadSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = { page ->
@@ -108,7 +108,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsPage_WithNullNextKey_OnEmptyResponse() = runTest {
+  fun loadEmptyResponse_returnPageWithNullNextKey() = runTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = { page ->
@@ -121,7 +121,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsCorrectKey_AnchorInMiddlePage() {
+  fun getRefreshKey_whenAnchorInMiddlePage_returnCorrectKey() {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(
@@ -136,7 +136,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_UsesPrevKey_WhenAnchorPageHasEveryKey() {
+  fun getRefreshKey_whenBothKeysPresent_shouldUsePrevKeyPlusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(ResultsItemSearchResponse("item1")),
@@ -148,7 +148,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_UsesNextKey_WhenPrefKeyIsNull() {
+  fun getRefreshKey_whenPrevKeyIsNull_shouldUseNextKeyMinusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(ResultsItemSearchResponse("item1")),
@@ -160,7 +160,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenAllKeysAreNull() {
+  fun getRefreshKey_whenBothKeysAreNull_returnNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(ResultsItemSearchResponse("item1"))
@@ -168,7 +168,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenNoAnchorPositionAndEmptyPages() {
+  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       anchorPosition = null
@@ -176,7 +176,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenAnchorIsZeroAndEmptyPages() {
+  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       anchorPosition = 0

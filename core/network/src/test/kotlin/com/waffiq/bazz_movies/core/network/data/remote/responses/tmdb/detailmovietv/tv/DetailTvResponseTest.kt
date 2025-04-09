@@ -10,24 +10,63 @@ import org.junit.Test
 
 class DetailTvResponseTest {
 
+  val detailTvResponse = detailTvResponseDump
+
   @Test
-  fun detailTvResponse_withValidValues_setsPropertiesCorrectly() {
-    val detailTvResponse = detailTvResponseDump
-    assertEquals("ko", detailTvResponse.originalLanguage)
-    assertEquals(12, detailTvResponse.numberOfEpisodes)
-    assertEquals(
-      "/pOSCKaZhndUFYtxHXjQOV6xJi1s.png",
-      detailTvResponse.networksResponse?.get(0)?.logoPath
-    )
+  fun detailTvResponse_setsBasicInfoCorrectly() {
+    assertEquals(253905, detailTvResponse.id)
     assertEquals("Miniseries", detailTvResponse.type)
-    assertEquals("/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg", detailTvResponse.backdropPath)
+    assertEquals("When the Phone Rings", detailTvResponse.name)
     assertEquals("Drama", detailTvResponse.genres?.get(0)?.name)
     assertEquals(394.215, detailTvResponse.popularity)
-    assertEquals("South Korea", detailTvResponse.productionCountriesResponse?.get(0)?.name)
-    assertEquals(253905, detailTvResponse.id)
-    assertEquals(1, detailTvResponse.numberOfSeasons)
+    assertEquals(8.4, detailTvResponse.voteAverage)
     assertEquals(141, detailTvResponse.voteCount)
+    assertEquals("지금 거신 전화는", detailTvResponse.originalName)
+    assertEquals("Korean", detailTvResponse.spokenLanguagesResponse?.get(0)?.englishName)
+    assertEquals("ko", detailTvResponse.originalLanguage)
+    assertEquals("ko", detailTvResponse.languages?.get(0))
+    assertEquals("Ended", detailTvResponse.status)
+    assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
+    assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
+    assertTrue(detailTvResponse.adult == false)
+  }
+
+  @Test
+  fun detailTvResponse_setsDatesCorrectly() {
     assertEquals("2024-11-22", detailTvResponse.firstAirDate)
+    assertEquals("2025-01-04", detailTvResponse.lastAirDate)
+    assertNull(detailTvResponse.nextEpisodeToAir)
+  }
+
+  @Test
+  fun detailTvResponse_setsMediaAssetsCorrectly() {
+    assertEquals("/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg", detailTvResponse.backdropPath)
+    assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", detailTvResponse.posterPath)
+    assertEquals("/pOSCKaZhndUFYtxHXjQOV6xJi1s.png", detailTvResponse.networksResponse?.get(0)?.logoPath)
+  }
+
+  @Test
+  fun detailTvResponse_setsSeasonsAndEpisodesCorrectly() {
+    assertEquals(1, detailTvResponse.numberOfSeasons)
+    assertEquals(12, detailTvResponse.numberOfEpisodes)
+    assertEquals(392789, detailTvResponse.seasonsResponse?.get(0)?.id)
+    assertEquals(70, detailTvResponse.episodeRunTime?.get(0))
+    assertEquals(67, detailTvResponse.lastEpisodeToAirResponse?.runtime)
+  }
+
+  @Test
+  fun detailTvResponse_setsProductionAndCountryCorrectly() {
+    assertEquals("South Korea", detailTvResponse.productionCountriesResponse?.get(0)?.name)
+    assertEquals("Baram Pictures", detailTvResponse.productionCompaniesResponse?.get(1)?.name)
+    assertEquals("KR", detailTvResponse.originCountry?.get(0))
+    assertEquals(
+      "KR",
+      detailTvResponse.contentRatingsResponse?.contentRatingsItemResponse?.get(1)?.iso31661
+    )
+  }
+
+  @Test
+  fun detailTvResponse_others_setsPropertiesCorrectly() {
     assertEquals(
       """
         A rising politician and his mute wife's tense marriage begins to unravel after a call from a 
@@ -35,32 +74,11 @@ class DetailTvResponseTest {
       """.trimIndent(),
       detailTvResponse.overview
     )
-    assertEquals(392789, detailTvResponse.seasonsResponse?.get(0)?.id)
-    assertEquals("ko", detailTvResponse.languages?.get(0))
-    assertEquals("Kim Ji-woon", detailTvResponse.createdByResponse?.get(0)?.name)
-    assertEquals(67, detailTvResponse.lastEpisodeToAirResponse?.runtime)
-    assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", detailTvResponse.posterPath)
-    assertEquals("KR", detailTvResponse.originCountry?.get(0))
-    assertEquals("Korean", detailTvResponse.spokenLanguagesResponse?.get(0)?.englishName)
-    assertEquals("Baram Pictures", detailTvResponse.productionCompaniesResponse?.get(1)?.name)
-    assertEquals("지금 거신 전화는", detailTvResponse.originalName)
-    assertEquals(8.4, detailTvResponse.voteAverage)
-    assertEquals("When the Phone Rings", detailTvResponse.name)
     assertEquals(
       "Their love hangs by a thread... until a stranger picks up the phone.",
       detailTvResponse.tagline
     )
-    assertEquals(70, detailTvResponse.episodeRunTime?.get(0))
-    assertEquals(
-      "KR",
-      detailTvResponse.contentRatingsResponse?.contentRatingsItemResponse?.get(1)?.iso31661
-    )
-    assertTrue(detailTvResponse.adult == false)
-    assertNull(detailTvResponse.nextEpisodeToAir)
     assertTrue(detailTvResponse.inProduction == false)
-    assertEquals("2025-01-04", detailTvResponse.lastAirDate)
-    assertEquals("https://program.imbc.com/WhenThePhoneRings", detailTvResponse.homepage)
-    assertEquals("Ended", detailTvResponse.status)
   }
 
   @Test

@@ -7,29 +7,66 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class DetailMovieResponseTest {
+  val detailMovieResponse = detailMovieResponseDump
 
   @Test
-  fun detailMovieResponse_withValidValues_setsPropertiesCorrectly() {
-    val detailMovieResponse = detailMovieResponseDump
-    assertEquals("en", detailMovieResponse.originalLanguage)
-    assertEquals("tt6263850", detailMovieResponse.imdbId)
-    assertTrue(detailMovieResponse.video == false)
+  fun detailMovieResponse_setsBasicInfoCorrectly() {
+    assertEquals(533535, detailMovieResponse.id)
     assertEquals("Deadpool & Wolverine", detailMovieResponse.title)
-    assertEquals("/lD4mhKoiaXpKrtBEjACeWgz7w0O.jpg", detailMovieResponse.backdropPath)
-    assertEquals(1338073645L, detailMovieResponse.revenue)
+    assertEquals("Deadpool & Wolverine", detailMovieResponse.originalTitle)
+    assertEquals("English", detailMovieResponse.listSpokenLanguagesItemResponse?.get(0)?.name)
+    assertEquals("en", detailMovieResponse.originalLanguage)
     assertEquals("Action", detailMovieResponse.listGenresItemResponse?.get(0)?.name)
-    assertEquals(856.096, detailMovieResponse.popularity)
+    assertEquals(
+      "https://www.marvel.com/movies/deadpool-and-wolverine",
+      detailMovieResponse.homepage
+    )
+    assertEquals(false, detailMovieResponse.adult)
+  }
+
+  @Test
+  fun detailMovieResponse_setsDatesCorrectly() {
+    assertEquals("2024-07-24", detailMovieResponse.releaseDate)
+    assertEquals("Released", detailMovieResponse.status)
     assertEquals(
       "AD",
       detailMovieResponse.releaseDatesResponse?.listReleaseDatesItemResponse?.get(0)?.iso31661
     )
+  }
+
+  @Test
+  fun detailMovieResponse_setsTechnicalDetailsCorrectly() {
+    assertEquals(856.096, detailMovieResponse.popularity)
+    assertEquals(1338073645L, detailMovieResponse.revenue)
+    assertEquals(6283, detailMovieResponse.voteCount)
+    assertEquals(200000000, detailMovieResponse.budget)
+    assertEquals(7.7, detailMovieResponse.voteAverage)
+    assertEquals(128, detailMovieResponse.runtime)
+    assertEquals("tt6263850", detailMovieResponse.imdbId)
+  }
+
+  @Test
+  fun detailMovieResponse_setsCompanyAndProductionCorrectly() {
     assertEquals(
       "United States of America",
       detailMovieResponse.listProductionCountriesItemResponse?.get(0)?.name
     )
-    assertEquals(533535, detailMovieResponse.id)
-    assertEquals(6283, detailMovieResponse.voteCount)
-    assertEquals(200000000, detailMovieResponse.budget)
+    assertEquals(
+      "Marvel Studios",
+      detailMovieResponse.listProductionCompaniesItemResponse?.get(0)?.name
+    )
+    assertEquals("Deadpool Collection", detailMovieResponse.belongsToCollectionResponse?.name)
+  }
+
+  @Test
+  fun detailMovieResponse_setsMediaAssetsCorrectly() {
+    assertEquals("/lD4mhKoiaXpKrtBEjACeWgz7w0O.jpg", detailMovieResponse.backdropPath)
+    assertEquals("/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", detailMovieResponse.posterPath)
+  }
+
+  @Test
+  fun detailMovieResponse_others_setsPropertiesCorrectly() {
+    assertTrue(detailMovieResponse.video == false)
     assertEquals(
       """
         A listless Wade Wilson toils away in civilian life with his days as the morally flexible 
@@ -38,24 +75,7 @@ class DetailMovieResponseTest {
       """.trimIndent(),
       detailMovieResponse.overview
     )
-    assertEquals("Deadpool & Wolverine", detailMovieResponse.originalTitle)
-    assertEquals(128, detailMovieResponse.runtime)
-    assertEquals("/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", detailMovieResponse.posterPath)
-    assertEquals("English", detailMovieResponse.listSpokenLanguagesItemResponse?.get(0)?.name)
-    assertEquals(
-      "Marvel Studios",
-      detailMovieResponse.listProductionCompaniesItemResponse?.get(0)?.name
-    )
-    assertEquals("2024-07-24", detailMovieResponse.releaseDate)
-    assertEquals(7.7, detailMovieResponse.voteAverage)
-    assertEquals("Deadpool Collection", detailMovieResponse.belongsToCollectionResponse?.name)
     assertEquals("Come together.", detailMovieResponse.tagline)
-    assertEquals(false, detailMovieResponse.adult)
-    assertEquals(
-      "https://www.marvel.com/movies/deadpool-and-wolverine",
-      detailMovieResponse.homepage
-    )
-    assertEquals("Released", detailMovieResponse.status)
   }
 
   @Test

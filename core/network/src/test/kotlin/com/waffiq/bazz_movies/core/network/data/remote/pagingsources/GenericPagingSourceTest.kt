@@ -27,7 +27,7 @@ class GenericPagingSourceTest {
   private val apiCallMock: suspend (Int) -> List<ResultItemResponse> = mockk()
 
   @Test
-  fun load_ReturnsPage_OnSuccessfulApiCall() = runTest {
+  fun loadInitialPage_whenApiCallSucceeds_returnCorrectPage() = runTest {
     val resultItems = listOf(ResultItemResponse("item1"), ResultItemResponse("item2"))
     testLoadReturnsPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
@@ -42,7 +42,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsError_OnIOException() = runTest {
+  fun loadPage_whenIOExceptionOccurs_returnError() = runTest {
     testLoadReturnsErrorOnException(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = {
@@ -54,7 +54,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsError_OnHttpException() = runTest {
+  fun loadPage_whenHttpExceptionOccurs_returnErrorWithMessage() = runTest {
     testLoadReturnsErrorOnHttpException(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = {
@@ -67,7 +67,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsNullData_OnNullResponseData() = runTest {
+  fun loadPage_whenResponseDataIsNull_returnNullFields() = runTest {
     coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns listOf(ResultItemResponse())
     val pagingSource = GenericPagingSource(apiCallMock)
 
@@ -81,7 +81,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsPage_WithNonNullPrevKey_OnSubsequentPage() = runTest {
+  fun loadSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
@@ -94,7 +94,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun load_ReturnsPage_WithNullNextKey_OnEmptyResponse() = runTest {
+  fun loadEmptyResponse_returnPageWithNullNextKey() = runTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
@@ -105,7 +105,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsCorrectKey_AnchorInMiddlePage() {
+  fun getRefreshKey_whenAnchorInMiddlePage_returnCorrectKey() {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(
@@ -120,7 +120,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_UsesPrevKey_WhenAnchorPageHasEveryKey() {
+  fun getRefreshKey_whenBothKeysPresent_shouldUsePrevKeyPlusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(ResultItemResponse("item1")),
@@ -132,7 +132,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_UsesNextKey_WhenPrefKeyIsNull() {
+  fun getRefreshKey_whenPrevKeyIsNull_shouldUseNextKeyMinusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(ResultItemResponse("item1")),
@@ -144,7 +144,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenAllKeysAreNull() {
+  fun getRefreshKey_whenAllKeysAreNull_returnNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(ResultItemResponse("item1"))
@@ -152,7 +152,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenNoAnchorPositionAndEmptyPages() {
+  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnNull() {
     testRefreshKeyEmptyList(
       pagingSource = GenericPagingSource(apiCallMock),
       anchorPosition = null
@@ -160,7 +160,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_ReturnsNull_WhenAnchorIsZeroAndEmptyPages() {
+  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnNull() {
     testRefreshKeyEmptyList(
       pagingSource = GenericPagingSource(apiCallMock),
       anchorPosition = 0

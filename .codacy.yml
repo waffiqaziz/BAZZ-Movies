@@ -10,3 +10,5 @@ engines:
       - '**/*Adapter.kt'
       - '**/build.gradle.kts'      
       - '**/I*Repository.kt'
+      - '**/*PagingSource.kt'
+      - '**/SafeApiCallHelperTest.kt'

@@ -1,8 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
+import com.waffiq.bazz_movies.core.network.testutils.BaseMovieDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.combinedCreditResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIDPersonResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.imagePersonResponseDump
@@ -15,54 +14,21 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import io.mockk.MockKAnnotations
-import io.mockk.clearMocks
-import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
 
-class MovieDataSourcePersonTest {
+class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
 
   private val backendErrorResponse: Response<PostResponse> = Response.error(
     502,
     """{"status_code": 502, "status_message": "Couldn't connect to the backend server."}"""
       .toResponseBody("application/json".toMediaTypeOrNull())
   )
-
-  @MockK
-  private lateinit var tmdbApiService: TMDBApiService
-
-  @MockK
-  private lateinit var omDbApiService: OMDbApiService
-
-  @MockK
-  private lateinit var testDispatcher: Dispatchers
-
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule()
-
-  private lateinit var movieDataSource: MovieDataSource
-
-  @Before
-  fun setup() {
-    // Initialize MockK annotations and relax mocking behavior
-    // `relaxed = true` allows MockK to automatically provide default behavior for any unmocked method calls.
-    MockKAnnotations.init(this, relaxed = true)
-
-    // clear any previous mocks to ensure tests are isolated
-    clearMocks(tmdbApiService, omDbApiService)
-
-    movieDataSource = MovieDataSource(tmdbApiService, omDbApiService, testDispatcher.IO)
-  }
 
   @Test
   fun getDetailPerson_ReturnExpectedResponse() = runTest {
