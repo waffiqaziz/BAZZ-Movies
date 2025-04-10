@@ -79,7 +79,7 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: manual
 
-      # Custom build steps instead of autobuild
+      # Custom build steps instead of auto-build
       - name: Build with Gradle
         run: |
           ./gradlew clean
