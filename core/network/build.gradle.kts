@@ -13,8 +13,9 @@ android {
   buildFeatures.buildConfig = true
 
   defaultConfig {
+    val localPropertiesFile = File(project.rootDir, "local.properties")
     val properties = Properties().apply {
-      load(project.rootProject.file("local.properties").inputStream())
+      localPropertiesFile.inputStream().use { load(it) }
     }
 
     // API KEY
