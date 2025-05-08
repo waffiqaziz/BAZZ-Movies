@@ -45,16 +45,16 @@ viewpager2 = "1.1.0"
 kotlinxCoroutines = "1.10.1"
 
 # Lifecycle Libraries
-lifecycle = "2.8.7"
+lifecycle = "2.9.0"
 
 # Datastore
-datastore = "1.1.2"
+datastore = "1.1.4"
 
 # Room Libraries
-room = "2.6.1"
+room = "2.7.1"
 
 # Paging3
-paging = "3.3.5"
+paging = "3.3.6"
 
 # UI components
 material = "1.12.0"
