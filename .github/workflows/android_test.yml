@@ -141,6 +141,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+
       - name: Run debug unit tests
         run: ./gradlew testDebugUnitTest
 
@@ -170,3 +171,23 @@ jobs:
         uses: codecov/test-results-action@f2dba722c67b86c6caa034178c6e4d35335f6706
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarqube-scan-action@aa494459d7c39c106cc77b166de8b4250a32bb97
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+        with:
+          args: >
+            -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
+            -Dsonar.organization=waffiqaziz
+            -Dsonar.coverage.jacoco.xmlReportPaths=/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+            -Dsonar.java.binaries=${{ github.workspace }}/**/build/intermediates/javac/debug/classes
+            -Dsonar.kotlin.binaries=${{ github.workspace }}/**/build/tmp/kotlin-classes/debug
+
