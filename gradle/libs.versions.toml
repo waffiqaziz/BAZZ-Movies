@@ -25,7 +25,7 @@ playIntegrity = "1.4.0"
 
 # Development Tools
 leakcanary = "2.14"
-detekt = "1.23.7"
+detekt = "1.23.8"
 dependencyGuard = "0.5.0"
 
 # AndroidX Libraries
