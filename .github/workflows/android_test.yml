@@ -167,6 +167,6 @@ jobs:
       # v1.1.0
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@f2dba722c67b86c6caa034178c6e4d35335f6706
+        uses: codecov/test-results-action@7024b0ed56bb02ec9dd191175a599a93803f0474
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
