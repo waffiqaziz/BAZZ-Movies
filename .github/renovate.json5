@@ -122,7 +122,7 @@
     },
     {
       groupName: "GitHub Actions - Code Coverage",
-      "matchPackagePatterns": [
+      matchPackagePatterns: [
         "^codecov/codecov-action$",
         "^codecov/test-results-action$",
         "^codacy/codacy-coverage-reporter-action$"
