@@ -156,7 +156,7 @@
         "com.google.devtools.ksp",
         "androidx.room",
       ],
-      automerge: true,
+      automerge: false,
     },
   ],
   ignoreDeps: [],
