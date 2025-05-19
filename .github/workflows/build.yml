@@ -46,4 +46,4 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleRelease --stacktrace
