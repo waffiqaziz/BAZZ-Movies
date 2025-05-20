@@ -31,7 +31,7 @@
   src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
   alt="Build Status"
-  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/debug_build.yml/badge.svg"></a>
+  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg"></a>
  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml"><img
   alt="Testing Status"
   src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg">
