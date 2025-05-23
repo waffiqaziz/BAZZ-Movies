@@ -88,7 +88,7 @@ turbine = "1.2.0"
 glide = "4.16.0"
 
 # Third-party Libraries
-expandableTextView = "1.0.4"
+expandableTextView = "1.0.7"
 cpa = "0.1.2"
 shimmer = "0.5.0"
 moduleGraph = "2.8.0"
@@ -185,7 +185,7 @@ firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 
 # Third-party Libraries
 country-picker-android = { group = "com.github.waffiqaziz", name = "country-picker-android", version.ref = "cpa" }
-expandable-textview = { group = "io.github.glailton.expandabletextview", name = "expandabletextview", version.ref = "expandableTextView" }
+expandable-textview = { group = "io.github.glailton", name = "expandabletextview", version.ref = "expandableTextView" }
 facebook-shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 # Hilt-dagger
