@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.feature.person.utils.helper
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.widget.ImageView
 import androidx.annotation.VisibleForTesting
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
@@ -84,12 +84,12 @@ object PersonPageHelper {
   fun Context.setupSocialLink(
     socialId: String?,
     imageView: ImageView,
-    baseUrl: String
+    baseUrl: String,
   ) {
     if (!socialId.isNullOrEmpty()) {
       imageView.isVisible = true
       imageView.setOnClickListener {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(baseUrl + socialId)))
+        startActivity(Intent(Intent.ACTION_VIEW, (baseUrl + socialId).toUri()))
       }
     } else {
       imageView.isVisible = false
