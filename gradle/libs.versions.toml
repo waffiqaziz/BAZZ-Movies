@@ -65,7 +65,7 @@ moshi = "1.15.2"
 okhttp = "4.12.0"
 
 # Java Compatibility
-desugarJdkLibs = "2.1.4"
+desugarJdkLibs = "2.1.5"
 
 # Testing Libraries
 androidxJunit = "1.2.1"
