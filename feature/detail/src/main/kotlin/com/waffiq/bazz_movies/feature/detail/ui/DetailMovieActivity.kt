@@ -4,8 +4,6 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +17,8 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -94,8 +94,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.text.isBlank
-import kotlin.text.isEmpty
 
 @Suppress("TooManyFunctions")
 @AndroidEntryPoint
@@ -510,7 +508,7 @@ class DetailMovieActivity : AppCompatActivity() {
       try {
         startActivity(
           Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("$YOUTUBE_LINK_VIDEO$link")
+            data = "$YOUTUBE_LINK_VIDEO$link".toUri()
           }
         )
       } catch (e: ActivityNotFoundException) {
@@ -648,7 +646,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(dialogView)
-    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
     val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
     val rateNow = binding.tvScoreYourScore.text.toString()

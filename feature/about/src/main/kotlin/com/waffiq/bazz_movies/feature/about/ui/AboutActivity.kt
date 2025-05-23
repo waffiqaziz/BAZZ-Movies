@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.feature.about.databinding.ActivityAboutBinding
+import androidx.core.net.toUri
 
 class AboutActivity : AppCompatActivity() {
 
@@ -22,11 +23,11 @@ class AboutActivity : AppCompatActivity() {
 
     // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_MAIN)))
+      startActivity(Intent(Intent.ACTION_VIEW, TMDB_LINK_MAIN.toUri()))
     }
 
     binding.btnAboutUs.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(BAZZ_MOVIES_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, BAZZ_MOVIES_LINK.toUri()))
     }
 
     justifyTextView(binding.tvTmdbAttribute)

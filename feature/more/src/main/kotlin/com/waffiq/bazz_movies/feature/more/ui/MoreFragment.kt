@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -91,7 +91,7 @@ class MoreFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentMoreBinding.inflate(inflater, container, false)
     return binding.root
@@ -145,16 +145,16 @@ class MoreFragment : Fragment() {
 
   private fun btnAction() {
     binding.btnFaq.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FAQ_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, FAQ_LINK.toUri()))
     }
     binding.tvPrivacyPolicy.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_LINK.toUri()))
     }
     binding.tvTermsConditon.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TERMS_CONDITIONS_LINK)))
+      startActivity(Intent(Intent.ACTION_VIEW, TERMS_CONDITIONS_LINK.toUri()))
     }
     binding.btnSuggestion.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FORM_HELPER)))
+      startActivity(Intent(Intent.ACTION_VIEW, FORM_HELPER.toUri()))
     }
     binding.btnAboutUs.setOnClickListener {
       navigator.openAboutActivity(requireContext())

@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.feature.person.ui
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +14,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
@@ -179,23 +179,20 @@ class PersonActivity : AppCompatActivity() {
     personViewModel.detailPerson.observe(this) { detailPerson ->
       binding.tvBiography.text =
         detailPerson.biography?.takeIf { it.isNotBlank() } ?: getString(no_biography)
+      binding.tvBiography.performClick()
       showBirthdate(detailPerson)
 
       if (!detailPerson.homepage.isNullOrEmpty()) {
         binding.ivLink.isVisible = true
         binding.divider1.isVisible = true
         binding.ivLink.setOnClickListener { _ ->
-          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(detailPerson.homepage)))
+          startActivity(Intent(Intent.ACTION_VIEW, detailPerson.homepage.toUri()))
         }
       } else {
         binding.ivLink.isGone = true
         binding.divider1.isGone = true
       }
     }
-
-    handler.postDelayed({
-      binding.tvBiography.performClick() // set automatic click
-    }, DELAY_CLICK_TIME)
   }
 
   private fun showSocialMediaPerson() {
@@ -226,7 +223,7 @@ class PersonActivity : AppCompatActivity() {
         WindowManager.LayoutParams.MATCH_PARENT,
         WindowManager.LayoutParams.WRAP_CONTENT
       )
-      window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // set background transparent
+      window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable()) // set background transparent
 
       val viewPager: ViewPager2 = findViewById(view_pager_dialog)
       viewPager.adapter = ImagePagerAdapter(imageUrls)
@@ -288,6 +285,5 @@ class PersonActivity : AppCompatActivity() {
   companion object {
     const val DIALOG_ALPHA = 0.8f
     const val EXTRA_PERSON = "EXTRA_PERSON"
-    const val DELAY_CLICK_TIME = 800L
   }
 }

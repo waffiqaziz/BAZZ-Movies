@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.login.ui
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -16,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -81,11 +81,11 @@ class LoginActivity : AppCompatActivity() {
 
   private fun openTMDB() {
     binding.tvJoinTMDB.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_SIGNUP)))
+      startActivity(Intent(Intent.ACTION_VIEW, TMDB_LINK_SIGNUP.toUri()))
     }
 
     binding.btnForgetPassword.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(TMDB_LINK_FORGET_PASSWORD)))
+      startActivity(Intent(Intent.ACTION_VIEW, TMDB_LINK_FORGET_PASSWORD.toUri()))
     }
   }
 
