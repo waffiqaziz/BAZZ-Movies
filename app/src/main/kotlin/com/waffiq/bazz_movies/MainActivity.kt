@@ -14,9 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search
 import com.waffiq.bazz_movies.databinding.ActivityMainBinding
-import com.waffiq.bazz_movies.feature.search.ui.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,7 +31,11 @@ class MainActivity : AppCompatActivity() {
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    // handle behavior Android 15 changes
+    setupWindowInsets()
+    setupNavigation()
+  }
+
+  private fun setupWindowInsets() {
     ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
       val insets = windowInsets.getInsets(
         WindowInsetsCompat.Type.systemBars()
@@ -47,23 +49,20 @@ class MainActivity : AppCompatActivity() {
       }
       WindowInsetsCompat.CONSUMED
     }
+  }
 
-    // Get NavHostFragment
+  private fun setupNavigation() {
+    // get NavHostFragment
     val navHostFragment =
       supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) as NavHostFragment
 
-    // Setup the BottomNavigationView with NavController
+    // setup the BottomNavigationView with NavController
     binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
 
-    // Expand SearchView on FragmentSearch when navigation search clicked twice
+    // handle search button
     binding.bottomNavigation.setOnItemReselectedListener { menuItem ->
       if (menuItem.itemId == navigation_search) {
-        val searchFragment = navHostFragment.childFragmentManager.fragments
-          .firstOrNull { it is SearchFragment } as? SearchFragment
-
-        searchFragment?.let { fragment ->
-          WeakReference(fragment).get()?.openSearchView()
-        }
+        supportFragmentManager.setFragmentResult("open_search_view", Bundle.EMPTY)
       }
     }
   }
