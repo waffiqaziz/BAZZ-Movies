@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.search.ui
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -23,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withStarted
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
@@ -71,7 +73,7 @@ class SearchFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentSearchBinding.inflate(inflater, container, false)
     return binding.root
@@ -98,6 +100,15 @@ class SearchFragment : Fragment() {
 
     adapterLoadStateListener()
     setupSearchView()
+
+    // set up fragment result listener
+    requireActivity().supportFragmentManager.setFragmentResultListener(
+      "open_search_view",
+      viewLifecycleOwner
+    ) { _, _ ->
+      openSearchView()
+    }
+
     collectAndSubmitData(this, { searchViewModel.searchResults }, searchAdapter)
   }
 
@@ -238,9 +249,21 @@ class SearchFragment : Fragment() {
 
   // trigger via bottom navigation
   fun openSearchView() {
-    (requireActivity() as AppCompatActivity).supportActionBar?.show()
-    binding.appBarLayout.setExpanded(true)
-    searchViewModel.setExpandSearchView(true)
+    // if fragment is not in valid state
+    val activity = activity as? AppCompatActivity ?: return
+    if (!isAdded || isDetached || view == null) return
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.withStarted {
+        try {
+          activity.supportActionBar?.show()
+          binding.appBarLayout.setExpanded(true, true)
+          searchViewModel.setExpandSearchView(true)
+        } catch (e: Exception) {
+          Log.w("SearchFragment", "Failed to open search view. ", e)
+        }
+      }
+    }
   }
 
   override fun onConfigurationChanged(newConfig: Configuration) {
