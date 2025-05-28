@@ -6,8 +6,8 @@ minSdk = "23"
 ndkVersion = "27.2.12479018"
 
 # App Version
-versionCode = "17"
-versionName = "1.2.1-rc.1"
+versionCode = "19"
+versionName = "1.2.2-rc.1"
 
 # Plugin Versions
 agp = "8.10.0"
@@ -226,7 +226,7 @@ room = { id = "androidx.room", version.ref = "room" }
 # Others
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
-module-graph = { id = "com.jraska.module.graph.assertion", version = "moduleGraph" }
+module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraph" }
 
 # Custom Plugins
 bazzmovies-android-application = { id = "bazzmovies.android.application" }
