@@ -25,14 +25,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_search
-import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
@@ -43,6 +46,8 @@ import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -63,6 +68,7 @@ class SearchFragment : Fragment() {
   private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var lastQuery: String? = null
+  private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -190,60 +196,73 @@ class SearchFragment : Fragment() {
   }
 
   private fun adapterLoadStateListener() {
+    var lastRefreshErrorMessage: String? = null
+
     lifecycleScope.launch {
-      searchAdapter.loadStateFlow.collect { loadState ->
-        when (loadState.source.refresh) {
-          is LoadState.Loading -> {
-            // Data is loading; keep showing the containerSearch
-            binding.illustrationSearchView.root.isVisible = false
-            binding.illustrationError.root.isVisible = false
-            binding.illustrationSearchNoResultView.root.isVisible = false
-            binding.rvSearch.isVisible = true
-          }
+      searchAdapter.loadStateFlow
+        .debounce(DEBOUNCE_SHORT)
+        .collectLatest { loadState ->
+          val currentRefresh = loadState.source.refresh
+          val errorMessage = (currentRefresh as? LoadState.Error)?.error?.message
+          val isNewError =
+            currentRefresh is LoadState.Error && errorMessage != lastRefreshErrorMessage
 
-          is LoadState.NotLoading -> {
-            binding.illustrationError.root.isVisible = false
-            binding.illustrationError.btnTryAgain.isVisible = false
-            if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
-              // No results found; displaying empty view instead.
-              binding.rvSearch.isVisible = false
-              binding.illustrationSearchNoResultView.root.isVisible = true
-              binding.illustrationSearchView.root.isVisible = false
-            } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
-              // No search operation; show illustration search
-              binding.rvSearch.isVisible = false
-              binding.illustrationSearchView.root.isVisible = true
-              binding.illustrationSearchNoResultView.root.isVisible = false
-            } else {
-              showActualData()
-              binding.rvSearch.isVisible = true
-              binding.illustrationSearchView.root.isVisible = false
-              binding.illustrationSearchNoResultView.root.isVisible = false
-            }
-          }
-
-          is LoadState.Error -> {
-            // Error occurred; handle error state
-            lastQuery = null
-            showActualData()
-            if (searchAdapter.itemCount < 1) {
-              binding.illustrationError.root.isVisible = true
-              binding.rvSearch.isVisible = false
-            } else {
-              binding.illustrationError.root.isVisible = false
-              binding.rvSearch.isVisible = true
-            }
-            binding.illustrationSearchView.root.isVisible = false
-            binding.illustrationError.progressCircular.isVisible = false
-            binding.illustrationError.btnTryAgain.isVisible = true
-
-            // show snackbar
-            pagingErrorState(loadState)?.let {
-              snackbar.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
-            }
+          if (currentRefresh !is LoadState.Error || isNewError) {
+            lastRefreshErrorMessage = errorMessage
+            handleRefreshState(loadState, currentRefresh)
           }
         }
-      }
+    }
+  }
+
+  private fun handleRefreshState(loadState: CombinedLoadStates, refreshState: LoadState) {
+    when (refreshState) {
+      is LoadState.Loading -> showLoadingState()
+      is LoadState.NotLoading -> showNotLoadingState(loadState)
+      is LoadState.Error -> showErrorState(loadState)
+    }
+  }
+
+  private fun showLoadingState() {
+    binding.illustrationSearchView.root.isVisible = false
+    binding.illustrationError.root.isVisible = false
+    binding.illustrationSearchNoResultView.root.isVisible = false
+    binding.rvSearch.isVisible = true
+  }
+
+  private fun showNotLoadingState(loadState: CombinedLoadStates) {
+    binding.illustrationError.root.isVisible = false
+    binding.illustrationError.btnTryAgain.isVisible = false
+
+    if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+      binding.rvSearch.isVisible = false
+      binding.illustrationSearchNoResultView.root.isVisible = true
+      binding.illustrationSearchView.root.isVisible = false
+    } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+      binding.rvSearch.isVisible = false
+      binding.illustrationSearchView.root.isVisible = true
+      binding.illustrationSearchNoResultView.root.isVisible = false
+    } else {
+      showActualData()
+      binding.rvSearch.isVisible = true
+      binding.illustrationSearchView.root.isVisible = false
+      binding.illustrationSearchNoResultView.root.isVisible = false
+    }
+  }
+
+  private fun showErrorState(loadState: CombinedLoadStates) {
+    lastQuery = null
+    showActualData()
+
+    val hasNoItems = searchAdapter.itemCount < 1
+    binding.illustrationError.root.isVisible = hasNoItems
+    binding.rvSearch.isVisible = !hasNoItems
+    binding.illustrationSearchView.root.isVisible = false
+    binding.illustrationError.progressCircular.isVisible = false
+    binding.illustrationError.btnTryAgain.isVisible = true
+
+    pagingErrorState(loadState)?.let {
+      mSnackbar = snackbar.showSnackbarWarning(Event(pagingErrorHandling(it.error)))
     }
   }
 
@@ -273,6 +292,12 @@ class SearchFragment : Fragment() {
     }
   }
 
+  override fun onPause() {
+    super.onPause()
+    mSnackbar?.dismiss()
+    mSnackbar = null
+  }
+
   override fun onResume() {
     super.onResume()
     searchAdapter.refresh()
@@ -282,6 +307,7 @@ class SearchFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    mSnackbar = null
     searchViewModel.setExpandSearchView(false) // reset expand search view
     lastQuery = null
     _binding = null
