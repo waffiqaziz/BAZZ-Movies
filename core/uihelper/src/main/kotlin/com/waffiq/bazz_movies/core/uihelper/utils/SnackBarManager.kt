@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -8,6 +9,8 @@ import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 
 /**
  * Utility object responsible for displaying Toast and Snackbar messages.
@@ -44,24 +47,26 @@ object SnackBarManager {
    * The Snackbar can optionally be anchored to a specific view (guideView).
    *
    * @param view The [View] to find the parent layout for the Snackbar.
-   * @param guideView The optional [View] to anchor the Snackbar to (like a guide or button).
    * @param eventMessage The [Event] containing the message to be shown in the Snackbar.
+   * @param anchorView The optional [View] to anchor the Snackbar to (like a guide or button).
    * @return The displayed [Snackbar], or null if no valid message is available.
    */
   fun snackBarWarning(
     view: View,
-    guideView: View?,
-    eventMessage: Event<String>
+    anchorView: View? = null,
+    eventMessage: Event<String>,
   ): Snackbar? {
-    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
+    return try {
+      val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
+      if (!view.isAttachedToWindow || message == null) return null
 
-    return if (message != null && view.isAttachedToWindow) {
       Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
-        guideView?.let { anchorView = it } // Check if guideView is non-null
-        setBackgroundTint(ContextCompat.getColor(context, red_matte))
+        anchorView?.let { this.anchorView = it }
+        setBackgroundTint(ContextCompat.getColor(view.context, red_matte))
         show()
       }
-    } else {
+    } catch (e: Exception) {
+      Log.e("SnackBarManager", e.toString())
       null
     }
   }
@@ -71,22 +76,25 @@ object SnackBarManager {
    * This method is similar to the one above, but it takes a direct string instead of an event.
    *
    * @param view The [View] to find the parent layout for the Snackbar.
-   * @param guideView The optional [View] to anchor the Snackbar to (like a guide or button).
    * @param message The message to be shown in the Snackbar.
+   * @param anchorView The optional [View] to anchor the Snackbar to (like a guide or button).
    * @return The displayed [Snackbar], or null if the message is invalid.
    */
   fun snackBarWarning(
     view: View,
-    guideView: View?,
-    message: String?
+    anchorView: View? = null,
+    message: String
   ): Snackbar? {
-    return if (!message.isNullOrEmpty() && view.isAttachedToWindow) {
+    return try {
+      if (!view.isAttachedToWindow || message.isEmpty() || message.isBlank()) return null
+
       Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
-        guideView?.let { anchorView = it } // Check if guideView is non-null
-        setBackgroundTint(ContextCompat.getColor(context, red_matte))
+        anchorView?.let { this.anchorView = it }
+        setBackgroundTint(ContextCompat.getColor(view.context, red_matte))
         show()
       }
-    } else {
+    } catch (e: Exception) {
+      Log.e("SnackBarManager", e.toString())
       null
     }
   }

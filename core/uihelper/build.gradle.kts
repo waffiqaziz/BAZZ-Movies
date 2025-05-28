@@ -8,6 +8,7 @@ android.namespace = "com.waffiq.bazz_movies.core.uihelper"
 dependencies {
   api(project(":core:common"))
   implementation(project(":core:designsystem"))
+  implementation(project(":core:utils"))
 
   api(libs.androidx.core.ktx)
   implementation(libs.androidx.paging.runtime)
