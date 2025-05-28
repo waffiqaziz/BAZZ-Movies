@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_popular_series
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_today
-import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel

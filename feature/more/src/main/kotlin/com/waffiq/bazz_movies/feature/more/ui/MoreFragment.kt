@@ -39,7 +39,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.uihelper.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort

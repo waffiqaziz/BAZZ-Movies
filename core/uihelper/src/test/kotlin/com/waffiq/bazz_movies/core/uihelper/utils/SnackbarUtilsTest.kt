@@ -1,14 +1,17 @@
 package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.app.Activity
-import android.content.Context
+import android.content.res.Resources
 import android.os.Looper
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -20,7 +23,6 @@ import org.robolectric.Shadows.shadowOf
 @RunWith(RobolectricTestRunner::class)
 class SnackbarUtilsTest {
 
-  private lateinit var context: Context
   private lateinit var parentView: FrameLayout
   private lateinit var guideView: FrameLayout
   private lateinit var eventMessage: Event<String>
@@ -31,11 +33,10 @@ class SnackbarUtilsTest {
 
     activity.setTheme(Base_Theme_BAZZ_movies)
 
-    context = activity
-    parentView = FrameLayout(context)
+    parentView = FrameLayout(activity)
     activity.setContentView(parentView)
 
-    guideView = FrameLayout(context)
+    guideView = FrameLayout(activity)
     eventMessage = mockk(relaxed = true)
 
     shadowOf(Looper.getMainLooper()).idle()
@@ -59,7 +60,22 @@ class SnackbarUtilsTest {
     val snackbar = snackBarWarning(parentView, guideView, eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(parentView, guideView, null)
+    val snackbar2 = snackBarWarning(parentView, guideView, " ")
     assertNull(snackbar2)
+  }
+
+  @Test
+  fun snackBarWarning_colorResourceMissing_returnsNull() {
+    every { eventMessage.getContentIfNotHandled() } returns "Message"
+    mockkStatic(ContextCompat::class)
+    every { ContextCompat.getColor(any(), any()) } throws Resources.NotFoundException()
+
+    val snackbar2 = snackBarWarning(parentView, guideView, "Test message")
+    assertNull(snackbar2)
+
+    val snackbar = snackBarWarning(parentView, guideView, eventMessage)
+    assertNull(snackbar)
+
+    unmockkStatic(ContextCompat::class)
   }
 }
