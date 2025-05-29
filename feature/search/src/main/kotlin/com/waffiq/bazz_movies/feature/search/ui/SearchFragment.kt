@@ -70,6 +70,8 @@ class SearchFragment : Fragment() {
   private var lastQuery: String? = null
   private var mSnackbar: Snackbar? = null
 
+  private var lastRefreshErrorMessage: String? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     searchAdapter = SearchAdapter(navigator)
@@ -94,6 +96,7 @@ class SearchFragment : Fragment() {
     binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
+      lastRefreshErrorMessage = null
       searchAdapter.refresh()
       binding.illustrationError.btnTryAgain.isVisible = false
       binding.illustrationError.progressCircular.isVisible = true
@@ -196,8 +199,6 @@ class SearchFragment : Fragment() {
   }
 
   private fun adapterLoadStateListener() {
-    var lastRefreshErrorMessage: String? = null
-
     lifecycleScope.launch {
       searchAdapter.loadStateFlow
         .debounce(DEBOUNCE_SHORT)
