@@ -41,16 +41,15 @@
     style="@style/ButtonTryAgain"
     android:layout_gravity="center"
     android:layout_marginTop="4dp"
-    android:text="@string/try_again"
-    android:textColor="@color/gray_1000" />
+    android:text="@string/try_again" />
 
   <ProgressBar
     android:id="@+id/progress_circular"
     style="@style/MyProgressBar"
-    android:visibility="gone"
-    android:layout_marginTop="8dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:visibility="gone"
     app:indicatorColor="@color/yellow" />
 
 </LinearLayout>
