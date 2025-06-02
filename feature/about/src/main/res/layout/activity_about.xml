@@ -16,7 +16,9 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <include layout="@layout/custom_toolbar_scroll_snap" />
+    <include
+      android:id="@+id/toolbar_layout"
+      layout="@layout/custom_toolbar_scroll_snap" />
 
   </com.google.android.material.appbar.AppBarLayout>
   <!-- End of HEADER SECTION -->
@@ -64,24 +66,13 @@
       android:text="@string/about_text" />
 
     <!-- ====== About button ====== -->
-    <Button
+    <com.google.android.material.button.MaterialButton
       android:id="@+id/btn_about_us"
       style="@style/MyTransparentButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="20dp"
       android:text="@string/about_us" />
     <!-- End of BODY SECTION -->
+
   </LinearLayout>
-
-  <!-- ====== Back button ====== -->
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab"
-    style="@style/MyFAB"
-    android:layout_marginEnd="@dimen/default_margin_parent_20"
-    android:layout_marginBottom="32dp"
-    android:contentDescription="@string/submit"
-    app:rippleColor="@color/yellow_alpha_80"
-    app:srcCompat="@drawable/ic_left_icon"
-    app:tint="@color/black" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

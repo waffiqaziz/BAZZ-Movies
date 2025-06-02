@@ -1,14 +1,13 @@
 package com.waffiq.bazz_movies.feature.about.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.feature.about.databinding.ActivityAboutBinding
-import androidx.core.net.toUri
 
 class AboutActivity : AppCompatActivity() {
 
@@ -19,7 +18,9 @@ class AboutActivity : AppCompatActivity() {
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    binding.fab.setOnClickListener { finish() }
+    setSupportActionBar(binding.toolbarLayout.toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
 
     // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
@@ -32,5 +33,10 @@ class AboutActivity : AppCompatActivity() {
 
     justifyTextView(binding.tvTmdbAttribute)
     justifyTextView(binding.tvAboutText)
+  }
+
+  override fun onSupportNavigateUp(): Boolean {
+    finish()
+    return true
   }
 }
