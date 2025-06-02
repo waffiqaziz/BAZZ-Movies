@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 object CreateTableViewHelper {
   fun createTable(
     context: Context,
-    pair: Pair<MutableList<String>, MutableList<String>>,
+    pair: Pair<List<String>, List<String>>,
     table: FrameLayout
   ) {
     val (job, crewName) = pair

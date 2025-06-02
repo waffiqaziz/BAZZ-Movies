@@ -134,7 +134,7 @@ object GenreHelper {
    * @return A comma-separated string of genre names, or null if the list is null.
    */
   fun transformListGenreToJoinString(list: List<GenresItem>?): String? =
-    list?.map { it.name }?.joinToString(separator = ", ")
+    list?.joinToString(separator = ", ") { it.name.toString() }
 
   /**
    * Transforms a list of `GenresItem` objects into a list of genre IDs.

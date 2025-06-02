@@ -7,14 +7,17 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.Video
  * Used for detail fragment
  */
 object DetailMovieTvHelper {
+  private const val SIXTY = 60
+
   private fun convertRuntime(t: Int): String {
-    val hours: Int = t / 60
-    val minutes: Int = t % 60
+    val hours: Int = t / SIXTY
+    val minutes: Int = t % SIXTY
     return "${hours}h ${minutes}m"
   }
 
-  fun detailCrew(crew: List<MovieTvCrewItem>): Pair<MutableList<String>, MutableList<String>> {
-    // key-value pair
+  fun detailCrew(crew: List<MovieTvCrewItem>): Pair<List<String>, List<String>> {
+    // Map of job titles to their display names
+    // Key: actual job title in data, Value: user-friendly display name
     val jobToNamesMap = mapOf(
       "Director" to "Director",
       "Story" to "Story",
@@ -26,25 +29,19 @@ object DetailMovieTvHelper {
       "Novel" to "Novel"
     )
 
-    val job: MutableList<String> = ArrayList()
-    val name: MutableList<String> = ArrayList()
+    // Group crew members by their job title for efficient lookup
+    // This avoids filtering the entire crew list multiple times
+    val crewByJob = crew.groupBy { it.job }
 
-    jobToNamesMap.forEach { (jobTitle, displayName) ->
-      val filteredNames =
-        // Filters the crew list to find members whose job matches the jobTitle in the map.
-        crew.filter { it.job == jobTitle }
-          // Maps the filtered crew members to their name field.
-          .map { it.name }.joinToString()
-
-      // If the list of names isn't empty, the displayName (from the map) is added to the job list,
-      // and the corresponding names are added to the name list.
-      if (filteredNames.isNotEmpty()) {
-        job.add(displayName)
-        name.add(filteredNames)
-      }
-    }
-
-    return job to name
+    // Process each job title and create pairs of (displayName, joinedNames)
+    return jobToNamesMap.mapNotNull { (jobTitle, displayName) ->
+      crewByJob[jobTitle] // Get crew members for this job title
+        ?.takeIf { it.isNotEmpty() } // Only proceed if we have crew members
+        ?.let { members ->
+          // Create pair: display name -> comma-separated crew names
+          displayName to members.joinToString { it.name.orEmpty() }
+        }
+    }.unzip() // Split pairs into two separate lists: [displayNames], [joinedNames]
   }
 
   fun Video.toLink(): String {
