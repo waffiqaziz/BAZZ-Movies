@@ -52,15 +52,17 @@ object AgeRatingHelper {
   private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String =
     if (region != "false") {
       data?.contentRatings?.contentRatingsItem
-        ?.filter { it?.iso31661 == "US" || it?.iso31661 == region } // Filter by US or specific region
-        ?.mapNotNull { contentRatingsItem -> // Map to ratings and exclude empty/null values
+        ?.filter { it?.iso31661 == "US" || it?.iso31661 == region }
+        // Map to ratings, exclude empty/null values and get the first value
+        ?.firstNotNullOfOrNull { contentRatingsItem ->
           contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        }?.firstOrNull() ?: "" // get the first
+        } ?: ""
     } else {
       data?.contentRatings?.contentRatingsItem
-        ?.mapNotNull { contentRatingsItem -> // Map to ratings and exclude empty/null values
+        // Map to ratings, exclude empty/null values and get the first value
+        ?.firstNotNullOfOrNull { contentRatingsItem ->
           contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        }?.firstOrNull() ?: "" // get the first
+        } ?: "" // get the first
     }
   // endregion CALCULATE AGE RATING TV
 }

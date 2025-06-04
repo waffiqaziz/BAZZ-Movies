@@ -5,6 +5,7 @@
   android:id="@+id/activity_login"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/gray_900"
   tools:context=".ui.LoginActivity">
 
   <!-- ========================== -->
@@ -58,7 +59,7 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <!-- Forget password button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_forget_password"
     style="@style/MyTransparentButton"
     android:layout_marginEnd="@dimen/default_margin_parent_20"
@@ -149,7 +150,7 @@
     tools:ignore="DuplicateSpeakableTextCheck" />
 
   <!-- Guest button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_guest"
     style="@style/MyTransparentButton"
     android:text="@string/guest_session"
@@ -159,7 +160,7 @@
   <!-- End of LOGIN FORM SECTION -->
 
   <!-- Create account button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_joinTMDB"
     style="@style/MyTransparentButton"
     android:layout_marginBottom="8dp"

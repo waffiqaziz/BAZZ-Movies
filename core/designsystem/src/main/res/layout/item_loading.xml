@@ -8,15 +8,15 @@
 
   <!-- Error message -->
   <TextView
-    android:fontFamily="@font/nunito_sans_regular"
     android:id="@+id/error_msg"
+    style="@style/TextDivider"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textAlignment="center"
     android:textIsSelectable="true"
     android:textSize="11sp"
-    android:layout_gravity="center"
-    android:textAlignment="center"
-    android:textColor="@color/white"
     tools:text="Timeout" />
 
   <!--  <ProgressBar-->
@@ -30,12 +30,9 @@
   <!--    android:indeterminateTintMode="src_atop" />-->
 
   <!-- Retry button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/retry_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/ButtonTryAgain"
     android:layout_gravity="center"
-    android:textColor="?attr/colorPrimary"
-    android:backgroundTint="?attr/colorAccent"
     android:text="@string/retry" />
 </LinearLayout>

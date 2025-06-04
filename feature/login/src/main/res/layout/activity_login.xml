@@ -34,7 +34,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_forget_password"
     style="@style/MyTransparentButton"
     android:layout_marginEnd="4dp"
@@ -135,7 +135,7 @@
     tools:ignore="DuplicateSpeakableTextCheck" />
 
   <!-- Guest button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_guest"
     style="@style/MyTransparentButton"
     android:layout_marginBottom="15dp"
@@ -146,7 +146,7 @@
   <!-- End of LOGIN FORM SECTION -->
 
   <!-- Create account button -->
-  <Button
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/tv_joinTMDB"
     style="@style/MyTransparentButton"
     android:layout_marginBottom="?attr/actionBarSize"
