@@ -150,7 +150,7 @@ jobs:
       # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
       # v5.4.0
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@15559ed290fa727036809b67ab0f646ffa6c5158
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -167,6 +167,6 @@ jobs:
       # v1.1.0
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@7024b0ed56bb02ec9dd191175a599a93803f0474
+        uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
