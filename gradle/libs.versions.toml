@@ -76,6 +76,8 @@ junitVersion = "4.13.2"
 json = "20250517"
 mockk = "1.13.13"
 mockitoAndroid = "5.2.0"
+mockitoKotlin = "5.2.0"
+mockitoInline = "5.2.0"
 mockitoCore = "5.14.2"
 robolectric = "4.14.1"
 testCore = "1.6.1"
@@ -162,8 +164,8 @@ json = { module = "org.json:json", version.ref = "json" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
-mockito-android-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoAndroid" }
-mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoAndroid" }
+mockito-android-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
