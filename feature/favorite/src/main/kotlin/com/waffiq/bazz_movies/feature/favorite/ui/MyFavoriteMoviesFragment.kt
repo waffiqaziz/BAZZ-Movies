@@ -61,7 +61,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   private val viewModelFav: MyFavoriteViewModel by viewModels()
   private val viewModelDBFav: SharedDBViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
-  private val baseViewModel: BaseViewModel by viewModels()
+  private val baseViewModel: BaseViewModel by viewModels({ requireParentFragment() })
 
   private lateinit var adapterDB: FavoriteAdapterDB
   private lateinit var adapterPaging: FavoriteMovieAdapter
@@ -75,7 +75,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentMyFavoriteMoviesBinding.inflate(inflater, container, false)
     return binding.root
@@ -248,7 +248,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   private fun showSnackBarUserLogin(
     title: String,
     fav: FavoriteModel?,
-    wtc: WatchlistModel?
+    wtc: WatchlistModel?,
   ) {
     val delete = isWantToDelete && fav != null
     val addToWatchlist = !isWantToDelete && wtc != null
