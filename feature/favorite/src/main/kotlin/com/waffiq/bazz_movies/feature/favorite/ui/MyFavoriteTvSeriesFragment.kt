@@ -64,7 +64,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
   private val viewModelFav: MyFavoriteViewModel by viewModels()
   private val viewModelDBFav: SharedDBViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
-  private val baseViewModel: BaseViewModel by viewModels()
+  private val baseViewModel: BaseViewModel by viewModels({ requireParentFragment() })
 
   private var mSnackbar: Snackbar? = null
 
