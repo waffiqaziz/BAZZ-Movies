@@ -10,19 +10,25 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import java.io.File
 
+@RunWith(RobolectricTestRunner::class)
 class UserPreferenceMemTest {
+
+  @get:Rule
+  val dataStoreRule = DataStoreTestRule()
+
   private lateinit var userPreference: UserPreference
-  private lateinit var dataStore: DataStore<Preferences>
 
   @Before
   fun setup() {
-    // use a test-specific in-memory DataStore implementation
-    val testDataStoreFile = File.createTempFile("test_datastore", ".preferences_pb")
-    dataStore = PreferenceDataStoreFactory.create { testDataStoreFile }
-    userPreference = UserPreference(dataStore)
+    userPreference = UserPreference(dataStoreRule.testDataStore)
   }
 
   @Test
@@ -101,5 +107,15 @@ class UserPreferenceMemTest {
     assertFalse(clearedUser.isLogin)
     assertEquals("", clearedUser.gravatarHast)
     assertEquals("", clearedUser.tmdbAvatar)
+  }
+}
+
+class DataStoreTestRule : TestWatcher() {
+  lateinit var testDataStore: DataStore<Preferences>
+    private set
+
+  override fun starting(description: Description) {
+    val testFile = File.createTempFile("test_${description.methodName}_${System.nanoTime()}", ".preferences_pb")
+    testDataStore = PreferenceDataStoreFactory.create { testFile }
   }
 }
