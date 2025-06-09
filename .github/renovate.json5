@@ -126,7 +126,10 @@
         "^codecov/codecov-action$",
         "^codecov/test-results-action$",
         "^codacy/codacy-coverage-reporter-action$"
-      ]
+      ],
+      digest: {
+        enabled: false
+      }
     },
     {
       groupName: "GitHub Actions",
@@ -140,7 +143,10 @@
       excludePackagePatterns: [
         "^codecov/",
         "^codacy/"
-      ]
+      ],
+      digest: {
+        enabled: false
+      }
     },
     {
       matchUpdateTypes: [
