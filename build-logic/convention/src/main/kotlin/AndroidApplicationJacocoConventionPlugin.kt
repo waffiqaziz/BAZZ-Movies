@@ -1,6 +1,7 @@
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.waffiq.bazz_movies.configureJacoco
+import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -15,6 +16,10 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
       androidExtension.buildTypes.configureEach {
         enableAndroidTestCoverage = true
         enableUnitTestCoverage = true
+      }
+
+      androidExtension.testCoverage {
+        jacocoVersion = libs.findVersion("jacoco").get().toString()
       }
 
       configureJacoco(extensions.getByType<ApplicationAndroidComponentsExtension>())
