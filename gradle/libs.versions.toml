@@ -84,7 +84,7 @@ testCore = "1.6.1"
 testRules = "1.6.1"
 testRunner = "1.6.2"
 truth = "1.4.4"
-turbine = "1.2.0"
+turbine = "1.2.1"
 
 # Image Loading
 glide = "4.16.0"
