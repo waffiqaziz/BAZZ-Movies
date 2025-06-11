@@ -117,6 +117,7 @@
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>
+  <string name="r_tomatoes">R. Tomatoes</string>
   <string name="tmdb_full">The Movie Database</string>
   <string name="status_">Status : %1$s</string>
 

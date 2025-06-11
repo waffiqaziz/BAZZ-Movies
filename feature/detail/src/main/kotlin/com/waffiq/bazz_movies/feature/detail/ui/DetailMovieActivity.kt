@@ -559,6 +559,7 @@ class DetailMovieActivity : AppCompatActivity() {
       imdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreImdb.text.toString()) }
       tmdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreTmdb.text.toString()) }
       metascoreViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreMetascore.text.toString()) }
+      rottenTomatoesViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreMetascore.text.toString()) }
     }
   }
 
@@ -595,6 +596,9 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.apply {
       tvScoreImdb.text = data.imdbRating?.takeIf { it.isNotBlank() } ?: getString(not_available)
       tvScoreMetascore.text = data.metascore?.takeIf { it.isNotBlank() } ?: getString(not_available)
+      tvScoreRottenTomatoes.text = data.ratings
+        ?.firstOrNull { it.source == "Rotten Tomatoes" }
+        ?.value ?: getString(not_available)
     }
   }
 
