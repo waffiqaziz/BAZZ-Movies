@@ -252,6 +252,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/margin_detail_info"
+          android:importantForAccessibility="no"
           android:text="@string/_divider"
           android:textColor="@color/gray_400"
           app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
@@ -263,6 +264,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/margin_detail_info"
+          android:importantForAccessibility="no"
           android:text="@string/_divider"
           android:textColor="@color/gray_400"
           app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
@@ -322,134 +324,167 @@
         <!--        SCORE SECTION       -->
         <!-- ========================== -->
 
-        <!-- IMDB -->
-        <LinearLayout
-          android:id="@+id/imdb_viewGroup"
-          android:layout_width="wrap_content"
+        <HorizontalScrollView
+          android:id="@+id/score_scrollview"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="14dp"
-          android:background="?attr/selectableItemBackgroundBorderless"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:orientation="vertical"
-          android:paddingBottom="10dp"
-          app:layout_constraintEnd_toStartOf="@+id/metascore_viewGroup"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toStartOf="parent"
+          android:scrollbars="none"
           app:layout_constraintTop_toBottomOf="@+id/iv_poster">
 
-          <TextView
-            android:id="@+id/tv_score_imdb"
-            style="@style/TextScore"
+          <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/not_available"
-            tools:text="8.5" />
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
-          <TextView
-            style="@style/TextScoreHeader"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/imdb" />
-        </LinearLayout>
+            <!-- IMDB -->
+            <LinearLayout
+              android:id="@+id/imdb_viewGroup"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="16dp"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:minWidth="48dp"
+              android:minHeight="48dp"
+              android:orientation="vertical"
+              android:paddingBottom="10dp">
 
-        <!-- METASCORE -->
-        <LinearLayout
-          android:id="@+id/metascore_viewGroup"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="?attr/selectableItemBackgroundBorderless"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:orientation="vertical"
-          android:paddingBottom="10dp"
-          app:layout_constraintEnd_toStartOf="@+id/tmdb_viewGroup"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toEndOf="@+id/imdb_viewGroup"
-          app:layout_constraintTop_toTopOf="@+id/imdb_viewGroup">
+              <TextView
+                android:id="@+id/tv_score_imdb"
+                style="@style/TextScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/not_available"
+                tools:text="8.5" />
 
-          <TextView
-            android:id="@+id/tv_score_metascore"
-            style="@style/TextScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/not_available"
-            app:layout_constraintEnd_toEndOf="@+id/tv_metascore"
-            app:layout_constraintStart_toStartOf="@+id/tv_metascore"
-            app:layout_constraintTop_toBottomOf="@+id/score_container"
-            tools:text="8.5" />
+              <TextView
+                style="@style/TextScoreHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/imdb" />
+            </LinearLayout>
 
-          <TextView
-            style="@style/TextScoreHeader"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/metascore"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toEndOf="@+id/tv_imdb"
-            app:layout_constraintTop_toBottomOf="@+id/tv_score_metascore" />
-        </LinearLayout>
+            <!-- METASCORE -->
+            <LinearLayout
+              android:id="@+id/metascore_viewGroup"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="16dp"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:minWidth="60dp"
+              android:minHeight="48dp"
+              android:orientation="vertical"
+              android:paddingBottom="10dp">
 
-        <!-- TMDB -->
-        <LinearLayout
-          android:id="@+id/tmdb_viewGroup"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="?attr/selectableItemBackgroundBorderless"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:orientation="vertical"
-          android:paddingBottom="10dp"
-          app:layout_constraintEnd_toStartOf="@+id/your_score_viewGroup"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toEndOf="@+id/metascore_viewGroup"
-          app:layout_constraintTop_toTopOf="@+id/metascore_viewGroup">
+              <TextView
+                android:id="@+id/tv_score_metascore"
+                style="@style/TextScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/not_available"
+                tools:text="8.5" />
 
-          <TextView
-            android:id="@+id/tv_score_tmdb"
-            style="@style/TextScore"
-            android:layout_gravity="center"
-            android:text="@string/not_available"
-            tools:text="8.5" />
+              <TextView
+                style="@style/TextScoreHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/metascore" />
+            </LinearLayout>
 
-          <TextView
-            style="@style/TextScoreHeader"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/tmdb" />
-        </LinearLayout>
+            <!-- ROTTEN TOMATOES -->
+            <LinearLayout
+              android:id="@+id/rotten_tomatoes_viewGroup"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="16dp"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:minWidth="60dp"
+              android:minHeight="48dp"
+              android:orientation="vertical"
+              android:paddingBottom="10dp">
 
-        <!-- USER SCORE -->
-        <LinearLayout
-          android:id="@+id/your_score_viewGroup"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="?attr/selectableItemBackgroundBorderless"
-          android:contentDescription="@string/rating"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
-          android:orientation="vertical"
-          android:paddingBottom="10dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toEndOf="@+id/tmdb_viewGroup"
-          app:layout_constraintTop_toTopOf="@+id/tmdb_viewGroup">
+              <TextView
+                android:id="@+id/tv_score_rotten_tomatoes"
+                style="@style/TextScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/not_available"
+                tools:text="85%" />
 
-          <TextView
-            android:id="@+id/tv_score_your_score"
-            style="@style/TextBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/not_available"
-            tools:text="8.5" />
+              <TextView
+                style="@style/TextScoreHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/r_tomatoes" />
+            </LinearLayout>
 
-          <TextView
-            style="@style/TextScoreHeader"
-            android:layout_height="wrap_content"
-            android:text="@string/your_score" />
-        </LinearLayout>
+            <!-- TMDB -->
+            <LinearLayout
+              android:id="@+id/tmdb_viewGroup"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="16dp"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:minWidth="48dp"
+              android:minHeight="48dp"
+              android:orientation="vertical"
+              android:paddingBottom="10dp">
+
+              <TextView
+                android:id="@+id/tv_score_tmdb"
+                style="@style/TextScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/not_available"
+                tools:text="8.5" />
+
+              <TextView
+                style="@style/TextScoreHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/tmdb" />
+            </LinearLayout>
+
+            <!-- USER SCORE -->
+            <LinearLayout
+              android:id="@+id/your_score_viewGroup"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="?attr/selectableItemBackgroundBorderless"
+              android:contentDescription="@string/rating"
+              android:minWidth="60dp"
+              android:minHeight="48dp"
+              android:orientation="vertical"
+              android:paddingBottom="10dp">
+
+              <TextView
+                android:id="@+id/tv_score_your_score"
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/not_available"
+                tools:text="8.5" />
+
+              <TextView
+                style="@style/TextScoreHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/your_score" />
+            </LinearLayout>
+
+          </LinearLayout>
+        </HorizontalScrollView>
         <!-- End of SCORE SECTION -->
 
         <com.google.android.material.divider.MaterialDivider
@@ -461,7 +496,7 @@
           app:dividerColor="@color/yellow_alpha_80"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/imdb_viewGroup" />
+          app:layout_constraintTop_toBottomOf="@+id/score_scrollview" />
 
         <!-- ========================== -->
         <!--    DETAIL LOWER SECTION    -->

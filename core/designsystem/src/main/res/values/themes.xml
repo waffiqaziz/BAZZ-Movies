@@ -208,16 +208,16 @@
   <style name="TextScore">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
     <item name="android:textColor">@color/gray_100</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
   <style name="TextScoreHeader">
     <item name="android:layout_marginTop">4dp</item>
-    <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
-    <item name="android:textColor">?attr/colorOnPrimary</item>
-    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+    <item name="android:textColor">@color/gray_400</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
     <item name="android:gravity">center</item>
     <item name="android:layout_width">wrap_content</item>
   </style>
