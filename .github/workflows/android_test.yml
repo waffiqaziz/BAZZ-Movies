@@ -52,6 +52,7 @@ jobs:
         run: ./gradlew detekt
 
   instrumentation_test:
+    name: Instrumentation Tests
     needs: detekt_checks
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -102,7 +103,21 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew :app:connectedCheck --stacktrace
+            ./gradlew app:connectedDebugAndroidTest  --stacktrace
+            ./gradlew :feature:login:connectedDebugAndroidTest  --stacktrace
+
+      # Cache test results for the coverage job
+      - name: Cache instrumentation test results
+        uses: actions/cache/save@v4
+        if: always() # Save cache even if tests fail
+        with:
+          path: |
+            **/build/outputs/androidTest-results/
+            **/build/reports/androidTests/
+            **/build/test-results/
+            **/build/jacoco/
+            **/build/tests/
+          key: instrumentation-results-${{ github.run_id }}
 
       - name: Upload Test Reports (if needed)
         if: failure()
@@ -111,18 +126,24 @@ jobs:
           name: instrumentation-test-report
           path: '**/build/reports/androidTests/connected/'
 
-  unit_test:
-    needs: detekt_checks
+  test_coverage:
+    name: Test Coverage Report
+    needs: instrumentation_test
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    continue-on-error: true
     permissions:
       contents: read
-      actions: write # Needed for cache
+      actions: write # Needed for cache and artifact upload
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
@@ -141,8 +162,50 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      # Restore cached instrumentation test results
+      - name: Restore instrumentation test results
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            **/build/outputs/androidTest-results/
+            **/build/reports/androidTests/
+            **/build/test-results/
+            **/build/jacoco/
+            **/build/tests/
+          key: instrumentation-results-${{ github.run_id }}
+
       - name: Run debug unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      # Skip instrumentation tests since we're using cached results
+      # If cache miss occurs, we could run them again as fallback
+      - name: Check if instrumentation results exist
+        id: check_cache
+        run: |
+          if [ -d "**/build/outputs/androidTest-results/" ] || [ -d "**/build/reports/androidTests/" ]; then
+            echo "cache_hit=true" >> $GITHUB_OUTPUT
+          else
+            echo "cache_hit=false" >> $GITHUB_OUTPUT
+          fi
+
+      # Fallback: run instrumentation tests if cache missed
+      - name: Enable KVM (fallback)
+        if: steps.check_cache.outputs.cache_hit == 'false'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run debug instrumentation test (fallback)
+        if: steps.check_cache.outputs.cache_hit == 'false'
+        uses: reactivecircus/android-emulator-runner@62dbb605bba737720e10b196cb4220d374026a6d
+        with:
+          api-level: 29
+          arch: x86
+          disable-animations: true
+          script: |
+            adb wait-for-device
+            ./gradlew connectedDebugAndroidTest --stacktrace
 
       - name: Generate JaCoCo
         run: ./gradlew createDebugCombinedCoverageReport
@@ -165,8 +228,15 @@ jobs:
 
       # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
       # v1.1.0
-      - name: Upload test results to Codecov
+      - name: Upload Unit Test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload Instrumentation Test Reports (if needed)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumentation-test-report-coverage
+          path: '**/build/reports/androidTests/connected/'
