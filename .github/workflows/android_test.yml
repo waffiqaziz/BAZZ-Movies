@@ -97,10 +97,9 @@ jobs:
         with:
           path: |
             **/build/test-results/testDebugUnitTest/
-            **/build/tests/
             **/build/reports/tests/testDebugUnitTest/
             **/build/jacoco/testDebugUnitTest.exec
-            **/build/jacoco/
+            **/build/tmp/kotlin-classes/debug/
           key: unit-test-results-${{ github.run_id }}
 
       - name: Upload Unit Test Reports (if needed)
@@ -174,8 +173,9 @@ jobs:
             **/build/outputs/androidTest-results/
             **/build/reports/androidTests/
             **/build/test-results/connectedDebugAndroidTest/
-            **/build/jacoco/
             **/build/jacoco/connectedDebugAndroidTest.exec
+            **/build/tmp/kotlin-classes/debug/
+            **/build/tmp/kotlin-classes/debugAndroidTest/
           key: instrumentation-test-results-${{ github.run_id }}
 
       - name: Upload Instrumentation Test Reports (if needed)
@@ -228,10 +228,9 @@ jobs:
         with:
           path: |
             **/build/test-results/testDebugUnitTest/
-            **/build/tests/
             **/build/reports/tests/testDebugUnitTest/
             **/build/jacoco/testDebugUnitTest.exec
-            **/build/jacoco/
+            **/build/tmp/kotlin-classes/debug/
           key: unit-test-results-${{ github.run_id }}
 
       # Restore cached instrumentation test results
@@ -243,8 +242,9 @@ jobs:
             **/build/outputs/androidTest-results/
             **/build/reports/androidTests/
             **/build/test-results/connectedDebugAndroidTest/
-            **/build/jacoco/
             **/build/jacoco/connectedDebugAndroidTest.exec
+            **/build/tmp/kotlin-classes/debug/
+            **/build/tmp/kotlin-classes/debugAndroidTest/
           key: instrumentation-test-results-${{ github.run_id }}
 
       # Fallback: run unit tests if cache missed
@@ -272,12 +272,42 @@ jobs:
             ./gradlew app:connectedDebugAndroidTest --stacktrace
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace
 
+      - name: Check cached test results
+        run: |
+          echo "=== Checking Unit Test Results ==="
+          find . -name "testDebugUnitTest.exec" -type f || echo "No unit test .exec files found"
+          find . -path "*/build/test-results/testDebugUnitTest" -type d || echo "No unit test results found"
+          
+          echo "=== Checking Instrumentation Test Results ==="
+          find . -name "connectedDebugAndroidTest.exec" -type f || echo "No instrumentation test .exec files found"
+          find . -path "*/build/test-results/connectedDebugAndroidTest" -type d || echo "No instrumentation test results found"
+
       - name: Generate JaCoCo Combined Coverage Report
-        run: ./gradlew createDebugCombinedCoverageReport
+        run: |
+          echo "Generating combined coverage report..."
+          ./gradlew createDebugCombinedCoverageReport --stacktrace
+          
+          echo "=== Checking Generated Reports ==="
+          find . -name "createDebugCombinedCoverageReport.xml" -type f || echo "No combined coverage report found"
+          find . -path "*/build/reports/jacoco" -type d || echo "No jacoco reports directory found"
+
+      # Check if coverage report exists before uploading
+      - name: Check coverage report exists
+        id: check_coverage
+        run: |
+          if find . -name "createDebugCombinedCoverageReport.xml" -type f | grep -q .; then
+            echo "coverage_exists=true" >> $GITHUB_OUTPUT
+            echo "✅ Coverage report found"
+            find . -name "createDebugCombinedCoverageReport.xml" -type f
+          else
+            echo "coverage_exists=false" >> $GITHUB_OUTPUT
+            echo "❌ Coverage report not found"
+          fi
 
       # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
       # v5.4.0
       - name: Upload coverage reports to Codecov
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
@@ -286,6 +316,7 @@ jobs:
       # https://github.com/codacy/codacy-coverage-reporter-action/commit/55c3b57cb3bb6833c8c1a6614fee4cebb140de2d
       # v1.3.0
       - name: Upload coverage reports to Codacy
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codacy/codacy-coverage-reporter-action@a38818475bb21847788496e9f0fddaa4e84955ba
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
