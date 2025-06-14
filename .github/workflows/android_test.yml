@@ -115,8 +115,6 @@ jobs:
             **/build/outputs/androidTest-results/
             **/build/reports/androidTests/
             **/build/test-results/
-            **/build/jacoco/
-            **/build/tests/
           key: instrumentation-results-${{ github.run_id }}
 
       - name: Upload Test Reports (if needed)
@@ -170,8 +168,6 @@ jobs:
             **/build/outputs/androidTest-results/
             **/build/reports/androidTests/
             **/build/test-results/
-            **/build/jacoco/
-            **/build/tests/
           key: instrumentation-results-${{ github.run_id }}
 
       - name: Run debug unit tests
@@ -182,10 +178,13 @@ jobs:
       - name: Check if instrumentation results exist
         id: check_cache
         run: |
-          if [ -d "**/build/outputs/androidTest-results/" ] || [ -d "**/build/reports/androidTests/" ]; then
+          if find . -path "*/build/outputs/androidTest-results" -type d | grep -q . || \
+             find . -path "*/build/reports/androidTests" -type d | grep -q .; then
             echo "cache_hit=true" >> $GITHUB_OUTPUT
+            echo "✅ Cached instrumentation test results found"
           else
             echo "cache_hit=false" >> $GITHUB_OUTPUT
+            echo "❌ No cached instrumentation test results found, will run tests"
           fi
 
       # Fallback: run instrumentation tests if cache missed
@@ -205,7 +204,8 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew connectedDebugAndroidTest --stacktrace
+            ./gradlew app:connectedDebugAndroidTest  --stacktrace
+            ./gradlew :feature:login:connectedDebugAndroidTest  --stacktrace
 
       - name: Generate JaCoCo
         run: ./gradlew createDebugCombinedCoverageReport
