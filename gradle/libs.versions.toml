@@ -98,6 +98,7 @@ moduleGraph = "2.8.0"
 [libraries]
 # AndroidX Libraries
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activityKtx" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "coreKtx" }
