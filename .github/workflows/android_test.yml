@@ -96,6 +96,7 @@ jobs:
         if: always() # Save cache even if tests fail
         with:
           path: |
+            ${{ github.workspace }}/**/build/outputs/
             ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/
             ${{ github.workspace }}/**/build/reports/tests/testDebugUnitTest/
             ${{ github.workspace }}/**/build/jacoco/testDebugUnitTest.exec
@@ -170,7 +171,7 @@ jobs:
         if: always() # Save cache even if tests fail
         with:
           path: |
-            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/
             ${{ github.workspace }}/**/build/reports/androidTests/
             ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
             ${{ github.workspace }}/**/build/jacoco/connectedDebugAndroidTest.exec
@@ -227,6 +228,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
+            ${{ github.workspace }}/**/build/outputs/
             ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/
             ${{ github.workspace }}/**/build/reports/tests/testDebugUnitTest/
             ${{ github.workspace }}/**/build/jacoco/testDebugUnitTest.exec
@@ -239,7 +241,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/outputs/
             ${{ github.workspace }}/**/build/reports/androidTests/
             ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
             ${{ github.workspace }}/**/build/jacoco/connectedDebugAndroidTest.exec
