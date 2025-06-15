@@ -30,7 +30,7 @@ dependencyGuard = "0.5.0"
 
 # AndroidX Libraries
 activityKtx = "1.10.1"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 cardview = "1.0.0"
 coreKtx = "1.16.0"
 constraintlayout = "2.2.1"
