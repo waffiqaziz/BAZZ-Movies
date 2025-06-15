@@ -96,10 +96,10 @@ jobs:
         if: always() # Save cache even if tests fail
         with:
           path: |
-            **/build/test-results/testDebugUnitTest/
-            **/build/reports/tests/testDebugUnitTest/
-            **/build/jacoco/testDebugUnitTest.exec
-            **/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/
+            ${{ github.workspace }}/**/build/reports/tests/testDebugUnitTest/
+            ${{ github.workspace }}/**/build/jacoco/testDebugUnitTest.exec
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
           key: unit-test-results-${{ github.run_id }}
 
       - name: Upload Unit Test Reports (if needed)
@@ -161,7 +161,7 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew app:connectedDebugAndroidTest --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest --stacktrace
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace
 
       # Cache instrumentation test results for the coverage job
@@ -170,12 +170,12 @@ jobs:
         if: always() # Save cache even if tests fail
         with:
           path: |
-            **/build/outputs/androidTest-results/
-            **/build/reports/androidTests/
-            **/build/test-results/connectedDebugAndroidTest/
-            **/build/jacoco/connectedDebugAndroidTest.exec
-            **/build/tmp/kotlin-classes/debug/
-            **/build/tmp/kotlin-classes/debugAndroidTest/
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/jacoco/connectedDebugAndroidTest.exec
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
           key: instrumentation-test-results-${{ github.run_id }}
 
       - name: Upload Instrumentation Test Reports (if needed)
@@ -227,10 +227,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            **/build/test-results/testDebugUnitTest/
-            **/build/reports/tests/testDebugUnitTest/
-            **/build/jacoco/testDebugUnitTest.exec
-            **/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/test-results/testDebugUnitTest/
+            ${{ github.workspace }}/**/build/reports/tests/testDebugUnitTest/
+            ${{ github.workspace }}/**/build/jacoco/testDebugUnitTest.exec
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
           key: unit-test-results-${{ github.run_id }}
 
       # Restore cached instrumentation test results
@@ -239,12 +239,12 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            **/build/outputs/androidTest-results/
-            **/build/reports/androidTests/
-            **/build/test-results/connectedDebugAndroidTest/
-            **/build/jacoco/connectedDebugAndroidTest.exec
-            **/build/tmp/kotlin-classes/debug/
-            **/build/tmp/kotlin-classes/debugAndroidTest/
+            ${{ github.workspace }}/**/build/outputs/androidTest-results/
+            ${{ github.workspace }}/**/build/reports/androidTests/
+            ${{ github.workspace }}/**/build/test-results/connectedDebugAndroidTest/
+            ${{ github.workspace }}/**/build/jacoco/connectedDebugAndroidTest.exec
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debug/
+            ${{ github.workspace }}/**/build/tmp/kotlin-classes/debugAndroidTest/
           key: instrumentation-test-results-${{ github.run_id }}
 
       # Fallback: run unit tests if cache missed
@@ -269,7 +269,7 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew app:connectedDebugAndroidTest --stacktrace
+            ./gradlew :app:connectedDebugAndroidTest --stacktrace
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace
 
       - name: Check cached test results
