@@ -175,7 +175,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace
+          script: ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
 
       # Cache instrumentation test results for the coverage job
       - name: Cache instrumentation test results
