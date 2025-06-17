@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
@@ -39,7 +40,7 @@ import javax.inject.Singleton
 class MovieDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
   private val omDbApiService: OMDbApiService,
-  @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+  @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : MovieDataSourceInterface {
 
   // region PAGING FUNCTION
@@ -133,7 +134,7 @@ class MovieDataSource @Inject constructor(
 
   override fun getPagingPopularTv(
     region: String,
-    twoWeeksFromToday: String
+    twoWeeksFromToday: String,
   ): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
@@ -148,7 +149,7 @@ class MovieDataSource @Inject constructor(
   override fun getPagingAiringThisWeekTv(
     region: String,
     airDateLte: String,
-    airDateGte: String
+    airDateGte: String,
   ): Flow<PagingData<ResultItemResponse>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
@@ -315,7 +316,7 @@ class MovieDataSource @Inject constructor(
 
   override suspend fun getStatedMovie(
     sessionId: String,
-    id: Int
+    id: Int,
   ): Flow<NetworkResult<StatedResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
@@ -327,12 +328,24 @@ class MovieDataSource @Inject constructor(
 
   override suspend fun getStatedTv(
     sessionId: String,
-    id: Int
+    id: Int,
   ): Flow<NetworkResult<StatedResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
         tmdbApiService.getStatedTv(id, sessionId)
+      }
+    )
+  }.flowOn(ioDispatcher)
+
+  override suspend fun getWatchProviders(
+    params: String,
+    id: Int,
+  ): Flow<NetworkResult<WatchProvidersResponse>> = flow {
+    emit(NetworkResult.Loading)
+    emit(
+      safeApiCall {
+        tmdbApiService.getWatchProviders(params, id)
       }
     )
   }.flowOn(ioDispatcher)
@@ -380,7 +393,7 @@ class MovieDataSource @Inject constructor(
   override suspend fun postFavorite(
     sessionId: String,
     fav: FavoritePostModel,
-    userId: Int
+    userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     flow {
       emit(NetworkResult.Loading)
@@ -394,7 +407,7 @@ class MovieDataSource @Inject constructor(
   override suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
-    userId: Int
+    userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     flow {
       emit(NetworkResult.Loading)
@@ -408,7 +421,7 @@ class MovieDataSource @Inject constructor(
   override suspend fun postTvRate(
     sessionId: String,
     rating: Float,
-    tvId: Int
+    tvId: Int,
   ): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.Loading)
@@ -422,7 +435,7 @@ class MovieDataSource @Inject constructor(
   override suspend fun postMovieRate(
     sessionId: String,
     rating: Float,
-    movieId: Int
+    movieId: Int,
   ): Flow<NetworkResult<PostResponse>> =
     flow {
       emit(NetworkResult.Loading)

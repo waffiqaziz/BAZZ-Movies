@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
@@ -33,7 +34,7 @@ interface MovieDataSourceInterface {
   fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
   fun getPagingPopularTv(
     region: String,
-    twoWeeksFromToday: String
+    twoWeeksFromToday: String,
   ): Flow<PagingData<ResultItemResponse>>
 
   fun getPagingAiringThisWeekTv(
@@ -66,6 +67,10 @@ interface MovieDataSourceInterface {
   suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>>
   suspend fun getStatedMovie(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
   suspend fun getStatedTv(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
+  suspend fun getWatchProviders(
+    params: String,
+    id: Int,
+  ): Flow<NetworkResult<WatchProvidersResponse>>
 
   // PERSON
   suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>>
@@ -77,24 +82,24 @@ interface MovieDataSourceInterface {
   suspend fun postFavorite(
     sessionId: String,
     fav: FavoritePostModel,
-    userId: Int
+    userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 
   suspend fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
-    userId: Int
+    userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 
   suspend fun postTvRate(
     sessionId: String,
     rating: Float,
-    tvId: Int
+    tvId: Int,
   ): Flow<NetworkResult<PostResponse>>
 
   suspend fun postMovieRate(
     sessionId: String,
     rating: Float,
-    movieId: Int
+    movieId: Int,
   ): Flow<NetworkResult<PostResponse>>
 }

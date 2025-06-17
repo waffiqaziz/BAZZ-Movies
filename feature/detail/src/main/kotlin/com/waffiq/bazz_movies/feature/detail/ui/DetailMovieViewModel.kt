@@ -28,6 +28,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvUseCase
@@ -47,7 +48,7 @@ class DetailMovieViewModel @Inject constructor(
   private val postMethodUseCase: PostMethodUseCase,
   private val getDetailOMDbUseCase: GetDetailOMDbUseCase,
   private val getStatedMovieUseCase: GetStatedMovieUseCase,
-  private val getStatedTvUseCase: GetStatedTvUseCase
+  private val getStatedTvUseCase: GetStatedTvUseCase,
 ) : ViewModel() {
 
   // region OBSERVABLES
@@ -89,6 +90,9 @@ class DetailMovieViewModel @Inject constructor(
 
   private val _recommendation = MutableLiveData<PagingData<ResultItem>>()
   val recommendation: LiveData<PagingData<ResultItem>> get() = _recommendation
+
+  private val _watchProviders = MutableLiveData<WatchProviders>()
+  val watchProviders: LiveData<WatchProviders> get() = _watchProviders
   // endregion OBSERVABLES
 
   // region MOVIE
@@ -150,6 +154,21 @@ class DetailMovieViewModel @Inject constructor(
       getStatedMovieUseCase.getStatedMovie(sessionId, id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _itemState.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
+            _loadingState.value = false
+            _errorState.emit(outcome.message)
+          }
+        }
+      }
+    }
+  }
+
+  fun getMovieWatchProviders(tvId: Int) {
+    viewModelScope.launch {
+      getDetailMovieUseCase.getWatchProvidersMovies(tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _watchProviders.value = it }
           is Outcome.Loading -> {}
           is Outcome.Error -> {
             _loadingState.value = false
@@ -238,6 +257,21 @@ class DetailMovieViewModel @Inject constructor(
       getStatedTvUseCase.getStatedTv(sessionId, id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _itemState.value = it }
+          is Outcome.Loading -> {}
+          is Outcome.Error -> {
+            _loadingState.value = false
+            _errorState.emit(outcome.message)
+          }
+        }
+      }
+    }
+  }
+
+  fun getTvWatchProviders(tvId: Int) {
+    viewModelScope.launch {
+      getDetailTvUseCase.getWatchProvidersTv(tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> outcome.data.let { _watchProviders.value = it }
           is Outcome.Loading -> {}
           is Outcome.Error -> {
             _loadingState.value = false

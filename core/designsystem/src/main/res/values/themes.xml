@@ -211,15 +211,30 @@
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
     <item name="android:textColor">@color/gray_100</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:text">@string/not_available</item>
   </style>
 
   <style name="TextScoreHeader">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginTop">4dp</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
     <item name="android:textColor">@color/gray_400</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:layout_gravity">center</item>
     <item name="android:gravity">center</item>
+  </style>
+
+  <style name="GroupScore">
     <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">16dp</item>
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="android:minWidth">48dp</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:paddingBottom">8dp</item>
   </style>
 
   <!-- Style button on more page -->

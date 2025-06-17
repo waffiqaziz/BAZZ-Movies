@@ -83,6 +83,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.detailCrew
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
@@ -95,7 +96,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
+@Suppress("ForbiddenComment", "TooManyFunctions")
 @AndroidEntryPoint
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -111,6 +112,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterRecommendation: RecommendationAdapter
+  private lateinit var adapterWatchProviders: WatchProvidersAdapter
 
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
@@ -160,12 +162,13 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun setupRecyclerView() {
     setupRecyclerViewsWithSnap(
-      listOf(binding.rvCast, binding.rvRecommendation)
+      listOf(binding.rvCast, binding.rvRecommendation, binding.rvWatchProviders)
     )
 
     // setup adapter
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
+    adapterWatchProviders = WatchProvidersAdapter()
 
     // setup rv cast
     binding.rvCast.itemAnimator = DefaultItemAnimator()
@@ -176,6 +179,10 @@ class DetailMovieActivity : AppCompatActivity() {
     binding.rvRecommendation.adapter = adapterRecommendation.withLoadStateFooter(
       footer = LoadingStateAdapter { adapterRecommendation.retry() }
     )
+
+    // setup rv watch providers
+    binding.rvWatchProviders.itemAnimator = DefaultItemAnimator()
+    binding.rvWatchProviders.adapter = adapterWatchProviders
   }
 
   private fun initTag() {
@@ -331,6 +338,9 @@ class DetailMovieActivity : AppCompatActivity() {
       detailViewModel.getLinkVideoMovie(movie.id)
       detailViewModel.getRecommendationMovie(movie.id)
     }
+
+    // get watch providers
+    detailViewModel.getMovieWatchProviders(dataExtra.id)
   }
 
   private fun updateMovieDetailsUI(movie: DetailMovieTvUsed) {
@@ -392,6 +402,13 @@ class DetailMovieActivity : AppCompatActivity() {
     detailViewModel.recommendation.observe(this) { recommendations ->
       adapterRecommendation.submitData(lifecycle, recommendations)
     }
+
+    detailViewModel.watchProviders.observe(this) {
+      // TODO: change with user country and separate between free, rent, buy, etc
+      val providers = it.results?.get("US")?.flatrate.orEmpty()
+
+      adapterWatchProviders.setProviders(providers)
+    }
   }
   // endregion MOVIE
 
@@ -450,6 +467,9 @@ class DetailMovieActivity : AppCompatActivity() {
         showViewReleaseDate(false)
       }
     }
+
+    // get watch providers
+    detailViewModel.getTvWatchProviders(dataExtra.id)
   }
 
   private fun observeDetailTv() {
@@ -484,6 +504,13 @@ class DetailMovieActivity : AppCompatActivity() {
         hideTrailer(false)
         btnTrailer(it)
       }
+    }
+
+    detailViewModel.watchProviders.observe(this) {
+      // TODO: change with user country and separate between free, rent, buy, etc
+      val providers = it.results?.get("US")?.flatrate.orEmpty()
+
+      adapterWatchProviders.setProviders(providers)
     }
   }
   // endregion TV

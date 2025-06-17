@@ -100,6 +100,8 @@
   <string name="invalid_url">Invalid URL</string>
   <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
   <string name="_divider">|</string>
+  <string name="data_powered_by">*Data powered by</string>
+  <string name="justwatch">JustWatch</string>
   <string name="overview">Overview</string>
   <string name="no_overview">Theres no overview translated in English</string>
   <string name="watch_trailer">Watch Trailer</string>

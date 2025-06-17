@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformDuration
@@ -18,12 +19,12 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetDetailMovieInteractor @Inject constructor(
-  private val detailRepository: IDetailRepository
+  private val detailRepository: IDetailRepository,
 ) : GetDetailMovieUseCase {
 
   override suspend fun getDetailMovie(
     movieId: Int,
-    userRegion: String
+    userRegion: String,
   ): Flow<Outcome<DetailMovieTvUsed>> =
     detailRepository.getDetailMovie(movieId).map { outcome ->
       when (outcome) {
@@ -60,6 +61,9 @@ class GetDetailMovieInteractor @Inject constructor(
 
   override suspend fun getCreditMovies(movieId: Int): Flow<Outcome<MovieTvCredits>> =
     detailRepository.getCreditMovies(movieId)
+
+  override suspend fun getWatchProvidersMovies(movieId: Int): Flow<Outcome<WatchProviders>> =
+    detailRepository.getWatchProviders("movie", movieId)
 
   override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)

@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toMovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toVideo
@@ -20,12 +21,13 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailM
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource
+  private val movieDataSource: MovieDataSource,
 ) : IDetailRepository {
   override suspend fun getDetailOMDb(imdbId: String): Flow<Outcome<OMDbDetails>> =
     movieDataSource.getDetailOMDb(imdbId).map { networkResult ->
@@ -100,16 +102,28 @@ class DetailRepositoryImpl @Inject constructor(
     }
 
   override fun getPagingMovieRecommendation(
-    movieId: Int
+    movieId: Int,
   ): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingMovieRecommendation(movieId).map { pagingData ->
       pagingData.map { it.toResultItem() }
     }
 
   override fun getPagingTvRecommendation(
-    tvId: Int
+    tvId: Int,
   ): Flow<PagingData<ResultItem>> =
     movieDataSource.getPagingTvRecommendation(tvId).map { pagingData ->
       pagingData.map { it.toResultItem() }
+    }
+
+  override suspend fun getWatchProviders(
+    params: String,
+    id: Int,
+  ): Flow<Outcome<WatchProviders>> =
+    movieDataSource.getWatchProviders(params, id).map { networkResult ->
+      when (networkResult) {
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toWatchProviders())
+        is NetworkResult.Error -> Outcome.Error(networkResult.message)
+        is NetworkResult.Loading -> Outcome.Loading
+      }
     }
 }
