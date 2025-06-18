@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import kotlinx.coroutines.flow.Flow
 
 interface IDetailRepository {
@@ -22,4 +23,5 @@ interface IDetailRepository {
   suspend fun getCreditTv(tvId: Int): Flow<Outcome<MovieTvCredits>>
   fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>>
   fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>>
+  suspend fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>>
 }

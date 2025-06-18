@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.CountryProviderData
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformDuration
@@ -18,12 +19,12 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetDetailMovieInteractor @Inject constructor(
-  private val detailRepository: IDetailRepository
+  private val detailRepository: IDetailRepository,
 ) : GetDetailMovieUseCase {
 
   override suspend fun getDetailMovie(
     movieId: Int,
-    userRegion: String
+    userRegion: String,
   ): Flow<Outcome<DetailMovieTvUsed>> =
     detailRepository.getDetailMovie(movieId).map { outcome ->
       when (outcome) {
@@ -60,6 +61,26 @@ class GetDetailMovieInteractor @Inject constructor(
 
   override suspend fun getCreditMovies(movieId: Int): Flow<Outcome<MovieTvCredits>> =
     detailRepository.getCreditMovies(movieId)
+
+  override suspend fun getWatchProvidersMovies(
+    countryCode: String,
+    movieId: Int,
+  ): Flow<Outcome<CountryProviderData>> =
+    detailRepository.getWatchProviders("movie", movieId).map { outcome ->
+      when (outcome) {
+        is Outcome.Success -> {
+          val countryProvider = outcome.data.results?.get(countryCode)
+          if (countryProvider != null) {
+            Outcome.Success(countryProvider)
+          } else {
+            Outcome.Error("No watch provider found for country code: $countryCode")
+          }
+        }
+
+        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Loading -> Outcome.Loading
+      }
+    }
 
   override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItem>> =
     detailRepository.getPagingMovieRecommendation(movieId)

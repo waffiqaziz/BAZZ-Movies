@@ -106,386 +106,319 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/default_margin_parent_20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
         <!-- ========================== -->
-        <!--      BACKDROP SECTION      -->
+        <!--        UPPER SECTION       -->
         <!-- ========================== -->
-
-        <!-- Backdrop image -->
-        <com.google.android.material.imageview.ShapeableImageView
-          android:id="@+id/iv_picture_backdrop"
-          style="@style/roundedCornersPoster"
+        <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
-          android:layout_height="270dp"
-          android:adjustViewBounds="true"
-          android:contentDescription="@string/poster"
-          android:fitsSystemWindows="false"
-          android:foreground="@drawable/bg_gradient_shape"
-          android:scaleType="centerCrop"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:src="@drawable/ic_bazz_placeholder_backdrops" />
-
-        <!-- No backdrop text -->
-        <TextView
-          android:id="@+id/tv_backdrop_not_found"
-          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:fontFamily="@font/nunito_sans_italic"
-          android:text="@string/backdrop_not_found"
-          android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-          android:textColor="@color/gray_300"
-          android:visibility="gone"
-          app:layout_constraintBottom_toTopOf="@+id/iv_poster"
+          android:paddingBottom="@dimen/default_margin_parent_20"
+          app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          tools:visibility="visible" />
+          app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-          android:id="@+id/cardView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:cardBackgroundColor="@android:color/transparent"
-          app:cardCornerRadius="50dp"
-          app:cardElevation="0dp"
-          app:layout_constraintBottom_toBottomOf="@+id/iv_picture_backdrop"
-          app:layout_constraintEnd_toEndOf="@+id/iv_picture_backdrop"
-          app:layout_constraintStart_toStartOf="@+id/iv_picture_backdrop"
-          app:layout_constraintTop_toTopOf="@+id/iv_picture_backdrop">
+          <!-- ========================== -->
+          <!--      BACKDROP SECTION      -->
+          <!-- ========================== -->
 
-          <!-- Trailer button -->
-          <ImageButton
-            android:id="@+id/ib_play"
+          <!-- Backdrop image -->
+          <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_picture_backdrop"
+            style="@style/roundedCornersPoster"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/poster"
+            android:fitsSystemWindows="false"
+            android:foreground="@drawable/bg_gradient_shape"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_bazz_placeholder_backdrops" />
+
+          <!-- No backdrop text -->
+          <TextView
+            android:id="@+id/tv_backdrop_not_found"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/watch_trailer"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:padding="12dp"
-            android:src="@drawable/ic_play"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/nunito_sans_italic"
+            android:text="@string/backdrop_not_found"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="@color/gray_300"
             android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/iv_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible" />
-        </androidx.cardview.widget.CardView>
-        <!-- End of BACKDROP SECTION -->
 
-        <!-- ========================== -->
-        <!--    DETAIL UPPER SECTION    -->
-        <!-- ========================== -->
+          <!-- Trailer button -->
+          <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_picture_backdrop"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture_backdrop"
+            app:layout_constraintStart_toStartOf="@+id/iv_picture_backdrop"
+            app:layout_constraintTop_toTopOf="@+id/iv_picture_backdrop">
 
-        <!-- Poster -->
-        <com.google.android.material.imageview.ShapeableImageView
-          android:id="@+id/iv_poster"
-          android:layout_width="120dp"
-          android:layout_height="180dp"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="-40dp"
-          android:contentDescription="@string/poster"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/iv_picture_backdrop"
-          app:shapeAppearanceOverlay="@style/roundedCornersPoster"
-          tools:layout_width="120dp"
-          tools:src="@drawable/ic_bazz_placeholder_poster" />
+            <ImageButton
+              android:id="@+id/ib_play"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@android:color/transparent"
+              android:contentDescription="@string/watch_trailer"
+              android:foreground="?attr/selectableItemBackgroundBorderless"
+              android:padding="12dp"
+              android:src="@drawable/ic_play"
+              android:visibility="gone"
+              tools:visibility="visible" />
+          </androidx.cardview.widget.CardView>
+          <!--  End of BACKDROP SECTION  -->
 
-        <!-- Title -->
-        <TextView
-          android:id="@+id/tv_title"
-          style="@style/TextHeader1"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:layout_marginBottom="8dp"
-          android:ellipsize="end"
-          android:maxLines="4"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toEndOf="@+id/iv_poster"
-          tools:text="The Silence" />
+          <!-- Poster -->
+          <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="@dimen/default_margin_parent_20"
+            android:layout_marginTop="-40dp"
+            android:contentDescription="@string/poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_picture_backdrop"
+            app:shapeAppearanceOverlay="@style/roundedCornersPoster"
+            tools:layout_width="120dp"
+            tools:src="@drawable/ic_bazz_placeholder_poster" />
 
-        <!-- TV/Movie -->
-        <TextView
-          android:id="@+id/tv_mediaType"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="@dimen/margin_detail_info"
-          app:layout_constraintBottom_toTopOf="@+id/tv_genre"
-          app:layout_constraintStart_toStartOf="@+id/tv_title"
-          tools:text="MOVIE" />
+          <!-- Title -->
+          <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextHeader1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            tools:text="The Silence" />
 
-        <!-- Release date -->
-        <TextView
-          android:id="@+id/tv_year_released"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-          app:layout_constraintStart_toEndOf="@+id/divider1"
-          tools:text="Jul 24, 2020" />
+          <!-- TV/Movie -->
+          <TextView
+            android:id="@+id/tv_mediaType"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_detail_info"
+            app:layout_constraintBottom_toTopOf="@+id/tv_genre"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="MOVIE" />
 
-        <!-- Region -->
-        <TextView
-          android:id="@+id/tv_region_release"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/margin_detail_info"
-          app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-          app:layout_constraintStart_toEndOf="@+id/tv_year_released"
-          tools:text="(US)" />
+          <!-- Release date -->
+          <TextView
+            android:id="@+id/tv_year_released"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/divider1"
+            tools:text="Jul 24, 2020" />
 
-        <TextView
-          android:id="@+id/divider1"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/margin_detail_info"
-          android:importantForAccessibility="no"
-          android:text="@string/_divider"
-          android:textColor="@color/gray_400"
-          app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
-          app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
+          <!-- Region -->
+          <TextView
+            android:id="@+id/tv_region_release"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+            tools:text="(US)" />
 
-        <TextView
-          android:id="@+id/divider2"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/margin_detail_info"
-          android:importantForAccessibility="no"
-          android:text="@string/_divider"
-          android:textColor="@color/gray_400"
-          app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-          app:layout_constraintStart_toEndOf="@+id/tv_region_release" />
+          <TextView
+            android:id="@+id/divider1"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            android:importantForAccessibility="no"
+            android:text="@string/_divider"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
 
-        <!-- Age rating -->
-        <TextView
-          android:id="@+id/tv_age_rating"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/margin_detail_info"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:ellipsize="end"
-          android:maxLines="1"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toEndOf="@+id/divider2"
-          tools:text="PG-A" />
+          <TextView
+            android:id="@+id/divider2"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            android:importantForAccessibility="no"
+            android:text="@string/_divider"
+            android:textColor="@color/gray_400"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/tv_region_release" />
 
-        <!-- Genre -->
-        <TextView
-          android:id="@+id/tv_genre"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/default_margin_parent_20"
-          android:layout_marginBottom="@dimen/margin_detail_info"
-          android:ellipsize="end"
-          android:maxLines="1"
-          android:text="@string/not_available"
-          app:layout_constrainedWidth="true"
-          app:layout_constraintBottom_toTopOf="@+id/tv_duration"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0"
-          app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
-          tools:text="Action, Drama, &amp; Family" />
+          <!-- Age rating -->
+          <TextView
+            android:id="@+id/tv_age_rating"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/divider2"
+            tools:text="PG-A" />
 
-        <!-- Duration -->
-        <TextView
-          android:id="@+id/tv_duration"
-          style="@style/TextBody"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:ellipsize="end"
-          android:maxLines="2"
-          android:text="@string/not_available"
-          app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
-          app:layout_constraintStart_toStartOf="@+id/tv_genre"
-          tools:text="1H 22m" />
-        <!-- End of DETAIL UPPER SECTION -->
+          <!-- Genre -->
+          <TextView
+            android:id="@+id/tv_genre"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:layout_marginBottom="@dimen/margin_detail_info"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/not_available"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/tv_duration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
+            tools:text="Action, Drama, &amp; Family" />
+
+          <!-- Duration -->
+          <TextView
+            android:id="@+id/tv_duration"
+            style="@style/TextBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/not_available"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintStart_toStartOf="@+id/tv_genre"
+            tools:text="1H 22m" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--     End of UPPER SECTION   -->
 
         <!-- ========================== -->
         <!--        SCORE SECTION       -->
         <!-- ========================== -->
-
         <HorizontalScrollView
           android:id="@+id/score_scrollview"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="14dp"
-          android:scrollbars="none"
-          app:layout_constraintTop_toBottomOf="@+id/iv_poster">
+          android:scrollbars="none">
 
           <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="@dimen/default_margin_parent_20">
 
             <!-- IMDB -->
             <LinearLayout
               android:id="@+id/imdb_viewGroup"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="16dp"
-              android:background="?attr/selectableItemBackgroundBorderless"
-              android:minWidth="48dp"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:paddingBottom="10dp">
+              style="@style/GroupScore">
 
               <TextView
                 android:id="@+id/tv_score_imdb"
                 style="@style/TextScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/not_available"
                 tools:text="8.5" />
 
               <TextView
                 style="@style/TextScoreHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
                 android:text="@string/imdb" />
             </LinearLayout>
 
             <!-- METASCORE -->
             <LinearLayout
               android:id="@+id/metascore_viewGroup"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="16dp"
-              android:background="?attr/selectableItemBackgroundBorderless"
-              android:minWidth="60dp"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:paddingBottom="10dp">
+              style="@style/GroupScore">
 
               <TextView
                 android:id="@+id/tv_score_metascore"
                 style="@style/TextScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/not_available"
                 tools:text="8.5" />
 
               <TextView
                 style="@style/TextScoreHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="@string/metascore" />
             </LinearLayout>
 
             <!-- ROTTEN TOMATOES -->
             <LinearLayout
               android:id="@+id/rotten_tomatoes_viewGroup"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="16dp"
-              android:background="?attr/selectableItemBackgroundBorderless"
-              android:minWidth="60dp"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:paddingBottom="10dp">
+              style="@style/GroupScore">
 
               <TextView
                 android:id="@+id/tv_score_rotten_tomatoes"
                 style="@style/TextScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/not_available"
                 tools:text="85%" />
 
               <TextView
                 style="@style/TextScoreHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="@string/r_tomatoes" />
             </LinearLayout>
 
             <!-- TMDB -->
             <LinearLayout
               android:id="@+id/tmdb_viewGroup"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginEnd="16dp"
-              android:background="?attr/selectableItemBackgroundBorderless"
-              android:minWidth="48dp"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:paddingBottom="10dp">
+              style="@style/GroupScore">
 
               <TextView
                 android:id="@+id/tv_score_tmdb"
                 style="@style/TextScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/not_available"
                 tools:text="8.5" />
 
               <TextView
                 style="@style/TextScoreHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
                 android:text="@string/tmdb" />
             </LinearLayout>
 
             <!-- USER SCORE -->
             <LinearLayout
               android:id="@+id/your_score_viewGroup"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="?attr/selectableItemBackgroundBorderless"
-              android:contentDescription="@string/rating"
-              android:minWidth="60dp"
-              android:minHeight="48dp"
-              android:orientation="vertical"
-              android:paddingBottom="10dp">
+              style="@style/GroupScore">
 
               <TextView
                 android:id="@+id/tv_score_your_score"
-                style="@style/TextBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/not_available"
+                style="@style/TextScore"
                 tools:text="8.5" />
 
               <TextView
                 style="@style/TextScoreHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="@string/your_score" />
             </LinearLayout>
 
           </LinearLayout>
         </HorizontalScrollView>
-        <!-- End of SCORE SECTION -->
+        <!--    End of SCORE SECTION    -->
 
         <com.google.android.material.divider.MaterialDivider
           android:id="@+id/divider_score"
@@ -493,10 +426,156 @@
           android:layout_height="1.5dp"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
-          app:dividerColor="@color/yellow_alpha_80"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/score_scrollview" />
+          app:dividerColor="@color/yellow_alpha_80" />
+
+        <!-- ========================== -->
+        <!--  WATCH PROVIDERS SECTION   -->
+        <!-- ========================== -->
+        <LinearLayout
+          android:id="@+id/watch_provider_section"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/tv_toggle_watch_providers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="start|center"
+            android:text="@string/where_to_watch_down"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/gray_100"
+            app:cornerRadius="@dimen/button_radius"
+            app:rippleColor="@color/gray_800" />
+
+          <LinearLayout
+            android:id="@+id/group_watch_providers"
+            style="@style/GroupWatchProviders"
+            tools:visibility="visible">
+
+            <!-- Streaming (Flatrate) -->
+            <LinearLayout
+              android:id="@+id/layout_streaming"
+              style="@style/LayoutWatchProviders"
+              tools:visibility="visible">
+
+              <TextView
+                android:id="@+id/label_streaming"
+                style="@style/LabelWatchProviders"
+                android:text="@string/streaming" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_streaming"
+                style="@style/RecyclerViewWatchProviders"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_watch_provider" />
+            </LinearLayout>
+
+            <!-- Rent -->
+            <LinearLayout
+              android:id="@+id/layout_rent"
+              style="@style/LayoutWatchProviders"
+              tools:visibility="visible">
+
+              <TextView
+                android:id="@+id/label_rent"
+                style="@style/LabelWatchProviders"
+                android:text="@string/rent" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_rent"
+                style="@style/RecyclerViewWatchProviders"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_watch_provider" />
+            </LinearLayout>
+
+            <!-- Buy -->
+            <LinearLayout
+              android:id="@+id/layout_buy"
+              style="@style/LayoutWatchProviders"
+              tools:visibility="visible">
+
+              <TextView
+                android:id="@+id/label_buy"
+                style="@style/LabelWatchProviders"
+                android:text="@string/buy" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_buy"
+                style="@style/RecyclerViewWatchProviders"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_watch_provider" />
+            </LinearLayout>
+
+            <!-- Free -->
+            <LinearLayout
+              android:id="@+id/layout_free"
+              style="@style/LayoutWatchProviders"
+              tools:visibility="visible">
+
+              <TextView
+                android:id="@+id/label_free"
+                style="@style/LabelWatchProviders"
+                android:text="@string/free" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_free"
+                style="@style/RecyclerViewWatchProviders"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_watch_provider" />
+            </LinearLayout>
+
+            <!-- JustWatch attribution -->
+            <LinearLayout
+              android:id="@+id/layout_justwatch"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+              android:orientation="horizontal">
+
+              <TextView
+                style="@style/TextBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/data_powered_by" />
+
+              <com.google.android.material.button.MaterialButton
+                android:layout_marginStart="-5dp"
+                android:id="@+id/btn_justwatch"
+                style="@style/MyTransparentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_bold"
+                android:text="@string/justwatch"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="@color/gray_100" />
+            </LinearLayout>
+
+            <TextView
+              android:id="@+id/tv_watch_providers_message"
+              style="@style/TextBody"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+              android:layout_marginBottom="8dp"
+              android:text=""
+              android:visibility="gone"
+              tools:text="Error no watch provider"
+              tools:visibility="visible" />
+          </LinearLayout>
+        </LinearLayout>
+        <!--   End of WATCH PROVIDERS   -->
+
+        <com.google.android.material.divider.MaterialDivider
+          android:id="@+id/divider_watch_provider"
+          android:layout_width="match_parent"
+          android:layout_height="1.5dp"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+          app:dividerColor="@color/yellow_alpha_80" />
 
         <!-- ========================== -->
         <!--    DETAIL LOWER SECTION    -->
@@ -510,9 +589,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/overview"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/divider_score" />
+          android:text="@string/overview" />
 
         <io.github.glailton.expandabletextview.ExpandableTextView
           android:id="@+id/tv_overview"
@@ -528,9 +605,6 @@
           app:ellipsizeTextColor="@color/yellow"
           app:expandType="layout"
           app:isExpanded="false"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_summary_header"
           app:readLessText="@string/less_more"
           app:readMoreText="@string/read_more"
           app:textMode="line"
@@ -544,8 +618,6 @@
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="8dp"
           android:orientation="horizontal"
-          app:layout_constraintStart_toStartOf="@+id/tv_overview"
-          app:layout_constraintTop_toBottomOf="@+id/tv_overview"
           tools:background="@color/yellow"
           tools:layout_height="100dp" />
 
@@ -555,21 +627,17 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/cast"
-          app:layout_constraintStart_toStartOf="@+id/tv_overview"
-          app:layout_constraintTop_toBottomOf="@+id/table" />
+          android:text="@string/cast" />
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_cast"
-          android:layout_width="0dp"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:clipToPadding="false"
           android:paddingStart="@dimen/default_margin_parent_20"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_cast_header"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_cast"
           tools:orientation="horizontal" />
@@ -580,10 +648,9 @@
           style="@style/TextHeader2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/recommendation"
-          app:layout_constraintStart_toStartOf="@+id/tv_cast_header"
-          app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+          android:text="@string/recommendation" />
         <!-- End of DETAIL LOWER SECTION -->
 
         <androidx.recyclerview.widget.RecyclerView
@@ -593,17 +660,12 @@
           android:layout_marginTop="8dp"
           android:clipToPadding="false"
           android:paddingStart="@dimen/default_margin_parent_20"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_recommendation_header"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:listitem="@layout/item_poster"
           tools:orientation="horizontal" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
-
+      </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
   <!-- End of MAIN SECTION -->
 

@@ -26,17 +26,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
+import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
@@ -58,6 +62,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successful
 import com.waffiq.bazz_movies.core.designsystem.R.string.security_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
+import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_down
+import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
@@ -83,6 +89,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.detailCrew
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
@@ -95,7 +103,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
+@Suppress("ForbiddenComment", "TooManyFunctions", "LargeClass")
 @AndroidEntryPoint
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -112,12 +120,19 @@ class DetailMovieActivity : AppCompatActivity() {
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterRecommendation: RecommendationAdapter
 
+  private lateinit var adapterBuy: WatchProvidersAdapter
+  private lateinit var adapterFree: WatchProvidersAdapter
+  private lateinit var adapterRent: WatchProvidersAdapter
+  private lateinit var adapterStreaming: WatchProvidersAdapter
+
   private var favorite = false // is item favorite or not
   private var watchlist = false // is item watchlist or not
   private var isLogin = false // is login as user or not
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
+
+  private var isExpanded = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
@@ -136,15 +151,16 @@ class DetailMovieActivity : AppCompatActivity() {
 
     justifyTextView(binding.tvOverview as TextView)
 
+    getDataExtra()
     showLoadingDim(true)
     setupRecyclerView()
     stateObserver()
     initTag()
 
     checkUser()
-    getDataExtra()
     showDetailData()
     favWatchlistHandler()
+    btnWatchProviders()
     viewListener()
   }
 
@@ -160,12 +176,42 @@ class DetailMovieActivity : AppCompatActivity() {
 
   private fun setupRecyclerView() {
     setupRecyclerViewsWithSnap(
-      listOf(binding.rvCast, binding.rvRecommendation)
+      listOf(
+        binding.rvBuy,
+        binding.rvFree,
+        binding.rvRent,
+        binding.rvStreaming,
+        binding.rvCast,
+        binding.rvRecommendation,
+      )
     )
 
+    val clickListener = {
+      startActivity(
+        Intent(
+          Intent.ACTION_VIEW,
+          "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri()
+        )
+      )
+    }
+
     // setup adapter
+    adapterBuy = WatchProvidersAdapter(clickListener)
+    adapterFree = WatchProvidersAdapter(clickListener)
+    adapterRent = WatchProvidersAdapter(clickListener)
+    adapterStreaming = WatchProvidersAdapter(clickListener)
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
+
+    // setup rv watch providers
+    binding.rvBuy.itemAnimator = DefaultItemAnimator()
+    binding.rvFree.itemAnimator = DefaultItemAnimator()
+    binding.rvRent.itemAnimator = DefaultItemAnimator()
+    binding.rvStreaming.itemAnimator = DefaultItemAnimator()
+    binding.rvBuy.adapter = adapterBuy
+    binding.rvFree.adapter = adapterFree
+    binding.rvRent.adapter = adapterRent
+    binding.rvStreaming.adapter = adapterStreaming
 
     // setup rv cast
     binding.rvCast.itemAnimator = DefaultItemAnimator()
@@ -308,9 +354,10 @@ class DetailMovieActivity : AppCompatActivity() {
     // shows crew and cast
     detailViewModel.getMovieCredits(dataExtra.id)
 
-    // get detail movie
+    // get detail movie, and watch providers
     prefViewModel.getUserRegion().observe(this) { region ->
       detailViewModel.detailMovie(dataExtra.id, region)
+      detailViewModel.getMovieWatchProviders(region.uppercase(), dataExtra.id)
     }
 
     detailViewModel.detailMovieTv.observe(this) { movie ->
@@ -392,6 +439,8 @@ class DetailMovieActivity : AppCompatActivity() {
     detailViewModel.recommendation.observe(this) { recommendations ->
       adapterRecommendation.submitData(lifecycle, recommendations)
     }
+
+    showWatchProviders()
   }
   // endregion MOVIE
 
@@ -408,9 +457,10 @@ class DetailMovieActivity : AppCompatActivity() {
       adapterRecommendation.submitData(lifecycle, it)
     }
 
-    // show genres & age rate
+    // show genres, age rate, watch region
     prefViewModel.getUserRegion().observe(this) { region ->
       detailViewModel.detailTv(dataExtra.id, region)
+      detailViewModel.getTvWatchProviders(region.uppercase(), dataExtra.id)
     }
     detailViewModel.detailMovieTv.observe(this) { tv ->
 
@@ -485,6 +535,8 @@ class DetailMovieActivity : AppCompatActivity() {
         btnTrailer(it)
       }
     }
+
+    showWatchProviders()
   }
   // endregion TV
 
@@ -504,6 +556,7 @@ class DetailMovieActivity : AppCompatActivity() {
   }
 
   private fun btnTrailer(link: String) {
+    // button to open trailer
     binding.ibPlay.setOnClickListener {
       try {
         startActivity(
@@ -524,6 +577,26 @@ class DetailMovieActivity : AppCompatActivity() {
         Log.e(TAG, "Unknown error occurred while trying to play video", e)
         snackBarWarning(binding.coordinatorLayout, null, getString(unknown_error))
       }
+    }
+  }
+
+  private fun btnWatchProviders() {
+    // button to expand or collapse watch providers
+    binding.tvToggleWatchProviders.setOnClickListener {
+      isExpanded = !isExpanded
+
+      // animate visibility changes
+      TransitionManager.beginDelayedTransition(binding.watchProviderSection, AutoTransition())
+      binding.groupWatchProviders.visibility = if (isExpanded) View.VISIBLE else View.GONE
+
+      // update toggle icon
+      binding.tvToggleWatchProviders.text =
+        if (isExpanded) getString(where_to_watch_up) else getString(where_to_watch_down)
+    }
+
+    // open justwatch
+    binding.btnJustwatch.setOnClickListener {
+      startActivity(Intent(Intent.ACTION_VIEW, JUSTWATCH_LINK_MAIN.toUri()))
     }
   }
 
@@ -745,6 +818,66 @@ class DetailMovieActivity : AppCompatActivity() {
   private fun showViewReleaseDate(isShow: Boolean) {
     binding.tvYearReleased.isVisible = isShow
     binding.divider1.isVisible = isShow
+  }
+
+  private fun showWatchProviders() {
+    detailViewModel.watchProvidersUiState.observe(this) { state ->
+      when (state) {
+        is WatchProvidersUiState.Loading -> {
+          binding.progressBar.isVisible = true
+          binding.tvWatchProvidersMessage.isVisible = false
+        }
+
+        is WatchProvidersUiState.Success -> {
+          binding.progressBar.isVisible = false
+          binding.tvWatchProvidersMessage.isVisible = false
+          binding.layoutJustwatch.isVisible = true
+
+          adapterBuy.setProviders(state.buy)
+          adapterFree.setProviders(state.free)
+          adapterRent.setProviders(state.rent)
+          adapterStreaming.setProviders(state.flatrate)
+
+          binding.rvBuy.isVisible = state.buy.isNotEmpty()
+          binding.rvFree.isVisible = state.free.isNotEmpty()
+          binding.rvRent.isVisible = state.rent.isNotEmpty()
+          binding.rvStreaming.isVisible = state.flatrate.isNotEmpty()
+
+          binding.labelBuy.isVisible = state.buy.isNotEmpty()
+          binding.labelFree.isVisible = state.free.isNotEmpty()
+          binding.labelRent.isVisible = state.rent.isNotEmpty()
+          binding.labelStreaming.isVisible = state.flatrate.isNotEmpty()
+
+          binding.layoutFree.isVisible = state.free.isNotEmpty()
+          binding.layoutBuy.isVisible = state.buy.isNotEmpty()
+          binding.layoutRent.isVisible = state.rent.isNotEmpty()
+          binding.layoutStreaming.isVisible = state.flatrate.isNotEmpty()
+        }
+
+        is WatchProvidersUiState.Error -> {
+          binding.progressBar.isVisible = false
+          binding.tvWatchProvidersMessage.text = state.message
+          binding.tvWatchProvidersMessage.isVisible = true
+          binding.layoutJustwatch.isVisible = false
+
+          binding.rvBuy.isVisible = false
+          binding.rvFree.isVisible = false
+          binding.rvRent.isVisible = false
+          binding.rvStreaming.isVisible = false
+
+
+          binding.labelBuy.isVisible = false
+          binding.labelFree.isVisible = false
+          binding.labelRent.isVisible = false
+          binding.labelStreaming.isVisible = false
+
+          binding.layoutFree.isVisible = false
+          binding.layoutBuy.isVisible = false
+          binding.layoutRent.isVisible = false
+          binding.layoutStreaming.isVisible = false
+        }
+      }
+    }
   }
   // endregion VIEW HANDLER
 

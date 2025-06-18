@@ -211,15 +211,65 @@
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
     <item name="android:textColor">@color/gray_100</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:text">@string/not_available</item>
   </style>
 
   <style name="TextScoreHeader">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginTop">4dp</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
     <item name="android:textColor">@color/gray_400</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:layout_gravity">center</item>
     <item name="android:gravity">center</item>
+  </style>
+
+  <style name="GroupScore">
     <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">16dp</item>
+    <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    <item name="android:minWidth">48dp</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:paddingBottom">8dp</item>
+  </style>
+
+  <style name="RecyclerViewWatchProviders">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:clipToPadding">false</item>
+    <item name="android:orientation">horizontal</item>
+    <item name="android:overScrollMode">never</item>
+    <item name="android:paddingStart">@dimen/default_margin_parent_20</item>
+  </style>
+
+  <style name="LayoutWatchProviders">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginBottom">12dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:visibility">gone</item>
+  </style>
+
+  <style name="LabelWatchProviders">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">@dimen/default_margin_parent_20</item>
+    <item name="android:layout_alignEnd">@dimen/default_margin_parent_20</item>
+    <item name="android:layout_marginBottom">8dp</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:textColor">@color/gray_200</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleSmall</item>
+  </style>
+
+  <style name="GroupWatchProviders">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:visibility">gone</item>
   </style>
 
   <!-- Style button on more page -->
