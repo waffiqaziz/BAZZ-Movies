@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.CountryProviderData
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.getTransformTMDBScore
@@ -64,8 +64,25 @@ class GetDetailTvInteractor @Inject constructor(
   override suspend fun getCreditTv(tvId: Int): Flow<Outcome<MovieTvCredits>> =
     detailRepository.getCreditTv(tvId)
 
-  override suspend fun getWatchProvidersTv(tvId: Int): Flow<Outcome<WatchProviders>> =
-    detailRepository.getWatchProviders("tv", tvId)
+  override suspend fun getWatchProvidersTv(
+    countryCode: String,
+    tvId: Int,
+  ): Flow<Outcome<CountryProviderData>> =
+    detailRepository.getWatchProviders("tv", tvId).map { outcome ->
+      when (outcome) {
+        is Outcome.Success -> {
+          val countryProvider = outcome.data.results?.get(countryCode)
+          if (countryProvider != null) {
+            Outcome.Success(countryProvider)
+          } else {
+            Outcome.Error("No watch provider found for country code: $countryCode")
+          }
+        }
+
+        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Loading -> Outcome.Loading
+      }
+    }
 
   override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItem>> =
     detailRepository.getPagingTvRecommendation(tvId)

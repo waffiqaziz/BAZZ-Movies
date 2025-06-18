@@ -13,8 +13,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemWatchProviderBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 
-@Suppress("ForbiddenComment")
-class WatchProvidersAdapter :
+class WatchProvidersAdapter(
+  private val onItemClick: () -> Unit,
+) :
   RecyclerView.Adapter<WatchProvidersAdapter.ViewHolder>() {
 
   private val providerList = ArrayList<Provider>()
@@ -29,7 +30,8 @@ class WatchProvidersAdapter :
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemWatchProviderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding =
+      ItemWatchProviderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -47,6 +49,7 @@ class WatchProvidersAdapter :
 
     fun bind(provider: Provider) {
       binding.ivPictureProvider.contentDescription = provider.providerName
+      binding.ivPictureProvider.setOnClickListener { onItemClick() }
 
       Glide.with(binding.ivPictureProvider)
         .load(
@@ -60,16 +63,12 @@ class WatchProvidersAdapter :
         .transition(withCrossFade())
         .error(ic_broken_image)
         .into(binding.ivPictureProvider)
-
-      binding.container.setOnClickListener {
-        // TODO: handle click (open link to watch providers)
-      }
     }
   }
 
   inner class DiffCallback(
     private val oldList: List<Provider>,
-    private val newList: List<Provider>
+    private val newList: List<Provider>,
   ) : DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
     override fun getNewListSize() = newList.size

@@ -28,10 +28,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvUseCase
+import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -91,8 +91,8 @@ class DetailMovieViewModel @Inject constructor(
   private val _recommendation = MutableLiveData<PagingData<ResultItem>>()
   val recommendation: LiveData<PagingData<ResultItem>> get() = _recommendation
 
-  private val _watchProviders = MutableLiveData<WatchProviders>()
-  val watchProviders: LiveData<WatchProviders> get() = _watchProviders
+  private val _watchProvidersUiState = MutableLiveData<WatchProvidersUiState>()
+  val watchProvidersUiState: LiveData<WatchProvidersUiState> = _watchProvidersUiState
   // endregion OBSERVABLES
 
   // region MOVIE
@@ -164,15 +164,25 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun getMovieWatchProviders(tvId: Int) {
+  fun getMovieWatchProviders(countryCode: String, movieId: Int) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getWatchProvidersMovies(tvId).collect { outcome ->
+      getDetailMovieUseCase.getWatchProvidersMovies(countryCode, movieId).collect { outcome ->
         when (outcome) {
-          is Outcome.Success -> outcome.data.let { _watchProviders.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            _watchProvidersUiState.value = WatchProvidersUiState.Loading
+          }
+
+          is Outcome.Success -> {
+            _watchProvidersUiState.value = WatchProvidersUiState.Success(
+              flatrate = outcome.data.flatrate.orEmpty(),
+              rent = outcome.data.rent.orEmpty(),
+              buy = outcome.data.buy.orEmpty(),
+              free = outcome.data.free.orEmpty(),
+            )
+          }
+
           is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
+            _watchProvidersUiState.value = WatchProvidersUiState.Error(outcome.message)
           }
         }
       }
@@ -267,15 +277,25 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun getTvWatchProviders(tvId: Int) {
+  fun getTvWatchProviders(countryCode: String, tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getWatchProvidersTv(tvId).collect { outcome ->
+      getDetailTvUseCase.getWatchProvidersTv(countryCode, tvId).collect { outcome ->
         when (outcome) {
-          is Outcome.Success -> outcome.data.let { _watchProviders.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            _watchProvidersUiState.value = WatchProvidersUiState.Loading
+          }
+
+          is Outcome.Success -> {
+            _watchProvidersUiState.value = WatchProvidersUiState.Success(
+              flatrate = outcome.data.flatrate.orEmpty(),
+              rent = outcome.data.rent.orEmpty(),
+              buy = outcome.data.buy.orEmpty(),
+              free = outcome.data.free.orEmpty(),
+            )
+          }
+
           is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
+            _watchProvidersUiState.value = WatchProvidersUiState.Error(outcome.message)
           }
         }
       }

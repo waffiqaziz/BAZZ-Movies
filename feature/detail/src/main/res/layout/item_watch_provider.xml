@@ -11,7 +11,10 @@
     android:layout_width="50dp"
     android:layout_height="50dp"
     android:layout_marginRight="12dp"
-    android:background="@android:color/transparent"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:backgroundTint="@android:color/transparent"
+    android:clickable="true"
+    android:focusable="true"
     app:shapeAppearanceOverlay="@style/roundedCornersPoster"
     tools:src="@color/yellow" />
 
