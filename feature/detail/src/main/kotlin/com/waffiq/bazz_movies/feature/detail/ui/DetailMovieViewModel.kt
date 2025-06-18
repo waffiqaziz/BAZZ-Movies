@@ -28,11 +28,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.CountryProviderData
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -166,26 +168,7 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getMovieWatchProviders(countryCode: String, movieId: Int) {
     viewModelScope.launch {
-      getDetailMovieUseCase.getWatchProvidersMovies(countryCode, movieId).collect { outcome ->
-        when (outcome) {
-          is Outcome.Loading -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Loading
-          }
-
-          is Outcome.Success -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Success(
-              flatrate = outcome.data.flatrate.orEmpty(),
-              rent = outcome.data.rent.orEmpty(),
-              buy = outcome.data.buy.orEmpty(),
-              free = outcome.data.free.orEmpty(),
-            )
-          }
-
-          is Outcome.Error -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Error(outcome.message)
-          }
-        }
-      }
+      collectWatchProviders(getDetailMovieUseCase.getWatchProvidersMovies(countryCode, movieId))
     }
   }
   // endregion MOVIE
@@ -279,29 +262,28 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getTvWatchProviders(countryCode: String, tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getWatchProvidersTv(countryCode, tvId).collect { outcome ->
-        when (outcome) {
-          is Outcome.Loading -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Loading
-          }
+      collectWatchProviders(getDetailTvUseCase.getWatchProvidersTv(countryCode, tvId))
+    }
+  }
+  // endregion TV-SERIES
 
-          is Outcome.Success -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Success(
-              flatrate = outcome.data.flatrate.orEmpty(),
-              rent = outcome.data.rent.orEmpty(),
-              buy = outcome.data.buy.orEmpty(),
-              free = outcome.data.free.orEmpty(),
-            )
-          }
+  private fun collectWatchProviders(flow: Flow<Outcome<CountryProviderData>>) {
+    viewModelScope.launch {
+      flow.collect { outcome ->
+        _watchProvidersUiState.value = when (outcome) {
+          is Outcome.Loading -> WatchProvidersUiState.Loading
+          is Outcome.Success -> WatchProvidersUiState.Success(
+            flatrate = outcome.data.flatrate.orEmpty(),
+            rent = outcome.data.rent.orEmpty(),
+            buy = outcome.data.buy.orEmpty(),
+            free = outcome.data.free.orEmpty(),
+          )
 
-          is Outcome.Error -> {
-            _watchProvidersUiState.value = WatchProvidersUiState.Error(outcome.message)
-          }
+          is Outcome.Error -> WatchProvidersUiState.Error(outcome.message)
         }
       }
     }
   }
-  // endregion TV-SERIES
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
