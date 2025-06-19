@@ -9,8 +9,6 @@ import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 
 /**
  * Utility object responsible for displaying Toast and Snackbar messages.
