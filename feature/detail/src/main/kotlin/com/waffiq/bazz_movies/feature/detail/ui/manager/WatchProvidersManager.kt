@@ -95,9 +95,12 @@ class WatchProvidersManager(
   }
 
   private fun openTMDBWatchPage() {
-     context.startActivity(
-         Intent(Intent.ACTION_VIEW, "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri())
-     )
+    context.startActivity(
+      Intent(
+        Intent.ACTION_VIEW,
+        "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri()
+      )
+    )
   }
 
   private fun openJustWatch() {
