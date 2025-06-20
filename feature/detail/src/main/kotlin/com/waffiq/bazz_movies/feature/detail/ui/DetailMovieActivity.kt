@@ -163,7 +163,7 @@ class DetailMovieActivity : AppCompatActivity() {
     uiManager.showGeneralInfo(dataExtra)
     uiManager.showLoadingDim(true)
 
-    dataManager.loadInitialData()
+    dataManager.loadAllData()
   }
 
   override fun onDestroy() {

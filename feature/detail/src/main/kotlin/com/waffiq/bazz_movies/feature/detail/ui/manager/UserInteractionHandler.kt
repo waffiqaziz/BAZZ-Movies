@@ -41,6 +41,21 @@ import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
 import java.util.Locale
 
+/**
+ * Handles all user interactions within the movie detail screen.
+ *
+ * This includes managing login state, updating UI based on user preferences
+ * (e.g., favorites, watchlist), responding to rating interactions, and
+ * posting data to TMDB or the local database.
+ *
+ * @param binding View binding for the detail movie activity layout.
+ * @param activity Reference to the hosting [AppCompatActivity].
+ * @param detailViewModel ViewModel responsible for detail-related data operations.
+ * @param prefViewModel ViewModel for managing user preferences and login state.
+ * @param dataExtra The movie or TV show data passed via intent.
+ * @param uiManager Utility class for managing UI feedback like toast/snackbar.
+ * @param dataManager Utility class for managing data refresh or reload logic.
+ */
 class UserInteractionHandler(
   private val binding: ActivityDetailMovieBinding,
   private val activity: AppCompatActivity,
@@ -48,7 +63,7 @@ class UserInteractionHandler(
   private val prefViewModel: DetailUserPrefViewModel,
   private val dataExtra: ResultItem,
   private val uiManager: DetailMovieUIManager,
-  private val dataManager: DetailMovieDataManager
+  private val dataManager: DetailMovieDataManager,
 ) {
   private var favorite = false
   private var watchlist = false
@@ -58,17 +73,22 @@ class UserInteractionHandler(
     initializeTags()
   }
 
+  /** Initializes button tags for favorite and watchlist actions. */
   private fun initializeTags() {
     binding.btnFavorite.tag = ic_hearth
     binding.btnWatchlist.tag = ic_bookmark
   }
 
+  /** Sets up LiveData observers related to the user state and interaction outcomes. */
   fun setupUserStateObservers() {
     observeUserToken(activity)
     observeFavoriteWatchlistPost(activity)
     observeRatingState(activity)
   }
 
+  /**
+   * Observes the user token to determine login state and setup appropriate observers.
+   */
   private fun observeUserToken(lifecycleOwner: LifecycleOwner) {
     prefViewModel.getUserToken().observe(lifecycleOwner) { token ->
       isLogin = token != NAN && token.isNotEmpty()
@@ -76,15 +96,18 @@ class UserInteractionHandler(
       binding.yourScoreViewGroup.isVisible = isLogin
 
       if (isLogin) {
-        setupUserLoginObservers(lifecycleOwner, token)
+        setupLoginUserObservers(lifecycleOwner, token)
         binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
+      } else {
+        setupGuestUserObservers(lifecycleOwner)
       }
-
-      setupFavoriteWatchlistObservers(lifecycleOwner)
     }
   }
 
-  private fun setupUserLoginObservers(lifecycleOwner: LifecycleOwner, token: String) {
+  /**
+   * Observes data for a logged-in user such as favorite/watchlist state and ratings.
+   */
+  private fun setupLoginUserObservers(lifecycleOwner: LifecycleOwner, token: String) {
     getStatedData(token)
 
     detailViewModel.itemState.observe(lifecycleOwner) { state ->
@@ -98,14 +121,10 @@ class UserInteractionHandler(
     }
   }
 
-  private fun setupFavoriteWatchlistObservers(lifecycleOwner: LifecycleOwner) {
-    if (isLogin) {
-      /**
-       * user login observers are already set up on [setupUserLoginObservers]
-       */
-      return
-    }
-
+  /**
+   * Observes data from local DB for guest users (not logged in).
+   */
+  private fun setupGuestUserObservers(lifecycleOwner: LifecycleOwner) {
     // guest user observers
     detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
     detailViewModel.isFavorite.observe(lifecycleOwner) { isFav ->
@@ -120,6 +139,10 @@ class UserInteractionHandler(
     }
   }
 
+
+  /**
+   * Observes result of add/remove item from favorite/watchlist.
+   */
   private fun observeFavoriteWatchlistPost(lifecycleOwner: LifecycleOwner) {
     detailViewModel.postModelState.observe(lifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled()?.let { postModelState ->
@@ -137,6 +160,9 @@ class UserInteractionHandler(
     }
   }
 
+  /**
+   * Observes the result of submit a rating.
+   */
   private fun observeRatingState(lifecycleOwner: LifecycleOwner) {
     detailViewModel.rateState.observe(lifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
@@ -147,6 +173,7 @@ class UserInteractionHandler(
     }
   }
 
+  /** Sets up all UI click listeners related to user interactions. */
   fun setupClickListeners() {
     binding.apply {
       btnBack.setOnClickListener {
@@ -181,6 +208,7 @@ class UserInteractionHandler(
     }
   }
 
+  /** Handles favorite button click based on login state. */
   private fun handleFavoriteClick() {
     uiManager.dismissSnackbar()
 
@@ -191,6 +219,7 @@ class UserInteractionHandler(
     }
   }
 
+  /** Handles watchlist button click based on login state. */
   private fun handleWatchlistClick() {
     uiManager.dismissSnackbar()
 
@@ -201,6 +230,7 @@ class UserInteractionHandler(
     }
   }
 
+  /** Refreshes data and user states when swipe refresh is triggered. */
   private fun handleSwipeRefresh() {
     // refresh user state
     prefViewModel.getUserToken().value?.let { token ->
@@ -212,16 +242,20 @@ class UserInteractionHandler(
     // refresh detail data based on media type
     when (dataExtra.mediaType) {
       MOVIE_MEDIA_TYPE -> {
-        dataManager.loadInitialData()
+        dataManager.loadAllData()
       }
 
       TV_MEDIA_TYPE -> {
-        dataManager.loadInitialData()
+        dataManager.loadAllData()
       }
     }
     binding.swipeRefresh.isRefreshing = false
   }
 
+
+  /**
+   * Retrieves stated data (favorite/watchlist) from TMDB based on media type.
+   */
   private fun getStatedData(token: String) {
     if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
       detailViewModel.getStatedMovie(token, dataExtra.id)
@@ -230,6 +264,12 @@ class UserInteractionHandler(
     }
   }
 
+  /**
+   * Sends a request to TMDB to update favorite or watchlist status.
+   *
+   * @param isModeFavorite Determines if action is for favorite or watchlist.
+   * @param state Current state of the button.
+   */
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) {
       favorite = !state
@@ -260,6 +300,9 @@ class UserInteractionHandler(
     }
   }
 
+  /**
+   * Displays the user's current rating in the UI after submit a rating.
+   */
   private fun showRatingUserLogin(state: Stated) {
     binding.tvScoreYourScore.text = when (val rating = state.rated) {
       is Rated.Unrated -> activity.getString(not_available)
@@ -267,12 +310,14 @@ class UserInteractionHandler(
     }
   }
 
+  /** Shows a "not rated" dialog if the score string has no valid number. */
   private val showDialogIfNotRated: (String) -> Unit = { scoreText ->
     if (!scoreText.contains("[0-9]".toRegex())) {
       showDialogNotRated()
     }
   }
 
+  /** Displays a dialog to indicate that rating data is unavailable. */
   private fun showDialogNotRated() {
     MaterialAlertDialogBuilder(activity, CustomAlertDialogTheme).apply {
       setTitle(activity.resources.getString(not_available_full))
@@ -284,6 +329,7 @@ class UserInteractionHandler(
     }
   }
 
+  /** Shows the rating dialog for user to submit a rating. */
   private fun showDialogRate() {
     val dialog = Dialog(activity)
     val dialogView = View.inflate(activity, dialog_rating, null)

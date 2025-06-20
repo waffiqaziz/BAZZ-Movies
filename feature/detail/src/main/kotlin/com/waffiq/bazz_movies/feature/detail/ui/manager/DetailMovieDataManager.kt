@@ -7,6 +7,18 @@ import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailMovieViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 
+/**
+ * Manages the loading of detailed movie or TV show data for the detail screen.
+ *
+ * This class is responsible for orchestrating multiple data-fetching operations,
+ * including details, credits, recommendations, external IDs, scores, and watch
+ * providers, depending on whether the item is a movie or TV show.
+ *
+ * @param detailViewModel The ViewModel that provides methods for retrieving movie/TV details.
+ * @param prefViewModel The ViewModel used to retrieve user preferences such as region.
+ * @param dataExtra The [ResultItem] representing the movie or TV show being viewed.
+ * @param lifecycleOwner The lifecycle owner used to observe LiveData from ViewModels.
+ */
 class DetailMovieDataManager(
   private val detailViewModel: DetailMovieViewModel,
   private val prefViewModel: DetailUserPrefViewModel,
@@ -14,17 +26,26 @@ class DetailMovieDataManager(
   private val lifecycleOwner: LifecycleOwner,
 ) {
 
-  fun loadInitialData() {
-    // load recommendations
+  /**
+   * Loads all data required for displaying the detail screen.
+   *
+   * This includes:
+   * - Recommendations based on the current movie/TV-series
+   * - Main details, credits, watch providers, external IDs, and scores,
+   *   depending on whether the item is a movie or TV show.
+   */
+  fun loadAllData() {
     loadRecommendations()
 
-    // load data based on media type
     when (dataExtra.mediaType) {
       MOVIE_MEDIA_TYPE -> loadMovieData()
       TV_MEDIA_TYPE -> loadTvData()
     }
   }
 
+  /**
+   * Loads movie or TV show recommendations based on the media type.
+   */
   fun loadRecommendations() {
     when (dataExtra.mediaType) {
       MOVIE_MEDIA_TYPE -> detailViewModel.getRecommendationMovie(dataExtra.id)
@@ -32,36 +53,36 @@ class DetailMovieDataManager(
     }
   }
 
+  /**
+   * Loads detailed data specific to a movie, including:
+   * - Credits (cast and crew)
+   * - Movie details
+   * - Watch providers based on the user's region
+   */
   private fun loadMovieData() {
-    // load movie credits (cast and crew)
     detailViewModel.getMovieCredits(dataExtra.id)
-
-    // load movie details and watch providers based on user region
     prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
       detailViewModel.detailMovie(dataExtra.id, region)
       detailViewModel.getMovieWatchProviders(region.uppercase(), dataExtra.id)
     }
   }
 
+  /**
+   * Loads detailed data specific to a TV-series, including:
+   * - External IMDb ID (not included by default in TV show results)
+   * - OMDb score via IMDb ID
+   * - Credits (cast and crew)
+   * - Video links (trailers, etc.)
+   * - TV details
+   * - Watch providers based on the user's region
+   */
   private fun loadTvData() {
-    // load external ID (IMDb ID),
-    // due to missing IMDb ID on default ResultItem for tv-series
     detailViewModel.getExternalTvId(dataExtra.id)
-
-    // get OMDB score using IMDb ID from ExternalID
     detailViewModel.tvExternalID.observe(lifecycleOwner) {
-      if (it?.imdbId != null) {
-        detailViewModel.getScoreOMDb(it.imdbId)
-      }
+      if (it?.imdbId != null) detailViewModel.getScoreOMDb(it.imdbId)
     }
-
-    // load TV credits (cast and crew)
     detailViewModel.getTvCredits(dataExtra.id)
-
-    // load TV video links
     detailViewModel.getLinkTv(dataExtra.id)
-
-    // load TV details and watch providers based on user region
     prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
       detailViewModel.detailTv(dataExtra.id, region)
       detailViewModel.getTvWatchProviders(region.uppercase(), dataExtra.id)

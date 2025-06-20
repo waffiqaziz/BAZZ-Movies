@@ -18,7 +18,7 @@ object CreateTableViewHelper {
   fun createTable(
     context: Context,
     pair: Pair<List<String>, List<String>>,
-    table: FrameLayout
+    table: FrameLayout,
   ) {
     val (job, crewName) = pair
 
