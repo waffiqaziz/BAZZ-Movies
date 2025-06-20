@@ -1,13 +1,10 @@
-package com.waffiq.bazz_movies.feature.detail.ui
+package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
@@ -28,6 +25,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
 import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.CountryProviderData
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
@@ -61,7 +59,7 @@ class DetailMovieViewModel @Inject constructor(
   val isWatchlist: LiveData<Boolean> = _isWatchlist
 
   private val _itemState = MutableLiveData<Stated>()
-  val itemState: LiveData<Stated> get() = _itemState.distinctUntilChanged()
+  val itemState: LiveData<Stated> get() = _itemState
 
   private val _movieTvCreditsResult = MutableLiveData<MovieTvCredits>()
   val movieTvCreditsResult: LiveData<MovieTvCredits> get() = _movieTvCreditsResult
@@ -87,8 +85,8 @@ class DetailMovieViewModel @Inject constructor(
   private val _detailMovieTv = MutableLiveData<DetailMovieTvUsed>()
   val detailMovieTv: LiveData<DetailMovieTvUsed> get() = _detailMovieTv
 
-  private val _tvImdbID = MutableLiveData<String>()
-  val tvImdbID: LiveData<String> get() = _tvImdbID
+  private val _tvExternalID = MutableLiveData<ExternalTvID>()
+  val tvExternalID: LiveData<ExternalTvID> get() = _tvExternalID
 
   private val _recommendation = MutableLiveData<PagingData<ResultItem>>()
   val recommendation: LiveData<PagingData<ResultItem>> get() = _recommendation
@@ -174,7 +172,7 @@ class DetailMovieViewModel @Inject constructor(
   // endregion MOVIE
 
   // region TV-SERIES
-  private fun getLinkTv(tvId: Int) {
+  fun getLinkTv(tvId: Int) {
     viewModelScope.launch {
       getDetailTvUseCase.getTrailerLinkTv(tvId).collect { outcome ->
         when (outcome) {
@@ -184,6 +182,18 @@ class DetailMovieViewModel @Inject constructor(
             _loadingState.value = false
             _errorState.emit(outcome.message)
           }
+        }
+      }
+    }
+  }
+
+  fun getExternalTvId(tvId: Int) {
+    viewModelScope.launch {
+      getDetailTvUseCase.getExternalTvId(tvId).collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> _tvExternalID.value = outcome.data
+          is Outcome.Loading -> {}
+          is Outcome.Error -> _errorState.emit(outcome.message)
         }
       }
     }
@@ -219,31 +229,13 @@ class DetailMovieViewModel @Inject constructor(
     }
   }
 
-  fun getImdbVideoTv(id: Int) {
+  fun getRecommendationTv(tvId: Int) {
     viewModelScope.launch {
-      getDetailTvUseCase.getExternalTvId(id).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            outcome.data.imdbId.let { _tvImdbID.value = it }
-            outcome.data.let { externalId ->
-              externalId.imdbId?.let { imdbId ->
-                getScoreOMDb(imdbId)
-                getLinkTv(id)
-              }
-            }
-          }
-
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _errorState.emit(outcome.message)
-          }
-        }
+      getDetailTvUseCase.getPagingTvRecommendation(tvId).collectLatest {
+        _recommendation.value = it
       }
     }
   }
-
-  fun getRecommendationTv(tvId: Int): LiveData<PagingData<ResultItem>> =
-    getDetailTvUseCase.getPagingTvRecommendation(tvId).cachedIn(viewModelScope).asLiveData()
 
   fun getStatedTv(sessionId: String, id: Int) {
     viewModelScope.launch {
@@ -287,7 +279,7 @@ class DetailMovieViewModel @Inject constructor(
 
   fun getScoreOMDb(imdbId: String) {
     viewModelScope.launch {
-      getDetailOMDbUseCase.getDetailOMDb(imdbId).collect { outcome ->
+      getDetailOMDbUseCase.getDetailOMDb(imdbId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             outcome.data.let { _omdbResult.value = it }
