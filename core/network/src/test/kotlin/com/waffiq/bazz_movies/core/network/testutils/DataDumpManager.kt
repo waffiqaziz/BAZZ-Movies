@@ -32,6 +32,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.CountryProviderDataResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.ProviderResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
@@ -687,6 +690,67 @@ object DataDumpManager {
     type = "Trailer",
     iso6391 = "en",
     key = "pkKu9hLT-t8"
+  )
+
+  val watchProviderResponseDump = WatchProvidersResponse(
+    id = 1234567890,
+    results = mapOf(
+      "US" to CountryProviderDataResponse(
+        link = "https://www.link.com/us/movie/example-movie",
+        flatrate = listOf(
+          ProviderResponse(
+            logoPath = "/logo1.png",
+            providerId = 1,
+            providerName = "Netflix",
+            displayPriority = 10
+          ),
+          ProviderResponse(
+            logoPath = "/logo2.png",
+            providerId = 2,
+            providerName = "Disney+",
+            displayPriority = 20
+          )
+        ),
+        rent = listOf(
+          ProviderResponse(
+            logoPath = "/logo3.png",
+            providerId = 3,
+            providerName = "Amazon Prime",
+            displayPriority = 15
+          )
+        ),
+        buy = listOf(
+          ProviderResponse(
+            logoPath = "/logo4.png",
+            providerId = 4,
+            providerName = "Google Play",
+            displayPriority = 5
+          )
+        ),
+        free = null
+      ),
+      "ID" to CountryProviderDataResponse(
+        link = "https://www.link.com/id/movie/example-movie",
+        flatrate = null,
+        rent = null,
+        buy = listOf(
+          ProviderResponse(
+            logoPath = "/logo5.png",
+            providerId = 5,
+            providerName = "Vidio",
+            displayPriority = 8
+          )
+        ),
+        free = listOf(
+          ProviderResponse(
+            logoPath = "/logo6.png",
+            providerId = 6,
+            providerName = "WeTV",
+            displayPriority = 12
+          )
+        )
+      )
+    )
   )
 
   val videoTvResponseDump = VideoResponse(
