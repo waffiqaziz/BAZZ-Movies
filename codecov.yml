@@ -9,9 +9,119 @@ coverage:
         threshold: 0%
         base: auto
 
-comment:
-  layout: "condensed_header, condensed_files, condensed_footer"
-  hide_project_coverage: TRUE
-
 codecov:
   max_report_age: off
+
+flags:
+  # App module
+  app:
+    paths:
+      - app/
+    
+  # Core modules
+  core-common:
+    paths:
+      - core/common/
+      
+  core-coroutines:
+    paths:
+      - core/coroutines/
+      
+  core-data:
+    paths:
+      - core/data/
+      
+  core-database:
+    paths:
+      - core/database/
+      
+  core-designsystem:
+    paths:
+      - core/designsystem/
+      
+  core-domain:
+    paths:
+      - core/domain/
+      
+  core-favoritewatchlist:
+    paths:
+      - core/favoritewatchlist/
+      
+  core-mappers:
+    paths:
+      - core/mappers/
+      
+  core-movie:
+    paths:
+      - core/movie/
+      
+  core-network:
+    paths:
+      - core/network/
+      
+  core-test:
+    paths:
+      - core/test/
+      
+  core-uihelper:
+    paths:
+      - core/uihelper/
+      
+  core-utils:
+    paths:
+      - core/utils/
+      
+  core-user:
+    paths:
+      - core/user/
+      
+  # Feature modules
+  feature-about:
+    paths:
+      - feature/about/
+      
+  feature-detail:
+    paths:
+      - feature/detail/
+      
+  feature-favorite:
+    paths:
+      - feature/favorite/
+      
+  feature-home:
+    paths:
+      - feature/home/
+      
+  feature-login:
+    paths:
+      - feature/login/
+      
+  feature-more:
+    paths:
+      - feature/more/
+      
+  feature-person:
+    paths:
+      - feature/person/
+      
+  feature-search:
+    paths:
+      - feature/search/
+      
+  feature-watchlist:
+    paths:
+      - feature/watchlist/
+
+flag_management:
+  default_rules:
+    carryforward: true
+    statuses:
+      - type: project
+        target: 80%
+      - type: patch
+        target: 80%
+
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: false
