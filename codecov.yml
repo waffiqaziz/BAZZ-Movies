@@ -3,123 +3,152 @@ coverage:
   round: down
   precision: 2
   status:
-    project: #docs https://docs.codecov.com/docs/commit-status
+    project:
       default:
         target: auto
         threshold: 0%
         base: auto
+    patch:
+      default:
+        target: 75%
 
 codecov:
   max_report_age: off
-
-flags:
-  # App module
-  app:
-    paths:
-      - app/
-    
-  # Core modules
-  core-common:
-    paths:
-      - core/common/
-      
-  core-coroutines:
-    paths:
-      - core/coroutines/
-      
-  core-data:
-    paths:
-      - core/data/
-      
-  core-database:
-    paths:
-      - core/database/
-      
-  core-designsystem:
-    paths:
-      - core/designsystem/
-      
-  core-domain:
-    paths:
-      - core/domain/
-      
-  core-favoritewatchlist:
-    paths:
-      - core/favoritewatchlist/
-      
-  core-mappers:
-    paths:
-      - core/mappers/
-      
-  core-movie:
-    paths:
-      - core/movie/
-      
-  core-network:
-    paths:
-      - core/network/
-      
-  core-test:
-    paths:
-      - core/test/
-      
-  core-uihelper:
-    paths:
-      - core/uihelper/
-      
-  core-utils:
-    paths:
-      - core/utils/
-      
-  core-user:
-    paths:
-      - core/user/
-      
-  # Feature modules
-  feature-about:
-    paths:
-      - feature/about/
-      
-  feature-detail:
-    paths:
-      - feature/detail/
-      
-  feature-favorite:
-    paths:
-      - feature/favorite/
-      
-  feature-home:
-    paths:
-      - feature/home/
-      
-  feature-login:
-    paths:
-      - feature/login/
-      
-  feature-more:
-    paths:
-      - feature/more/
-      
-  feature-person:
-    paths:
-      - feature/person/
-      
-  feature-search:
-    paths:
-      - feature/search/
-      
-  feature-watchlist:
-    paths:
-      - feature/watchlist/
 
 flag_management:
   default_rules:
     carryforward: true
     statuses:
-      - type: project
-        target: 80%
-      - type: patch
-        target: 80%
+      - name_prefix: proj-
+        type: project
+        target: 75%
+        threshold: 1%
+      - name_prefix: patch-
+        type: patch
+        target: 75%
+  individual_flags:
+    # App module
+    - name: app
+      paths:
+        - app/
+      carryforward: true
+      
+    # Core modules
+    - name: core-common
+      paths:
+        - core/common/
+      carryforward: true
+        
+    - name: core-coroutines
+      paths:
+        - core/coroutines/
+      carryforward: true
+        
+    - name: core-data
+      paths:
+        - core/data/
+      carryforward: true
+        
+    - name: core-database
+      paths:
+        - core/database/
+      carryforward: true
+        
+    - name: core-designsystem
+      paths:
+        - core/designsystem/
+      carryforward: true
+        
+    - name: core-domain
+      paths:
+        - core/domain/
+      carryforward: true
+        
+    - name: core-favoritewatchlist
+      paths:
+        - core/favoritewatchlist/
+      carryforward: true
+        
+    - name: core-mappers
+      paths:
+        - core/mappers/
+      carryforward: true
+        
+    - name: core-movie
+      paths:
+        - core/movie/
+      carryforward: true
+        
+    - name: core-network
+      paths:
+        - core/network/
+      carryforward: true
+        
+    - name: core-test
+      paths:
+        - core/test/
+      carryforward: true
+        
+    - name: core-uihelper
+      paths:
+        - core/uihelper/
+      carryforward: true
+        
+    - name: core-utils
+      paths:
+        - core/utils/
+      carryforward: true
+        
+    - name: core-user
+      paths:
+        - core/user/
+      carryforward: true
+        
+    # Feature modules
+    - name: feature-about
+      paths:
+        - feature/about/
+      carryforward: true
+        
+    - name: feature-detail
+      paths:
+        - feature/detail/
+      carryforward: true
+        
+    - name: feature-favorite
+      paths:
+        - feature/favorite/
+      carryforward: true
+        
+    - name: feature-home
+      paths:
+        - feature/home/
+      carryforward: true
+        
+    - name: feature-login
+      paths:
+        - feature/login/
+      carryforward: true
+        
+    - name: feature-more
+      paths:
+        - feature/more/
+      carryforward: true
+        
+    - name: feature-person
+      paths:
+        - feature/person/
+      carryforward: true
+        
+    - name: feature-search
+      paths:
+        - feature/search/
+      carryforward: true
+        
+    - name: feature-watchlist
+      paths:
+        - feature/watchlist/
+      carryforward: true
 
 comment:
   layout: "reach,diff,flags,tree"

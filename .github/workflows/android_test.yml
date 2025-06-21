@@ -350,12 +350,246 @@ jobs:
 
       # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
       # v5.4.0
-      - name: Upload coverage reports to Codecov
+      # Upload the same combined report with different flags for each module
+      - name: Upload coverage with app flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: app
           token: ${{ secrets.CODECOV_TOKEN }}
+          name: app-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-common flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-common
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-common-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-coroutines flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-coroutines
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-coroutines-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-data flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-data
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-data-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-database flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-database
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-database-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-designsystem flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-designsystem
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-designsystem-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-domain flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-domain
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-domain-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-favoritewatchlist flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-favoritewatchlist
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-favoritewatchlist-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-mappers flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-mappers
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-mappers-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-movie flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-movie
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-movie-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-network flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-network
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-network-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-test flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-test
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-test-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-uihelper flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-uihelper
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-uihelper-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-utils flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-utils
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-utils-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-user flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-user
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-user-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-about flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-about
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-about-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-detail flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-detail
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-detail-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-favorite flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-favorite
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-favorite-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-home flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-home
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-home-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-login flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-login
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-login-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-more flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-more
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-more-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-person flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-person
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-person-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-search flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-search
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-search-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-watchlist flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-watchlist
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-watchlist-coverage
+        continue-on-error: true
 
       # https://github.com/codacy/codacy-coverage-reporter-action/commit/55c3b57cb3bb6833c8c1a6614fee4cebb140de2d
       # v1.3.0
