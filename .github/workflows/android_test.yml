@@ -51,6 +51,16 @@ jobs:
       - name: Run Detekt
         run: ./gradlew detekt
 
+  danger_cheks:
+    runs-on: ubuntu-latest
+    name: "Run Danger"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Danger
+        uses: danger/kotlin@92d2ac8aae985fe162c88b02d641a9fa9bac81cf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   unit_test:
     name: Unit Tests
     needs: detekt_checks
