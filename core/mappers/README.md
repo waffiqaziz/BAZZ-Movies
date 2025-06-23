@@ -1,5 +1,7 @@
 # :core:mappers Module
 
+[![Code Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-mappers.svg)  
@@ -45,3 +47,8 @@ val postDomainModel = apiPostResponse.toPost()
 - **Follow a consistent mapping strategy** – Maintain clear naming conventions to improve readability.
 
 This module plays a crucial role in ensuring data consistency and maintainability across the application.
+
+<!-- LINK -->
+
+[core-mappers-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mappers
+[core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers

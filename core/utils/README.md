@@ -1,5 +1,7 @@
 # :core:utils Module
 
+[![Code Coverage][core-utils-coverage-badge]][core-utils-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/core-utils.svg)
@@ -72,3 +74,8 @@ val genreName = GenreHelper.getGenreName(28) // Returns "Action"
 - **Keep utilities modular** and avoid business logic in helper classes.
 
 This module serves as a central place for shared utility functions, improving maintainability and code reuse across the application.
+
+<!-- LINK -->
+
+[core-utils-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-utils
+[core-utils-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/utils/src/main/kotlin/com/waffiq/bazz_movies/core/utils

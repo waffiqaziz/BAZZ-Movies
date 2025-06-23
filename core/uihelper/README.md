@@ -1,5 +1,7 @@
 # :core:uihelper Module
 
+[![Code Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-uihelper.svg)  
@@ -58,3 +60,8 @@ SnackBarManager.snackBarWarning(view, guideView, "This is a message")
 - **Keep UI interactions reusable** – Modular utilities help maintain cleaner and more efficient UI code.
 
 This module improves the application's UI experience by providing structured and reusable helper classes for animations, gestures, and UI behaviors.
+
+<!-- LINK -->
+
+[core-uihelper-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-uihelper
+[core-uihelper-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper

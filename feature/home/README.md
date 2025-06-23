@@ -1,5 +1,7 @@
 # :feature:home Module
 
+[![Code Coverage][feature-home-coverage-badge]][feature-home-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-home.svg)
@@ -60,3 +62,8 @@ dependencies {
     implementation(project(":feature:home"))
 }
 ```
+
+<!-- LINK -->
+
+[feature-home-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-home
+[feature-home-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/home/src/main/kotlin/com/waffiq/bazz_movies/feature/home

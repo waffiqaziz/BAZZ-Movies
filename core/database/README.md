@@ -1,5 +1,7 @@
 # :core:database Module  
 
+[![Code Coverage][core-database-coverage-badge]][core-database-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-database.svg)  
@@ -67,3 +69,8 @@ class FavoriteViewModel @Inject constructor(
 - **Encapsulate logic in use cases** – Maintains separation of concerns and clean architecture.  
 
 This module establishes a robust local storage layer, ensuring data persistence and offline capabilities for the application.
+
+<!-- LINK -->
+
+[core-database-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-database
+[core-database-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/database/src/main/kotlin/com/waffiq/bazz_movies/core/database

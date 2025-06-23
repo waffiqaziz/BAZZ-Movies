@@ -1,5 +1,7 @@
 # :core:domain Module
 
+[![Code Coverage][core-domain-coverage-badge]][core-domain-coverage-link]
+
 ## Overview
 
 `:core:domain` is responsible as shared core business models and result states used throughout the application. It acts as the intermediary between data sources and the presentation layer, ensuring a clean separation of concerns.
@@ -45,3 +47,8 @@ fun fetchMovies(): Outcome<List<Movie>> {
 - Ensure domain models **only contain business logic** and remain independent module.
 
 This module plays a crucial role in maintaining a well-structured architecture by defining core entities and managing application states effectively.
+
+<!-- LINK -->
+
+[core-domain-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-domain
+[core-domain-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/domain/src/main/kotlin/com/waffiq/bazz_movies/core/domain

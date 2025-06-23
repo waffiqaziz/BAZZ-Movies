@@ -1,5 +1,7 @@
 # :feature:person Module
 
+[![Code Coverage][feature-person-coverage-badge]][feature-person-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-person.svg)
@@ -69,3 +71,8 @@ val intent = Intent(context, PersonActivity::class.java)
 intent.putExtra("personId", personId)
 context.startActivity(intent)
 ```
+
+<!-- LINK -->
+
+[feature-person-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-person
+[feature-person-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/person/src/main/kotlin/com/waffiq/bazz_movies/feature/person

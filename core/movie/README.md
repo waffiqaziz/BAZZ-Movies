@@ -1,5 +1,7 @@
 # :core:movie Module
 
+[![Code Coverage][core-movie-coverage-badge]][core-movie-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-movie.svg)  
@@ -82,3 +84,8 @@ viewModelScope.launch {
 - **Utilize mapper classes** – Convert raw API responses into clean domain models.  
 
 This module ensures efficient movie data handling, making it a core component of the application’s media management system.
+
+<!-- LINK -->
+
+[core-movie-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-movie
+[core-movie-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie

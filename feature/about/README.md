@@ -1,5 +1,7 @@
 # :feature:about Module
 
+[![Code Coverage][feature-about-coverage-badge]][feature-about-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-about.svg)
@@ -34,3 +36,8 @@ To navigate to the About screen from another part of the app, use an explicit in
 val intent = Intent(context, AboutActivity::class.java)
 context.startActivity(intent)
 ```
+
+<!-- LINK -->
+
+[feature-about-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-about
+[feature-about-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/about/src/main/kotlin/com/waffiq/bazz_movies/feature/about

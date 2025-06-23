@@ -1,5 +1,7 @@
 # :feature:watchlist Module
 
+[![Code Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-watchlist.svg)
@@ -47,3 +49,8 @@ dependencies {
     implementation(project(":feature:watchlist"))
 }
 ```
+
+<!-- LINK -->
+
+[feature-watchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-watchlist
+[feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist

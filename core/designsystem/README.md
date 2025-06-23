@@ -1,5 +1,7 @@
 # \:core\:designsystem Module
 
+[![Code Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]
+
 ![Dependency graph](../../docs/images/module-graphs/core-designsystem.svg)  
 
 ## Overview
@@ -54,3 +56,8 @@ Applying a custom background drawable:
 - **Use theme attributes instead of hardcoded values** – Improves flexibility and adaptability to dark mode.
 
 This module provides a structured approach to UI design, making the application more scalable and maintainable.
+
+<!-- LINK -->
+
+[core-designsystem-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-designsystem
+[core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/designsystem/src/main/kotlin/com/waffiq/bazz_movies/core/designsystem

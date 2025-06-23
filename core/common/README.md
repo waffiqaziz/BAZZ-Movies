@@ -1,5 +1,7 @@
 # :core:common Module  
 
+[![Code Coverage][core-common-coverage-badge]][core-common-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-common.svg)  
@@ -64,3 +66,8 @@ viewModel.navigateToDetails.observe(viewLifecycleOwner) { event ->
 - **Keep this module lightweight** – It should only contain essential shared values and classes without business logic.  
 
 This module provides a structured way to manage shared resources efficiently, improving maintainability and consistency across the application.
+
+<!-- LINK -->
+
+[core-common-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-common
+[core-common-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/common/src/main/kotlin/com/waffiq/bazz_movies/core/common

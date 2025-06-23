@@ -1,5 +1,7 @@
 # :feature:more Module
 
+[![Code Coverage][feature-more-coverage-badge]][feature-more-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-more.svg)
@@ -43,3 +45,8 @@ fragmentManager.beginTransaction()
     .addToBackStack(null)
     .commit()
 ```
+
+<!-- LINK -->
+
+[feature-more-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-more
+[feature-more-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/more/src/main/kotlin/com/waffiq/bazz_movies/feature/more

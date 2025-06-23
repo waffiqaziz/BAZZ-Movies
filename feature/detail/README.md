@@ -1,5 +1,7 @@
 # :feature:detail Module
 
+[![Code Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-detail.svg)
@@ -48,3 +50,8 @@ To open the detail screen:
 val intent = Intent(context, DetailMovieActivity::class.java)
 context.startActivity(intent)
 ```
+
+<!-- LINK -->
+
+[feature-detail-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-detail
+[feature-detail-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail

@@ -1,5 +1,7 @@
 # :core:coroutines Module  
 
+[![Code Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]
+
 ## Dependency Graph  
 
 ![Dependency graph](../../docs/images/module-graphs/core-coroutines.svg)  
@@ -54,3 +56,8 @@ class LocalDataSource @Inject constructor(
 - **Leverage structured concurrency** – Use `withContext(dispatcher)` for better coroutine scoping.  
 
 This module provides a clean and scalable approach to managing coroutine dispatching, ensuring efficient background processing and improved testability.
+
+<!-- Link -->
+
+[core-coroutines-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-coroutines
+[core-coroutines-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/coroutines/src/main/kotlin/com/waffiq/bazz_movies/core/coroutines
