@@ -11,61 +11,73 @@
 </h3>
 
 <p align="center">
- <strong>
-  <a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
-  •
-  <a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
-  •
-  <a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
- </strong>
-</p>
-<p align="center">
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
-  alt="Releases"
-  src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies"></a>
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases"><img
-  alt="Change Log"
-  src="https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg"></a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse"><img
-  alt="Activity"
-  src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies" /></a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions"><img
-  alt="Build Status"
-  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg"></a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml"><img
-  alt="Testing Status"
-  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg">
- </a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml"><img
-  alt="CodeQL Status"
-  src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg"></a>
- <a href="https://codecov.io/gh/waffiqaziz/BAZZ-Movies" ><img
-  alt="Code Coverage"
-  src="https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ"/>
- </a>
- <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies"><img
-  alt="SonarQube Status"
-  src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status"></a>
- <a href="https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard?utm_source=gh&utm_medium=referral& utm_content=&utm_campaign=Badge_grade"><img
-  alt="Qodacy Status"
-  src="https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff"/>
- </a>
- <a href="https://www.bestpractices.dev/projects/10186"><img
-  alt="OpenSSF Best Practices"
-  src="https://www.bestpractices.dev/projects/10186/badge"></a>
- <a href="https://www.apache.org/licenses/LICENSE-2.0"><img
-  alt="license"
-  src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies"></a>
- <a href="https://github.com/waffiqaziz/BAZZ-Movies/issues"><img
-  alt="Issue Opened"
-  src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies"></a>
- <a href=""><img
-  alt="Contribution welcome"
-  src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg"></a>
+  <strong>
+    <a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
+    •
+    <a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
+    •
+    <a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
+  </strong>
 </p>
 
 <p align="center">
- <img src="docs/images/featured-picture.png" width="550">
+  <!-- Release & Activity -->
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases">
+    <img alt="Releases" src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies">
+  </a>
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases">
+    <img alt="Change Log" src="https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg">
+  </a>
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse">
+    <img alt="Activity" src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies">
+  </a>
+    <a href="https://github.com/waffiqaziz/BAZZ-Movies/issues">
+    <img alt="Issues" src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies">
+  </a>
+</p>
+
+<p align="center">
+  <!-- Build & Testing -->
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions">
+    <img alt="Build Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg">
+  </a>
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml">
+    <img alt="Testing Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg">
+  </a>
+  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml">
+    <img alt="CodeQL Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg">
+  </a>
+</p>
+
+<p align="center">
+  <!-- Code Quality -->
+  <a href="https://codecov.io/gh/waffiqaziz/BAZZ-Movies">
+    <img alt="Code Coverage" src="https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ">
+  </a>
+  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies">
+    <img alt="SonarQube Status" src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status">
+  </a>
+  <a href="https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
+    <img alt="Codacy Status" src="https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff">
+  </a>
+  <a href="https://qlty.sh/gh/waffiqaziz/projects/BAZZ-Movies"><img src="https://qlty.sh/badges/81837a70-f262-4ee0-818a-549e78248a72/maintainability.svg" alt="Maintainability" />
+  </a>
+</p>
+<!-- Release & Activity -->
+<p align="center">
+  <!-- Repository Info -->
+  <a href="https://www.bestpractices.dev/projects/10186">
+    <img alt="OpenSSF Best Practices" src="https://www.bestpractices.dev/projects/10186/badge">
+  </a>
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+    <img alt="License" src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies">
+  </a>
+  <img alt="Repository Size" src="https://img.shields.io/github/repo-size/waffiqaziz/BAZZ-Movies">
+  <img alt="Contributions Welcome" src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg">
+</p>
+
+<p align="center">
+ <img src="docs/images/featured-picture.webp" width="550">
 </p>
 
 ## 🚀 About
