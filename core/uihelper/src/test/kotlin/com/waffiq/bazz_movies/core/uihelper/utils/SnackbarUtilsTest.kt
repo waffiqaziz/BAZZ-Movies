@@ -51,7 +51,7 @@ class SnackbarUtilsTest {
   }
 
   @Test
-  fun snackBarWarning_messageHandled_returnNull() {
+  fun snackBarWarning_whenMessageIsHandled_returnNull() {
     every { eventMessage.getContentIfNotHandled() } returns null
 
     val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
@@ -62,7 +62,7 @@ class SnackbarUtilsTest {
   }
 
   @Test
-  fun snackBarWarning_emptyMessage_returnNull() {
+  fun snackBarWarning_whenMessageIsEmpty_returnNull() {
     every { eventMessage.getContentIfNotHandled() } returns ""
 
     val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
@@ -73,7 +73,7 @@ class SnackbarUtilsTest {
   }
 
   @Test
-  fun snackBarWarning_colorResourceMissing_returnsNull() {
+  fun snackBarWarning_whenColorResourceIsMissing_returnsNull() {
     every { eventMessage.getContentIfNotHandled() } returns "Message"
     mockkStatic(ContextCompat::class)
     every { ContextCompat.getColor(any(), any()) } throws Resources.NotFoundException()
@@ -110,7 +110,7 @@ class SnackbarUtilsTest {
   }
 
   @Test
-  fun snackBarWarning_defaultParameterUsage_returnsSnackbar() {
+  fun snackBarWarning_withDefaultParameter_returnsSnackbar() {
     every { eventMessage.getContentIfNotHandled() } returns "Test Message"
 
     val snackbar = snackBarWarning(parentView, eventMessage = eventMessage)

@@ -92,7 +92,7 @@ class ScrollActionBarBehaviorTest {
   @Test
   @Config(sdk = [34])
   @Suppress("DEPRECATION")
-  fun scrollActionBarBehavior_api30_changesColors() {
+  fun scrollActionBarBehavior_onApi30_changesTheColors() {
     context.scrollActionBarBehavior(window, appBarLayout, nestedScrollView)
     val maxScrollY = nestedScrollView.getChildAt(0).height - nestedScrollView.height
     assertTrue(maxScrollY > 0)
@@ -129,7 +129,7 @@ class ScrollActionBarBehaviorTest {
   @Test
   @Config(sdk = [34])
   @Suppress("DEPRECATION")
-  fun scrollActionBarBehavior_negativeMaxScroll_setsPercentageToZero() {
+  fun scrollActionBarBehavior_whenMaxScrollNegative_doesNotChangeColors() {
     nestedScrollView.removeAllViews()
     val shorterChild = View(context).apply {
       layoutParams = ViewGroup.LayoutParams(
@@ -187,7 +187,7 @@ class ScrollActionBarBehaviorTest {
 
   @Test
   @Config(sdk = [34])
-  fun scrollActionBarBehavior_NegativeMaxScroll_EnsuresZeroPercentage() {
+  fun scrollActionBarBehavior_whenMaxScrollNegative_setsTransparentAppBar() {
     // create test context and mocks
     val spyContext = spyk(context)
     val mockScrollView = mockk<NestedScrollView>(relaxed = true)
@@ -229,7 +229,7 @@ class ScrollActionBarBehaviorTest {
 
   @Test
   @Config(sdk = [35])
-  fun scrollActionBarBehavior_api35_usesModernApproach() {
+  fun scrollActionBarBehavior_onApi35_usesModernApproach() {
     mockkConstructor(WindowInsetsControllerCompat::class)
 
     every { anyConstructed<WindowInsetsControllerCompat>().isAppearanceLightStatusBars } returns true
@@ -256,7 +256,7 @@ class ScrollActionBarBehaviorTest {
 
   @Test
   @Config(sdk = [35])
-  fun scrollActionBarBehavior_removesExistingStatusBarBackground() {
+  fun scrollActionBarBehavior_onApi35_removesExistingStatusBarBackground() {
     ReflectionHelpers.setStaticField(Build.VERSION::class.java, "SDK_INT", 35)
 
     // add initial background

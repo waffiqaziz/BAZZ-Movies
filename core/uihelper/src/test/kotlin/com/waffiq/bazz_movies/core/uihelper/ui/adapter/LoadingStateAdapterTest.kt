@@ -41,7 +41,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsCorrectViewHolder() {
+  fun onCreateViewHolder_whenCalled_createsCorrectViewHolder() {
     val parent = FrameLayout(context)
     val loadState = LoadState.Loading
     val viewHolder = adapter.onCreateViewHolder(parent, loadState)
@@ -50,7 +50,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsCorrectErrorState() {
+  fun onBindViewHolder_whenCalled_bindsCorrectErrorState() {
     val errorState = LoadState.Error(Throwable("Test error message"))
     adapter.onBindViewHolder(viewHolder, errorState)
 
@@ -60,7 +60,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsCorrectLoadingState() {
+  fun onBindViewHolder_whenCalled_bindsCorrectLoadingState() {
     val loadingState = LoadState.Loading
     adapter.onBindViewHolder(viewHolder, loadingState)
 
@@ -69,7 +69,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun stateTransitions_errorToLoading_updateUiCorrectly() {
+  fun stateTransitions_fromErrorToLoading_updateUiCorrectly() {
     // start with error state
     val errorState = LoadState.Error(Throwable("Error message"))
     viewHolder.bind(errorState)
@@ -85,7 +85,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun stateTransitions_loadingToError_updateUiCorrectly() {
+  fun stateTransitions_fromLoadingToError_updateUiCorrectly() {
     // start from loading state
     val loadingState = LoadState.Loading
     viewHolder.bind(loadingState)
@@ -101,7 +101,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun retryButton_hiddenForNonErrorStates() {
+  fun retryButton_whenButtonIsTrigger_hiddenForNonErrorStates() {
     val notLoadingState = LoadState.NotLoading(endOfPaginationReached = true)
     viewHolder.bind(notLoadingState)
 
@@ -110,7 +110,7 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun errorMessage_handleLongText() {
+  fun errorMessage_whenErrorOccur_shouldHandleLongText() {
     val longMessage = "This is a very long error message that exceeds normal limits."
     val errorState = LoadState.Error(Throwable(longMessage))
     viewHolder.bind(errorState)
@@ -120,14 +120,14 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun retryButton_invokesRetryCallback() {
+  fun retryButton_whenClicked_invokesRetryCallback() {
     binding.retryButton.performClick() // simulate button click
 
     verify { retryMock.invoke() }
   }
 
   @Test
-  fun retryButton_clickWithoutListener() {
+  fun retryButton_whenClicked_shouldAbleClickedWithoutListener() {
     val bindingWithoutListener = ItemLoadingBinding.inflate(inflater, null, false)
     bindingWithoutListener.retryButton.performClick()
 
@@ -135,13 +135,13 @@ class LoadingStateAdapterTest {
   }
 
   @Test
-  fun adapter_handlesEmptyState() {
+  fun adapter_withNoItem_shouldHandleEmptyState() {
     val itemCount = adapter.itemCount
     assertEquals(0, itemCount) // initially, there should be no items
   }
 
   @Test
-  fun errorViewVisibility_isInvisibleWhenErrorIsNull() {
+  fun errorMessage_whenErrorIsNull_shouldNotVisible() {
     val errorState = LoadState.Error(Throwable(null as String?))
     viewHolder.bind(errorState)
 

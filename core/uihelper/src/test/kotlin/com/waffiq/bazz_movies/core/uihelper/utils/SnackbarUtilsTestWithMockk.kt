@@ -32,7 +32,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_messageHandled_returnSnackbar() {
+  fun snackBarWarning_whenMessageIsHandled_returnSnackbar() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -54,7 +54,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_parentNotAttached_returnNull() {
+  fun snackBarWarning_whenParentNotAttached_returnNull() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -74,7 +74,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_noMessage_returnNull() {
+  fun snackBarWarning_withoutMessage_returnNull() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -101,7 +101,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_anchorNull_returnSnackbar() {
+  fun snackBarWarning_whenAnchorViewNull_returnSnackbar() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -121,7 +121,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_anchorViewAssignment_verifyBehavior() {
+  fun snackBarWarning_whenAnchorViewProvided_returnSnackbar() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -152,7 +152,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_functionParameterCoverage_allVariations() {
+  fun snackBarWarning_whenCalledWithAllParameterVariations_createsSnackbarSuccessfully() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar
@@ -182,7 +182,7 @@ class SnackbarUtilsTestWithMockk {
   }
 
   @Test
-  fun snackBarWarning_letScopeExecution_verifyAnchorViewAssignment() {
+  fun snackBarWarning_whenAnchorViewVaries_correctlyHandlesTheAnchor() {
     val mockSnackbar = mockk<Snackbar>(relaxed = true)
     mockkStatic(Snackbar::class)
     every { Snackbar.make(any<View>(), any<String>(), any<Int>()) } returns mockSnackbar

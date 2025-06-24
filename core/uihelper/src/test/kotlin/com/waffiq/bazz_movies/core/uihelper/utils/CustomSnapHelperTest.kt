@@ -43,7 +43,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withDefaultOffset() {
+  fun calculateDistanceToFinalSnap_withDefaultOffset_updateOffsetCorrectly() {
     val snapHelper = CustomSnapHelper()
     snapHelper.attachToRecyclerView(recyclerView)
 
@@ -59,7 +59,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withCustomOffset0() {
+  fun calculateDistanceToFinalSnap_withCustomOffsetZero_shouldUpdateDistanceToZero() {
     val snapHelper = CustomSnapHelper(0)
     snapHelper.attachToRecyclerView(recyclerView)
 
@@ -71,7 +71,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withCustomOffset90() {
+  fun calculateDistanceToFinalSnap_withCustomOffset90_shouldUpdateDistanceTo90() {
     val customOffset = 90
     val snapHelper = CustomSnapHelper(customOffset)
     snapHelper.attachToRecyclerView(recyclerView)
@@ -87,7 +87,7 @@ class CustomSnapHelperTest {
 
   // edge case
   @Test
-  fun calculateDistanceToFinalSnap_withLastItem() {
+  fun calculateDistanceToFinalSnap_withLastItem_shouldUpdateDistanceCorrectly() {
     val lastItem = TextView(context).apply {
       layoutParams = RecyclerView.LayoutParams(
         RecyclerView.LayoutParams.MATCH_PARENT,
@@ -108,7 +108,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withEmptyRecyclerView() {
+  fun calculateDistanceToFinalSnap_withEmptyRecyclerView_returnNull() {
     val emptyRecyclerView = RecyclerView(context)
     emptyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -121,7 +121,7 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withNullDistances() {
+  fun calculateDistanceToFinalSnap_withNullDistances_returnNull() {
     // Mock the helper to return null from getSuperDistances
     val snapHelper = mockk<CustomSnapHelper>(relaxed = true)
     every { snapHelper.getSuperDistances(any(), any()) } returns null
@@ -136,8 +136,8 @@ class CustomSnapHelperTest {
   }
 
   @Test
-  fun calculateDistanceToFinalSnap_withVerticalLayoutManager() {
-    // Mock the helper to return false from canLayoutManagerScrollHorizontally
+  fun calculateDistanceToFinalSnap_withVerticalLayoutManager_shouldUpdateDistanceCorrectly() {
+    // mock the helper to return false from canLayoutManagerScrollHorizontally
     val snapHelper = mockk<CustomSnapHelper>(relaxed = true)
     every { snapHelper.getSuperDistances(any(), any()) } returns intArrayOf(10, 20)
     every { snapHelper.canLayoutManagerScrollHorizontally(any()) } returns false
