@@ -19,7 +19,7 @@ import retrofit2.Response
 class UserDataSourceDetailTest : BaseUserDataSourceTest() {
 
   @Test
-  fun getUserDetail_ReturnExpectedResponse() = runTest {
+  fun getUserDetail_returnExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       mockApiResponse = Response.success(accountDetailsResponse),
@@ -34,7 +34,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getUserDetail_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -45,7 +45,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
 
   // region getUserDetail EDGE CASE
   @Test
-  fun getUserDetail_ReturnErrorWhenAPIRespondsWith404() = runTest {
+  fun getUserDetail_returnErrorWhenAPIRespondsWith404() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
@@ -53,7 +53,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getUserDetail_returnErrorWhenNetworkErrorOccurs() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
@@ -61,7 +61,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getUserDetail_returnErrorWhenTimeoutOccurs() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
@@ -69,7 +69,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getUserDetail_returnErrorWhenHttpExceptionOccurs() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
@@ -77,7 +77,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnErrorWhenIOExceptionOccurs() = runTest {
+  fun getUserDetail_returnErrorWhenIOExceptionOccurs() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
@@ -85,7 +85,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getUserDetail_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getUserDetail_returnErrorWhenExceptionOccurs() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getAccountDetails("session_id") },
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },

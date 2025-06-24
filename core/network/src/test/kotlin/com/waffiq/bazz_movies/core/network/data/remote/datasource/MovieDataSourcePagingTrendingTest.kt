@@ -28,7 +28,7 @@ import org.junit.Test
 class MovieDataSourcePagingTrendingTest : BaseMovieDataSourceTest() {
 
   @Test
-  fun getPagingTrendingWeek_ReturnExpectedPagingData() = runTest {
+  fun getPagingTrendingWeek_returnExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getTrendingWeek("id", 1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(movieDump4, movieDump2, movieDump3)),
@@ -72,7 +72,7 @@ class MovieDataSourcePagingTrendingTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingTrendingDay_ReturnExpectedPagingData() = runTest {
+  fun getPagingTrendingDay_returnExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getTrendingDay("ca", 1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(tvShowDump1, movieDump7)),
@@ -109,7 +109,7 @@ class MovieDataSourcePagingTrendingTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingSearch_ReturnExpectedPagingData() = runTest {
+  fun getPagingSearch_returnExpectedPagingData() = runTest {
     val pagingSource = SearchPagingSource(tmdbApiService, "john")
     testPagingSearchSource(
       mockResults = defaultMultiSearchResponse(listOf(personDump1)),

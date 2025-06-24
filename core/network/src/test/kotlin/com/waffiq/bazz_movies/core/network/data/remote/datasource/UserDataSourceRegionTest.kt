@@ -18,7 +18,7 @@ import retrofit2.Response
 class UserDataSourceRegionTest : BaseUserDataSourceTest() {
 
   @Test
-  fun getCountryCode_ReturnExpectedResponse() = runTest {
+  fun getCountryCode_returnExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       mockApiResponse = Response.success(countryIPResponseDump),
@@ -31,7 +31,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getCountryCode_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -42,7 +42,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
 
   // region getCountryCode EDGE CASE
   @Test
-  fun getCountryCode_ReturnErrorWhenAPIRespondsWith404() = runTest {
+  fun getCountryCode_returnErrorWhenAPIRespondsWith404() = runTest {
     testError404Response(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
@@ -50,7 +50,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getCountryCode_returnErrorWhenNetworkErrorOccurs() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
@@ -58,7 +58,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getCountryCode_returnErrorWhenTimeoutOccurs() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
@@ -66,7 +66,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getCountryCode_returnErrorWhenHttpExceptionOccurs() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
@@ -74,7 +74,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnErrorWhenIOExceptionOccurs() = runTest {
+  fun getCountryCode_returnErrorWhenIOExceptionOccurs() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
@@ -82,7 +82,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun getCountryCode_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getCountryCode_returnErrorWhenExceptionOccurs() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { countryIPApiService.getIP() },
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
