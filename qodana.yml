@@ -1,0 +1,22 @@
+version: "1.0"
+linter: jetbrains/qodana-jvm-android:2025.1
+
+# Exclude files/directories from analysis
+exclude:
+  - name: "Generated files"
+    paths:
+      - "build/"
+      - ".gradle/"
+      - "*.generated.*"
+
+# Include additional directories
+include:
+  - name: "Source files"
+    paths:
+      - "src/"
+      - "app/src/"
+
+# Bootstrap script to set up environment
+bootstrap: |
+  echo "sdk.dir=$ANDROID_HOME" > local.properties
+  echo "ndk.dir=$ANDROID_NDK_HOME" >> local.properties
