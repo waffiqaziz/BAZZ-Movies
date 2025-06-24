@@ -17,7 +17,7 @@
 - **[AboutActivity](../about/src/main/kotlin/com/waffiq/bazz_movies/feature/about/ui/AboutActivity.kt)**
   - A dedicated activity that serves as the entry point for the "About" section.
   - Displays application-related details in a user-friendly manner.
-  
+
 ## Integration
 
 To use this module, add it as a dependency in `build.gradle` file:

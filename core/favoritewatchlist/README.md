@@ -2,9 +2,9 @@
 
 [![Code Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]
 
-## Dependency Graph  
+## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-favoritewatchlist.svg)  
+![Dependency graph](../../docs/images/module-graphs/core-favoritewatchlist.svg)
 
 ## Overview
 

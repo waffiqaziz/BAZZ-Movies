@@ -16,7 +16,7 @@
 
 The data layer is responsible for handling watchlist-related data.
 
-- **[WatchlistRepositoryImpl](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/data/repository/WatchlistRepositoryImpl.kt)** – Implements [`IWatchlistRepository`]((../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)) to manage adding, removing, and retrieving watchlist items.
+- **[WatchlistRepositoryImpl](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/data/repository/WatchlistRepositoryImpl.kt)** – Implements [`IWatchlistRepository`](<(../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)>) to manage adding, removing, and retrieving watchlist items.
 
 ### Dependency Injection
 

@@ -12,8 +12,9 @@
 configurations for unit and instrumentation tests across multiple modules.
 
 ## Responsibilities
-  
+
 - **Test Rules**
+
   - [`LifecycleOwnerRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/LifecycleOwnerRule.kt) –
     Manages a `LifecycleOwner` for testing lifecycle-dependent components.
   - [`MainCoroutineRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/MainCoroutineRule.kt) –

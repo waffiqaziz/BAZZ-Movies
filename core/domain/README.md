@@ -9,6 +9,7 @@
 ## Responsibilities
 
 - **Domain Models**
+
   - Represents entities such as `Favorite`, `Post`, `Rated`, `UserModel`, and `WatchlistModel`.
   - Provides a structured way to model application-specific data.
 

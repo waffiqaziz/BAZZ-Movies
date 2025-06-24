@@ -2,7 +2,7 @@
 
 [![Code Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]
 
-![Dependency graph](../../docs/images/module-graphs/core-designsystem.svg)  
+![Dependency graph](../../docs/images/module-graphs/core-designsystem.svg)
 
 ## Overview
 
@@ -11,6 +11,7 @@
 ## Responsibilities
 
 - **ViewPager Adapter**
+
   - [GenericViewPagerAdapter](../designsystem/src/main/kotlin/com/waffiq/bazz_movies/core/designsystem/viewpager/GenericViewPagerAdapter.kt): A generic `FragmentStateAdapter` implementation for managing a list of fragments inside a ViewPager.
 
 - **UI Resources**

@@ -15,10 +15,12 @@
 ### UI Layer
 
 - **[MoreFragment](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreFragment.kt)**
+
   - Serves as the main entry point for the "More" section.
   - Provides navigation to additional settings or options.
 
 - **[MoreLocalViewModel](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreLocalViewModel.kt)**
+
   - Manages locally stored settings and preferences for the "More" section.
 
 - **[MoreUserViewModel](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreUserViewModel.kt)**

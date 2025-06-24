@@ -2,23 +2,23 @@
 
 [![Code Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]
 
-## Dependency Graph  
+## Dependency Graph
 
-![Dependency graph](../../docs/images/module-graphs/core-uihelper.svg)  
+![Dependency graph](../../docs/images/module-graphs/core-uihelper.svg)
 
-## Overview  
+## Overview
 
 `:core:uihelper` is a utility module that provides helper classes and utilities for UI interactions and animations within the application. It contains reusable components for handling UI behaviors, gestures, animations, and snackbars.
 
-## Responsibilities  
+## Responsibilities
 
-### UI Components  
+### UI Components
 
 - **[ISnackbar](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/ISnackbar.kt)** – Interface for handling Snackbar interactions across the app.
 
 - **[LoadingStateAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/ui/adapter/LoadingStateAdapter.kt)** – Adapter for handling pagination loading states in lists.
 
-### Utility Classes  
+### Utility Classes
 
 - **[ActionBarBehavior](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ActionBarBehavior.kt)** – Custom behavior for managing ActionBar animations and visibility.
 
@@ -34,9 +34,9 @@
 
 - **[SnackBarManager](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SnackBarManager.kt)** – Manages showing and dismissing Snackbars warning in a consistent way.
 
-## Integration  
+## Integration
 
-To use the module, add it as a dependency in `build.gradle` file:  
+To use the module, add it as a dependency in `build.gradle` file:
 
 ```gradle
 dependencies {
@@ -44,15 +44,15 @@ dependencies {
 }
 ```
 
-## Example Usage  
+## Example Usage
 
-Using `SnackBarManager` to show messages:  
+Using `SnackBarManager` to show messages:
 
 ```kotlin
 SnackBarManager.snackBarWarning(view, guideView, "This is a message")
 ```
 
-## Best Practices  
+## Best Practices
 
 - **Use `SnackBarManager` for consistent Snackbar handling** – Avoid redundant Snackbar implementations across the app.
 - **Utilize `CustomSnapHelper` for smooth RecyclerView snapping** – Ensures a polished scrolling experience.
