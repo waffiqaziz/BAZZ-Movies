@@ -1,5 +1,7 @@
 # :core:test Module
 
+[![Code Coverage][core-test-coverage-badge]][core-test-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/core-test.svg)
@@ -10,8 +12,9 @@
 configurations for unit and instrumentation tests across multiple modules.
 
 ## Responsibilities
-  
+
 - **Test Rules**
+
   - [`LifecycleOwnerRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/LifecycleOwnerRule.kt) –
     Manages a `LifecycleOwner` for testing lifecycle-dependent components.
   - [`MainCoroutineRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/MainCoroutineRule.kt) –
@@ -49,3 +52,8 @@ or use helpers as needed:
 ```kotlin
 val diffCallback = PagingDataHelperTest.TestDiffCallback<MyData>()
 ```
+
+<!-- LINK -->
+
+[core-test-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-test
+[core-test-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/test/src/main/kotlin/com/waffiq/bazz_movies/core/test

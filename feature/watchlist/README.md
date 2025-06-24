@@ -1,5 +1,7 @@
 # :feature:watchlist Module
 
+[![Code Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-watchlist.svg)
@@ -14,7 +16,7 @@
 
 The data layer is responsible for handling watchlist-related data.
 
-- **[WatchlistRepositoryImpl](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/data/repository/WatchlistRepositoryImpl.kt)** – Implements [`IWatchlistRepository`]((../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)) to manage adding, removing, and retrieving watchlist items.
+- **[WatchlistRepositoryImpl](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/data/repository/WatchlistRepositoryImpl.kt)** – Implements [`IWatchlistRepository`](<(../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)>) to manage adding, removing, and retrieving watchlist items.
 
 ### Dependency Injection
 
@@ -47,3 +49,8 @@ dependencies {
     implementation(project(":feature:watchlist"))
 }
 ```
+
+<!-- LINK -->
+
+[feature-watchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-watchlist
+[feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist

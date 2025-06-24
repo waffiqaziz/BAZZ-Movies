@@ -1,5 +1,7 @@
 # :feature:favorite Module
 
+[![Code Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-favorite.svg)
@@ -44,3 +46,8 @@ dependencies {
     implementation(project(":feature:favorite"))
 }
 ```
+
+<!-- LINK -->
+
+[feature-favorite-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-favorite
+[feature-favorite-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite

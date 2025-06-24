@@ -1,49 +1,53 @@
 # :core:movie Module
 
-## Dependency Graph  
+[![Code Coverage][core-movie-coverage-badge]][core-movie-coverage-link]
 
-![Dependency graph](../../docs/images/module-graphs/core-movie.svg)  
+## Dependency Graph
 
-## Overview  
+![Dependency graph](../../docs/images/module-graphs/core-movie.svg)
 
-`:core:movie` is responsible as shared managing movie-related data, including fetching movie details, handling repository logic, and implementing domain-specific use cases. This module follows clean architecture principles and integrates repository, use cases, and dependency injection to ensure modularity and testability.  
+## Overview
 
-## Responsibilities  
+`:core:movie` is responsible as shared managing movie-related data, including fetching movie details, handling repository logic, and implementing domain-specific use cases. This module follows clean architecture principles and integrates repository, use cases, and dependency injection to ensure modularity and testability.
 
-### Data Layer  
+## Responsibilities
 
-- **[MoviesRepository](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/data/repository/MoviesRepository.kt)**  
-  - Implements [`IMoviesRepository`](./src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/repository/IMoviesRepository.kt) to provide data from remote sources.  
-  - Fetches movie-related information and processes API responses.  
+### Data Layer
 
-### Domain Layer  
+- **[MoviesRepository](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/data/repository/MoviesRepository.kt)**
+  - Implements [`IMoviesRepository`](./src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/repository/IMoviesRepository.kt) to provide data from remote sources.
+  - Fetches movie-related information and processes API responses.
 
-- **Models**  
-  - **[PostFavoriteWatchlist](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/model/post/PostFavoriteWatchlist.kt)** – Represents movie watchlist and favorite post data.  
+### Domain Layer
 
-- **Repositories**  
-  - **[IMoviesRepository](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/repository/IMoviesRepository.kt)** – Defines methods for retrieving movie data.  
+- **Models**
 
-- **Use Cases**  
-  - **[Get Stated Movies](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt)** – Fetches trending or popular movies.  
-  - **[Get Stated TV Shows](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt)** – Retrieves trending or top-rated TV shows.  
-  - **[Post Method Use Case](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt)** – Handles posting movie-related data (e.g., adding to watchlist).  
+  - **[PostFavoriteWatchlist](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/model/post/PostFavoriteWatchlist.kt)** – Represents movie watchlist and favorite post data.
 
-### Dependency Injection  
+- **Repositories**
 
-- **[MovieRepositoryModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/MovieRepositoryModule.kt)** – Provides [`MoviesRepository`](./src/main/kotlin/com/waffiq/bazz_movies/core/movie/data/repository/MoviesRepository.kt) as a dependency.  
+  - **[IMoviesRepository](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/repository/IMoviesRepository.kt)** – Defines methods for retrieving movie data.
 
-- **[PostMethodUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/PostMethodUseCaseModule.kt)** – Supplies [`PostMethodUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt) for use in ViewModels and repositories.  
+- **Use Cases**
+  - **[Get Stated Movies](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt)** – Fetches trending or popular movies.
+  - **[Get Stated TV Shows](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt)** – Retrieves trending or top-rated TV shows.
+  - **[Post Method Use Case](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt)** – Handles posting movie-related data (e.g., adding to watchlist).
 
-- **[StatedUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/StatedUseCaseModule.kt)** – Provides [`GetStatedMovieUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt) and [`GetStatedTvUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt).  
+### Dependency Injection
 
-### Utility Classes  
+- **[MovieRepositoryModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/MovieRepositoryModule.kt)** – Provides [`MoviesRepository`](./src/main/kotlin/com/waffiq/bazz_movies/core/movie/data/repository/MoviesRepository.kt) as a dependency.
 
-- **[Mapper](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/utils/mappers/Mapper.kt)** – Converts API responses into domain models.  
+- **[PostMethodUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/PostMethodUseCaseModule.kt)** – Supplies [`PostMethodUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt) for use in ViewModels and repositories.
 
-## Integration  
+- **[StatedUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/StatedUseCaseModule.kt)** – Provides [`GetStatedMovieUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt) and [`GetStatedTvUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt).
 
-To use the module, add it as a dependency in `build.gradle` file:  
+### Utility Classes
+
+- **[Mapper](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/utils/mappers/Mapper.kt)** – Converts API responses into domain models.
+
+## Integration
+
+To use the module, add it as a dependency in `build.gradle` file:
 
 ```gradle
 dependencies {
@@ -51,7 +55,7 @@ dependencies {
 }
 ```
 
-## Example Usage  
+## Example Usage
 
 Fetching movies in a ViewModel:
 
@@ -59,7 +63,7 @@ Fetching movies in a ViewModel:
 class MoviesViewModel @Inject constructor(
     private val getStatedMovieUseCase: GetStatedMovieUseCase
 ) : ViewModel() {
-    
+
     val movies = liveData {
         emit(getStatedMovieUseCase.execute())
     }
@@ -74,11 +78,16 @@ viewModelScope.launch {
 }
 ```
 
-## Best Practices  
+## Best Practices
 
 - **Follow clean architecture** – Keep data, domain, and UI layers separate.
 - **Use dependency injection** – Ensure proper management of repository and use case instances.
 - **Encapsulate business logic in use cases** – Maintain a structured and testable architecture.
-- **Utilize mapper classes** – Convert raw API responses into clean domain models.  
+- **Utilize mapper classes** – Convert raw API responses into clean domain models.
 
 This module ensures efficient movie data handling, making it a core component of the application’s media management system.
+
+<!-- LINK -->
+
+[core-movie-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-movie
+[core-movie-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie

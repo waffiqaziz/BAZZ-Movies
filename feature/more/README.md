@@ -1,5 +1,7 @@
 # :feature:more Module
 
+[![Code Coverage][feature-more-coverage-badge]][feature-more-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-more.svg)
@@ -13,10 +15,12 @@
 ### UI Layer
 
 - **[MoreFragment](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreFragment.kt)**
+
   - Serves as the main entry point for the "More" section.
   - Provides navigation to additional settings or options.
 
 - **[MoreLocalViewModel](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreLocalViewModel.kt)**
+
   - Manages locally stored settings and preferences for the "More" section.
 
 - **[MoreUserViewModel](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreUserViewModel.kt)**
@@ -43,3 +47,8 @@ fragmentManager.beginTransaction()
     .addToBackStack(null)
     .commit()
 ```
+
+<!-- LINK -->
+
+[feature-more-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-more
+[feature-more-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/more/src/main/kotlin/com/waffiq/bazz_movies/feature/more

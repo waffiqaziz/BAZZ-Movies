@@ -1,5 +1,7 @@
 # :core:user Module
 
+[![Code Coverage][core-user-coverage-badge]][core-user-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/core-user.svg)
@@ -96,3 +98,8 @@ viewModel.authenticateUser("sessionToken").observe(viewLifecycleOwner) { authSta
 - **Encapsulate business logic in use cases** for maintainability and separation of concerns.
 
 This module provides a scalable and structured way to handle user-related operations, ensuring a seamless authentication and preference management experience for the application.
+
+<!-- LINK -->
+
+[core-user-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-user
+[core-user-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/user/src/main/kotlin/com/waffiq/bazz_movies/core/user

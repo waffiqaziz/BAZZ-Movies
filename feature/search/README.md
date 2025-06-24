@@ -1,5 +1,7 @@
 # :feature:search Module
 
+[![Code Coverage][feature-search-coverage-badge]][feature-search-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/feature-search.svg)
@@ -53,3 +55,8 @@ dependencies {
     implementation(project(":feature:search"))
 }
 ```
+
+<!-- LINK -->
+
+[feature-search-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-search
+[feature-search-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/search/src/main/kotlin/com/waffiq/bazz_movies/feature/search

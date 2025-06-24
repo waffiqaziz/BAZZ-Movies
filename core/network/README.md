@@ -1,5 +1,7 @@
 # :core:network Module
 
+[![Code Coverage][core-network-coverage-badge]][core-network-coverage-link]
+
 ## Dependency Graph
 
 ![Dependency graph](../../docs/images/module-graphs/core-network.svg)
@@ -51,3 +53,8 @@ class MovieRepository @Inject constructor(
 - **Follow dependency injection principles** – Enables better testability and modularity.
 
 This module establishes a robust and scalable network layer, ensuring clean architecture principles are followed throughout the application.
+
+<!-- LINK -->
+
+[core-network-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-network
+[core-network-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/network/src/main/kotlin/com/waffiq/bazz_movies/core/network

@@ -1,8 +1,10 @@
 # :core:favoritewatchlist Module
 
-## Dependency Graph  
+[![Code Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]
 
-![Dependency graph](../../docs/images/module-graphs/core-favoritewatchlist.svg)  
+## Dependency Graph
+
+![Dependency graph](../../docs/images/module-graphs/core-favoritewatchlist.svg)
 
 ## Overview
 
@@ -66,3 +68,8 @@ val swipeCallback = object : SwipeCallbackHelper() {
 - **Ensure proper UI feedback** by using Snackbar utilities for user interactions.
 
 This module enhances the user experience by providing a structured way to manage favorite and watchlist items efficiently.
+
+<!-- LINK -->
+
+[core-favoritewatchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-favoritewatchlist
+[core-favoritewatchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist/src/main/kotlin/com/waffiq/bazz_movies/core/favoritewatchlist
