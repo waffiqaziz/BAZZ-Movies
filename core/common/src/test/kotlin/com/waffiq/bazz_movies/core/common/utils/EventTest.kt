@@ -15,7 +15,7 @@ class EventTest {
   }
 
   @Test
-  fun getContentIfNotHandled_firstCall_returnsContent() {
+  fun getContentIfNotHandled_whenFirstCall_returnsContent() {
     val content = "test content"
     val event = Event(content)
 
@@ -26,7 +26,7 @@ class EventTest {
   }
 
   @Test
-  fun getContentIfNotHandled_secondCall_returnsNull() {
+  fun getContentIfNotHandled_whenSecondCall_returnsNull() {
     val event = Event("test content")
 
     event.getContentIfNotHandled() // first call
@@ -37,7 +37,7 @@ class EventTest {
   }
 
   @Test
-  fun peekContent_returnsContent_anyHandledState() {
+  fun peekContent_whenCalled_returnsContent() {
     val content = "test content"
     val event = Event(content)
 
@@ -51,7 +51,7 @@ class EventTest {
   }
 
   @Test
-  fun getContentIfNotHandled_nullContent_shouldWorkProperly() {
+  fun getContentIfNotHandled_withNullContent_shouldWorkProperly() {
     val event = Event<String?>(null)
     val result = event.getContentIfNotHandled()
 
@@ -60,7 +60,7 @@ class EventTest {
   }
 
   @Test
-  fun getContentIfNotHandled_differentDataTypes_shouldWorkProperly() {
+  fun getContentIfNotHandled_withDifferentDataTypes_shouldWorkProperly() {
     // integer test
     val intEvent = Event(42)
     assertEquals(42, intEvent.getContentIfNotHandled())
@@ -78,7 +78,7 @@ class EventTest {
   }
 
   @Test
-  fun hasBeenHandled_shouldNotBeModifiableEternally() {
+  fun hasBeenHandled_whenCalled_shouldNotBeModifiableEternally() {
     // compile-time check, if this compiles, the test passes
     val event = Event("test")
 
@@ -91,7 +91,7 @@ class EventTest {
   }
 
   @Test
-  fun subclassBehavior_shouldMaintainSameProperties() {
+  fun customEvent_whenCalled_shouldMaintainSameProperties() {
     class CustomEvent<T>(content: T) : Event<T>(content) {
       // custom event with no additional functionality
     }
