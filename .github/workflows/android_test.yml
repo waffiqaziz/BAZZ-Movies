@@ -605,7 +605,7 @@ jobs:
       - name: Upload coverage reports to Qlty
         uses: qltysh/qlty-action/coverage@b9133a486505563742d768da29f7951271678c87
         with:
-          token: {{ secrets.QLTY_COVERAGE_TOKEN }}
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
       # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
