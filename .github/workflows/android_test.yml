@@ -600,6 +600,14 @@ jobs:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
+      # https://github.com/qltysh/qlty-action/commit/b9133a486505563742d768da29f7951271678c87
+      # v1.1.1
+      - name: Upload coverage reports to Qlty
+        uses: qltysh/qlty-action/coverage@b9133a486505563742d768da29f7951271678c87
+        with:
+          token: {{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+
       # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
       # v1.1.0
       - name: Upload Unit Test results to Codecov
