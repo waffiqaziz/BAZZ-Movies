@@ -12,12 +12,12 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class ConstantsTest {
 
-  val context = ApplicationProvider.getApplicationContext<Context>().apply {
+  val context: Context = ApplicationProvider.getApplicationContext<Context>().apply {
     setTheme(Base_Theme_BAZZ_movies) // set the theme
   }
 
   @Test
-  fun tabMoviesTvHeadingArray_returnCorrectValue() {
+  fun tabMoviesTvHeadingArray_whenCalled_returnCorrectValue() {
     assertEquals("Movies", context.getString(tabMoviesTvHeadingArray[0]))
     assertEquals("TV Series", context.getString(tabMoviesTvHeadingArray[1]))
   }

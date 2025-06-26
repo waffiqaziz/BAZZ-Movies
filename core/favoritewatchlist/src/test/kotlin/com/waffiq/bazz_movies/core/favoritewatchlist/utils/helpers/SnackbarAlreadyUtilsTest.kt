@@ -60,7 +60,7 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyFavorite_contentIsNotHandled_returnNull() {
+  fun snackBarAlreadyFavorite_whenContentIsNotHandled_returnsNull() {
     every { mockEventMessage.getContentIfNotHandled() } returns null
 
     val result = snackBarAlready(
@@ -75,7 +75,7 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyWatchlist_contentIsNotHandled_returnNull() {
+  fun snackBarAlreadyWatchlist_whenContentIsNotHandled_returnsNull() {
     every { mockEventMessage.getContentIfNotHandled() } returns null
 
     val result = snackBarAlready(
@@ -90,7 +90,7 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyFavorite_contentIsAvailable_showSnackbar() {
+  fun snackBarAlreadyFavorite_whenContentIsAvailable_showsSnackbar() {
     every { mockEventMessage.getContentIfNotHandled() } returns "Test Item"
 
     // directly mock the ContextCompat.getString call
@@ -126,7 +126,7 @@ class SnackbarAlreadyUtilsTest {
   }
 
   @Test
-  fun snackBarAlreadyWatchlist_showWhenContentIsAvailable() {
+  fun snackBarAlreadyWatchlist_whenContentIsAvailable_showsSnackbar() {
     val view = mockk<View>(relaxed = true)
     val viewGuide = mockk<View>(relaxed = true)
     val eventMessage = mockk<Event<String>>()

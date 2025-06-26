@@ -118,7 +118,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun whenRefreshIsLoading_showProgressBarAndRecyclerView() = runTest {
+  fun handlePagingLoadState_whenRefreshIsLoading_showsProgressBarAndRecyclerView() = runTest {
     val loadState = createLoadState(refresh = LoadState.Loading)
 
     setupAndRunTest(loadState)
@@ -132,7 +132,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun whenAppendIsLoading_showProgressBarAndRecyclerView() = runTest {
+  fun handlePagingLoadState_whenAppendIsLoading_showsProgressBarAndRecyclerView() = runTest {
     val loadState = createLoadState(append = LoadState.Loading)
 
     setupAndRunTest(loadState)
@@ -146,7 +146,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun whenRefreshError_withEmptyAdapter_showErrorView() = runTest {
+  fun handlePagingLoadState_whenRefreshErrorAndEmptyAdapter_showsErrorView() = runTest {
     val error = IOException("Network error")
     val loadState = createLoadState(refresh = LoadState.Error(error))
 
@@ -162,7 +162,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun whenRefreshError_withNonEmptyAdapter_showRecyclerView() = runTest {
+  fun handlePagingLoadState_whenRefreshErrorAndNonEmptyAdapter_showsRecyclerView() = runTest {
     val loadState = createLoadState(refresh = LoadState.Error(IOException("Network error")))
 
     setupAndRunTest(loadState, itemCount = 5)
@@ -177,35 +177,37 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun whenEndOfPaginationReached_withEmptyAdapter_showEmptyView() = runTest {
-    val loadState = createLoadState(append = LoadState.NotLoading(true))
+  fun handlePagingLoadState_whenEndOfPaginationReachedAndEmptyAdapter_showsEmptyView() =
+    runTest {
+      val loadState = createLoadState(append = LoadState.NotLoading(true))
 
-    setupAndRunTest(loadState, itemCount = 0)
+      setupAndRunTest(loadState, itemCount = 0)
 
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = false,
-      errorVisible = false,
-      emptyVisible = true
-    )
-  }
-
-  @Test
-  fun whenEndOfPaginationReached_withNonEmptyAdapter_showRecyclerView() = runTest {
-    val loadState = createLoadState(append = LoadState.NotLoading(true))
-
-    setupAndRunTest(loadState, itemCount = 5)
-
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false
-    )
-  }
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = false,
+        errorVisible = false,
+        emptyVisible = true
+      )
+    }
 
   @Test
-  fun whenNormalState_showOnlyRecyclerView() = runTest {
+  fun handlePagingLoadState_whenEndOfPaginationReachedAndNonEmptyAdapter_showsRecyclerView() =
+    runTest {
+      val loadState = createLoadState(append = LoadState.NotLoading(true))
+
+      setupAndRunTest(loadState, itemCount = 5)
+
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false
+      )
+    }
+
+  @Test
+  fun handlePagingLoadState_whenNormalState_showsOnlyRecyclerView() = runTest {
     val loadState = createLoadState() // Uses default values for normal state
 
     setupAndRunTest(loadState)
@@ -219,7 +221,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun tesDebounce_emitMultipleValuesQuickly() = runTest {
+  fun handlePagingLoadState_whenDebounce_emitsMultipleValuesQuickly() = runTest {
     // setup handler first
     lifecycleOwner.handlePagingLoadState(
       mockAdapter,
@@ -256,7 +258,7 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun testDistinctUntilChanged_emitSameValueTwice() = runTest {
+  fun handlePagingLoadState_whenDistinctUntilChanged_emitsSameValueTwice() = runTest {
     // track number of calls to a callback
     var callCount = 0
     val trackingCallback: (Event<String>?) -> Unit = { callCount++ }

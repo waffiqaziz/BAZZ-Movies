@@ -11,8 +11,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.testDate
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.testDateFormatted
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE_FORMATTED
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
@@ -80,7 +80,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_allDataValid_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_whenAllDataIsValid_bindsCorrectMovieData() = runTest {
     // test case 1: all valid
     adapter.submitData(
       PagingData.from(
@@ -91,8 +91,8 @@ class FavoriteMovieAdapterTest {
             title = movieTitle,
             originalTitle = movieOriginalTitle,
             originalName = movieOriginalName,
-            firstAirDate = testDate,
-            releaseDate = testDate,
+            firstAirDate = TEST_DATE,
+            releaseDate = TEST_DATE,
             listGenreIds = listOf(12),
             voteAverage = 10f,
             posterPath = "posterPath.jpg"
@@ -103,13 +103,13 @@ class FavoriteMovieAdapterTest {
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals("Test Movie Name", binding.tvTitle.text.toString())
     assertEquals("Adventure", binding.tvGenre.text.toString())
-    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
+    assertEquals(TEST_DATE_FORMATTED, binding.tvYearReleased.text.toString())
     assertEquals("10/10", binding.tvRating.text.toString())
     assertEquals("5.0", binding.ratingBar.rating.toString())
   }
 
   @Test
-  fun onBindViewHolder_severalDataEmpty_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_whenSeveralDataIsEmpty_bindsCorrectMovieData() = runTest {
     // test case 2: title, releaseDate valid, posterPath empty, listGenre empty
     adapter.submitData(
       PagingData.from(
@@ -117,7 +117,7 @@ class FavoriteMovieAdapterTest {
           ResultItem(
             mediaType = "movie",
             title = movieTitle,
-            releaseDate = testDate,
+            releaseDate = TEST_DATE,
             firstAirDate = null,
             listGenreIds = emptyList(),
             posterPath = ""
@@ -128,13 +128,13 @@ class FavoriteMovieAdapterTest {
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals(movieTitle, binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
-    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
+    assertEquals(TEST_DATE_FORMATTED, binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
   }
 
   @Test
-  fun onBindViewHolder_originalTitleValid_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_whenOriginalTitleIsValid_bindsCorrectMovieData() = runTest {
     // test case 3: originalTitle valid, posterPath null
     adapter.submitData(
       PagingData.from(
@@ -143,7 +143,7 @@ class FavoriteMovieAdapterTest {
             mediaType = "movie",
             originalTitle = movieOriginalTitle,
             releaseDate = null,
-            firstAirDate = testDate,
+            firstAirDate = TEST_DATE,
             posterPath = null
           )
         )
@@ -152,13 +152,13 @@ class FavoriteMovieAdapterTest {
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals(movieOriginalTitle, binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
-    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
+    assertEquals(TEST_DATE_FORMATTED, binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
   }
 
   @Test
-  fun onBindViewHolder_originalNameValid_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_whenOriginalNameIsValid_bindsCorrectMovieData() = runTest {
     // test case 4: originalName valid, date invalid
     adapter.submitData(
       PagingData.from(
@@ -183,7 +183,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_allAttributeNull_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_allAttributeIsNull_bindsCorrectMovieData() = runTest {
     // test case 5: all null
     adapter.submitData(
       PagingData.from(
@@ -201,7 +201,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_handlesNullDataProperly() {
+  fun onBindViewHolder_whenDataIsNull_handlesNullDataProperly() {
     // create a minimal test adapter with just the functionality needed for testing
     val testAdapter = object : PagingDataAdapter<ResultItem, RecyclerView.ViewHolder>(
       FavoriteMovieAdapter.DIFF_CALLBACK
@@ -235,7 +235,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
     val parent = FrameLayout(context)
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
     assertNotNull(viewHolder)
@@ -246,7 +246,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun onClick_openDetailsMovie() = runTest {
+  fun onClick_whenClicked_opensMovieDetails() = runTest {
     val pagingData = PagingData.from(listOf(movieData))
     adapter.submitData(pagingData)
     advanceUntilIdle()
@@ -258,7 +258,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun diffCallback_areItemsTheSame_returnsTrueForSameIdAndMediaType() {
+  fun areItemsTheSame_whenIdAndMediaTypeIsSame_returnsTrue() {
     val oldItem = ResultItem(id = 1, mediaType = "movie")
     val newItem = ResultItem(id = 1, mediaType = "movie")
 
@@ -266,7 +266,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun diffCallback_areItemsTheSame_returnsFalseForDifferentId() {
+  fun areItemsTheSame_whenDifferentId_returnsFalse() {
     val oldItem = ResultItem(id = 1, mediaType = "movie")
     val newItem1 = ResultItem(id = 2, mediaType = "movie") // different ID
 
@@ -274,7 +274,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun diffCallback_areContentsTheSame_returnsTrueForSameIdAndMediaType() {
+  fun areContentsTheSame_whenIdAndMediaTypeIsSame_returnsTrue() {
     val oldItem = ResultItem(id = 1, mediaType = "movie", title = "Movie 1")
     val newItem = ResultItem(id = 1, mediaType = "movie", title = "Different Title")
 
@@ -282,7 +282,7 @@ class FavoriteMovieAdapterTest {
   }
 
   @Test
-  fun diffCallback_areContentsTheSame_returnsFalseForDifferentId() {
+  fun areContentsTheSame_whenDifferentId_returnsFalse() {
     val oldItem = ResultItem(id = 1, mediaType = "movie")
     val newItem1 = ResultItem(id = 2, mediaType = "movie") // different ID
 
