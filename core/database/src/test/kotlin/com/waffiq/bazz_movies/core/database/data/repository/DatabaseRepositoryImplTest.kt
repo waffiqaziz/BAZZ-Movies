@@ -54,7 +54,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun watchlistTvFromDB_returnTransformedDataCorrectly() = runTest {
+  fun watchlistTvFromDB_whenSuccessful_returnTransformedDataCorrectly() = runTest {
     val favoriteEntities = listOf(favoriteTvEntity)
 
     every { localDataSource.getWatchlistTv } returns flowOf(favoriteEntities)
@@ -71,7 +71,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun favoriteTvFromDB_returnTransformedDataCorrectly() = runTest {
+  fun favoriteTvFromDB_whenSuccessful_returnTransformedDataCorrectly() = runTest {
     val favoriteEntities = listOf(favoriteTvEntity.copy(isFavorite = true, isWatchlist = false))
 
     every { localDataSource.getFavoriteTv } returns flowOf(favoriteEntities)
@@ -88,7 +88,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun favoriteMoviesFromDB_transformsDataCorrectly() = runTest {
+  fun favoriteMoviesFromDB_whenSuccessful_transformsDataCorrectly() = runTest {
     val favoriteEntities = listOf(favoriteMovieEntity.copy(isFavorite = true, isWatchlist = false))
 
     every { localDataSource.getFavoriteMovies } returns flowOf(favoriteEntities)
@@ -105,7 +105,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun watchlistMovieFromDB_returnTransformedDataCorrectly() = runTest {
+  fun watchlistMovieFromDB_whenSuccessful_returnTransformedDataCorrectly() = runTest {
     val favoriteEntities = listOf(favoriteMovieEntity)
 
     every { localDataSource.getWatchlistMovies } returns flowOf(favoriteEntities)
@@ -122,7 +122,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun insertToDB_returnsSuccessDbResult() = runTest {
+  fun insertToDB_whenSuccessful_returnsSuccessDbResult() = runTest {
     coEvery { localDataSource.insert(favoriteMovie.toFavoriteEntity()) } returns DbResult.Success(1)
     val result = repository.insertToDB(favoriteMovie)
     assertTrue(result is DbResult.Success)
@@ -132,7 +132,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun deleteFromDB_returnSuccessResult() = runTest {
+  fun deleteFromDB_whenSuccessful_returnSuccessResult() = runTest {
     coEvery { localDataSource.deleteItemFromDB(101, "movie") } returns DbResult.Success(1)
 
     val result = repository.deleteFromDB(favoriteMovie)
@@ -143,7 +143,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun deleteAll_returnSuccessResult() = runTest {
+  fun deleteAll_whenSuccessful_returnSuccessResult() = runTest {
     coEvery { localDataSource.deleteAll() } returns DbResult.Success(5)
 
     val result = repository.deleteAll()
@@ -154,7 +154,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun isFavoriteDB_returnSuccessResult() = runTest {
+  fun isFavoriteDB_whenSuccessful_returnSuccessResult() = runTest {
     coEvery { localDataSource.isFavorite(101, "movie") } returns DbResult.Success(true)
 
     val result = repository.isFavoriteDB(101, "movie")
@@ -165,7 +165,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun isWatchlistDB_returnSuccessResult() = runTest {
+  fun isWatchlistDB_whenSuccessful_returnSuccessResult() = runTest {
     coEvery { localDataSource.isWatchlist(101, "movie") } returns DbResult.Success(true)
 
     val result = repository.isWatchlistDB(101, "movie")
@@ -176,7 +176,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun updateFavoriteItemDB_handlesDeleteCaseCorrectly() = runTest {
+  fun updateFavoriteItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
       localDataSource.update(false, true, 101, "movie")
     } returns DbResult.Success(1)
@@ -192,7 +192,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun updateFavoriteItemDB_handlesAddCaseCorrectly() = runTest {
+  fun updateFavoriteItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
       localDataSource.update(true, true, 101, "movie")
     } returns DbResult.Success(1)
@@ -208,7 +208,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun updateWatchlistItemDB_handlesDeleteCaseCorrectly() = runTest {
+  fun updateWatchlistItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
       localDataSource.update(true, false, 101, "movie")
     } returns DbResult.Success(1)
@@ -221,7 +221,7 @@ class DatabaseRepositoryImplTest {
   }
 
   @Test
-  fun updateWatchlistItemDB_handlesAddCaseCorrectly() = runTest {
+  fun updateWatchlistItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
       localDataSource.update(true, true, 101, "movie")
     } returns DbResult.Success(1)

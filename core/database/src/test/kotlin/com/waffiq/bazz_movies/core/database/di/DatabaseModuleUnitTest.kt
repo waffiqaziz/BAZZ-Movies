@@ -38,7 +38,7 @@ class DatabaseModuleUnitTest {
    * 3. (Optional) The database version is at least 1, indicating initialization worked
    */
   @Test
-  fun provideDatabase_withMigration_successProvided() {
+  fun provideDatabase_withMigration_returnsValidDatabaseAndDao() {
     // create an instance
     val databaseModule = DatabaseModule()
 
@@ -81,7 +81,7 @@ class DatabaseModuleUnitTest {
   }
 
   @Test
-  fun provideDatabase_successProvided() {
+  fun provideDatabase_whenSuccessful_returnsValidDao() {
     val databaseModule = DatabaseModule()
     val database = Room.databaseBuilder(
       context,
@@ -98,7 +98,7 @@ class DatabaseModuleUnitTest {
   }
 
   @Test
-  fun getMigrationOneToTwo_successMigrated() {
+  fun getMigrationOneToTwo_whenApplied_correctlyMigratesSchemaAndData() {
     val helper = MigrationTestHelper(
       InstrumentationRegistry.getInstrumentation(),
       FavoriteDatabase::class.java,

@@ -37,7 +37,7 @@ class DatabaseMapperTest {
   )
 
   @Test
-  fun toFavorite_allPossibility() {
+  fun toFavorite_withValidAllTrueValues_returnsFavorite() {
 
     // test case 1: valid data
     val favorite1 = resultItem1.toFavorite(isFavorite = true, isWatchlist = true)
@@ -89,28 +89,28 @@ class DatabaseMapperTest {
   }
 
   @Test
-  fun favTrueWatchlistTrue_returnCorrectData() {
+  fun favTrueWatchlistTrue_withValidValue_returnCorrectData() {
     val result = favTrueWatchlistTrue(resultItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist)
   }
 
   @Test
-  fun favTrueWatchlistFalse_returnCorrectData() {
+  fun favTrueWatchlistFalse_withValidValue_returnCorrectData() {
     val result = favTrueWatchlistFalse(resultItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist == false)
   }
 
   @Test
-  fun favFalseWatchlistTrue_returnCorrectData() {
+  fun favFalseWatchlistTrue_withValidValue_returnCorrectData() {
     val result = favFalseWatchlistTrue(resultItem1)
     assertTrue(result.isFavorite == false)
     assertTrue(result.isWatchlist)
   }
 
   @Test
-  fun toFavoriteEntity_withValidValue_mapCorrectly() {
+  fun toFavoriteEntity_withFavoriteIsTrue_ReturnsFavoriteEntity() {
     val favorite = Favorite(
       id = 1,
       mediaId = 1,
@@ -143,7 +143,7 @@ class DatabaseMapperTest {
   }
 
   @Test
-  fun toFavorite__withValidValue_mapCorrectly() {
+  fun toFavorite_withFavoriteIsFalse_returnsFavorite() {
     val favoriteEntity = FavoriteEntity(
       id = 2,
       mediaId = 2,

@@ -98,7 +98,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun favoriteMoviesFromDB_returnsListOfFavorites() = runTest {
+  fun favoriteMoviesFromDB_whenSuccessful_returnsListOfFavorites() = runTest {
     localDatabaseInteractor.favoriteMoviesFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
@@ -110,7 +110,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun watchlistMovieFromDB_returnsListOfWatchlist() = runTest {
+  fun watchlistMovieFromDB_whenSuccessful_returnsListOfWatchlist() = runTest {
     localDatabaseInteractor.watchlistMovieFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
@@ -122,7 +122,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun favoriteTvFromDB_returnsListOfFavorites() = runTest {
+  fun favoriteTvFromDB_whenSuccessful_returnsListOfFavorites() = runTest {
     localDatabaseInteractor.favoriteTvFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
@@ -134,7 +134,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun watchlistTvFromDB_returnListOfTvWatchlist() = runTest {
+  fun watchlistTvFromDB_whenSuccessful_returnListOfTvWatchlist() = runTest {
     localDatabaseInteractor.watchlistTvFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
@@ -146,7 +146,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun insertToDB_returnsSuccess() = runTest {
+  fun insertToDB_whenSuccessful_returnsSuccess() = runTest {
     val favorite = Favorite(
       id = 1,
       mediaId = 101,
@@ -173,7 +173,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun deleteFromDB_returnsSuccess() = runTest {
+  fun deleteFromDB_whenSuccessful_returnsSuccess() = runTest {
     val favorite = Favorite(
       id = 1,
       mediaId = 101,
@@ -200,7 +200,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun deleteAll_returnsSuccess() = runTest {
+  fun deleteAll_whenSuccessful_returnsSuccess() = runTest {
     coEvery { mockRepository.deleteAll() } returns DbResult.Success(5)
 
     val result = localDatabaseInteractor.deleteAll()
@@ -222,7 +222,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun isWatchlistDB_returnsSuccess() = runTest {
+  fun isWatchlistDB_whenSuccessful_returnsSuccess() = runTest {
     coEvery { mockRepository.isWatchlistDB(101, "movie") } returns DbResult.Success(true)
 
     val result = localDatabaseInteractor.isWatchlistDB(101, "movie")
@@ -233,7 +233,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun updateFavoriteItemDB_returnsSuccess() = runTest {
+  fun updateFavoriteItemDB_whenSuccessful_returnsSuccess() = runTest {
     val favorite = Favorite(
       id = 1,
       mediaId = 101,
@@ -260,7 +260,7 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun updateWatchlistItemDB_returnsSuccess() = runTest {
+  fun updateWatchlistItemDB_whenSuccessful_returnsSuccess() = runTest {
     val favorite = Favorite(
       id = 1,
       mediaId = 101,
