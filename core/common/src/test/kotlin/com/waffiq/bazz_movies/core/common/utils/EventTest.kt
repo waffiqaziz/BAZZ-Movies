@@ -7,47 +7,41 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class EventTest {
+  private val testContent = "test content"
+  private val testEvent = Event(testContent)
 
   @Test
   fun initialState_hasBeenHandled_shouldFalse() {
-    val event = Event("test content")
-    assertFalse(event.hasBeenHandled)
+    assertFalse(testEvent.hasBeenHandled)
   }
 
   @Test
   fun getContentIfNotHandled_whenFirstCall_returnsContent() {
-    val content = "test content"
-    val event = Event(content)
+    val result = testEvent.getContentIfNotHandled()
 
-    val result = event.getContentIfNotHandled()
-
-    assertEquals(content, result)
-    assertTrue(event.hasBeenHandled)
+    assertEquals(testContent, result)
+    assertTrue(testEvent.hasBeenHandled)
   }
 
   @Test
   fun getContentIfNotHandled_whenSecondCall_returnsNull() {
-    val event = Event("test content")
-
-    event.getContentIfNotHandled() // first call
-    val secondResult = event.getContentIfNotHandled() // second call
+    testEvent.getContentIfNotHandled() // first call
+    val secondResult = testEvent.getContentIfNotHandled() // second call
 
     assertNull(secondResult)
-    assertTrue(event.hasBeenHandled)
+    assertTrue(testEvent.hasBeenHandled)
   }
 
   @Test
   fun peekContent_whenCalled_returnsContent() {
-    val content = "test content"
-    val event = Event(content)
 
-    assertEquals(content, event.peekContent())
-    assertFalse(event.hasBeenHandled)
+    assertEquals(testContent, testEvent.peekContent())
+    assertFalse(testEvent.hasBeenHandled)
 
-    event.getContentIfNotHandled()
+    testEvent.getContentIfNotHandled()
 
-    assertEquals(content, event.peekContent())
-    assertTrue(event.hasBeenHandled)
+    assertEquals(testContent, testEvent.peekContent())
+    assertTrue(testEvent.hasBeenHandled)
   }
 
   @Test
@@ -96,11 +90,11 @@ class EventTest {
       // custom event with no additional functionality
     }
 
-    val customEvent = CustomEvent("test content")
+    val customEvent = CustomEvent(testContent)
 
     assertFalse(customEvent.hasBeenHandled)
-    assertEquals("test content", customEvent.getContentIfNotHandled())
+    assertEquals(testContent, customEvent.getContentIfNotHandled())
     assertTrue(customEvent.hasBeenHandled)
-    assertEquals("test content", customEvent.peekContent())
+    assertEquals(testContent, customEvent.peekContent())
   }
 }

@@ -3,6 +3,8 @@ package com.waffiq.bazz_movies.core.database.data.room
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
@@ -16,6 +18,12 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class FavoriteDaoTest {
+  // dump string
+  private val releaseDate = "releaseDate"
+  private val overview = "overview"
+  private val backdrop = "backdrop"
+  private val poster = "poster"
+
   private lateinit var database: FavoriteDatabase
   private lateinit var favoriteDao: FavoriteDao
 
@@ -38,21 +46,20 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun insertAndGetFavoriteTv_success() = runTest {
-    // Given
+  fun insertAndGetFavoriteTv_whenSuccessful_returnTvDataCorrectly() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 124324,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Test Show",
       rating = 8.5f,
       isFavorite = true,
       isWatchlist = false,
       id = 1,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Crime, War",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 12435.0
     )
 
@@ -65,20 +72,20 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun insertAndGetFavoriteMovies_success() = runTest {
+  fun insertAndGetFavoriteMovies_whenSuccessful_returnMovieDataCorrectly() = runTest {
     val movie = FavoriteEntity(
       mediaId = 2,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Test Movie",
       rating = 9.0f,
       isFavorite = true,
       isWatchlist = false,
       id = 2,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Action, Crime",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 213.0
     )
 
@@ -90,20 +97,20 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun getWatchlistMovies_success() = runTest {
+  fun getWatchlistMovies_whenSuccessful_returnDataCorrectly() = runTest {
     val movie = FavoriteEntity(
       mediaId = 3,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Watchlist Movie",
       rating = 7.5f,
       isFavorite = false,
       isWatchlist = true,
       id = 3,
       genre = "Comedy, Romance",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 56456.0
     )
 
@@ -118,17 +125,17 @@ class FavoriteDaoTest {
   fun getWatchlistTv_success() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 4,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Watchlist Show",
       rating = 8.0f,
       isFavorite = false,
       isWatchlist = true,
       id = 4,
       genre = "Horror",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 5454.0
     )
 
@@ -140,72 +147,71 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun isFavorite_returnsTrueForFavorite() = runTest {
-    // Given
+  fun isFavorite_whenSuccessful_returnsTrueForFavorite() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 5,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Favorite Show",
       rating = 8.5f,
       isFavorite = true,
       isWatchlist = false,
       id = 5,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Science, War",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 43215.0
     )
     favoriteDao.insert(tvShow)
 
-    val isFavorite = favoriteDao.isFavorite(5, "tv")
+    val isFavorite = favoriteDao.isFavorite(5, TV_MEDIA_TYPE)
     assertTrue(isFavorite)
   }
 
   @Test
-  fun isWatchlist_returnsTrueForWatchlist() = runTest {
+  fun isWatchlist_whenSuccessful_returnsTrueForWatchlist() = runTest {
     val movie = FavoriteEntity(
       mediaId = 6,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Watchlist Movie",
       rating = 7.8f,
       isFavorite = false,
       isWatchlist = true,
       id = 6,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Comedy, Thriller",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 6546.0
     )
     favoriteDao.insert(movie)
 
-    val isWatchlist = favoriteDao.isWatchlist(6, "movie")
+    val isWatchlist = favoriteDao.isWatchlist(6, MOVIE_MEDIA_TYPE)
     assertTrue(isWatchlist)
   }
 
   @Test
-  fun deleteItem_removesFromDatabase() = runTest {
+  fun deleteItem_whenSuccessful_removesFromDatabase() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 7,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Temporary Show",
       rating = 6.5f,
       isFavorite = true,
       isWatchlist = false,
       id = 7,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Romance, War",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 325.0
     )
     favoriteDao.insert(tvShow)
 
-    val deleteCount = favoriteDao.deleteItem(7, "tv")
+    val deleteCount = favoriteDao.deleteItem(7, TV_MEDIA_TYPE)
     assertEquals(1, deleteCount)
 
     val favorites = favoriteDao.getFavoriteTv().first()
@@ -213,35 +219,34 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun deleteAll_removesAllItems() = runTest {
-    // Given
+  fun deleteAll_whenSuccessful_removesAllItems() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 8,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Show 1",
       isFavorite = true,
       isWatchlist = false,
       id = 8,
       genre = "Thriller",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 2343.0,
       rating = 9.6f
     )
     val movie = FavoriteEntity(
       mediaId = 9,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Movie 1",
       isFavorite = true,
       isWatchlist = false,
       id = 9,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Action, War",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 213.0,
       rating = 75.0f
     )
@@ -256,65 +261,62 @@ class FavoriteDaoTest {
   }
 
   @Test
-  fun update_changesValues() = runTest {
-    // Given
+  fun update_whenSuccessful_changesValues() = runTest {
     val tvShow = FavoriteEntity(
       mediaId = 10,
-      mediaType = "tv",
+      mediaType = TV_MEDIA_TYPE,
       title = "Update Test",
       isFavorite = false,
       isWatchlist = false,
       id = 2,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Adventure",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 543.0,
       rating = 45.0f
     )
     favoriteDao.insert(tvShow)
 
-    // When
-    val updateCount = favoriteDao.update(true, true, 10, "tv")
+    val updateCount = favoriteDao.update(true, true, 10, TV_MEDIA_TYPE)
 
-    // Then
     assertEquals(1, updateCount)
-    val isFavorite = favoriteDao.isFavorite(10, "tv")
-    val isWatchlist = favoriteDao.isWatchlist(10, "tv")
+    val isFavorite = favoriteDao.isFavorite(10, TV_MEDIA_TYPE)
+    val isWatchlist = favoriteDao.isWatchlist(10, TV_MEDIA_TYPE)
     assertTrue(isFavorite)
     assertTrue(isWatchlist)
   }
 
   @Test
-  fun insert_ignoresOnConflict() = runTest {
+  fun insert_whenSuccessful_ignoresOnConflict() = runTest {
     val original = FavoriteEntity(
       mediaId = 11,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Original Title",
       isFavorite = true,
       isWatchlist = false,
       id = 11,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Action",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 3244.0,
       rating = 80.0f
     )
     val duplicate = FavoriteEntity(
       mediaId = 11,
-      mediaType = "movie",
+      mediaType = MOVIE_MEDIA_TYPE,
       title = "Updated Title", // Different title
       isFavorite = false,
       isWatchlist = true,
       id = 11,
-      genre = "Action, Adventure",
-      backDrop = "backdrop",
-      poster = "poster",
-      overview = "overview",
-      releaseDate = "release date",
+      genre = "Mystery",
+      backDrop = backdrop,
+      poster = poster,
+      overview = overview,
+      releaseDate = releaseDate,
       popularity = 45353.0,
       rating = 7.5f
     )
@@ -322,11 +324,9 @@ class FavoriteDaoTest {
     val firstInsert = favoriteDao.insert(original)
     val secondInsert = favoriteDao.insert(duplicate) // Should be ignored
 
-    // Then
     assertEquals(11, firstInsert)
     assertEquals(-1, secondInsert) // -1 indicates insert was ignored
 
-    // Original data should remain
     val movies = favoriteDao.getFavoriteMovies().first()
     assertEquals(1, movies.size)
     assertEquals("Original Title", movies[0].title)

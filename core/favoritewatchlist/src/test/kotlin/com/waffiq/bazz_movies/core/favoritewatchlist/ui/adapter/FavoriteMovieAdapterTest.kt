@@ -11,12 +11,11 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.testDate
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.testDateFormatted
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.navigation.INavigator
-import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -44,9 +43,13 @@ class FavoriteMovieAdapterTest {
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
+  private val movieTitle = "Test Movie Title"
+  private val movieOriginalTitle = "Test Movie Original Title"
+  private val movieOriginalName = "Test Movie Original Name"
+
   private val movieData = ResultItem(
     id = 1,
-    title = "Test Movie",
+    title = movieTitle,
     overview = "Test Overview",
     name = "Test Name",
     mediaType = "movie",
@@ -85,11 +88,11 @@ class FavoriteMovieAdapterTest {
           ResultItem(
             mediaType = "movie",
             name = "Test Movie Name",
-            title = "Test Movie Title",
-            originalTitle = "Test Movie Original Title",
-            originalName = "Test Movie Original Name",
-            firstAirDate = "2007-06-27",
-            releaseDate = "2007-06-27",
+            title = movieTitle,
+            originalTitle = movieOriginalTitle,
+            originalName = movieOriginalName,
+            firstAirDate = testDate,
+            releaseDate = testDate,
             listGenreIds = listOf(12),
             voteAverage = 10f,
             posterPath = "posterPath.jpg"
@@ -100,7 +103,7 @@ class FavoriteMovieAdapterTest {
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals("Test Movie Name", binding.tvTitle.text.toString())
     assertEquals("Adventure", binding.tvGenre.text.toString())
-    assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
+    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
     assertEquals("10/10", binding.tvRating.text.toString())
     assertEquals("5.0", binding.ratingBar.rating.toString())
   }
@@ -113,8 +116,8 @@ class FavoriteMovieAdapterTest {
         listOf(
           ResultItem(
             mediaType = "movie",
-            title = "Test Movie Title",
-            releaseDate = "2007-06-27",
+            title = movieTitle,
+            releaseDate = testDate,
             firstAirDate = null,
             listGenreIds = emptyList(),
             posterPath = ""
@@ -123,9 +126,9 @@ class FavoriteMovieAdapterTest {
       )
     )
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("Test Movie Title", binding.tvTitle.text.toString())
+    assertEquals(movieTitle, binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
-    assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
+    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
   }
@@ -138,18 +141,18 @@ class FavoriteMovieAdapterTest {
         listOf(
           ResultItem(
             mediaType = "movie",
-            originalTitle = "Test Movie Original Title",
+            originalTitle = movieOriginalTitle,
             releaseDate = null,
-            firstAirDate = "2007-06-27",
+            firstAirDate = testDate,
             posterPath = null
           )
         )
       )
     )
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("Test Movie Original Title", binding.tvTitle.text.toString())
+    assertEquals(movieOriginalTitle, binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
-    assertEquals("Jun 27, 2007", binding.tvYearReleased.text.toString())
+    assertEquals(testDateFormatted, binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())
     assertEquals("0.0", binding.ratingBar.rating.toString())
   }
@@ -162,7 +165,7 @@ class FavoriteMovieAdapterTest {
         listOf(
           ResultItem(
             mediaType = "movie",
-            originalName = "Test Movie Original Name",
+            originalName = movieOriginalName,
             releaseDate = null,
             firstAirDate = "invalid date",
             listGenreIds = null,
@@ -172,7 +175,7 @@ class FavoriteMovieAdapterTest {
       )
     )
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("Test Movie Original Name", binding.tvTitle.text.toString())
+    assertEquals(movieOriginalName, binding.tvTitle.text.toString())
     assertEquals("N/A", binding.tvGenre.text.toString())
     assertEquals("N/A", binding.tvYearReleased.text.toString())
     assertEquals("0/10", binding.tvRating.text.toString())

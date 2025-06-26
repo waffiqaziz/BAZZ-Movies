@@ -32,6 +32,8 @@ class FavoriteAdapterDBTest {
   private lateinit var navigator: INavigator
   private lateinit var adapter: FavoriteAdapterDB
 
+  private val indonesianMovie = "Indonesian Movie"
+  private val indonesianMovie2 ="Indonesian Movie 2"
   private val favorite = Favorite(
     id = 1,
     mediaId = 1,
@@ -40,7 +42,7 @@ class FavoriteAdapterDBTest {
     backDrop = "backdrop",
     poster = "poster",
     overview = "overview",
-    title = "Indonesian Movie",
+    title = indonesianMovie,
     releaseDate = "1979-04-04",
     popularity = 214.0,
     rating = 9.0f,
@@ -61,7 +63,7 @@ class FavoriteAdapterDBTest {
   fun setFavorite_updatesListAndNotifiesChanges() {
     val oldList = listOf(favorite)
     val newList = listOf(
-      favorite.copy(id = 2, mediaId = 2, title = "Indonesian Movie 2"),
+      favorite.copy(id = 2, mediaId = 2, title = indonesianMovie2),
       favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3")
     )
 
@@ -83,7 +85,7 @@ class FavoriteAdapterDBTest {
     // test case 1: valid data
     adapter.setFavorite(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("Indonesian Movie", binding.tvTitle.text.toString())
+    assertEquals(indonesianMovie, binding.tvTitle.text.toString())
     assertEquals("Action", binding.tvGenre.text.toString())
     assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
 
@@ -150,9 +152,9 @@ class FavoriteAdapterDBTest {
       favorite.copy(
         backDrop = "N/A",
         poster = "N/A",
-        title = "Indonesian Movie 2"
-      ) to "Indonesian Movie 2",
-      favorite.copy(backDrop = "N/A") to "Indonesian Movie"
+        title = indonesianMovie2
+      ) to indonesianMovie2,
+      favorite.copy(backDrop = "N/A") to indonesianMovie
     )
 
     testCases.forEach { (favorite, favoriteTitle) ->

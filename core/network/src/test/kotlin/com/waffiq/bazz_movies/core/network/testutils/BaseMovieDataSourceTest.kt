@@ -15,6 +15,12 @@ import org.junit.Before
 import org.junit.Rule
 import retrofit2.Response
 
+/**
+ * Base test class for verifying behavior of [MovieDataSource].
+ *
+ * Provides common mock dependencies, error response stubs, and a shared setup routine
+ * to be reused across concrete test implementations.
+ */
 abstract class BaseMovieDataSourceTest {
 
   protected val apiMaintenanceErrorResponse: Response<PostResponse> = Response.error(
@@ -22,6 +28,16 @@ abstract class BaseMovieDataSourceTest {
     """{"status_code": 503, "status_message": "The API is undergoing maintenance. Try again later."}"""
       .toResponseBody("application/json".toMediaTypeOrNull())
   )
+
+  protected val apiMaintenanceErrorMessage = "The API is undergoing maintenance. Try again later."
+
+  protected val backendErrorResponse: Response<PostResponse> = Response.error(
+    502,
+    """{"status_code": 502, "status_message": "Couldn't connect to the backend server."}"""
+      .toResponseBody("application/json".toMediaTypeOrNull())
+  )
+
+  protected val backendErrorMessage = "Couldn't connect to the backend server."
 
   @MockK
   protected lateinit var tmdbApiService: TMDBApiService
@@ -39,7 +55,7 @@ abstract class BaseMovieDataSourceTest {
 
   @Before
   open fun setup() {
-    // Initialize MockK annotations and relax mocking behavior
+    // initialize MockK annotations and relax mocking behavior
     MockKAnnotations.init(this, relaxed = true)
 
     // clear any previous mocks to ensure tests are isolated

@@ -31,26 +31,51 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+/**
+ * Utility object providing shared helpers for testing paged and flow-based data sources.
+ *
+ * Includes support for:
+ * - Verifying success and error responses from `Flow<NetworkResult<T>>`
+ * - Testing various exception scenarios (e.g., network, HTTP, IO)
+ * - Paging source testing with mocked data
+ * - Paging flow testing using `AsyncPagingDataDiffer`
+ */
 object TestHelper {
 
+  /**
+   * Differ used for testing [PagingData] of [ResultItemResponse].
+   */
   val differ = AsyncPagingDataDiffer(
     diffCallback = TestDiffCallback<ResultItemResponse>(),
     updateCallback = TestListCallback(),
     workerDispatcher = Dispatchers.Main
   )
 
+
+  /**
+   * Differ used for testing [PagingData] of [ResultsItemSearchResponse].
+   */
   val differSearch = AsyncPagingDataDiffer(
     diffCallback = TestDiffCallback<ResultsItemSearchResponse>(),
     updateCallback = TestListCallback(),
     workerDispatcher = Dispatchers.Main
   )
 
+  /**
+   * Verifies a successful flow response from a data source.
+   *
+   * @param apiEndpoint The suspended API call.
+   * @param mockApiResponse The mocked successful API response.
+   * @param dataSourceEndpointCall The data source method returning [Flow]<[NetworkResult]<T>>.
+   * @param expectedData The expected successful data.
+   * @param additionalAssertions Optional lambda to perform further assertions on the result.
+   */
   suspend fun <T> testSuccessResponse(
     apiEndpoint: suspend () -> Response<*>,
     mockApiResponse: Response<T>,
     dataSourceEndpointCall: suspend () -> Flow<NetworkResult<T>>,
     expectedData: T,
-    additionalAssertions: (T) -> Unit
+    additionalAssertions: (T) -> Unit,
   ) {
     coEvery { apiEndpoint() } returns mockApiResponse
 
@@ -73,11 +98,15 @@ object TestHelper {
     coVerify { apiEndpoint() }
   }
 
+
+  /**
+   * Verifies a flow response with an exception (e.g., network failure).
+   */
   suspend fun testErrorResponse(
     apiEndpoint: suspend () -> Response<*>,
     exception: Throwable,
     dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
-    expectedErrorMessage: String
+    expectedErrorMessage: String,
   ) {
     coEvery { apiEndpoint() } throws exception
 
@@ -95,11 +124,14 @@ object TestHelper {
     coVerify { apiEndpoint() }
   }
 
+  /**
+   * Verifies a flow response with an error HTTP response (e.g., 4xx/5xx).
+   */
   suspend fun testErrorResponse(
     apiEndpoint: suspend () -> Response<*>,
     errorResponse: Response<*>,
     dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
-    expectedErrorMessage: String
+    expectedErrorMessage: String,
   ) {
     coEvery { apiEndpoint() } returns errorResponse
 
@@ -117,9 +149,12 @@ object TestHelper {
     coVerify { apiEndpoint() }
   }
 
+  /**
+   * Verifies a 404 Not Found error case.
+   */
   suspend fun testError404Response(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     val error404Response: Response<MovieTvCreditsResponse> = Response.error(
       404,
@@ -134,9 +169,13 @@ object TestHelper {
     )
   }
 
+  /**
+   * Verifies an [UnknownHostException] error scenario.
+   */
+
   suspend fun testUnknownHostExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
@@ -146,9 +185,12 @@ object TestHelper {
     )
   }
 
+  /**
+   * Verifies a [SocketTimeoutException] error scenario.
+   */
   suspend fun testSocketTimeoutExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
@@ -158,9 +200,13 @@ object TestHelper {
     )
   }
 
+
+  /**
+   * Verifies a generic [HttpException] error scenario.
+   */
   suspend fun testHttpExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     val httpException = mockk<HttpException> {
       every { message } returns "HTTP Error"
@@ -173,9 +219,12 @@ object TestHelper {
     )
   }
 
+  /**
+   * Verifies an [IOException] scenario.
+   */
   suspend fun testIOExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
@@ -185,9 +234,12 @@ object TestHelper {
     )
   }
 
+  /**
+   * Verifies a generic [Exception] scenario.
+   */
   suspend fun testGeneralExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>
+    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
@@ -197,11 +249,19 @@ object TestHelper {
     )
   }
 
+  /**
+   * Tests a paging source and asserts the loaded result.
+   *
+   * @param mockResults The mock API response.
+   * @param mockApiCall The mocked API call.
+   * @param loader The paging source's `load` method.
+   * @param resultAssertions Assertions to verify [LoadResult.Page] content.
+   */
   suspend fun testPagingSource(
     mockResults: MovieTvResponse,
     mockApiCall: suspend () -> MovieTvResponse,
     loader: suspend () -> LoadResult<Int, ResultItemResponse>,
-    resultAssertions: (LoadResult.Page<Int, ResultItemResponse>) -> Unit
+    resultAssertions: (LoadResult.Page<Int, ResultItemResponse>) -> Unit,
   ) {
     coEvery { mockApiCall() } returns mockResults
 
@@ -213,11 +273,14 @@ object TestHelper {
     coVerify { mockApiCall() }
   }
 
+  /**
+   * Tests a paging source for search results.
+   */
   suspend fun testPagingSearchSource(
     mockResults: MultiSearchResponse,
     mockApiCall: suspend () -> MultiSearchResponse,
     loader: suspend () -> LoadResult<Int, ResultsItemSearchResponse>,
-    resultAssertions: (LoadResult.Page<Int, ResultsItemSearchResponse>) -> Unit
+    resultAssertions: (LoadResult.Page<Int, ResultsItemSearchResponse>) -> Unit,
   ) {
     coEvery { mockApiCall() } returns mockResults
 
@@ -229,6 +292,9 @@ object TestHelper {
     coVerify { mockApiCall() }
   }
 
+  /**
+   * Builds a default [MovieTvResponse] from a list of items.
+   */
   fun defaultMovieTvResponse(list: List<ResultItemResponse>) = MovieTvResponse(
     page = 1,
     results = list,
@@ -236,6 +302,9 @@ object TestHelper {
     totalPages = 3
   )
 
+  /**
+   * Builds a default [MultiSearchResponse] from a list of items.
+   */
   fun defaultMultiSearchResponse(list: List<ResultsItemSearchResponse>) = MultiSearchResponse(
     page = 1,
     results = list,
@@ -243,9 +312,15 @@ object TestHelper {
     totalPages = 3
   )
 
+  /**
+   * Collects and verifies a [PagingData] flow for [ResultItemResponse].
+   *
+   * @param testScope The [TestScope] for advancing coroutine execution.
+   * @param itemAssertions Assertions to verify the loaded items.
+   */
   suspend fun Flow<PagingData<ResultItemResponse>>.testPagingFlow(
     testScope: TestScope,
-    itemAssertions: (List<ResultItemResponse>) -> Unit
+    itemAssertions: (List<ResultItemResponse>) -> Unit,
   ) {
     test {
       val pagingData = awaitItem()
@@ -261,9 +336,12 @@ object TestHelper {
     }
   }
 
+  /**
+   * Collects and verifies a [PagingData] flow for [ResultsItemSearchResponse].
+   */
   suspend fun Flow<PagingData<ResultsItemSearchResponse>>.testPagingFlowSearch(
     testScope: TestScope,
-    itemAssertions: (List<ResultsItemSearchResponse>) -> Unit
+    itemAssertions: (List<ResultsItemSearchResponse>) -> Unit,
   ) {
     test {
       val pagingData = awaitItem()

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMovieDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.combinedCreditResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIDPersonResponseDump
@@ -17,18 +16,10 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.Response
 
 class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
-
-  private val backendErrorResponse: Response<PostResponse> = Response.error(
-    502,
-    """{"status_code": 502, "status_message": "Couldn't connect to the backend server."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
-  )
 
   @Test
   fun getDetailPerson_returnExpectedResponse() = runTest {
@@ -51,7 +42,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
@@ -125,7 +116,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
@@ -201,7 +192,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
@@ -278,7 +269,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 

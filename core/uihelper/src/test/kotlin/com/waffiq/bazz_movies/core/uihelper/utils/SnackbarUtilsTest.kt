@@ -35,6 +35,9 @@ class SnackbarUtilsTest {
   private lateinit var anchorView: FrameLayout
   private lateinit var eventMessage: Event<String>
 
+  // mocked message for snackbar
+  private val testMessage = "Test Message"
+
   @Before
   fun setup() {
     val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
@@ -74,11 +77,11 @@ class SnackbarUtilsTest {
 
   @Test
   fun snackBarWarning_whenColorResourceIsMissing_returnsNull() {
-    every { eventMessage.getContentIfNotHandled() } returns "Message"
+    every { eventMessage.getContentIfNotHandled() } returns testMessage
     mockkStatic(ContextCompat::class)
     every { ContextCompat.getColor(any(), any()) } throws Resources.NotFoundException()
 
-    val snackbar2 = snackBarWarning(parentView, anchorView, "Test message")
+    val snackbar2 = snackBarWarning(parentView, anchorView, testMessage)
     assertNull(snackbar2)
 
     val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
@@ -89,34 +92,34 @@ class SnackbarUtilsTest {
 
   @Test
   fun snackBarWarning_withoutAnchorView_returnsSnackbar() {
-    every { eventMessage.getContentIfNotHandled() } returns "Test Message"
+    every { eventMessage.getContentIfNotHandled() } returns testMessage
 
     val snackbar = snackBarWarning(parentView, eventMessage = eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(parentView, message = "Test Message")
+    val snackbar2 = snackBarWarning(parentView, message = testMessage)
     assertNull(snackbar2)
   }
 
   @Test
   fun snackBarWarning_withAnchorView_returnsSnackbar() {
-    every { eventMessage.getContentIfNotHandled() } returns "Test Message"
+    every { eventMessage.getContentIfNotHandled() } returns testMessage
 
     val snackbar = snackBarWarning(view = parentView, anchorView = anchorView, eventMessage = eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(view = parentView, anchorView = anchorView, message = "Test Message")
+    val snackbar2 = snackBarWarning(view = parentView, anchorView = anchorView, message = testMessage)
     assertNull(snackbar2)
   }
 
   @Test
   fun snackBarWarning_withDefaultParameter_returnsSnackbar() {
-    every { eventMessage.getContentIfNotHandled() } returns "Test Message"
+    every { eventMessage.getContentIfNotHandled() } returns testMessage
 
     val snackbar = snackBarWarning(parentView, eventMessage = eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(parentView, message = "Test Message")
+    val snackbar2 = snackBarWarning(parentView, message = testMessage)
     assertNull(snackbar2)
   }
 }

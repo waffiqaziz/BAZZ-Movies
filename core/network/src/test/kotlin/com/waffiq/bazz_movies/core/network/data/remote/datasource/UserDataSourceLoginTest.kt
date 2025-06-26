@@ -35,12 +35,12 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnExpectedStatusMessageResponse() = runTest {
+  fun createToken_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       errorResponse = apiInvalidFormatErrorResponse,
       dataSourceEndpointCall = { userDataSource.createToken() },
-      expectedErrorMessage = "Invalid format: This service doesn't exist in that format."
+      expectedErrorMessage = errorInvalidFormatMessage
     )
   }
 
@@ -109,12 +109,12 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnExpectedStatusMessageResponse() = runTest {
+  fun deleteSession_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
-      expectedErrorMessage = "Invalid format: This service doesn't exist in that format."
+      expectedErrorMessage = errorInvalidFormatMessage
     )
   }
 
@@ -182,12 +182,12 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnExpectedStatusMessageResponse() = runTest {
+  fun createSessionLogin_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       errorResponse = apiInvalidFormatErrorResponse,
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
-      expectedErrorMessage = "Invalid format: This service doesn't exist in that format."
+      expectedErrorMessage = errorInvalidFormatMessage
     )
   }
 
@@ -255,12 +255,12 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnExpectedStatusMessageResponse() = runTest {
+  fun login_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
-      expectedErrorMessage = "Invalid format: This service doesn't exist in that format."
+      expectedErrorMessage = errorInvalidFormatMessage
     )
   }
 

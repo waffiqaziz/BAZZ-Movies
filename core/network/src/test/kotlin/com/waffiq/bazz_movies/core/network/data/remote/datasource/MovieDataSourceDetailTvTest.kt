@@ -45,7 +45,7 @@ class MovieDataSourceDetailTvTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getCreditTv(22222) },
       errorResponse = apiMaintenanceErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getCreditTv(22222) },
-      expectedErrorMessage = "The API is undergoing maintenance. Try again later."
+      expectedErrorMessage = apiMaintenanceErrorMessage
     )
   }
 
@@ -119,7 +119,7 @@ class MovieDataSourceDetailTvTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getVideoTv(95479) },
       errorResponse = apiMaintenanceErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getVideoTv(95479) },
-      expectedErrorMessage = "The API is undergoing maintenance. Try again later."
+      expectedErrorMessage = apiMaintenanceErrorMessage
     )
   }
 
@@ -195,7 +195,7 @@ class MovieDataSourceDetailTvTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getDetailTv(253905) },
       errorResponse = apiMaintenanceErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getDetailTv(253905) },
-      expectedErrorMessage = "The API is undergoing maintenance. Try again later."
+      expectedErrorMessage = apiMaintenanceErrorMessage
     )
   }
 
@@ -271,7 +271,7 @@ class MovieDataSourceDetailTvTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getExternalId(246) },
       errorResponse = apiMaintenanceErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getExternalTvId(246) },
-      expectedErrorMessage = "The API is undergoing maintenance. Try again later."
+      expectedErrorMessage = apiMaintenanceErrorMessage
     )
   }
 
@@ -346,7 +346,7 @@ class MovieDataSourceDetailTvTest : BaseMovieDataSourceTest() {
       apiEndpoint = { tmdbApiService.getStatedTv(544321, "session_id") },
       errorResponse = apiMaintenanceErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getStatedTv("session_id", 544321) },
-      expectedErrorMessage = "The API is undergoing maintenance. Try again later."
+      expectedErrorMessage = apiMaintenanceErrorMessage
     )
   }
 

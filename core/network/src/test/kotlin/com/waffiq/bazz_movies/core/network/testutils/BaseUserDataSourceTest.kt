@@ -15,6 +15,12 @@ import org.junit.Before
 import org.junit.Rule
 import retrofit2.Response
 
+/**
+ * Base test class for verifying behavior of [UserDataSource].
+ *
+ * Provides shared mock dependencies, error response stubs, and a setup routine
+ * for reuse across all user data source test cases.
+ */
 abstract class BaseUserDataSourceTest {
 
   protected val apiInvalidFormatErrorResponse: Response<PostResponse> = Response.error(
@@ -22,6 +28,8 @@ abstract class BaseUserDataSourceTest {
     """{"status_code": 503, "status_message": "Invalid format: This service doesn't exist in that format."}"""
       .toResponseBody("application/json".toMediaTypeOrNull())
   )
+
+  protected val errorInvalidFormatMessage = "Invalid format: This service doesn't exist in that format."
 
   @MockK
   protected lateinit var tmdbApiService: TMDBApiService
@@ -39,8 +47,12 @@ abstract class BaseUserDataSourceTest {
 
   @Before
   open fun setup() {
+    // initialize MockK annotations and relax mocking behavior
     MockKAnnotations.init(this, relaxed = true)
+
+    // clear any previous mocks to ensure tests are isolated
     clearMocks(tmdbApiService, countryIPApiService)
+
     userDataSource = UserDataSource(tmdbApiService, countryIPApiService, testDispatcher.IO)
   }
 }
