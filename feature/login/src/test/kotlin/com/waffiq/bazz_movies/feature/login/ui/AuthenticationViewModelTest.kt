@@ -129,7 +129,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun userLogin_emitsLoadingAndErrorStates_onFailure() = runTest {
+  fun userLogin_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
     // mock the UseCase to emit a failure
     coEvery { authTMDbAccountUseCase.createToken() } returns flow {
       emit(Outcome.Loading)
@@ -149,7 +149,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun userLogin_success_triggersLoginAndSessionCreation() = runTest {
+  fun userLogin_whenSuccessful_triggersLoginAndSessionCreation() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
@@ -167,7 +167,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun userLogin_outcomeSuccessDataFailed_setLoginStateFalse() = runTest {
+  fun userLogin_whenResponseSuccessButAuthFails_setsLoginStateFalse() = runTest {
     coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = false, requestToken = null))
     )
@@ -180,7 +180,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun userLogin_outcomeSuccessTokenNull_setLoginStateFalse() = runTest {
+  fun userLogin_whenResponseSuccessButNullToken_setsLoginStateFalse() = runTest {
     coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = null))
     )
@@ -193,7 +193,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun login_success_requestTokenNull() = runTest {
+  fun login_whenSuccessful_requestsTokenNull() = runTest {
     mockSuccessfulTokenCreation()
 
     coEvery {
@@ -212,7 +212,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun login_emitsLoadingAndErrorStates_onFailure() = runTest {
+  fun login_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
     mockSuccessfulTokenCreation()
 
     coEvery {
@@ -232,7 +232,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun createSession_outcomeSuccessDataFailed_setLoginStateFalse() = runTest {
+  fun createSession_whenResponseSuccessButAuthFails_setsLoginStateFalse() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
 
@@ -251,7 +251,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun createSession_outcomeSuccess_setUserModelAllPossibility() = runTest {
+  fun createSession_whenErrorOccurs_setsLoadingAndErrorStates() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
 
@@ -272,7 +272,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_outcomeSuccess_setLoginStateTrue() = runTest {
+  fun getUserDetail_whenSuccessful_setsLoginStateTrue() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
@@ -303,7 +303,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_outcomeSuccessAvatarNull() = runTest {
+  fun getUserDetail_whenResponseSuccessButAvatarNull_returnsUserData() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
@@ -336,7 +336,7 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_emitsLoadingAndErrorStates_onFailure() = runTest {
+  fun getUserDetail_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
