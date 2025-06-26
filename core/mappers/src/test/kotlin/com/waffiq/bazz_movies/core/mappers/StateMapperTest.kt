@@ -11,7 +11,7 @@ import org.junit.Test
 class StateMapperTest {
 
   @Test
-  fun statedResponse_withValidRatedValue_returnsMappedValues() {
+  fun toStated_withValidValue_returnsStated() {
     val statedResponse = StatedResponse(
       id = 123,
       favorite = true,
@@ -28,7 +28,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withNullRatedValue_returnsUnrated() {
+  fun toStated_withNullRatedValue_returnsStated() {
     val statedResponse = StatedResponse(
       id = 456,
       favorite = false,
@@ -45,7 +45,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withRatedAsStringValue_returnsMappedValues() {
+  fun toStated_withValidRated_returnsStated() {
     val statedResponse = StatedResponse(
       id = 789,
       favorite = true,
@@ -62,7 +62,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withRatedAsComplexObject_returnsMappedValues() {
+  fun toStated_whenRatedIsValueObject_returnsStated() {
     val complexRated = RatedResponse.Value(8.5)
     val statedResponse = StatedResponse(
       id = 321,
@@ -80,7 +80,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withExtremeIdValues_returnsMappedValues() {
+  fun toStated_withExtremeIdValues_returnsStated() {
     val statedResponse = StatedResponse(
       id = Int.MAX_VALUE,
       favorite = true,
@@ -97,7 +97,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withZeroId_returnsMappedValues() {
+  fun toStated_withZeroId_returnsStated() {
     val statedResponse = StatedResponse(
       id = 0,
       favorite = false,
@@ -114,7 +114,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withRatedAsBoolean_returnsUnrated() {
+  fun toStated_withRatedUnrated_returnsStated() {
     val statedResponse = StatedResponse(
       id = 111,
       favorite = true,
@@ -131,7 +131,7 @@ class StateMapperTest {
   }
 
   @Test
-  fun statedResponse_withExtremeBooleanCombinations_returnsMappedValues() {
+  fun toStated_withAllTrue_returnsStated() {
     val statedResponse = StatedResponse(
       id = 999,
       favorite = true,
