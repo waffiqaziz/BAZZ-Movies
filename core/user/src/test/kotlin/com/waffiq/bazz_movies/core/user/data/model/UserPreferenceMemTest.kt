@@ -1,8 +1,6 @@
 package com.waffiq.bazz_movies.core.user.data.model
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
+import com.waffiq.bazz_movies.core.user.testutils.DataStoreTestRule
 import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -12,11 +10,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.io.File
 
 @RunWith(RobolectricTestRunner::class)
 class UserPreferenceMemTest {
@@ -75,7 +70,7 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun saveRegion_updatesRegionCorrectly() = runTest {
+  fun saveRegion_whenSuccessful_updatesRegionCorrectly() = runTest {
     userPreference.saveUser(userModelPref)
 
     val savedUser = userPreference.getUser().first()
@@ -88,7 +83,7 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun removeUserData_clearsAllDataCorrectly() = runTest {
+  fun removeUserData_whenSuccessful_clearsAllDataCorrectly() = runTest {
     userPreference.saveUser(userModelPref)
 
     val savedUser = userPreference.getUser().first()
@@ -107,15 +102,5 @@ class UserPreferenceMemTest {
     assertFalse(clearedUser.isLogin)
     assertEquals("", clearedUser.gravatarHast)
     assertEquals("", clearedUser.tmdbAvatar)
-  }
-}
-
-class DataStoreTestRule : TestWatcher() {
-  lateinit var testDataStore: DataStore<Preferences>
-    private set
-
-  override fun starting(description: Description) {
-    val testFile = File.createTempFile("test_${description.methodName}_${System.nanoTime()}", ".preferences_pb")
-    testDataStore = PreferenceDataStoreFactory.create { testFile }
   }
 }

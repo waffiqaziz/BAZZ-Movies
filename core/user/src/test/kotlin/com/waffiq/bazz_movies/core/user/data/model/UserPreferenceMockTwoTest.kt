@@ -35,7 +35,7 @@ class UserPreferenceMockTwoTest {
   }
 
   @Test
-  fun saveRegion_savesCorrectRegion() = runTest {
+  fun saveRegion_whenSuccessful_savesCorrectRegion() = runTest {
     userPreference.saveRegion("ID")
 
     val updatedPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID"))
@@ -48,7 +48,7 @@ class UserPreferenceMockTwoTest {
   }
 
   @Test
-  fun saveRegion_updatesRegionWhenKeyExists() = runTest {
+  fun saveRegion_whenSuccessful_updatesRegionWhenKeyExists() = runTest {
     userPreference.saveRegion("US")
     `when`(mockDataStore.data).thenReturn(flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US")))
     val firstRegion = userPreference.getRegion().first()

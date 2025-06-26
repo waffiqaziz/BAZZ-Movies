@@ -7,19 +7,19 @@ import org.junit.Test
 class AvatarTMDbTest {
 
   @Test
-  fun avatarTMDb_creationWithAllPropertiesSet() {
+  fun avatarTMDb_withAllPropertiesSet_setsPropertiesCorrectly() {
     val avatarTmdb = AvatarTMDb(avatarPath = "/1243513451443.jpg")
     assertEquals("/1243513451443.jpg", avatarTmdb.avatarPath)
   }
 
   @Test
-  fun avatarTMDb_creationWithAllPropertiesNull() {
+  fun avatarTMDb_withAllPropertiesNull_setsPropertiesCorrectly() {
     val avatarTmdb = AvatarTMDb(avatarPath = null)
     assertNull(avatarTmdb.avatarPath)
   }
 
   @Test
-  fun avatarTMDb_creationWithDefaultValues() {
+  fun avatarTMDb_withDefaultValues_setsPropertiesCorrectly() {
     val avatarTmdb = AvatarTMDb()
     assertNull(avatarTmdb.avatarPath)
   }

@@ -39,7 +39,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun login_SuccessReturnsSuccessResult() = runTest {
+  fun login_whenSuccessful_returnsSuccessResult() = runTest {
     val response = Authentication(
       success = true,
       expireAt = "date_expire",
@@ -64,7 +64,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun login_FailedReturnsErrorMessage() = runTest {
+  fun login_whenFailedOccur_returnsErrorMessage() = runTest {
     val username = "username"
     val pass = "password"
     val sessionId = "session_id"
@@ -83,7 +83,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun createToken_SuccessReturnsSuccessResult() = runTest {
+  fun createToken_whenSuccessful_returnsSuccessResult() = runTest {
     val response =
       Authentication(success = true, expireAt = "date_expire", requestToken = "request_token")
 
@@ -103,7 +103,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun createToken_FailedReturnsErrorMessage() = runTest {
+  fun createToken_whenFailedOccur_returnsErrorMessage() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     whenever(mockRepository.createToken()).thenReturn(flow)
 
@@ -118,7 +118,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun deleteSession_SuccessReturnsSuccessResult() = runTest {
+  fun deleteSession_whenSuccessfull_returnsSuccessResult() = runTest {
     val response = Post(success = true, statusCode = 200, statusMessage = "Delete session success")
     val flow = flowOf(Outcome.Success(response))
     whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
@@ -136,7 +136,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun deleteSession_FailedReturnsErrorMessage() = runTest {
+  fun deleteSession_whenFailedOccur_returnsErrorMessage() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
 
@@ -150,7 +150,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun createSession_LoginSuccessReturnsSuccessResult() = runTest {
+  fun createSession_whenLoginSuccess_returnsSuccessResult() = runTest {
     val response = CreateSession(success = true, sessionId = "session_id")
 
     val flow = flowOf(Outcome.Success(response))
@@ -167,7 +167,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun createSession_LoginFailedReturnsErrorMessage() = runTest {
+  fun createSession_whenLoginFailed_returnsErrorMessage() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     whenever(mockRepository.createSessionLogin(requestToken)).thenReturn(flow)
 
@@ -181,7 +181,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun getUserDetails_SuccessReturnsSuccessResult() = runTest {
+  fun getUserDetails_whenSuccessful_returnsUserDataCorrectly() = runTest {
     val response = AccountDetails(
       includeAdult = false,
       iso31661 = "en",
@@ -219,7 +219,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun getUserDetails_FailedReturnsErrorMessage() = runTest {
+  fun getUserDetails_whenFailedOccur_returnsErrorMessage() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     whenever(mockRepository.getUserDetail(sessionId)).thenReturn(flow)
 

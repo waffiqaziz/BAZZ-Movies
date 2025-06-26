@@ -34,7 +34,7 @@ import org.junit.Test
 class AccountMapperTest {
 
   @Test
-  fun mapUserModelPref_ToUserModel() {
+  fun toUserModel_withValidValues_returnsUserModel() {
     val userModelPref = UserModelPref(
       userId = 34567,
       name = "name",
@@ -60,7 +60,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapUserModel_ToUserModelPref() {
+  fun toUserModelPref_withValidValues_returnsUserModelPref() {
     val userMode = UserModel(
       userId = 12345,
       name = "name_model",
@@ -86,7 +86,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAuthenticationResponse_ToAuthenticationNonNullResponse() {
+  fun toAuthentication_withValidValues_returnsAuthentication() {
     val response = AuthenticationResponse(
       success = true,
       expireAt = "date_expire",
@@ -100,7 +100,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAuthenticationResponse_ToAuthenticationNullResponse() {
+  fun toAuthentication_withNullValues_returnsAuthentication() {
     val response = AuthenticationResponse(
       success = true,
       expireAt = null,
@@ -114,16 +114,16 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapCreateSessionResponse_ToCreateSession() {
+  fun toCreateSession_withValidValues_returnCreateSession() {
     val response = CreateSessionResponse(success = true, sessionId = "session_id")
 
-    val authentication: CreateSession = response.toCreateSession()
-    assertEquals(true, authentication.success)
-    assertEquals("session_id", authentication.sessionId)
+    val createSession: CreateSession = response.toCreateSession()
+    assertEquals(true, createSession.success)
+    assertEquals("session_id", createSession.sessionId)
   }
 
   @Test
-  fun mapAccountDetailsResponse_ToAccountDetailsWithNonNullResponses() {
+  fun toAccountDetails_withValidValues_returnsAccountDetails() {
     val response = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "en",
@@ -154,7 +154,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAccountDetailsResponse_ToAccountDetailsWithNullAvatarItemResponse() {
+  fun oAccountDetails_withSomeNullValues_returnsAccountDetails() {
     val response = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "id",
@@ -176,7 +176,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAccountDetailsResponse_ToAccountDetailsNullResponses() {
+  fun toAccountDetails_withAllNullValues_returnsAccountDetails() {
     val response = AccountDetailsResponse(
       includeAdult = null,
       iso31661 = null,
@@ -199,7 +199,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAvatarItemResponse_ToAvatarItemWithNonNullResponses() {
+  fun toAvatarItem_withValidValues_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
       avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
@@ -211,7 +211,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAvatarItemResponse_ToAvatarItemWithNullGravatarResponse() {
+  fun toAvatarItem_withGravatarNull_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = null,
       avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
@@ -224,7 +224,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAvatarItemResponse_ToAvatarItemWithNullAvatarTMDbResponse() {
+  fun toAvatarItem_withAvatarNull_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
       avatarTMDbResponse = null
@@ -237,7 +237,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAvatarItemResponse_ToAvatarItemWithNullResponses() {
+  fun toAvatarItem_withNullValues_returnsAvatarItem() {
     val response = AvatarItemResponse(gravatarResponse = null, avatarTMDbResponse = null)
 
     val avatarItem: AvatarItem = response.toAvatarItem()
@@ -247,7 +247,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapAvatarTMDbResponse_ToAvatarTMDb() {
+  fun toAvatarTMDb_withValidValues_returnsAvatarTMDb() {
     val response = AvatarTMDbResponse(avatarPath = "/32154543587943.jpg")
 
     val avatarTmdb: AvatarTMDb = response.toAvatarTMDb()
@@ -255,7 +255,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapGravatarResponse_ToGravatar() {
+  fun toGravatar_withValidValues_returnsGravatar() {
     val response = GravatarResponse(hash = "/325987423659432.jpg")
 
     val gravatar: Gravatar = response.toGravatar()
@@ -263,7 +263,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun mapCountryIPResponse_ToCountryIP() {
+  fun toCountryIP_withValidValues_returnsCountryIP() {
     val response = CountryIPResponse(
       country = "ID",
       ip = "ip_country"

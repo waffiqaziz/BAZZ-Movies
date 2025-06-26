@@ -42,7 +42,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun getUser_returnsCorrectUserModel() = runTest {
+  fun getUser_whenSuccessful_returnsCorrectUserModel() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val user = userPreference.getUser().first()
@@ -66,7 +66,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun getToken_returnsCorrectToken() = runTest {
+  fun getToken_whenSuccessful_returnsCorrectToken() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val token = userPreference.getToken().first()
@@ -87,7 +87,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun getRegion_returnsCorrectRegion() = runTest {
+  fun getRegion_whenSuccessful_returnsCorrectRegion() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
     val region = userPreference.getRegion().first().toString().uppercase()
@@ -102,7 +102,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun getRegion_handlesNullRegion() = runTest {
+  fun getRegion_whenSuccessful_handlesNullRegion() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences)) // explicitly mock preferences object
 
     // Inline test with Turbine
@@ -114,7 +114,7 @@ class UserPreferenceMockTest {
   }
 
   @Test
-  fun saveRegion_edit_callsEdit() = runTest {
+  fun saveRegion_whenCalled_shouldCallEdit() = runTest {
     `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences)) // explicitly mock preferences object
     `when`(mockDataStore.edit(any())).thenAnswer {
       // Simulate that edit does nothing (since it returns Unit)

@@ -38,7 +38,7 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_EmitsCountryCodeWhenUseCaseReturnsSuccess() = runTest {
+  fun getCountryCode_whenSuccessful_emitsCountryCode() = runTest {
     val mockCountryIP = CountryIP(country = "US", ip = "192.168.0.1")
     val mockResult = Outcome.Success(mockCountryIP)
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
@@ -53,7 +53,7 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_EmitsErrorStateWhenUseCaseReturnsError() = runTest {
+  fun getCountryCode_whenUnsuccessful_emitsErrorState() = runTest {
     val mockResult = Outcome.Error(message = "Network error")
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
@@ -67,7 +67,7 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_ProcessesLoadingState() = runTest {
+  fun getCountryCode_whenLoading_processesLoadingState() = runTest {
     val mockResult = Outcome.Loading
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
@@ -82,7 +82,7 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_SetsCountryCodeToEmptyWhenUseCaseReturnsError() = runTest {
+  fun getCountryCode_whenUnsuccessful_setsCountryCodeToEmpty() = runTest {
     val mockResult = Outcome.Error(message = "Error")
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
@@ -96,7 +96,7 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_SetsCountryCodeToEmptyWhenCountryIsNull() = runTest {
+  fun getCountryCode_whenCountryIsNull_setsCountryCodeToEmpty() = runTest {
     val mockCountryIP = CountryIP(country = null, ip = "192.168.0.1")
     val mockResult = Outcome.Success(mockCountryIP)
     `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
