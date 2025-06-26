@@ -41,7 +41,7 @@ class SearchRepositoryImplTestTwo {
   }
 
   @Test
-  fun getPagingSearch_transformDataCorrectly() = runTest {
+  fun getPagingSearch_whenSearching_shouldTransformDataCorrectly() = runTest {
     val query = "Avengers"
 
     val responseItem1 = ResultsItemSearchResponse(id = 1, title = "Mock Movie 1")

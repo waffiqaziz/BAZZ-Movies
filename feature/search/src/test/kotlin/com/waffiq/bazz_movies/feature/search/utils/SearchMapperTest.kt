@@ -11,7 +11,7 @@ import org.junit.Test
 class SearchMapperTest {
 
   @Test
-  fun toResultItemSearch_withValidValue_mapCorrectly() {
+  fun toResultItemSearch_whenResponseIsValid_mapsAllFieldsCorrectly() {
     val response = ResultsItemSearchResponse(
       mediaType = "movie",
       listKnownFor = listOf(

@@ -6,7 +6,7 @@ import org.junit.Test
 class KnownForItemTest {
 
   @Test
-  fun knownForItem_nullValue_returnDefaultValue() {
+  fun knownForItem_withNullValue_returnDefaultValue() {
     val knownForItem = KnownForItem()
 
     assertNull(knownForItem.overview)

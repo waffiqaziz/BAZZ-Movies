@@ -8,7 +8,7 @@ import org.junit.Test
 class SearchHelperTest {
 
   @Test
-  fun getKnownFor_returnsConcatenatedTitles() {
+  fun getKnownFor_whenCalled_returnsConcatenatedTitles() {
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),
       KnownForItem(title = "Movie 2"),
@@ -20,13 +20,13 @@ class SearchHelperTest {
   }
 
   @Test
-  fun getKnownFor_returnsEmptyStringForEmptyList() {
+  fun getKnownFor_whenListIsEmpty_returnsEmptyString() {
     val result = getKnownFor(emptyList())
     assertEquals("", result)
   }
 
   @Test
-  fun getKnownFor_handlesNullTitlesGracefully() {
+  fun getKnownFor_whenSomeTitlesAreNull_ignoresNullsAndJoinsOthers() {
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),
       KnownForItem(title = null),
@@ -38,7 +38,7 @@ class SearchHelperTest {
   }
 
   @Test
-  fun getKnownFor_handlesNullNameGracefully() {
+  fun getKnownFor_whenUsingNameField_ignoresNullsAndJoinsValidNames() {
     val knownForItems = listOf(
       KnownForItem(name = "Movie 2"),
       KnownForItem(name = null),
@@ -50,7 +50,7 @@ class SearchHelperTest {
   }
 
   @Test
-  fun getKnownFor_handlesNullOriginalNameGracefully() {
+  fun getKnownFor_whenUsingOriginalNameField_ignoresNullsAndJoinsValidNames() {
     val knownForItems = listOf(
       KnownForItem(originalName = "Movie 2"),
       KnownForItem(originalName = null),

@@ -125,7 +125,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_validValue_returnDataCorrectly() = runTest {
+  fun search_whenValueIsValid_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -163,7 +163,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_picturePathNull_returnNull() = runTest {
+  fun search_whenPicturePathIsNull_returnsEmptyPage() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -178,7 +178,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_backdropNull_returnDataCorrectly() = runTest {
+  fun search_whenBackdropPathIsNull_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -205,7 +205,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_posterNull_returnDataCorrectly() = runTest {
+  fun search_whenPosterPathIsNull_returnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -232,7 +232,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_profileNull_shouldReturnDataCorrectly() = runTest {
+  fun search_whenProfilePathIsNull_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -259,7 +259,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_backdropPathValid_showBackdrop() = runTest {
+  fun search_whenBackdropPathIsValid_showsBackdrop() = runTest {
     // case 1: only backdropPath
     val fakePagingData1 = PagingData.from(
       listOf(
@@ -280,7 +280,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_posterPathValid_showPoster() = runTest {
+  fun search_whenPosterPathIsValid_showsPoster() = runTest {
     // case 2: only posterPath
     val fakePagingData2 = PagingData.from(
       listOf(
@@ -301,7 +301,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_profilePathValid_showProfile() = runTest {
+  fun search_whenProfilePathIsValid_showsProfile() = runTest {
     // case 3: only profilePath
     val fakePagingData3 = PagingData.from(
       listOf(
@@ -322,7 +322,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_allEmpty_returnEmptyList() = runTest {
+  fun search_whenAllDataIsEmpty_returnsEmptyList() = runTest {
     // case 1: empty strings (not null)
     val fakePagingDataEmpty = PagingData.from(
       listOf(
@@ -340,7 +340,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_mixedValid_returnEmptyList() = runTest {
+  fun search_whenMixedValidValue_returnsEmptyList() = runTest {
     // case 2: one path is empty string, one is null, one has content
     val fakePagingDataMixed = PagingData.from(
       listOf(
@@ -361,7 +361,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_mixedEmpty_returnEmptyList() = runTest {
+  fun search_whenMixedEmpty_returnsEmptyList() = runTest {
     // case 3: all are empty or null but in different ways
     val fakePagingDataVariedEmpty = PagingData.from(
       listOf(
@@ -379,7 +379,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_nullValue_returnEmptyList() = runTest {
+  fun search_whenAllDataIsNull_returnsEmptyList() = runTest {
     val fakePagingData = PagingData.from(
       listOf(
         ResultsItemSearchResponse().toResultItemSearch(),
@@ -393,7 +393,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun filter_allPathCombinations_ensureProperFilteringLogic() = runTest {
+  fun filter_withPathCombinations_ensureProperFilteringLogic() = runTest {
     // total 9 elements - should only left 7 after filtering
     val fakePagingData = PagingData.from(testCases)
 
