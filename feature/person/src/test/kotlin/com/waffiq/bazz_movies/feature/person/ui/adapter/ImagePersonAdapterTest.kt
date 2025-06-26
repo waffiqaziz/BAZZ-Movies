@@ -45,7 +45,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsDataAndHandlesClicks() {
+  fun onBindViewHolder_whenCalled_bindsDataAndHandlesClicks() {
     val testProfiles = listOf(
       ProfilesItem(filePath = "/test_path1.jpg"),
       ProfilesItem(filePath = "/test_path2.jpg")
@@ -76,7 +76,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
     val parent = FrameLayout(context)
     val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
     val adapter = ImagePersonAdapter(onItemClick)
@@ -90,7 +90,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun setImage_updatesListAndNotifiesAdapter() {
+  fun setImage_whenCalled_updatesListAndNotifiesAdapter() {
     val initialProfiles = listOf(
       ProfilesItem(filePath = "/path1.jpg"),
       ProfilesItem(filePath = "/path2.jpg"),
@@ -113,7 +113,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun bind_loadsCorrectImageOrPlaceholder() {
+  fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
     val binding = ItemPosterBinding.inflate(LayoutInflater.from(context))
     val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
     val adapter = ImagePersonAdapter(onItemClick)
@@ -134,7 +134,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsTrueForSameFilePath() {
+  fun areContentsTheSame_whenFilePathAreTheSame_returnsTrue() {
     val oldItem = ProfilesItem(filePath = "image1.jpg")
     val newItem = ProfilesItem(filePath = "image1.jpg") // same content
     val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
@@ -147,7 +147,7 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsFalseForDifferentFilePath() {
+  fun areContentsTheSame_whenDifferentFilePath_returnsFalse() {
     val oldItem = ProfilesItem(filePath = "image1.jpg")
     val newItem = ProfilesItem(filePath = "image2.jpg") // different content
     val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }

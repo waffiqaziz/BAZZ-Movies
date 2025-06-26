@@ -8,7 +8,7 @@ import org.junit.Test
 class CastItemTest {
 
   @Test
-  fun castItem_nullValue_returnDefaultValue() {
+  fun castItem_withNullValue_returnsDefaultValue() {
     val castItem = CastItem()
 
     assertNull(castItem.firstAirDate)

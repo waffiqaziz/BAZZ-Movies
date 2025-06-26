@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner
 class DetailPersonTest {
 
   @Test
-  fun detailPerson_nullValue_returnDefaultValue() {
+  fun detailPerson_whenInstantiatedWithNoData_returnsAllFieldsNull() {
     val detailPerson = DetailPerson()
 
     assertNull(detailPerson.alsoKnownAs)
@@ -32,7 +32,7 @@ class DetailPersonTest {
   }
 
   @Test
-  fun testParcelable_validData() {
+  fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
     val original = DetailPerson(
       alsoKnownAs = listOf("Name1", "Name2"),
       birthday = "1990-01-01",
@@ -68,7 +68,7 @@ class DetailPersonTest {
   }
 
   @Test
-  fun testParcelable_nullData() {
+  fun parcelable_whenAllFieldsAreNull_readsAndWritesCorrectly() {
     val original = DetailPerson(
       alsoKnownAs = null,
       birthday = null,
@@ -100,7 +100,7 @@ class DetailPersonTest {
   }
 
   @Test
-  fun testParcelable_emptyList() {
+  fun parcelable_whenAlsoKnownAsIsEmpty_readsAndWritesCorrectly() {
     val original = DetailPerson(alsoKnownAs = listOf())
 
     @Suppress("UNCHECKED_CAST")
@@ -117,7 +117,7 @@ class DetailPersonTest {
   }
 
   @Test
-  fun testWriteToParcel_directCall() {
+  fun writeToParcel_whenCalled_performsWriteWithoutCrash() {
     val detailPerson = DetailPerson(
       alsoKnownAs = listOf("Name1", "Name2"),
       birthday = "1990-01-01",
@@ -141,7 +141,7 @@ class DetailPersonTest {
   }
 
   @Test
-  fun testDescribeContents_directCall() {
+  fun describeContents_whenCalled_returnsZero() {
     val detailPerson = DetailPerson()
 
     val contentsValue = detailPerson.describeContents()

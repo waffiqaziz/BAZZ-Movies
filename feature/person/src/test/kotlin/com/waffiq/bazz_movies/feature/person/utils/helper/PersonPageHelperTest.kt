@@ -19,7 +19,7 @@ import org.junit.Test
 class PersonPageHelperTest {
 
   @Test
-  fun hasAnySocialMediaIds_returnsCorrectly_forAllPossibility() {
+  fun hasAnySocialMediaIds_whenCheckingVariousIds_returnsExpectedResult() {
     // should return true if theres id
     assertTrue(hasAnySocialMediaIds(ExternalIDPerson(instagramId = "instagramId")))
     assertTrue(hasAnySocialMediaIds(ExternalIDPerson(twitterId = "twitterId")))
@@ -50,7 +50,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatBirthInfo_formatsBirthdateAndPlaceCorrectly() {
+  fun formatBirthInfo_whenVariousInputValues_formatsCorrectly() {
     // valid birth day and place of birth
     assertEquals(
       "May 15, 1990\nNew York",
@@ -83,7 +83,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatDeathInfo_correctValue_returnDateAndAgeCorrectly() {
+  fun formatDeathInfo_whenValidDatesProvided_returnsFormattedDateAndAge() {
     val context: Context = mockk()
     val birthDate = "1990-05-15"
     val deathDate = "2020-10-10"
@@ -103,7 +103,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatDeathInfo_allNull_returnsNoData() {
+  fun formatDeathInfo_whenAllInputsAreNull_returnsNoData() {
     val context: Context = mockk()
 
     // mock the behavior of getString to return "no data" for any input
@@ -116,7 +116,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatDeathInfo_nullBirthday_returnsEmpty() {
+  fun formatDeathInfo_whenBirthdayIsNull_returnsNoData() {
     val context: Context = mockk()
 
     every { context.getString(no_data) } returns "no data"
@@ -126,7 +126,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatDeathInfo_nullDeathday_returnsNoData() {
+  fun formatDeathInfo_whenDeathdayIsNull_returnsNoData() {
     val context: Context = mockk()
     every { context.getString(no_data) } returns "no_data"
 
@@ -135,7 +135,7 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun formatDeathInfo_onlyDeathDate_returnsEmpty() {
+  fun formatDeathInfo_whenOnlyDeathdayProvided_returnsNoData() {
     val context: Context = mockk()
     val deathDate = "2020-10-10"
 

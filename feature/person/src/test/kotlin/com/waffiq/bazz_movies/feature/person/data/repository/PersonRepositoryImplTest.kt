@@ -42,7 +42,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getDetailPerson_returnsSuccessResult() = runTest {
+  fun getDetailPerson_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<DetailPersonResponse>(relaxed = true)
     val networkResult = NetworkResult.Success(mockResponse)
 
@@ -68,7 +68,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getDetailPerson_returnsErrorResult() = runTest {
+  fun getDetailPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     val networkResult = NetworkResult.Error(errorMessage)
 
     // Mock the MovieDataSource's getDetailPerson method
@@ -90,7 +90,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getDetailPerson_returnsLoadingState() = runTest {
+  fun getDetailPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     // Mock the MovieDataSource's getDetailPerson method to emit only loading
     coEvery { movieDataSource.getDetailPerson(id) } returns flow {
       emit(NetworkResult.Loading) // Emit only Loading
@@ -107,7 +107,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getKnownForPerson_returnsSuccessResult() = runTest {
+  fun getKnownForPerson_whenSuccessful_returnsSuccessResult() = runTest {
     // Arrange
     val combinedCreditResponse = mockk<CombinedCreditResponse>(relaxed = true) // Mock response
     val networkResult = NetworkResult.Success(combinedCreditResponse)
@@ -134,7 +134,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getKnownForPerson_returnsErrorResult() = runTest {
+  fun getKnownForPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     // Arrange
     val networkResult = NetworkResult.Error(errorMessage)
 
@@ -157,7 +157,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getKnownForPerson_returnsLoadingState() = runTest {
+  fun getKnownForPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     // Mock the MovieDataSource's getKnownForPerson method to emit only loading
     coEvery { movieDataSource.getKnownForPerson(id) } returns flow {
       emit(NetworkResult.Loading) // Emit only Loading
@@ -174,7 +174,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getImagePerson_returnsSuccessResult() = runTest {
+  fun getImagePerson_whenSuccessful_returnsSuccessResult() = runTest {
     // Arrange
     val imagePersonResponse = mockk<ImagePersonResponse>(relaxed = true) // Mock response
     val networkResult = NetworkResult.Success(imagePersonResponse)
@@ -201,7 +201,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getImagePerson_returnsErrorResult() = runTest {
+  fun getImagePerson_whenUnsuccessful_returnsErrorResult() = runTest {
     // Arrange
     val networkResult = NetworkResult.Error(errorMessage)
 
@@ -224,7 +224,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getImagePerson_returnsLoadingState() = runTest {
+  fun getImagePerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     // Mock the MovieDataSource's getImagePerson method to emit only loading
     coEvery { movieDataSource.getImagePerson(id) } returns flow {
       emit(NetworkResult.Loading) // Emit only Loading
@@ -241,7 +241,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getExternalIDPerson_returnsSuccessResult() = runTest {
+  fun getExternalIDPerson_whenSuccessful_returnsSuccessResult() = runTest {
     // Arrange
     val externalIDPersonResponse = mockk<ExternalIDPersonResponse>(relaxed = true) // Mock response
     val networkResult = NetworkResult.Success(externalIDPersonResponse)
@@ -268,7 +268,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getExternalIDPerson_returnsErrorResult() = runTest {
+  fun getExternalIDPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     // Arrange
     val networkResult = NetworkResult.Error(errorMessage)
 
@@ -291,7 +291,7 @@ class PersonRepositoryImplTest {
   }
 
   @Test
-  fun getExternalIDPerson_returnsLoadingState() = runTest {
+  fun getExternalIDPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     // Mock the MovieDataSource's getExternalIDPerson method to emit only loading
     coEvery { movieDataSource.getExternalIDPerson(id) } returns flow {
       emit(NetworkResult.Loading) // Emit only Loading

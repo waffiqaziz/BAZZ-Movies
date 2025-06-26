@@ -27,33 +27,33 @@ class PersonPageHelperRoboTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
-  fun getAgeDeath_deathBeforeBirthday_reducesAge() {
+  fun getAgeDeath_whenDeathBeforeBirthday_returnsReducedAge() {
     val age = getAgeDeath(dateBirth = "2000-05-10", dateDeath = "2021-03-15")
     assertEquals(20, age) // should be 20 instead of 21
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.O])
-  fun getAgeDeath_onAPI26Up_returnCorrectly() {
+  fun getAgeDeath_whenApiLevelIs26OrAbove_returnsCorrectAge() {
     val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2020-10-10")
     assertEquals(30, age)
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.M])
-  fun getAgeDeath_onAPI26Down_returnCorrectly() {
+  fun getAgeDeath_whenApiLevelIsBelow26_returnsCorrectAge() {
     val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2024-10-10")
     assertEquals(34, age)
   }
 
   @Test
-  fun getAgeDeath_deathDateNull_returnNoData() {
+  fun getAgeDeath_whenDatesAreValid_returnsCalculatedAge() {
     val age = getAgeDeath(dateBirth = "1990-05-15", dateDeath = "2024-10-10")
     assertEquals(34, age)
   }
 
   @Test
-  fun setupSocialLink_socialIdNotNull_showImageView() {
+  fun setupSocialLink_whenSocialIdIsNotNull_showsImageViewAndStartsIntent() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
     val imageView = ImageView(activity)
     val socialId = "12345"
@@ -75,7 +75,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_socialIdNull_hideImageView() {
+  fun setupSocialLink_whenSocialIdIsNull_hidesImageViewAndSkipsClickListener() {
     val context: Context = mockk(relaxed = true)
     val imageView: ImageView = mockk(relaxed = true)
 
@@ -89,7 +89,7 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_socialIdEmpty_hideImageView() {
+  fun setupSocialLink_whenSocialIdIsEmpty_hidesImageViewAndSkipsClickListener() {
     val context: Context = mockk(relaxed = true)
     val imageView: ImageView = mockk(relaxed = true)
 

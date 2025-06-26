@@ -50,7 +50,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun setCast_updatesListAndNotifiesChanges() {
+  fun setCast_whenCalled_updatesListAndNotifiesChanges() {
     val oldList = listOf(CastItem(id = 1, name = "Old Cast"))
     val newList = listOf(
       CastItem(id = 2, name = "New Cast"),
@@ -66,7 +66,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsCorrectData_forAllCases() {
+  fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
     val context = ApplicationProvider.getApplicationContext<Context>()
     val inflater = LayoutInflater.from(context)
     val binding = ItemPlayForBinding.inflate(inflater, null, false)
@@ -104,7 +104,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
     val parent = FrameLayout(context)
     val adapter = KnownForAdapter(navigator)
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
@@ -116,7 +116,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun bind_loadsCorrectImageOrPlaceholder() {
+  fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
     val binding = ItemPlayForBinding.inflate(LayoutInflater.from(context))
     val adapter = KnownForAdapter(navigator)
     val viewHolder = adapter.ViewHolder(binding)
@@ -136,7 +136,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_clicksContainer_callsNavigator() {
+  fun onBindViewHolder_whenClicked_callsNavigator() {
     val castItem = CastItem(
       id = 1,
       title = "Movie Title",
@@ -181,7 +181,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsTrueForSameFilePath() {
+  fun areContentsTheSame_whenFilePathIsSame_returnsTrue() {
     val oldItem = CastItem(id = 1, name = "Test Name", character = "Bjorn")
     val newItem = CastItem(id = 1, name = "Test Name", character = "Bjorn") // same content
 
@@ -191,7 +191,7 @@ class KnownForAdapterTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsFalseForDifferentFilePath() {
+  fun areContentsTheSame_whenDifferentFilePath_returnsFalse() {
     val oldItem = CastItem(id = 1, name = "Test Name", character = "Bjorn")
     val newItem = CastItem(id = 2, name = "Test Name2", character = "Ragnar") // different content
 
