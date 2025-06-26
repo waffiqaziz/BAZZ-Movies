@@ -6,7 +6,7 @@ import org.junit.Test
 class CombinedCreditPersonTest {
 
   @Test
-  fun combinedCreditPerson_nullValue_returnDefaultValue() {
+  fun combinedCreditPerson_withNullValue_returnsDefaultValue() {
     val combinedCreditPerson = CombinedCreditPerson()
 
     assertNull(combinedCreditPerson.id)

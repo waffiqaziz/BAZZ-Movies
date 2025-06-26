@@ -44,7 +44,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getDetailPerson_emitsSuccess() = runTest {
+  fun getDetailPerson_whenSuccessful_emitsSuccess() = runTest {
     val expectedDetailPerson = DetailPerson(
       id = personId,
       name = "John Doe",
@@ -91,7 +91,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getDetailPerson_emitsError() = runTest {
+  fun getDetailPerson_whenUnsuccessful_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -108,7 +108,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getKnownFor_emitsSuccess() = runTest {
+  fun getKnownFor_whenSuccessful_emitsSuccess() = runTest {
     val castItem = CastItem(
       name = "name_person",
       id = 45678,
@@ -153,7 +153,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getKnownFor_emitsError() = runTest {
+  fun getKnownFor_whenUnsuccessful_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -170,7 +170,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getImagePerson_emitsSuccess() = runTest {
+  fun getImagePerson_whenSuccessful_emitsSuccess() = runTest {
     val profilesItem = ProfilesItem(
       aspectRatio = 0.667,
       filePath = "/file_path_profile.jpg",
@@ -220,7 +220,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getImagePerson_emitsError() = runTest {
+  fun getImagePerson_whenUnsuccessful_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )
@@ -238,7 +238,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getExternalIDPerson_emitsSuccess() = runTest {
+  fun getExternalIDPerson_whenSuccessful_emitsSuccess() = runTest {
     val expectedExternalIDPerson = ExternalIDPerson(
       id = 3254153,
       instagramId = "instagram_id"
@@ -277,7 +277,7 @@ class PersonViewModelTest {
   }
 
   @Test
-  fun getExternalIDPerson_emitsError() = runTest {
+  fun getExternalIDPerson_whenUnsuccessful_emitsError() = runTest {
     coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns flowOf(
       Outcome.Error(errorMessage)
     )

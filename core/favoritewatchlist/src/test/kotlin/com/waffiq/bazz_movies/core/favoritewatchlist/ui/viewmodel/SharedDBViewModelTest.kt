@@ -130,14 +130,14 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun retrieveFlowPropertiesAreMappedCorrectly() {
-    // Then - verify that the LiveData properties correctly map to the Use Case Flow properties
+  fun localDatabaseUseCase_whenCalled_returnsFlowCorrectly() {
+    // verify the LiveData properties correctly map to the Use Case Flow properties
     assertThat(viewModel.favoriteTvFromDB).isNotNull()
     assertThat(viewModel.favoriteMoviesFromDB).isNotNull()
     assertThat(viewModel.watchlistMoviesDB).isNotNull()
     assertThat(viewModel.watchlistTvSeriesDB).isNotNull()
 
-    // Verify the correct flows are being used
+    // verify the correct flows are being used
     verify(exactly = 1) { localDatabaseUseCase.favoriteTvFromDB }
     verify(exactly = 1) { localDatabaseUseCase.favoriteMoviesFromDB }
     verify(exactly = 1) { localDatabaseUseCase.watchlistMovieFromDB }
@@ -145,7 +145,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun insertToDB_emitsSuccess() = runTest {
+  fun insertToDB_whenSuccessful_emitsSuccess() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.insertToDB(favorite) } returns dbResult
@@ -163,7 +163,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun delFromFavoriteDB_emitsSuccessAndSetsUndo() = runTest {
+  fun delFromFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.deleteFromDB(favorite) } returns dbResult
@@ -187,7 +187,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun updateToFavoriteDB_emitsSuccessAndSetsUndo() = runTest {
+  fun updateToFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.updateFavoriteItemDB(false, favorite) } returns dbResult
@@ -211,7 +211,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun updateToWatchlistDB_emitsSuccessAndSetsUndo() = runTest {
+  fun updateToWatchlistDB_whenSuccessful_emitsSuccessAndSetsUndo() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.updateWatchlistItemDB(false, favorite) } returns dbResult
@@ -235,7 +235,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun updateToRemoveFromWatchlistDB_emitsSuccessAndSetsUndo() = runTest {
+  fun updateToRemoveFromWatchlistDB_whenSuccessful_emitsSuccessAndSetsUndo() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.updateWatchlistItemDB(true, favorite) } returns dbResult
@@ -259,7 +259,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun updateToRemoveFromFavoriteDB_emitsSuccessAndSetsUndo() = runTest {
+  fun updateToRemoveFromFavoriteDB_whenSuccessful_emitsSuccessAndSetsUndo() = runTest {
     val dbResult = DbResult.Success(1)
 
     coEvery { localDatabaseUseCase.updateFavoriteItemDB(true, favorite) } returns dbResult
@@ -283,7 +283,7 @@ class SharedDBViewModelTest {
   }
 
   @Test
-  fun flowData_transformsToLiveData() = runTest {
+  fun flowData_whenSuccessful_shouldTransformsToLiveData() = runTest {
     // create mock flows that emit the test data
     val favoriteTvFlow = MutableStateFlow(favoriteTvList)
     val favoriteMoviesFlow = MutableStateFlow(favoriteMoviesList)

@@ -18,7 +18,7 @@ import org.junit.Test
 class PersonMapperTest {
 
   @Test
-  fun toCombinedCredit_withValidValue_mapCorrectly() {
+  fun toCombinedCredit_withValidValue_returnsCombinedCredit() {
     val listOfCastItemResponse = listOf(
       CastItemResponse(id = 1, name = "John", voteCount = 12345),
       CastItemResponse(id = 2, name = "Rex", voteCount = 2345)
@@ -46,7 +46,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun toCombinedCredit_nullValue_mappedToDefaultValue() {
+  fun toCombinedCredit_withNullValue_returnsCombinedCredit() {
     val response = CombinedCreditResponse(
       id = 4376,
       cast = null,
@@ -60,7 +60,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun toCastItem_withValidValue_mapCorrectly() {
+  fun toCastItem_withValidValue_returnsCastItem() {
     val castItemResponse = CastItemResponse(
       firstAirDate = "firstAirDate",
       overview = "overview",
@@ -103,7 +103,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun toDetailPerson_withValidValue_mapCorrectly() {
+  fun toDetailPerson_withValidValue_returnsDetailPerson() {
     val response = DetailPersonResponse(imdbId = "nm123456", name = "Silverst", gender = 2)
     val detailPerson = response.toDetailPerson()
     assertEquals("nm123456", detailPerson.imdbId)
@@ -112,7 +112,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun toImagePerson_withValidValue_mapCorrectly() {
+  fun toImagePerson_withValidValue_returnsImagePerson() {
     val listOfProfilesItemResponse = listOf(
       ProfilesItemResponse(
         width = 300,
@@ -140,7 +140,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun toImagePerson_withSomeNullValue_mappedToDefaultValue() {
+  fun toImagePerson_whenProfilesIsNull_returnsImagePerson() {
     val response = ImagePersonResponse(profiles = null, id = 4531)
     val imagePerson = response.toImagePerson()
 
@@ -149,7 +149,7 @@ class PersonMapperTest {
   }
 
   @Test
-  fun mtoExternalIDPerson_withValidValue_mapCorrectly() {
+  fun toExternalIDPerson_withValidValue_returnsExternalIDPerson() {
     val response = ExternalIDPersonResponse(
       imdbId = "nm12345",
       instagramId = "instagram_id",

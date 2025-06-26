@@ -45,7 +45,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun movieDataSource_getPagingSearchReturnsDataCorrectly() = runTest {
+  fun movieDataSource_whenSearching_returnsCorrectPageData() = runTest {
     coEvery { mockTMDBApiService.search(QUERY, 1) } returns multiSearchResponse
     val pagingSource = SearchPagingSource(mockTMDBApiService, QUERY)
 
@@ -66,7 +66,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun movieDataSource_getPagingSearchThrowsIOException() = runTest {
+  fun movieDataSource_whenSearchFailsWithIOException_returnsLoadError() = runTest {
     coEvery { mockTMDBApiService.search(QUERY, 1) } throws IOException("Network Error")
     val pagingSource = SearchPagingSource(mockTMDBApiService, QUERY)
 
@@ -105,7 +105,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun repository_getPagingSearchWithEmptyData() = runTest {
+  fun repository_whenSearching_returnsPagedData() = runTest {
     val emptyPagingData = PagingData.from(emptyList<ResultsItemSearchResponse>())
     every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(emptyPagingData)
 
@@ -124,7 +124,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun repository_getPagingSearchWithNullData() = runTest {
+  fun repository_whenSearchItemIsNull_returnsNonEmptyPagingData() = runTest {
     val invalidItem = mockk<ResultsItemSearchResponse>(relaxed = true)
     val pagingDataWithNull = PagingData.from(listOf(invalidItem))
 
@@ -145,7 +145,7 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun repository_getPagingSearchWithNullValues() = runTest {
+  fun repository_whenSearchItemHasNulls_setsDefaultValues() = runTest {
     val responseWithNulls = ResultsItemSearchResponse(
       mediaType = null, // Should default to MOVIE_MEDIA_TYPE
       popularity = null, // Should default to 0.0

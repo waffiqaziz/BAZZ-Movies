@@ -6,7 +6,7 @@ import org.junit.Test
 class CrewItemTest {
 
   @Test
-  fun crewItem_nullValue_returnDefaultValue() {
+  fun crewItem_withNullValue_returnsDefaultValue() {
     val crewItem = CrewItem()
 
     assertNull(crewItem.overview)

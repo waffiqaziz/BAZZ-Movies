@@ -28,7 +28,7 @@ class GetRegionInteractorTest {
   }
 
   @Test
-  fun getCountryCode_EmitsSuccess() = runTest {
+  fun getCountryCode_whenSuccessful_emitsSuccess() = runTest {
     val expectedCountryIP = CountryIP(country = "US")
     val flow = flowOf(Outcome.Success(expectedCountryIP))
     coEvery { mockRepository.getCountryCode() } returns flow
@@ -49,7 +49,7 @@ class GetRegionInteractorTest {
   }
 
   @Test
-  fun getCountryCode_EmitsError() = runTest {
+  fun getCountryCode_whenUnsuccessful_emitsError() = runTest {
     val errorMessage = "Network error"
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getCountryCode() } returns flow

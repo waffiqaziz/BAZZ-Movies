@@ -35,43 +35,43 @@ class MultiSearchInteractorTest {
 
     // one path present, others null
     resultsItemSearchResponse.copy(
-      backdropPath = "/path.jpg",
+      backdropPath = "1/path.jpg",
       posterPath = null,
       profilePath = null
     ),
     resultsItemSearchResponse.copy(
       backdropPath = null,
-      posterPath = "/path.jpg",
+      posterPath = "2/path.jpg",
       profilePath = null
     ),
     resultsItemSearchResponse.copy(
       backdropPath = null,
       posterPath = null,
-      profilePath = "/path.jpg"
+      profilePath = "3/path.jpg"
     ),
 
     // two paths present, one null
     resultsItemSearchResponse.copy(
-      backdropPath = "/path.jpg",
-      posterPath = "/path.jpg",
+      backdropPath = "4/path.jpg",
+      posterPath = "4/path.jpg",
       profilePath = null
     ),
     resultsItemSearchResponse.copy(
-      backdropPath = "/path.jpg",
+      backdropPath = "5/path.jpg",
       posterPath = null,
-      profilePath = "/path.jpg"
+      profilePath = "5/path.jpg"
     ),
     resultsItemSearchResponse.copy(
       backdropPath = null,
-      posterPath = "/path.jpg",
-      profilePath = "/path.jpg"
+      posterPath = "6/path.jpg",
+      profilePath = "6/path.jpg"
     ),
 
     // all paths not null
     resultsItemSearchResponse.copy(
-      backdropPath = "/path.jpg",
-      posterPath = "/path.jpg",
-      profilePath = "/path.jpg"
+      backdropPath = "7/path.jpg",
+      posterPath = "7/path.jpg",
+      profilePath = "7/path.jpg"
     ),
 
     // all empty - should be filtered out
@@ -125,7 +125,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_validValue_returnDataCorrectly() = runTest {
+  fun search_whenValueIsValid_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -163,7 +163,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_picturePathNull_returnNull() = runTest {
+  fun search_whenPicturePathIsNull_returnsEmptyPage() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
@@ -178,17 +178,17 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_backdropNull_returnDataCorrectly() = runTest {
+  fun search_whenBackdropPathIsNull_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
           resultsItemSearchResponse.copy(
-            posterPath = "/poster_path0.jpg",
-            profilePath = "/profile_path0.jpg"
+            posterPath = "/poster_path3.jpg",
+            profilePath = "/profile_path3.jpg"
           ).toResultItemSearch(),
           resultsItemSearchResponse2.copy(
-            posterPath = "/poster_path1.jpg",
-            profilePath = "/profile_path1.jpg"
+            posterPath = "/poster_path4.jpg",
+            profilePath = "/profile_path4.jpg"
           ).toResultItemSearch()
         )
       )
@@ -196,26 +196,26 @@ class MultiSearchInteractorTest {
     testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
-      assertEquals("/poster_path0.jpg", pagingList[0].posterPath)
-      assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
+      assertEquals("/poster_path3.jpg", pagingList[0].posterPath)
+      assertEquals("/profile_path3.jpg", pagingList[0].profilePath)
       assertTrue(pagingList[1].backdropPath.isNullOrEmpty())
-      assertEquals("/poster_path1.jpg", pagingList[1].posterPath)
-      assertEquals("/profile_path1.jpg", pagingList[1].profilePath)
+      assertEquals("/poster_path4.jpg", pagingList[1].posterPath)
+      assertEquals("/profile_path4.jpg", pagingList[1].profilePath)
     }
   }
 
   @Test
-  fun search_posterNull_returnDataCorrectly() = runTest {
+  fun search_whenPosterPathIsNull_returnDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
           resultsItemSearchResponse.copy(
-            backdropPath = "/backdrop_path0.jpg",
-            profilePath = "/profile_path0.jpg"
+            backdropPath = "/backdrop_path5.jpg",
+            profilePath = "/profile_path5.jpg"
           ).toResultItemSearch(),
           resultsItemSearchResponse2.copy(
-            backdropPath = "/backdrop_path1.jpg",
-            profilePath = "/profile_path1.jpg"
+            backdropPath = "/backdrop_path6.jpg",
+            profilePath = "/profile_path6.jpg"
           ).toResultItemSearch()
         )
       )
@@ -223,26 +223,26 @@ class MultiSearchInteractorTest {
     testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
-      assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
-      assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
+      assertEquals("/backdrop_path5.jpg", pagingList[0].backdropPath)
+      assertEquals("/profile_path5.jpg", pagingList[0].profilePath)
       assertTrue(pagingList[1].posterPath.isNullOrEmpty())
-      assertEquals("/backdrop_path1.jpg", pagingList[1].backdropPath)
-      assertEquals("/profile_path1.jpg", pagingList[1].profilePath)
+      assertEquals("/backdrop_path6.jpg", pagingList[1].backdropPath)
+      assertEquals("/profile_path6.jpg", pagingList[1].profilePath)
     }
   }
 
   @Test
-  fun search_profileNull_shouldReturnDataCorrectly() = runTest {
+  fun search_whenProfilePathIsNull_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(
         listOf(
           resultsItemSearchResponse.copy(
-            backdropPath = "/backdrop_path0.jpg",
-            posterPath = "/poster_path0.jpg",
+            backdropPath = "/backdrop_path7.jpg",
+            posterPath = "/poster_path7.jpg",
           ).toResultItemSearch(),
           resultsItemSearchResponse2.copy(
-            backdropPath = "/backdrop_path1.jpg",
-            posterPath = "/poster_path1.jpg",
+            backdropPath = "/backdrop_path8.jpg",
+            posterPath = "/poster_path8.jpg",
           ).toResultItemSearch()
         )
       )
@@ -250,21 +250,21 @@ class MultiSearchInteractorTest {
     testSearchWithPagingData(fakePagingData) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
-      assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
-      assertEquals("/poster_path0.jpg", pagingList[0].posterPath)
+      assertEquals("/backdrop_path7.jpg", pagingList[0].backdropPath)
+      assertEquals("/poster_path7.jpg", pagingList[0].posterPath)
       assertTrue(pagingList[1].profilePath.isNullOrEmpty())
-      assertEquals("/backdrop_path1.jpg", pagingList[1].backdropPath)
-      assertEquals("/poster_path1.jpg", pagingList[1].posterPath)
+      assertEquals("/backdrop_path8.jpg", pagingList[1].backdropPath)
+      assertEquals("/poster_path8.jpg", pagingList[1].posterPath)
     }
   }
 
   @Test
-  fun search_backdropPathValid_showBackdrop() = runTest {
+  fun search_whenBackdropPathIsValid_showsBackdrop() = runTest {
     // case 1: only backdropPath
     val fakePagingData1 = PagingData.from(
       listOf(
         resultsItemSearchResponse.copy(
-          backdropPath = "/backdrop_path0.jpg",
+          backdropPath = "/backdrop_path9.jpg",
           posterPath = null,
           profilePath = null
         ).toResultItemSearch()
@@ -273,20 +273,20 @@ class MultiSearchInteractorTest {
 
     testSearchWithPagingData(fakePagingData1) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
-      assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
+      assertEquals("/backdrop_path9.jpg", pagingList[0].backdropPath)
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
     }
   }
 
   @Test
-  fun search_posterPathValid_showPoster() = runTest {
+  fun search_whenPosterPathIsValid_showsPoster() = runTest {
     // case 2: only posterPath
     val fakePagingData2 = PagingData.from(
       listOf(
         resultsItemSearchResponse.copy(
           backdropPath = null,
-          posterPath = "/poster_path0.jpg",
+          posterPath = "/poster_path10.jpg",
           profilePath = null
         ).toResultItemSearch()
       )
@@ -295,20 +295,20 @@ class MultiSearchInteractorTest {
     testSearchWithPagingData(fakePagingData2) { pagingList ->
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
-      assertEquals("/poster_path0.jpg", pagingList[0].posterPath)
+      assertEquals("/poster_path10.jpg", pagingList[0].posterPath)
       assertTrue(pagingList[0].profilePath.isNullOrEmpty())
     }
   }
 
   @Test
-  fun search_profilePathValid_showProfile() = runTest {
+  fun search_whenProfilePathIsValid_showsProfile() = runTest {
     // case 3: only profilePath
     val fakePagingData3 = PagingData.from(
       listOf(
         resultsItemSearchResponse.copy(
           backdropPath = null,
           posterPath = null,
-          profilePath = "/profile_path0.jpg"
+          profilePath = "/profile_path11.jpg"
         ).toResultItemSearch()
       )
     )
@@ -317,12 +317,12 @@ class MultiSearchInteractorTest {
       assertTrue(pagingList.isNotEmpty())
       assertTrue(pagingList[0].backdropPath.isNullOrEmpty())
       assertTrue(pagingList[0].posterPath.isNullOrEmpty())
-      assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
+      assertEquals("/profile_path11.jpg", pagingList[0].profilePath)
     }
   }
 
   @Test
-  fun search_allEmpty_returnEmptyList() = runTest {
+  fun search_whenAllDataIsEmpty_returnsEmptyList() = runTest {
     // case 1: empty strings (not null)
     val fakePagingDataEmpty = PagingData.from(
       listOf(
@@ -340,14 +340,14 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_mixedValid_returnEmptyList() = runTest {
+  fun search_whenMixedValidValue_returnsEmptyList() = runTest {
     // case 2: one path is empty string, one is null, one has content
     val fakePagingDataMixed = PagingData.from(
       listOf(
         resultsItemSearchResponse.copy(
           backdropPath = "",
           posterPath = null,
-          profilePath = "/profile_path0.jpg"
+          profilePath = "/profile_path12.jpg"
         ).toResultItemSearch()
       )
     )
@@ -356,12 +356,12 @@ class MultiSearchInteractorTest {
       assertTrue(pagingList.isNotEmpty())
       assertEquals("", pagingList[0].backdropPath)
       assertNull(pagingList[0].posterPath)
-      assertEquals("/profile_path0.jpg", pagingList[0].profilePath)
+      assertEquals("/profile_path12.jpg", pagingList[0].profilePath)
     }
   }
 
   @Test
-  fun search_mixedEmpty_returnEmptyList() = runTest {
+  fun search_whenMixedEmpty_returnsEmptyList() = runTest {
     // case 3: all are empty or null but in different ways
     val fakePagingDataVariedEmpty = PagingData.from(
       listOf(
@@ -379,7 +379,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun search_nullValue_returnEmptyList() = runTest {
+  fun search_whenAllDataIsNull_returnsEmptyList() = runTest {
     val fakePagingData = PagingData.from(
       listOf(
         ResultsItemSearchResponse().toResultItemSearch(),
@@ -393,7 +393,7 @@ class MultiSearchInteractorTest {
   }
 
   @Test
-  fun filter_allPathCombinations_ensureProperFilteringLogic() = runTest {
+  fun filter_withPathCombinations_ensureProperFilteringLogic() = runTest {
     // total 9 elements - should only left 7 after filtering
     val fakePagingData = PagingData.from(testCases)
 

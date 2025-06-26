@@ -25,7 +25,7 @@ class GetStatedMovieInteractorTest {
   }
 
   @Test
-  fun getStatedIMovieRepositorySuccess_returnCorrectData() = runTest {
+  fun getStatedIMovieRepository_whenSuccessful_returnsCorrectData() = runTest {
     val stated = Stated(
       id = 1234,
       favorite = true,

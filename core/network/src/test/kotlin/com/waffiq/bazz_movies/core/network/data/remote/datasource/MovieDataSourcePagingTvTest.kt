@@ -40,49 +40,49 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
   )
 
   @Test
-  fun getPagingFavoriteTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingFavoriteTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createFavoriteTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingWatchlistTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingWatchlistTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createWatchlistTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingPopularTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingPopularTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createPopularTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingAiringThisWeekTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingAiringThisWeekTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createAiringThisWeekTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingAiringTodayTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingAiringTodayTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createAiringTodayTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingTvRecommendation_ReturnExpectedPagingData() = runTest {
+  fun getPagingTvRecommendation_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createTvRecommendationScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingTopRatedTv_ReturnExpectedPagingData() = runTest {
+  fun getPagingTopRatedTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createTopRatedTvScenario()
     testTvPagingScenario(scenario)
   }
 
-  // Common test execution method
-  private suspend fun testTvPagingScenario(scenario: TvTestScenario) = runTest {
+  // common test execution method
+  private fun testTvPagingScenario(scenario: TvTestScenario) = runTest {
     val pagingSource = scenario.pagingSourceFactory()
 
     testPagingSource(
@@ -95,14 +95,14 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
       scenario.pageValidation(page)
     }
 
-    // Test using paging data
+    // test using paging data
     scenario.dataSourceCall().testPagingFlow(this) { pagingList ->
       val items = differ.snapshot().items
       scenario.pagingFlowValidation(items)
     }
   }
 
-  // Scenario factory methods
+  // scenario factory methods
   private fun createFavoriteTvScenario() = TvTestScenario(
     testName = "FavoriteTv",
     expectedData = listOf(tvShowDump2),
@@ -150,14 +150,15 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
     }
   )
 
+  private val airDate1 = "2012-06-04"
   private fun createPopularTvScenario() = TvTestScenario(
     testName = "PopularTv",
     expectedData = listOf(tvShowDump3),
     pagingSourceFactory = {
-      GenericPagingSource { tmdbApiService.getPopularTv(1, "id", "2023-11-06").results }
+      GenericPagingSource { tmdbApiService.getPopularTv(1, "id", airDate1).results }
     },
-    mockApiCall = { tmdbApiService.getPopularTv(1, "id", "2023-11-06") },
-    dataSourceCall = { movieDataSource.getPagingPopularTv("id", "2023-11-06") },
+    mockApiCall = { tmdbApiService.getPopularTv(1, "id", airDate1) },
+    dataSourceCall = { movieDataSource.getPagingPopularTv("id", airDate1) },
     pageValidation = { page ->
       assertPageBasics(page, expectedSize = 1, expectedTitle = "Kingdom", expectedId = 46437)
       assertEquals(tvShowDump3, page.data[0])
@@ -168,26 +169,26 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
       assertEquals("Kingdom", items[0].title)
       assertEquals(38, items[0].voteCount)
       assertNull(items[0].backdropPath)
+      assertEquals("2012-06-04", items[0].firstAirDate)
       assertEquals("/dehuJJkKo50nYvCYppigrWejqLe.jpg", items[0].posterPath)
-      coVerify { tmdbApiService.getPopularTv(1, "id", "2023-11-06") }
+      coVerify { tmdbApiService.getPopularTv(1, "id", airDate1) }
     }
   )
+
+  private val airDate2 = "2023-11-14"
+  private val airDateEnd = "2023-11-06"
 
   private fun createAiringThisWeekTvScenario() = TvTestScenario(
     testName = "AiringThisWeekTv",
     expectedData = listOf(tvShowDump1, tvShowDump2, tvShowDump3),
     pagingSourceFactory = {
       GenericPagingSource {
-        tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-06", 1).results
+        tmdbApiService.getTvAiring("id", airDate2, airDateEnd, 1).results
       }
     },
-    mockApiCall = { tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-06", 1) },
+    mockApiCall = { tmdbApiService.getTvAiring("id", airDate2, airDateEnd, 1) },
     dataSourceCall = {
-      movieDataSource.getPagingAiringThisWeekTv(
-        "id",
-        "2023-11-14",
-        "2023-11-06"
-      )
+      movieDataSource.getPagingAiringThisWeekTv("id", airDate2, airDateEnd)
     },
     pageValidation = { page ->
       assertEquals(3, page.data.size)
@@ -203,7 +204,7 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
       assertEquals(48, items[1].voteCount)
       assertNull(items[1].backdropPath)
       assertEquals("/c7Pfx7dQiRsi1rU8N9s05gHnAkI.jpg", items[1].posterPath)
-      coVerify { tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-06", 1) }
+      coVerify { tmdbApiService.getTvAiring("id", airDate2, airDateEnd, 1) }
     }
   )
 
@@ -212,11 +213,11 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
     expectedData = listOf(tvShowDump1, tvShowDump3),
     pagingSourceFactory = {
       GenericPagingSource {
-        tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-14", 1).results
+        tmdbApiService.getTvAiring("id", airDate2, airDate2, 1).results
       }
     },
-    mockApiCall = { tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-14", 1) },
-    dataSourceCall = { movieDataSource.getPagingAiringTodayTv("id", "2023-11-14", "2023-11-14") },
+    mockApiCall = { tmdbApiService.getTvAiring("id", airDate2, airDate2, 1) },
+    dataSourceCall = { movieDataSource.getPagingAiringTodayTv("id", airDate2, airDate2) },
     pageValidation = { page ->
       assertEquals(2, page.data.size)
       assertEquals("/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", page.data[0].posterPath)
@@ -231,7 +232,7 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
       assertEquals(38, items[1].voteCount)
       assertNull(items[1].backdropPath)
       assertEquals("/dehuJJkKo50nYvCYppigrWejqLe.jpg", items[1].posterPath)
-      coVerify { tmdbApiService.getTvAiring("id", "2023-11-14", "2023-11-14", 1) }
+      coVerify { tmdbApiService.getTvAiring("id", airDate2, airDate2, 1) }
     }
   )
 

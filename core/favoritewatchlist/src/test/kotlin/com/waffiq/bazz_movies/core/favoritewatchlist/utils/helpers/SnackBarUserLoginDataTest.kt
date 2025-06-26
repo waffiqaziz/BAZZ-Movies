@@ -11,7 +11,7 @@ import org.junit.Test
 class SnackBarUserLoginDataTest {
 
   @Test
-  fun createInstance_withCorrectValues() {
+  fun snackBarUserLoginData_withCorrectValues_createsTheInstance() {
     val favorite = FavoriteModel(mediaType = "movie", mediaId = 123, favorite = true)
     val watchlist = WatchlistModel(mediaType = "tv", mediaId = 456, watchlist = true)
 
@@ -29,7 +29,7 @@ class SnackBarUserLoginDataTest {
   }
 
   @Test
-  fun equalObjects_shouldBeSame() {
+  fun snackBarUserLoginData_whenContentsAreEqual_instancesAreEqual() {
     val favorite = FavoriteModel("movie", 123, true)
     val watchlist = WatchlistModel("tv", 456, true)
 
@@ -41,7 +41,7 @@ class SnackBarUserLoginDataTest {
   }
 
   @Test
-  fun copyFunction_updatesSpecificFields() {
+  fun snackBarUserLoginData_whenCopyFunctionCalled_updatesSpecificFields() {
     val favorite = FavoriteModel("movie", 123, true)
     val original = SnackBarUserLoginData(true, "Success", favorite, null)
 
@@ -54,7 +54,7 @@ class SnackBarUserLoginDataTest {
   }
 
   @Test
-  fun nullValues_handleCorrectly() {
+  fun snackBarUserLoginData_withNullValues_shouldHandleCorrectly() {
     val data = SnackBarUserLoginData(
       isSuccess = false,
       title = "Failed",

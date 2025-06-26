@@ -35,7 +35,7 @@ class SetupRecyclerViewTest {
   }
 
   @Test
-  fun setupRecyclerView_configureRecyclerViewCorrectly() {
+  fun setupRecyclerView_whenCalled_configuresWithConcatAdapterAndVerticalLayout() {
     recyclerView.setupRecyclerView(context, pagingAdapter)
 
     // verify that layoutManager is a LinearLayoutManager with vertical orientation
@@ -90,7 +90,7 @@ class SetupRecyclerViewTest {
   private class TestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
   @Test
-  fun loadingStateAdapter_callsRetryOnPagingAdapter() {
+  fun loadingStateAdapter_whenRetryInvoked_callsPagingAdapterRetry() {
     // use spy of the pagingAdapter to verify retry() is called
     val spyAdapter = spy(pagingAdapter)
 

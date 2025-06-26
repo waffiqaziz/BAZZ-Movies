@@ -1,8 +1,9 @@
 # 🧪 Testing
 
-We use testing to ensure the stability and quality of our code.
+We use testing to ensure the stability and quality of our code. For testing name convention,
+please [follow this naming guide](../docs/BAZZMoviesTestNamingConvention.md).
 
-## 📈 Module-Level Coverage
+## Module-Level Coverage
 
 Below you can find a list of BAZZ Movies modules.
 

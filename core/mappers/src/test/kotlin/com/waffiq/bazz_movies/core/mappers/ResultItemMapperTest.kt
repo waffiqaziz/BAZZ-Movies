@@ -9,7 +9,7 @@ import org.junit.Test
 class ResultItemMapperTest {
 
   @Test
-  fun resultItemResponse_withValidValues_returnsMappedResultItem() {
+  fun toResultItem_withValidValues_returnsResultItem() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "2023-12-01",
       overview = "This is an overview",
@@ -56,7 +56,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun resultItemResponse_withNullValues_returnsDefaultValues() {
+  fun toResultItem_withNullValues_returnsResultItem() {
     val resultItemResponse = ResultItemResponse()
 
     val resultItem = resultItemResponse.toResultItem()
@@ -83,7 +83,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun resultItemResponse_withEmptyStringsAndZeroValues_returnsMappedValues() {
+  fun toResultItem_withEmptyStringsAndZeroValues_returnsResultItem() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "",
       overview = "",
@@ -130,7 +130,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun resultItemResponse_withBlankStrings_returnsMappedValues() {
+  fun toResultItem_withBlankValues_returnsResultItem() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = "  ",
       overview = "  ",
@@ -161,7 +161,7 @@ class ResultItemMapperTest {
   }
 
   @Test
-  fun resultItemResponse_withPartialNullValues_returnsMappedValuesWithDefaults() {
+  fun toResultItem_withSomeNullValues_returnsResultItem() {
     val resultItemResponse = ResultItemResponse(
       firstAirDate = null,
       overview = "Overview",

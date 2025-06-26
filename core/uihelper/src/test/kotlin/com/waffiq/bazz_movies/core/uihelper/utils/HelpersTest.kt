@@ -56,21 +56,21 @@ class HelpersTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun justifyTextView_shouldWork_onAndroidQAndAbove() {
+  fun justifyTextView_onAndroidQAndAbove_setsLineBreakerJustification() {
     justifyTextView(textView)
     assertEquals(textView.justificationMode, LineBreaker.JUSTIFICATION_MODE_INTER_WORD)
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.O, Build.VERSION_CODES.P])
-  fun justifyTextView_shouldWork_onAndroidOToP() {
+  fun justifyTextView_onAndroidOToP_setsLayoutJustification() {
     justifyTextView(textView)
     assertEquals(textView.justificationMode, Layout.JUSTIFICATION_MODE_INTER_WORD)
   }
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
-  fun justifyTextView_shouldDoNothing_belowAndroidO() {
+  fun justifyTextView_belowAndroidO_doesNotChangeJustification() {
     val textView = TextView(context)
 
     val initialJustificationMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -105,7 +105,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnap_attachesCustomSnapHelper() {
+  fun setupRecyclerViewsWithSnap_whenCalled_attachesCustomSnapHelper() {
     setupRecyclerViewsWithSnap(listOf(recyclerView))
 
     assertNotNull(recyclerView.onFlingListener)
@@ -113,7 +113,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnap_doesNotAttachSnapHelperIfAlreadySet() {
+  fun setupRecyclerViewsWithSnap_whenSnapHelperAlreadySet_doesNotReplaceIt() {
     recyclerView.onFlingListener = CustomSnapHelper()
 
     setupRecyclerViewsWithSnap(listOf(recyclerView))
@@ -123,7 +123,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnap_usesProvidedLayoutManager() {
+  fun setupRecyclerViewsWithSnap_withCustomLayoutManager_setsLayoutManagerAndAttachesSnapHelper() {
     val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
 
     setupRecyclerViewsWithSnap(listOf(recyclerView), layoutManager = customLayoutManager)
@@ -134,7 +134,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnapGridLayout_attachesCustomSnapHelperToGridLayoutManager() {
+  fun setupRecyclerViewsWithSnapGridLayout_whenCalled_attachesSnapHelperWithGridLayout() {
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(recyclerView))
 
     assertNotNull(recyclerView.onFlingListener)
@@ -142,7 +142,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnapGridLayout_doesNotAttachSnapHelperIfAlreadySet() {
+  fun setupRecyclerViewsWithSnapGridLayout_whenSnapHelperAlreadySet_doesNotReplaceOrChangeLayoutManager() {
     // set RecyclerView with SnapHelper
     recyclerView.onFlingListener = CustomSnapHelper()
     val existingLayoutManager =
@@ -160,7 +160,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnapGridLayout_usesProvidedLayoutManager() {
+  fun setupRecyclerViewsWithSnapGridLayout_withCustomLayoutManager_setsLayoutManagerAndAttachesSnapHelper() {
     val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
 
     setupRecyclerViewsWithSnapGridLayout(
@@ -174,13 +174,13 @@ class HelpersTest {
   }
 
   @Test
-  fun animFadeOutLong_hasCorrectDuration() {
+  fun animFadeOutLong_returnsAnimationWithCorrectDuration() {
     val animation = animFadeOutLong(context)
     assertEquals(animation.duration, DEBOUNCE_VERY_LONG)
   }
 
   @Test
-  fun getStatusBarHeight_returnsZeroWhenInsetsAreNull() {
+  fun getStatusBarHeight_whenInsetsNull_returnsZero() {
     mockkStatic(ViewCompat::class)
 
     val mockDecorView = mockk<View>()
@@ -194,7 +194,7 @@ class HelpersTest {
   }
 
   @Test
-  fun getStatusBarHeight_returnsCorrectValue() {
+  fun getStatusBarHeight_whenInsetsAvailable_returnsCorrectHeight() {
     mockkStatic(ViewCompat::class)
 
     val mockDecorView = mockk<View>()
@@ -211,7 +211,7 @@ class HelpersTest {
   }
 
   @Test
-  fun isLightColor_detectsLightAndDarkColorsCorrectly() {
+  fun isLightColor_detectsCorrectlyForLightAndDarkColors() {
     assertTrue(isLightColor(Color.WHITE))
     assertFalse(isLightColor(Color.BLACK))
     assertTrue(isLightColor(Color.LTGRAY))

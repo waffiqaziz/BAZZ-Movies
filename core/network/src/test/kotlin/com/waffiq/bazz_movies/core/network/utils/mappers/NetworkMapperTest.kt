@@ -16,7 +16,7 @@ import org.junit.Test
 class NetworkMapperTest {
 
   @Test
-  fun mapWatchlistModel_toWatchlistPostModel() {
+  fun toFavoritePostModel_withValidValues_returnsFavoritePostModel() {
     val favoriteModel = FavoriteModel("movie", 12345, false)
     val favoritePostModel = favoriteModel.toFavoritePostModel()
 
@@ -26,7 +26,7 @@ class NetworkMapperTest {
   }
 
   @Test
-  fun mapFavoriteModel_toFavoritePostModel() {
+  fun toWatchlistPostModel_withValidValues_returnsWatchListPostModel() {
     val watchlistModel = WatchlistModel("tv", 67890, true)
     val watchlistPostModel = watchlistModel.toWatchlistPostModel()
 
@@ -36,7 +36,7 @@ class NetworkMapperTest {
   }
 
   @Test
-  fun mapWatchlistPostModel_toWatchlistModel() {
+  fun toFavoriteModel_withValidValues_returnsFavoriteModel() {
     val favoritePostModel = FavoritePostModel("movie", 1254543255, true)
     val favoriteModel = favoritePostModel.toFavoriteModel()
 
@@ -46,7 +46,7 @@ class NetworkMapperTest {
   }
 
   @Test
-  fun mapFavoritePostModel_toFavoriteModel() {
+  fun toWatchlistModel_withValidValues_returnsWatchlistModel() {
     val watchlistPostModel = WatchlistPostModel("tv", 566536534, true)
     val watchlistModel = watchlistPostModel.toWatchlistModel()
 

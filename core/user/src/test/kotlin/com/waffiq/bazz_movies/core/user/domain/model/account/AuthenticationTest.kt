@@ -9,7 +9,7 @@ import org.junit.Test
 class AuthenticationTest {
 
   @Test
-  fun authentication_WithAllPropertiesSet() {
+  fun authentication_withAllPropertiesSet_setsPropertiesCorrectly() {
     val authentication = Authentication(
       success = true,
       expireAt = "expire_date",
@@ -21,7 +21,7 @@ class AuthenticationTest {
   }
 
   @Test
-  fun authentication_WithSomePropertiesProvided() {
+  fun authentication_withSomePropertiesProvided_setsPropertiesCorrectly() {
     val authentication = Authentication(success = false, expireAt = null, requestToken = null)
     assertFalse(authentication.success)
     assertNull(authentication.expireAt)
@@ -29,7 +29,7 @@ class AuthenticationTest {
   }
 
   @Test
-  fun authentication_WithWithDefaultValues() {
+  fun authentication_withWithDefaultValues_setsPropertiesCorrectly() {
     val authentication = Authentication(success = true)
     assertTrue(authentication.success)
     assertNull(authentication.expireAt)

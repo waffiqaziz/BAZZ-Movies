@@ -31,7 +31,7 @@ class GestureHelperIsButtonNavigationEnabledTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q]) // API 29
-  fun isButtonNavigationEnabled_returnsTrue_whenButtonNavigationEnabled() {
+  fun isButtonNavigationEnabled_whenButtonNavigationEnabled_returnsTrue() {
     // set button navigation (gesture mode = 0)
     Settings.Secure.putInt(contentResolver, "secure_gesture_navigation", 0)
     assertTrue(activity.isButtonNavigationEnabled())
@@ -39,7 +39,7 @@ class GestureHelperIsButtonNavigationEnabledTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q]) // API 29
-  fun isButtonNavigationEnabled_returnsFalse_whenGestureNavigationEnabled() {
+  fun isButtonNavigationEnabled_whenGestureNavigationEnabled_returnsFalse() {
     // set gesture navigation (gesture mode = 1)
     Settings.Secure.putInt(contentResolver, "secure_gesture_navigation", 1)
     assertFalse(activity.isButtonNavigationEnabled())
@@ -47,7 +47,7 @@ class GestureHelperIsButtonNavigationEnabledTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q]) // API 29
-  fun isButtonNavigationEnabled_returnsTrue_whenSettingNotFound() {
+  fun isButtonNavigationEnabled_whenSettingNotFound_returnsTrue() {
     // for SettingNotFoundException case, use a spyk on the activity
     val spyActivity = spyk(activity)
     val spyContentResolver = spyk(contentResolver)

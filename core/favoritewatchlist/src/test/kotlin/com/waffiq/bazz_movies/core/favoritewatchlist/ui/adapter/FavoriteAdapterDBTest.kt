@@ -32,6 +32,8 @@ class FavoriteAdapterDBTest {
   private lateinit var navigator: INavigator
   private lateinit var adapter: FavoriteAdapterDB
 
+  private val indonesianMovie = "Indonesian Movie"
+  private val indonesianMovie2 ="Indonesian Movie 2"
   private val favorite = Favorite(
     id = 1,
     mediaId = 1,
@@ -40,7 +42,7 @@ class FavoriteAdapterDBTest {
     backDrop = "backdrop",
     poster = "poster",
     overview = "overview",
-    title = "Indonesian Movie",
+    title = indonesianMovie,
     releaseDate = "1979-04-04",
     popularity = 214.0,
     rating = 9.0f,
@@ -58,10 +60,10 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun setFavorite_updatesListAndNotifiesChanges() {
+  fun setFavorite_whenCalledTwice_updatesListAndItemCount() {
     val oldList = listOf(favorite)
     val newList = listOf(
-      favorite.copy(id = 2, mediaId = 2, title = "Indonesian Movie 2"),
+      favorite.copy(id = 2, mediaId = 2, title = indonesianMovie2),
       favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3")
     )
 
@@ -74,7 +76,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsCorrectData_forAllCases() {
+  fun onBindViewHolder_whenCalled_bindsCorrectDataForAllCases() {
     val context = ApplicationProvider.getApplicationContext<Context>()
     val inflater = LayoutInflater.from(context)
     val binding = ItemResultBinding.inflate(inflater, null, false)
@@ -83,7 +85,7 @@ class FavoriteAdapterDBTest {
     // test case 1: valid data
     adapter.setFavorite(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals("Indonesian Movie", binding.tvTitle.text.toString())
+    assertEquals(indonesianMovie, binding.tvTitle.text.toString())
     assertEquals("Action", binding.tvGenre.text.toString())
     assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
 
@@ -94,7 +96,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
     val parent = FrameLayout(context)
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
     assertNotNull(viewHolder)
@@ -105,7 +107,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun viewHolder_dataInitialization() {
+  fun viewHolder_whenAccessedBeforeBind_throwsUntilBound() {
     val binding = ItemResultBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
@@ -142,7 +144,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun bind_loadsCorrectImageOrPlaceholder() {
+  fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
     val binding = ItemResultBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
@@ -150,9 +152,9 @@ class FavoriteAdapterDBTest {
       favorite.copy(
         backDrop = "N/A",
         poster = "N/A",
-        title = "Indonesian Movie 2"
-      ) to "Indonesian Movie 2",
-      favorite.copy(backDrop = "N/A") to "Indonesian Movie"
+        title = indonesianMovie2
+      ) to indonesianMovie2,
+      favorite.copy(backDrop = "N/A") to indonesianMovie
     )
 
     testCases.forEach { (favorite, favoriteTitle) ->
@@ -165,7 +167,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun onBindViewHolder_clicksContainer_callsNavigator() {
+  fun onBindViewHolder_whenClicked_callsNavigator() {
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
     val binding = ItemResultBinding.inflate(inflater, FrameLayout(inflater.context), false)
     val viewHolder = adapter.ViewHolder(binding)
@@ -196,7 +198,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsTrueForSameContent() {
+  fun areContentsTheSame_whenContentIsSame_returnsTrue() {
     val oldItem = favorite
     val newItem = favorite // same content
 
@@ -206,7 +208,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun areContentsTheSame_returnsFalseForDifferentContent() {
+  fun areContentsTheSame_whenContentIsDifferent_returnsFalse() {
     val oldItem = favorite
     val newItem = Favorite(
       id = 4535,
@@ -230,7 +232,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun areContentsTheSame_differentCombinations() {
+  fun areContentsTheSame_whenDifferentContent_returnsFalse() {
     val testCases = listOf(
       Pair(favorite, favorite.copy(isFavorite = !favorite.isFavorite)),
       Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
@@ -247,7 +249,7 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun areItemsTheSame_differentCombinations() {
+  fun areItemsTheSame_whenSameContent_returnsTrue() {
     val testCases = listOf(
       Pair(favorite, favorite.copy(isFavorite = !favorite.isFavorite)),
       Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
@@ -268,22 +270,22 @@ class FavoriteAdapterDBTest {
   }
 
   @Test
-  fun viewHolder_dataInitialization2() {
+  fun viewHolder_whenUnbound_throwsThenInitializes() {
     val binding = ItemResultBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
-    // Uninitialized access should throw exception
+    // uninitialized access should throw exception
     assertThrows(UninitializedPropertyAccessException::class.java) { viewHolder.data }
 
-    // Initialize with bind()
+    // initialize with bind()
     viewHolder.bind(favorite)
 
-    // Explicitly access data again to hit both branches
+    // explicitly access data again to hit both branches
     assertNotNull(viewHolder.data)
     assertEquals(favorite, viewHolder.data)
     assertEquals("movie", viewHolder.data.mediaType)
 
-    // If data is used inside other functions, call those functions too
-    viewHolder.itemView.performClick() // Example, if click depends on 'data'
+    // clickable
+    viewHolder.itemView.performClick()
   }
 }

@@ -22,11 +22,11 @@ import org.junit.Test
 
 class UserPrefInteractorTest {
 
-  // Mock repository
+  // mock repository
   private val mockRepository: IUserRepository = mockk()
   private lateinit var userPrefInteractor: UserPrefInteractor
 
-  // Mock the DataStore
+  // mock the DataStore
   private val mockDataStore: DataStore<Preferences> = mockk(relaxed = true)
   private lateinit var userPreference: UserPreference
 
@@ -37,7 +37,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun getUserPref_EmitsUserData() = runTest {
+  fun getUserPref_whenSuccessful_emitsUserData() = runTest {
     val userModel = UserModel(
       userId = 3,
       name = "Alice",
@@ -53,7 +53,7 @@ class UserPrefInteractorTest {
     every { mockRepository.getUserPref() } returns flow
 
     userPrefInteractor.getUser().test {
-      // Assert the first emission is success with correct data
+      // assert the first emission is success with correct data
       val emission = awaitItem()
       assertEquals(3, emission.userId)
       assertEquals("Alice", emission.name)
@@ -64,17 +64,17 @@ class UserPrefInteractorTest {
       assertEquals("hash123", emission.gravatarHast)
       assertEquals("https://example.com/avatar2.jpg", emission.tmdbAvatar)
 
-      // Assert no further emissions
+      // assert no further emissions
       awaitComplete()
     }
 
-    // Verify repository interaction
+    // verify repository interaction
     verify(exactly = 1) { mockRepository.getUserPref() }
     verify { mockRepository.getUserPref() }
   }
 
   @Test
-  fun getUserRegionPref_EmitsUserRegion() = runTest {
+  fun getUserRegionPref_whenSuccessful_emitsUserRegion() = runTest {
     val region = "ID"
     val flow = flowOf(region)
     every { mockRepository.getUserRegionPref() } returns flow
@@ -87,7 +87,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun getUserToken_EmitsUserToken() = runTest {
+  fun getUserToken_whenSuccessful_emitsUserToken() = runTest {
     val userToken = "user_token"
     val flow = flowOf(userToken)
     every { mockRepository.getUserToken() } returns flow
@@ -100,7 +100,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun saveRegionPref_SavesUserRegion() = runTest {
+  fun saveRegionPref_whenCalled_callsSaveRegionPrefFromRepository() = runTest {
     val region = "ID"
     coEvery { mockRepository.saveRegionPref(region) } just Runs
     userPrefInteractor.saveRegionPref(region)
@@ -108,7 +108,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun saveUserPref_SavesUserData() = runTest {
+  fun saveUserPref_whenSuccessful_savesUserData() = runTest {
     val userModel = UserModel(
       userId = 3,
       name = "Alice",
@@ -126,7 +126,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun removeUserDataPref_RemovesUserData() = runTest {
+  fun removeUserDataPref_whenCalled_callsRemoveUserDataPrefFromRepository() = runTest {
     coEvery { mockRepository.removeUserDataPref() } just Runs
     userPrefInteractor.removeUserDataPref()
     coVerify { mockRepository.removeUserDataPref() }

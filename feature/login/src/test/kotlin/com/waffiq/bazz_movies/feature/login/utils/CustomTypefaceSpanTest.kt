@@ -24,7 +24,7 @@ class CustomTypefaceSpanTest {
   }
 
   @Test
-  fun updateDrawState_shouldSetCorrectTypeface() {
+  fun updateDrawState_whenCalled_shouldSetCorrectTypeface() {
     // Call the method
     customTypefaceSpan.updateDrawState(mockTextPaint)
 
@@ -33,7 +33,7 @@ class CustomTypefaceSpanTest {
   }
 
   @Test
-  fun updateMeasureState_shouldSetCorrectTypeface() {
+  fun updateMeasureState_whenCalled_shouldSetCorrectTypeface() {
     customTypefaceSpan.updateMeasureState(mockTextPaint)
     verify(mockTextPaint).typeface = mockTypeface
   }

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMovieDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.combinedCreditResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIDPersonResponseDump
@@ -17,21 +16,13 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostE
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.Response
 
 class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
 
-  private val backendErrorResponse: Response<PostResponse> = Response.error(
-    502,
-    """{"status_code": 502, "status_message": "Couldn't connect to the backend server."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
-  )
-
   @Test
-  fun getDetailPerson_ReturnExpectedResponse() = runTest {
+  fun getDetailPerson_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       mockApiResponse = Response.success(personResponseDump),
@@ -46,18 +37,18 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPersonError_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getDetailPerson_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
   // region getDetailPerson EDGE CASE
   @Test
-  fun getDetailPerson_ReturnErrorWhenApiRespondsWith404() = runTest {
+  fun getDetailPerson_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -65,7 +56,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPerson_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getDetailPerson_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -73,7 +64,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPerson_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getDetailPerson_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -81,7 +72,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPerson_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getDetailPerson_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -89,7 +80,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPerson_ReturnErrorWhenIoExceptionOccurs() = runTest {
+  fun getDetailPerson_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -97,7 +88,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailPerson_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getDetailPerson_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getDetailPerson(1810) },
       dataSourceEndpointCall = { movieDataSource.getDetailPerson(1810) },
@@ -106,7 +97,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   // endregion getDetailPerson EDGE CASE
 
   @Test
-  fun getImagePerson_ReturnExpectedResponse() = runTest {
+  fun getImagePerson_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       mockApiResponse = Response.success(imagePersonResponseDump),
@@ -120,18 +111,18 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePersonError_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getImagePerson_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
   // region getImagePerson EDGE CASE
   @Test
-  fun getImagePerson_ReturnErrorWhenApiRespondsWith404() = runTest {
+  fun getImagePerson_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -139,7 +130,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePerson_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getImagePerson_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -147,7 +138,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePerson_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getImagePerson_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -155,7 +146,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePerson_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getImagePerson_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -163,7 +154,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePerson_ReturnErrorWhenIoExceptionOccurs() = runTest {
+  fun getImagePerson_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -171,7 +162,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getImagePerson_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getImagePerson_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getImagePerson(1878952) },
       dataSourceEndpointCall = { movieDataSource.getImagePerson(1878952) },
@@ -180,7 +171,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   // endregion getImagePerson EDGE CASE
 
   @Test
-  fun getKnownForPerson_ReturnExpectedResponse() = runTest {
+  fun getKnownForPerson_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       mockApiResponse = Response.success(combinedCreditResponseDump),
@@ -196,18 +187,18 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPersonError_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getKnownForPerson_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
   // region getKnownForPerson EDGE CASE
   @Test
-  fun getKnownForPerson_ReturnErrorWhenApiRespondsWith404() = runTest {
+  fun getKnownForPerson_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -215,7 +206,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPerson_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getKnownForPerson_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -223,7 +214,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPerson_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getKnownForPerson_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -231,7 +222,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPerson_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getKnownForPerson_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -239,7 +230,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPerson_ReturnErrorWhenIoExceptionOccurs() = runTest {
+  fun getKnownForPerson_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -247,7 +238,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getKnownForPerson_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getKnownForPerson_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getKnownForPersonCombinedMovieTv(500) },
       dataSourceEndpointCall = { movieDataSource.getKnownForPerson(500) },
@@ -256,7 +247,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   // endregion getKnownForPerson EDGE CASE
 
   @Test
-  fun getExternalIDPerson_ReturnExpectedResponse() = runTest {
+  fun getExternalIDPerson_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       mockApiResponse = Response.success(externalIDPersonResponseDump),
@@ -273,18 +264,18 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPersonError_ReturnExpectedStatusMessageResponse() = runTest {
+  fun getExternalIDPerson_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       errorResponse = backendErrorResponse,
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
-      expectedErrorMessage = "Couldn't connect to the backend server."
+      expectedErrorMessage = backendErrorMessage
     )
   }
 
   // region getExternalIDPerson EDGE CASE
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenApiRespondsWith404() = runTest {
+  fun getExternalIDPerson_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
@@ -292,7 +283,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getExternalIDPerson_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
@@ -300,7 +291,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenTimeoutOccurs() = runTest {
+  fun getExternalIDPerson_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
@@ -308,7 +299,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getExternalIDPerson_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
@@ -316,7 +307,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenIoExceptionOccurs() = runTest {
+  fun getExternalIDPerson_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },
@@ -324,7 +315,7 @@ class MovieDataSourcePersonTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getExternalIDPerson_ReturnErrorWhenExceptionOccurs() = runTest {
+  fun getExternalIDPerson_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getExternalIdPerson(114253) },
       dataSourceEndpointCall = { movieDataSource.getExternalIDPerson(114253) },

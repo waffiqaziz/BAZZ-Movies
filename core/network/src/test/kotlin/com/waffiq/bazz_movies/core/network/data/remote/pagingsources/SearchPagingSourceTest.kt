@@ -89,7 +89,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun loadSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
+  fun loadPage_onSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = { page ->
@@ -108,7 +108,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun loadEmptyResponse_returnPageWithNullNextKey() = runTest {
+  fun loadPage_withEmptyResponse_returnPageWithNullNextKey() = runTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = { page ->
@@ -121,7 +121,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenAnchorInMiddlePage_returnCorrectKey() {
+  fun getRefreshKey_whenAnchorInMiddlePage_returnsCorrectKey() {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(
@@ -160,7 +160,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenBothKeysAreNull_returnNull() {
+  fun getRefreshKey_whenBothKeysAreNull_returnsNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(ResultsItemSearchResponse("item1"))
@@ -168,7 +168,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnNull() {
+  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       anchorPosition = null
@@ -176,7 +176,7 @@ class SearchPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnNull() {
+  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       anchorPosition = 0

@@ -10,7 +10,7 @@ class DetailMovieResponseTest {
   val detailMovieResponse = detailMovieResponseDump
 
   @Test
-  fun detailMovieResponse_setsBasicInfoCorrectly() {
+  fun detailMovieResponse_withValidValues_setsBasicInfoCorrectly() {
     assertEquals(533535, detailMovieResponse.id)
     assertEquals("Deadpool & Wolverine", detailMovieResponse.title)
     assertEquals("Deadpool & Wolverine", detailMovieResponse.originalTitle)
@@ -25,7 +25,7 @@ class DetailMovieResponseTest {
   }
 
   @Test
-  fun detailMovieResponse_setsDatesCorrectly() {
+  fun detailMovieResponse_withValidValues_setsDatesCorrectly() {
     assertEquals("2024-07-24", detailMovieResponse.releaseDate)
     assertEquals("Released", detailMovieResponse.status)
     assertEquals(
@@ -35,7 +35,7 @@ class DetailMovieResponseTest {
   }
 
   @Test
-  fun detailMovieResponse_setsTechnicalDetailsCorrectly() {
+  fun detailMovieResponse_withValidValues_setsTechnicalDetailsCorrectly() {
     assertEquals(856.096, detailMovieResponse.popularity)
     assertEquals(1338073645L, detailMovieResponse.revenue)
     assertEquals(6283, detailMovieResponse.voteCount)
@@ -46,7 +46,7 @@ class DetailMovieResponseTest {
   }
 
   @Test
-  fun detailMovieResponse_setsCompanyAndProductionCorrectly() {
+  fun detailMovieResponse_withValidValues_setsCompanyAndProductionCorrectly() {
     assertEquals(
       "United States of America",
       detailMovieResponse.listProductionCountriesItemResponse?.get(0)?.name
@@ -59,13 +59,13 @@ class DetailMovieResponseTest {
   }
 
   @Test
-  fun detailMovieResponse_setsMediaAssetsCorrectly() {
+  fun detailMovieResponse_withValidValues_setsMediaAssetsCorrectly() {
     assertEquals("/lD4mhKoiaXpKrtBEjACeWgz7w0O.jpg", detailMovieResponse.backdropPath)
     assertEquals("/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", detailMovieResponse.posterPath)
   }
 
   @Test
-  fun detailMovieResponse_others_setsPropertiesCorrectly() {
+  fun detailMovieResponse_withValidValues_setsOthersPropertiesCorrectly() {
     assertTrue(detailMovieResponse.video == false)
     assertEquals(
       """

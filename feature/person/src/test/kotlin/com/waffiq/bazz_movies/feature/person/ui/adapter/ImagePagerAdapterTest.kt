@@ -29,7 +29,7 @@ class ImagePagerAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindsDataAndAppliesAnimation() {
+  fun onBindViewHolder_whenCalled_bindsImageAndStartsAnimation() {
     val adapter = ImagePagerAdapter(images = listOf("image1"))
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
     val binding = ItemImageSliderBinding.inflate(inflater, parentView, false)
@@ -46,7 +46,7 @@ class ImagePagerAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_inflatesViewHolderWithCorrectContext() {
     val adapter = ImagePagerAdapter(images = emptyList())
     val viewHolder = adapter.onCreateViewHolder(parentView, 0)
     assertNotNull(viewHolder)
@@ -57,7 +57,7 @@ class ImagePagerAdapterTest {
   }
 
   @Test
-  fun getItemCount_returnsCorrectSize() {
+  fun getItemCount_whenCalled_returnsImagesListSize() {
     val images = listOf("image1", "image2", "image3")
     val adapter = ImagePagerAdapter(images)
 

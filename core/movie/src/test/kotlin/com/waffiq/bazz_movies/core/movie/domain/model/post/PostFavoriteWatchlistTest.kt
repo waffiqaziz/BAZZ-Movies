@@ -7,7 +7,7 @@ import org.junit.Test
 class PostFavoriteWatchlistTest {
 
   @Test
-  fun postFavoriteWatchlist_withAllPropertiesSet() {
+  fun postFavoriteWatchlist_whenInitializedWithValues_setsAllProperties() {
     val postFavoriteWatchlist = PostFavoriteWatchlist(
       statusCode = 200,
       statusMessage = "Success"
@@ -17,7 +17,7 @@ class PostFavoriteWatchlistTest {
   }
 
   @Test
-  fun postFavoriteWatchlist_withDefaultValue() {
+  fun postFavoriteWatchlist_whenInitializedWithNoValues_setsPropertiesToNull() {
     val postFavoriteWatchlist = PostFavoriteWatchlist()
     assertNull(postFavoriteWatchlist.statusMessage)
     assertNull(postFavoriteWatchlist.statusCode)

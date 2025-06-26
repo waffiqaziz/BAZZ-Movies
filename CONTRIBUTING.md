@@ -187,6 +187,9 @@ functionality and performance, rather than formatting tweaks.
 For example: If methods use camelCase (e.g., `thisIsMyNewMethod`), avoid switching to
 `this_is_my_new_method`.
 
+For testing name convention,
+please [follow this naming guide](./docs/BAZZMoviesTestNamingConvention.md).
+
 > **A Note on Package Naming**
 >
 >The current package naming uses snake_case, which does not align with Java and Kotlin conventions.

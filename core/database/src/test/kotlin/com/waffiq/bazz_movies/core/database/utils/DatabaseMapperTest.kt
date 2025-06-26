@@ -13,7 +13,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DatabaseMapperTest {
-  val resultItem1 = ResultItem(
+  private val genreName = "Action, Adventure"
+  private val resultItem1 = ResultItem(
     firstAirDate = "firstAirData",
     overview = "overview",
     originalLanguage = "originalLanguage",
@@ -36,7 +37,7 @@ class DatabaseMapperTest {
   )
 
   @Test
-  fun toFavorite_allPossibility() {
+  fun toFavorite_withValidAllTrueValues_returnsFavorite() {
 
     // test case 1: valid data
     val favorite1 = resultItem1.toFavorite(isFavorite = true, isWatchlist = true)
@@ -48,7 +49,7 @@ class DatabaseMapperTest {
     assertEquals(favorite1.rating, 65f)
     assertEquals(favorite1.backDrop, "backdropPath")
     assertEquals(favorite1.poster, "posterPath")
-    assertEquals(favorite1.genre, "Action, Adventure")
+    assertEquals(favorite1.genre, genreName)
     assertEquals("Different value", favorite1.popularity, 90.0, 0.0)
     assertEquals(favorite1.overview, "overview")
     assertEquals(favorite1.isFavorite, true)
@@ -88,33 +89,33 @@ class DatabaseMapperTest {
   }
 
   @Test
-  fun favTrueWatchlistTrue_returnCorrectData() {
+  fun favTrueWatchlistTrue_withValidValue_returnCorrectData() {
     val result = favTrueWatchlistTrue(resultItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist)
   }
 
   @Test
-  fun favTrueWatchlistFalse_returnCorrectData() {
+  fun favTrueWatchlistFalse_withValidValue_returnCorrectData() {
     val result = favTrueWatchlistFalse(resultItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist == false)
   }
 
   @Test
-  fun favFalseWatchlistTrue_returnCorrectData() {
+  fun favFalseWatchlistTrue_withValidValue_returnCorrectData() {
     val result = favFalseWatchlistTrue(resultItem1)
     assertTrue(result.isFavorite == false)
     assertTrue(result.isWatchlist)
   }
 
   @Test
-  fun toFavoriteEntity_withValidValue_mapCorrectly() {
+  fun toFavoriteEntity_withFavoriteIsTrue_ReturnsFavoriteEntity() {
     val favorite = Favorite(
       id = 1,
       mediaId = 1,
       mediaType = "movie",
-      genre = "Action, Adventure",
+      genre = genreName,
       backDrop = "backDrop",
       poster = "poster",
       overview = "overview",
@@ -129,7 +130,7 @@ class DatabaseMapperTest {
     assertEquals(favoriteEntity.id, 1)
     assertEquals(favoriteEntity.mediaId, 1)
     assertEquals(favoriteEntity.mediaType, "movie")
-    assertEquals(favoriteEntity.genre, "Action, Adventure")
+    assertEquals(favoriteEntity.genre, genreName)
     assertEquals(favoriteEntity.backDrop, "backDrop")
     assertEquals(favoriteEntity.poster, "poster")
     assertEquals(favoriteEntity.overview, "overview")
@@ -142,12 +143,12 @@ class DatabaseMapperTest {
   }
 
   @Test
-  fun toFavorite__withValidValue_mapCorrectly() {
+  fun toFavorite_withFavoriteIsFalse_returnsFavorite() {
     val favoriteEntity = FavoriteEntity(
       id = 2,
       mediaId = 2,
       mediaType = "tv",
-      genre = "Action, Adventure",
+      genre = genreName,
       backDrop = "backDrop",
       poster = "poster",
       overview = "overview",
@@ -162,7 +163,7 @@ class DatabaseMapperTest {
     assertEquals(favorite.id, 2)
     assertEquals(favorite.mediaId, 2)
     assertEquals(favorite.mediaType, "tv")
-    assertEquals(favorite.genre, "Action, Adventure")
+    assertEquals(favorite.genre, genreName)
     assertEquals(favorite.backDrop, "backDrop")
     assertEquals(favorite.poster, "poster")
     assertEquals(favorite.overview, "overview")

@@ -10,7 +10,7 @@ class RatedResponseAdapterToJsonTest {
   private val adapter = RatedResponseAdapter()
 
   @Test
-  fun toJson_ValueResponse_ReturnsMap() {
+  fun toJson_withValidResponse_returnsCorrectMap() {
     val response = RatedResponse.Value(4.5)
     val result = adapter.toJson(response)
     assertTrue(result is Map<*, *>)
@@ -18,7 +18,7 @@ class RatedResponseAdapterToJsonTest {
   }
 
   @Test
-  fun toJson_UnratedResponse_ReturnsFalse() {
+  fun toJson_withUnratedResponse_returnsFalse() {
     val response = RatedResponse.Unrated
     val result = adapter.toJson(response)
     assertEquals(false, result)

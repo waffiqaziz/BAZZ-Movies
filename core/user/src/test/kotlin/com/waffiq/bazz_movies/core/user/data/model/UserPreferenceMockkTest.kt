@@ -50,7 +50,7 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun getUser_returnsCorrectUserModel() = runTest {
+  fun getUser_whenSuccessful_returnsCorrectUserModel() = runTest {
     every { mockDataStore.data } returns flowOf(mockPreferences)
 
     val user = userPreference.getUser().first()
@@ -74,7 +74,7 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun getToken_returnsCorrectToken() = runTest {
+  fun getToken_whenSuccessful_returnsCorrectToken() = runTest {
     every { mockDataStore.data } returns flowOf(mockPreferences)
 
     val token = userPreference.getToken().first()
@@ -95,7 +95,7 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun getRegion_returnsCorrectRegion() = runTest {
+  fun getRegion_whenSuccessful_returnsCorrectRegion() = runTest {
     every { mockDataStore.data } returns flowOf(mockPreferences)
 
     val region = userPreference.getRegion().first().toString().uppercase()
@@ -110,7 +110,7 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun getRegion_handlesNullRegion() = runTest {
+  fun getRegion_whenSuccessful_handlesNullRegion() = runTest {
     every { mockDataStore.data } returns flowOf(mockPreferences) // explicitly mock preferences object
 
     // Inline test with Turbine
@@ -122,7 +122,7 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun saveRegion_edit_callsEdit() = runTest {
+  fun saveRegion_whenCalled_shouldCallEdit() = runTest {
     // Capture the transform function passed to updateData
     val transformSlot = slot<suspend (Preferences) -> Preferences>()
 

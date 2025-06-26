@@ -22,19 +22,19 @@ class BaseViewModelTest {
   }
 
   @Test
-  fun markSnackbarShown_setIsSnackbarShownTrue() {
+  fun markSnackbarShown_whenCalled_setsIsSnackbarShownTrue() {
     viewModel.markSnackbarShown()
     assertTrue(viewModel.isSnackbarShown.value == true)
   }
 
   @Test
-  fun resetSnackbarShown_setIsSnackbarShownFalse() {
+  fun resetSnackbarShown_whenCalled_setsIsSnackbarShownFalse() {
     viewModel.resetSnackbarShown()
     assertTrue(viewModel.isSnackbarShown.value == false)
   }
 
   @Test
-  fun simultaneously_changeTheValue() {
+  fun markAndResetSnackbarShown_whenRunningSimultaneously_changesTheValue() {
     viewModel.markSnackbarShown()
     assertTrue(viewModel.isSnackbarShown.value == true)
     viewModel.resetSnackbarShown()

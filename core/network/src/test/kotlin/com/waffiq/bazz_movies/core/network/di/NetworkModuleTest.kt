@@ -24,7 +24,7 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideLoggingInterceptor_debugEnabled_setsLevelBody() {
+  fun provideLoggingInterceptor_whenDebugEnabled_setsLevelBody() {
     every { debugConfig.isDebug() } returns true
 
     val loggingInterceptor = NetworkModule().provideLoggingInterceptor(debugConfig)
@@ -32,7 +32,7 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideLoggingInterceptor_debugDisabled_setsLevelNone() {
+  fun provideLoggingInterceptor_whenDebugDisabled_setsLevelNone() {
     every { debugConfig.isDebug() } returns false
 
     val loggingInterceptor = NetworkModule().provideLoggingInterceptor(debugConfig)
@@ -40,13 +40,13 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideMoshi_returnsValidMoshiInstance() {
+  fun provideMoshi_whenAlreadyInitialized_returnsValidMoshiInstance() {
     val moshi = NetworkModule().provideMoshi()
     assertNotNull(moshi.adapter(Any::class.java))
   }
 
   @Test
-  fun provideOkHttpClient_configuresCorrectTimeouts() {
+  fun provideOkHttpClient_whenProvided_configuresCorrectTimeouts() {
     val loggingInterceptor = mockk<HttpLoggingInterceptor>(relaxed = true)
 
     val client = NetworkModule().provideOkHttpClient(loggingInterceptor)
@@ -56,14 +56,14 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideCountryIPApiService_createsValidService() {
+  fun provideCountryIPApiService_whenAlreadyInitialized_createsValidService() {
     val client = mockk<OkHttpClient>(relaxed = true)
     val service = NetworkModule().provideCountryIPApiService(client)
     assertNotNull(service)
   }
 
   @Test
-  fun provideOMDBApiService_addsCorrectInterceptor() {
+  fun provideOMDBApiService_whenAlreadyInitialized_addsCorrectInterceptor() {
     val clientBuilder = mockk<OkHttpClient.Builder>(relaxed = true)
     val client = mockk<OkHttpClient> {
       every { newBuilder() } returns clientBuilder
@@ -83,7 +83,7 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideTMDBApiService_addsCorrectInterceptor() {
+  fun provideTMDBApiService_whenAlreadyInitialized_addsCorrectInterceptor() {
     val clientBuilder = mockk<OkHttpClient.Builder>(relaxed = true)
     val client = mockk<OkHttpClient> {
       every { newBuilder() } returns clientBuilder

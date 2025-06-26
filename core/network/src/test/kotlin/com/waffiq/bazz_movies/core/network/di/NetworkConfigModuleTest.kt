@@ -20,7 +20,7 @@ class NetworkConfigModuleTest {
   }
 
   @Test
-  fun provideDebugConfig_returnsDebugConfigImpl() {
+  fun provideDebugConfig_isProvided_returnsDebugConfigImpl() {
     val providedConfig: IDebugConfig = NetworkConfigModule.provideDebugConfig()
 
     assertNotNull(providedConfig)
@@ -28,7 +28,7 @@ class NetworkConfigModuleTest {
   }
 
   @Test
-  fun debugConfig_isDebug_returnsCorrectValue() {
+  fun debugConfig_isDebug_returnsDebugIsTrue() {
     every { debugConfig.isDebug() } returns true
     assertTrue(debugConfig.isDebug())
 

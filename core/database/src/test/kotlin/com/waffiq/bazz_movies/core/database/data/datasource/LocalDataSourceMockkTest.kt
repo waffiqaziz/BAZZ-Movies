@@ -37,7 +37,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun insert_returnSuccess() = runTest {
+  fun insert_withValidValue_returnSuccess() = runTest {
     val favorite = FavoriteEntity(
       mediaId = 101,
       mediaType = "movie",
@@ -62,7 +62,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun deleteItemFromDB_returnSuccess() = runTest {
+  fun deleteItemFromDB_whenSuccessful_returnSuccess() = runTest {
     coEvery { favoriteDao.deleteItem(101, "movie") } returns 1
 
     val result = localDataSource.deleteItemFromDB(101, "movie")
@@ -72,7 +72,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun deleteAll_returnSuccess() = runTest {
+  fun deleteAll_whenSuccessful_returnSuccess() = runTest {
     coEvery { favoriteDao.deleteALl() } returns 1
 
     val result = localDataSource.deleteAll()
@@ -82,7 +82,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun isFavorite_returnTrue() = runTest {
+  fun isFavorite_whenFavoriteExists_returnsTrue() = runTest {
     coEvery { favoriteDao.isFavorite(101, "movie") } returns true
 
     val result = localDataSource.isFavorite(101, "movie")
@@ -92,7 +92,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun update_returnSuccess() = runTest {
+  fun update_whenSuccessful_returnSuccess() = runTest {
     coEvery {
       favoriteDao.update(
         isFavorite = true,
@@ -122,7 +122,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun insert_throwSQLiteConstraintException() = runDbErrorTest(
+  fun insert_whenConstraintViolation_throwsSQLiteConstraintException() = runDbErrorTest(
     "Unique constraint violation",
     { coEvery { favoriteDao.insert(any()) } throws SQLiteConstraintException("Unique constraint failed") }
   ) {
@@ -130,7 +130,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun deleteItemFromDB_throwSQLiteFullException() = runDbErrorTest(
+  fun deleteItemFromDB_whenDatabaseFull_throwsSQLiteFullException() = runDbErrorTest(
     "Database is full",
     {
       coEvery {
@@ -142,7 +142,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun isFavorite_throwSQLiteDiskIOException() = runDbErrorTest(
+  fun isFavorite_whenDiskIOIssue_throwsSQLiteDiskIOException() = runDbErrorTest(
     "Disk IO issue",
     {
       coEvery {
@@ -154,7 +154,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun update_throwSQLiteException() = runDbErrorTest(
+  fun update_whenGenericError_throwsSQLiteException() = runDbErrorTest(
     "SQLite exception",
     {
       coEvery {
@@ -166,7 +166,7 @@ class LocalDataSourceMockkTest {
   }
 
   @Test
-  fun insert_throwUnknownException() = runDbErrorTest(
+  fun insert_whenUnknownError_throwsException() = runDbErrorTest(
     "Unknown error",
     { coEvery { favoriteDao.insert(any()) } throws Exception("Unknown error") }
   ) {

@@ -31,7 +31,17 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.test.ViewMatcher.withDrawable
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.login.R
+import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
+import com.waffiq.bazz_movies.feature.login.R.id.activity_login
+import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
+import com.waffiq.bazz_movies.feature.login.R.id.btn_forget_password
+import com.waffiq.bazz_movies.feature.login.R.id.btn_login
+import com.waffiq.bazz_movies.feature.login.R.id.ed_pass
+import com.waffiq.bazz_movies.feature.login.R.id.ed_username
+import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
+import com.waffiq.bazz_movies.feature.login.R.id.progress_bar
+import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
+import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -116,153 +126,151 @@ class LoginActivityTest {
   }
 
   @Test
-  fun allView_isVisible() {
-    // Verify that all UI elements are visible
-    onView(withId(R.id.btn_forget_password)).check(matches(isDisplayed()))
-    onView(withId(R.id.layout_bazz_movies)).check(matches(isDisplayed()))
-    onView(withId(R.id.ed_username)).check(matches(isDisplayed()))
-    onView(withId(R.id.ed_pass)).check(matches(isDisplayed()))
-    onView(withId(R.id.btn_eye)).check(matches(isDisplayed()))
-    onView(withId(R.id.btn_login)).check(matches(isDisplayed()))
-    onView(withId(R.id.tv_guest)).check(matches(isDisplayed()))
-    onView(withId(R.id.tv_joinTMDB)).check(matches(isDisplayed()))
+  fun loginScreen_whenInitialized_showsAllViews() {
+    onView(withId(btn_forget_password)).check(matches(isDisplayed()))
+    onView(withId(layout_bazz_movies)).check(matches(isDisplayed()))
+    onView(withId(ed_username)).check(matches(isDisplayed()))
+    onView(withId(ed_pass)).check(matches(isDisplayed()))
+    onView(withId(btn_eye)).check(matches(isDisplayed()))
+    onView(withId(btn_login)).check(matches(isDisplayed()))
+    onView(withId(tv_guest)).check(matches(isDisplayed()))
+    onView(withId(tv_joinTMDB)).check(matches(isDisplayed()))
   }
 
   @Test
-  fun progressBar_initiallyInvisible() {
-    onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())))
+  fun loginScreen_whenInitialized_progressBarIsGone() {
+    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
   }
 
   @Test
-  fun btnEye_ic_eye_off_whenInitially() {
-    onView(withId(R.id.btn_eye))
-      .check(matches(allOf(isDisplayed(), withDrawable(R.drawable.ic_eye_off))))
+  fun loginScreen_whenInitialized_showsButtonEyeOff() {
+    onView(withId(btn_eye))
+      .check(matches(allOf(isDisplayed(), withDrawable(ic_eye_off))))
   }
 
   @Test
   fun login_withoutUsernameAndPassword_showsErrorMessage() {
-    // Click login button without entering username/password
-    onView(withId(R.id.btn_login)).perform(click())
+    // click login button without entering username/password
+    onView(withId(btn_login)).perform(click())
 
-    // Verify that error messages are shown
-    onView(withId(R.id.ed_username)).check(matches(withErrorText("Please enter a username")))
-    onView(withId(R.id.ed_pass)).check(matches(withErrorText("Please enter a password")))
+    // verify that error messages are shown
+    onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
+    onView(withId(ed_pass)).check(matches(withErrorText("Please enter a password")))
   }
 
   @Test
   fun login_withOnlyUsername_showsPasswordError() {
-    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+    onView(withId(ed_username)).perform(typeText(validUsername))
     closeSoftKeyboard()
-    onView(withId(R.id.btn_login)).perform(click())
+    onView(withId(btn_login)).perform(click())
 
-    onView(withId(R.id.ed_username)).check(matches(withoutError()))
-    onView(withId(R.id.ed_pass)).check(matches(withErrorText("Please enter a password")))
+    onView(withId(ed_username)).check(matches(withoutError()))
+    onView(withId(ed_pass)).check(matches(withErrorText("Please enter a password")))
   }
 
   @Test
   fun login_withOnlyPassword_showsUsernameError() {
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+    onView(withId(ed_pass)).perform(typeText(validPassword))
     closeSoftKeyboard()
-    onView(withId(R.id.btn_login)).perform(click())
+    onView(withId(btn_login)).perform(click())
 
-    onView(withId(R.id.ed_username)).check(matches(withErrorText("Please enter a username")))
-    onView(withId(R.id.ed_pass)).check(matches(withoutError()))
+    onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
+    onView(withId(ed_pass)).check(matches(withoutError()))
   }
 
   @Test
   fun login_withBlankSpaces_showsErrorMessages() {
-    onView(withId(R.id.ed_username)).perform(typeText("   "))
+    onView(withId(ed_username)).perform(typeText("   "))
     closeSoftKeyboard()
-    onView(withId(R.id.ed_pass)).perform(typeText("   "))
+    onView(withId(ed_pass)).perform(typeText("   "))
     closeSoftKeyboard()
-    onView(withId(R.id.btn_login)).perform(click())
+    onView(withId(btn_login)).perform(click())
 
-    onView(withId(R.id.ed_username)).check(matches(withErrorText("Please enter a username")))
-    onView(withId(R.id.ed_pass)).check(matches(withErrorText("Please enter a password")))
+    onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
+    onView(withId(ed_pass)).check(matches(withErrorText("Please enter a password")))
   }
 
   @Test
-  fun triggerPasswordToggle_showsPassword() {
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+  fun passwordButtonToggle_whenClicked_showsPassword() {
+    onView(withId(ed_pass)).perform(typeText(validPassword))
 
     // unmask the edit text
-    onView(withId(R.id.btn_eye)).perform(click())
-    onView(withId(R.id.ed_pass)).check(matches(withText(validPassword)))
+    onView(withId(btn_eye)).perform(click())
+    onView(withId(ed_pass)).check(matches(withText(validPassword)))
 
-    onView(withId(R.id.btn_eye)).perform(click())
-    onView(withId(R.id.ed_pass)).check(matches(isPasswordHidden())) // Masked password
+    onView(withId(btn_eye)).perform(click())
+    onView(withId(ed_pass)).check(matches(isPasswordHidden())) // Masked password
   }
 
   @Test
-  fun passwordToggle_maintainsCursorPosition() {
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+  fun passwordToggle_whenMovingTheCursor_maintainsCursorPosition() {
+    onView(withId(ed_pass)).perform(typeText(validPassword))
 
-    // Move cursor to middle
-    onView(withId(R.id.ed_pass)).perform(clickAtPosition(Random.nextInt(1, 6)))
+    // move cursor to middle
+    onView(withId(ed_pass)).perform(clickAtPosition(Random.nextInt(1, 6)))
 
-    // Toggle password visibility
-    onView(withId(R.id.btn_eye)).perform(click())
+    // toggle password visibility
+    onView(withId(btn_eye)).perform(click())
 
-    // Verify cursor position is maintained (this is more complex to test,
-    // but at minimum we can verify the toggle works)
-    onView(withId(R.id.ed_pass)).check(matches(withText(validPassword)))
+    // verify cursor position is maintained
+    onView(withId(ed_pass)).check(matches(withText(validPassword)))
   }
 
   @Test
   fun textWatcher_removesUsernameError_whenTyping() {
     // create an error
-    onView(withId(R.id.btn_login)).perform(click())
-    onView(withId(R.id.ed_username)).check(matches(withErrorText("Please enter a username")))
+    onView(withId(btn_login)).perform(click())
+    onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
 
     // type to remove error
-    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
-    onView(withId(R.id.ed_username)).check(matches(withoutError()))
+    onView(withId(ed_username)).perform(typeText(validUsername))
+    onView(withId(ed_username)).check(matches(withoutError()))
   }
 
   @Test
   fun textWatcher_removesPasswordError_whenTyping() {
-    onView(withId(R.id.btn_login)).perform(click())
-    onView(withId(R.id.ed_pass)).check(matches(withErrorText("Please enter a password")))
+    onView(withId(btn_login)).perform(click())
+    onView(withId(ed_pass)).check(matches(withErrorText("Please enter a password")))
 
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
-    onView(withId(R.id.ed_pass)).check(matches(withoutError()))
+    onView(withId(ed_pass)).perform(typeText(validPassword))
+    onView(withId(ed_pass)).check(matches(withoutError()))
   }
 
   @Test
   fun login_withInvalidCredential_returnToLoginActivity() {
-    // Enter valid credentials
-    onView(withId(R.id.ed_username)).perform(typeText("random"))
+    // enter invalid credentials
+    onView(withId(ed_username)).perform(typeText("random"))
     closeSoftKeyboard()
-    onView(withId(R.id.ed_pass)).perform(ViewActions.replaceText("random"))
+    onView(withId(ed_pass)).perform(ViewActions.replaceText("random"))
     closeSoftKeyboard()
 
-    onView(withId(R.id.btn_login)).perform(click())
-    onView(withId(R.id.activity_login)).check(matches(isDisplayed()))
+    onView(withId(btn_login)).perform(click())
+    onView(withId(activity_login)).check(matches(isDisplayed()))
   }
 
   @Test
   fun login_withValidCredentials_disablesButtonsAndShowsLoading() {
-    // Mock successful login flow
+    // mock successful login flow
     val loadingLiveData = MutableLiveData<Boolean>()
     every { mockAuthViewModel.loadingState } returns loadingLiveData
 
-    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+    onView(withId(ed_username)).perform(typeText(validUsername))
     closeSoftKeyboard()
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+    onView(withId(ed_pass)).perform(typeText(validPassword))
     closeSoftKeyboard()
 
-    onView(withId(R.id.btn_login)).perform(click())
+    onView(withId(btn_login)).perform(click())
 
-    // Verify buttons are disabled during login
-    onView(withId(R.id.btn_login)).check(matches(not(isEnabled())))
-    onView(withId(R.id.tv_guest)).check(matches(not(isEnabled())))
+    // verify buttons are disabled during login
+    onView(withId(btn_login)).check(matches(not(isEnabled())))
+    onView(withId(tv_guest)).check(matches(not(isEnabled())))
 
-    // Simulate loading state
+    // simulate loading state
     activityRule.scenario.onActivity {
       loadingLiveData.postValue(true)
     }
 
-    onView(withId(R.id.progress_bar)).check(matches(isDisplayed()))
+    onView(withId(progress_bar)).check(matches(isDisplayed()))
   }
 
   // TODO: unsuccess test
@@ -274,12 +282,12 @@ class LoginActivityTest {
 //    every { mockAuthViewModel.loginState } returns loginStateLiveData
 //    every { mockAuthViewModel.userModel } returns userModelLiveData
 //
-//    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+//    onView(withId(ed_username)).perform(typeText(validUsername))
 //    closeSoftKeyboard()
-//    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+//    onView(withId(ed_pass)).perform(typeText(validPassword))
 //    closeSoftKeyboard()
 //
-//    onView(withId(R.id.btn_login)).perform(click())
+//    onView(withId(btn_login)).perform(click())
 //
 //    // Simulate the login flow
 //    activityRule.scenario.onActivity {
@@ -299,13 +307,13 @@ class LoginActivityTest {
 //  @Test
 //  fun login_successfulLogin_callsGetDetailUser() {
 //    // Fill in credentials
-//    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+//    onView(withId(ed_username)).perform(typeText(validUsername))
 //    closeSoftKeyboard()
-//    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+//    onView(withId(ed_pass)).perform(typeText(validPassword))
 //    closeSoftKeyboard()
 //
 //    // Click login button
-//    onView(withId(R.id.btn_login)).perform(click())
+//    onView(withId(btn_login)).perform(click())
 //
 //    // Verify userLogin was called
 //    verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
@@ -345,12 +353,12 @@ class LoginActivityTest {
 //    every { mockAuthViewModel.loginState } returns loginStateLiveData
 //    every { mockAuthViewModel.userModel } returns userModelLiveData
 //
-//    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+//    onView(withId(ed_username)).perform(typeText(validUsername))
 //    closeSoftKeyboard()
-//    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+//    onView(withId(ed_pass)).perform(typeText(validPassword))
 //    closeSoftKeyboard()
 //
-//    onView(withId(R.id.btn_login)).perform(click())
+//    onView(withId(btn_login)).perform(click())
 //
 //    // Simulate successful login flow
 //    activityRule.scenario.onActivity {
@@ -364,10 +372,10 @@ class LoginActivityTest {
 //  }
 
   @Test
-  fun guestLogin_savesGuestUserAndNavigates() {
-    onView(withId(R.id.tv_guest)).perform(click())
+  fun guestLogin_whenClicked_savesGuestUserAndNavigates() {
+    onView(withId(tv_guest)).perform(click())
 
-    // Verify guest user is saved
+    // verify guest user is saved
     verify {
       mockUserPrefViewModel.saveUserPref(match { userModel ->
         userModel.userId == 0 &&
@@ -377,55 +385,55 @@ class LoginActivityTest {
       })
     }
 
-    // Verify navigation to main activity
+    // verify navigation to main activity
     verify { mockNavigator.openMainActivity(any()) }
   }
 
   @Test
-  fun forgetPasswordButton_opensWebBrowser() {
-    // Mock intent to verify URL opening
+  fun forgetPasswordButton_whenClicked_opensWebBrowser() {
+    // mock intent to verify URL opening
     val expectedIntent = hasAction(Intent.ACTION_VIEW)
     intending(expectedIntent).respondWith(ActivityResult(Activity.RESULT_OK, null))
 
-    onView(withId(R.id.btn_forget_password)).perform(click())
+    onView(withId(btn_forget_password)).perform(click())
 
-    // Verify intent was sent
+    // verify intent was sent
     intended(expectedIntent)
   }
 
   @Test
-  fun joinTMDBButton_opensWebBrowser() {
-    // Mock intent to verify URL opening
+  fun joinTMDBButton_whenClicked_opensWebBrowser() {
+    // mock intent to verify URL opening
     val expectedIntent = hasAction(Intent.ACTION_VIEW)
     intending(expectedIntent).respondWith(ActivityResult(Activity.RESULT_OK, null))
 
-    onView(withId(R.id.tv_joinTMDB)).perform(click())
+    onView(withId(tv_joinTMDB)).perform(click())
 
-    // Verify intent was sent
+    // verify intent was sent
     intended(expectedIntent)
   }
 
   @Test
-  fun userLogin_callsAuthenticationViewModelWithCorrectParams() {
-    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+  fun login_withCorrectParams_callsAuthenticationViewModel() {
+    onView(withId(ed_username)).perform(typeText(validUsername))
     closeSoftKeyboard()
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+    onView(withId(ed_pass)).perform(typeText(validPassword))
     closeSoftKeyboard()
 
-    onView(withId(R.id.btn_login)).perform(click())
+    onView(withId(btn_login)).perform(click())
 
-    // Verify the userLogin method is called with correct parameters
+    // verify the userLogin method is called with correct parameters
     verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
   }
 
   @Test
-  fun configurationChange_maintainsState() {
-    onView(withId(R.id.ed_username)).perform(typeText(validUsername))
+  fun loginScreen_whenConfigurationChange_maintainsTheState() {
+    onView(withId(ed_username)).perform(typeText(validUsername))
     closeSoftKeyboard()
-    onView(withId(R.id.ed_pass)).perform(typeText(validPassword))
+    onView(withId(ed_pass)).perform(typeText(validPassword))
     closeSoftKeyboard()
 
-    // Simulate configuration change (rotation)
+    // simulate configuration change (rotation)
     activityRule.scenario.onActivity { activity ->
       activity.onConfigurationChanged(
         Configuration().apply {
@@ -434,9 +442,9 @@ class LoginActivityTest {
       )
     }
 
-    // Verify data is maintained
-    onView(withId(R.id.ed_username)).check(matches(withText(validUsername)))
-    onView(withId(R.id.ed_pass)).check(matches(withText(validPassword)))
+    // verify data is maintained
+    onView(withId(ed_username)).check(matches(withText(validUsername)))
+    onView(withId(ed_pass)).check(matches(withText(validPassword)))
   }
 
   private fun withErrorText(expectedError: String): Matcher<View> {

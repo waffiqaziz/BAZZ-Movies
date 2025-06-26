@@ -66,7 +66,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun submitData_withPagingData_updateAdapter() = runTest {
+  fun submitData_withPagingData_updatesTheAdapter() = runTest {
     val pagingData = PagingData.from(
       listOf(
         ResultsItemSearch(id = 1, title = "Movie 1"),
@@ -79,7 +79,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindCorrectMovieData() = runTest {
+  fun onBindViewHolder_whenCalled_bindsCorrectMovieData() = runTest {
     val movieData = ResultsItemSearch(
       mediaType = "movie",
       id = 1,
@@ -97,7 +97,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindCorrectTvData() = runTest {
+  fun onBindViewHolder_whenCalled_bindsCorrectTvData() = runTest {
     val tvData = ResultsItemSearch(
       mediaType = "tv",
       id = 12345,
@@ -115,7 +115,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_bindCorrectPersonData() = runTest {
+  fun onBindViewHolder_whenCalled_bindsCorrectPersonData() = runTest {
     val personData = ResultsItemSearch(
       mediaType = "person",
       id = 134321,
@@ -149,7 +149,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_withValidData_bindsCorrectly() = runTest {
+  fun onBindViewHolder_withValidData_bindsDataCorrectly() = runTest {
     val dummyData =
       listOf(ResultsItemSearch(id = 1, title = "Title", mediaType = "movie"))
     val pagingData = PagingData.from(dummyData)
@@ -162,7 +162,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onCreateViewHolder_createsViewHolderCorrectly() {
+  fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
     assertNotNull(viewHolder)
 
@@ -172,7 +172,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onClick_openDetailsMovie() = runTest {
+  fun movieSearchItem_whenClicked_opensMovieDetails() = runTest {
     submitPagingAndWait(
       ResultsItemSearch(
         id = 1,
@@ -196,7 +196,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun onClick_openPersonDetails() = runTest {
+  fun personSearchItem_whenClicked_opensPersonDetails() = runTest {
     val personData = ResultsItemSearch(
       id = 1,
       mediaType = "person",
@@ -244,7 +244,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataPerson_handleAllPossibility() {
+  fun showDataPerson_whenCalled_shouldHandleAllPossibility() {
     // test case 1: null name
     submitPagingAndWait(
       ResultsItemSearch(
@@ -271,7 +271,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_handleNullData() {
+  fun showDataMovieTv_whenCalled_shouldHandleNullData() {
     // release data all null, title using original name
     submitPagingAndWait(
       ResultsItemSearch(
@@ -308,7 +308,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_shouldDisplayNAForNullReleaseDate_exceptWithValidFirstAirDate() = runTest {
+  fun showReleaseYear_whenReleaseDateIsMissing_usesFirstAirDateOrNA() = runTest {
     // releaseDate null, firstAirDate null
     submitDataYearReleased(
       "N/A",
@@ -335,7 +335,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_shouldDisplayReleaseDateWhenValid_regardlessOfFirstAirDate() {
+  fun showReleaseYear_whenReleaseDateIsValid_usesReleaseDateOnly() {
     // releaseDate valid, firstAirDate valid
     submitDataYearReleased(
       "2023-05-15",
@@ -372,7 +372,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_shouldFallbackToFirstAirDate_whenReleaseDateIsEmpty() {
+  fun showReleaseYear_whenReleaseDateIsEmpty_fallsBackToFirstAirDate() {
     // releaseDate empty, firstAirDate null
     submitDataYearReleased(
       "N/A",
@@ -399,7 +399,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_shouldFallbackToFirstAirDate_whenReleaseDateIsBlank() {
+  fun showReleaseYear_whenReleaseDateIsBlank_fallsBackToFirstAirDate() {
     // releaseDate blank, firstAirDate null
     submitDataYearReleased(
       "N/A",
@@ -431,7 +431,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_handleValidReleaseDate() = runTest {
+  fun showReleaseYear_whenReleaseDateIsValid_displaysReleaseDate() = runTest {
     submitPagingAndWait(
       ResultsItemSearch(
         id = 1,
@@ -447,7 +447,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_handleSetImageMovieTv_handleAllPossibility() = runTest {
+  fun showPosterImage_whenPathsAreMissing_displaysFallbackImage() = runTest {
     submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie"))
     submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = ""))
     submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = " "))
@@ -457,7 +457,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun diffCallback_areItemsTheSame_returnsTrueForSameIdAndMediaType() {
+  fun diffCallback_whenItemsAreTheSame_returnsTrueForSameIdAndMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
     val newItem = ResultsItemSearch(id = 1, mediaType = "movie")
 
@@ -465,7 +465,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun diffCallback_areItemsTheSame_returnsFalseForDifferentIdOrMediaType() {
+  fun diffCallback_whenItemsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
     val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
     val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType
@@ -475,7 +475,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun diffCallback_areContentsTheSame_returnsTrueForSameIdAndMediaType() {
+  fun diffCallback_whenContentsAreTheSame_returnsTrueForSameIdAndMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie", title = "Movie 1")
     val newItem = ResultsItemSearch(id = 1, mediaType = "movie", title = "Different Title")
 
@@ -483,7 +483,7 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun diffCallback_areContentsTheSame_returnsFalseForDifferentIdOrMediaType() {
+  fun diffCallback_whenContentsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
     val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
     val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
     val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType

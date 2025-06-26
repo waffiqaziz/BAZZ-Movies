@@ -25,7 +25,7 @@ class GetStatedTvInteractorTest {
   }
 
   @Test
-  fun getStatedITvRepositorySuccess_returnCorrectData() = runTest {
+  fun getStatedITvRepository_whenSuccessful_returnsCorrectData() = runTest {
     val stated = Stated(
       id = 6789,
       favorite = false,

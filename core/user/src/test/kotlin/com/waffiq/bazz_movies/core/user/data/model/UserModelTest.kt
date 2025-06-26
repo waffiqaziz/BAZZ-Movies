@@ -34,7 +34,7 @@ class UserModelTest {
   }
 
   @Test
-  fun userModel_withIdenticalProperties_isEqualAndHasSameHashCode() {
+  fun userModel_withIdenticalProperties_equalsAndHasSameHashCode() {
     val user1 = UserModel(
       userId = 3,
       name = "Alice",
@@ -64,7 +64,7 @@ class UserModelTest {
   }
 
   @Test
-  fun userModel_copyFunction_updatesSpecifiedFields() {
+  fun userModel_whenCopyFunctionCalled_updatesSpecifiedFields() {
     val user = UserModel(
       userId = 4,
       name = "Bob",
@@ -87,7 +87,7 @@ class UserModelTest {
   }
 
   @Test
-  fun userModel_withBlankPassword_isNotNull() {
+  fun userModel_withBlankPassword_returnsPasswordIsNotNull() {
     val user = UserModel(
       userId = 5,
       name = "Test User",

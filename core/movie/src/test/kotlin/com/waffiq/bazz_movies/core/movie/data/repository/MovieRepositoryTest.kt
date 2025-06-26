@@ -39,7 +39,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun getStatedMovieSuccess_returnMappedStatedMovie() = runTest {
+  fun getStatedMovie_whenSuccessful_returnsMappedStatedMovie() = runTest {
     val statedResponse = StatedResponse(
       id = 1234,
       favorite = true,
@@ -63,7 +63,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun getStatedTvSuccess_returnMappedStatedTv() = runTest {
+  fun getStatedTv_whenSuccessful_returnsMappedStatedTv() = runTest {
     val statedResponse = StatedResponse(
       id = 8888,
       favorite = false,
@@ -87,7 +87,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun postFavoriteSuccess_returnCorrectResponse() = runTest {
+  fun postFavorite_whenSuccessful_returnsCorrectResponse() = runTest {
     val postFavoriteWatchlistResponse = PostFavoriteWatchlistResponse(
       statusCode = 201,
       statusMessage = "Success"
@@ -117,7 +117,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun postWatchlistSuccess_returnCorrectResponse() = runTest {
+  fun postWatchlist_whenSuccessful_returnsCorrectResponse() = runTest {
     val postFavoriteWatchlistResponse = PostFavoriteWatchlistResponse(
       statusCode = 201,
       statusMessage = "Successs Addd Watchlist"
@@ -147,7 +147,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun postMovieRateSuccess_returnCorrectResponse() = runTest {
+  fun postMovieRate_whenSuccessful_returnsCorrectResponse() = runTest {
     val postRateResponse = PostResponse(
       success = true,
       statusCode = 201,
@@ -170,7 +170,7 @@ class MovieRepositoryTest {
   }
 
   @Test
-  fun postTvRateSuccess_returnCorrectResponse() = runTest {
+  fun postTvRate_whenSuccessful_returnsCorrectResponse() = runTest {
     val postRateResponse = PostResponse(
       success = true,
       statusCode = 201,

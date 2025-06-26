@@ -68,7 +68,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onSwiped_swipeLeft_triggersOnSwipeLeftCallback() {
+  fun swipeCallbackHelper_whenSwipedLeft_triggersOnSwipeLeftCallback() {
     // set up viewHolder position using reflection since bindingAdapterPosition returns -1 in tests
     val expectedPosition = 1
     val field = RecyclerView.ViewHolder::class.java.getDeclaredField("mPosition")
@@ -89,7 +89,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onSwiped_swipeRight_triggersOnSwipeRightCallback() {
+  fun swipeCallbackHelper_whenSwipeRight_triggersOnSwipeRightCallback() {
     // set up viewHolder position using reflection since bindingAdapterPosition returns -1 in tests
     val expectedPosition = 2
     val field = RecyclerView.ViewHolder::class.java.getDeclaredField("mPosition")
@@ -110,7 +110,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onSwiped_invalidDirection_doesNotTriggerCallbacks() {
+  fun swipeCallbackHelper_whenSwipeInvalidDirection_doesNotTriggerCallbacks() {
     // test when direction is neither START nor END
     val invalidDirection = ItemTouchHelper.UP
 
@@ -129,7 +129,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun getMovementFlags_returnsCorrectFlags() {
+  fun swipeCallbackHelper_whenGetMovementFlagsCalled_returnsCorrectFlags() {
     // verify that correct movement flags are returned for swipe operations
     val flags = swipeCallbackHelper.getMovementFlags(recyclerView, viewHolder)
 
@@ -141,7 +141,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onMove_returnsFalse() {
+  fun swipeCallbackHelper_whenOnMove_returnsFalse() {
     // verify that onMove always returns false as dragging is not supported
     val targetViewHolder = object : RecyclerView.ViewHolder(
       FrameLayout(context)
@@ -153,7 +153,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun getSwipeThreshold_returnsConstantValue() {
+  fun swipeCallbackHelper_whenGetSwipeThresholdCalled_returnsConstantValue() {
     // verify that the swipe threshold is set to the expected constant value
     val threshold = swipeCallbackHelper.getSwipeThreshold(viewHolder)
 
@@ -161,9 +161,9 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onChildDraw_swipeRight_callsSuperMethod() {
+  fun swipeCallbackHelper_whenSwipeRightOnChildDraw_callsSuperMethod() {
     // verify that swiping right doesn't throw exceptions
-    val dX = 100f
+    val dX = 100f // swipe right
     val dY = 0f
 
     swipeCallbackHelper.onChildDraw(
@@ -181,9 +181,9 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onChildDraw_swipeLeft_callsSuperMethod() {
+  fun onChildDraw_whenSwipeLeftOnChildDraw_callsSuperMethod() {
     // verify that swiping left doesn't throw exceptions
-    val dX = -100f
+    val dX = -100f // swipe left
     val dY = 0f
 
     swipeCallbackHelper.onChildDraw(
@@ -201,7 +201,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onChildDraw_noSwipe_callsSuperMethod() {
+  fun swipeCallbackHelper_whenNoSwipeOnChildDraw_callsSuperMethod() {
     // verify that no swipe movement doesn't throw exceptions
     val dX = 0f
     val dY = 0f
@@ -221,7 +221,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun init_withCorrectParameters_createsInstance() {
+  fun swipeCallbackHelper_initWithCorrectParameters_returnsTheInstance() {
     // verify that the helper can be instantiated with different parameters
     val helper = SwipeCallbackHelper(
       isLogin = false,
@@ -236,7 +236,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onChildDraw_swipeRightWithNullIcon_handlesNull() {
+  fun swipeCallbackHelper_swipeRightWithNullIcon_handlesNullValue() {
     // create a new SwipeCallbackHelper with null resource IDs
     val helperWithNullIcons = SwipeCallbackHelper(
       isLogin = true,
@@ -265,7 +265,7 @@ class SwipeCallbackHelperTest {
   }
 
   @Test
-  fun onChildDraw_swipeLeftWithNullIcon_handlesNull() {
+  fun swipeCallbackHelper_swipeLeftWithNullIcon_handlesNullValue() {
     // create a new SwipeCallbackHelper with null resource IDs
     val helperWithNullIcons = SwipeCallbackHelper(
       isLogin = true,

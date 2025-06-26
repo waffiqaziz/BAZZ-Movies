@@ -57,7 +57,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun search_updateLiveDataCorrectly() = runTest {
+  fun search_whenSuccessful_updateLiveDataCorrectly() = runTest {
     val fakePagingData = PagingData.from(
       listOf(tv, movie)
     )
@@ -98,7 +98,7 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun setExpandSearchView_updateLiveData() {
+  fun setExpandSearchView_whenCalled_updateTheLiveDataValue() {
     searchViewModel.setExpandSearchView(true)
     assertEquals(true, searchViewModel.expandSearchView.value)
 

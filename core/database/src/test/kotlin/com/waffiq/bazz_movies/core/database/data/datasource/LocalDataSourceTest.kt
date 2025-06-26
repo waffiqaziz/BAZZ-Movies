@@ -45,7 +45,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun getFavoriteMovies_emitCorrectData() = runTest(testDispatcher) {
+  fun getFavoriteMovies_whenSuccessful_emitCorrectData() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity.copy(isFavorite = true))
 
     localDataSource.getFavoriteMovies.test {
@@ -57,7 +57,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun getFavoriteTv_emitCorrectData() = runTest(testDispatcher) {
+  fun getFavoriteTv_whenSuccessful_emitCorrectData() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteTvEntity.copy(isFavorite = true))
 
     localDataSource.getFavoriteTv.test {
@@ -69,7 +69,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun getWatchlistMovies_emitCorrectData() = runTest(testDispatcher) {
+  fun getWatchlistMovies_whenSuccessful_emitCorrectData() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity)
 
     localDataSource.getWatchlistMovies.test {
@@ -81,7 +81,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun getWatchlistTv_emitCorrectData() = runTest(testDispatcher) {
+  fun getWatchlistTv_whenSuccessful_emitCorrectData() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteTvEntity)
 
     localDataSource.getWatchlistTv.test {
@@ -93,7 +93,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun deleteItemFromDB_success() = runTest(testDispatcher) {
+  fun deleteItemFromDB_whenSuccessful_dataShouldBeDeleted() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity)
 
     val result =
@@ -105,7 +105,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun deleteAll_success() = runTest(testDispatcher) {
+  fun deleteAll_whenSuccessful_databaseShouldBeEmpty() = runTest(testDispatcher) {
     val fakeMovies = listOf(
       favoriteMovieEntity.copy(id = 1),
       favoriteMovieEntity.copy(id = 2)
@@ -120,7 +120,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun isFavorite_returnTrue() = runTest(testDispatcher) {
+  fun isFavorite_whenSuccessful_returnTrue() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity.copy(isFavorite = true))
 
     val result = localDataSource.isFavorite(favoriteMovieEntity.mediaId, "movie")
@@ -128,13 +128,13 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun isFavorite_returnFalse() = runTest(testDispatcher) {
+  fun isFavorite_whenDataIsNotExistOnFavorite_returnFalse() = runTest(testDispatcher) {
     val result = localDataSource.isFavorite(999, "movie") // non-existent ID
     assert(result is DbResult.Success && !result.data)
   }
 
   @Test
-  fun isWatchlist_returnTrue() = runTest(testDispatcher) {
+  fun isWatchlist_whenDataIsExistOnWatchlist_returnTrue() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity)
 
     val result = localDataSource.isWatchlist(favoriteMovieEntity.mediaId, "movie")
@@ -142,13 +142,13 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun isWatchlist_returnFalse() = runTest(testDispatcher) {
+  fun isWatchlist_whenDataIsNotExistOnWatchlist_returnFalse() = runTest(testDispatcher) {
     val result = localDataSource.isWatchlist(999, "movie") // non-existent ID
     assert(result is DbResult.Success && !result.data)
   }
 
   @Test
-  fun update_success() = runTest(testDispatcher) {
+  fun update_whenSuccessful_shouldUpdateTheData() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity.copy(isFavorite = false, isWatchlist = false))
 
     val result = localDataSource.update(
@@ -165,7 +165,7 @@ class LocalDataSourceTest {
   }
 
   @Test
-  fun insertMultipleFavorite_returnCorrectSize() = runTest(testDispatcher) {
+  fun insertMultipleFavorite_whenSuccessful_returnCorrectSize() = runTest(testDispatcher) {
     favoriteDao.insert(favoriteMovieEntity.copy(id = 3, isFavorite = true))
     favoriteDao.insert(favoriteMovieEntity.copy(id = 4, isFavorite = true))
 

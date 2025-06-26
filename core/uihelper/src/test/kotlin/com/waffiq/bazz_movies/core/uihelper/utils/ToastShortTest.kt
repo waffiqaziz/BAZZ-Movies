@@ -16,7 +16,7 @@ class ToastShortTest {
   private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Test
-  fun toastShort_displayCorrectToastMessage() {
+  fun toastShort_whenCalled_displayCorrectToastMessage() {
     val rawText = "Hello, <b>World</b>!"
     val expectedText = HtmlCompat.fromHtml(rawText, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
 

@@ -28,7 +28,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeOut_animateAlphaToZeroAndSetViewInvisibleOnAnimationEnd() {
+  fun fadeOut_whenAnimateAlphaToZero_setViewInvisibleOnAnimationEnd() {
     val duration = 300L
 
     val animationListenerSlot = slot<Animator.AnimatorListener>()
@@ -47,7 +47,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeInAlpha50_animateAlphaToFiftyPercentAndSetViewVisible() {
+  fun fadeInAlpha50_whenCalled_setViewToVisible() {
     val duration = 300L
     val fadeAlpha = 0.5f
 
@@ -63,7 +63,7 @@ class AnimationTest {
 
   // edge case
   @Test
-  fun fadeOut_handleNegativeDurationGracefully() {
+  fun fadeOut_whenDurationIsNegative_useDefaultDuration() {
     Animation.fadeOut(mockView, -100L)
 
     verify { mockView.animate() }
@@ -73,7 +73,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeOut_useDefaultDurationGracefully() {
+  fun fadeOut_whenUseDefaultDuration_useDefaultDuration() {
     Animation.fadeOut(mockView)
 
     verify { mockView.animate() }
@@ -83,7 +83,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeOut_handleZeroDuration() {
+  fun fadeOut_whenUseZeroDuration_shouldUseZeroDuration() {
     Animation.fadeOut(mockView, 0L)
 
     verify { mockView.animate() }
@@ -93,7 +93,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeOut_handleAlreadyInvisibleView() {
+  fun fadeOut_whenViewIsInvisible_stillAnimatesAlpha() {
     every { mockView.isVisible } returns false
 
     Animation.fadeOut(mockView)
@@ -104,7 +104,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeInAlpha50_handleNegativeDurationGracefully() {
+  fun fadeInAlpha50_withNegativeDuration_useDefaultDuration() {
     Animation.fadeInAlpha50(mockView, -200L)
 
     verify { mockView.animate() }
@@ -114,7 +114,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeInAlpha50_useDefaultDurationGracefully() {
+  fun fadeInAlpha50_whenUseDefaultDuration_useDefaultDuration() {
     Animation.fadeInAlpha50(mockView)
 
     verify { mockView.animate() }
@@ -124,7 +124,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeInAlpha50_handleZeroDuration() {
+  fun fadeInAlpha50_whenUseZeroDuration_useZeroDuration() {
     Animation.fadeInAlpha50(mockView, 0L)
 
     verify { mockView.animate() }
@@ -134,7 +134,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeInAlpha50_handleVisibleView() {
+  fun fadeInAlpha50_whenViewIsVisible_stillAnimate() {
     every { mockView.isVisible } returns true
     every { mockView.alpha } returns 0.5f
 
@@ -147,7 +147,7 @@ class AnimationTest {
   }
 
   @Test
-  fun fadeOutAndFadeInAlpha50_calledConcurrently_animationUpdateCorrectly() {
+  fun fadeOutAndFadeInAlpha50_whenCalledConcurrently_animationUpdateCorrectly() {
     Animation.fadeOut(mockView, 300L)
     Animation.fadeInAlpha50(mockView, 300L)
 

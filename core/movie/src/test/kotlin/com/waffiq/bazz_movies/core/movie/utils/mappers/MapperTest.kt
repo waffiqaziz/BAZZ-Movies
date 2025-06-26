@@ -8,7 +8,7 @@ import org.junit.Test
 class MapperTest {
 
   @Test
-  fun toPostFavoriteWatchlist_returnCorrectly() {
+  fun toPostFavoriteWatchlist_withValidValues_returnsMappedModel() {
     val postFavoriteWatchlistResponse = PostFavoriteWatchlistResponse(
       statusCode = 200,
       statusMessage = "success"

@@ -9,13 +9,13 @@ class DebugConfigImplTest {
   private lateinit var debugConfig: DebugConfigImpl
 
   @Test
-  fun isDebug_returnsTrueWhenDebugTrue() {
+  fun isDebug_whenDebugIsTrue_returnsTrue() {
     debugConfig = DebugConfigImpl(isDebug = true)
     assertTrue(debugConfig.isDebug())
   }
 
   @Test
-  fun isDebug_returnsFalseWhenDebugFalse() {
+  fun isDebug_whenDebugIsFalse_returnsFalse() {
     debugConfig = DebugConfigImpl(isDebug = false)
     assertFalse(debugConfig.isDebug())
   }

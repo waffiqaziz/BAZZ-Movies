@@ -34,18 +34,16 @@ class RoutingActivityTest {
   fun setUp() {
     hiltRule.inject()
 
-    // Mock ViewModel with mockk
     mockViewModel = mockk(relaxed = true)
 
-    // Stub LiveData behavior
     every { mockViewModel.getUserPref() } returns mockLiveData
   }
 
   @Test
-  fun test_navigates_to_MainActivity_when_user_is_logged_in() {
+  fun navigatesToMainActivity_success_whenUserIsLoggedIn() {
     Intents.init()
 
-    // Provide mock LiveData value
+    // provide mock LiveData value
     mockLiveData.postValue(
       UserModel(
         userId = 111,
@@ -60,10 +58,10 @@ class RoutingActivityTest {
       )
     )
 
-    // Launch activity
+    // launch activity
     val scenario = ActivityScenario.launch(RoutingActivity::class.java)
 
-    // Verify navigation to MainActivity
+    // verify navigation to MainActivity
     intended(hasComponent(MainActivity::class.java.name))
 
     Intents.release()
@@ -71,10 +69,9 @@ class RoutingActivityTest {
   }
 
   @Test
-  fun test_navigates_to_MainActivity_when_user_is_not_logged_in() {
+  fun navigatesToMainActivity_fallbackToLogin_whenUserIsNotLoggedIn() {
     Intents.init()
 
-    // Provide mock LiveData value
     mockLiveData.postValue(
       UserModel(
         userId = 0,
@@ -89,10 +86,7 @@ class RoutingActivityTest {
       )
     )
 
-    // Launch activity
     val scenario = ActivityScenario.launch(RoutingActivity::class.java)
-
-    // Verify navigation to MainActivity
     intended(hasComponent(LoginActivity::class.java.name))
 
     Intents.release()

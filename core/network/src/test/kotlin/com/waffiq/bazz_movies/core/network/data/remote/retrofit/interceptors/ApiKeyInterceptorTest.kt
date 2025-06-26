@@ -99,7 +99,7 @@ class ApiKeyInterceptorTest {
   }
 
   @Test
-  fun oMDbInterceptor_AllTestPassed() {
+  fun oMDbInterceptor_withMultipleTestCase_shouldPassed() {
     val interceptor = ApiKeyInterceptorOMDb("omdbKey")
     val apiKeyParamName = "apikey"
     val apiKey = "omdbKey"
@@ -111,7 +111,7 @@ class ApiKeyInterceptorTest {
   }
 
   @Test
-  fun tMDbInterceptor_AllTestPassed() {
+  fun tMDbInterceptor_withMultipleTestCase_shouldPassed() {
     val interceptor = ApiKeyInterceptorTMDB("tmdbKey")
     val apiKeyParamName = "api_key"
     val apiKey = "tmdbKey"
