@@ -26,7 +26,7 @@ class PostMethodInteractorTest {
   }
 
   @Test
-  fun postFavoriteSuccess_returnCorrectResponse() = runTest {
+  fun postFavorite_whenSuccessful_returnsCorrectResponse() = runTest {
     val postFavoriteWatchlist = PostFavoriteWatchlist(
       statusCode = 201,
       statusMessage = "Success"
@@ -56,7 +56,7 @@ class PostMethodInteractorTest {
   }
 
   @Test
-  fun postWatchlistSuccess_returnCorrectResponse() = runTest {
+  fun postWatchlist_whenSuccessful_returnsCorrectResponse() = runTest {
     val postFavoriteWatchlist = PostFavoriteWatchlist(
       statusCode = 201,
       statusMessage = "Success Add Watchlist"
@@ -86,7 +86,7 @@ class PostMethodInteractorTest {
   }
 
   @Test
-  fun postMovieRateSuccess_returnCorrectResponse() = runTest {
+  fun postMovieRate_whenSuccessful_returnsCorrectResponse() = runTest {
     val postRate = Post(
       success = true,
       statusCode = 201,
@@ -109,7 +109,7 @@ class PostMethodInteractorTest {
   }
 
   @Test
-  fun postTvRateSuccess_returnCorrectResponse() = runTest {
+  fun postTvRate_whenSuccessful_returnsCorrectResponse() = runTest {
     val postRate = Post(
       success = true,
       statusCode = 201,
