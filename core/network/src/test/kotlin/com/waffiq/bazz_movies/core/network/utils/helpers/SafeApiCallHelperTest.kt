@@ -17,7 +17,7 @@ import java.net.UnknownHostException
 class SafeApiCallHelperTest {
 
   @Test
-  fun safeApiCall_shouldSuccessResponseWithBody() = runTest {
+  fun safeApiCall_whenSuccessful_returnsResponseWithBody() = runTest {
     val mockResponse = mockk<Response<String>> {
       every { isSuccessful } returns true
       every { code() } returns 200
@@ -30,7 +30,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldSuccessResponseWithNullBody() = runTest {
+  fun safeApiCall_whenSuccessful_returnsResponseWithNullBody() = runTest {
     val mockResponse = mockk<Response<String>> {
       every { isSuccessful } returns true
       every { body() } returns null
@@ -45,7 +45,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldSuccessResponseWithMissingCode() = runTest {
+  fun safeApiCall_whenSuccessful_returnsResponseWithMissingCode() = runTest {
     val mockResponse = mockk<Response<String>> {
       every { isSuccessful } returns true
       every { code() } returns 0
@@ -58,24 +58,25 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorBodyNullResponseWithMessageNoDetailProvided() = runTest {
-    val mockResponse = mockk<Response<String>> {
-      every { isSuccessful } returns false
-      every { code() } returns 500
-      every { body() } returns null
-      every { errorBody() } returns null
+  fun safeApiCall_whenUnSuccessfulAndBodyIsNull_returnsErrorWithMessageNoDetailProvided() =
+    runTest {
+      val mockResponse = mockk<Response<String>> {
+        every { isSuccessful } returns false
+        every { code() } returns 500
+        every { body() } returns null
+        every { errorBody() } returns null
+      }
+
+      val result = safeApiCall { mockResponse }
+      assert(result is NetworkResult.Error)
+      assertEquals(
+        "Server error: No error details provided",
+        (result as NetworkResult.Error).message
+      )
     }
 
-    val result = safeApiCall { mockResponse }
-    assert(result is NetworkResult.Error)
-    assertEquals(
-      "Server error: No error details provided",
-      (result as NetworkResult.Error).message
-    )
-  }
-
   @Test
-  fun safeApiCall_shouldError404ResponseInvalidRequest() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorWith404AndInvalidRequestMessage() = runTest {
     val mockResponse = mockk<Response<String>> {
       every { isSuccessful } returns false
       every { code() } returns 404
@@ -92,7 +93,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithStatusMessage() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorResponseWithStatusMessage() = runTest {
     val errorString = """
       {
           "status_code": 7,
@@ -118,7 +119,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithoutStatusMessage() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorResponseWithoutStatusMessage() = runTest {
     val errorString = """
       {
           "status_code": 7,
@@ -143,7 +144,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithEmptyErrorBody() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnErrorResponseWithEmptyErrorBody() = runTest {
     val mockResponseBody = mockk<ResponseBody> {
       every { string() } returns ""
     }
@@ -162,7 +163,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithNullErrorBody() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorResponseWithNullErrorBody() = runTest {
     val mockResponse = mockk<Response<String>> {
       every { isSuccessful } returns false
       every { code() } returns 400
@@ -178,7 +179,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithMalformedJson() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorResponseWithMalformedJson() = runTest {
     val errorString = """{invalid_json}"""
     val mockResponseBody = mockk<ResponseBody> {
       every { string() } returns errorString
@@ -198,7 +199,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldErrorResponseWithPlainTextErrorBody() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnsErrorResponseWithPlainTextBody() = runTest {
     val errorString = "Server error occurred"
     val mockResponseBody = mockk<ResponseBody> {
       every { string() } returns errorString
@@ -218,7 +219,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldNullResponseShouldResponseWithoutException() = runTest {
+  fun safeApiCall_whenUnsuccessful_returnNullResponse() = runTest {
     val apiCall: Response<String>? = null
     val result = safeApiCall { apiCall }
 
@@ -230,7 +231,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldHandlesUnknownHostException() = runTest {
+  fun safeApiCall_whenUnsuccessful_shouldHandleUnknownHostException() = runTest {
     val result = safeApiCall<String> { throw UnknownHostException("Host not found") }
     assert(result is NetworkResult.Error)
     assertEquals(
@@ -240,7 +241,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldHandlesSocketTimeoutException() = runTest {
+  fun safeApiCall_whenUnsuccessful_shouldHandleSocketTimeoutException() = runTest {
     val result = safeApiCall<String> { throw SocketTimeoutException("Timeout") }
     assert(result is NetworkResult.Error)
     assertEquals(
@@ -250,7 +251,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldHandlesHttpException() = runTest {
+  fun safeApiCall_whenUnsuccessful_shouldHandleHttpException() = runTest {
     val exception = mockk<HttpException> {
       every { message } returns "HTTP Error"
     }
@@ -263,7 +264,7 @@ class SafeApiCallHelperTest {
   }
 
   @Test
-  fun safeApiCall_shouldHandlesIOException() = runTest {
+  fun safeApiCall__whenUnsuccessful_shouldHandleIOException() = runTest {
     val result = safeApiCall<String> { throw IOException("Network error") }
     assert(result is NetworkResult.Error)
     assertEquals(
@@ -274,7 +275,7 @@ class SafeApiCallHelperTest {
 
   @Test
   @Suppress("TooGenericExceptionThrown")
-  fun safeApiCall_shouldHandlesUnknownException() = runTest {
+  fun safeApiCall_whenUnsuccessful_shouldHandleUnknownException() = runTest {
     val result = safeApiCall<String> { throw Exception("Unexpected error") }
     assert(result is NetworkResult.Error)
     assertEquals(

@@ -8,7 +8,7 @@ import org.junit.Test
 class OMDbDetailsResponseTest {
 
   @Test
-  fun oMDbDetailsResponse_setsRatingFieldsCorrectly() {
+  fun oMDbDetailsResponse_withValidValues_setsRatingFieldsCorrectly() {
     assertEquals("67", omdbDetailsResponseDump.metascore)
     assertEquals("7.5", omdbDetailsResponseDump.imdbRating)
 
@@ -23,7 +23,7 @@ class OMDbDetailsResponseTest {
   }
 
   @Test
-  fun oMDbDetailsResponse_setsBasicDetailsCorrectly() {
+  fun oMDbDetailsResponse_withValidValues_setsBasicDetailsCorrectly() {
     assertEquals("Avatar: The Way of Water", omdbDetailsResponseDump.title)
     assertEquals("Action, Adventure, Fantasy", omdbDetailsResponseDump.genre)
     assertEquals("James Cameron, Rick Jaffa, Amanda Silver", omdbDetailsResponseDump.writer)
@@ -32,7 +32,7 @@ class OMDbDetailsResponseTest {
   }
 
   @Test
-  fun oMDbDetailsResponse_setsPlotCorrectly() {
+  fun oMDbDetailsResponse_withValidValues_setsPlotCorrectly() {
     assertEquals(
       """
         Jake Sully lives with his newfound family formed on the extrasolar moon Pandora. Once a 
@@ -44,13 +44,13 @@ class OMDbDetailsResponseTest {
   }
 
   @Test
-  fun oMDbDetailsResponse_setsBoxOfficeInfoCorrectly() {
+  fun oMDbDetailsResponse_withValidValues_setsBoxOfficeInfoCorrectly() {
     assertEquals("$684,075,767", omdbDetailsResponseDump.boxOffice)
     assertEquals("Won 1 Oscar. 75 wins & 152 nominations total", omdbDetailsResponseDump.awards)
   }
 
   @Test
-  fun oMDbDetailsResponse_setsTechnicalDetailsCorrectly() {
+  fun oMDbDetailsResponse_withValidValues_setsTechnicalDetailsCorrectly() {
     assertEquals("192 min", omdbDetailsResponseDump.runtime)
     assertEquals("English", omdbDetailsResponseDump.language)
     assertEquals("PG-13", omdbDetailsResponseDump.rated)
@@ -105,7 +105,7 @@ class OMDbDetailsResponseTest {
   }
 
   @Test
-  fun ratingsItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
+  fun ratingsItemResponse_withSomeNullValues_setsNullValueCorrectly() {
     val ratingsItemResponse = RatingsItemResponse()
     assertNull(ratingsItemResponse.value)
     assertNull(ratingsItemResponse.source)

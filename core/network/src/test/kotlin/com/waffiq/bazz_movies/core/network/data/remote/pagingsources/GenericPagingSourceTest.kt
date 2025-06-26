@@ -27,7 +27,7 @@ class GenericPagingSourceTest {
   private val apiCallMock: suspend (Int) -> List<ResultItemResponse> = mockk()
 
   @Test
-  fun loadInitialPage_whenApiCallSucceeds_returnCorrectPage() = runTest {
+  fun loadInitialPage_whenApiCallSucceeds_returnsCorrectPage() = runTest {
     val resultItems = listOf(ResultItemResponse("item1"), ResultItemResponse("item2"))
     testLoadReturnsPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
@@ -42,7 +42,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun loadPage_whenIOExceptionOccurs_returnError() = runTest {
+  fun loadPage_whenIOExceptionOccurs_returnsError() = runTest {
     testLoadReturnsErrorOnException(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = {
@@ -54,7 +54,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun loadPage_whenHttpExceptionOccurs_returnErrorWithMessage() = runTest {
+  fun loadPage_whenHttpExceptionOccurs_returnsErrorWithMessage() = runTest {
     testLoadReturnsErrorOnHttpException(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = {
@@ -67,7 +67,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun loadPage_whenResponseDataIsNull_returnNullFields() = runTest {
+  fun loadPage_whenResponseDataIsNull_returnsNullFields() = runTest {
     coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns listOf(ResultItemResponse())
     val pagingSource = GenericPagingSource(apiCallMock)
 
@@ -81,7 +81,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun loadSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
+  fun loadSubsequentPage_returnsPageWithNonNullPrevKey() = runTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
@@ -94,7 +94,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun loadEmptyResponse_returnPageWithNullNextKey() = runTest {
+  fun loadPage_withEmptyResponse_returnsPageWithNullNextKey() = runTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
@@ -105,7 +105,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenAnchorInMiddlePage_returnCorrectKey() {
+  fun getRefreshKey_whenAnchorInMiddlePage_returnsCorrectKey() {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(
@@ -144,7 +144,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenAllKeysAreNull_returnNull() {
+  fun getRefreshKey_whenAllKeysAreNull_returnsNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(ResultItemResponse("item1"))
@@ -152,7 +152,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnNull() {
+  fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = GenericPagingSource(apiCallMock),
       anchorPosition = null
@@ -160,7 +160,7 @@ class GenericPagingSourceTest {
   }
 
   @Test
-  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnNull() {
+  fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = GenericPagingSource(apiCallMock),
       anchorPosition = 0

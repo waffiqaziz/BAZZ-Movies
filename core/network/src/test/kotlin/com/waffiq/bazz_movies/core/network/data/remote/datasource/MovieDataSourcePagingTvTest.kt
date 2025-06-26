@@ -40,43 +40,43 @@ class MovieDataSourcePagingTvTest : BaseMovieDataSourceTest() {
   )
 
   @Test
-  fun getPagingFavoriteTv_returnExpectedPagingData() = runTest {
+  fun getPagingFavoriteTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createFavoriteTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingWatchlistTv_returnExpectedPagingData() = runTest {
+  fun getPagingWatchlistTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createWatchlistTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingPopularTv_returnExpectedPagingData() = runTest {
+  fun getPagingPopularTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createPopularTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingAiringThisWeekTv_returnExpectedPagingData() = runTest {
+  fun getPagingAiringThisWeekTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createAiringThisWeekTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingAiringTodayTv_returnExpectedPagingData() = runTest {
+  fun getPagingAiringTodayTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createAiringTodayTvScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingTvRecommendation_returnExpectedPagingData() = runTest {
+  fun getPagingTvRecommendation_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createTvRecommendationScenario()
     testTvPagingScenario(scenario)
   }
 
   @Test
-  fun getPagingTopRatedTv_returnExpectedPagingData() = runTest {
+  fun getPagingTopRatedTv_whenSuccessful_returnsExpectedPagingData() = runTest {
     val scenario = createTopRatedTvScenario()
     testTvPagingScenario(scenario)
   }

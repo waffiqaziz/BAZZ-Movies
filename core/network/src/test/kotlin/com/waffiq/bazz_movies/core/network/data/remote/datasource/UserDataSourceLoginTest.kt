@@ -21,7 +21,7 @@ import retrofit2.Response
 class UserDataSourceLoginTest : BaseUserDataSourceTest() {
 
   @Test
-  fun createToken_returnExpectedResponse() = runTest {
+  fun createToken_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       mockApiResponse = Response.success(authenticationResponseDump),
@@ -35,7 +35,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
+  fun createToken_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -46,7 +46,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
 
   // region createToken EDGE CASE
   @Test
-  fun createToken_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun createToken_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -54,7 +54,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun createToken_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -62,7 +62,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnErrorWhenTimeoutOccurs() = runTest {
+  fun createToken_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -70,7 +70,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun createToken_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -78,7 +78,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun createToken_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -86,7 +86,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createToken_returnErrorWhenExceptionOccurs() = runTest {
+  fun createToken_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.createToken() },
       dataSourceEndpointCall = { userDataSource.createToken() },
@@ -95,7 +95,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   // endregion createToken EDGE CASE
 
   @Test
-  fun deleteSession_returnExpectedResponse() = runTest {
+  fun deleteSession_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       mockApiResponse = Response.success(postResponseDump),
@@ -109,7 +109,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
+  fun deleteSession_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -120,7 +120,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
 
   // region deleteSession EDGE CASE
   @Test
-  fun deleteSession_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun deleteSession_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -128,7 +128,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun deleteSession_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -136,7 +136,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnErrorWhenTimeoutOccurs() = runTest {
+  fun deleteSession_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -144,7 +144,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun deleteSession_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -152,7 +152,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun deleteSession_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -160,7 +160,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun deleteSession_returnErrorWhenExceptionOccurs() = runTest {
+  fun deleteSession_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.delSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
@@ -169,7 +169,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   // endregion deleteSession EDGE CASE
 
   @Test
-  fun createSessionLogin_returnExpectedResponse() = runTest {
+  fun createSessionLogin_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       mockApiResponse = Response.success(createSessionResponseDump),
@@ -182,7 +182,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
+  fun createSessionLogin_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -193,7 +193,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
 
   // region createSessionLogin EDGE CASE
   @Test
-  fun createSessionLogin_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun createSessionLogin_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -201,7 +201,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun createSessionLogin_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -209,7 +209,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnErrorWhenTimeoutOccurs() = runTest {
+  fun createSessionLogin_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -217,7 +217,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun createSessionLogin_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -225,7 +225,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun createSessionLogin_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -233,7 +233,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun createSessionLogin_returnErrorWhenExceptionOccurs() = runTest {
+  fun createSessionLogin_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.createSessionLogin("request_token") },
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
@@ -242,7 +242,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   // endregion createSessionLogin EDGE CASE
 
   @Test
-  fun login_returnExpectedResponse() = runTest {
+  fun login_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       mockApiResponse = Response.success(authenticationResponseDump),
@@ -255,7 +255,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_whenApiInvalidFormat_returnExpectedStatusMessageResponse() = runTest {
+  fun login_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
@@ -266,7 +266,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
 
   // region login EDGE CASE
   @Test
-  fun login_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun login_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
@@ -274,7 +274,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun login_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
@@ -282,7 +282,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnErrorWhenTimeoutOccurs() = runTest {
+  fun login_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
@@ -290,7 +290,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun login_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
@@ -298,7 +298,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun login_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
@@ -306,7 +306,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   }
 
   @Test
-  fun login_returnErrorWhenExceptionOccurs() = runTest {
+  fun login_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.login("username", "password", "session_id") },
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },

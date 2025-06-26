@@ -13,7 +13,7 @@ class DetailTvResponseTest {
   val detailTvResponse = detailTvResponseDump
 
   @Test
-  fun detailTvResponse_setsBasicInfoCorrectly() {
+  fun detailTvResponse_withValidValues_setsBasicInfoCorrectly() {
     assertEquals(253905, detailTvResponse.id)
     assertEquals("Miniseries", detailTvResponse.type)
     assertEquals("When the Phone Rings", detailTvResponse.name)
@@ -32,21 +32,21 @@ class DetailTvResponseTest {
   }
 
   @Test
-  fun detailTvResponse_setsDatesCorrectly() {
+  fun detailTvResponse_withValidValues_setsDatesCorrectly() {
     assertEquals("2024-11-22", detailTvResponse.firstAirDate)
     assertEquals("2025-01-04", detailTvResponse.lastAirDate)
     assertNull(detailTvResponse.nextEpisodeToAir)
   }
 
   @Test
-  fun detailTvResponse_setsMediaAssetsCorrectly() {
+  fun detailTvResponse_withValidValues_setsMediaAssetsCorrectly() {
     assertEquals("/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg", detailTvResponse.backdropPath)
     assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", detailTvResponse.posterPath)
     assertEquals("/pOSCKaZhndUFYtxHXjQOV6xJi1s.png", detailTvResponse.networksResponse?.get(0)?.logoPath)
   }
 
   @Test
-  fun detailTvResponse_setsSeasonsAndEpisodesCorrectly() {
+  fun detailTvResponse_withValidValues_setsSeasonsAndEpisodesCorrectly() {
     assertEquals(1, detailTvResponse.numberOfSeasons)
     assertEquals(12, detailTvResponse.numberOfEpisodes)
     assertEquals(392789, detailTvResponse.seasonsResponse?.get(0)?.id)
@@ -55,7 +55,7 @@ class DetailTvResponseTest {
   }
 
   @Test
-  fun detailTvResponse_setsProductionAndCountryCorrectly() {
+  fun detailTvResponse_withValidValues_setsProductionAndCountryCorrectly() {
     assertEquals("South Korea", detailTvResponse.productionCountriesResponse?.get(0)?.name)
     assertEquals("Baram Pictures", detailTvResponse.productionCompaniesResponse?.get(1)?.name)
     assertEquals("KR", detailTvResponse.originCountry?.get(0))
@@ -66,7 +66,7 @@ class DetailTvResponseTest {
   }
 
   @Test
-  fun detailTvResponse_others_setsPropertiesCorrectly() {
+  fun detailTvResponse_withValidValues_setsOthersPropertiesCorrectly() {
     assertEquals(
       """
         A rising politician and his mute wife's tense marriage begins to unravel after a call from a 

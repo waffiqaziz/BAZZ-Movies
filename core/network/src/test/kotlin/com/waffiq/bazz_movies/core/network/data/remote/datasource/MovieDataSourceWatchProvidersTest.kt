@@ -19,7 +19,7 @@ import retrofit2.Response
 class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
 
   @Test
-  fun getWatchProviders_returnExpectedResponse() = runTest {
+  fun getWatchProviders_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       mockApiResponse = Response.success(watchProviderResponseDump),
@@ -48,7 +48,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProvidersError_returnExpectedStatusMessageResponse() = runTest {
+  fun getWatchProviders_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       errorResponse = apiMaintenanceErrorResponse,
@@ -59,7 +59,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
 
   // region getWatchProviders EDGE CASE
   @Test
-  fun getWatchProviders_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun getWatchProviders_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
@@ -67,7 +67,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProviders_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getWatchProviders_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
@@ -75,7 +75,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProviders_returnErrorWhenTimeoutOccurs() = runTest {
+  fun getWatchProviders_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
@@ -83,7 +83,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProviders_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getWatchProviders_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
@@ -91,7 +91,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProviders_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun getWatchProviders_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
@@ -99,7 +99,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getWatchProviders_returnErrorWhenExceptionOccurs() = runTest {
+  fun getWatchProviders_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getWatchProviders("movie", 1234567890) },
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },

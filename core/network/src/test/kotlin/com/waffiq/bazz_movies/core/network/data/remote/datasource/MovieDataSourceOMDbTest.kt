@@ -18,7 +18,7 @@ import retrofit2.Response
 class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
 
   @Test
-  fun getDetailOMDb_returnExpectedResponse() = runTest {
+  fun getDetailOMDb_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       mockApiResponse = Response.success(omdbDetailsResponseDump),
@@ -33,7 +33,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDbError_returnExpectedStatusMessageResponse() = runTest {
+  fun getDetailOMDb_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       errorResponse = apiMaintenanceErrorResponse,
@@ -44,7 +44,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
 
   // region getDetailOMDb EDGE CASE
   @Test
-  fun getDetailOMDb_returnErrorWhenAPIRespondsWith404() = runTest {
+  fun getDetailOMDb_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },
@@ -52,7 +52,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDb_returnErrorWhenNetworkErrorOccurs() = runTest {
+  fun getDetailOMDb_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },
@@ -60,7 +60,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDb_returnErrorWhenTimeoutOccurs() = runTest {
+  fun getDetailOMDb_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },
@@ -68,7 +68,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDb_returnErrorWhenHttpExceptionOccurs() = runTest {
+  fun getDetailOMDb_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },
@@ -76,7 +76,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDb_returnErrorWhenIOExceptionOccurs() = runTest {
+  fun getDetailOMDb_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },
@@ -84,7 +84,7 @@ class MovieDataSourceOMDbTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getDetailOMDb_returnErrorWhenExceptionOccurs() = runTest {
+  fun getDetailOMDb_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { omDbApiService.getMovieDetailOMDb("tt1630029") },
       dataSourceEndpointCall = { movieDataSource.getDetailOMDb("tt1630029") },

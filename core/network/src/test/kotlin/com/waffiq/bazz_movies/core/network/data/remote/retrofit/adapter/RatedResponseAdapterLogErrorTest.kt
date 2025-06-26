@@ -18,7 +18,7 @@ class RatedResponseAdapterLogErrorTest {
   }
 
   @Test
-  fun logError_LogsCorrectMessage() {
+  fun loggingAnError_whenErrorOccur_logsCorrectMessage() {
     mockkStatic(Log::class)
     every { Log.e(any(), any()) } returns 0
 

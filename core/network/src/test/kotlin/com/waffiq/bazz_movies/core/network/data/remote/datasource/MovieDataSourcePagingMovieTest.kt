@@ -23,7 +23,7 @@ import org.junit.Test
 class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
 
   @Test
-  fun getPagingTopRatedMovies_returnExpectedPagingData() = runTest {
+  fun getPagingTopRatedMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getTopRatedMovies(1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(movieDump1, movieDump2)),
@@ -62,7 +62,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingPopularMovies_returnExpectedPagingData() = runTest {
+  fun getPagingPopularMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getPopularMovies(1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(movieDump5)),
@@ -93,7 +93,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingFavoriteMovies_returnExpectedPagingData() = runTest {
+  fun getPagingFavoriteMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource =
       GenericPagingSource { tmdbApiService.getFavoriteMovies("session_id", 1).results }
     testPagingSource(
@@ -125,7 +125,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingWatchlistMovies_returnExpectedPagingData() = runTest {
+  fun getPagingWatchlistMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource =
       GenericPagingSource { tmdbApiService.getWatchlistMovies("session_id", 1).results }
     testPagingSource(
@@ -157,7 +157,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingMovieRecommendation_returnExpectedPagingData() = runTest {
+  fun getPagingMovieRecommendation_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource =
       GenericPagingSource { tmdbApiService.getRecommendedMovie(12345678, 1).results }
     testPagingSource(
@@ -189,7 +189,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingUpcomingMovies_returnExpectedPagingData() = runTest {
+  fun getPagingUpcomingMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getUpcomingMovies("cn", 1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(movieDump4)),
@@ -220,7 +220,7 @@ class MovieDataSourcePagingMovieTest : BaseMovieDataSourceTest() {
   }
 
   @Test
-  fun getPagingPlayingNowMovies_returnExpectedPagingData() = runTest {
+  fun getPagingPlayingNowMovies_whenSuccessful_returnsExpectedPagingData() = runTest {
     val pagingSource = GenericPagingSource { tmdbApiService.getPlayingNowMovies("gb", 1).results }
     testPagingSource(
       mockResults = defaultMovieTvResponse(listOf(movieDump5)),
