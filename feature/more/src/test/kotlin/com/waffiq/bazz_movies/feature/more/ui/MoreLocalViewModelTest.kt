@@ -41,7 +41,7 @@ class MoreLocalViewModelTest {
   }
 
   @Test
-  fun deleteAllPosts_successResult() = runTest {
+  fun deleteAllPosts_whenSuccessful_emitsSuccessResult() = runTest {
     // Arrange
     val expectedResult = DbResult.Success(1)
     coEvery { localDatabaseUseCase.deleteAll() } returns expectedResult
@@ -67,7 +67,7 @@ class MoreLocalViewModelTest {
   }
 
   @Test
-  fun deleteAllPosts_errorResult() = runTest {
+  fun deleteAllPosts_whenUnsuccessful_errorResult() = runTest {
     val expectedError = DbResult.Error("Delete failed")
     coEvery { localDatabaseUseCase.deleteAll() } returns expectedError
 
