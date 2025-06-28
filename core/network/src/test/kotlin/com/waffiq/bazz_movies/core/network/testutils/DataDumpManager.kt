@@ -440,7 +440,6 @@ object DataDumpManager {
         adult = false,
         order = 2
       )
-      // Add the rest of the cast items in a similar way...
     ),
     crew = listOf(
       movieTvCrewItemResponseDump,
@@ -470,7 +469,6 @@ object DataDumpManager {
         department = "Production",
         job = "Producer"
       )
-      // Add the rest of the crew items in a similar way...
     )
   )
 
@@ -697,6 +695,14 @@ object DataDumpManager {
     results = mapOf(
       "US" to CountryProviderDataResponse(
         link = "https://www.link.com/us/movie/example-movie",
+        ads = listOf(
+          ProviderResponse(
+            logoPath = "/logo6.png",
+            providerId = 6,
+            providerName = "WeTV",
+            displayPriority = 3
+          )
+        ),
         flatrate = listOf(
           ProviderResponse(
             logoPath = "/logo1.png",
@@ -731,8 +737,7 @@ object DataDumpManager {
       ),
       "ID" to CountryProviderDataResponse(
         link = "https://www.link.com/id/movie/example-movie",
-        flatrate = null,
-        rent = null,
+        ads = null,
         buy = listOf(
           ProviderResponse(
             logoPath = "/logo5.png",
@@ -741,6 +746,8 @@ object DataDumpManager {
             displayPriority = 8
           )
         ),
+        flatrate = null,
+        rent = null,
         free = listOf(
           ProviderResponse(
             logoPath = "/logo6.png",
