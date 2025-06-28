@@ -475,19 +475,19 @@
                 tools:listitem="@layout/item_watch_provider" />
             </LinearLayout>
 
-            <!-- Rent -->
+            <!-- Ads -->
             <LinearLayout
-              android:id="@+id/layout_rent"
+              android:id="@+id/layout_ads"
               style="@style/LayoutWatchProviders"
               tools:visibility="visible">
 
               <TextView
-                android:id="@+id/label_rent"
+                android:id="@+id/label_ads"
                 style="@style/LabelWatchProviders"
-                android:text="@string/rent" />
+                android:text="@string/ads" />
 
               <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_rent"
+                android:id="@+id/rv_ads"
                 style="@style/RecyclerViewWatchProviders"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_watch_provider" />
@@ -506,6 +506,24 @@
 
               <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_buy"
+                style="@style/RecyclerViewWatchProviders"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_watch_provider" />
+            </LinearLayout>
+
+            <!-- Rent -->
+            <LinearLayout
+              android:id="@+id/layout_rent"
+              style="@style/LayoutWatchProviders"
+              tools:visibility="visible">
+
+              <TextView
+                android:id="@+id/label_rent"
+                style="@style/LabelWatchProviders"
+                android:text="@string/rent" />
+
+              <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_rent"
                 style="@style/RecyclerViewWatchProviders"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_watch_provider" />
@@ -544,11 +562,11 @@
                 android:text="@string/data_powered_by" />
 
               <com.google.android.material.button.MaterialButton
-                android:layout_marginStart="-5dp"
                 android:id="@+id/btn_justwatch"
                 style="@style/MyTransparentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="-5dp"
                 android:fontFamily="@font/nunito_sans_bold"
                 android:text="@string/justwatch"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"

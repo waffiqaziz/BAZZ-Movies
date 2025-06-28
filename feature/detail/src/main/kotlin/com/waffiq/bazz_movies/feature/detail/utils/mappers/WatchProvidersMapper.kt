@@ -18,10 +18,11 @@ object WatchProvidersMapper {
 
   private fun CountryProviderDataResponse.toDomain(): CountryProviderData = CountryProviderData(
     link = link,
-    flatrate = flatrate?.map { it.toProvider() },
-    rent = rent?.map { it.toProvider() },
+    ads = ads?.map { it.toProvider() },
     buy = buy?.map { it.toProvider() },
+    flatrate = flatrate?.map { it.toProvider() },
     free = free?.map { it.toProvider() },
+    rent = rent?.map { it.toProvider() },
   )
 
   private fun ProviderResponse.toProvider(): Provider = Provider(
