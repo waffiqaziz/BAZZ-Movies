@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -40,6 +41,7 @@ class WatchProvidersManager(
   private val context: Context,
   private val dataExtra: ResultItem,
 ) {
+  private lateinit var adapterAds: WatchProvidersAdapter
   private lateinit var adapterBuy: WatchProvidersAdapter
   private lateinit var adapterFree: WatchProvidersAdapter
   private lateinit var adapterRent: WatchProvidersAdapter
@@ -58,6 +60,7 @@ class WatchProvidersManager(
   private fun setupWatchProvidersUI() {
     setupRecyclerViewsWithSnap(
       listOf(
+        binding.rvAds,
         binding.rvBuy,
         binding.rvFree,
         binding.rvRent,
@@ -67,11 +70,13 @@ class WatchProvidersManager(
 
     val clickListener = { openTMDBWatchPage() }
 
+    adapterAds = WatchProvidersAdapter(clickListener)
     adapterBuy = WatchProvidersAdapter(clickListener)
     adapterFree = WatchProvidersAdapter(clickListener)
     adapterRent = WatchProvidersAdapter(clickListener)
     adapterStreaming = WatchProvidersAdapter(clickListener)
 
+    setupRecyclerView(binding.rvAds, adapterAds)
     setupRecyclerView(binding.rvBuy, adapterBuy)
     setupRecyclerView(binding.rvFree, adapterFree)
     setupRecyclerView(binding.rvRent, adapterRent)
@@ -202,7 +207,12 @@ class WatchProvidersManager(
     }
     binding.layoutJustwatch.isVisible = false
 
-    hideAllProviderSections()
+    // hide all provider sections
+    binding.layoutAds.isVisible = false
+    binding.layoutBuy.isVisible = false
+    binding.layoutFree.isVisible = false
+    binding.layoutRent.isVisible = false
+    binding.layoutStreaming.isVisible = false
   }
 
   /**
@@ -211,52 +221,17 @@ class WatchProvidersManager(
    * @param state The successful state containing categorized provider lists.
    */
   private fun showSuccessState(state: WatchProvidersUiState.Success) {
+    adapterAds.setProviders(state.ads)
     adapterBuy.setProviders(state.buy)
     adapterFree.setProviders(state.free)
     adapterRent.setProviders(state.rent)
     adapterStreaming.setProviders(state.flatrate)
 
-    updateProviderVisibility(state.buy, binding.rvBuy, binding.labelBuy, binding.layoutBuy)
-    updateProviderVisibility(state.free, binding.rvFree, binding.labelFree, binding.layoutFree)
-    updateProviderVisibility(state.rent, binding.rvRent, binding.labelRent, binding.layoutRent)
-    updateProviderVisibility(
-      state.flatrate,
-      binding.rvStreaming,
-      binding.labelStreaming,
-      binding.layoutStreaming
-    )
-  }
-
-  /**
-   * Updates the visibility of a specific provider section.
-   *
-   * @param providers The list of providers for this category.
-   * @param recyclerView The RecyclerView showing providers.
-   * @param label The label (e.g., "Buy", "Rent") view.
-   * @param layout The container layout for the section.
-   */
-  private fun updateProviderVisibility(
-    providers: List<Provider>,
-    recyclerView: RecyclerView,
-    label: View,
-    layout: View,
-  ) {
-    val hasProviders = providers.isNotEmpty()
-    recyclerView.isVisible = hasProviders
-    label.isVisible = hasProviders
-    layout.isVisible = hasProviders
-  }
-
-  /**
-   * Hides all provider-related UI sections (used on error or no data).
-   */
-  private fun hideAllProviderSections() {
-    listOf(
-      binding.rvBuy, binding.rvFree, binding.rvRent, binding.rvStreaming,
-      binding.labelBuy, binding.labelFree, binding.labelRent, binding.labelStreaming,
-      binding.layoutBuy, binding.layoutFree, binding.layoutRent, binding.layoutStreaming
-    ).forEach { view ->
-      view.isVisible = false
-    }
+    // update provider visibility
+    binding.layoutAds.isVisible = state.ads.isNotEmpty()
+    binding.layoutBuy.isVisible = state.buy.isNotEmpty()
+    binding.layoutFree.isVisible = state.free.isNotEmpty()
+    binding.layoutRent.isVisible = state.rent.isNotEmpty()
+    binding.layoutStreaming.isVisible = state.flatrate.isNotEmpty()
   }
 }

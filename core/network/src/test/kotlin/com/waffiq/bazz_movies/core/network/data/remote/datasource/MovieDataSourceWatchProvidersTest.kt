@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessRespo
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -34,6 +35,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
       assertEquals(2, usProviders?.flatrate?.size)
       assertEquals("Netflix", usProviders?.flatrate?.get(0)?.providerName)
       assertEquals("Disney+", usProviders?.flatrate?.get(1)?.providerName)
+      assertEquals("WeTV", usProviders?.ads?.get(0)?.providerName)
       assertNotNull(usProviders?.rent?.get(0))
 
       val idProviders = data.results?.get("ID")
@@ -43,6 +45,7 @@ class MovieDataSourceWatchProvidersTest : BaseMovieDataSourceTest() {
       assertEquals("/logo6.png", idProviders?.free?.get(0)?.logoPath)
       assertEquals("WeTV", idProviders?.free?.get(0)?.providerName)
       assertEquals(6, idProviders?.free?.get(0)?.providerId)
+      assertNull(idProviders?.ads?.get(0))
       assertEquals(12, idProviders?.free?.get(0)?.displayPriority)
     }
   }

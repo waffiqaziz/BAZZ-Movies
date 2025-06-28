@@ -265,10 +265,11 @@ class DetailMovieViewModel @Inject constructor(
         _watchProvidersUiState.value = when (outcome) {
           is Outcome.Loading -> WatchProvidersUiState.Loading
           is Outcome.Success -> WatchProvidersUiState.Success(
-            flatrate = outcome.data.flatrate.orEmpty(),
-            rent = outcome.data.rent.orEmpty(),
+            ads = outcome.data.ads.orEmpty(),
             buy = outcome.data.buy.orEmpty(),
+            flatrate = outcome.data.flatrate.orEmpty(),
             free = outcome.data.free.orEmpty(),
+            rent = outcome.data.rent.orEmpty(),
           )
 
           is Outcome.Error -> WatchProvidersUiState.Error(outcome.message)
