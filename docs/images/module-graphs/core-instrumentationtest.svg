@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="222pt" height="116pt" viewBox="0.00 0.00 222.09 116.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 218.09,-112 218.09,4 -4,4"/>
+<!-- :core:instrumentationtest -->
+<g id="node1" class="node">
+<title>:core:instrumentationtest</title>
+<ellipse fill="none" stroke="black" cx="107.04" cy="-90" rx="107.04" ry="18"/>
+<text text-anchor="middle" x="107.04" y="-85.8" font-family="Times,serif" font-size="14.00">:core:instrumentationtest</text>
+</g>
+<!-- :core:designsystem -->
+<g id="node2" class="node">
+<title>:core:designsystem</title>
+<ellipse fill="none" stroke="black" cx="107.04" cy="-18" rx="85.06" ry="18"/>
+<text text-anchor="middle" x="107.04" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+</g>
+<!-- :core:instrumentationtest&#45;&gt;:core:designsystem -->
+<g id="edge1" class="edge">
+<title>:core:instrumentationtest-&gt;:core:designsystem</title>
+<path fill="none" stroke="red" stroke-width="2" d="M107.04,-71.7C107.04,-64.41 107.04,-55.73 107.04,-47.54"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="110.54,-49.13 107.04,-39.13 103.54,-49.13 110.54,-49.13"/>
+</g>
+</g>
+</svg>
