@@ -16,7 +16,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterStandard_shouldReturnFormattedDate_withValidInput() {
+  fun dateFormatterStandard_withValidInput_returnFormattedDate() {
     val input = "1979-04-04"
     val expectedOutput = "Apr 04, 1979"
     val actualOutput = DateFormatter.dateFormatterStandard(input)
@@ -24,7 +24,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterStandard_shouldReturnEmpty_withNullInput() {
+  fun dateFormatterStandard_withNullInput_returnEmptyString() {
     val input: String? = null
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterStandard(input)
@@ -32,7 +32,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterStandard_shouldReturnEmpty_withEmptyInput() {
+  fun dateFormatterStandard_withEmptyInput_returnEmptyString() {
     val input = ""
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterStandard(input)
@@ -40,7 +40,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterStandard_shouldReturnEmpty_withInvalidDateFormat() {
+  fun dateFormatterStandard_withInvalidDateFormat_returnEmptyString() {
     val input = "04-04-1979"
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterStandard(input)
@@ -48,7 +48,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterISO8601_shouldReturnFormattedDate_withValidInput() {
+  fun dateFormatterISO8601_withValidInput_returnsFormattedDate() {
     val input = "2024-01-19T00:00:00.000Z"
     val expectedOutput = "Jan 19, 2024"
     val actualOutput = DateFormatter.dateFormatterISO8601(input)
@@ -56,7 +56,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterISO8601_shouldReturnEmpty_withNullInput() {
+  fun dateFormatterISO8601_withNullInput_returnEmptyString() {
     val input: String? = null
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterISO8601(input)
@@ -64,7 +64,7 @@ class DateFormatterTest {
   }
 
   @Test
-  fun dateFormatterISO8601_shouldReturnEmpty_withEmptyInput() {
+  fun dateFormatterISO8601_withEmptyInput_returnEmptyString() {
     val input = ""
     val expectedOutput = ""
     val actualOutput = DateFormatter.dateFormatterISO8601(input)

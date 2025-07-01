@@ -30,7 +30,7 @@ class CollectAndSubmitDataTest {
   private val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
 
   @Test
-  fun collectAndSubmitData_shouldSubmitPagingData_whenLifecycleCreated() = runTest {
+  fun collectAndSubmitData_whenLifecycleCreated_shouldSubmitPagingData() = runTest {
     val mockFragment = mockk<Fragment>(relaxed = true) {
       every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
     }
@@ -50,7 +50,7 @@ class CollectAndSubmitDataTest {
   }
 
   @Test
-  fun collectAndSubmitData_shouldNotSubmitData_whenFlowIsEmpty() = runTest {
+  fun collectAndSubmitData_whenFlowIsEmpty_shouldNotSubmitData() = runTest {
     val mockFragment = mockk<Fragment>(relaxed = true) {
       every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
     }
@@ -68,7 +68,7 @@ class CollectAndSubmitDataTest {
   }
 
   @Test
-  fun collectAndSubmitData_shouldHandleMultipleEmissions() = runTest {
+  fun collectAndSubmitData_whenRunningSimultaneously_shouldHandleMultipleEmissions() = runTest {
     val mockFragment = mockk<Fragment>(relaxed = true) {
       every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
     }
