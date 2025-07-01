@@ -68,6 +68,11 @@ flag_management:
       paths:
         - core/favoritewatchlist/
       carryforward: true
+
+    - name: core-instrumentationtest
+      paths:
+        - core/instrumentationtest/
+      carryforward: true
         
     - name: core-mappers
       paths:
