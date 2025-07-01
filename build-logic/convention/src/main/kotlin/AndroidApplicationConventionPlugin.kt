@@ -32,7 +32,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
           versionCode = libs.findVersion("versionCode").get().toString().toInt()
           versionName = libs.findVersion("versionName").get().toString()
 
-          testInstrumentationRunner = "com.waffiq.bazz_movies.testrunner.CustomTestRunner"
+          testInstrumentationRunner =
+            "com.waffiq.bazz_movies.core.instrumentationtest.CustomTestRunner"
 
           signingConfig = signingConfigs.getByName("debug")
 

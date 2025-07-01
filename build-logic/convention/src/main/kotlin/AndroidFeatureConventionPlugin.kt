@@ -12,11 +12,20 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     with(target) {
       apply(plugin = "bazzmovies.android.library")
       apply(plugin = "bazzmovies.hilt")
+      apply(plugin = "bazzmovies.hilt.test")
       apply(plugin = "bazzmovies.detekt")
+      apply(plugin = "bazzmovies.android.library.jacoco")
+
       extensions.configure<LibraryExtension> {
         configureCommonAndroidSettings(this)
         buildFeatures.viewBinding = true
-        defaultConfig.consumerProguardFiles("consumer-rules.pro")
+        defaultConfig {
+          consumerProguardFiles("consumer-rules.pro")
+
+          // custom test runner
+          testInstrumentationRunner =
+            "com.waffiq.bazz_movies.core.instrumentationtest.CustomTestRunner"
+        }
 
         testCoverage {
           jacocoVersion = libs.findVersion("jacoco").get().toString()
@@ -26,6 +35,9 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       dependencies {
         add("implementation", project(":core:designsystem"))
         add("implementation", project(":navigation"))
+
+        add("testImplementation", project(":core:test"))
+        add("androidTestImplementation", project(":core:instrumentationtest"))
       }
     }
   }

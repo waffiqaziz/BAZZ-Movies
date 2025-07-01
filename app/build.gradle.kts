@@ -41,6 +41,7 @@ dependencies {
   implementation(libs.expandable.textview)
 
   // testing
+  androidTestImplementation(project(":core:instrumentationtest"))
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.runner)
