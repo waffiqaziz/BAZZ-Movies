@@ -9,6 +9,7 @@ dependencies {
   implementation(project(":core:designsystem"))
   implementation(libs.androidx.appcompat)
   implementation(libs.hilt.test)
+  implementation(libs.androidx.espresso.core)
   implementation(libs.androidx.test.core)
   implementation(libs.androidx.test.runner)
 }

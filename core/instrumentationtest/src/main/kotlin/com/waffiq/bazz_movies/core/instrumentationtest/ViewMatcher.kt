@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.test
+package com.waffiq.bazz_movies.core.instrumentationtest
 
 import android.view.View
 import android.widget.ImageView
