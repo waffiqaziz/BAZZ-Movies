@@ -1,4 +1,5 @@
 name: testing
+
 on:
   push:
     branches:
@@ -12,6 +13,9 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**.md'
+
+permissions:
+  contents: read
 
 jobs:
   detekt_checks:
@@ -429,6 +433,16 @@ jobs:
           flags: core-favoritewatchlist
           token: ${{ secrets.CODECOV_TOKEN }}
           name: core-favoritewatchlist-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with core-instrumentationtest flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: core-instrumentationtest
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: core-instrumentationtest-coverage
         continue-on-error: true
 
       - name: Upload coverage with core-mappers flag
