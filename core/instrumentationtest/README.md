@@ -33,7 +33,7 @@ To use this module in other modules' `androidTest`, add the following dependency
 ```gradle
 android {
   defaultConfig {
-    testInstrumentationRunner = "com.waffiq.bazz_movies.feature.search.testrunner.CustomTestRunner"
+    testInstrumentationRunner = "com.waffiq.bazz_movies.core.instrumentationtest.CustomTestRunner"
   }
 }
 
