@@ -29,7 +29,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.test.ViewMatcher.withDrawable
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.withDrawable
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
