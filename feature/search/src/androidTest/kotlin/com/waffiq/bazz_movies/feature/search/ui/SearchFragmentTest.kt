@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.R.id.search_src_text
@@ -41,6 +42,7 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.waitFor
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
@@ -52,7 +54,6 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -234,7 +235,11 @@ class SearchFragmentTest {
   @Test
   fun swipeRefresh_whenSwiped_triggersRefresh() {
     onView(isRoot()).perform(waitFor(500))
-    onView(withId(swipe_refresh)).perform(swipeDown())
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      onView(withId(swipe_refresh)).perform(swipeDown())
+    } else {
+      onView(withId(swipe_refresh)).perform(triggerSwipeRefresh())
+    }
     onView(isRoot()).perform(waitFor(1000))
 
     onView(withId(illustration_search_view)).check(matches(isDisplayed()))
@@ -243,44 +248,19 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenDebugging_shouldPassed() {
-    // wait for fragment to be fully initialized
-    Thread.sleep(1000)
-
-    // check fragment is properly attached
-    assertTrue("Fragment should be added", searchFragment.isAdded)
-    assertTrue("Fragment should not be detached", !searchFragment.isDetached)
-
-    // check activity and toolbarare  set up
-    assertNotNull("Activity should not be null", searchFragment.activity)
-    val supportActionBar = (searchFragment.activity as AppCompatActivity).supportActionBar
-    println("Support ActionBar: $supportActionBar")
-
-    // check if menu is inflated
-    try {
-      onView(withContentDescription("More options")).perform(click())
-    } catch (e: Exception) {
-      println("No menu overflow: ${e.message}")
-    }
+    onView(isRoot()).perform(waitFor(1000))
 
     // check search action item specifically
-    try {
-      onView(withId(action_search)).check(matches(isDisplayed()))
-    } catch (e: Exception) {
-      println("Search action item not visible: ${e.message}")
-    }
+    onView(withId(action_search)).check(matches(isDisplayed()))
 
     // manual expand search
-    try {
-      onView(withId(action_search)).perform(click())
-    } catch (e: Exception) {
-      println("Cannot click search action: ${e.message}")
-    }
+    onView(withId(action_search)).perform(click())
 
     // trigger via LiveData
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    Thread.sleep(1000)
+    onView(isRoot()).perform(waitFor(1000))
 
     val searchViewChecks = listOf(
       "androidx.appcompat.R.id.search_src_text" to search_src_text,
@@ -298,23 +278,15 @@ class SearchFragmentTest {
     }
 
     // find SearchView by class
-    try {
-      onView(isAssignableFrom(SearchView::class.java)).check(matches(isDisplayed()))
-    } catch (e: Exception) {
-      println("SearchView not found by class: ${e.message}")
-    }
+    onView(isAssignableFrom(SearchView::class.java)).check(matches(isDisplayed()))
 
     // find EditText inside SearchView
-    try {
-      onView(
-        allOf(
-          isAssignableFrom(EditText::class.java),
-          isDescendantOfA(isAssignableFrom(SearchView::class.java))
-        )
-      ).check(matches(isDisplayed()))
-    } catch (e: Exception) {
-      println("EditText within SearchView not found: ${e.message}")
-    }
+    onView(
+      allOf(
+        isAssignableFrom(EditText::class.java),
+        isDescendantOfA(isAssignableFrom(SearchView::class.java))
+      )
+    ).check(matches(isDisplayed()))
   }
 
   @Test
