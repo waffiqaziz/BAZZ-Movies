@@ -233,7 +233,9 @@ class SearchFragmentTest {
 
   @Test
   fun swipeRefresh_whenSwiped_triggersRefresh() {
+    onView(isRoot()).perform(waitFor(500))
     onView(withId(swipe_refresh)).perform(swipeDown())
+    onView(isRoot()).perform(waitFor(1000))
 
     onView(withId(illustration_search_view)).check(matches(isDisplayed()))
     verify(exactly = 1) { searchAdapter.refresh() }
