@@ -4,7 +4,6 @@ import org.gradle.kotlin.dsl.libs
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.glide)
-  alias(libs.plugins.bazzmovies.android.library.jacoco)
   id("kotlin-parcelize")
 }
 
@@ -34,4 +33,18 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
   testImplementation(libs.turbine)
+
+  androidTestImplementation(project(":core:designsystem"))
+  androidTestImplementation(project(":core:instrumentationtest"))
+  androidTestImplementation(libs.androidx.core.testing)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.intents)
+  androidTestImplementation(libs.androidx.fragment.testing)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.kotlinx.coroutines.test)
+  androidTestImplementation(libs.mockk.android)
+  androidTestImplementation(libs.mockk.agent)
+  androidTestImplementation(libs.truth)
 }

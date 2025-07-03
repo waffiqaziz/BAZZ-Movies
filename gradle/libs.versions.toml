@@ -156,6 +156,7 @@ androidx-core-testing = { module = "androidx.arch.core:core-testing", version.re
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "testCore" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
+androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "fragmentKtx" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }

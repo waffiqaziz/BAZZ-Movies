@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.R.id.search_button
 import androidx.appcompat.R.id.search_close_btn
 import androidx.appcompat.R.id.search_src_text
@@ -29,6 +30,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -216,7 +218,8 @@ class SearchFragment : Fragment() {
     }
   }
 
-  private fun handleRefreshState(loadState: CombinedLoadStates, refreshState: LoadState) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun handleRefreshState(loadState: CombinedLoadStates, refreshState: LoadState) {
     when (refreshState) {
       is LoadState.Loading -> showLoadingState()
       is LoadState.NotLoading -> showNotLoadingState(loadState)
@@ -289,7 +292,7 @@ class SearchFragment : Fragment() {
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
-      binding.appBarLayout.setExpanded(true)
+      onKeyboardHidden()
     }
   }
 
@@ -312,5 +315,16 @@ class SearchFragment : Fragment() {
     searchViewModel.setExpandSearchView(false) // reset expand search view
     lastQuery = null
     _binding = null
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal fun onKeyboardHidden() {
+    binding.appBarLayout.setExpanded(true)
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun setAdapterForTest(adapter: SearchAdapter) {
+    this.searchAdapter = adapter
+    binding.rvSearch.adapter = adapter
   }
 }
