@@ -211,7 +211,10 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
+          script: |
+            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
+            ./gradlew :feature:search:connectedDebugAndroidTest --stacktrace --continue
+            killall -INT crashpad_handler || true
 
       # Cache instrumentation test results for the coverage job
       - name: Cache instrumentation test results
@@ -624,7 +627,7 @@ jobs:
 
       # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
       # v1.1.0
-      - name: Upload Unit Test results to Codecov
+      - name: Upload Test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f
         with:
