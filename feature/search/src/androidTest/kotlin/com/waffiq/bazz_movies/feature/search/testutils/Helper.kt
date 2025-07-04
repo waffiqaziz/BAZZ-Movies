@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
+import android.util.Log
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.espresso.UiController
@@ -33,14 +34,15 @@ object Helper {
         swipeRefreshLayout.post {
           swipeRefreshLayout.isRefreshing = true
 
-          // Use reflection to access the private mListener field
+          // use reflection to access the private mListener field
           try {
             val listenerField = SwipeRefreshLayout::class.java.getDeclaredField("mListener")
             listenerField.isAccessible = true
             val listener = listenerField.get(swipeRefreshLayout) as? SwipeRefreshLayout.OnRefreshListener
             listener?.onRefresh()
           } catch (e: Exception) {
-            // Fallback - just set isRefreshing which should trigger UI updates
+            // set isRefreshing, trigger UI updates
+            Log.e("triggerSwipeRefresh", e.toString())
             swipeRefreshLayout.isRefreshing = false
             swipeRefreshLayout.isRefreshing = true
           }
