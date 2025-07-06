@@ -7,36 +7,37 @@ please [follow this naming guide](../docs/BAZZMoviesTestNamingConvention.md).
 
 Below you can find a list of BAZZ Movies modules.
 
-| Module Name                                              | Coverage                                                                                        |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [`:app`][app-link]                                       | [![Code Coverage][app-coverage-badge]][app-coverage-link]                                       |
-| [`:core:common`][core-common-link]                       | [![Code Coverage][core-common-coverage-badge]][core-common-coverage-link]                       |
-| [`:core:coroutines`][core-coroutines-link]               | [![Code Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]               |
-| [`:core:data`][core-data-link]                           | [![Code Coverage][core-data-coverage-badge]][core-data-coverage-link]                           |
-| [`:core:database`][core-database-link]                   | [![Code Coverage][core-database-coverage-badge]][core-database-coverage-link]                   |
-| [`:core:designsystem`][core-designsystem-link]           | [![Code Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]           |
-| [`:core:domain`][core-domain-link]                       | [![Code Coverage][core-domain-coverage-badge]][core-domain-coverage-link]                       |
-| [`:core:favoritewatchlist`][core-favoritewatchlist-link] | [![Code Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link] |
-| [`:core:mappers`][core-mappers-link]                     | [![Code Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                     |
-| [`:core:movie`][core-movie-link]                         | [![Code Coverage][core-movie-coverage-badge]][core-movie-coverage-link]                         |
-| [`:core:network`][core-network-link]                     | [![Code Coverage][core-network-coverage-badge]][core-network-coverage-link]                     |
-| [`:core:test`][core-test-link]                           | [![Code Coverage][core-test-coverage-badge]][core-test-coverage-link]                           |
-| [`:core:uihelper`][core-uihelper-link]                   | [![Code Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                   |
-| [`:core:user`][core-user-link]                           | [![Code Coverage][core-user-coverage-badge]][core-user-coverage-link]                           |
-| [`:core:utils`][core-utils-link]                         | [![Code Coverage][core-utils-coverage-badge]][core-utils-coverage-link]                         |
-| [`:feature:about`][feature-about-link]                   | [![Code Coverage][feature-about-coverage-badge]][feature-about-coverage-link]                   |
-| [`:feature:detail`][feature-detail-link]                 | [![Code Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]                 |
-| [`:feature:favorite`][feature-favorite-link]             | [![Code Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]             |
-| [`:feature:home`][feature-home-link]                     | [![Code Coverage][feature-home-coverage-badge]][feature-home-coverage-link]                     |
-| [`:feature:login`][feature-login-link]                   | [![Code Coverage][feature-login-coverage-badge]][feature-login-coverage-link]                   |
-| [`:feature:more`][feature-more-link]                     | [![Code Coverage][feature-more-coverage-badge]][feature-more-coverage-link]                     |
-| [`:feature:person`][feature-person-link]                 | [![Code Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                 |
-| [`:feature:search`][feature-search-link]                 | [![Code Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                 |
-| [`:feature:watchlist`][feature-watchlist-link]           | [![Code Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]           |
+| Module Name                                                  | Coverage                                                                                       |
+|--------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| [`:app`][app-link]                                           | [![Coverage][app-coverage-badge]][app-coverage-link]                                           |
+| [`:core:common`][core-common-link]                           | [![Coverage][core-common-coverage-badge]][core-common-coverage-link]                           |
+| [`:core:coroutines`][core-coroutines-link]                   | [![Coverage][core-coroutines-coverage-badge]][core-coroutines-coverage-link]                   |
+| [`:core:data`][core-data-link]                               | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                               |
+| [`:core:database`][core-database-link]                       | [![Coverage][core-database-coverage-badge]][core-database-coverage-link]                       |
+| [`:core:designsystem`][core-designsystem-link]               | [![Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]               |
+| [`:core:domain`][core-domain-link]                           | [![Coverage][core-domain-coverage-badge]][core-domain-coverage-link]                           |
+| [`:core:favoritewatchlist`][core-favoritewatchlist-link]     | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]     |
+| [`:core:instrumentationtest`][core-instrumentationtest-link] | [![Coverage][core-instrumentationtest-coverage-badge]][core-instrumentationtest-coverage-link] |
+| [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |
+| [`:core:movie`][core-movie-link]                             | [![Coverage][core-movie-coverage-badge]][core-movie-coverage-link]                             |
+| [`:core:network`][core-network-link]                         | [![Coverage][core-network-coverage-badge]][core-network-coverage-link]                         |
+| [`:core:test`][core-test-link]                               | [![Coverage][core-test-coverage-badge]][core-test-coverage-link]                               |
+| [`:core:uihelper`][core-uihelper-link]                       | [![Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                       |
+| [`:core:user`][core-user-link]                               | [![Coverage][core-user-coverage-badge]][core-user-coverage-link]                               |
+| [`:core:utils`][core-utils-link]                             | [![Coverage][core-utils-coverage-badge]][core-utils-coverage-link]                             |
+| [`:feature:about`][feature-about-link]                       | [![Coverage][feature-about-coverage-badge]][feature-about-coverage-link]                       |
+| [`:feature:detail`][feature-detail-link]                     | [![Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]                     |
+| [`:feature:favorite`][feature-favorite-link]                 | [![Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]                 |
+| [`:feature:home`][feature-home-link]                         | [![Coverage][feature-home-coverage-badge]][feature-home-coverage-link]                         |
+| [`:feature:login`][feature-login-link]                       | [![Coverage][feature-login-coverage-badge]][feature-login-coverage-link]                       |
+| [`:feature:more`][feature-more-link]                         | [![Coverage][feature-more-coverage-badge]][feature-more-coverage-link]                         |
+| [`:feature:person`][feature-person-link]                     | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                     |
+| [`:feature:search`][feature-search-link]                     | [![Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                     |
+| [`:feature:watchlist`][feature-watchlist-link]               | [![Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]               |
 
 > [!NOTE]
 > Reports are generated using [JaCoCo](https://github.com/jacoco/jacoco)
-> and updated regularly via [CI](../.github/workflows/android_test.yml).
+> and updated regularly via [CI (GitHub Action)](../.github/workflows/android_test.yml).
 
 ## Unit Tests
 
@@ -139,6 +140,9 @@ For [`:core:user`](../core/user/) module on debug variant:
 [core-favoritewatchlist-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist
 [core-favoritewatchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-favoritewatchlist
 [core-favoritewatchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist/src/main/kotlin/com/waffiq/bazz_movies/core/favoritewatchlist
+[core-instrumentationtest-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/instrumentationtest
+[core-instrumentationtest-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-instrumentationtest
+[core-instrumentationtest-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/instrumentationtest/src/main/kotlin/com/waffiq/bazz_movies/core/instrumentationtest
 [core-mappers-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/mappers
 [core-mappers-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mappers
 [core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers

@@ -1,84 +1,51 @@
-<p align="center">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/images/bazz-movies-light.svg">
-      <source media="(prefers-color-scheme: light)" srcset="docs/images/bazz-movies.svg">
-      <img alt="BAZZ Movies" src="docs/images/bazz-movies.svg">
-    </picture>
-</p>
+<div align="center">
 
-<h3 align="center">
- Movies Catalog Android App
-</h3>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/bazz-movies-light.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/bazz-movies.svg">
+  <img alt="BAZZ Movies" src="docs/images/bazz-movies.svg">
+</picture>
 
-<p align="center">
-  <strong>
-    <a href="https://waffiqaziz.github.io/bazzmovies">Website</a>
-    •
-    <a href="https://play.google.com/store/apps/details?id=com.bazz.bazz_movies">Play Store</a>
-    •
-    <a href="https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing">FAQ</a>
-  </strong>
-</p>
+### Movies Catalog Android App
 
-<p align="center">
-  <!-- Release & Activity -->
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases">
-    <img alt="Releases" src="https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies">
-  </a>
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/releases">
-    <img alt="Change Log" src="https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg">
-  </a>
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/pulse">
-    <img alt="Activity" src="https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies">
-  </a>
-    <a href="https://github.com/waffiqaziz/BAZZ-Movies/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies">
-  </a>
-</p>
+#### [**Website**][WEB] • [**Play Store**][PLAY-STORE] • [**FAQ**][FAQ]
 
-<p align="center">
-  <!-- Build & Testing -->
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions">
-    <img alt="Build Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg">
-  </a>
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml">
-    <img alt="Testing Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg">
-  </a>
-  <a href="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml">
-    <img alt="CodeQL Status" src="https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg">
-  </a>
-</p>
+---
 
-<p align="center">
-  <!-- Code Quality -->
-  <a href="https://codecov.io/gh/waffiqaziz/BAZZ-Movies">
-    <img alt="Code Coverage" src="https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ">
-  </a>
-  <a href="https://sonarcloud.io/summary/new_code?id=waffiqaziz_BAZZ-Movies">
-    <img alt="SonarQube Status" src="https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status">
-  </a>
-  <a href="https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
-    <img alt="Codacy Status" src="https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff">
-  </a>
-  <a href="https://qlty.sh/gh/waffiqaziz/projects/BAZZ-Movies"><img src="https://qlty.sh/badges/81837a70-f262-4ee0-818a-549e78248a72/maintainability.svg" alt="Maintainability" />
-  </a>
-</p>
+<!-- Badge -->
 <!-- Release & Activity -->
-<p align="center">
-  <!-- Repository Info -->
-  <a href="https://www.bestpractices.dev/projects/10186">
-    <img alt="OpenSSF Best Practices" src="https://www.bestpractices.dev/projects/10186/badge">
-  </a>
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
-    <img alt="License" src="https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies">
-  </a>
-  <img alt="Repository Size" src="https://img.shields.io/github/repo-size/waffiqaziz/BAZZ-Movies">
-  <img alt="Contributions Welcome" src="https://img.shields.io/badge/contributions-welcome-9EDF9C.svg">
-</p>
+[![Release][BADGE-RELEASE]][RELEASE]
+[![Change Log][BADGE-CHANGE-LOG]][CHANGE-LOG]
+[![Activity][BADGE-ACTIVITY]][ACTIVITY]
+[![Issue][BADGE-ISSUE]][ISSUE]
 
-<p align="center">
- <img src="docs/images/featured-picture.webp" width="550">
-</p>
+<!-- Android SDK -->
+[![Android SDK][BADGE-ANDROID-SDK]][ANDROID-SDK]
+[![View System][BADGE-UI]][UI]
+[![Hilt][BADGE-HILT]][HILT]
+[![Room][BADGE-ROOM]][ROOM]
+[![Coroutines][BADGE-COROUTINES]][COROUTINES]
+
+<!-- Build & Testing -->
+[![Build][BADGE-BUILD]][BUILD]
+[![Testing][BADGE-TESTING]][TESTING]
+[![QodeQL][BADGE-CODEQL]][CODEQL]
+
+<!-- Code Quality -->
+[![Codecov][BADGE-CODECOV]][CODECOV]
+[![Sonarqube][BADGE-SONARQUBE]][SONARQUBE]
+[![Codacy][BADGE-CODACY]][CODACY]
+[![Qlty][BADGE-QLTY]][QLTY]
+
+<!-- Repository Info -->
+[![OpenSSF][BADGE-OPENSSF]][OPENSSF]
+[![License][BADGE-LICENSE]][LICENSE]
+[![Repo Size][BADGE-SIZE]][SIZE]
+[![Contributions][BADGE-CONTRIBUTION]][CONTRIBUTION]
+
+[<img src="https://i.postimg.cc/tJJ4sBkd/Thumbnail-Blur.png" width="550"/>](https://i.postimg.cc/tJJ4sBkd/Thumbnail-Blur.png)
+
+</div>
 
 ## 🚀 About
 
@@ -145,19 +112,21 @@ Please read this [page](CONTRIBUTING.md).
 
 This application is released under the [Apache Version 2.0 License](LICENSE).
 
-    Copyright (C) 2024-2025 Waffiq Aziz
+```txt
+Copyright (C) 2024-2025 Waffiq Aziz
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 ### Note
 
@@ -185,3 +154,52 @@ Licensed under [Open Font License](https://openfontlicense.org/):
 
 - [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans)
 - [Exo Font](https://fonts.google.com/specimen/Exo)
+
+<!-- LINK -->
+
+[WEB]: https://waffiqaziz.github.io/bazzmovies
+[PLAY-STORE]: https://play.google.com/store/apps/details?id=com.bazz.bazz_movies
+[FAQ]: https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing
+
+[BADGE-ANDROID-SDK]: https://img.shields.io/badge/Android%20SDK-23%20→%2035-brightgreen
+[BADGE-UI]: https://img.shields.io/badge/View%20Binding-using-green?logo=android
+[BADGE-HILT]: https://img.shields.io/badge/Hilt-DI-blue?logo=dagger
+[BADGE-ROOM]: https://img.shields.io/badge/Room-DB-FF6F00?logo=android
+[BADGE-COROUTINES]: https://img.shields.io/badge/Coroutines-supported-009688
+[ANDROID-SDK]: https://developer.android.com/about/versions
+[UI]: https://developer.android.com/topic/libraries/view-binding
+[HILT]: https://dagger.dev/hilt/
+[ROOM]: https://developer.android.com/training/data-storage/room
+[COROUTINES]: https://developer.android.com/kotlin/coroutines
+
+[BADGE-RELEASE]: https://img.shields.io/github/v/release/waffiqaziz/BAZZ-Movies
+[BADGE-CHANGE-LOG]:https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg
+[BADGE-ACTIVITY]: https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies
+[BADGE-ISSUE]: https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies
+[BADGE-BUILD]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg
+[BADGE-TESTING]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg
+[BADGE-CODEQL]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg
+[BADGE-CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ
+[BADGE-SONARQUBE]: https://sonarcloud.io/api/project_badges/measure?project=waffiqaziz_BAZZ-Movies&metric=alert_status
+[BADGE-CODACY]: https://app.codacy.com/project/badge/Grade/58305a0496ad44a4bd73f2cc052269ff
+[BADGE-QLTY]: https://qlty.sh/badges/81837a70-f262-4ee0-818a-549e78248a72/maintainability.svg
+[BADGE-OPENSSF]: https://www.bestpractices.dev/projects/10186/badge
+[BADGE-LICENSE]: https://img.shields.io/github/license/waffiqaziz/BAZZ-Movies
+[BADGE-SIZE]: https://img.shields.io/github/repo-size/waffiqaziz/BAZZ-Movies
+[BADGE-CONTRIBUTION]: https://img.shields.io/badge/contributions-welcome-9EDF9C.svg
+
+[RELEASE]: https://github.com/waffiqaziz/BAZZ-Movies/releases
+[CHANGE-LOG]: https://github.com/waffiqaziz/BAZZ-Movies/releases
+[ACTIVITY]: https://github.com/waffiqaziz/BAZZ-Movies/pulse
+[ISSUE]: https://github.com/waffiqaziz/BAZZ-Movies/issues
+[BUILD]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml
+[TESTING]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml
+[CODEQL]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml
+[CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
+[SONARQUBE]: https://sonarcloud.io/project/overview?id=waffiqaziz_BAZZ-Movies
+[CODACY]: https://app.codacy.com/gh/waffiqaziz/BAZZ-Movies/dashboard
+[QLTY]: https://qlty.sh/gh/waffiqaziz/projects/BAZZ-Movies
+[OPENSSF]: https://www.bestpractices.dev/projects/10186
+[LICENSE]: https://www.apache.org/licenses/LICENSE-2.0
+[SIZE]: #
+[CONTRIBUTION]: https://github.com/waffiqaziz/BAZZ-Movies/blob/main/CONTRIBUTING.md
