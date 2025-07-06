@@ -51,7 +51,7 @@ complexity. This can lead to increased Gradle sync times and ongoing maintenance
 adding more modules may complicate the project’s Gradle setup compared to a single monolithic
 module.
 > To address this, we create [convention plugins](/build-logic/convention/build.gradle.kts) to
-> extract reusable build configurations into type-safe Kotlin code. In the Now in Android app, these
+> extract reusable build configurations into type-safe Kotlin code. In the BAZZ Movies app, these
 > convention plugins are located in the [`build-logic` folder](/build-logic/).
 
 ## Types of modules in BAZZ Movies
@@ -80,7 +80,7 @@ module for each of them. Each feature module has pattern like below:
    - Usecases of Domain Layer are injected into ViewModel through dependency injection ([Hilt](https://dagger.dev/hilt/)) to create business logic.
 
 and for overall modularization can see below:
-![Diagram showing types of modules and their dependencies in Now in Android](/docs/modularization.png "Diagram showing types of modules and their dependencies in BAZZ Movies")
+![Diagram showing types of modules and their dependencies in BAZZ Movies app](/docs/modularization.png "Diagram showing types of modules and their dependencies in BAZZ Movies")
 
 <hr>
 
