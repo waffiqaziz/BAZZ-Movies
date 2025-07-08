@@ -18,8 +18,8 @@ hilt = "2.56.2"
 
 # Google Services
 gms = "4.4.2"
-crashlytics = "3.0.3"
-firebaseBom = "33.14.0"
+crashlytics = "3.0.4"
+firebaseBom = "33.16.0"
 firebasePerfPlugin = "1.4.2"
 playIntegrity = "1.4.0"
 
