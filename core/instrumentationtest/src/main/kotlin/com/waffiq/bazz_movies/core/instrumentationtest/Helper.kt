@@ -10,6 +10,8 @@ import org.hamcrest.Matcher
 
 object Helper {
 
+  private const val DELAY_TIME = 50L
+
   fun waitFor(millis: Long): ViewAction {
     return object : ViewAction {
       override fun getConstraints(): Matcher<View> = isRoot()
@@ -31,7 +33,7 @@ object Helper {
           try {
             if (matcher.matches(view)) return
           } catch (_: Throwable) {}
-          Thread.sleep(50)
+          Thread.sleep(DELAY_TIME)
         } while (System.currentTimeMillis() < endTime)
         throw AssertionError("View did not match $matcher within $timeout ms")
       }

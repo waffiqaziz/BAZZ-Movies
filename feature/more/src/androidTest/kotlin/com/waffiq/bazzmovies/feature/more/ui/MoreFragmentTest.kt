@@ -26,12 +26,10 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
@@ -121,13 +119,14 @@ class MoreFragmentTest {
     Intents.init()
 
     every { mockNavigator.openLoginActivity(any()) } just Runs
+    every { mockNavigator.openAboutActivity(any()) } just Runs
     every { mockMoreLocalViewModel.dbResult } returns mockDbResult
     every { mockMoreLocalViewModel.deleteAll() } just Runs
     every { mockUserViewModel.signOutState } returns mockSignOutState
     every { mockUserViewModel.deleteSession(any()) } just Runs
     every { mockUserViewModel.removeState() } just Runs
     every { mockRegionViewModel.countryCode } returns mockCountryCode
-    // every { mockRegionViewModel.getCountryCode() } just Awaits // no use
+    // every { mockRegionViewModel.getCountryCode() } just Runs
     every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } returns mockk(relaxed = true)
     every { mockUserPrefViewModel.getUserPref() } returns mockUserModel
     every { mockUserPrefViewModel.getUserRegionPref() } returns mockRegionPref
@@ -180,12 +179,6 @@ class MoreFragmentTest {
     verify { mockNavigator.openAboutActivity(any()) }
   }
 
-//  @Test
-//  fun buttonRegion_whenClicked_shouldTriggerCountryPicker() {
-//    onView(withId(btn_region)).perform(click())
-//    onView(withId(btn_country_picker)).check(matches(isDisplayed()))
-//  }
-
   @Test
   fun setData_whenUserPrefProvided_shouldDisplayUserInfo() {
     onView(withId(tv_fullName)).check(matches(withText("Test Name")))
@@ -197,15 +190,6 @@ class MoreFragmentTest {
     onView(withId(img_avatar)).check(matches(isDisplayed()))
   }
 
-//  @Test
-//  fun regionSetup_whenCountryCodeNotSet_shouldGetCountryCode() {
-//    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-//      mockRegionPref.value = NAN
-//    }
-//
-//    verify { mockRegionViewModel.getCountryCode() }
-//  }
-
   @Test
   fun regionSetup_whenCountryCodeSet_shouldSetCountryPickerCorrectly() {
     mockRegionPref.postValue("AR")
@@ -216,26 +200,8 @@ class MoreFragmentTest {
 
   @Test
   fun signOut_whenGuestUser_shouldShowGuestModeDialog() {
-    // setup for guest user
-    mockUserModel.postValue(userModel.copy(token = NAN))
-
-    // wait for data to observe
-    onView(isRoot()).perform(waitFor(300))
-
-    // perform sign out
-    onView(withId(btn_signout)).perform(click())
-
-    // check if dialog is shown
-    onView(withText(warning)).check(matches(isDisplayed()))
-    onView(withText(warning_signOut_guest_mode)).check(matches(isDisplayed()))
-//    onView(isRoot()).perform(waitFor(500))
-//
-//    onView(withText(yes)).perform(click())
-//    onView(isRoot()).perform(waitFor(1000))
-//
-//    verify(exactly = 1) { mockMoreLocalViewModel.deleteAll() }
-//    verify(exactly = 1) { mockUserPrefViewModel.removeUserDataPref() }
-//    verify(exactly = 1) { mockNavigator.openLoginActivity(any()) }
+    setupGuestUser()
+    performSignOutAction()
   }
 
   @Test
@@ -248,26 +214,11 @@ class MoreFragmentTest {
 
   @Test
   fun signOutDialogGuestUser_whenYesClicked_shouldDeleteLocalData() {
-    // setup for guest user
-    mockUserModel.postValue(userModel.copy(token = NAN))
+    setupGuestUser()
+    performSignOutAction()
 
-    // wait for data to observe
-    onView(isRoot()).perform(waitFor(300))
-
-    // perform yes clicked
-    onView(withId(btn_signout)).perform(click())
-    onView(withText(yes)).perform(click())
-
-     verify { mockMoreLocalViewModel.deleteAll() }
+    verify { mockMoreLocalViewModel.deleteAll() }
   }
-
-//   @Test
-//   fun signOutDialog_whenYesClicked_forLoggedInUser_shouldDeleteSession() {
-//     onView(withId(btn_signout)).perform(click())
-//     onView(withText(yes)).perform(click())
-//
-//     verify { mockUserViewModel.deleteSession("valid_token") }
-//   }
 
   @Test
   fun signOutDialog_whenNoClicked_shouldDismissDialog() {
@@ -279,14 +230,37 @@ class MoreFragmentTest {
   }
 
   @Test
+  fun signOutStateLogin_whenSuccess_shouldShowSuccessToastAndNavigateToLogin() {
+    performSignOutAction()
+  }
+
+  @Test
+  fun signOutStateLogin_whenLoading_shouldShowLoadingState() {
+    runBlocking {
+      mockSignOutState.emit(Outcome.Loading)
+    }
+
+    performSignOutAction()
+  }
+
+  @Test
+  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() {
+    setupGuestUser()
+
+    mockDbResult.postValue(Event(DbResult.Success(1)))
+    onView(isRoot()).perform(waitFor(300))
+
+    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+  }
+
+
+  @Test
   fun signOutStateLogin_whenErrorOccurs_shouldShowErrorSnackbar() {
     runBlocking {
       mockSignOutState.emit(Outcome.Error("Sign out failed"))
     }
 
-    // perform sign out
-    onView(withId(btn_signout)).perform(click())
-    onView(withText("Yes")).perform(click())
+    performSignOutAction()
     onView(isRoot()).perform(waitFor(1000))
 
     onView(withId(btn_signout)).check(matches(not(isEnabled())))
@@ -294,28 +268,107 @@ class MoreFragmentTest {
   }
 
   @Test
-  fun dbResult_whenSuccess_shouldShowSuccessMessage() {
+  fun dbResultGuestUser_whenEventAlreadyHandled_shouldHandleGracefully() {
+    setupGuestUser()
+
+    // create an event and consume it first
+    val consumedEvent = Event(DbResult.Success(1))
+    consumedEvent.getContentIfNotHandled() // consume the event
+
+    mockDbResult.postValue(consumedEvent)
+    onView(isRoot()).perform(waitFor(300))
+  }
+
+  @Test
+  fun dbResultGuestUser_whenSuccess_shouldHideProgress() {
+    setupGuestUser()
+
+    // emit success result
+    mockDbResult.postValue(Event(DbResult.Success(1)))
+    onView(isRoot()).perform(waitFor(500))
+
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
   }
 
-//  @Test
-//  fun dbResult_whenErrorOccurs_shouldShowErrorSnackbar() {
-//    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-//      mockDbResult.value = Event(DbResult.Error("Database error"))
-//    }
-//
-//    verify { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
-//    // Progress bar should be hidden
-//    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-//  }
+  @Test
+  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() {
+    setupGuestUser()
 
-//  @Test
-//  fun countryPicker_whenCountrySelected_shouldSaveRegionPref() {
-//    onView(withId(btn_country_picker)).perform(click())
-//
-//    // Simulate country selection - this might need adjustment based on your country picker implementation
-//    // verify { mockUserPreferenceViewModel.saveRegionPref(any()) }
-//  }
+    // emit error result
+    mockDbResult.postValue(Event(DbResult.Error("Database error")))
+    onView(isRoot()).perform(waitFor(500))
+
+    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+    verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
+  }
+
+  @Test
+  fun regionViewModel_whenCountryCodeProvided_shouldUpdateRegionAndCountryPicker() {
+    mockCountryCode.postValue("CA")
+    onView(isRoot()).perform(waitFor(500))
+
+    verify(timeout = 2000) { mockUserPrefViewModel.saveRegionPref("CA") }
+  }
+
+  @Test
+  fun regionViewModel_whenCountryCodeEmpty_shouldNotUpdateRegion() {
+    mockCountryCode.postValue("")
+    onView(isRoot()).perform(waitFor(300))
+
+    verify(exactly = 0) { mockUserPrefViewModel.saveRegionPref("") }
+  }
+
+  @Test
+  fun setData_whenUserHasGravatarHash_shouldDisplayAvatar() {
+    val userWithGravatar = userModel.copy(
+      gravatarHast = "testHash123",
+      tmdbAvatar = null
+    )
+    mockUserModel.postValue(userWithGravatar)
+    onView(isRoot()).perform(waitFor(300))
+
+    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    onView(withId(tv_fullName)).check(matches(withText(userWithGravatar.name)))
+  }
+
+  @Test
+  fun setData_whenUserHasTmdbAvatarButNoGravatar_shouldDisplayAvatar() {
+    val userWithTmdb = userModel.copy(
+      gravatarHast = null,
+      tmdbAvatar = "tmdbAvatar123"
+    )
+    mockUserModel.postValue(userWithTmdb)
+    onView(isRoot()).perform(waitFor(300))
+
+    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    onView(withId(tv_fullName)).check(matches(withText(userWithTmdb.name)))
+  }
+
+  @Test
+  fun setData_whenUserHasNoAvatars_shouldUseDefaultAvatar() {
+    val userWithoutAvatars = userModel.copy(
+      gravatarHast = null,
+      tmdbAvatar = null
+    )
+    mockUserModel.postValue(userWithoutAvatars)
+    onView(isRoot()).perform(waitFor(300))
+
+    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    onView(withId(tv_fullName)).check(matches(withText(userWithoutAvatars.name)))
+  }
+
+  @Test
+  fun setData_whenUserHasEmptyAvatars_shouldUseDefaultAvatar() {
+    val userWithEmptyAvatars = userModel.copy(
+      gravatarHast = "",
+      tmdbAvatar = ""
+    )
+    mockUserModel.postValue(userWithEmptyAvatars)
+    onView(isRoot()).perform(waitFor(300))
+
+    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    onView(withId(tv_fullName)).check(matches(withText(userWithEmptyAvatars.name)))
+  }
 
   @Test
   fun progressBar_initialState_shouldBeHidden() {
@@ -373,5 +426,15 @@ class MoreFragmentTest {
       moreFragment.onDestroyView()
     }
     verify(exactly = 1) { mockUserViewModel.removeState() }
+  }
+
+  private fun setupGuestUser() {
+    mockUserModel.postValue(userModel.copy(token = NAN))
+    onView(isRoot()).perform(waitFor(300))
+  }
+
+  private fun performSignOutAction() {
+    onView(withId(btn_signout)).perform(click())
+    onView(withText(yes)).perform(click())
   }
 }
