@@ -35,7 +35,6 @@ dependencies {
   testImplementation(libs.turbine)
 
   androidTestImplementation(project(":core:designsystem"))
-  androidTestImplementation(project(":core:instrumentationtest"))
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.intents)
