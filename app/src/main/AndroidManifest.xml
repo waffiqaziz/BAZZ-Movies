@@ -8,15 +8,17 @@
 
   <application
     android:name=".MyApplication"
-    android:allowBackup="true"
+    android:allowBackup="false"
+    android:dataExtractionRules="@xml/data_extraction_rules"
     android:exported="false"
+    android:fullBackupContent="@xml/backup_rules"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="false"
     android:theme="@style/Base.Theme.BAZZ_movies"
     android:usesCleartextTraffic="false"
-    tools:targetApi="34">
+    tools:targetApi="35">
 
     <activity
       android:name=".feature.about.ui.AboutActivity"
