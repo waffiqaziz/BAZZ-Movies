@@ -28,6 +28,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.withDrawable
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -61,23 +62,11 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.random.Random
 
-@Suppress("ForbiddenComment")
 @HiltAndroidTest
 class LoginActivityTest {
 
   private val validUsername = "validUsername1234"
   private val validPassword = "validPassword1234"
-//  private val testUser = UserModel(
-//    userId = 123,
-//    name = "Test User",
-//    username = validUsername,
-//    password = validPassword,
-//    region = "US",
-//    token = "token123",
-//    isLogin = true,
-//    gravatarHast = null,
-//    tmdbAvatar = null
-//  )
 
   private val loginStateLiveData = MutableLiveData<Boolean>()
   private val userModelLiveData = MutableLiveData<UserModel>()
@@ -273,104 +262,6 @@ class LoginActivityTest {
     onView(withId(progress_bar)).check(matches(isDisplayed()))
   }
 
-  // TODO: unsuccess test
-//  @Test
-//  fun login_successfulLogin_callsGetDetailUser_withTimeout() {
-//    val loginStateLiveData = MutableLiveData<Boolean>()
-//    val userModelLiveData = MutableLiveData<UserModel>()
-//
-//    every { mockAuthViewModel.loginState } returns loginStateLiveData
-//    every { mockAuthViewModel.userModel } returns userModelLiveData
-//
-//    onView(withId(ed_username)).perform(typeText(validUsername))
-//    closeSoftKeyboard()
-//    onView(withId(ed_pass)).perform(typeText(validPassword))
-//    closeSoftKeyboard()
-//
-//    onView(withId(btn_login)).perform(click())
-//
-//    // Simulate the login flow
-//    activityRule.scenario.onActivity {
-//      loginStateLiveData.postValue(true)
-//      // Small delay to ensure observer is set up
-//      Handler(Looper.getMainLooper()).postDelayed({
-//        userModelLiveData.postValue(testUser)
-//      }, 10)
-//    }
-//
-//    // Verify with timeout to allow for async operations
-//    verify(timeout = 1000) { mockAuthViewModel.userModel }
-//    verify { mockUserPrefViewModel.saveUserPref(testUser) }
-//  }
-
-  // TODO: unsuccess test
-//  @Test
-//  fun login_successfulLogin_callsGetDetailUser() {
-//    // Fill in credentials
-//    onView(withId(ed_username)).perform(typeText(validUsername))
-//    closeSoftKeyboard()
-//    onView(withId(ed_pass)).perform(typeText(validPassword))
-//    closeSoftKeyboard()
-//
-//    // Click login button
-//    onView(withId(btn_login)).perform(click())
-//
-//    // Verify userLogin was called
-//    verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
-//
-//    // Simulate successful login - this will trigger getDetailUser(true)
-//    activityRule.scenario.onActivity {
-//      loginStateLiveData.postValue(true)
-//    }
-//
-//    // Wait for the loginState observer to process and set up userModel observer
-//    Thread.sleep(100)
-//
-//    // Now simulate userModel data being available - this triggers the userModel observer
-//    activityRule.scenario.onActivity {
-//      userModelLiveData.postValue(testUser)
-//    }
-//
-//    // Wait for the userModel observer to process
-//    Thread.sleep(100)
-//
-//    // Verify that userModel property was accessed (when observer was set up)
-//    verify { mockAuthViewModel.userModel }
-//
-//    // Verify that saveUserPref was called with the test user
-//    verify { mockUserPrefViewModel.saveUserPref(testUser) }
-//
-//    // Verify navigation was called
-//    verify { mockNavigator.openMainActivity(any()) }
-//  }
-
-  // TODO: unsuccess test
-//  @Test
-//  fun login_successfulUserLogin_savesUserAndNavigates() {
-//    val loginStateLiveData = MutableLiveData<Boolean>(true)
-//    val userModelLiveData = MutableLiveData<UserModel>()
-//
-//    every { mockAuthViewModel.loginState } returns loginStateLiveData
-//    every { mockAuthViewModel.userModel } returns userModelLiveData
-//
-//    onView(withId(ed_username)).perform(typeText(validUsername))
-//    closeSoftKeyboard()
-//    onView(withId(ed_pass)).perform(typeText(validPassword))
-//    closeSoftKeyboard()
-//
-//    onView(withId(btn_login)).perform(click())
-//
-//    // Simulate successful login flow
-//    activityRule.scenario.onActivity {
-//      loginStateLiveData.postValue(true)
-//      userModelLiveData.postValue(testUser)
-//    }
-//
-//    // Verify user preference is saved and navigation occurs
-//    verify { mockUserPrefViewModel.saveUserPref(testUser) }
-//    verify { mockNavigator.openMainActivity(any()) }
-//  }
-
   @Test
   fun guestLogin_whenClicked_savesGuestUserAndNavigates() {
     onView(withId(tv_guest)).perform(click())
@@ -379,9 +270,8 @@ class LoginActivityTest {
     verify {
       mockUserPrefViewModel.saveUserPref(match { userModel ->
         userModel.userId == 0 &&
-          userModel.name == context.getString(com.waffiq.bazz_movies.core.designsystem.R.string.guest_user) &&
-          userModel.username == context.getString(com.waffiq.bazz_movies.core.designsystem.R.string.guest_user) &&
-          userModel.isLogin == true
+          userModel.name == context.getString(guest_user) &&
+          userModel.username == context.getString(guest_user) && userModel.isLogin
       })
     }
 
