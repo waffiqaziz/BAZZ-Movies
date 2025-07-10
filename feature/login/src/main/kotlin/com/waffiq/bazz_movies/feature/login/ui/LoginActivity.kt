@@ -12,12 +12,11 @@ import android.view.View
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
@@ -38,6 +37,7 @@ import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.feature.login.utils.CustomTypefaceSpan
+import com.waffiq.bazz_movies.feature.login.utils.InsetListener.applyWindowInsets
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -50,7 +50,9 @@ class LoginActivity : AppCompatActivity() {
   @Inject
   lateinit var navigator: INavigator
 
-  private lateinit var binding: ActivityLoginBinding
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  lateinit var binding: ActivityLoginBinding
+
   private val authenticationViewModel: AuthenticationViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
@@ -59,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
-    applyWindowInsetsListener()
+    applyWindowInsets(binding.root)
 
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(
@@ -242,30 +244,7 @@ class LoginActivity : AppCompatActivity() {
 
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
-    applyWindowInsetsListener()
-  }
-
-  private fun applyWindowInsetsListener() {
-    val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
-    if (isLandscape) {
-      ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-        val navBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        val isGestureNavigation = navBarInsets.right == 0
-
-        if (!isGestureNavigation) {
-          v.setPadding(
-            v.paddingLeft,
-            v.paddingTop,
-            PADDING_RIGHT,
-            v.paddingBottom
-          )
-        } else {
-          v.setPadding(v.paddingLeft, v.paddingTop, 0, v.paddingBottom)
-        }
-        insets
-      }
-    }
+    applyWindowInsets(binding.root)
   }
 
   companion object {
