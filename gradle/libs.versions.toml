@@ -10,7 +10,7 @@ versionCode = "23"
 versionName = "1.2.4-dev"
 
 # Plugin Versions
-agp = "8.10.1"
+agp = "8.11.1"
 androidTools = "31.10.1"
 kotlin = "2.1.21"
 ksp = "2.1.21-2.0.1"
