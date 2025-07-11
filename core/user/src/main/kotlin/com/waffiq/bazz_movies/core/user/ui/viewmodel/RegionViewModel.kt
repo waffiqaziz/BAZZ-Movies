@@ -18,7 +18,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RegionViewModel @Inject constructor(
-  private val getRegionUseCase: GetRegionUseCase
+  private val getRegionUseCase: GetRegionUseCase,
 ) : ViewModel() {
   private val _countryCode = MutableLiveData<String>()
   val countryCode: LiveData<String> = _countryCode
@@ -26,7 +26,7 @@ class RegionViewModel @Inject constructor(
   private val _errorState = MutableLiveData<Event<String>>()
   val errorState: LiveData<Event<String>> get() = _errorState
 
-  fun getCountryCode() =
+  fun getCountryCode() {
     viewModelScope.launch {
       getRegionUseCase.getCountryCode().collect { outcome ->
         when (outcome) {
@@ -45,4 +45,5 @@ class RegionViewModel @Inject constructor(
         }
       }
     }
+  }
 }

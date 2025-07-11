@@ -1,7 +1,12 @@
 <!-- :feature:login/src/androidTest/AndroidManifest.xml -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
 
-  <application android:theme="@style/Base.Theme.BAZZ_movies">
+  <application
+    android:allowBackup="false"
+    android:theme="@style/Base.Theme.BAZZ_movies"
+    tools:ignore="AllowBackup">
+
     <activity
       android:name="com.waffiq.bazz_movies.feature.login.ui.LoginActivity"
       android:autofillHints=""

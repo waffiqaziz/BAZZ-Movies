@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.user.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
@@ -12,12 +13,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserPreferenceViewModel @Inject constructor(
-  private val userPrefUseCase: UserPrefUseCase
+  private val userPrefUseCase: UserPrefUseCase,
 ) : ViewModel() {
 
-  fun getUserPref() = userPrefUseCase.getUser().asLiveData().distinctUntilChanged()
+  fun getUserPref(): LiveData<UserModel> =
+    userPrefUseCase.getUser().asLiveData().distinctUntilChanged()
 
-  fun getUserRegionPref() = userPrefUseCase.getUserRegionPref().asLiveData().distinctUntilChanged()
+  fun getUserRegionPref(): LiveData<String> =
+    userPrefUseCase.getUserRegionPref().asLiveData().distinctUntilChanged()
 
   fun saveUserPref(userModel: UserModel) {
     viewModelScope.launch { userPrefUseCase.saveUserPref(userModel) }

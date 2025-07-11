@@ -33,6 +33,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
@@ -43,7 +44,6 @@ import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
-import com.waffiq.bazz_movies.feature.search.testutils.Helper.waitFor
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

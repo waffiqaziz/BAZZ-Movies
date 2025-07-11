@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -19,7 +20,6 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
-import com.waffiq.bazz_movies.feature.search.testutils.Helper.waitFor
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

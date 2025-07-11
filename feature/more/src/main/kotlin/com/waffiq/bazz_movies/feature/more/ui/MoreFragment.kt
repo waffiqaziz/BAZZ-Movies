@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +49,6 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -100,7 +100,6 @@ class MoreFragment : Fragment() {
   private fun signOutStateObserver(isLogin: Boolean) {
     if (isLogin) {
       viewLifecycleOwner.lifecycleScope.launch {
-        @OptIn(FlowPreview::class)
         moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { outcome ->
           when (outcome) {
             is Outcome.Success -> {
@@ -112,6 +111,7 @@ class MoreFragment : Fragment() {
             is Outcome.Loading -> {}
 
             is Outcome.Error -> {
+              Log.d("TEST_DEBUG", "Received signOutState: ${outcome.message}")
               fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
               btnSignOutIsEnable(true)
               progressIsVisible(false)
