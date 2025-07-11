@@ -1,4 +1,4 @@
-package com.waffiq.bazzmovies.feature.more.testutils
+package com.waffiq.bazz_movies.feature.more.testutils
 
 import com.waffiq.bazz_movies.core.domain.UserModel
 

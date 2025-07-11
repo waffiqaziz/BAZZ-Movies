@@ -1,4 +1,4 @@
-package com.waffiq.bazzmovies.feature.more.di
+package com.waffiq.bazz_movies.feature.more.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore

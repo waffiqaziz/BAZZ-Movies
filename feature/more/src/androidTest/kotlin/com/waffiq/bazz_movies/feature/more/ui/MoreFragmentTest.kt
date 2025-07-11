@@ -1,4 +1,4 @@
-package com.waffiq.bazzmovies.feature.more.ui
+package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
 import androidx.core.net.toUri
@@ -49,11 +49,8 @@ import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
 import com.waffiq.bazz_movies.feature.more.R.id.tv_privacy_policy
 import com.waffiq.bazz_movies.feature.more.R.id.tv_terms_conditon
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
-import com.waffiq.bazz_movies.feature.more.ui.MoreFragment
-import com.waffiq.bazz_movies.feature.more.ui.MoreLocalViewModel
-import com.waffiq.bazz_movies.feature.more.ui.MoreUserViewModel
+import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazzmovies.feature.more.testutils.Helper.userModel
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
