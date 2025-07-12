@@ -18,7 +18,7 @@
         </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -33,6 +33,7 @@
             <option value="$PROJECT_DIR$/core/designsystem" />
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/core/favoritewatchlist" />
+            <option value="$PROJECT_DIR$/core/instrumentationtest" />
             <option value="$PROJECT_DIR$/core/mappers" />
             <option value="$PROJECT_DIR$/core/movie" />
             <option value="$PROJECT_DIR$/core/network" />
@@ -53,7 +54,6 @@
             <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
