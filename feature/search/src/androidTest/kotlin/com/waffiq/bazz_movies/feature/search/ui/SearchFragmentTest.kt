@@ -102,7 +102,7 @@ class SearchFragmentTest {
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     searchAdapter = spyAdapter
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment>() {
+    searchFragment = launchFragmentInHiltContainer<SearchFragment> {
       this.setAdapterForTest(spyAdapter)
     }
 
@@ -137,11 +137,10 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenExpandTriggered_showsSearchView() {
-    onView(isRoot()).perform(waitFor(1000))
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    onView(isRoot()).perform(waitFor(1000))
+    shortDelay()
 
     onView(
       allOf(
@@ -153,17 +152,10 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenSubmitting_triggersSearch() {
-    // check is fragment properly initialized and observing
-    onView(isRoot()).perform(waitFor(1000)) // Give fragment time to set up observers
-
-    // use setValue on main thread
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    onView(withId(action_search)).perform(click())
-
-    // wait for UI to update
-    onView(isRoot()).perform(waitFor(500))
+    performSearchAction()
 
     // check and interact with search view
     onView(withId(search_src_text))
@@ -180,13 +172,10 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenSearchWithSameQuery_onlyTriggerSearchOnce() {
-    onView(isRoot()).perform(waitFor(1000))
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    // wait and press the search icon
-    onView(withId(action_search)).perform(click())
-    onView(isRoot()).perform(waitFor(500))
+    performSearchAction()
 
     // perform search twice with same query
     onView(withId(search_src_text))
@@ -201,13 +190,10 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenSearchWithoutQuery_shouldNotTriggerSearch() {
-    onView(isRoot()).perform(waitFor(1000))
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    // wait and press the search icon
-    onView(withId(action_search)).perform(click())
-    onView(isRoot()).perform(waitFor(500))
+    performSearchAction()
 
     // perform search without query
     onView(withId(search_src_text))
@@ -219,8 +205,7 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenRestoresQuery_restoresFromViewModel() {
-    onView(isRoot()).perform(waitFor(1000))
-    onView(withId(action_search)).perform(click())
+    performSearchAction()
 
     // simulate saved query without typing
     val savedQuery = "saved query"
@@ -234,13 +219,12 @@ class SearchFragmentTest {
 
   @Test
   fun swipeRefresh_whenSwiped_triggersRefresh() {
-    onView(isRoot()).perform(waitFor(500))
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       onView(withId(swipe_refresh)).perform(swipeDown())
     } else {
       onView(withId(swipe_refresh)).perform(triggerSwipeRefresh())
     }
-    onView(isRoot()).perform(waitFor(1000))
+    shortDelay()
 
     onView(withId(illustration_search_view)).check(matches(isDisplayed()))
     verify(exactly = 1) { searchAdapter.refresh() }
@@ -248,19 +232,13 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenDebugging_shouldPassed() {
-    onView(isRoot()).perform(waitFor(1000))
-
-    // check search action item specifically
-    onView(withId(action_search)).check(matches(isDisplayed()))
-
-    // manual expand search
-    onView(withId(action_search)).perform(click())
+    performSearchAction()
 
     // trigger via LiveData
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    onView(isRoot()).perform(waitFor(1000))
+    shortDelay()
 
     val searchViewChecks = listOf(
       "androidx.appcompat.R.id.search_src_text" to search_src_text,
@@ -291,13 +269,9 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenPressSubmit_shouldTriggerSearchFunction() {
-    // wait for setup
-    Thread.sleep(1000)
-
     // manual click search action
     try {
-      onView(withId(action_search)).perform(click())
-      Thread.sleep(500)
+      performSearchAction()
 
       onView(
         allOf(
@@ -321,14 +295,10 @@ class SearchFragmentTest {
       println("Fragment lifecycle state: $state")
       assertTrue(state == Lifecycle.State.RESUMED)
     }
+    performSearchAction()
 
-    Thread.sleep(1000)
-    onView(withId(action_search)).perform(click())
     // expanse the search view
     expandSearchViewLiveData.postValue(true)
-
-    // wait longer
-    Thread.sleep(2000)
 
     // multiple search approaches
     val success = tryMultipleSearchApproaches()
@@ -343,8 +313,7 @@ class SearchFragmentTest {
     searchFragment.javaClass.getDeclaredMethod("setupSearchView")
       .apply { isAccessible = true }
       .invoke(searchFragment)
-
-    Thread.sleep(1000)
+    shortDelay()
 
     // direct call the search method
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
@@ -460,5 +429,18 @@ class SearchFragmentTest {
       }
     }
     return false
+  }
+
+  private fun shortDelay() {
+    onView(isRoot()).perform(waitFor(WAIT_TIME))
+  }
+
+  private fun performSearchAction() {
+    onView(withId(action_search)).perform(click())
+    shortDelay()
+  }
+
+  companion object {
+    private const val WAIT_TIME = 300L
   }
 }
