@@ -37,4 +37,14 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.truth)
   testImplementation(libs.turbine)
+
+  androidTestImplementation(project(":core:test"))
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.intents)
+  androidTestImplementation(libs.kotlinx.coroutines.test)
+  androidTestImplementation(libs.mockk.android)
+  androidTestImplementation(libs.mockk.agent)
 }

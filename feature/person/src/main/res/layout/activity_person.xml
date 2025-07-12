@@ -37,7 +37,7 @@
       tools:title="Avengers">
 
       <ImageView
-        android:id="@id/iv_picture"
+        android:id="@+id/iv_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -254,7 +254,9 @@
           app:readLessText="@string/less_more"
           app:readMoreText="@string/read_more"
           app:textMode="line"
-          tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />
+          android:text="\n\n\n\n"
+          tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses."
+          tools:ignore="HardcodedText" />
 
         <!-- Born -->
         <TextView

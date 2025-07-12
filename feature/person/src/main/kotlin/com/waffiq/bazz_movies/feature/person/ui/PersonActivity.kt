@@ -147,14 +147,15 @@ class PersonActivity : AppCompatActivity() {
     binding.rvPhotos.adapter = adapterImage
 
     binding.collapse.title = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
+    val imageToLoad = if (!dataExtra.profilePath.isNullOrEmpty()) {
+      TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
+      binding.ivPicture.contentDescription = "with_profile"
+    } else {
+      binding.ivPicture.contentDescription = "no_profile"
+      ic_no_profile
+    }
     Glide.with(binding.ivPicture)
-      .load(
-        if (!dataExtra.profilePath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
-        } else {
-          ic_no_profile
-        }
-      )
+      .load(imageToLoad)
       .placeholder(ic_bazz_logo)
       .transition(withCrossFade())
       .error(ic_broken_image)
@@ -179,7 +180,6 @@ class PersonActivity : AppCompatActivity() {
     personViewModel.detailPerson.observe(this) { detailPerson ->
       binding.tvBiography.text =
         detailPerson.biography?.takeIf { it.isNotBlank() } ?: getString(no_biography)
-      binding.tvBiography.performClick()
       showBirthdate(detailPerson)
 
       if (!detailPerson.homepage.isNullOrEmpty()) {
