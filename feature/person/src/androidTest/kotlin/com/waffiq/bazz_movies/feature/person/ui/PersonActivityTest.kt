@@ -27,7 +27,7 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.test.MainCoroutineRule
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitForActivityToBeDestroyed
 import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
 import com.waffiq.bazz_movies.feature.person.R.id.btn_back
 import com.waffiq.bazz_movies.feature.person.R.id.collapse
@@ -71,7 +71,6 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
@@ -81,10 +80,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper(){
-
-  @get:Rule
-  val mainCoroutineRule = MainCoroutineRule()
+class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -204,9 +200,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
       shortDelay()
 
       onView(withId(btn_back)).perform(click())
-      scenario.onActivity { activity ->
-        assertTrue("Activity should be finishing", activity.isFinishing)
-      }
+      scenario.waitForActivityToBeDestroyed()
     }
 
     InstrumentationRegistry.getInstrumentation().removeMonitor(monitor)
@@ -322,6 +316,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
   fun swipeRefresh_whenScroll_runsCorrectly() = runTest {
     context.launchPersonActivity {
       shortDelay()
+      onView(withId(rv_known_for)).perform(scrollTo())
       onView(withId(rv_known_for)).perform(swipeDown())
       onView(withId(swipe_refresh))
         .check(matches(not(isRefreshing())))
