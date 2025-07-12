@@ -30,7 +30,7 @@ object Helper {
       if (System.currentTimeMillis() - startTime > timeoutMillis) {
         throw AssertionError("Activity did not reach DESTROYED state in time")
       }
-      Thread.sleep(50)
+      Thread.sleep(DELAY_TIME)
     }
   }
 
