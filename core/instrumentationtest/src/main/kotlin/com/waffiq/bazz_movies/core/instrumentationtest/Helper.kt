@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.core.instrumentationtest
 
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -11,6 +13,26 @@ import org.hamcrest.Matcher
 object Helper {
 
   private const val DELAY_TIME = 50L
+
+  /**
+   * Used to verifying that the activity finishes properly, especially after calling `finish()`
+   * or testing navigation behavior that should close the screen.
+   *
+   * Continuously polls the activity's lifecycle state until it becomes `DESTROYED` or the timeout is reached.
+   * If the timeout passes without reaching the state, throws an [AssertionError].
+   *
+   * @param timeoutMillis Maximum time to wait before failing, in milliseconds (default is 500ms).
+   * @throws AssertionError if the activity is not destroyed within [timeoutMillis].
+   */
+  fun ActivityScenario<*>.waitForActivityToBeDestroyed(timeoutMillis: Long = 500) {
+    val startTime = System.currentTimeMillis()
+    while (state != Lifecycle.State.DESTROYED) {
+      if (System.currentTimeMillis() - startTime > timeoutMillis) {
+        throw AssertionError("Activity did not reach DESTROYED state in time")
+      }
+      Thread.sleep(DELAY_TIME)
+    }
+  }
 
   fun waitFor(millis: Long): ViewAction {
     return object : ViewAction {
