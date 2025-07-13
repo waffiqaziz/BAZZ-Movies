@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
 import android.content.Intent
-import android.util.Log
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -51,8 +51,6 @@ import com.waffiq.bazz_movies.feature.person.testutils.Helper.launchPersonActivi
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testCastItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testDetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testImagesList
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testKnownForList
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testMovieTvCastItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testProfileItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.withCollapsingToolbarTitle
@@ -68,13 +66,12 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
+import org.hamcrest.Matcher
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -110,52 +107,6 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
     setupBaseMocks()
     setupViewModelMocks(mockPersonViewModel)
     setupNavigatorMocks(mockNavigator)
-  }
-
-  @Test
-  fun debugTest_whenRunning_shouldPassed() {
-    Log.d("TEST", "Starting test")
-    setupMocks()
-    Log.d("TEST", "Mocks setup")
-
-    val testPerson = testMovieTvCastItem
-    Log.d("TEST", "Test person created")
-
-    val intent = Intent(context, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, testPerson)
-    }
-    Log.d("TEST", "Intent created")
-
-    ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
-      Log.d("TEST", "Activity launched")
-
-      // wait for the activity to be created and visible
-      scenario.onActivity { activity ->
-        assertNotNull(activity)
-        Log.d("TEST", "Activity is not null")
-      }
-
-      // emit the data after the activity is ready
-      // simulates ViewModel to return the data after API calls
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson)
-        knownForLiveData.postValue(testKnownForList)
-        imagePersonLiveData.postValue(testImagesList)
-        externalIdPersonLiveData.postValue(testExternalIDPerson)
-      }
-
-      // wait for the UI to update
-      shortDelay()
-
-      // verify that the activity is in the correct state
-      scenario.onActivity { activity ->
-        assertFalse("Activity should not be finishing", activity.isFinishing)
-        Log.d("TEST", "Activity is in correct state")
-      }
-
-      Log.d("TEST", "All checks passed")
-    }
-    Log.d("TEST", "Test completed")
   }
 
   @Test
@@ -214,9 +165,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
     )
 
     context.launchPersonActivity(data) {
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
-        .check(matches(withCollapsingToolbarTitle(data.name)))
+      checkCollapseTitle(data.name)
     }
   }
 
@@ -228,9 +177,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
     )
 
     context.launchPersonActivity(data) {
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
-        .check(matches(withCollapsingToolbarTitle(data.originalName)))
+      checkCollapseTitle(data.originalName)
     }
   }
 
@@ -242,9 +189,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
     )
 
     context.launchPersonActivity(data) {
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
-        .check(matches(withCollapsingToolbarTitle(context.getString(not_available))))
+      checkCollapseTitle(context.getString(not_available))
     }
   }
 
@@ -315,11 +260,9 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
   @Test
   fun swipeRefresh_whenScroll_runsCorrectly() = runTest {
     context.launchPersonActivity {
-      shortDelay()
       onView(withId(rv_known_for)).perform(scrollTo())
       onView(withId(rv_known_for)).perform(swipeDown())
-      onView(withId(swipe_refresh))
-        .check(matches(not(isRefreshing())))
+      onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
     }
   }
 
@@ -335,8 +278,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
       }
 
       onView(withId(iv_link)).perform(scrollTo())
-      onView(withId(iv_link)).check(matches(isDisplayed()))
-      onView(withId(divider1)).check(matches(isDisplayed()))
+      checkHomePageLink(isDisplayed())
       onView(withId(iv_link)).perform(click())
 
       intended(
@@ -350,25 +292,17 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun homePageLink_withNullUrl_hidesLink() = runTest {
-    val testDetailPersonWithoutHomepage = testDetailPerson.copy(homepage = null)
-
     context.launchPersonActivity {
-      detailPersonLiveData.postValue(testDetailPersonWithoutHomepage)
-
-      onView(withId(iv_link)).check(matches(not(isDisplayed())))
-      onView(withId(divider1)).check(matches(not(isDisplayed())))
+      detailPersonLiveData.postValue(testDetailPerson.copy(homepage = null))
+      checkHomePageLink(not(isDisplayed()))
     }
   }
 
   @Test
   fun homePageLink_withEmptyUrl_hidesLink() = runTest {
-    val testDetailPersonWithoutHomepage = testDetailPerson.copy(homepage = "")
-
     context.launchPersonActivity {
-      detailPersonLiveData.postValue(testDetailPersonWithoutHomepage)
-
-      onView(withId(iv_link)).check(matches(not(isDisplayed())))
-      onView(withId(divider1)).check(matches(not(isDisplayed())))
+      detailPersonLiveData.postValue(testDetailPerson.copy(homepage = ""))
+      checkHomePageLink(not(isDisplayed()))
     }
   }
 
@@ -405,7 +339,6 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         externalIdPersonLiveData.postValue(testExternalIds)
       }
-      shortDelay()
 
       onView(withId(view_group_social_media))
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
@@ -419,9 +352,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
     context.launchPersonActivity {
       verify { PersonPageHelper.formatBirthInfo(any(), any()) }
-
-      onView(withId(tv_born))
-        .check(matches(withText(context.getString(no_data))))
+      onView(withId(tv_born)).check(matches(withText(context.getString(no_data))))
     }
 
     unmockkObject(PersonPageHelper)
@@ -429,44 +360,32 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun deathInfo_withDeathday_shouldVisible() = runTest {
-    val testDetailPersonDeceased = testDetailPerson.copy(
-      deathday = "2023-01-01"
-    )
-
     context.launchPersonActivity {
-      detailPersonLiveData.postValue(testDetailPersonDeceased)
-
+      InstrumentationRegistry.getInstrumentation().runOnMainSync {
+        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = "2023-01-01"))
+      }
       onView(withId(tv_death)).perform(scrollTo())
-      onView(withId(tv_death)).check(matches(isDisplayed()))
-      onView(withId(tv_dead_header)).check(matches(isDisplayed()))
+      checkDeathInfo(isDisplayed())
     }
   }
 
   @Test
   fun deathInfo_whenNull_shouldHidden() = runTest {
-    val testDetailPersonAlive = testDetailPerson.copy(deathday = null)
-
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPersonAlive)
+        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = null))
       }
-      onView(withId(rv_known_for)).perform(scrollTo())
-      onView(withId(tv_death)).check(matches(not(isDisplayed())))
-      onView(withId(tv_dead_header)).check(matches(not(isDisplayed())))
+      checkDeathInfo(not(isDisplayed()))
     }
   }
 
   @Test
   fun deathInfo_whenEmpty_shouldHidden() = runTest {
-    val testDetailPersonAlive = testDetailPerson.copy(deathday = "")
-
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPersonAlive)
+        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = ""))
       }
-      onView(withId(rv_known_for)).perform(scrollTo())
-      onView(withId(tv_death)).check(matches(not(isDisplayed())))
-      onView(withId(tv_dead_header)).check(matches(not(isDisplayed())))
+      checkDeathInfo(not(isDisplayed()))
     }
   }
 
@@ -501,5 +420,23 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
     ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
       onView(withId(iv_picture)).check(matches(isDisplayed()))
     }
+  }
+
+  // helper action
+  private fun checkCollapseTitle(title: String?) {
+    onView(withId(rv_photos)).perform(scrollTo())
+    onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
+      .check(matches(withCollapsingToolbarTitle(title)))
+  }
+
+  private fun checkDeathInfo(viewMatcher: Matcher<View>) {
+    onView(withId(rv_known_for)).perform(scrollTo())
+    onView(withId(tv_death)).check(matches(viewMatcher))
+    onView(withId(tv_dead_header)).check(matches(viewMatcher))
+  }
+
+  private fun checkHomePageLink(viewMatcher: Matcher<View>) {
+    onView(withId(iv_link)).check(matches(viewMatcher))
+    onView(withId(divider1)).check(matches(viewMatcher))
   }
 }
