@@ -50,7 +50,6 @@ dependencies {
 
   testImplementation(libs.mockk)
   androidTestImplementation(libs.mockk.android)
-  androidTestImplementation(libs.mockk.agent)
   androidTestImplementation(libs.androidx.datastore.core)
   androidTestImplementation(libs.androidx.datastore.preferences)
 
