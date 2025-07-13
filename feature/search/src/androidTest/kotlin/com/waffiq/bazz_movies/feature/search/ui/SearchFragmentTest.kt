@@ -8,7 +8,6 @@ import androidx.appcompat.R.id.search_src_text
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
@@ -25,7 +24,6 @@ import androidx.test.espresso.matcher.ViewMatchers.Visibility
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withHint
@@ -33,7 +31,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
@@ -75,14 +73,10 @@ class SearchFragmentTest {
   private val searchResultsFlow: Flow<PagingData<ResultsItemSearch>> = flowOf()
   private val queryLiveData = MutableLiveData<String>()
   private val expandSearchViewLiveData = MutableLiveData<Boolean>()
-
   private val testQuery = "test_query"
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
-
-  @get:Rule
-  var mInstantTaskExecutorRule = InstantTaskExecutorRule()
 
   @BindValue
   @JvmField
@@ -155,12 +149,8 @@ class SearchFragmentTest {
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    performSearchAction()
-
-    // check and interact with search view
-    onView(withId(search_src_text))
-      .check(matches(isDisplayed()))
-      .perform(typeText(testQuery), pressImeActionButton())
+    performClickSearchAction()
+    performTypeAndSearchAction()
 
     // verify loading state UI
     onView(withId(rv_search)).check(matches(isDisplayed()))
@@ -175,12 +165,10 @@ class SearchFragmentTest {
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    performSearchAction()
+    performClickSearchAction()
 
     // perform search twice with same query
-    onView(withId(search_src_text))
-      .check(matches(isDisplayed()))
-      .perform(typeText(testQuery), pressImeActionButton())
+    performTypeAndSearchAction()
     onView(withId(search_src_text))
       .perform(clearText(), typeText(testQuery), pressImeActionButton())
 
@@ -193,7 +181,7 @@ class SearchFragmentTest {
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       expandSearchViewLiveData.value = true
     }
-    performSearchAction()
+    performClickSearchAction()
 
     // perform search without query
     onView(withId(search_src_text))
@@ -205,12 +193,11 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenRestoresQuery_restoresFromViewModel() {
-    performSearchAction()
+    performClickSearchAction()
 
     // simulate saved query without typing
     val savedQuery = "saved query"
     queryLiveData.postValue(savedQuery)
-
     expandSearchViewLiveData.postValue(true)
 
     // verify query is restored in search view
@@ -232,7 +219,7 @@ class SearchFragmentTest {
 
   @Test
   fun searchView_whenDebugging_shouldPassed() {
-    performSearchAction()
+    performClickSearchAction()
 
     // trigger via LiveData
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
@@ -271,7 +258,7 @@ class SearchFragmentTest {
   fun searchView_whenPressSubmit_shouldTriggerSearchFunction() {
     // manual click search action
     try {
-      performSearchAction()
+      performClickSearchAction()
 
       onView(
         allOf(
@@ -295,7 +282,7 @@ class SearchFragmentTest {
       println("Fragment lifecycle state: $state")
       assertTrue(state == Lifecycle.State.RESUMED)
     }
-    performSearchAction()
+    performClickSearchAction()
 
     // expanse the search view
     expandSearchViewLiveData.postValue(true)
@@ -310,9 +297,11 @@ class SearchFragmentTest {
   @Test
   fun searchView_directViewModelCall_test() {
     // get the search view
-    searchFragment.javaClass.getDeclaredMethod("setupSearchView")
-      .apply { isAccessible = true }
-      .invoke(searchFragment)
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      searchFragment.javaClass.getDeclaredMethod("setupSearchView")
+        .apply { isAccessible = true }
+        .invoke(searchFragment)
+    }
     shortDelay()
 
     // direct call the search method
@@ -431,16 +420,14 @@ class SearchFragmentTest {
     return false
   }
 
-  private fun shortDelay() {
-    onView(isRoot()).perform(waitFor(WAIT_TIME))
-  }
-
-  private fun performSearchAction() {
+  private fun performClickSearchAction() {
     onView(withId(action_search)).perform(click())
     shortDelay()
   }
 
-  companion object {
-    private const val WAIT_TIME = 300L
+  private fun performTypeAndSearchAction() {
+    onView(withId(search_src_text))
+      .check(matches(isDisplayed()))
+      .perform(typeText(testQuery), pressImeActionButton())
   }
 }
