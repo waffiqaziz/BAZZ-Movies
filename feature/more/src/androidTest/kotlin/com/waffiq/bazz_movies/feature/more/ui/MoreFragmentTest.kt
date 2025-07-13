@@ -33,7 +33,6 @@ import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
-import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -61,7 +60,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
@@ -72,13 +70,9 @@ import org.junit.Test
 class MoreFragmentTest {
 
   private lateinit var moreFragment: MoreFragment
-  private val testDispatcher = UnconfinedTestDispatcher()
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
-
-  @get:Rule
-  val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
   @BindValue
   @JvmField
