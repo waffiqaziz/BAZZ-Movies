@@ -27,6 +27,7 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitForActivityToBeDestroyed
 import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
 import com.waffiq.bazz_movies.feature.person.R.id.btn_back

@@ -22,6 +22,5 @@ interface PersonActivityTestSetup {
   fun setupBaseMocks()
   fun setupViewModelMocks(mockPersonViewModel: PersonViewModel)
   fun setupNavigatorMocks(mockNavigator: INavigator)
-  fun shortDelay()
   fun initializeTest(context: Context)
 }
