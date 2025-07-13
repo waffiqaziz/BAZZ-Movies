@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
+import android.view.View
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
@@ -13,7 +14,6 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
@@ -30,7 +30,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
@@ -60,6 +61,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matcher
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
@@ -135,33 +137,25 @@ class MoreFragmentTest {
   @Test
   fun buttonFaq_whenClicked_shouldOpenFaqLink() {
     onView(withId(btn_faq)).perform(click())
-
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(FAQ_LINK.toUri()))
+    checkIntentData(FAQ_LINK)
   }
 
   @Test
   fun buttonPrivacyPolicy_whenClicked_shouldOpenPrivacyPolicyLink() {
     onView(withId(tv_privacy_policy)).perform(click())
-
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(PRIVACY_POLICY_LINK.toUri()))
+    checkIntentData(PRIVACY_POLICY_LINK)
   }
 
   @Test
   fun buttonTermsCondition_whenClicked_shouldOpenTermsConditionsLink() {
     onView(withId(tv_terms_conditon)).perform(click())
-
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(TERMS_CONDITIONS_LINK.toUri()))
+    checkIntentData(TERMS_CONDITIONS_LINK)
   }
 
   @Test
   fun buttonSuggestion_whenClicked_shouldOpenFormHelperLink() {
     onView(withId(btn_suggestion)).perform(click())
-
-    intended(hasAction(Intent.ACTION_VIEW))
-    intended(hasData(FORM_HELPER.toUri()))
+    checkIntentData(FORM_HELPER)
   }
 
   @Test
@@ -185,7 +179,7 @@ class MoreFragmentTest {
   fun regionSetup_whenCountryCodeSet_shouldSetCountryPickerCorrectly() {
     mockRegionPref.postValue("AR")
     onView(withText("AR")).check(matches(isDisplayed()))
-    // Verify that country picker is set with the correct country
+    // verify country picker is set with the correct country
     onView(withId(btn_country_picker)).check(matches(isDisplayed()))
   }
 
@@ -230,7 +224,6 @@ class MoreFragmentTest {
     runBlocking {
       mockSignOutState.emit(Outcome.Loading)
     }
-
     performSignOutAction()
   }
 
@@ -239,7 +232,7 @@ class MoreFragmentTest {
     setupGuestUser()
 
     mockDbResult.postValue(Event(DbResult.Success(1)))
-    onView(isRoot()).perform(waitFor(300))
+    shortDelay()
 
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
   }
@@ -250,9 +243,8 @@ class MoreFragmentTest {
     runBlocking {
       mockSignOutState.emit(Outcome.Error("Sign out failed"))
     }
-
     performSignOutAction()
-    onView(isRoot()).perform(waitFor(1000))
+    shortDelay()
 
     onView(withId(btn_signout)).check(matches(not(isEnabled())))
     onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
@@ -267,7 +259,6 @@ class MoreFragmentTest {
     consumedEvent.getContentIfNotHandled() // consume the event
 
     mockDbResult.postValue(consumedEvent)
-    onView(isRoot()).perform(waitFor(300))
   }
 
   @Test
@@ -276,7 +267,7 @@ class MoreFragmentTest {
 
     // emit success result
     mockDbResult.postValue(Event(DbResult.Success(1)))
-    onView(isRoot()).perform(waitFor(500))
+    shortDelay()
 
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
   }
@@ -287,7 +278,7 @@ class MoreFragmentTest {
 
     // emit error result
     mockDbResult.postValue(Event(DbResult.Error("Database error")))
-    onView(isRoot()).perform(waitFor(500))
+    shortDelay()
 
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
     verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
@@ -296,7 +287,7 @@ class MoreFragmentTest {
   @Test
   fun regionViewModel_whenCountryCodeProvided_shouldUpdateRegionAndCountryPicker() {
     mockCountryCode.postValue("CA")
-    onView(isRoot()).perform(waitFor(500))
+    shortDelay()
 
     verify(timeout = 2000) { mockUserPrefViewModel.saveRegionPref("CA") }
   }
@@ -304,7 +295,7 @@ class MoreFragmentTest {
   @Test
   fun regionViewModel_whenCountryCodeEmpty_shouldNotUpdateRegion() {
     mockCountryCode.postValue("")
-    onView(isRoot()).perform(waitFor(300))
+    shortDelay()
 
     verify(exactly = 0) { mockUserPrefViewModel.saveRegionPref("") }
   }
@@ -315,11 +306,7 @@ class MoreFragmentTest {
       gravatarHast = "testHash123",
       tmdbAvatar = null
     )
-    mockUserModel.postValue(userWithGravatar)
-    onView(isRoot()).perform(waitFor(300))
-
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
-    onView(withId(tv_fullName)).check(matches(withText(userWithGravatar.name)))
+    checkAvatarIsVisible(userWithGravatar, isDisplayed())
   }
 
   @Test
@@ -328,11 +315,7 @@ class MoreFragmentTest {
       gravatarHast = null,
       tmdbAvatar = "tmdbAvatar123"
     )
-    mockUserModel.postValue(userWithTmdb)
-    onView(isRoot()).perform(waitFor(300))
-
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
-    onView(withId(tv_fullName)).check(matches(withText(userWithTmdb.name)))
+    checkAvatarIsVisible(userWithTmdb, isDisplayed())
   }
 
   @Test
@@ -341,11 +324,7 @@ class MoreFragmentTest {
       gravatarHast = null,
       tmdbAvatar = null
     )
-    mockUserModel.postValue(userWithoutAvatars)
-    onView(isRoot()).perform(waitFor(300))
-
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
-    onView(withId(tv_fullName)).check(matches(withText(userWithoutAvatars.name)))
+    checkAvatarIsVisible(userWithoutAvatars, isDisplayed())
   }
 
   @Test
@@ -354,11 +333,7 @@ class MoreFragmentTest {
       gravatarHast = "",
       tmdbAvatar = ""
     )
-    mockUserModel.postValue(userWithEmptyAvatars)
-    onView(isRoot()).perform(waitFor(300))
-
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
-    onView(withId(tv_fullName)).check(matches(withText(userWithEmptyAvatars.name)))
+    checkAvatarIsVisible(userWithEmptyAvatars, isDisplayed())
   }
 
   @Test
@@ -419,13 +394,26 @@ class MoreFragmentTest {
     verify(exactly = 1) { mockUserViewModel.removeState() }
   }
 
+  private fun checkIntentData(link: String){
+    intended(hasAction(Intent.ACTION_VIEW))
+    intended(hasData(link.toUri()))
+  }
+
   private fun setupGuestUser() {
     mockUserModel.postValue(userModel.copy(token = NAN))
-    onView(isRoot()).perform(waitFor(300))
+    shortDelay()
   }
 
   private fun performSignOutAction() {
     onView(withId(btn_signout)).perform(click())
     onView(withText(yes)).perform(click())
+  }
+
+  private fun  checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>){
+    mockUserModel.postValue(userModel)
+    shortDelay()
+
+    onView(withId(img_avatar)).check(matches(viewMatcher))
+    onView(withId(tv_fullName)).check(matches(withText(userModel.name)))
   }
 }

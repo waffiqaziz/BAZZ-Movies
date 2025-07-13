@@ -12,7 +12,6 @@ dependencies {
 
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.google.material)
-
   implementation(libs.country.picker.android)
 
   testImplementation(libs.androidx.core.testing)
@@ -20,18 +19,12 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
 
-  androidTestImplementation(project(":core:designsystem"))
-  androidTestImplementation(project(":core:test"))
-  androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.datastore.preferences)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.intents)
-  androidTestImplementation(libs.androidx.fragment.testing)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
-  androidTestImplementation(libs.mockk.agent)
-  androidTestImplementation(libs.truth)
 }
