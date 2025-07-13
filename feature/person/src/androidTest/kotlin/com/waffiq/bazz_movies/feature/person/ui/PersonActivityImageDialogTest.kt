@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
@@ -14,7 +13,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.test.MainCoroutineRule
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
@@ -38,9 +37,6 @@ class PersonActivityImageDialogTest : PersonActivityTestSetup by PersonActivityT
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
-
-  @get:Rule
-  val mainCoroutineRule = MainCoroutineRule()
 
   @BindValue
   @JvmField
@@ -67,31 +63,18 @@ class PersonActivityImageDialogTest : PersonActivityTestSetup by PersonActivityT
     setupBaseMocks()
     setupViewModelMocks(mockPersonViewModel)
     setupNavigatorMocks(mockNavigator)
+    loadingStateLiveData.postValue(false)
   }
 
   @Test
   fun imageDialog_whenImageClicked_showsDialog() = runTest {
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
         imagePersonLiveData.postValue(
           listOf(testProfileItem, testProfileItem.copy(filePath = "path"))
         )
       }
-      shortDelay()
-
-      // scroll to the person photos
-      onView(withId(rv_photos)).perform(scrollTo())
-
-      // click on the first image
-      onView(withId(rv_photos))
-        .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-
-      shortDelay()
-
-      // verify dialog is displayed
-      onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
-      onView(withId(btn_close_dialog)).check(matches(isDisplayed()))
+      performClickListPhotos(0)
     }
   }
 
@@ -99,27 +82,16 @@ class PersonActivityImageDialogTest : PersonActivityTestSetup by PersonActivityT
   fun imageDialog_whenCloseButtonClicked_dismissesDialog() = runTest {
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
         imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem))
       }
-      shortDelay()
+      performClickListPhotos(0)
 
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(withId(rv_photos))
-        .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-
-      shortDelay()
-
-      onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
+      // close dialog
       onView(withId(btn_close_dialog)).perform(click())
       shortDelay()
 
-      // verify dialog is dismissed (this throw ViewNotFoundException which is expected)
-      try {
-        onView(withId(view_pager_dialog)).check(doesNotExist())
-      } catch (_: Exception) {
-        // expect dialog should be dismissed, no error and test passed
-      }
+      // verify dialog is dismissed
+      onView(withId(view_pager_dialog)).check(doesNotExist())
     }
   }
 
@@ -129,22 +101,12 @@ class PersonActivityImageDialogTest : PersonActivityTestSetup by PersonActivityT
 
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
         imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
       }
-      shortDelay()
+      performClickListPhotos(1)
 
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(withId(rv_photos))
-        .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
-
-      shortDelay()
-
-      // verify dialog is displayed
-      onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
-
-      // You might want to verify the ViewPager is at the correct position
-      // This would require custom matchers or checking the adapter state
+      // verify the ViewPager is at the correct position
+      // but it require custom matchers or checking the adapter state
     }
   }
 
@@ -154,26 +116,28 @@ class PersonActivityImageDialogTest : PersonActivityTestSetup by PersonActivityT
 
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
         imagePersonLiveData.postValue(listOf(testProfileItem))
       }
-      shortDelay()
-
-      onView(withId(rv_photos)).perform(scrollTo())
-      onView(withId(rv_photos))
-        .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-
-      shortDelay()
-
-      onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
+      performClickListPhotos(0)
       pressBack()
       shortDelay()
 
-      try {
-        onView(withId(view_pager_dialog)).check(doesNotExist())
-      } catch (_: Exception) {
-        // expected dialog should be dismissed
-      }
+      // expected dialog is dismissed
+      onView(withId(view_pager_dialog)).check(doesNotExist())
     }
+  }
+
+  private fun performClickListPhotos(position : Int){
+    // delay before perform action
+    shortDelay()
+
+    onView(withId(rv_photos)).perform(scrollTo())
+    onView(withId(rv_photos))
+      .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+    shortDelay()
+
+    // verify dialog and close button is visible
+    onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
+    onView(withId(btn_close_dialog)).check(matches(isDisplayed()))
   }
 }

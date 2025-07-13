@@ -19,11 +19,9 @@ dependencies {
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.paging.runtime)
-
   implementation(libs.google.material)
   implementation(libs.facebook.shimmer)
 
-  testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.junit)
@@ -34,16 +32,11 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.turbine)
 
-  androidTestImplementation(project(":core:designsystem"))
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.intents)
-  androidTestImplementation(libs.androidx.fragment.testing)
-  androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
-  androidTestImplementation(libs.mockk.agent)
   androidTestImplementation(libs.truth)
 }

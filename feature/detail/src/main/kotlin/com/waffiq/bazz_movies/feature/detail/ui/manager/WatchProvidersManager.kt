@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -19,7 +18,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
 import com.waffiq.bazz_movies.core.domain.ResultItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 

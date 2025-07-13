@@ -2,12 +2,9 @@ package com.waffiq.bazz_movies.feature.person.testutils
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -57,10 +54,6 @@ class PersonActivityTestHelper : PersonActivityTestSetup {
   override fun setupNavigatorMocks(mockNavigator: INavigator) {
     every { mockNavigator.openDetails(any(), any()) } just Runs
     every { mockNavigator.openPersonDetails(any(), any()) } just Runs
-  }
-
-  override fun shortDelay() {
-    onView(isRoot()).perform(waitFor(300))
   }
 
   override fun initializeTest(context: Context) {

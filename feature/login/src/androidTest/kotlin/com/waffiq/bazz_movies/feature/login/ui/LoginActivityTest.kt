@@ -73,13 +73,13 @@ class LoginActivityTest {
   private val errorStateLiveData = MutableLiveData<String>()
   private val loadingStateLiveData = MutableLiveData<Boolean>()
 
+  private lateinit var context: Context
+
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
 
   @get:Rule
   var activityRule = ActivityScenarioRule(LoginActivity::class.java)
-
-  private lateinit var context: Context
 
   @BindValue
   @JvmField
@@ -188,7 +188,9 @@ class LoginActivityTest {
     onView(withId(ed_pass)).check(matches(withText(validPassword)))
 
     onView(withId(btn_eye)).perform(click())
-    onView(withId(ed_pass)).check(matches(isPasswordHidden())) // Masked password
+
+    // verify password is masked
+    onView(withId(ed_pass)).check(matches(isPasswordHidden()))
   }
 
   @Test
@@ -243,12 +245,7 @@ class LoginActivityTest {
     val loadingLiveData = MutableLiveData<Boolean>()
     every { mockAuthViewModel.loadingState } returns loadingLiveData
 
-    onView(withId(ed_username)).perform(typeText(validUsername))
-    closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(typeText(validPassword))
-    closeSoftKeyboard()
-
-    onView(withId(btn_login)).perform(click())
+    performValidLogin()
 
     // verify buttons are disabled during login
     onView(withId(btn_login)).check(matches(not(isEnabled())))
@@ -305,23 +302,13 @@ class LoginActivityTest {
 
   @Test
   fun login_withCorrectParams_callsAuthenticationViewModel() {
-    onView(withId(ed_username)).perform(typeText(validUsername))
-    closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(typeText(validPassword))
-    closeSoftKeyboard()
-
-    onView(withId(btn_login)).perform(click())
-
-    // verify the userLogin method is called with correct parameters
+    performValidLogin()
     verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
   }
 
   @Test
   fun loginScreen_whenConfigurationChange_maintainsTheState() {
-    onView(withId(ed_username)).perform(typeText(validUsername))
-    closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(typeText(validPassword))
-    closeSoftKeyboard()
+    typeValidLogin()
 
     // simulate configuration change (rotation)
     activityRule.scenario.onActivity { activity ->
@@ -336,6 +323,19 @@ class LoginActivityTest {
     onView(withId(ed_username)).check(matches(withText(validUsername)))
     onView(withId(ed_pass)).check(matches(withText(validPassword)))
   }
+
+  private fun typeValidLogin(){
+    onView(withId(ed_username)).perform(typeText(validUsername))
+    closeSoftKeyboard()
+    onView(withId(ed_pass)).perform(typeText(validPassword))
+    closeSoftKeyboard()
+  }
+
+  private fun performValidLogin(){
+    typeValidLogin()
+    onView(withId(btn_login)).perform(click())
+  }
+
 
   private fun withErrorText(expectedError: String): Matcher<View> {
     return object : BoundedMatcher<View, EditText>(EditText::class.java) {
