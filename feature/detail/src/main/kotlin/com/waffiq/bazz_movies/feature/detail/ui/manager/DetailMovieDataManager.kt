@@ -57,10 +57,12 @@ class DetailMovieDataManager(
    * Loads detailed data specific to a movie, including:
    * - Credits (cast and crew)
    * - Movie details
+   * - Trailer
    * - Watch providers based on the user's region
    */
   private fun loadMovieData() {
     detailViewModel.getMovieCredits(dataExtra.id)
+    detailViewModel.getLinkVideoMovie(dataExtra.id)
     prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
       detailViewModel.detailMovie(dataExtra.id, region)
       detailViewModel.getMovieWatchProviders(region.uppercase(), dataExtra.id)
@@ -72,8 +74,8 @@ class DetailMovieDataManager(
    * - External IMDb ID (not included by default in TV show results)
    * - OMDb score via IMDb ID
    * - Credits (cast and crew)
-   * - Video links (trailers, etc.)
    * - TV details
+   * - Trailer
    * - Watch providers based on the user's region
    */
   private fun loadTvData() {
