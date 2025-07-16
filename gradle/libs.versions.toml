@@ -6,8 +6,8 @@ minSdk = "23"
 ndkVersion = "27.2.12479018"
 
 # App Version
-versionCode = "24"
-versionName = "1.2.4"
+versionCode = "25"
+versionName = "1.2.5-dev"
 
 # Plugin Versions
 agp = "8.10.1"
