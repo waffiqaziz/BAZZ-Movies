@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import junit.framework.TestCase.assertEquals
@@ -18,7 +18,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_allValid_returnName() {
     val result =
       context.titleHandler(
-        ResultItem(
+        MediaItem(
           name = "Test Name",
           title = "Test Title",
           originalTitle = "Test Original Title",
@@ -32,7 +32,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_nameNull_returnTitle() {
     val result =
       context.titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = "Test Title",
           originalTitle = "Test Original Title",
@@ -46,7 +46,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_nameAndTitleAreNull_returnOriginalTitle() {
     val result =
       context.titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = null,
           originalTitle = "Test Original Title",
@@ -60,7 +60,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_onlyOriginalNameValid_returnOriginalName() {
     val result =
       context.titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = null,
           originalTitle = null,
@@ -74,7 +74,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_allTitleNull_returnNotAvailable() {
     val result =
       context.titleHandler(
-        ResultItem(name = null, title = null, originalTitle = null, originalName = null)
+        MediaItem(name = null, title = null, originalTitle = null, originalName = null)
       )
     assertEquals("N/A", result)
   }
@@ -83,7 +83,7 @@ class DetailDataUtilsTest {
   fun titleHandler_nameValid_returnName() {
     val result =
       titleHandler(
-        ResultItem(
+        MediaItem(
           name = "Test Name",
           title = "Test Title",
           originalTitle = "Test Original Title",
@@ -97,7 +97,7 @@ class DetailDataUtilsTest {
   fun titleHandler_nameIsNull_returnTitle() {
     val result =
       titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = "Test Title",
           originalTitle = "Test Original Title",
@@ -111,7 +111,7 @@ class DetailDataUtilsTest {
   fun titleHandler_nameAndTitleAreNull_returnOriginalTitle() {
     val result =
       titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = null,
           originalTitle = "Test Original Title",
@@ -125,7 +125,7 @@ class DetailDataUtilsTest {
   fun titleHandler_returnOriginalNameWhenOthersNull() {
     val result =
       titleHandler(
-        ResultItem(
+        MediaItem(
           name = null,
           title = null,
           originalTitle = null,
@@ -139,7 +139,7 @@ class DetailDataUtilsTest {
   fun titleHandler_returnNotAvailable_whenAllTitleFieldsAreNull() {
     val result =
       titleHandler(
-        ResultItem(name = null, title = null, originalTitle = null, originalName = null)
+        MediaItem(name = null, title = null, originalTitle = null, originalName = null)
       )
     assertEquals("Item", result)
   }
@@ -147,7 +147,7 @@ class DetailDataUtilsTest {
   @Test
   fun releaseDateHandler_allDateValid_showDateCorrectly() {
     val result = context.releaseDateHandler(
-      ResultItem(
+      MediaItem(
         firstAirDate = "2007-06-27",
         releaseDate = "2007-06-27",
       )
@@ -158,7 +158,7 @@ class DetailDataUtilsTest {
   @Test
   fun releaseDateHandler_firstAirDateNull_showDateFromReleaseDate() {
     val result = context.releaseDateHandler(
-      ResultItem(
+      MediaItem(
         releaseDate = "2007-06-27",
         firstAirDate = null,
       )
@@ -169,7 +169,7 @@ class DetailDataUtilsTest {
   @Test
   fun releaseDateHandler_releaseDateNull_showDateFromFirstAirDate() {
     val result = context.releaseDateHandler(
-      ResultItem(
+      MediaItem(
         releaseDate = null,
         firstAirDate = "2007-06-27",
       )
@@ -180,7 +180,7 @@ class DetailDataUtilsTest {
   @Test
   fun releaseDateHandler_allDateNull_showNotAvailable() {
     val result = context.releaseDateHandler(
-      ResultItem(
+      MediaItem(
         releaseDate = null,
         firstAirDate = null,
       )
@@ -191,7 +191,7 @@ class DetailDataUtilsTest {
   @Test
   fun releaseDateHandler_allDateInvalid_showNotAvailable() {
     val result = context.releaseDateHandler(
-      ResultItem(
+      MediaItem(
         releaseDate = "invalid date",
         firstAirDate = "  ",
       )

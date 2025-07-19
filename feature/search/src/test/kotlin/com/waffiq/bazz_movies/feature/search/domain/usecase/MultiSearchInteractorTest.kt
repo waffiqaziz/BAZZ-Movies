@@ -4,15 +4,15 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse2
-import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toResultItemSearch
+import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -76,7 +76,7 @@ class MultiSearchInteractorTest {
 
     // all empty - should be filtered out
     resultsItemSearchResponse.copy(backdropPath = "", posterPath = "", profilePath = "")
-  ).map { it.toResultItemSearch() }
+  ).map { it.toMultiSearchItem() }
 
   private val mockRepository: ISearchRepository = mockk()
   private lateinit var multiSearchInteractor: MultiSearchInteractor
@@ -89,22 +89,22 @@ class MultiSearchInteractorTest {
     multiSearchInteractor = MultiSearchInteractor(mockRepository)
   }
 
-  private fun mockGetPagingSearch(pagingData: PagingData<ResultsItemSearch>) {
-    every { mockRepository.getPagingSearch(QUERY) } returns flowOf(pagingData)
+  private fun mockSearchPagingData(pagingData: PagingData<MultiSearchItem>) {
+    every { mockRepository.search(QUERY) } returns flowOf(pagingData)
   }
 
-  private fun verifyGetPagingSearch() {
-    verify { mockRepository.getPagingSearch(QUERY) }
+  private fun verifyPagingSearch() {
+    verify { mockRepository.search(QUERY) }
   }
 
   /**
    * Helper function to run a test with a specific paging data and execute assertions on the results
    */
   private fun testSearchWithPagingData(
-    pagingData: PagingData<ResultsItemSearch>,
-    assertions: (List<ResultsItemSearch>) -> Unit,
+    pagingData: PagingData<MultiSearchItem>,
+    assertions: (List<MultiSearchItem>) -> Unit,
   ) = runTest {
-    mockGetPagingSearch(pagingData)
+    mockSearchPagingData(pagingData)
 
     multiSearchInteractor.search(QUERY).test {
       val actualPagingData = awaitItem() // collect first item
@@ -121,7 +121,7 @@ class MultiSearchInteractorTest {
       awaitComplete()
     }
 
-    verifyGetPagingSearch()
+    verifyPagingSearch()
   }
 
   @Test
@@ -133,12 +133,12 @@ class MultiSearchInteractorTest {
             backdropPath = "/backdrop_path0.jpg",
             posterPath = "/poster_path0.jpg",
             profilePath = "/profile_path0.jpg"
-          ).toResultItemSearch(),
+          ).toMultiSearchItem(),
           resultsItemSearchResponse2.copy(
             backdropPath = "/backdrop_path1.jpg",
             posterPath = "/poster_path1.jpg",
             profilePath = "/profile_path1.jpg"
-          ).toResultItemSearch()
+          ).toMultiSearchItem()
         )
       )
 
@@ -167,8 +167,8 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.toResultItemSearch(),
-          resultsItemSearchResponse2.toResultItemSearch()
+          resultsItemSearchResponse.toMultiSearchItem(),
+          resultsItemSearchResponse2.toMultiSearchItem()
         )
       )
 
@@ -185,11 +185,11 @@ class MultiSearchInteractorTest {
           resultsItemSearchResponse.copy(
             posterPath = "/poster_path3.jpg",
             profilePath = "/profile_path3.jpg"
-          ).toResultItemSearch(),
+          ).toMultiSearchItem(),
           resultsItemSearchResponse2.copy(
             posterPath = "/poster_path4.jpg",
             profilePath = "/profile_path4.jpg"
-          ).toResultItemSearch()
+          ).toMultiSearchItem()
         )
       )
 
@@ -212,11 +212,11 @@ class MultiSearchInteractorTest {
           resultsItemSearchResponse.copy(
             backdropPath = "/backdrop_path5.jpg",
             profilePath = "/profile_path5.jpg"
-          ).toResultItemSearch(),
+          ).toMultiSearchItem(),
           resultsItemSearchResponse2.copy(
             backdropPath = "/backdrop_path6.jpg",
             profilePath = "/profile_path6.jpg"
-          ).toResultItemSearch()
+          ).toMultiSearchItem()
         )
       )
 
@@ -239,11 +239,11 @@ class MultiSearchInteractorTest {
           resultsItemSearchResponse.copy(
             backdropPath = "/backdrop_path7.jpg",
             posterPath = "/poster_path7.jpg",
-          ).toResultItemSearch(),
+          ).toMultiSearchItem(),
           resultsItemSearchResponse2.copy(
             backdropPath = "/backdrop_path8.jpg",
             posterPath = "/poster_path8.jpg",
-          ).toResultItemSearch()
+          ).toMultiSearchItem()
         )
       )
 
@@ -267,7 +267,7 @@ class MultiSearchInteractorTest {
           backdropPath = "/backdrop_path9.jpg",
           posterPath = null,
           profilePath = null
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -288,7 +288,7 @@ class MultiSearchInteractorTest {
           backdropPath = null,
           posterPath = "/poster_path10.jpg",
           profilePath = null
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -309,7 +309,7 @@ class MultiSearchInteractorTest {
           backdropPath = null,
           posterPath = null,
           profilePath = "/profile_path11.jpg"
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -330,7 +330,7 @@ class MultiSearchInteractorTest {
           backdropPath = "",
           posterPath = "",
           profilePath = ""
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -348,7 +348,7 @@ class MultiSearchInteractorTest {
           backdropPath = "",
           posterPath = null,
           profilePath = "/profile_path12.jpg"
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -369,7 +369,7 @@ class MultiSearchInteractorTest {
           backdropPath = "",
           posterPath = null,
           profilePath = ""
-        ).toResultItemSearch()
+        ).toMultiSearchItem()
       )
     )
 
@@ -382,13 +382,13 @@ class MultiSearchInteractorTest {
   fun search_whenAllDataIsNull_returnsEmptyList() = runTest {
     val fakePagingData = PagingData.from(
       listOf(
-        ResultsItemSearchResponse().toResultItemSearch(),
-        ResultsItemSearchResponse().toResultItemSearch()
+        MultiSearchResponseItem().toMultiSearchItem(),
+        MultiSearchResponseItem().toMultiSearchItem()
       )
     )
 
     testSearchWithPagingData(fakePagingData) { pagingList ->
-      assertEquals(emptyList<ResultsItemSearch>(), pagingList)
+      assertEquals(emptyList<MultiSearchItem>(), pagingList)
     }
   }
 

@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.di
 
+import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieInteractor
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvInteractor
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetTvStateUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,11 +19,11 @@ abstract class StatedUseCaseModule {
   @ViewModelScoped
   abstract fun bindStatedMovieUseCase(
     getStatedMovieInteractor: GetStatedMovieInteractor
-  ): GetStatedMovieUseCase
+  ): GetMovieStateUseCase
 
   @Binds
   @ViewModelScoped
   abstract fun bindStatedTvUseCase(
     getStatedTvInteractor: GetStatedTvInteractor
-  ): GetStatedTvUseCase
+  ): GetTvStateUseCase
 }

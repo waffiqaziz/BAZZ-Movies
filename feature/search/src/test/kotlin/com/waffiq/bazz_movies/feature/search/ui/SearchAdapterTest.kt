@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -69,8 +69,8 @@ class SearchAdapterTest {
   fun submitData_withPagingData_updatesTheAdapter() = runTest {
     val pagingData = PagingData.from(
       listOf(
-        ResultsItemSearch(id = 1, title = "Movie 1"),
-        ResultsItemSearch(id = 2, title = "Movie 2")
+        MultiSearchItem(id = 1, title = "Movie 1"),
+        MultiSearchItem(id = 2, title = "Movie 2")
       )
     )
 
@@ -80,7 +80,7 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectMovieData() = runTest {
-    val movieData = ResultsItemSearch(
+    val movieData = MultiSearchItem(
       mediaType = "movie",
       id = 1,
       title = "Transformers",
@@ -98,7 +98,7 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectTvData() = runTest {
-    val tvData = ResultsItemSearch(
+    val tvData = MultiSearchItem(
       mediaType = "tv",
       id = 12345,
       title = "Bleach",
@@ -116,7 +116,7 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectPersonData() = runTest {
-    val personData = ResultsItemSearch(
+    val personData = MultiSearchItem(
       mediaType = "person",
       id = 134321,
       name = "Jason Statham",
@@ -139,7 +139,7 @@ class SearchAdapterTest {
 
   @Test
   fun onBindViewHolder_withNullData_doesNotCrash() = runTest {
-    val fakePagingData = PagingData.empty<ResultsItemSearch>()
+    val fakePagingData = PagingData.empty<MultiSearchItem>()
     adapter.submitData(fakePagingData)
     advanceUntilIdle()
 
@@ -151,7 +151,7 @@ class SearchAdapterTest {
   @Test
   fun onBindViewHolder_withValidData_bindsDataCorrectly() = runTest {
     val dummyData =
-      listOf(ResultsItemSearch(id = 1, title = "Title", mediaType = "movie"))
+      listOf(MultiSearchItem(id = 1, title = "Title", mediaType = "movie"))
     val pagingData = PagingData.from(dummyData)
 
     adapter.submitData(pagingData)
@@ -174,7 +174,7 @@ class SearchAdapterTest {
   @Test
   fun movieSearchItem_whenClicked_opensMovieDetails() = runTest {
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         title = "Test Movie",
         name = "Test Name",
@@ -184,7 +184,7 @@ class SearchAdapterTest {
     )
     binding.containerResult.performClick()
 
-    val expectedItem = ResultItem(
+    val expectedItem = MediaItem(
       id = 1,
       title = "Test Movie",
       overview = "Test Overview",
@@ -197,7 +197,7 @@ class SearchAdapterTest {
 
   @Test
   fun personSearchItem_whenClicked_opensPersonDetails() = runTest {
-    val personData = ResultsItemSearch(
+    val personData = MultiSearchItem(
       id = 1,
       mediaType = "person",
       name = "Actor Name",
@@ -212,7 +212,7 @@ class SearchAdapterTest {
     adapter.onBindViewHolder(viewHolder, 0)
     binding.containerResult.performClick()
 
-    val expectedPerson = MovieTvCastItem(
+    val expectedPerson = MediaCastItem(
       id = 1,
       name = "Actor Name",
       originalName = "Original Actor Name",
@@ -224,7 +224,7 @@ class SearchAdapterTest {
 
   @Test
   fun submitData_wthEmptyPagingData_shouldNotCrash() = runTest {
-    val emptyPagingData = PagingData.from(emptyList<ResultsItemSearch>())
+    val emptyPagingData = PagingData.from(emptyList<MultiSearchItem>())
     adapter.submitData(emptyPagingData)
     assertEquals(0, adapter.itemCount)
   }
@@ -233,9 +233,9 @@ class SearchAdapterTest {
   fun submitData_withMultiplePagingDataItems_shouldUpdateItemCountCorrectly() = runTest {
     val pagingData = PagingData.from(
       listOf(
-        ResultsItemSearch(id = 1, title = "Movie 1"),
-        ResultsItemSearch(id = 2, title = "Movie 2"),
-        ResultsItemSearch(id = 3, title = "Movie 3")
+        MultiSearchItem(id = 1, title = "Movie 1"),
+        MultiSearchItem(id = 2, title = "Movie 2"),
+        MultiSearchItem(id = 3, title = "Movie 3")
       )
     )
 
@@ -247,7 +247,7 @@ class SearchAdapterTest {
   fun showDataPerson_whenCalled_shouldHandleAllPossibility() {
     // test case 1: null name
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "person",
         name = null,
@@ -261,7 +261,7 @@ class SearchAdapterTest {
 
     // test case 2: null profile path
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "person",
         name = "Actor Name",
@@ -271,10 +271,10 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun showDataMovieTv_whenCalled_shouldHandleNullData() {
+  fun showMediaData_whenCalled_shouldHandleNullMediaData() {
     // release data all null, title using original name
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         originalName = "Avatar",
@@ -287,7 +287,7 @@ class SearchAdapterTest {
 
     // release data all null, title using original title
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         originalTitle = "Avatar Name"
@@ -296,13 +296,13 @@ class SearchAdapterTest {
     assertEquals("Avatar Name", binding.tvTitle.text.toString())
   }
 
-  private fun submitPagingAndWait(item: ResultsItemSearch) = runTest {
+  private fun submitPagingAndWait(item: MultiSearchItem) = runTest {
     adapter.submitData(PagingData.from(listOf(item)))
     advanceUntilIdle()
     adapter.onBindViewHolder(viewHolder, 0)
   }
 
-  private fun submitDataYearReleased(expected: String, item: ResultsItemSearch) = runTest {
+  private fun submitDataYearReleased(expected: String, item: MultiSearchItem) = runTest {
     submitPagingAndWait(item)
     assertEquals(expected, binding.tvYearReleased.text.toString())
   }
@@ -312,25 +312,25 @@ class SearchAdapterTest {
     // releaseDate null, firstAirDate null
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie")
+      MultiSearchItem(id = 1, mediaType = "movie")
     )
 
     // releaseDate null, firstAirDate valid
     submitDataYearReleased(
       "2023-05-15",
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "2023-05-15")
+      MultiSearchItem(id = 1, mediaType = "movie", firstAirDate = "2023-05-15")
     )
 
     // releaseDate null, firstAirDate empty
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = "")
+      MultiSearchItem(id = 1, mediaType = "movie", firstAirDate = "")
     )
 
     // releaseDate null, firstAirDate blank
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", firstAirDate = " ")
+      MultiSearchItem(id = 1, mediaType = "movie", firstAirDate = " ")
     )
   }
 
@@ -339,7 +339,7 @@ class SearchAdapterTest {
     // releaseDate valid, firstAirDate valid
     submitDataYearReleased(
       "2023-05-15",
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         firstAirDate = "2023-05-15",
@@ -350,19 +350,19 @@ class SearchAdapterTest {
     // releaseDate valid, firstAirDate null
     submitDataYearReleased(
       "2023-05-15",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2023-05-15")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "2023-05-15")
     )
 
     // releaseDate valid, firstAirDate empty
     submitDataYearReleased(
       "2010-10-10",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "2010-10-10", firstAirDate = "")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "2010-10-10", firstAirDate = "")
     )
 
     // releaseDate valid, firstAirDate blank
     submitDataYearReleased(
       "2022-08-20",
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         releaseDate = "2022-08-20",
@@ -376,25 +376,25 @@ class SearchAdapterTest {
     // releaseDate empty, firstAirDate null
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "")
     )
 
     // releaseDate empty, firstAirDate valid
     submitDataYearReleased(
       "2010-10-10",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "2010-10-10")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "2010-10-10")
     )
 
     // releaseDate empty, firstAirDate empty
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = "")
     )
 
     // releaseDate empty, firstAirDate blank
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = " ")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "", firstAirDate = " ")
     )
   }
 
@@ -403,25 +403,25 @@ class SearchAdapterTest {
     // releaseDate blank, firstAirDate null
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = " ")
     )
 
     // releaseDate blank, firstAirDate blank
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = "  ", firstAirDate = "  ")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = "  ", firstAirDate = "  ")
     )
 
     // releaseDate blank, firstAirDate empty
     submitDataYearReleased(
       "N/A",
-      ResultsItemSearch(id = 1, mediaType = "movie", releaseDate = " ", firstAirDate = "")
+      MultiSearchItem(id = 1, mediaType = "movie", releaseDate = " ", firstAirDate = "")
     )
 
     // releaseDate blank, firstAirDate valid
     submitDataYearReleased(
       "2022-08-20",
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         releaseDate = " ",
@@ -433,7 +433,7 @@ class SearchAdapterTest {
   @Test
   fun showReleaseYear_whenReleaseDateIsValid_displaysReleaseDate() = runTest {
     submitPagingAndWait(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         mediaType = "movie",
         originalTitle = "Valid Release Date",
@@ -448,27 +448,27 @@ class SearchAdapterTest {
 
   @Test
   fun showPosterImage_whenPathsAreMissing_displaysFallbackImage() = runTest {
-    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie"))
-    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = ""))
-    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", backdropPath = " "))
-    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", posterPath = ""))
-    submitPagingAndWait(ResultsItemSearch(id = 1, mediaType = "movie", posterPath = " "))
+    submitPagingAndWait(MultiSearchItem(id = 1, mediaType = "movie"))
+    submitPagingAndWait(MultiSearchItem(id = 1, mediaType = "movie", backdropPath = ""))
+    submitPagingAndWait(MultiSearchItem(id = 1, mediaType = "movie", backdropPath = " "))
+    submitPagingAndWait(MultiSearchItem(id = 1, mediaType = "movie", posterPath = ""))
+    submitPagingAndWait(MultiSearchItem(id = 1, mediaType = "movie", posterPath = " "))
     assertTrue(binding.ivPicture.isVisible)
   }
 
   @Test
   fun diffCallback_whenItemsAreTheSame_returnsTrueForSameIdAndMediaType() {
-    val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
-    val newItem = ResultsItemSearch(id = 1, mediaType = "movie")
+    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
+    val newItem = MultiSearchItem(id = 1, mediaType = "movie")
 
     assertTrue(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
   }
 
   @Test
   fun diffCallback_whenItemsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
-    val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
-    val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
-    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType
+    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
+    val newItem1 = MultiSearchItem(id = 2, mediaType = "movie") // different ID
+    val newItem2 = MultiSearchItem(id = 1, mediaType = "tv") // different mediaType
 
     assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
     assertFalse(SearchAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem2))
@@ -476,17 +476,17 @@ class SearchAdapterTest {
 
   @Test
   fun diffCallback_whenContentsAreTheSame_returnsTrueForSameIdAndMediaType() {
-    val oldItem = ResultsItemSearch(id = 1, mediaType = "movie", title = "Movie 1")
-    val newItem = ResultsItemSearch(id = 1, mediaType = "movie", title = "Different Title")
+    val oldItem = MultiSearchItem(id = 1, mediaType = "movie", title = "Movie 1")
+    val newItem = MultiSearchItem(id = 1, mediaType = "movie", title = "Different Title")
 
     assertTrue(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
   fun diffCallback_whenContentsAreTheSame_returnsFalseForDifferentIdOrMediaType() {
-    val oldItem = ResultsItemSearch(id = 1, mediaType = "movie")
-    val newItem1 = ResultsItemSearch(id = 2, mediaType = "movie") // different ID
-    val newItem2 = ResultsItemSearch(id = 1, mediaType = "tv") // different mediaType
+    val oldItem = MultiSearchItem(id = 1, mediaType = "movie")
+    val newItem1 = MultiSearchItem(id = 2, mediaType = "movie") // different ID
+    val newItem2 = MultiSearchItem(id = 1, mediaType = "tv") // different mediaType
 
     assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
     assertFalse(SearchAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem2))

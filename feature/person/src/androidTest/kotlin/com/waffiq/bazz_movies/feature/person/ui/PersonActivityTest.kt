@@ -52,7 +52,7 @@ import com.waffiq.bazz_movies.feature.person.testutils.Helper.launchPersonActivi
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testCastItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testDetailPerson
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testMovieTvCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.Helper.testMediaCastItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testProfileItem
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
@@ -160,7 +160,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun collapseTitle_withName_showsCorrectly() = runTest {
-    val data = testMovieTvCastItem.copy(
+    val data = testMediaCastItem.copy(
       name = "Test Name 1",
       originalName = null
     )
@@ -172,7 +172,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun collapseTitle_withOriginalName_showsCorrectly() = runTest {
-    val data = testMovieTvCastItem.copy(
+    val data = testMediaCastItem.copy(
       name = null,
       originalName = "Original Name 1"
     )
@@ -184,7 +184,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun collapseTitle_noName_showsNotAvailable() = runTest {
-    val data = testMovieTvCastItem.copy(
+    val data = testMediaCastItem.copy(
       name = null,
       originalName = null
     )
@@ -196,7 +196,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun dataPerson_whenNoId_shouldNoProblem() = runTest {
-    context.launchPersonActivity(testMovieTvCastItem.copy(id = null)) {
+    context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
       verify(exactly = 0) { mockPersonViewModel.getKnownFor(any()) }
       verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
       verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
@@ -246,14 +246,14 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
 
   @Test
   fun photoProfile_whenNull_showsNoProfile() = runTest {
-    context.launchPersonActivity(testMovieTvCastItem.copy(profilePath = null)) {
+    context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
       onView(withId(iv_picture)).check(matches(withContentDescription("no_profile")))
     }
   }
 
   @Test
   fun photoProfile_whenEmpty_showsNoProfile() = runTest {
-    context.launchPersonActivity(testMovieTvCastItem.copy(profilePath = "")) {
+    context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
       onView(withId(iv_picture)).check(matches(withContentDescription("no_profile")))
     }
   }
@@ -415,7 +415,7 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
   @Test
   fun personScreen_whenInitialized_showsAllViews() = runTest {
     val intent = Intent(context, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, testMovieTvCastItem)
+      putExtra(PersonActivity.EXTRA_PERSON, testMediaCastItem)
     }
 
     ActivityScenario.launch<PersonActivity>(intent).use { scenario ->

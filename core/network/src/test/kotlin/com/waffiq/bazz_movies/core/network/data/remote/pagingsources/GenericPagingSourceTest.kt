@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 
 import androidx.paging.PagingSource
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.testutils.PagingSourceTestHelper.testLoadReturnsErrorOnException
 import com.waffiq.bazz_movies.core.network.testutils.PagingSourceTestHelper.testLoadReturnsErrorOnHttpException
 import com.waffiq.bazz_movies.core.network.testutils.PagingSourceTestHelper.testLoadReturnsPage
@@ -24,18 +24,18 @@ import java.io.IOException
 
 class GenericPagingSourceTest {
 
-  private val apiCallMock: suspend (Int) -> List<ResultItemResponse> = mockk()
+  private val apiCallMock: suspend (Int) -> List<MediaResponseItem> = mockk()
 
   @Test
   fun loadInitialPage_whenApiCallSucceeds_returnsCorrectPage() = runTest {
-    val resultItems = listOf(ResultItemResponse("item1"), ResultItemResponse("item2"))
+    val mediaItems = listOf(MediaResponseItem("item1"), MediaResponseItem("item2"))
     testLoadReturnsPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = {
-        coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns resultItems
+        coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns mediaItems
       },
       params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
-      expectedData = resultItems,
+      expectedData = mediaItems,
       expectedPrevKey = null,
       expectedNextKey = INITIAL_PAGE_INDEX + 1
     )
@@ -68,7 +68,7 @@ class GenericPagingSourceTest {
 
   @Test
   fun loadPage_whenResponseDataIsNull_returnsNullFields() = runTest {
-    coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns listOf(ResultItemResponse())
+    coEvery { apiCallMock(INITIAL_PAGE_INDEX) } returns listOf(MediaResponseItem())
     val pagingSource = GenericPagingSource(apiCallMock)
 
     val result = pagingSource.load(PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false))
@@ -85,11 +85,11 @@ class GenericPagingSourceTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
-        val resultItems = listOf(ResultItemResponse("item1"), ResultItemResponse("item2"))
-        coEvery { apiCallMock(page) } returns resultItems
+        val mediaItems = listOf(MediaResponseItem("item1"), MediaResponseItem("item2"))
+        coEvery { apiCallMock(page) } returns mediaItems
       },
       page = 2,
-      expectedData = listOf(ResultItemResponse("item1"), ResultItemResponse("item2"))
+      expectedData = listOf(MediaResponseItem("item1"), MediaResponseItem("item2"))
     )
   }
 
@@ -98,7 +98,7 @@ class GenericPagingSourceTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
-        coEvery { apiCallMock(page) } returns emptyList<ResultItemResponse>()
+        coEvery { apiCallMock(page) } returns emptyList<MediaResponseItem>()
       },
       expectedData = emptyList()
     )
@@ -109,8 +109,8 @@ class GenericPagingSourceTest {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = GenericPagingSource(apiCallMock),
       data = listOf(
-        listOf(ResultItemResponse("item1"), ResultItemResponse("item2")),
-        listOf(ResultItemResponse("item3"), ResultItemResponse("item4"))
+        listOf(MediaResponseItem("item1"), MediaResponseItem("item2")),
+        listOf(MediaResponseItem("item3"), MediaResponseItem("item4"))
       ),
       prevKeys = listOf(null, 1),
       nextKeys = listOf(2, 3),
@@ -123,7 +123,7 @@ class GenericPagingSourceTest {
   fun getRefreshKey_whenBothKeysPresent_shouldUsePrevKeyPlusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = GenericPagingSource(apiCallMock),
-      data = listOf(ResultItemResponse("item1")),
+      data = listOf(MediaResponseItem("item1")),
       anchorPosition = 0,
       prevKey = 1,
       nextKey = 3,
@@ -135,7 +135,7 @@ class GenericPagingSourceTest {
   fun getRefreshKey_whenPrevKeyIsNull_shouldUseNextKeyMinusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = GenericPagingSource(apiCallMock),
-      data = listOf(ResultItemResponse("item1")),
+      data = listOf(MediaResponseItem("item1")),
       anchorPosition = 0,
       prevKey = null,
       nextKey = 3,
@@ -147,7 +147,7 @@ class GenericPagingSourceTest {
   fun getRefreshKey_whenAllKeysAreNull_returnsNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = GenericPagingSource(apiCallMock),
-      data = listOf(ResultItemResponse("item1"))
+      data = listOf(MediaResponseItem("item1"))
     )
   }
 

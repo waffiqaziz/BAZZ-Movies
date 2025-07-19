@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE_FORMATTED
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -43,7 +43,7 @@ class FavoriteTvAdapterTest {
   private val tvOriginalTitle = "Test Tv Original Title"
   private val tvOriginalName = "Test Tv Original Name"
 
-  private val tvData = ResultItem(
+  private val tvData = MediaItem(
     id = 1,
     title = tvTitle,
     overview = "Test Overview",
@@ -81,7 +81,7 @@ class FavoriteTvAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "tv",
             name = "Test Tv Name",
             title = tvTitle,
@@ -110,7 +110,7 @@ class FavoriteTvAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "tv",
             title = tvTitle,
             releaseDate = TEST_DATE,
@@ -135,7 +135,7 @@ class FavoriteTvAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "tv",
             originalTitle = tvOriginalTitle,
             releaseDate = null,
@@ -159,7 +159,7 @@ class FavoriteTvAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "tv",
             originalName = tvOriginalName,
             releaseDate = null,
@@ -184,7 +184,7 @@ class FavoriteTvAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem()
+          MediaItem()
         )
       )
     )
@@ -221,32 +221,32 @@ class FavoriteTvAdapterTest {
 
   @Test
   fun areItemsTheSame_whenIdAndMediaTypeIsSame_returnsTrue() {
-    val oldItem = ResultItem(id = 1, mediaType = "tv")
-    val newItem = ResultItem(id = 1, mediaType = "tv")
+    val oldItem = MediaItem(id = 1, mediaType = "tv")
+    val newItem = MediaItem(id = 1, mediaType = "tv")
 
     assertTrue(FavoriteTvAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areItemsTheSame_whenDifferentId_returnsFalse() {
-    val oldItem = ResultItem(id = 1, mediaType = "tv")
-    val newItem1 = ResultItem(id = 2, mediaType = "tv") // different ID
+    val oldItem = MediaItem(id = 1, mediaType = "tv")
+    val newItem1 = MediaItem(id = 2, mediaType = "tv") // different ID
 
     assertFalse(FavoriteTvAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
   }
 
   @Test
   fun areContentsTheSame_whenIdAndMediaType_returnsTrue() {
-    val oldItem = ResultItem(id = 1, mediaType = "tv", title = "Tv 1")
-    val newItem = ResultItem(id = 1, mediaType = "tv", title = "Different Title")
+    val oldItem = MediaItem(id = 1, mediaType = "tv", title = "Tv 1")
+    val newItem = MediaItem(id = 1, mediaType = "tv", title = "Different Title")
 
     assertTrue(FavoriteTvAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areContentsTheSame_whenDifferentId_returnsFalse() {
-    val oldItem = ResultItem(id = 1, mediaType = "tv")
-    val newItem1 = ResultItem(id = 2, mediaType = "tv") // different ID
+    val oldItem = MediaItem(id = 1, mediaType = "tv")
+    val newItem1 = MediaItem(id = 2, mediaType = "tv") // different ID
 
     assertFalse(FavoriteTvAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
   }

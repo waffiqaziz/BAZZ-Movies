@@ -44,7 +44,7 @@ class MyAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
   ...
-  fun bind(data: MovieTvCastItem) {
+  fun bind(data: MediaCastItem) {
     inner class ViewHolder(private var binding: MyViewBinding) :
       RecyclerView.ViewHolder(binding.root) {
 
@@ -59,7 +59,7 @@ class MyAdapter(private val navigator: INavigator) :
 @Inject
 lateinit var navigator: INavigator
 
-fun function(data: MovieTvCastItem){
+fun function(data: MediaCastItem){
   navigator.openPersonDetails(context, data)
 }
 ```

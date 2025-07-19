@@ -6,7 +6,7 @@ import androidx.paging.PagingSource.LoadResult
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
@@ -20,11 +20,11 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,32 +84,32 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun repository_getPagingSearchReturnsDataCorrectly() = runTest {
+  fun search_whenSuccessful_returnsDataCorrectly() = runTest {
     val fakePagingData =
       PagingData.from(listOf(resultsItemSearchResponse, resultsItemSearchResponse2))
-    every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(fakePagingData)
+    every { movieDataSource.search(QUERY) } returns flowOf(fakePagingData)
 
-    repository.getPagingSearch(QUERY).test {
-      val pagingData = awaitItem() // Collect first item
+    repository.search(QUERY).test {
+      val pagingData = awaitItem() // collect first item
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
-      val listResultItemSearch = differ.snapshot().items
-      assertTrue(listResultItemSearch.isEmpty().not())
+      val listMediaItemSearch = differ.snapshot().items
+      assertTrue(listMediaItemSearch.isEmpty().not())
       job.cancel()
 
       cancelAndIgnoreRemainingEvents()
     }
 
-    verify { movieDataSource.getPagingSearch(QUERY) }
+    verify { movieDataSource.search(QUERY) }
   }
 
   @Test
-  fun repository_whenSearching_returnsPagedData() = runTest {
-    val emptyPagingData = PagingData.from(emptyList<ResultsItemSearchResponse>())
-    every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(emptyPagingData)
+  fun search_whenSuccessful_returnsPagedData() = runTest {
+    val emptyPagingData = PagingData.from(emptyList<MultiSearchResponseItem>())
+    every { movieDataSource.search(QUERY) } returns flowOf(emptyPagingData)
 
-    repository.getPagingSearch(QUERY).test {
+    repository.search(QUERY).test {
       val pagingData = awaitItem()
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
@@ -120,17 +120,17 @@ class SearchRepositoryImplTest {
       cancelAndIgnoreRemainingEvents()
     }
 
-    verify { movieDataSource.getPagingSearch(QUERY) }
+    verify { movieDataSource.search(QUERY) }
   }
 
   @Test
-  fun repository_whenSearchItemIsNull_returnsNonEmptyPagingData() = runTest {
-    val invalidItem = mockk<ResultsItemSearchResponse>(relaxed = true)
+  fun search_whenSearchItemIsNull_returnsNonEmptyPagingData() = runTest {
+    val invalidItem = mockk<MultiSearchResponseItem>(relaxed = true)
     val pagingDataWithNull = PagingData.from(listOf(invalidItem))
 
-    every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(pagingDataWithNull)
+    every { movieDataSource.search(QUERY) } returns flowOf(pagingDataWithNull)
 
-    repository.getPagingSearch(QUERY).test {
+    repository.search(QUERY).test {
       val pagingData = awaitItem()
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
@@ -141,26 +141,24 @@ class SearchRepositoryImplTest {
       cancelAndIgnoreRemainingEvents()
     }
 
-    verify { movieDataSource.getPagingSearch(QUERY) }
+    verify { movieDataSource.search(QUERY) }
   }
 
   @Test
-  fun repository_whenSearchItemHasNulls_setsDefaultValues() = runTest {
-    val responseWithNulls = ResultsItemSearchResponse(
-      mediaType = null, // Should default to MOVIE_MEDIA_TYPE
-      popularity = null, // Should default to 0.0
-      id = null, // Should default to 0
-      adult = null, // Should default to false
-      video = null, // Should default to false
-      voteAverage = null, // Should default to 0.0
-      voteCount = null // Should default to 0.0
+  fun search_whenItemHasNulls_setsDefaultValues() = runTest {
+    val responseWithNulls = MultiSearchResponseItem(
+      mediaType = null, // should default to MOVIE_MEDIA_TYPE
+      popularity = null, // should default to 0.0
+      id = null, // should default to 0
+      adult = null, // should default to false
+      video = null, // should default to false
+      voteAverage = null, // should default to 0.0
+      voteCount = null // should default to 0.0
     )
-
     val pagingDataWithNulls = PagingData.from(listOf(responseWithNulls))
+    every { movieDataSource.search(QUERY) } returns flowOf(pagingDataWithNulls)
 
-    every { movieDataSource.getPagingSearch(QUERY) } returns flowOf(pagingDataWithNulls)
-
-    repository.getPagingSearch(QUERY).test {
+    repository.search(QUERY).test {
       val pagingData = awaitItem()
       val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
@@ -177,7 +175,6 @@ class SearchRepositoryImplTest {
       job.cancel()
       cancelAndIgnoreRemainingEvents()
     }
-
-    verify { movieDataSource.getPagingSearch(QUERY) }
+    verify { movieDataSource.search(QUERY) }
   }
 }

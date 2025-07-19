@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.di
 
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieInteractor
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailMovie.GetDetailMovieUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbInteractor
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailOmdb.GetDetailOMDbUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvInteractor
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getDetailTv.GetDetailTvUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetDetailMovieInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,17 +21,17 @@ abstract class DetailUseCaseModule {
   @ViewModelScoped
   abstract fun bindDetailMovieUseCase(
     getDetailMovieInteractor: GetDetailMovieInteractor
-  ): GetDetailMovieUseCase
+  ): GetMovieDetailUseCase
 
   @Binds
   @ViewModelScoped
   abstract fun bindDetailTvUseCase(
-    getDetailTvInteractor: GetDetailTvInteractor
-  ): GetDetailTvUseCase
+    getDetailTvInteractor: GetTvDetailInteractor
+  ): GetTvDetailUseCase
 
   @Binds
   @ViewModelScoped
   abstract fun bindDetailOMDbUseCase(
-    getDetailOMDbInteractor: GetDetailOMDbInteractor
-  ): GetDetailOMDbUseCase
+    getDetailOMDbInteractor: GetOMDbDetailInteractor
+  ): GetOMDbDetailUseCase
 }

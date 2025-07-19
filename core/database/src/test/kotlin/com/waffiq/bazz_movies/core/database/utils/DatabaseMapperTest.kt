@@ -7,14 +7,14 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DatabaseMapperTest {
   private val genreName = "Action, Adventure"
-  private val resultItem1 = ResultItem(
+  private val mediaItem1 = MediaItem(
     firstAirDate = "firstAirData",
     overview = "overview",
     originalLanguage = "originalLanguage",
@@ -40,7 +40,7 @@ class DatabaseMapperTest {
   fun toFavorite_withValidAllTrueValues_returnsFavorite() {
 
     // test case 1: valid data
-    val favorite1 = resultItem1.toFavorite(isFavorite = true, isWatchlist = true)
+    val favorite1 = mediaItem1.toFavorite(isFavorite = true, isWatchlist = true)
     assertEquals(favorite1.id, 0)
     assertEquals(favorite1.mediaId, 436719)
     assertEquals(favorite1.mediaType, "tv")
@@ -57,13 +57,13 @@ class DatabaseMapperTest {
 
     // test case 2: title using originalName, release date using firstAirDate, popularity null,
     // overView null, rating null
-    val resultItem2 = ResultItem(
+    val mediaItem2 = MediaItem(
       originalName = "originalName",
       firstAirDate = "firstAirDate",
       voteAverage = null,
       popularity = null
     )
-    val favorite2 = resultItem2.toFavorite(false, false)
+    val favorite2 = mediaItem2.toFavorite(false, false)
     assertEquals(favorite2.title, "originalName")
     assertEquals(favorite2.releaseDate, "firstAirDate")
     assertEquals(favorite2.rating, 0.0f)
@@ -72,39 +72,39 @@ class DatabaseMapperTest {
     assertEquals(favorite2.genre, "")
 
     // test case 3: title using title, release date null
-    val resultItem3 = ResultItem(title = "title")
-    val favorite3 = resultItem3.toFavorite(false, false)
+    val mediaItem3 = MediaItem(title = "title")
+    val favorite3 = mediaItem3.toFavorite(false, false)
     assertEquals(favorite3.title, "title")
     assertEquals(favorite3.releaseDate, "N/A")
 
     // test case 4: title using originalTitle
-    val resultItem4 = ResultItem(originalTitle = "originalTitle")
-    val favorite4 = resultItem4.toFavorite(false, false)
+    val mediaItem4 = MediaItem(originalTitle = "originalTitle")
+    val favorite4 = mediaItem4.toFavorite(false, false)
     assertEquals(favorite4.title, "originalTitle")
 
     // test case 5: title null
-    val resultItem = ResultItem()
-    val favorite5 = resultItem.toFavorite(false, false)
+    val mediaItem = MediaItem()
+    val favorite5 = mediaItem.toFavorite(false, false)
     assertEquals(favorite5.title, "N/A")
   }
 
   @Test
   fun favTrueWatchlistTrue_withValidValue_returnCorrectData() {
-    val result = favTrueWatchlistTrue(resultItem1)
+    val result = favTrueWatchlistTrue(mediaItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist)
   }
 
   @Test
   fun favTrueWatchlistFalse_withValidValue_returnCorrectData() {
-    val result = favTrueWatchlistFalse(resultItem1)
+    val result = favTrueWatchlistFalse(mediaItem1)
     assertTrue(result.isFavorite)
     assertTrue(result.isWatchlist == false)
   }
 
   @Test
   fun favFalseWatchlistTrue_withValidValue_returnCorrectData() {
-    val result = favFalseWatchlistTrue(resultItem1)
+    val result = favFalseWatchlistTrue(mediaItem1)
     assertTrue(result.isFavorite == false)
     assertTrue(result.isWatchlist)
   }

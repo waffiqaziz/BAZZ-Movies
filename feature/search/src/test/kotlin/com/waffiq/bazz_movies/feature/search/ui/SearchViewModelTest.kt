@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
@@ -24,7 +24,7 @@ class SearchViewModelTest {
 
   private val mockMultiSearchUseCase: MultiSearchUseCase = mockk()
   private lateinit var searchViewModel: SearchViewModel
-  private val tv = ResultsItemSearch(
+  private val tv = MultiSearchItem(
     title = "Transformers TV-series",
     mediaType = "tv",
     id = 12345,
@@ -34,7 +34,7 @@ class SearchViewModelTest {
     profilePath = "/profile_path0.jpg",
     adult = false
   )
-  private val movie = ResultsItemSearch(
+  private val movie = MultiSearchItem(
     title = "Transformers 2",
     mediaType = "movie",
     id = 333111,

@@ -8,7 +8,7 @@ import retrofit2.http.Query
 fun interface OMDbApiService {
 
   @GET("?r=json")
-  suspend fun getMovieDetailOMDb(
+  suspend fun getOMDbDetails(
     @Query("i") i: String
   ): Response<OMDbDetailsResponse>
 }

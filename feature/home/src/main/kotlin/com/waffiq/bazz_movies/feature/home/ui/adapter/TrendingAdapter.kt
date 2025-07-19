@@ -14,11 +14,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class TrendingAdapter(private val navigator: INavigator) :
-  PagingDataAdapter<ResultItem, TrendingAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<MediaItem, TrendingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,7 +38,7 @@ class TrendingAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(data: ResultItem) {
+    fun bind(data: MediaItem) {
       binding.imgPoster.contentDescription =
         data.name ?: data.title ?: data.originalTitle ?: data.originalName
 
@@ -50,7 +50,7 @@ class TrendingAdapter(private val navigator: INavigator) :
       }
     }
 
-    private fun showImage(data: ResultItem) {
+    private fun showImage(data: MediaItem) {
       Glide.with(binding.imgPoster)
         .load(
           if (!data.posterPath.isNullOrEmpty()) {
@@ -68,17 +68,17 @@ class TrendingAdapter(private val navigator: INavigator) :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem == newItem
       }

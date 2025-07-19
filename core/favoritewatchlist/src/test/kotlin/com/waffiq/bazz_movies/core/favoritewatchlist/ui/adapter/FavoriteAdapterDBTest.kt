@@ -8,7 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
 import io.mockk.slot
@@ -175,8 +175,7 @@ class FavoriteAdapterDBTest {
     adapter.setFavorite(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
 
-    // use slot to capture ResultItem
-    val resultSlot = slot<ResultItem>()
+    val resultSlot = slot<MediaItem>()
 
     binding.containerResult.performClick()
 
@@ -186,7 +185,7 @@ class FavoriteAdapterDBTest {
     // verify navigator.openDetails() is called with the correct argument
     verify { navigator.openDetails(any(), capture(resultSlot)) }
 
-    // expect captured ResultItem matches expected values
+    // expect captured MediaItem matches expected values
     val capturedResult = resultSlot.captured
     assertEquals(favorite.mediaId, capturedResult.id)
     assertEquals(favorite.title, capturedResult.title)

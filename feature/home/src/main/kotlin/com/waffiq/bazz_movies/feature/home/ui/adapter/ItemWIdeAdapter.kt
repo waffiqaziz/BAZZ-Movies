@@ -16,14 +16,14 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class ItemWIdeAdapter(private val navigator: INavigator) :
-  PagingDataAdapter<ResultItem, ItemWIdeAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<MediaItem, ItemWIdeAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemWideBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,7 +43,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private var binding: ItemWideBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(data: ResultItem) {
+    fun bind(data: MediaItem) {
       adjustWidth(binding)
       setImage(binding.ivBackdrop, data)
 
@@ -60,7 +60,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
       }
     }
 
-    private fun setImage(ivBackdrop: ImageView, data: ResultItem) {
+    private fun setImage(ivBackdrop: ImageView, data: MediaItem) {
       ivBackdrop.contentDescription = titleHandler(data)
       Glide.with(ivBackdrop)
         .load(
@@ -103,17 +103,17 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
   companion object {
     private const val PADDING_DP = 40f
     private const val MAX_WIDTH_DP = 350f
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem == newItem
       }

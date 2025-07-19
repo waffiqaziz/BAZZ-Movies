@@ -22,7 +22,7 @@ class PersonRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource
 ) : IPersonRepository {
   override suspend fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
-    movieDataSource.getDetailPerson(id).map { networkResult ->
+    movieDataSource.getPersonDetail(id).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> Outcome.Success(networkResult.data.toDetailPerson())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
@@ -31,7 +31,7 @@ class PersonRepositoryImpl @Inject constructor(
     }
 
   override suspend fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
-    movieDataSource.getKnownForPerson(id).map { networkResult ->
+    movieDataSource.getPersonKnownFor(id).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> Outcome.Success(networkResult.data.toCombinedCredit())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
@@ -40,7 +40,7 @@ class PersonRepositoryImpl @Inject constructor(
     }
 
   override suspend fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
-    movieDataSource.getImagePerson(id).map { networkResult ->
+    movieDataSource.getPersonImage(id).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> Outcome.Success(networkResult.data.toImagePerson())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
@@ -49,7 +49,7 @@ class PersonRepositoryImpl @Inject constructor(
     }
 
   override suspend fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
-    movieDataSource.getExternalIDPerson(id).map { networkResult ->
+    movieDataSource.getPersonExternalID(id).map { networkResult ->
       when (networkResult) {
         is NetworkResult.Success -> Outcome.Success(networkResult.data.toExternalIDPerson())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)

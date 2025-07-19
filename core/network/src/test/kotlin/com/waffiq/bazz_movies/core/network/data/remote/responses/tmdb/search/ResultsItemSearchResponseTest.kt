@@ -58,7 +58,7 @@ class ResultsItemSearchResponseTest {
 
   @Test
   fun resultsItemSearchResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val resultsItemSearchResponse = ResultsItemSearchResponse()
+    val resultsItemSearchResponse = MultiSearchResponseItem()
     assertNull(resultsItemSearchResponse.mediaType)
     assertNull(resultsItemSearchResponse.listKnownFor)
     assertNull(resultsItemSearchResponse.knownForDepartment)
@@ -85,7 +85,7 @@ class ResultsItemSearchResponseTest {
 
   @Test
   fun resultsItemSearchResponse_withSomeNullValues_setsPropertiesCorrectly() {
-    val resultsItemSearchResponse = ResultsItemSearchResponse(name = null, id = 2)
+    val resultsItemSearchResponse = MultiSearchResponseItem(name = null, id = 2)
     assertNull(resultsItemSearchResponse.name)
     assertEquals(2, resultsItemSearchResponse.id)
   }

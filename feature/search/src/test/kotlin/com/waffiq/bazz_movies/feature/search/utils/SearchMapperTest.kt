@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toResultItemSearch
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -11,8 +11,8 @@ import org.junit.Test
 class SearchMapperTest {
 
   @Test
-  fun toResultItemSearch_whenResponseIsValid_mapsAllFieldsCorrectly() {
-    val response = ResultsItemSearchResponse(
+  fun toMultiSearchItem_whenResponseIsValid_mapsAllFieldsCorrectly() {
+    val response = MultiSearchResponseItem(
       mediaType = "movie",
       listKnownFor = listOf(
         KnownForItemResponse(title = "Known Movie 1"),
@@ -40,7 +40,7 @@ class SearchMapperTest {
       originalName = "Original Movie Name"
     )
 
-    val result = response.toResultItemSearch()
+    val result = response.toMultiSearchItem()
 
     assertEquals("movie", result.mediaType)
     assertEquals(2, result.listKnownFor?.size)

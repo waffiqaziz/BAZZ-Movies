@@ -16,8 +16,8 @@
 
 ### Navigation Methods  
 
-- `openPersonDetails(context: Context, cast: MovieTvCastItem)` – Opens the details screen for a specific cast member.  
-- `openDetails(context: Context, resultItem: ResultItem)` – Navigates to a detailed view of a selected movie or TV show.  
+- `openPersonDetails(context: Context, cast: MediaCastItem)` – Opens the details screen for a specific cast member.  
+- `openDetails(context: Context, mediaItem: MediaItem)` – Navigates to a detailed view of a selected movie or TV show.  
 - `openMainActivity(context: Context)` – Launches the main activity of the application.  
 - `openLoginActivity(context: Context)` – Redirects users to the login screen.  
 - `openAboutActivity(context: Context)` – Opens the About section of the app.  
@@ -39,7 +39,7 @@ To navigate to the details screen, inject the `INavigator` implementation and ca
 
 ```kotlin
 class MovieAdapter(private val navigator: INavigator) {
-    fun onMovieClicked(context: Context, movie: ResultItem) {
+    fun onMovieClicked(context: Context, movie: MediaItem) {
         navigator.openDetails(context, movie)
     }
 }

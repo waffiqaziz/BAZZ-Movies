@@ -3,16 +3,16 @@ package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MovieTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
@@ -20,7 +20,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Ima
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -56,40 +56,40 @@ interface TMDBApiService {
 
   // region TRENDING
   @GET("3/trending/all/week")
-  suspend fun getTrendingWeek(
+  suspend fun getTrendingThisWeek(
     @Query("region") region: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/trending/all/day")
-  suspend fun getTrendingDay(
+  suspend fun getTrendingToday(
     @Query("region") region: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
   // endregion TRENDING
 
   // region MOVIE
   @GET("3/movie/popular?language=en-US")
   suspend fun getPopularMovies(
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/movie/upcoming?language=en-US&with_release_type=2|3")
   suspend fun getUpcomingMovies(
     @Query("region") region: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/movie/now_playing?language=en-US")
-  suspend fun getPlayingNowMovies(
+  suspend fun getNowPlayingMovies(
     @Query("region") region: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/movie/top_rated?language=en-US")
   suspend fun getTopRatedMovies(
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
   // endregion
 
   // region TV
@@ -104,7 +104,7 @@ interface TMDBApiService {
     @Query("page") page: Int,
     @Query("watch_region") region: String,
     @Query("air_date.lte") dateTime: String,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET(
     "3/discover/tv?language=en-US" +
@@ -118,26 +118,26 @@ interface TMDBApiService {
     @Query("air_date.lte") airDateLte: String,
     @Query("air_date.gte") airDateGte: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/tv/top_rated?language=en-US")
   suspend fun getTopRatedTv(
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
   // endregion TV
 
   // region RECOMMENDATION
   @GET("3/movie/{movieId}/recommendations")
-  suspend fun getRecommendedMovie(
+  suspend fun getMovieRecommendations(
     @Path("movieId") movieId: Int,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/tv/{tvId}/recommendations")
-  suspend fun getRecommendedTv(
+  suspend fun getTvRecommendations(
     @Path("tvId") movieId: Int,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
   // endregion RECOMMENDATION
 
   // region FAVORITES & WATCHLIST
@@ -145,72 +145,72 @@ interface TMDBApiService {
   suspend fun getFavoriteMovies(
     @Query("session_id") sessionId: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/account/{account_id}/favorite/tv?language=en-US&sort_by=created_at.asc")
   suspend fun getFavoriteTv(
     @Query("session_id") sessionId: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/account/{account_id}/watchlist/movies?language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistMovies(
     @Query("session_id") sessionId: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
 
   @GET("3/account/{account_id}/watchlist/tv?language=en-US&sort_by=created_at.asc")
   suspend fun getWatchlistTv(
     @Query("session_id") sessionId: String,
     @Query("page") page: Int,
-  ): MovieTvResponse
+  ): MediaResponse
   // endregion
 
   // region DETAIL PAGE
   @GET("3/movie/{movieId}/account_states")
-  suspend fun getStatedMovie(
+  suspend fun getMovieState(
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String,
-  ): Response<StatedResponse>
+  ): Response<MediaStateResponse>
 
   @GET("3/tv/{tvId}/account_states")
-  suspend fun getStatedTv(
+  suspend fun getTvState(
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
-  ): Response<StatedResponse>
+  ): Response<MediaStateResponse>
 
   @GET("3/movie/{movieId}/credits?language=en-US")
-  suspend fun getCreditMovies(
+  suspend fun getMovieCredits(
     @Path("movieId") movieId: Int,
-  ): Response<MovieTvCreditsResponse>
+  ): Response<MediaCreditsResponse>
 
   @GET("3/tv/{tvId}/credits?language=en-US")
-  suspend fun getCreditTv(
+  suspend fun getTvCredits(
     @Path("tvId") tvId: Int,
-  ): Response<MovieTvCreditsResponse>
+  ): Response<MediaCreditsResponse>
 
   @GET("3/movie/{movieId}?language=en-US&append_to_response=releasedates")
-  suspend fun getDetailMovie(
+  suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
   ): Response<DetailMovieResponse>
 
   @GET("3/tv/{tvId}?language=en-US&append_to_response=content_ratings")
-  suspend fun getDetailTv(
+  suspend fun getTvDetail(
     @Path("tvId") tvId: Int,
   ): Response<DetailTvResponse>
 
   @GET("3/movie/{id}/videos?language=en-US")
-  suspend fun getVideoMovies(
+  suspend fun getMovieVideo(
     @Path("id") id: Int,
   ): Response<VideoResponse>
 
   @GET("3/tv/{id}/videos?language=en-US")
-  suspend fun getVideoTv(
+  suspend fun getTvVideo(
     @Path("id") id: Int,
   ): Response<VideoResponse>
 
   @GET("3/tv/{tvId}/external_ids?language=en-US")
-  suspend fun getExternalId(
+  suspend fun getTvExternalIds(
     @Path("tvId") tvId: Int,
   ): Response<ExternalIdResponse>
 
@@ -238,7 +238,7 @@ interface TMDBApiService {
   ): Response<ExternalIDPersonResponse>
 
   @GET("3/person/{personId}/combined_credits?language=en-US")
-  suspend fun getKnownForPersonCombinedMovieTv(
+  suspend fun getPersonCombinedCredits(
     @Path("personId") personId: Int,
   ): Response<CombinedCreditResponse>
   // endregion

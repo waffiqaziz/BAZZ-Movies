@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_down
 import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
@@ -37,7 +37,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 class WatchProvidersManager(
   private val binding: ActivityDetailMovieBinding,
   private val context: Context,
-  private val dataExtra: ResultItem,
+  private val dataExtra: MediaItem,
 ) {
   private lateinit var adapterAds: WatchProvidersAdapter
   private lateinit var adapterBuy: WatchProvidersAdapter

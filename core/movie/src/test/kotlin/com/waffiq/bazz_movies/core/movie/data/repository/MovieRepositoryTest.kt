@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSourc
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
@@ -40,14 +40,14 @@ class MovieRepositoryTest {
 
   @Test
   fun getStatedMovie_whenSuccessful_returnsMappedStatedMovie() = runTest {
-    val statedResponse = StatedResponse(
+    val statedResponse = MediaStateResponse(
       id = 1234,
       favorite = true,
       ratedResponse = RatedResponse.Unrated,
       watchlist = false
     )
 
-    coEvery { mockMovieDataSource.getStatedMovie("sessionId", 1234) } returns
+    coEvery { mockMovieDataSource.getMovieState("sessionId", 1234) } returns
       flowOf(NetworkResult.Success(statedResponse))
 
     movieRepository.getStatedMovie("sessionId", 1234).test {
@@ -64,14 +64,14 @@ class MovieRepositoryTest {
 
   @Test
   fun getStatedTv_whenSuccessful_returnsMappedStatedTv() = runTest {
-    val statedResponse = StatedResponse(
+    val statedResponse = MediaStateResponse(
       id = 8888,
       favorite = false,
       ratedResponse = RatedResponse.Value(9.0),
       watchlist = true
     )
 
-    coEvery { mockMovieDataSource.getStatedTv("sessionId", 8888) } returns
+    coEvery { mockMovieDataSource.getTvState("sessionId", 8888) } returns
       flowOf(NetworkResult.Success(statedResponse))
 
     movieRepository.getStatedTv("sessionId", 8888).test {

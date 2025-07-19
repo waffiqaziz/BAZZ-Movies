@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_p
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
@@ -23,7 +23,7 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoin
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class FavoriteTvAdapter(private val navigator: INavigator) :
-  androidx.paging.PagingDataAdapter<ResultItem, FavoriteTvAdapter.ViewHolder>(DIFF_CALLBACK) {
+  androidx.paging.PagingDataAdapter<MediaItem, FavoriteTvAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,31 +42,31 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
 
   inner class ViewHolder(private var binding: ItemMulmedBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    lateinit var data: ResultItem
+    lateinit var data: MediaItem
 
-    fun bind(resultItem: ResultItem) {
-      data = resultItem
-      showImage(binding, resultItem)
+    fun bind(mediaItem: MediaItem) {
+      data = mediaItem
+      showImage(binding, mediaItem)
 
-      binding.tvTitle.text = itemView.context.titleHandler(resultItem)
-      binding.tvYearReleased.text = itemView.context.releaseDateHandler(resultItem)
-      binding.tvGenre.text = resultItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
+      binding.tvTitle.text = itemView.context.titleHandler(mediaItem)
+      binding.tvYearReleased.text = itemView.context.releaseDateHandler(mediaItem)
+      binding.tvGenre.text = mediaItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
         .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
-      binding.ratingBar.rating = (resultItem.voteAverage ?: 0F) / 2
-      binding.tvRating.text = ratingHandler(resultItem.voteAverage)
+      binding.ratingBar.rating = (mediaItem.voteAverage ?: 0F) / 2
+      binding.tvRating.text = ratingHandler(mediaItem.voteAverage)
 
       // OnClickListener
       binding.container.setOnClickListener {
-        navigator.openDetails(itemView.context, resultItem.copy(mediaType = TV_MEDIA_TYPE))
+        navigator.openDetails(itemView.context, mediaItem.copy(mediaType = TV_MEDIA_TYPE))
       }
     }
 
-    private fun showImage(binding: ItemMulmedBinding, resultItem: ResultItem) {
-      binding.ivPicture.contentDescription = titleHandler(resultItem)
+    private fun showImage(binding: ItemMulmedBinding, mediaItem: MediaItem) {
+      binding.ivPicture.contentDescription = titleHandler(mediaItem)
       Glide.with(binding.ivPicture)
         .load(
-          if (!resultItem.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + resultItem.posterPath
+          if (!mediaItem.posterPath.isNullOrEmpty()) {
+            TMDB_IMG_LINK_POSTER_W185 + mediaItem.posterPath
           } else {
             ic_poster_error
           }
@@ -80,17 +80,17 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem.id == newItem.id
       }

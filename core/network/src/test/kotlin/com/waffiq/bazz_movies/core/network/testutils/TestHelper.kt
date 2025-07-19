@@ -4,11 +4,11 @@ import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.paging.PagingSource.LoadResult
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MovieTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
@@ -43,20 +43,20 @@ import java.net.UnknownHostException
 object TestHelper {
 
   /**
-   * Differ used for testing [PagingData] of [ResultItemResponse].
+   * Differ used for testing [PagingData] of [MediaResponseItem].
    */
   val differ = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<ResultItemResponse>(),
+    diffCallback = TestDiffCallback<MediaResponseItem>(),
     updateCallback = TestListCallback(),
     workerDispatcher = Dispatchers.Main
   )
 
 
   /**
-   * Differ used for testing [PagingData] of [ResultsItemSearchResponse].
+   * Differ used for testing [PagingData] of [MultiSearchResponseItem].
    */
   val differSearch = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<ResultsItemSearchResponse>(),
+    diffCallback = TestDiffCallback<MultiSearchResponseItem>(),
     updateCallback = TestListCallback(),
     workerDispatcher = Dispatchers.Main
   )
@@ -156,7 +156,7 @@ object TestHelper {
     apiEndpoint: suspend () -> Response<*>,
     dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
   ) {
-    val error404Response: Response<MovieTvCreditsResponse> = Response.error(
+    val error404Response: Response<MediaCreditsResponse> = Response.error(
       404,
       "Not Found".toResponseBody("application/json".toMediaTypeOrNull())
     )
@@ -258,10 +258,10 @@ object TestHelper {
    * @param resultAssertions Assertions to verify [LoadResult.Page] content.
    */
   suspend fun testPagingSource(
-    mockResults: MovieTvResponse,
-    mockApiCall: suspend () -> MovieTvResponse,
-    loader: suspend () -> LoadResult<Int, ResultItemResponse>,
-    resultAssertions: (LoadResult.Page<Int, ResultItemResponse>) -> Unit,
+    mockResults: MediaResponse,
+    mockApiCall: suspend () -> MediaResponse,
+    loader: suspend () -> LoadResult<Int, MediaResponseItem>,
+    resultAssertions: (LoadResult.Page<Int, MediaResponseItem>) -> Unit,
   ) {
     coEvery { mockApiCall() } returns mockResults
 
@@ -279,8 +279,8 @@ object TestHelper {
   suspend fun testPagingSearchSource(
     mockResults: MultiSearchResponse,
     mockApiCall: suspend () -> MultiSearchResponse,
-    loader: suspend () -> LoadResult<Int, ResultsItemSearchResponse>,
-    resultAssertions: (LoadResult.Page<Int, ResultsItemSearchResponse>) -> Unit,
+    loader: suspend () -> LoadResult<Int, MultiSearchResponseItem>,
+    resultAssertions: (LoadResult.Page<Int, MultiSearchResponseItem>) -> Unit,
   ) {
     coEvery { mockApiCall() } returns mockResults
 
@@ -293,9 +293,9 @@ object TestHelper {
   }
 
   /**
-   * Builds a default [MovieTvResponse] from a list of items.
+   * Builds a default [MediaResponse] from a list of items.
    */
-  fun defaultMovieTvResponse(list: List<ResultItemResponse>) = MovieTvResponse(
+  fun defaultMediaResponse(list: List<MediaResponseItem>) = MediaResponse(
     page = 1,
     results = list,
     totalResults = 2,
@@ -305,7 +305,7 @@ object TestHelper {
   /**
    * Builds a default [MultiSearchResponse] from a list of items.
    */
-  fun defaultMultiSearchResponse(list: List<ResultsItemSearchResponse>) = MultiSearchResponse(
+  fun defaultMultiSearchResponse(list: List<MultiSearchResponseItem>) = MultiSearchResponse(
     page = 1,
     results = list,
     totalResults = 3,
@@ -313,14 +313,14 @@ object TestHelper {
   )
 
   /**
-   * Collects and verifies a [PagingData] flow for [ResultItemResponse].
+   * Collects and verifies a [PagingData] flow for [MediaResponseItem].
    *
    * @param testScope The [TestScope] for advancing coroutine execution.
    * @param itemAssertions Assertions to verify the loaded items.
    */
-  suspend fun Flow<PagingData<ResultItemResponse>>.testPagingFlow(
+  suspend fun Flow<PagingData<MediaResponseItem>>.testPagingFlow(
     testScope: TestScope,
-    itemAssertions: (List<ResultItemResponse>) -> Unit,
+    itemAssertions: (List<MediaResponseItem>) -> Unit,
   ) {
     test {
       val pagingData = awaitItem()
@@ -337,11 +337,11 @@ object TestHelper {
   }
 
   /**
-   * Collects and verifies a [PagingData] flow for [ResultsItemSearchResponse].
+   * Collects and verifies a [PagingData] flow for [MultiSearchResponseItem].
    */
-  suspend fun Flow<PagingData<ResultsItemSearchResponse>>.testPagingFlowSearch(
+  suspend fun Flow<PagingData<MultiSearchResponseItem>>.testPagingFlowSearch(
     testScope: TestScope,
-    itemAssertions: (List<ResultsItemSearchResponse>) -> Unit,
+    itemAssertions: (List<MultiSearchResponseItem>) -> Unit,
   ) {
     test {
       val pagingData = awaitItem()

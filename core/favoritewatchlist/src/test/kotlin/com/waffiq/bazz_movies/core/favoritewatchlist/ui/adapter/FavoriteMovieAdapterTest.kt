@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE_FORMATTED
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
@@ -47,7 +47,7 @@ class FavoriteMovieAdapterTest {
   private val movieOriginalTitle = "Test Movie Original Title"
   private val movieOriginalName = "Test Movie Original Name"
 
-  private val movieData = ResultItem(
+  private val movieData = MediaItem(
     id = 1,
     title = movieTitle,
     overview = "Test Overview",
@@ -85,7 +85,7 @@ class FavoriteMovieAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "movie",
             name = "Test Movie Name",
             title = movieTitle,
@@ -114,7 +114,7 @@ class FavoriteMovieAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "movie",
             title = movieTitle,
             releaseDate = TEST_DATE,
@@ -139,7 +139,7 @@ class FavoriteMovieAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "movie",
             originalTitle = movieOriginalTitle,
             releaseDate = null,
@@ -163,7 +163,7 @@ class FavoriteMovieAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem(
+          MediaItem(
             mediaType = "movie",
             originalName = movieOriginalName,
             releaseDate = null,
@@ -188,7 +188,7 @@ class FavoriteMovieAdapterTest {
     adapter.submitData(
       PagingData.from(
         listOf(
-          ResultItem()
+          MediaItem()
         )
       )
     )
@@ -203,12 +203,12 @@ class FavoriteMovieAdapterTest {
   @Test
   fun onBindViewHolder_whenDataIsNull_handlesNullDataProperly() {
     // create a minimal test adapter with just the functionality needed for testing
-    val testAdapter = object : PagingDataAdapter<ResultItem, RecyclerView.ViewHolder>(
+    val testAdapter = object : PagingDataAdapter<MediaItem, RecyclerView.ViewHolder>(
       FavoriteMovieAdapter.DIFF_CALLBACK
     ) {
       // simplified test method that focuses only on the null handling behavior
       fun testNullDataHandling() {
-        val data: ResultItem? = null
+        val data: MediaItem? = null
 
         // test the null check logic
         if (data != null) {
@@ -259,32 +259,32 @@ class FavoriteMovieAdapterTest {
 
   @Test
   fun areItemsTheSame_whenIdAndMediaTypeIsSame_returnsTrue() {
-    val oldItem = ResultItem(id = 1, mediaType = "movie")
-    val newItem = ResultItem(id = 1, mediaType = "movie")
+    val oldItem = MediaItem(id = 1, mediaType = "movie")
+    val newItem = MediaItem(id = 1, mediaType = "movie")
 
     assertTrue(FavoriteMovieAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areItemsTheSame_whenDifferentId_returnsFalse() {
-    val oldItem = ResultItem(id = 1, mediaType = "movie")
-    val newItem1 = ResultItem(id = 2, mediaType = "movie") // different ID
+    val oldItem = MediaItem(id = 1, mediaType = "movie")
+    val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
     assertFalse(FavoriteMovieAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
   }
 
   @Test
   fun areContentsTheSame_whenIdAndMediaTypeIsSame_returnsTrue() {
-    val oldItem = ResultItem(id = 1, mediaType = "movie", title = "Movie 1")
-    val newItem = ResultItem(id = 1, mediaType = "movie", title = "Different Title")
+    val oldItem = MediaItem(id = 1, mediaType = "movie", title = "Movie 1")
+    val newItem = MediaItem(id = 1, mediaType = "movie", title = "Different Title")
 
     assertTrue(FavoriteMovieAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
   fun areContentsTheSame_whenDifferentId_returnsFalse() {
-    val oldItem = ResultItem(id = 1, mediaType = "movie")
-    val newItem1 = ResultItem(id = 2, mediaType = "movie") // different ID
+    val oldItem = MediaItem(id = 1, mediaType = "movie")
+    val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
     assertFalse(FavoriteMovieAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
   }

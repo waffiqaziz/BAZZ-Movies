@@ -1,24 +1,24 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.domain.GenresItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.BelongsToCollectionResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesItemValueResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
 import com.waffiq.bazz_movies.feature.detail.domain.model.BelongsToCollection
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toGenresItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toProductionCompaniesItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toProductionCountriesItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toSpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
 
 object MovieMapper {
 
-  fun DetailMovieResponse.toDetailMovie() = DetailMovie(
+  fun DetailMovieResponse.toDetailMovie() = MovieDetail(
     originalLanguage = originalLanguage,
     imdbId = imdbId,
     video = video,
@@ -51,12 +51,12 @@ object MovieMapper {
     listReleaseDatesItem = listReleaseDatesItemResponse?.map { it?.toReleaseDatesItem() }
   )
 
-  private fun ReleaseDatesItemResponse.toReleaseDatesItem() = ReleaseDatesItem(
+  private fun ReleaseDatesResponseItem.toReleaseDatesItem() = ReleaseDatesItem(
     iso31661 = iso31661,
-    listReleaseDatesitemValue = listReleaseDateItemValueResponse?.map { it.toReleaseDatesItemValue() }
+    listReleaseDatesitemValue = listReleaseDateResponseItemValue?.map { it.toReleaseDatesItemValue() }
   )
 
-  private fun ReleaseDatesItemValueResponse.toReleaseDatesItemValue() = ReleaseDatesItemValue(
+  private fun ReleaseDatesResponseItemValue.toReleaseDatesItemValue() = ReleaseDatesItemValue(
     descriptors = descriptors,
     note = note,
     type = type,

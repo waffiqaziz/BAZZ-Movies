@@ -1,14 +1,14 @@
 package com.waffiq.bazz_movies.feature.home.domain.usecase.getListMovie
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetListMoviesUseCase {
-  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>>
-  fun getPagingPopularMovies(): Flow<PagingData<ResultItem>>
-  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>>
-  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>>
+  fun getTopRatedMovies(): Flow<PagingData<MediaItem>>
+  fun getPopularMovies(): Flow<PagingData<MediaItem>>
+  fun getTrendingThisWeek(region: String): Flow<PagingData<MediaItem>>
+  fun getTrendingToday(region: String): Flow<PagingData<MediaItem>>
+  fun getUpcomingMovies(region: String): Flow<PagingData<MediaItem>>
+  fun getPlayingNowMovies(region: String): Flow<PagingData<MediaItem>>
 }

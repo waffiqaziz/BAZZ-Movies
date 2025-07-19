@@ -3,38 +3,38 @@ package com.waffiq.bazz_movies.core.network.testutils
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AvatarTMDbResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.GravatarResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.GenresItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.ProductionCountriesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCastItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCrewItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.BelongsToCollectionResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesItemValueResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.releasedates.ReleaseDatesResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ContentRatingsItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ContentRatingsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.CreatedByItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.LastEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.NetworksItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ProductionCompaniesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SeasonsItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SpokenLanguagesItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.CountryProviderDataResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.ProviderResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCastResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCrewResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponseItemValue
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CastItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CrewItemResponse
@@ -45,14 +45,14 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Pro
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 
 @Suppress("LargeClass")
 object DataDumpManager {
 
-  val movieDump1 = ResultItemResponse(
+  val movieDump1 = MediaResponseItem(
     id = 278,
     title = "The Shawshank Redemption",
     originalTitle = "The Shawshank Redemption",
@@ -76,7 +76,7 @@ object DataDumpManager {
     video = false
   )
 
-  val movieDump2 = ResultItemResponse(
+  val movieDump2 = MediaResponseItem(
     id = 238,
     title = "The Godfather",
     originalTitle = "The Godfather",
@@ -98,7 +98,7 @@ object DataDumpManager {
     video = false
   )
 
-  val movieDump3 = ResultItemResponse(
+  val movieDump3 = MediaResponseItem(
     id = 240,
     title = "The Godfather Part II",
     originalTitle = "The Godfather Part II",
@@ -119,7 +119,7 @@ object DataDumpManager {
     video = false
   )
 
-  val movieDump4 = ResultItemResponse(
+  val movieDump4 = MediaResponseItem(
     id = 424,
     title = "Schindler's List",
     originalTitle = "Schindler's List",
@@ -139,7 +139,7 @@ object DataDumpManager {
     video = false
   )
 
-  val movieDump5 = ResultItemResponse(
+  val movieDump5 = MediaResponseItem(
     id = 389,
     title = "12 Angry Men",
     originalTitle = "12 Angry Men",
@@ -161,7 +161,7 @@ object DataDumpManager {
     video = false
   )
 
-  val movieDump6 = ResultItemResponse(
+  val movieDump6 = MediaResponseItem(
     id = 823219,
     title = "Flow",
     originalTitle = "Straume",
@@ -181,7 +181,7 @@ object DataDumpManager {
     voteCount = 558
   )
 
-  val movieDump7 = ResultItemResponse(
+  val movieDump7 = MediaResponseItem(
     id = 402431,
     title = "Wicked",
     originalTitle = "Wicked",
@@ -203,7 +203,7 @@ object DataDumpManager {
     voteCount = 1071
   )
 
-  val tvShowDump1 = ResultItemResponse(
+  val tvShowDump1 = MediaResponseItem(
     id = 93405,
     name = "Squid Game",
     originalTitle = null,
@@ -223,7 +223,7 @@ object DataDumpManager {
     originCountry = listOf("KR")
   )
 
-  val tvShowDump2 = ResultItemResponse(
+  val tvShowDump2 = MediaResponseItem(
     id = 69316,
     title = "Eternal Love",
     originalTitle = "三生三世十里桃花",
@@ -246,7 +246,7 @@ object DataDumpManager {
     voteCount = 48
   )
 
-  val tvShowDump3 = ResultItemResponse(
+  val tvShowDump3 = MediaResponseItem(
     id = 46437,
     title = "Kingdom",
     originalTitle = "キングダム",
@@ -339,7 +339,7 @@ object DataDumpManager {
     voteCount = 8557
   )
 
-  val personDump1 = ResultsItemSearchResponse(
+  val personDump1 = MultiSearchResponseItem(
     id = 18918,
     name = "Dwayne Johnson",
     originalName = "Dwayne Johnson",
@@ -356,7 +356,7 @@ object DataDumpManager {
     )
   )
 
-  val movieSearchDump = ResultsItemSearchResponse(
+  val movieSearchDump = MultiSearchResponseItem(
     id = 19995,
     title = "Avatar",
     originalTitle = "Avatar",
@@ -379,7 +379,7 @@ object DataDumpManager {
     voteCount = 31734.0,
   )
 
-  val movieTvCastItemResponseDump = MovieTvCastItemResponse(
+  val mediaCastItemResponseDump = MediaCastResponseItem(
     castId = 13,
     character = "Momo",
     gender = 1,
@@ -394,7 +394,7 @@ object DataDumpManager {
     order = 0
   )
 
-  val movieTvCrewItemResponseDump = MovieTvCrewItemResponse(
+  val mediaCrewItemResponseDump = MediaCrewResponseItem(
     gender = 0,
     creditId = "64fc09ebf85958011ca070b4",
     knownForDepartment = "Visual Effects",
@@ -408,11 +408,11 @@ object DataDumpManager {
     job = "VFX Supervisor"
   )
 
-  val movieTvCreditsResponseDump1 = MovieTvCreditsResponse(
+  val mediaCreditsResponseDump1 = MediaCreditsResponse(
     id = 1175842,
     cast = listOf(
-      movieTvCastItemResponseDump,
-      MovieTvCastItemResponse(
+      mediaCastItemResponseDump,
+      MediaCastResponseItem(
         castId = 14,
         character = "",
         gender = 2,
@@ -426,7 +426,7 @@ object DataDumpManager {
         adult = false,
         order = 1
       ),
-      MovieTvCastItemResponse(
+      MediaCastResponseItem(
         castId = 15,
         character = "",
         gender = 1,
@@ -442,8 +442,8 @@ object DataDumpManager {
       )
     ),
     crew = listOf(
-      movieTvCrewItemResponseDump,
-      MovieTvCrewItemResponse(
+      mediaCrewItemResponseDump,
+      MediaCrewResponseItem(
         gender = 2,
         creditId = "64fc0a08f8595800adc950df",
         knownForDepartment = "Directing",
@@ -456,7 +456,7 @@ object DataDumpManager {
         department = "Directing",
         job = "Director"
       ),
-      MovieTvCrewItemResponse(
+      MediaCrewResponseItem(
         gender = 2,
         creditId = "64fc0a2af85958013a8d8b8a",
         knownForDepartment = "Production",
@@ -472,10 +472,10 @@ object DataDumpManager {
     )
   )
 
-  val movieTvCreditsResponseDump2 = MovieTvCreditsResponse(
+  val mediaCreditsResponseDump2 = MediaCreditsResponse(
     id = 246,
     cast = listOf(
-      MovieTvCastItemResponse(
+      MediaCastResponseItem(
         adult = false,
         gender = 2,
         id = 60251,
@@ -488,7 +488,7 @@ object DataDumpManager {
         creditId = "5253483519c29579400de740",
         order = 0
       ),
-      MovieTvCastItemResponse(
+      MediaCastResponseItem(
         adult = false,
         gender = 1,
         id = 52404,
@@ -501,7 +501,7 @@ object DataDumpManager {
         creditId = "5253483519c29579400de75e",
         order = 1
       ),
-      MovieTvCastItemResponse(
+      MediaCastResponseItem(
         adult = false,
         gender = 2,
         id = 60230,
@@ -516,7 +516,7 @@ object DataDumpManager {
       ),
     ),
     crew = listOf(
-      MovieTvCrewItemResponse(
+      MediaCrewResponseItem(
         adult = false,
         gender = 0,
         id = 1447300,
@@ -529,7 +529,7 @@ object DataDumpManager {
         department = "Editing",
         job = "Editorial Manager"
       ),
-      MovieTvCrewItemResponse(
+      MediaCrewResponseItem(
         adult = false,
         gender = 2,
         id = 1450350,
@@ -542,7 +542,7 @@ object DataDumpManager {
         department = "Directing",
         job = "Layout"
       ),
-      MovieTvCrewItemResponse(
+      MediaCrewResponseItem(
         adult = false,
         gender = 2,
         id = 1190518,
@@ -603,7 +603,7 @@ object DataDumpManager {
     writer = "James Cameron, Rick Jaffa, Amanda Silver"
   )
 
-  val videoItemMovieResponseDump1 = VideoItemResponse(
+  val videoItemMovieResponseDump1 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -616,7 +616,7 @@ object DataDumpManager {
     key = "O_hKC3gRvzw"
   )
 
-  val videoItemMovieResponseDump2 = VideoItemResponse(
+  val videoItemMovieResponseDump2 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -629,7 +629,7 @@ object DataDumpManager {
     key = "YkPvQ2hqnMY"
   )
 
-  val videoItemMovieResponseDump3 = VideoItemResponse(
+  val videoItemMovieResponseDump3 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -651,7 +651,7 @@ object DataDumpManager {
     )
   )
 
-  val videoItemTvResponseDump1 = VideoItemResponse(
+  val videoItemTvResponseDump1 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -664,7 +664,7 @@ object DataDumpManager {
     key = "GwaRztMaoY0"
   )
 
-  val videoItemTvResponseDump2 = VideoItemResponse(
+  val videoItemTvResponseDump2 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -677,7 +677,7 @@ object DataDumpManager {
     key = "VpO6APNqY1c"
   )
 
-  val videoItemTvResponseDump3 = VideoItemResponse(
+  val videoItemTvResponseDump3 = VideoResponseItem(
     site = "YouTube",
     size = 1080,
     iso31661 = "US",
@@ -693,7 +693,7 @@ object DataDumpManager {
   val watchProviderResponseDump = WatchProvidersResponse(
     id = 1234567890,
     results = mapOf(
-      "US" to CountryProviderDataResponse(
+      "US" to WatchProvidersResponseItem(
         link = "https://www.link.com/us/movie/example-movie",
         ads = listOf(
           ProviderResponse(
@@ -735,7 +735,7 @@ object DataDumpManager {
         ),
         free = null
       ),
-      "ID" to CountryProviderDataResponse(
+      "ID" to WatchProvidersResponseItem(
         link = "https://www.link.com/id/movie/example-movie",
         ads = null,
         buy = listOf(
@@ -772,7 +772,7 @@ object DataDumpManager {
     backdropPath = "/dTq7mGyAR5eAydR532feWfjJjzm.jpg"
   )
 
-  val productionCompaniesItemResponseDump = ProductionCompaniesItemResponse(
+  val productionCompaniesItemResponseDump = ProductionCompaniesResponseItem(
     logoPath = "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png",
     name = "Marvel Studios",
     id = 420,
@@ -787,33 +787,33 @@ object DataDumpManager {
     backdropPath = "/lD4mhKoiaXpKrtBEjACeWgz7w0O.jpg",
     revenue = 1338073645,
     listGenresItemResponse = listOf(
-      GenresItemResponse(id = 28, name = "Action"),
-      GenresItemResponse(id = 35, name = "Comedy"),
-      GenresItemResponse(id = 878, name = "Science Fiction")
+      GenresResponseItem(id = 28, name = "Action"),
+      GenresResponseItem(id = 35, name = "Comedy"),
+      GenresResponseItem(id = 878, name = "Science Fiction")
     ),
     popularity = 856.096,
     releaseDatesResponse = ReleaseDatesResponse(
       listReleaseDatesItemResponse = listOf(
-        ReleaseDatesItemResponse(
+        ReleaseDatesResponseItem(
           iso31661 = "AD",
-          listReleaseDateItemValueResponse = listOf(
-            ReleaseDatesItemValueResponse(
+          listReleaseDateResponseItemValue = listOf(
+            ReleaseDatesResponseItemValue(
               releaseDate = "2024-11-12T00:00:00.000Z",
               note = "Disney+",
               type = 4
             )
           )
         ),
-        ReleaseDatesItemResponse(
+        ReleaseDatesResponseItem(
           iso31661 = "AE",
-          listReleaseDateItemValueResponse = listOf(
-            ReleaseDatesItemValueResponse(releaseDate = "2024-07-25T00:00:00.000Z")
+          listReleaseDateResponseItemValue = listOf(
+            ReleaseDatesResponseItemValue(releaseDate = "2024-07-25T00:00:00.000Z")
           )
         )
       )
     ),
     listProductionCountriesItemResponse = listOf(
-      ProductionCountriesItemResponse(iso31661 = "US", name = "United States of America")
+      ProductionCountriesResponseItem(iso31661 = "US", name = "United States of America")
     ),
     id = 533535,
     voteCount = 6283,
@@ -827,11 +827,11 @@ object DataDumpManager {
     runtime = 128,
     posterPath = "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
     listSpokenLanguagesItemResponse = listOf(
-      SpokenLanguagesItemResponse(name = "English", iso6391 = "en", englishName = "English")
+      SpokenLanguagesResponseItem(name = "English", iso6391 = "en", englishName = "English")
     ),
     listProductionCompaniesItemResponse = listOf(
       productionCompaniesItemResponseDump,
-      ProductionCompaniesItemResponse(
+      ProductionCompaniesResponseItem(
         logoPath = "/hx0C1XcSxGgat8N62GpxoJGTkCk.png",
         name = "Maximum Effort",
         id = 104228,
@@ -891,7 +891,7 @@ object DataDumpManager {
     posterPath = "/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg"
   )
 
-  val spokenLanguagesItemResponseDump = SpokenLanguagesItemResponse(
+  val spokenLanguagesItemResponseDump = SpokenLanguagesResponseItem(
     englishName = "Korean",
     iso6391 = "ko",
     name = "한국어/조선말"
@@ -923,12 +923,12 @@ object DataDumpManager {
     type = "Miniseries",
     backdropPath = "/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg",
     genres = listOf(
-      GenresItemResponse(name = "Drama", id = 18),
-      GenresItemResponse(name = "Mystery", id = 9648)
+      GenresResponseItem(name = "Drama", id = 18),
+      GenresResponseItem(name = "Mystery", id = 9648)
     ),
     popularity = 394.215,
     productionCountriesResponse = listOf(
-      ProductionCountriesItemResponse(
+      ProductionCountriesResponseItem(
         iso31661 = "KR",
         name = "South Korea"
       )
@@ -949,13 +949,13 @@ object DataDumpManager {
     originCountry = listOf("KR"),
     spokenLanguagesResponse = listOf(spokenLanguagesItemResponseDump),
     productionCompaniesResponse = listOf(
-      ProductionCompaniesItemResponse(
+      ProductionCompaniesResponseItem(
         id = 36225,
         logoPath = "/haNfBy6ZS1a1teY9JXNHHkFhZEj.png",
         name = "Bon Factory",
         originCountry = "KR"
       ),
-      ProductionCompaniesItemResponse(
+      ProductionCompaniesResponseItem(
         id = 140692,
         logoPath = "/blHOMOg29qc8GmSaiOWYNsxe0vC.png",
         name = "Baram Pictures",
@@ -988,14 +988,14 @@ object DataDumpManager {
     instagramId = "avatarthelastairbender"
   )
 
-  val statedResponseDump1 = StatedResponse(
+  val statedResponseDump1 = MediaStateResponse(
     id = 12345,
     favorite = true,
     ratedResponse = RatedResponse.Value(10.0),
     watchlist = false,
   )
 
-  val statedResponseDump2 = StatedResponse(
+  val statedResponseDump2 = MediaStateResponse(
     id = 544321,
     favorite = false,
     ratedResponse = RatedResponse.Unrated,

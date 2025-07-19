@@ -17,16 +17,16 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class SearchAdapter(private val navigator: INavigator) :
-  PagingDataAdapter<ResultsItemSearch, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<MultiSearchItem, SearchAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
@@ -36,7 +36,7 @@ class SearchAdapter(private val navigator: INavigator) :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position) ?: return
-    if (data.mediaType == PERSON_MEDIA_TYPE) holder.bindPerson(data) else holder.bindMovieTv(data)
+    if (data.mediaType == PERSON_MEDIA_TYPE) holder.bindPerson(data) else holder.bindMultiSearch(data)
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
@@ -44,10 +44,10 @@ class SearchAdapter(private val navigator: INavigator) :
 
   inner class ViewHolder(private var binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bindPerson(data: ResultsItemSearch) {
+    fun bindPerson(data: MultiSearchItem) {
       showDataPerson(binding, data)
       binding.containerResult.setOnClickListener {
-        val person = MovieTvCastItem(
+        val person = MediaCastItem(
           id = data.id,
           profilePath = data.profilePath,
           name = data.name,
@@ -57,10 +57,10 @@ class SearchAdapter(private val navigator: INavigator) :
       }
     }
 
-    fun bindMovieTv(data: ResultsItemSearch) {
-      showDataMovieTv(binding, data, itemView)
+    fun bindMultiSearch(data: MultiSearchItem) {
+      showMediaData(binding, data, itemView)
       binding.containerResult.setOnClickListener {
-        val resultItem = ResultItem(
+        val mediaItem = MediaItem(
           posterPath = data.posterPath,
           backdropPath = data.backdropPath,
           firstAirDate = data.firstAirDate,
@@ -74,12 +74,12 @@ class SearchAdapter(private val navigator: INavigator) :
           listGenreIds = data.listGenreIds,
           id = data.id
         )
-        navigator.openDetails(itemView.context, resultItem)
+        navigator.openDetails(itemView.context, mediaItem)
       }
     }
   }
 
-  private fun showDataPerson(binding: ItemResultBinding, data: ResultsItemSearch) {
+  private fun showDataPerson(binding: ItemResultBinding, data: MultiSearchItem) {
     binding.ivPicture.contentDescription =
       data.name ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -101,8 +101,8 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
-  private fun showDataMovieTv(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
-    setImageMovieTv(binding, data)
+  private fun showMediaData(binding: ItemResultBinding, data: MultiSearchItem, view: View) {
+    setImageMedia(binding, data)
     binding.tvYearReleased.text = when {
       !data.releaseDate.isNullOrEmpty() && !data.releaseDate.isBlank() -> data.releaseDate
       !data.firstAirDate.isNullOrEmpty() && !data.firstAirDate.isBlank() -> data.firstAirDate
@@ -113,7 +113,7 @@ class SearchAdapter(private val navigator: INavigator) :
     showGenreMovie(binding, data, view)
   }
 
-  private fun showGenreMovie(binding: ItemResultBinding, data: ResultsItemSearch, view: View) {
+  private fun showGenreMovie(binding: ItemResultBinding, data: MultiSearchItem, view: View) {
     binding.tvGenre.text =
       if (data.listGenreIds?.isEmpty() == true) {
         view.context.getString(not_available)
@@ -122,7 +122,7 @@ class SearchAdapter(private val navigator: INavigator) :
       }
   }
 
-  private fun setImageMovieTv(binding: ItemResultBinding, data: ResultsItemSearch) {
+  private fun setImageMedia(binding: ItemResultBinding, data: MultiSearchItem) {
     binding.ivPicture.contentDescription =
       data.name ?: data.title ?: data.originalTitle ?: data.originalName
     Glide.with(binding.ivPicture)
@@ -140,17 +140,17 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultsItemSearch>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MultiSearchItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultsItemSearch,
-        newItem: ResultsItemSearch
+        oldItem: MultiSearchItem,
+        newItem: MultiSearchItem
       ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultsItemSearch,
-        newItem: ResultsItemSearch
+        oldItem: MultiSearchItem,
+        newItem: MultiSearchItem
       ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
       }

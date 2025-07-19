@@ -5,8 +5,8 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -41,34 +41,34 @@ class SearchRepositoryImplTestTwo {
   }
 
   @Test
-  fun getPagingSearch_whenSearching_shouldTransformDataCorrectly() = runTest {
+  fun search_whenSearching_shouldTransformDataCorrectly() = runTest {
     val query = "Avengers"
 
-    val responseItem1 = ResultsItemSearchResponse(id = 1, title = "Mock Movie 1")
-    val responseItem2 = ResultsItemSearchResponse(id = 2, title = "Mock Movie 2")
+    val responseItem1 = MultiSearchResponseItem(id = 1, title = "Mock Movie 1")
+    val responseItem2 = MultiSearchResponseItem(id = 2, title = "Mock Movie 2")
 
     val mockPagingData = PagingData.from(listOf(responseItem1, responseItem2))
 
-    val expectedItem1 = ResultsItemSearch(id = 1, title = "Mock Movie 1")
-    val expectedItem2 = ResultsItemSearch(id = 2, title = "Mock Movie 2")
+    val expectedItem1 = MultiSearchItem(id = 1, title = "Mock Movie 1")
+    val expectedItem2 = MultiSearchItem(id = 2, title = "Mock Movie 2")
 
-    every { mockMovieDataSource.getPagingSearch(query) } returns flowOf(mockPagingData)
-    val resultPagingData = searchRepository.getPagingSearch(query).first()
+    every { mockMovieDataSource.search(query) } returns flowOf(mockPagingData)
+    val resultPagingData = searchRepository.search(query).first()
 
     // Then
     // Use AsyncPagingDataDiffer to extract the actual items
     val differ = AsyncPagingDataDiffer(
-      diffCallback = object : DiffUtil.ItemCallback<ResultsItemSearch>() {
+      diffCallback = object : DiffUtil.ItemCallback<MultiSearchItem>() {
         override fun areItemsTheSame(
-          oldItem: ResultsItemSearch,
-          newItem: ResultsItemSearch
+          oldItem: MultiSearchItem,
+          newItem: MultiSearchItem
         ): Boolean {
           return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-          oldItem: ResultsItemSearch,
-          newItem: ResultsItemSearch
+          oldItem: MultiSearchItem,
+          newItem: MultiSearchItem
         ): Boolean {
           return oldItem == newItem
         }
@@ -81,13 +81,13 @@ class SearchRepositoryImplTestTwo {
     testDispatcher.scheduler.advanceUntilIdle() // Wait for async operations
 
     // Verify the transformed items
-    val resultItems = differ.snapshot().items
-    assertEquals(2, resultItems.size)
-    assertEquals(expectedItem1, resultItems[0])
-    assertEquals(expectedItem2, resultItems[1])
+    val mediaItems = differ.snapshot().items
+    assertEquals(2, mediaItems.size)
+    assertEquals(expectedItem1, mediaItems[0])
+    assertEquals(expectedItem2, mediaItems[1])
 
     // Verify method was called
-    verify(exactly = 1) { mockMovieDataSource.getPagingSearch(query) }
+    verify(exactly = 1) { mockMovieDataSource.search(query) }
     confirmVerified(mockMovieDataSource)
   }
 

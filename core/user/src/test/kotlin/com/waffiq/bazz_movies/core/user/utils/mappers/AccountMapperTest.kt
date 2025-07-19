@@ -154,7 +154,7 @@ class AccountMapperTest {
   }
 
   @Test
-  fun oAccountDetails_withSomeNullValues_returnsAccountDetails() {
+  fun toAccountDetails_withSomeNullValues_returnsAccountDetails() {
     val response = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "id",
