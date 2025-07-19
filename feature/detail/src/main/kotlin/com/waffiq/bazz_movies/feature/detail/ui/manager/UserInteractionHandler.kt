@@ -26,17 +26,17 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.not_available_full
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
-import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
+import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
 import java.util.Locale
@@ -138,7 +138,6 @@ class UserInteractionHandler(
       watchlist = isWatch
     }
   }
-
 
   /**
    * Observes result of add/remove item from favorite/watchlist.
@@ -251,7 +250,6 @@ class UserInteractionHandler(
     }
     binding.swipeRefresh.isRefreshing = false
   }
-
 
   /**
    * Retrieves stated data (favorite/watchlist) from TMDB based on media type.

@@ -14,9 +14,9 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetTvStateUseCase

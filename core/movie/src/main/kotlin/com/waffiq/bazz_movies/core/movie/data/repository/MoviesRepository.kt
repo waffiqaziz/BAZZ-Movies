@@ -1,12 +1,12 @@
 package com.waffiq.bazz_movies.core.movie.data.repository
 
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toPostFavoriteWatchlist

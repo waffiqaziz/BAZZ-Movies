@@ -18,8 +18,8 @@ import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailMovieDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailMovieUIManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
 import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -150,7 +150,8 @@ class MediaDetailActivity : AppCompatActivity() {
     }
 
     watchProvidersManager.observeWatchProviders(
-      detailViewModel.watchProvidersUiState, this
+      detailViewModel.watchProvidersUiState,
+      this
     )
   }
 

@@ -43,8 +43,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWith
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter

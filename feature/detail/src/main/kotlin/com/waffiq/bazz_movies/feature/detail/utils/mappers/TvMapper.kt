@@ -13,10 +13,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem

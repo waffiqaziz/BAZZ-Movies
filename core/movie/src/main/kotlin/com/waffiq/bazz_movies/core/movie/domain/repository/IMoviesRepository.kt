@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.domain.repository
 
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import kotlinx.coroutines.flow.Flow

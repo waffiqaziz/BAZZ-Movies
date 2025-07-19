@@ -4,8 +4,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 
 /**
  * Manages the loading of detailed movie or TV show data for the detail screen.

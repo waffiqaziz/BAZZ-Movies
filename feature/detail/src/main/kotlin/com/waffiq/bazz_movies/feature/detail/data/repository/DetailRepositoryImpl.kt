@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult

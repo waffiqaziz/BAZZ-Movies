@@ -1,12 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating

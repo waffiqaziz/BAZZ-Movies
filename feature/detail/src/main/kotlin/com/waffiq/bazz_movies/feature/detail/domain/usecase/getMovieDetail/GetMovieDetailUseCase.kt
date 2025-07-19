@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
