@@ -29,7 +29,7 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".feature.detail.ui.DetailMovieActivity"
+      android:name=".feature.detail.ui.MediaDetailActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity

@@ -40,7 +40,7 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
@@ -70,7 +70,7 @@ class SearchFragmentTest {
   private lateinit var toolbar: ActionBar
   private lateinit var searchAdapter: SearchAdapter
 
-  private val searchResultsFlow: Flow<PagingData<ResultsItemSearch>> = flowOf()
+  private val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf()
   private val queryLiveData = MutableLiveData<String>()
   private val expandSearchViewLiveData = MutableLiveData<Boolean>()
   private val testQuery = "test_query"

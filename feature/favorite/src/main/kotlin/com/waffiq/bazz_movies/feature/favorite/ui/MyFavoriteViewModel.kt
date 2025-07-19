@@ -11,12 +11,12 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedMovieUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetStatedTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetMovieStateUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetTvStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
@@ -30,8 +30,8 @@ class MyFavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,
-  private val getStatedMovieUseCase: GetStatedMovieUseCase,
-  private val getStatedTvUseCase: GetStatedTvUseCase
+  private val getStatedMovieUseCase: GetMovieStateUseCase,
+  private val getStatedTvUseCase: GetTvStateUseCase
 ) : ViewModel() {
 
   private val _snackBarAlready = MutableLiveData<Event<String>>()
@@ -41,11 +41,11 @@ class MyFavoriteViewModel @Inject constructor(
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
 
   // region NETWORK
-  fun favoriteMovies(sesId: String): Flow<PagingData<ResultItem>> =
-    getFavoriteMovieUseCase.getPagingFavoriteMovies(sesId).cachedIn(viewModelScope)
+  fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
+    getFavoriteMovieUseCase.getFavoriteMovies(sesId).cachedIn(viewModelScope)
 
-  fun favoriteTvSeries(sesId: String): Flow<PagingData<ResultItem>> =
-    getFavoriteTvUseCase.getPagingFavoriteTv(sesId).cachedIn(viewModelScope)
+  fun favoriteTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
+    getFavoriteTvUseCase.getFavoriteTv(sesId).cachedIn(viewModelScope)
 
   fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
     viewModelScope.launch {
@@ -89,7 +89,7 @@ class MyFavoriteViewModel @Inject constructor(
     title: String
   ) {
     viewModelScope.launch {
-      getStatedMovieUseCase.getStatedMovie(user.token, id).collect { outcome ->
+      getStatedMovieUseCase.getMovieState(user.token, id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             if (outcome.data.watchlist) {
@@ -119,7 +119,7 @@ class MyFavoriteViewModel @Inject constructor(
     title: String
   ) {
     viewModelScope.launch {
-      getStatedTvUseCase.getStatedTv(user.token, id).collect { outcome ->
+      getStatedTvUseCase.getTvState(user.token, id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             if (outcome.data.watchlist) {

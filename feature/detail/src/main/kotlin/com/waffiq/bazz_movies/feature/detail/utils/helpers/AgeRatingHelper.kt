@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 
 /**
@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 object AgeRatingHelper {
   // region CALCULATE AGE RATING MOVIE
   fun getAgeRating(
-    data: DetailMovie?,
+    data: MovieDetail?,
     userRegion: String,
   ): String {
     // if age rating based on user region return empty, get age rating from any region
@@ -18,23 +18,28 @@ object AgeRatingHelper {
       ?: getTransformAgeRatingMovie(data, "false")
   }
 
-  private fun getTransformAgeRatingMovie(data: DetailMovie?, region: String): String {
+  private fun getTransformAgeRatingMovie(data: MovieDetail?, region: String): String {
+    // return early if data is null
+    if (data == null || data.releaseDates == null || data.releaseDates.listReleaseDatesItem == null) {
+      return ""
+    }
+
+    val releaseDatesItems = data.releaseDates.listReleaseDatesItem
+
     return if (region != "false") { // find age rating based on user region
-      data?.releaseDates?.listReleaseDatesItem
-        ?.find { it?.iso31661 == region }
-        ?.let { regionItem ->
-          regionItem.listReleaseDatesitemValue
-            ?.find { it.certification?.isNotEmpty() == true }
-            ?.certification
-        } ?: ""
+      releaseDatesItems
+        .find { it?.iso31661 == region }
+        ?.listReleaseDatesitemValue
+        ?.find { !it.certification.isNullOrEmpty() }
+        ?.certification
+        ?: ""
     } else { // find age rating from any country
-      data?.releaseDates?.listReleaseDatesItem
-        ?.asSequence() // Convert to sequence for lazy evaluation
-        ?.flatMap {
-          it?.listReleaseDatesitemValue?.asSequence() ?: emptySequence()
-        } // Flatten the list of release dates
-        ?.find { it.certification?.isNotEmpty() == true } // Find the first non-null and non-empty certification
-        ?.certification ?: ""
+      releaseDatesItems
+        .asSequence()
+        .flatMap { item -> item?.listReleaseDatesitemValue?.asSequence() ?: emptySequence() }
+        .firstOrNull { !it.certification.isNullOrEmpty() }
+        ?.certification
+        ?: ""
     }
   }
   // endregion CALCULATE AGE RATING MOVIE
@@ -51,12 +56,15 @@ object AgeRatingHelper {
 
   private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String =
     if (region != "false") {
+      // try to find rating for the specific user region
       data?.contentRatings?.contentRatingsItem
-        ?.filter { it?.iso31661 == "US" || it?.iso31661 == region }
-        // Map to ratings, exclude empty/null values and get the first value
-        ?.firstNotNullOfOrNull { contentRatingsItem ->
-          contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        } ?: ""
+        ?.find { it?.iso31661 == region }
+        ?.rating?.takeIf { it.isNotEmpty() }
+        ?: // if not found or empty, try US as fallback
+        data?.contentRatings?.contentRatingsItem
+          ?.find { it?.iso31661 == "US" }
+          ?.rating?.takeIf { it.isNotEmpty() }
+        ?: ""
     } else {
       data?.contentRatings?.contentRatingsItem
         // Map to ratings, exclude empty/null values and get the first value

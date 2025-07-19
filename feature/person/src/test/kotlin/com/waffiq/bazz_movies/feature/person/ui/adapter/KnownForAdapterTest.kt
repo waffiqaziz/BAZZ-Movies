@@ -9,7 +9,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
@@ -160,8 +160,8 @@ class KnownForAdapterTest {
     adapter.setCast(listOf(castItem))
     adapter.onBindViewHolder(viewHolder, 0)
 
-    // use slot to capture ResultItem
-    val resultSlot = slot<ResultItem>()
+    // use slot to capture MediaItem
+    val resultSlot = slot<MediaItem>()
 
     binding.container.performClick()
 
@@ -171,7 +171,7 @@ class KnownForAdapterTest {
     // verify navigator.openDetails() is called with the correct argument
     verify { navigator.openDetails(any(), capture(resultSlot)) }
 
-    // expect captured ResultItem matches expected values
+    // expect captured MediaItem matches expected values
     val capturedResult = resultSlot.captured
     assertEquals(castItem.id, capturedResult.id)
     assertEquals(castItem.title, capturedResult.title)

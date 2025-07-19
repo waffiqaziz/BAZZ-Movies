@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -149,14 +149,14 @@ class SearchFragmentLoadStateTest {
 
     // mock search results
     val mockSearchResults = listOf(
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 1,
         title = "Test Movie",
         overview = "Test overview",
         posterPath = "/test-poster.jpg",
         mediaType = "movie"
       ),
-      ResultsItemSearch(
+      MultiSearchItem(
         id = 2,
         title = "Another Movie",
         overview = "Another overview",

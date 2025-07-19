@@ -17,9 +17,9 @@ The `:core:mappers` module is responsible for converting data models between dif
   - Converts `Post` data objects into their domain representations.
   - Ensures proper transformation of API responses before usage.
 
-- **[ResultItemMapper](../mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers/ResultItemMapper.kt)**
+- **[MediaItemMapper](../mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers/MediaItemMapper.kt)**
 
-  - Maps `ResultItem` objects between data and domain layers.
+  - Maps `MediaItem` objects between data and domain layers.
   - Handles cases where fields require formatting or type conversion.
 
 - **[StateMapper](../mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers/StateMapper.kt)**

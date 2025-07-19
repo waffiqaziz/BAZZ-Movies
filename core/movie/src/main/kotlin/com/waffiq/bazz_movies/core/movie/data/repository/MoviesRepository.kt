@@ -3,10 +3,10 @@ package com.waffiq.bazz_movies.core.movie.data.repository
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.Stated
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
-import com.waffiq.bazz_movies.core.mappers.StateMapper.toStated
+import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.utils.mappers.Mapper.toPostFavoriteWatchlist
@@ -27,19 +27,19 @@ class MoviesRepository @Inject constructor(
   override suspend fun getStatedMovie(
     sessionId: String,
     movieId: Int
-  ): Flow<Outcome<Stated>> =
-    movieDataSource.getStatedMovie(sessionId, movieId).map { networkResult ->
+  ): Flow<Outcome<MediaState>> =
+    movieDataSource.getMovieState(sessionId, movieId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toStated())
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMediaState())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
         is NetworkResult.Loading -> Outcome.Loading
       }
     }
 
-  override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<Stated>> =
-    movieDataSource.getStatedTv(sessionId, tvId).map { networkResult ->
+  override suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =
+    movieDataSource.getTvState(sessionId, tvId).map { networkResult ->
       when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toStated())
+        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMediaState())
         is NetworkResult.Error -> Outcome.Error(networkResult.message)
         is NetworkResult.Loading -> Outcome.Loading
       }

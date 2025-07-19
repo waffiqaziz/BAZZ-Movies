@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_s
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.navigation.INavigator
 
@@ -80,7 +80,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
       binding.tvYearReleased.text = dateFormatterStandard(fav.releaseDate)
         .ifEmpty { itemView.context.getString(not_available) }
 
-      val resultItem = ResultItem(
+      val mediaItem = MediaItem(
         backdropPath = fav.backDrop,
         posterPath = fav.poster,
         releaseDate = fav.releaseDate,
@@ -92,7 +92,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
       )
 
       binding.containerResult.setOnClickListener {
-        navigator.openDetails(itemView.context, resultItem)
+        navigator.openDetails(itemView.context, mediaItem)
       }
     }
   }

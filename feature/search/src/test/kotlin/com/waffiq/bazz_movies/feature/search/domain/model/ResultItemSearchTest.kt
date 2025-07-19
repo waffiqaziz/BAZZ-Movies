@@ -5,11 +5,11 @@ import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
 import org.junit.Test
 
-class ResultItemSearchTest {
+class MediaItemSearchTest {
 
   @Test
-  fun resultItemSearch_withNullValue_returnDefaultValue(){
-    val resultsItemSearch = ResultsItemSearch(id = 1)
+  fun mediaItemSearch_withNullValue_returnDefaultValue(){
+    val resultsItemSearch = MultiSearchItem(id = 1)
 
     assertEquals(resultsItemSearch.mediaType, "movie")
     assertNull(resultsItemSearch.listKnownFor)

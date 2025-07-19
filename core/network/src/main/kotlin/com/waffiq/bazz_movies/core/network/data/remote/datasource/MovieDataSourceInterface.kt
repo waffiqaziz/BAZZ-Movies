@@ -4,79 +4,76 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface MovieDataSourceInterface {
   // PAGING
-  fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>>
-  fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>>
-  fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingPopularTv(
-    region: String,
-    twoWeeksFromToday: String,
-  ): Flow<PagingData<ResultItemResponse>>
+  fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>>
+  fun getTrendingThisWeek(region: String): Flow<PagingData<MediaResponseItem>>
+  fun getTrendingToday(region: String): Flow<PagingData<MediaResponseItem>>
+  fun getPopularMovies(): Flow<PagingData<MediaResponseItem>>
+  fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaResponseItem>>
+  fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaResponseItem>>
+  fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaResponseItem>>
+  fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>>
+  fun getPopularTv(region: String, twoWeeksFromToday: String): Flow<PagingData<MediaResponseItem>>
 
-  fun getPagingAiringThisWeekTv(
+  fun getAiringThisWeekTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
-  ): Flow<PagingData<ResultItemResponse>>
+  ): Flow<PagingData<MediaResponseItem>>
 
-  fun getPagingAiringTodayTv(
+  fun getAiringTodayTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
-  ): Flow<PagingData<ResultItemResponse>>
+  ): Flow<PagingData<MediaResponseItem>>
 
-  fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>>
-  fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>>
-  fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>>
-  fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>>
-  fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>>
+  fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaResponseItem>>
+  fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaResponseItem>>
+  fun getUpcomingMovies(region: String): Flow<PagingData<MediaResponseItem>>
+  fun getPlayingNowMovies(region: String): Flow<PagingData<MediaResponseItem>>
+  fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>>
+  fun search(query: String): Flow<PagingData<MultiSearchResponseItem>>
 
   // DETAIL PAGE
-  suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
-  suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>>
-  suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>>
-  suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<VideoResponse>>
-  suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<VideoResponse>>
-  suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovieResponse>>
-  suspend fun getDetailTv(id: Int): Flow<NetworkResult<DetailTvResponse>>
-  suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>>
-  suspend fun getStatedMovie(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
-  suspend fun getStatedTv(sessionId: String, id: Int): Flow<NetworkResult<StatedResponse>>
+  suspend fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
+  suspend fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>>
+  suspend fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>>
+  suspend fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>>
+  suspend fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>>
+  suspend fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>>
+  suspend fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>>
+  suspend fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>>
+  suspend fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
+  suspend fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
   suspend fun getWatchProviders(
     params: String,
     id: Int,
   ): Flow<NetworkResult<WatchProvidersResponse>>
 
   // PERSON
-  suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>>
-  suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>>
-  suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
-  suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
+  suspend fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>>
+  suspend fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>>
+  suspend fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
+  suspend fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
 
   // POST
   suspend fun postFavorite(

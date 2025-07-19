@@ -1,26 +1,26 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.domain.GenresItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ContentRatingsItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ContentRatingsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.CreatedByItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.LastEpisodeToAirResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.NetworksItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.SeasonsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ExternalTvID
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toGenresItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toProductionCompaniesItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toProductionCountriesItem
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.DetailMovieTvMapper.toSpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCountriesItem
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toSpokenLanguagesItem
 
 object TvMapper {
 
@@ -111,7 +111,7 @@ object TvMapper {
     voteCount = voteCount
   )
 
-  fun ExternalIdResponse.toExternalTvID() = ExternalTvID(
+  fun ExternalIdResponse.toExternalTvID() = TvExternalIds(
     imdbId = imdbId,
     freebaseMid = freebaseMid,
     tvdbId = tvdbId,

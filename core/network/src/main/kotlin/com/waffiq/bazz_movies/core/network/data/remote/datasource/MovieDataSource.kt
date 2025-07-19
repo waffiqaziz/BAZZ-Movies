@@ -10,21 +10,21 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.castcrew.MovieTvCreditsResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.movie.DetailMovieResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.DetailTvResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.detailmovietv.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.StatedResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
@@ -44,7 +44,7 @@ class MovieDataSource @Inject constructor(
 ) : MovieDataSourceInterface {
 
   // region PAGING FUNCTION
-  override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItemResponse>> {
+  override fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -55,29 +55,29 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getTrendingThisWeek(region: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getTrendingWeek(region, page).results
+          tmdbApiService.getTrendingThisWeek(region, page).results
         }
       }
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getTrendingToday(region: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getTrendingDay(region, page).results
+          tmdbApiService.getTrendingToday(region, page).results
         }
       }
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingPopularMovies(): Flow<PagingData<ResultItemResponse>> {
+  override fun getPopularMovies(): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -88,7 +88,7 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -99,7 +99,7 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -110,7 +110,7 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingWatchlistTv(sessionId: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -121,7 +121,7 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingWatchlistMovies(sessionId: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -132,10 +132,10 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingPopularTv(
+  override fun getPopularTv(
     region: String,
     twoWeeksFromToday: String,
-  ): Flow<PagingData<ResultItemResponse>> {
+  ): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -146,11 +146,11 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingAiringThisWeekTv(
+  override fun getAiringThisWeekTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
-  ): Flow<PagingData<ResultItemResponse>> {
+  ): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -161,11 +161,11 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingAiringTodayTv(
+  override fun getAiringTodayTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
-  ): Flow<PagingData<ResultItemResponse>> {
+  ): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -176,29 +176,29 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingMovieRecommendation(movieId: Int): Flow<PagingData<ResultItemResponse>> {
+  override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getRecommendedMovie(movieId, page).results
+          tmdbApiService.getMovieRecommendations(movieId, page).results
         }
       }
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingTvRecommendation(tvId: Int): Flow<PagingData<ResultItemResponse>> {
+  override fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getRecommendedTv(tvId, page).results
+          tmdbApiService.getTvRecommendations(tvId, page).results
         }
       }
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getUpcomingMovies(region: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -209,18 +209,18 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItemResponse>> {
+  override fun getPlayingNowMovies(region: String): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
         GenericPagingSource { page ->
-          tmdbApiService.getPlayingNowMovies(region, page).results
+          tmdbApiService.getNowPlayingMovies(region, page).results
         }
       }
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItemResponse>> {
+  override fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = {
@@ -231,7 +231,7 @@ class MovieDataSource @Inject constructor(
     ).flow.flowOn(ioDispatcher)
   }
 
-  override fun getPagingSearch(query: String): Flow<PagingData<ResultsItemSearchResponse>> {
+  override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> {
     return Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
@@ -240,100 +240,100 @@ class MovieDataSource @Inject constructor(
   // endregion PAGING FUNCTION
 
   // region DETAIL
-  override suspend fun getCreditMovies(movieId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> =
+  override suspend fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.getCreditMovies(movieId)
+          tmdbApiService.getMovieCredits(movieId)
         }
       )
     }.flowOn(ioDispatcher)
 
-  override suspend fun getCreditTv(tvId: Int): Flow<NetworkResult<MovieTvCreditsResponse>> = flow {
+  override suspend fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getCreditTv(tvId)
+        tmdbApiService.getTvCredits(tvId)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getDetailOMDb(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
+  override suspend fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          omDbApiService.getMovieDetailOMDb(imdbId)
+          omDbApiService.getOMDbDetails(imdbId)
         }
       )
     }.flowOn(ioDispatcher)
 
-  override suspend fun getVideoMovies(movieId: Int): Flow<NetworkResult<VideoResponse>> = flow {
+  override suspend fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getVideoMovies(movieId)
+        tmdbApiService.getMovieVideo(movieId)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getVideoTv(tvId: Int): Flow<NetworkResult<VideoResponse>> = flow {
+  override suspend fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getVideoTv(tvId)
+        tmdbApiService.getTvVideo(tvId)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getDetailMovie(id: Int): Flow<NetworkResult<DetailMovieResponse>> = flow {
+  override suspend fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getDetailMovie(id)
+        tmdbApiService.getMovieDetail(id)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getDetailTv(id: Int): Flow<NetworkResult<DetailTvResponse>> = flow {
+  override suspend fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getDetailTv(id)
+        tmdbApiService.getTvDetail(id)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getExternalTvId(id: Int): Flow<NetworkResult<ExternalIdResponse>> = flow {
+  override suspend fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getExternalId(id)
+        tmdbApiService.getTvExternalIds(id)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getStatedMovie(
+  override suspend fun getMovieState(
     sessionId: String,
     id: Int,
-  ): Flow<NetworkResult<StatedResponse>> = flow {
+  ): Flow<NetworkResult<MediaStateResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getStatedMovie(id, sessionId)
+        tmdbApiService.getMovieState(id, sessionId)
       }
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getStatedTv(
+  override suspend fun getTvState(
     sessionId: String,
     id: Int,
-  ): Flow<NetworkResult<StatedResponse>> = flow {
+  ): Flow<NetworkResult<MediaStateResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
-        tmdbApiService.getStatedTv(id, sessionId)
+        tmdbApiService.getTvState(id, sessionId)
       }
     )
   }.flowOn(ioDispatcher)
@@ -352,7 +352,7 @@ class MovieDataSource @Inject constructor(
   // endregion DETAIL
 
   // region PERSON
-  override suspend fun getDetailPerson(id: Int): Flow<NetworkResult<DetailPersonResponse>> = flow {
+  override suspend fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
@@ -361,7 +361,7 @@ class MovieDataSource @Inject constructor(
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getImagePerson(id: Int): Flow<NetworkResult<ImagePersonResponse>> = flow {
+  override suspend fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>> = flow {
     emit(NetworkResult.Loading)
     emit(
       safeApiCall {
@@ -370,17 +370,17 @@ class MovieDataSource @Inject constructor(
     )
   }.flowOn(ioDispatcher)
 
-  override suspend fun getKnownForPerson(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
+  override suspend fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(
         safeApiCall {
-          tmdbApiService.getKnownForPersonCombinedMovieTv(id)
+          tmdbApiService.getPersonCombinedCredits(id)
         }
       )
     }.flowOn(ioDispatcher)
 
-  override suspend fun getExternalIDPerson(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
+  override suspend fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
     flow {
       emit(NetworkResult.Loading)
       emit(

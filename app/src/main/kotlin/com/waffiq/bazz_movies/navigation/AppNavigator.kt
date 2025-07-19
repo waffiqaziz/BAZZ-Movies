@@ -8,10 +8,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
-import com.waffiq.bazz_movies.feature.detail.ui.DetailMovieActivity
+import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import javax.inject.Inject
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AppNavigator @Inject constructor() : INavigator {
-  override fun openPersonDetails(context: Context, cast: MovieTvCastItem) {
+  override fun openPersonDetails(context: Context, cast: MediaCastItem) {
     val intent = Intent(context, PersonActivity::class.java).apply {
       putExtra(PersonActivity.EXTRA_PERSON, cast)
     }
@@ -27,9 +27,9 @@ class AppNavigator @Inject constructor() : INavigator {
     ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
   }
 
-  override fun openDetails(context: Context, resultItem: ResultItem) {
-    val intent = Intent(context, DetailMovieActivity::class.java).apply {
-      putExtra(DetailMovieActivity.EXTRA_MOVIE, resultItem)
+  override fun openDetails(context: Context, mediaItem: MediaItem) {
+    val intent = Intent(context, MediaDetailActivity::class.java).apply {
+      putExtra(MediaDetailActivity.EXTRA_MOVIE, mediaItem)
     }
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
     ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())

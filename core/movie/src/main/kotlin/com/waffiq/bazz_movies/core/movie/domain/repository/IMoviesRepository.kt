@@ -3,16 +3,16 @@ package com.waffiq.bazz_movies.core.movie.domain.repository
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.Stated
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {
 
-  suspend fun getStatedMovie(sessionId: String, movieId: Int): Flow<Outcome<Stated>>
+  suspend fun getStatedMovie(sessionId: String, movieId: Int): Flow<Outcome<MediaState>>
 
-  suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<Stated>>
+  suspend fun getStatedTv(sessionId: String, tvId: Int): Flow<Outcome<MediaState>>
 
   // region POST FAVORITE AND WATCHLIST
   suspend fun postFavorite(

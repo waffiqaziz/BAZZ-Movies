@@ -27,15 +27,15 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successful
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.domain.Stated
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailMovieViewModel
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
@@ -59,9 +59,9 @@ import java.util.Locale
 class UserInteractionHandler(
   private val binding: ActivityDetailMovieBinding,
   private val activity: AppCompatActivity,
-  private val detailViewModel: DetailMovieViewModel,
+  private val detailViewModel: MediaDetailViewModel,
   private val prefViewModel: DetailUserPrefViewModel,
-  private val dataExtra: ResultItem,
+  private val dataExtra: MediaItem,
   private val uiManager: DetailMovieUIManager,
   private val dataManager: DetailMovieDataManager,
 ) {
@@ -258,9 +258,9 @@ class UserInteractionHandler(
    */
   private fun getStatedData(token: String) {
     if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-      detailViewModel.getStatedMovie(token, dataExtra.id)
+      detailViewModel.getMovieState(token, dataExtra.id)
     } else {
-      detailViewModel.getStatedTv(token, dataExtra.id)
+      detailViewModel.getTvState(token, dataExtra.id)
     }
   }
 
@@ -303,7 +303,7 @@ class UserInteractionHandler(
   /**
    * Displays the user's current rating in the UI after submit a rating.
    */
-  private fun showRatingUserLogin(state: Stated) {
+  private fun showRatingUserLogin(state: MediaState) {
     binding.tvScoreYourScore.text = when (val rating = state.rated) {
       is Rated.Unrated -> activity.getString(not_available)
       is Rated.Value -> rating.value.toString()

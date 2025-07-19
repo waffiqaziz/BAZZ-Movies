@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 import androidx.lifecycle.LifecycleOwner
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailMovieViewModel
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 
 /**
@@ -16,13 +16,13 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewMode
  *
  * @param detailViewModel The ViewModel that provides methods for retrieving movie/TV details.
  * @param prefViewModel The ViewModel used to retrieve user preferences such as region.
- * @param dataExtra The [ResultItem] representing the movie or TV show being viewed.
+ * @param dataExtra The [MediaItem] representing the movie or TV show being viewed.
  * @param lifecycleOwner The lifecycle owner used to observe LiveData from ViewModels.
  */
 class DetailMovieDataManager(
-  private val detailViewModel: DetailMovieViewModel,
+  private val detailViewModel: MediaDetailViewModel,
   private val prefViewModel: DetailUserPrefViewModel,
-  private var dataExtra: ResultItem,
+  private var dataExtra: MediaItem,
   private val lifecycleOwner: LifecycleOwner,
 ) {
 
@@ -48,8 +48,8 @@ class DetailMovieDataManager(
    */
   fun loadRecommendations() {
     when (dataExtra.mediaType) {
-      MOVIE_MEDIA_TYPE -> detailViewModel.getRecommendationMovie(dataExtra.id)
-      TV_MEDIA_TYPE -> detailViewModel.getRecommendationTv(dataExtra.id)
+      MOVIE_MEDIA_TYPE -> detailViewModel.getMovieRecommendation(dataExtra.id)
+      TV_MEDIA_TYPE -> detailViewModel.getTvRecommendation(dataExtra.id)
     }
   }
 
@@ -62,9 +62,9 @@ class DetailMovieDataManager(
    */
   private fun loadMovieData() {
     detailViewModel.getMovieCredits(dataExtra.id)
-    detailViewModel.getLinkVideoMovie(dataExtra.id)
+    detailViewModel.getMovieVideoLink(dataExtra.id)
     prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
-      detailViewModel.detailMovie(dataExtra.id, region)
+      detailViewModel.getMovieDetail(dataExtra.id, region)
       detailViewModel.getMovieWatchProviders(region.uppercase(), dataExtra.id)
     }
   }
@@ -79,14 +79,14 @@ class DetailMovieDataManager(
    * - Watch providers based on the user's region
    */
   private fun loadTvData() {
-    detailViewModel.getExternalTvId(dataExtra.id)
+    detailViewModel.getTvExternalIds(dataExtra.id)
     detailViewModel.tvExternalID.observe(lifecycleOwner) {
-      if (it?.imdbId != null) detailViewModel.getScoreOMDb(it.imdbId)
+      if (it?.imdbId != null) detailViewModel.getOMDbDetails(it.imdbId)
     }
     detailViewModel.getTvCredits(dataExtra.id)
-    detailViewModel.getLinkTv(dataExtra.id)
+    detailViewModel.getTvTrailerLink(dataExtra.id)
     prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
-      detailViewModel.detailTv(dataExtra.id, region)
+      detailViewModel.getTvDetail(dataExtra.id, region)
       detailViewModel.getTvWatchProviders(region.uppercase(), dataExtra.id)
     }
   }

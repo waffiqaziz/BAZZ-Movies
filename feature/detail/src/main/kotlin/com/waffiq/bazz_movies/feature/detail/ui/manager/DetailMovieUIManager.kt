@@ -36,21 +36,21 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.security_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.domain.model.DetailMovieTvUsed
-import com.waffiq.bazz_movies.feature.detail.domain.model.MovieTvCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.DetailMovieTvHelper.detailCrew
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -138,7 +138,7 @@ class DetailMovieUIManager(
   /**
    * Displays general media info like images, title, release year, and overview.
    */
-  fun showGeneralInfo(dataExtra: ResultItem) {
+  fun showGeneralInfo(dataExtra: MediaItem) {
     showBackdropAndPoster(dataExtra)
     updateBasicInfo(dataExtra)
   }
@@ -146,7 +146,7 @@ class DetailMovieUIManager(
   /**
    * Loads and displays poster and backdrop images using Glide.
    */
-  private fun showBackdropAndPoster(dataExtra: ResultItem) {
+  private fun showBackdropAndPoster(dataExtra: MediaItem) {
     val backdropUrl = when {
       dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE ->
         ic_backdrop_error_filled
@@ -188,7 +188,7 @@ class DetailMovieUIManager(
   /**
    * Populates basic text data such as title, media type, release date, and overview.
    */
-  private fun updateBasicInfo(dataExtra: ResultItem) {
+  private fun updateBasicInfo(dataExtra: MediaItem) {
     binding.apply {
       tvTitle.text =
         dataExtra.name ?: dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.originalName
@@ -206,7 +206,7 @@ class DetailMovieUIManager(
   /**
    * Updates the UI with detailed metadata like genre, score, runtime, and status.
    */
-  fun updateDetailUI(details: DetailMovieTvUsed, mediaType: String) {
+  fun updateDetailUI(details: MediaDetail, mediaType: String) {
     binding.apply {
       tvGenre.text = details.genre ?: activity.getString(not_available)
       tvScoreTmdb.text = details.tmdbScore ?: activity.getString(not_available)
@@ -265,8 +265,8 @@ class DetailMovieUIManager(
   /**
    * Updates the cast and crew credits section.
    */
-  fun updateCreditsUI(credits: MovieTvCredits) {
-    createTable(activity, detailCrew(credits.crew), binding.table)
+  fun updateCreditsUI(credits: MediaCredits) {
+    createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
     adapterCast.setCast(credits.cast)
 
     val hasCast = adapterCast.itemCount > 0
@@ -331,7 +331,7 @@ class DetailMovieUIManager(
   /**
    * Updates the recommendation list with paginated data.
    */
-  fun updateRecommendations(recommendations: PagingData<ResultItem>, lifecycle: Lifecycle) {
+  fun updateRecommendations(recommendations: PagingData<MediaItem>, lifecycle: Lifecycle) {
     adapterRecommendation.submitData(lifecycle, recommendations)
   }
 

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.testutils
 
 import androidx.paging.PagingSource.LoadResult
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.ResultItemResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ object PagingDataSourceTestHelper {
    * @param expectedId Optional. The expected ID of the first item.
    */
   fun assertPageBasics(
-    page: LoadResult.Page<Int, ResultItemResponse>,
+    page: LoadResult.Page<Int, MediaResponseItem>,
     expectedSize: Int,
     expectedTitle: String? = null,
     expectedId: Int? = null,
@@ -45,7 +45,7 @@ object PagingDataSourceTestHelper {
    * @param nextKey The expected next key, or null.
    */
   fun assertPagingKeys(
-    page: LoadResult.Page<Int, ResultItemResponse>,
+    page: LoadResult.Page<Int, MediaResponseItem>,
     prevKey: Int?,
     nextKey: Int?,
   ) {
@@ -62,8 +62,8 @@ object PagingDataSourceTestHelper {
    * @param index Optional. The index to check. Defaults to 0 (first item).
    */
   fun assertPagingFlowBasics(
-    items: List<ResultItemResponse>,
-    expectedItem: ResultItemResponse,
+    items: List<MediaResponseItem>,
+    expectedItem: MediaResponseItem,
     expectedId: Int,
     index: Int = 0,
   ) {

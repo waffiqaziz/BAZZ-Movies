@@ -38,7 +38,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_bold
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
@@ -68,7 +68,7 @@ class PersonActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityPersonBinding
 
-  private lateinit var dataExtra: MovieTvCastItem
+  private lateinit var dataExtra: MediaCastItem
   private val personViewModel: PersonViewModel by viewModels()
 
   private val handler = Handler(Looper.getMainLooper())
@@ -111,7 +111,7 @@ class PersonActivity : AppCompatActivity() {
     }
 
     dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      intent.getParcelableExtra(EXTRA_PERSON, MovieTvCastItem::class.java)
+      intent.getParcelableExtra(EXTRA_PERSON, MediaCastItem::class.java)
     } else {
       @Suppress("DEPRECATION")
       intent.getParcelableExtra(EXTRA_PERSON)

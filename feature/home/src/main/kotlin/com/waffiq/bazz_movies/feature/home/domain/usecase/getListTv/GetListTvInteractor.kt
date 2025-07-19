@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -9,15 +9,15 @@ import javax.inject.Inject
 class GetListTvInteractor @Inject constructor(
   private val homeRepository: IHomeRepository
 ) : GetListTvUseCase {
-  override fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingPopularTv(region)
+  override fun getPopularTv(region: String): Flow<PagingData<MediaItem>> =
+    homeRepository.getPopularTv(region)
 
-  override fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingAiringThisWeekTv(region)
+  override fun getAiringThisWeekTv(region: String): Flow<PagingData<MediaItem>> =
+    homeRepository.getAiringThisWeekTv(region)
 
-  override fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingAiringTodayTv(region)
+  override fun getAiringTodayTv(region: String): Flow<PagingData<MediaItem>> =
+    homeRepository.getAiringTodayTv(region)
 
-  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
-    homeRepository.getPagingTopRatedTv()
+  override fun getTopRatedTv(): Flow<PagingData<MediaItem>> =
+    homeRepository.getTopRatedTv()
 }
