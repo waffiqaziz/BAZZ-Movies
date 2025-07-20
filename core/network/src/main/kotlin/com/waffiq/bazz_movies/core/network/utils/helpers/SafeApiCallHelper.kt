@@ -2,10 +2,15 @@ package com.waffiq.bazz_movies.core.network.utils.helpers
 
 import android.util.Log
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
+import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -36,10 +41,10 @@ object SafeApiCallHelper {
    * - [IOException]: Captures broader network-related issues, such as disconnections.
    * - [Exception]: Catches any unexpected errors, preventing crashes and returning an "Unknown error" message.
    */
-  suspend fun <T> safeApiCall(apiCall: suspend () -> retrofit2.Response<T>?): NetworkResult<T> =
+  suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> =
     performApiCall(apiCall)
 
-  private fun <T> processApiResponse(response: retrofit2.Response<T>): NetworkResult<T> {
+  private fun <T> processApiResponse(response: Response<T>): NetworkResult<T> {
     return when {
       response.isSuccessful -> {
         val responseBody = response.body()
@@ -56,7 +61,7 @@ object SafeApiCallHelper {
     }
   }
 
-  private fun <T> handleErrorBody(response: retrofit2.Response<T>): NetworkResult.Error {
+  private fun <T> handleErrorBody(response: Response<T>): NetworkResult.Error {
     val errorBody = response.errorBody()?.string()
     return when {
       response.code() == ERROR_CODE -> NetworkResult.Error("Invalid request (400)")
@@ -76,9 +81,9 @@ object SafeApiCallHelper {
     }
   }
 
-  private suspend fun <T> performApiCall(apiCall: suspend () -> retrofit2.Response<T>?): NetworkResult<T> {
+  private suspend fun <T> performApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
     return try {
-      val response: retrofit2.Response<T>? = apiCall()
+      val response: Response<T>? = apiCall()
       if (response != null) {
         processApiResponse(response)
       } else {
@@ -101,4 +106,23 @@ object SafeApiCallHelper {
       NetworkResult.Error("An unknown error occurred")
     }
   }
+
+  /**
+   * Executes an API call within a [Flow], emitting [NetworkResult] states.
+   *
+   * - Emits [NetworkResult.Loading] before starting the request.
+   * - Emits [NetworkResult.Success] with the response data if successful.
+   * - Emits [NetworkResult.Error] from [safeApiCall] with an error message if the call fails.
+   *
+   * @param apiCall A suspend function that performs the API request and returns [Response].
+   * @param ioDispatcher The [CoroutineDispatcher] used to run the API call on the IO thread.
+   * @return A [Flow] emitting [NetworkResult] states reflecting the call outcome.
+   */
+  fun <T> executeApiCall(
+    apiCall: suspend () -> Response<T>,
+    ioDispatcher: CoroutineDispatcher,
+  ): Flow<NetworkResult<T>> = flow {
+    emit(NetworkResult.Loading) // emit loading on initial
+    emit(safeApiCall { apiCall() }) // then emit the actual response
+  }.flowOn(ioDispatcher)
 }
