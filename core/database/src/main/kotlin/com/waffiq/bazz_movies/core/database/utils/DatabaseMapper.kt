@@ -4,13 +4,13 @@ import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 
 object DatabaseMapper {
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun ResultItem.toFavorite(
+  fun MediaItem.toFavorite(
     isFavorite: Boolean,
     isWatchlist: Boolean
   ) = Favorite(
@@ -29,15 +29,15 @@ object DatabaseMapper {
     isWatchlist = isWatchlist
   )
 
-  fun favTrueWatchlistTrue(data: ResultItem): Favorite {
+  fun favTrueWatchlistTrue(data: MediaItem): Favorite {
     return data.toFavorite(isFavorite = true, isWatchlist = true)
   }
 
-  fun favTrueWatchlistFalse(data: ResultItem): Favorite {
+  fun favTrueWatchlistFalse(data: MediaItem): Favorite {
     return data.toFavorite(isFavorite = true, isWatchlist = false)
   }
 
-  fun favFalseWatchlistTrue(data: ResultItem): Favorite {
+  fun favFalseWatchlistTrue(data: MediaItem): Favorite {
     return data.toFavorite(isFavorite = false, isWatchlist = true)
   }
 

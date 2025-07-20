@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 import androidx.paging.PagingSource
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
 import com.waffiq.bazz_movies.core.network.testutils.PagingSourceTestHelper.testLoadReturnsErrorOnException
 import com.waffiq.bazz_movies.core.network.testutils.PagingSourceTestHelper.testLoadReturnsErrorOnHttpException
@@ -31,16 +31,16 @@ class SearchPagingSourceTest {
 
   @Test
   fun fetchPage_withSuccessfulApiCall_returnsCorrectPageData() = runTest {
-    val resultItems = listOf(ResultsItemSearchResponse("item1"), ResultsItemSearchResponse("item2"))
+    val mediaItems = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
     testLoadReturnsPage(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = {
         coEvery {
           apiServiceMock.search(query, INITIAL_PAGE_INDEX)
-        } returns MultiSearchResponse(results = resultItems)
+        } returns MultiSearchResponse(results = mediaItems)
       },
       params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
-      expectedData = resultItems,
+      expectedData = mediaItems,
       expectedPrevKey = null,
       expectedNextKey = INITIAL_PAGE_INDEX + 1
     )
@@ -93,17 +93,17 @@ class SearchPagingSourceTest {
     testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
       pagingSourceFactory = { SearchPagingSource(apiServiceMock, query) },
       setupMock = { page ->
-        val resultItems =
-          listOf(ResultsItemSearchResponse("item1"), ResultsItemSearchResponse("item2"))
+        val mediaItems =
+          listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
         coEvery {
           apiServiceMock.search(
             query,
             page
           )
-        } returns MultiSearchResponse(results = resultItems)
+        } returns MultiSearchResponse(results = mediaItems)
       },
       page = 2,
-      expectedData = listOf(ResultsItemSearchResponse("item1"), ResultsItemSearchResponse("item2"))
+      expectedData = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
     )
   }
 
@@ -114,7 +114,7 @@ class SearchPagingSourceTest {
       setupMock = { page ->
         coEvery {
           apiServiceMock.search(query, page)
-        } returns MultiSearchResponse(results = emptyList<ResultsItemSearchResponse>())
+        } returns MultiSearchResponse(results = emptyList<MultiSearchResponseItem>())
       },
       expectedData = emptyList()
     )
@@ -125,8 +125,8 @@ class SearchPagingSourceTest {
     testRefreshKeyWithAnchorInMiddlePage(
       pagingSource = SearchPagingSource(apiServiceMock, query),
       data = listOf(
-        listOf(ResultsItemSearchResponse("item1"), ResultsItemSearchResponse("item2")),
-        listOf(ResultsItemSearchResponse("item3"), ResultsItemSearchResponse("item4"))
+        listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2")),
+        listOf(MultiSearchResponseItem("item3"), MultiSearchResponseItem("item4"))
       ),
       prevKeys = listOf(null, 1),
       nextKeys = listOf(2, 3),
@@ -139,7 +139,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenBothKeysPresent_shouldUsePrevKeyPlusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = SearchPagingSource(apiServiceMock, query),
-      data = listOf(ResultsItemSearchResponse("item1")),
+      data = listOf(MultiSearchResponseItem("item1")),
       anchorPosition = 0,
       prevKey = 1,
       nextKey = 3,
@@ -151,7 +151,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenPrevKeyIsNull_shouldUseNextKeyMinusOne() {
     testRefreshKeyUsesCorrectKey(
       pagingSource = SearchPagingSource(apiServiceMock, query),
-      data = listOf(ResultsItemSearchResponse("item1")),
+      data = listOf(MultiSearchResponseItem("item1")),
       anchorPosition = 0,
       prevKey = null,
       nextKey = 3,
@@ -163,7 +163,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenBothKeysAreNull_returnsNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = SearchPagingSource(apiServiceMock, query),
-      data = listOf(ResultsItemSearchResponse("item1"))
+      data = listOf(MultiSearchResponseItem("item1"))
     )
   }
 

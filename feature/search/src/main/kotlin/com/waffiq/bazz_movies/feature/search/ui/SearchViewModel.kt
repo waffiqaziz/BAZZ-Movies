@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -19,10 +19,10 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
   private val multiSearchUseCase: MultiSearchUseCase
 ) : ViewModel() {
-  private val _searchResults = MutableStateFlow<PagingData<ResultsItemSearch>>(
+  private val _searchResults = MutableStateFlow<PagingData<MultiSearchItem>>(
     PagingData.Companion.empty()
   )
-  val searchResults: Flow<PagingData<ResultsItemSearch>> = _searchResults.cachedIn(
+  val searchResults: Flow<PagingData<MultiSearchItem>> = _searchResults.cachedIn(
     viewModelScope
   )
 

@@ -15,11 +15,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.core.domain.ResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class TvAdapter(private val navigator: INavigator) :
-  PagingDataAdapter<ResultItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
+  PagingDataAdapter<MediaItem, TvAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,7 +39,7 @@ class TvAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(tv: ResultItem) {
+    fun bind(tv: MediaItem) {
       binding.imgPoster.contentDescription =
         tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
 
@@ -65,17 +65,17 @@ class TvAdapter(private val navigator: INavigator) :
   }
 
   companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultItem>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
       override fun areItemsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem.id == newItem.id
       }
 
       override fun areContentsTheSame(
-        oldItem: ResultItem,
-        newItem: ResultItem
+        oldItem: MediaItem,
+        newItem: MediaItem
       ): Boolean {
         return oldItem == newItem
       }

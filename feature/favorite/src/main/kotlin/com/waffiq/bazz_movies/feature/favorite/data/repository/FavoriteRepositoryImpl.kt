@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.favorite.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.mappers.ResultItemMapper.toResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.favorite.domain.repository.IFavoriteRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,13 +16,13 @@ class FavoriteRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource
 ) : IFavoriteRepository {
 
-  override fun getPagingFavoriteMovies(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingFavoriteMovies(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
+  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getFavoriteMovies(sessionId).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
     }
 
-  override fun getPagingFavoriteTv(sessionId: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingFavoriteTv(sessionId).map { pagingData ->
-      pagingData.map { it.toResultItem() }
+  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getFavoriteTv(sessionId).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
     }
 }

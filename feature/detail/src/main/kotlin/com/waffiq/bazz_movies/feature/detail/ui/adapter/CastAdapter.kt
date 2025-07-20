@@ -12,15 +12,15 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class CastAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 
-  private val listCast = ArrayList<MovieTvCastItem>()
+  private val listCast = ArrayList<MediaCastItem>()
 
-  fun setCast(itemCast: List<MovieTvCastItem>) {
+  fun setCast(itemCast: List<MediaCastItem>) {
     val diffCallback = DiffCallback(this.listCast, itemCast)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -46,7 +46,7 @@ class CastAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private var binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(cast: MovieTvCastItem) {
+    fun bind(cast: MediaCastItem) {
       binding.imgCastPhoto.contentDescription = cast.name
 
       Glide.with(binding.imgCastPhoto)
@@ -73,8 +73,8 @@ class CastAdapter(private val navigator: INavigator) :
   }
 
   inner class DiffCallback(
-    private val oldList: List<MovieTvCastItem>,
-    private val newList: List<MovieTvCastItem>
+    private val oldList: List<MediaCastItem>,
+    private val newList: List<MediaCastItem>
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

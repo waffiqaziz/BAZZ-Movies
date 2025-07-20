@@ -1,309 +1,137 @@
 package com.waffiq.bazz_movies.feature.person.data.repository
 
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.CombinedCreditResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
+import com.waffiq.bazz_movies.feature.person.testutils.BasePersonRepositoryImplTest
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toImagePerson
-import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class PersonRepositoryImplTest {
-
-  // Arrange common
-  private val id = 1
-  private val errorMessage = "Error occurred"
-
-  private lateinit var repository: PersonRepositoryImpl
-  private val movieDataSource: MovieDataSource = mockk() // Mock MovieDataSource
-
-  @get:Rule
-  val mainDispatcherRule = UnconfinedDispatcherRule()
-
-  @Before
-  fun setUp() {
-    repository = PersonRepositoryImpl(movieDataSource)
-  }
-
+class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
   @Test
   fun getDetailPerson_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<DetailPersonResponse>(relaxed = true)
-    val networkResult = NetworkResult.Success(mockResponse)
-
-    // Mock the MovieDataSource's getDetailPerson method
-    coEvery { movieDataSource.getDetailPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock success result
-    }
-
-    // Act
-    val result = repository.getDetailPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Success) // Check if the second emission is Success
-    val successResult = result[1] as Outcome.Success
-    assertEquals(
-      mockResponse.toDetailPerson(),
-      successResult.data
-    ) // Verify that the data is correct
-
-    // Verify that getDetailPerson was called at least once with the expected id
-    coVerify(atLeast = 1) { movieDataSource.getDetailPerson(id) }
+    testSuccessfulCall(
+      mockResponse = mockResponse,
+      dataSourceCall = { movieDataSource.getPersonDetail(id) },
+      repositoryCall = { repository.getDetailPerson(id) },
+      expectedData = mockResponse.toDetailPerson(),
+      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonDetail(id) } }
+    )
   }
 
   @Test
   fun getDetailPerson_whenUnsuccessful_returnsErrorResult() = runTest {
-    val networkResult = NetworkResult.Error(errorMessage)
-
-    // Mock the MovieDataSource's getDetailPerson method
-    coEvery { movieDataSource.getDetailPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock error result
-    }
-
-    // Act
-    val result = repository.getDetailPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Error) // Check if the second emission is Error
-    val errorResult = result[1] as Outcome.Error
-    assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
-
-    // Verify that getDetailPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getDetailPerson(id) }
+    testUnsuccessfulCall(
+      dataSourceCall = { movieDataSource.getPersonDetail(id) },
+      repositoryCall = { repository.getDetailPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonDetail(id) } }
+    )
   }
 
   @Test
   fun getDetailPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    // Mock the MovieDataSource's getDetailPerson method to emit only loading
-    coEvery { movieDataSource.getDetailPerson(id) } returns flow {
-      emit(NetworkResult.Loading) // Emit only Loading
-    }
-
-    // Act
-    val result = repository.getDetailPerson(id).first()
-
-    // Assert
-    assert(result is Outcome.Loading) // Ensure the first emission is Loading
-
-    // Verify that getDetailPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getDetailPerson(id) }
+    testLoadingState(
+      dataSourceCall = { movieDataSource.getPersonDetail(id) },
+      repositoryCall = { repository.getDetailPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonDetail(id) } }
+    )
   }
 
   @Test
   fun getKnownForPerson_whenSuccessful_returnsSuccessResult() = runTest {
-    // Arrange
-    val combinedCreditResponse = mockk<CombinedCreditResponse>(relaxed = true) // Mock response
-    val networkResult = NetworkResult.Success(combinedCreditResponse)
-
-    // Mock the MovieDataSource's getKnownForPerson method
-    coEvery { movieDataSource.getKnownForPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock success result
-    }
-
-    // Act
-    val result = repository.getKnownForPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Success) // Check if the second emission is Success
-    val successResult = result[1] as Outcome.Success
-    assertEquals(
-      combinedCreditResponse.toCombinedCredit(),
-      successResult.data
-    ) // Verify that the data is correct
-
-    // Verify that getKnownForPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getKnownForPerson(id) }
+    val mockResponse = mockk<CombinedCreditResponse>(relaxed = true)
+    testSuccessfulCall(
+      mockResponse = mockResponse,
+      dataSourceCall = { movieDataSource.getPersonKnownFor(id) },
+      repositoryCall = { repository.getKnownForPerson(id) },
+      expectedData = mockResponse.toCombinedCredit(),
+      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonKnownFor(id) } }
+    )
   }
 
   @Test
   fun getKnownForPerson_whenUnsuccessful_returnsErrorResult() = runTest {
-    // Arrange
-    val networkResult = NetworkResult.Error(errorMessage)
-
-    // Mock the MovieDataSource's getKnownForPerson method
-    coEvery { movieDataSource.getKnownForPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock error result
-    }
-
-    // Act
-    val result = repository.getKnownForPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Error) // Check if the second emission is Error
-    val errorResult = result[1] as Outcome.Error
-    assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
-
-    // Verify that getKnownForPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getKnownForPerson(id) }
+    testUnsuccessfulCall(
+      dataSourceCall = { movieDataSource.getPersonKnownFor(id) },
+      repositoryCall = { repository.getKnownForPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonKnownFor(id) } }
+    )
   }
 
   @Test
   fun getKnownForPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    // Mock the MovieDataSource's getKnownForPerson method to emit only loading
-    coEvery { movieDataSource.getKnownForPerson(id) } returns flow {
-      emit(NetworkResult.Loading) // Emit only Loading
-    }
-
-    // Act
-    val result = repository.getKnownForPerson(id).first()
-
-    // Assert
-    assert(result is Outcome.Loading) // Ensure the first emission is Loading
-
-    // Verify that getKnownForPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getKnownForPerson(id) }
+    testLoadingState(
+      dataSourceCall = { movieDataSource.getPersonKnownFor(id) },
+      repositoryCall = { repository.getKnownForPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonKnownFor(id) } }
+    )
   }
 
   @Test
   fun getImagePerson_whenSuccessful_returnsSuccessResult() = runTest {
-    // Arrange
-    val imagePersonResponse = mockk<ImagePersonResponse>(relaxed = true) // Mock response
-    val networkResult = NetworkResult.Success(imagePersonResponse)
-
-    // Mock the MovieDataSource's getImagePerson method
-    coEvery { movieDataSource.getImagePerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock success result
-    }
-
-    // Act
-    val result = repository.getImagePerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Success) // Check if the second emission is Success
-    val successResult = result[1] as Outcome.Success
-    assertEquals(
-      imagePersonResponse.toImagePerson(),
-      successResult.data
-    ) // Verify that the data is correct
-
-    // Verify that getImagePerson was called exactly once with the expected id
-    coVerify { movieDataSource.getImagePerson(id) }
+    val mockResponse = mockk<ImagePersonResponse>(relaxed = true)
+    testSuccessfulCall(
+      mockResponse = mockResponse,
+      dataSourceCall = { movieDataSource.getPersonImage(id) },
+      repositoryCall = { repository.getImagePerson(id) },
+      expectedData = mockResponse.toImagePerson(),
+      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonImage(id) } }
+    )
   }
 
   @Test
   fun getImagePerson_whenUnsuccessful_returnsErrorResult() = runTest {
-    // Arrange
-    val networkResult = NetworkResult.Error(errorMessage)
-
-    // Mock the MovieDataSource's getImagePerson method
-    coEvery { movieDataSource.getImagePerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock error result
-    }
-
-    // Act
-    val result = repository.getImagePerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Error) // Check if the second emission is Error
-    val errorResult = result[1] as Outcome.Error
-    assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
-
-    // Verify that getImagePerson was called exactly once with the expected id
-    coVerify { movieDataSource.getImagePerson(id) }
+    testUnsuccessfulCall(
+      dataSourceCall = { movieDataSource.getPersonImage(id) },
+      repositoryCall = { repository.getImagePerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonImage(id) } }
+    )
   }
 
   @Test
   fun getImagePerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    // Mock the MovieDataSource's getImagePerson method to emit only loading
-    coEvery { movieDataSource.getImagePerson(id) } returns flow {
-      emit(NetworkResult.Loading) // Emit only Loading
-    }
-
-    // Act
-    val result = repository.getImagePerson(id).first()
-
-    // Assert
-    assert(result is Outcome.Loading) // Ensure the first emission is Loading
-
-    // Verify that getImagePerson was called exactly once with the expected id
-    coVerify { movieDataSource.getImagePerson(id) }
+    testLoadingState(
+      dataSourceCall = { movieDataSource.getPersonImage(id) },
+      repositoryCall = { repository.getImagePerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonImage(id) } }
+    )
   }
 
   @Test
   fun getExternalIDPerson_whenSuccessful_returnsSuccessResult() = runTest {
-    // Arrange
-    val externalIDPersonResponse = mockk<ExternalIDPersonResponse>(relaxed = true) // Mock response
-    val networkResult = NetworkResult.Success(externalIDPersonResponse)
-
-    // Mock the MovieDataSource's getExternalIDPerson method
-    coEvery { movieDataSource.getExternalIDPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock success result
-    }
-
-    // Act
-    val result = repository.getExternalIDPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Success) // Check if the second emission is Success
-    val successResult = result[1] as Outcome.Success
-    assertEquals(
-      externalIDPersonResponse.toExternalIDPerson(),
-      successResult.data
-    ) // Verify that the data is correct
-
-    // Verify that getExternalIDPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getExternalIDPerson(id) }
+    val mockResponse = mockk<ExternalIDPersonResponse>(relaxed = true)
+    testSuccessfulCall(
+      mockResponse = mockResponse,
+      dataSourceCall = { movieDataSource.getPersonExternalID(id) },
+      repositoryCall = { repository.getExternalIDPerson(id) },
+      expectedData = mockResponse.toExternalIDPerson(),
+      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonExternalID(id) } }
+    )
   }
 
   @Test
   fun getExternalIDPerson_whenUnsuccessful_returnsErrorResult() = runTest {
-    // Arrange
-    val networkResult = NetworkResult.Error(errorMessage)
-
-    // Mock the MovieDataSource's getExternalIDPerson method
-    coEvery { movieDataSource.getExternalIDPerson(id) } returns flow {
-      emit(NetworkResult.Loading)
-      emit(networkResult) // Return the mock error result
-    }
-
-    // Act
-    val result = repository.getExternalIDPerson(id).toList()
-
-    // Assert
-    assert(result[1] is Outcome.Error) // Check if the second emission is Error
-    val errorResult = result[1] as Outcome.Error
-    assertEquals(errorMessage, errorResult.message) // Verify the error message is correct
-
-    // Verify that getExternalIDPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getExternalIDPerson(id) }
+    testUnsuccessfulCall(
+      dataSourceCall = { movieDataSource.getPersonExternalID(id) },
+      repositoryCall = { repository.getExternalIDPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonExternalID(id) } }
+    )
   }
 
   @Test
   fun getExternalIDPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    // Mock the MovieDataSource's getExternalIDPerson method to emit only loading
-    coEvery { movieDataSource.getExternalIDPerson(id) } returns flow {
-      emit(NetworkResult.Loading) // Emit only Loading
-    }
-
-    // Act
-    val result = repository.getExternalIDPerson(id).first()
-
-    // Assert
-    assert(result is Outcome.Loading) // Ensure the first emission is Loading
-
-    // Verify that getExternalIDPerson was called exactly once with the expected id
-    coVerify { movieDataSource.getExternalIDPerson(id) }
+    testLoadingState(
+      dataSourceCall = { movieDataSource.getPersonExternalID(id) },
+      repositoryCall = { repository.getExternalIDPerson(id) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getPersonExternalID(id) } }
+    )
   }
 }

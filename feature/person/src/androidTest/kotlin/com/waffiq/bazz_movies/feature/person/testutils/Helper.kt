@@ -7,7 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.matcher.BoundedMatcher
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.waffiq.bazz_movies.core.domain.MovieTvCastItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -61,11 +61,11 @@ object Helper {
    *
    * Used to launch [PersonActivity] for UI tests.
    *
-   * @param person The person to show in the activity (default is [testMovieTvCastItem]).
+   * @param person The person to show in the activity (default is [testMediaCastItem]).
    * @param block What to do with the launched [PersonActivity].
    */
   inline fun Context.launchPersonActivity(
-    person: MovieTvCastItem = testMovieTvCastItem,
+    person: MediaCastItem = testMediaCastItem,
     block: (ActivityScenario<PersonActivity>) -> Unit
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {
@@ -78,8 +78,8 @@ object Helper {
   }
 
   // helper methods to create test data
-  val testMovieTvCastItem =
-    MovieTvCastItem(
+  val testMediaCastItem =
+    MediaCastItem(
       id = 123,
       name = "Test Actor",
       originalName = "Test Actor Original",

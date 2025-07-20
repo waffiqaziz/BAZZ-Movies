@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterISO8601
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.feature.detail.domain.model.movie.DetailMovie
+import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
  * to ensure that an appropriate release date and region are returned.
  */
 object ReleaseDateHelper {
-  private const val YEAR = 4
 
   /**
    * For Movie
@@ -33,7 +32,7 @@ object ReleaseDateHelper {
    * @param userRegion A string representing the user's desired region code.
    * @return A `ReleaseDateRegion` object that contains the selected release date and region.
    */
-  fun getReleaseDateRegion(data: DetailMovie?, userRegion: String): ReleaseDateRegion {
+  fun getReleaseDateRegion(data: MovieDetail?, userRegion: String): ReleaseDateRegion {
     var releaseDateRegion: ReleaseDateRegion? = null
 
     // Step 1: Look for a release date in the user's specified region.
@@ -82,7 +81,7 @@ object ReleaseDateHelper {
    */
   private fun getMatchingRegionAndReleaseDateMovie(
     data: List<ReleaseDatesItem?>?,
-    region: String
+    region: String,
   ): Pair<String, String>? {
     return data?.firstOrNull { isValidRegionAndReleaseDate(it, region) }
       ?.let {
@@ -120,7 +119,7 @@ object ReleaseDateHelper {
    */
   private fun isValidRegionAndReleaseDate(
     item: ReleaseDatesItem?,
-    region: String? = null
+    region: String? = null,
   ): Boolean {
     return item?.iso31661 != null &&
       (region == null || item.iso31661 == region) &&
@@ -154,16 +153,38 @@ object ReleaseDateHelper {
    * Example: return `2017-2019` for multiple seasons, return `2017` if only one season`
    */
   private fun getYearRangeTv(data: DetailTv): String {
-    val filteredSeasons = data.listSeasonsItem?.filter { it?.name?.startsWith("Season ") == true }
-    val years = filteredSeasons?.mapNotNull { it?.airDate?.take(YEAR)?.toIntOrNull() }
+    // extract years from season items that start with "Season"
+    val seasonYears = data.listSeasonsItem
+      ?.filter { it?.name?.startsWith("Season") == true } // Filter only "Season X"
+      ?.mapNotNull { season ->
+        val airDate = season?.airDate
 
-    return if (years.isNullOrEmpty()) {
-      ""
-    } else if (filteredSeasons.size > 1) {
-      "${years.minOrNull()}-${years.maxOrNull()}"
-    } else {
-      years.first().toString()
+        // take the first 4 characters of airDate if available, and convert to Int
+        if (airDate != null && airDate.length >= 4) {
+          val yearStr = airDate.take(4)
+          yearStr.toIntOrNull()
+        } else {
+          null
+        }
+      }
+
+    // if valid season years exist, return a year or range
+    if (!seasonYears.isNullOrEmpty()) {
+      return if (seasonYears.size > 1) {
+        // format as year range, e.g., "2018–2025"
+        "${seasonYears.minOrNull()}-${seasonYears.maxOrNull()}"
+      } else {
+        // only one valid season year, return as string
+        seasonYears.first().toString()
+      }
     }
+
+    // fallback: use the show's firstAirDate if no valid seasons exist
+    val yearStr = data.firstAirDate?.takeIf { it.length >= 4 }?.take(4)
+    val firstAirYear = yearStr?.toIntOrNull()
+
+    // return the fallback year or an empty string if invalid
+    return firstAirYear?.toString().orEmpty()
   }
 
   /**

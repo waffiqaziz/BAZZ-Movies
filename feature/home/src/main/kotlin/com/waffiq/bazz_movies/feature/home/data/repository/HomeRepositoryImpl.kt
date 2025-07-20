@@ -4,8 +4,8 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.ResultItem
-import com.waffiq.bazz_movies.core.mappers.ResultItemMapper.toResultItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.home.domain.repository.IHomeRepository
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getDateToday
@@ -20,57 +20,57 @@ class HomeRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource
 ) : IHomeRepository {
 
-  override fun getPagingTrendingWeek(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTrendingWeek(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
+  override fun getTrendingThisWeek(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getTrendingThisWeek(region).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
     }
 
-  override fun getPagingTrendingDay(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTrendingDay(region).map { pagingData ->
-      pagingData.map { it.toResultItem() }
+  override fun getTrendingToday(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getTrendingToday(region).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
     }
 
-  override fun getPagingTopRatedMovies(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTopRatedMovies().map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
+  override fun getTopRatedMovies(): Flow<PagingData<MediaItem>> =
+    movieDataSource.getTopRatedMovies().map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
     }
 
-  override fun getPagingPopularMovies(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularMovies().map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
+  override fun getPopularMovies(): Flow<PagingData<MediaItem>> =
+    movieDataSource.getPopularMovies().map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
     }
 
-  override fun getPagingUpcomingMovies(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingUpcomingMovies(region).map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
+  override fun getUpcomingMovies(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getUpcomingMovies(region).map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
     }
 
-  override fun getPagingPlayingNowMovies(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPlayingNowMovies(region).map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
+  override fun getPlayingNowMovies(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getPlayingNowMovies(region).map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = MOVIE_MEDIA_TYPE) }
     }
 
-  override fun getPagingAiringTodayTv(region: String): Flow<PagingData<ResultItem>> {
+  override fun getAiringTodayTv(region: String): Flow<PagingData<MediaItem>> {
     val date = getDateToday()
-    return movieDataSource.getPagingAiringTodayTv(region, date, date)
+    return movieDataSource.getAiringTodayTv(region, date, date)
       .map { pagingData ->
-        pagingData.map { it.toResultItem().copy(mediaType = TV_MEDIA_TYPE) }
+        pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
       }
   }
 
-  override fun getPagingPopularTv(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingPopularTv(region, getDateTwoWeeksFromToday()).map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = TV_MEDIA_TYPE) }
+  override fun getPopularTv(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getPopularTv(region, getDateTwoWeeksFromToday()).map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
     }
 
-  override fun getPagingAiringThisWeekTv(region: String): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingAiringThisWeekTv(region, getDateTwoWeeksFromToday(), getDateToday())
+  override fun getAiringThisWeekTv(region: String): Flow<PagingData<MediaItem>> =
+    movieDataSource.getAiringThisWeekTv(region, getDateTwoWeeksFromToday(), getDateToday())
       .map { pagingData ->
-        pagingData.map { it.toResultItem().copy(mediaType = TV_MEDIA_TYPE) }
+        pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
       }
 
-  override fun getPagingTopRatedTv(): Flow<PagingData<ResultItem>> =
-    movieDataSource.getPagingTopRatedTv().map { pagingData ->
-      pagingData.map { it.toResultItem().copy(mediaType = TV_MEDIA_TYPE) }
+  override fun getTopRatedTv(): Flow<PagingData<MediaItem>> =
+    movieDataSource.getTopRatedTv().map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
     }
 }

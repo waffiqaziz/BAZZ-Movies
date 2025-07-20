@@ -2,11 +2,12 @@ package com.waffiq.bazz_movies.feature.search.utils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.KnownForItemResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.ResultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.domain.model.ResultsItemSearch
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 
 object SearchMapper {
-  fun ResultsItemSearchResponse.toResultItemSearch() = ResultsItemSearch(
+  fun MultiSearchResponseItem.toMultiSearchItem() = MultiSearchItem(
     mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
     listKnownFor = listKnownFor?.map { it.toKnownForItem() },
     knownForDepartment = knownForDepartment,
@@ -32,7 +33,7 @@ object SearchMapper {
   )
 
   private fun KnownForItemResponse.toKnownForItem() =
-    com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem(
+    KnownForItem(
       overview = overview,
       originalLanguage = originalLanguage,
       originalTitle = originalTitle,
