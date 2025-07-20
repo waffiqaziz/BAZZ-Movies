@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponse
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse2
+import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem2
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -86,7 +86,7 @@ class SearchRepositoryImplTest {
   @Test
   fun search_whenSuccessful_returnsDataCorrectly() = runTest {
     val fakePagingData =
-      PagingData.from(listOf(resultsItemSearchResponse, resultsItemSearchResponse2))
+      PagingData.from(listOf(multiSearchResponseItem, multiSearchResponseItem2))
     every { movieDataSource.search(QUERY) } returns flowOf(fakePagingData)
 
     repository.search(QUERY).test {

@@ -13,14 +13,14 @@ import kotlinx.coroutines.Dispatchers
 object SearchTestVariables {
 
   const val QUERY = "transformers"
-  val resultsItemSearchResponse = MultiSearchResponseItem(
+  val multiSearchResponseItem = MultiSearchResponseItem(
     mediaType = TV_MEDIA_TYPE,
     title = "Transformers TV-series",
     id = 12345,
     adult = false,
     voteCount = 2222.0
   )
-  val resultsItemSearchResponse2 = MultiSearchResponseItem(
+  val multiSearchResponseItem2 = MultiSearchResponseItem(
     mediaType = MOVIE_MEDIA_TYPE,
     title = "Transformers 2",
     id = 333111,
@@ -29,7 +29,7 @@ object SearchTestVariables {
   )
   val multiSearchResponse = MultiSearchResponse(
     page = 1,
-    results = listOf(resultsItemSearchResponse, resultsItemSearchResponse2),
+    results = listOf(multiSearchResponseItem, multiSearchResponseItem2),
     totalPages = 1,
     totalResults = 2
   )

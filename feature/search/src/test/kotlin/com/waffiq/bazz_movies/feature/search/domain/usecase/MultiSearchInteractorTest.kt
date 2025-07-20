@@ -10,8 +10,8 @@ import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.repository.ISearchRepository
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse
-import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.resultsItemSearchResponse2
+import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem
+import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.multiSearchResponseItem2
 import com.waffiq.bazz_movies.feature.search.utils.SearchMapper.toMultiSearchItem
 import io.mockk.every
 import io.mockk.mockk
@@ -31,51 +31,51 @@ import org.junit.Test
 class MultiSearchInteractorTest {
   private val testCases = listOf(
     // all null - should be filtered out
-    resultsItemSearchResponse.copy(backdropPath = null, posterPath = null, profilePath = null),
+    multiSearchResponseItem.copy(backdropPath = null, posterPath = null, profilePath = null),
 
     // one path present, others null
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = "1/path.jpg",
       posterPath = null,
       profilePath = null
     ),
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = null,
       posterPath = "2/path.jpg",
       profilePath = null
     ),
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = null,
       posterPath = null,
       profilePath = "3/path.jpg"
     ),
 
     // two paths present, one null
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = "4/path.jpg",
       posterPath = "4/path.jpg",
       profilePath = null
     ),
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = "5/path.jpg",
       posterPath = null,
       profilePath = "5/path.jpg"
     ),
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = null,
       posterPath = "6/path.jpg",
       profilePath = "6/path.jpg"
     ),
 
     // all paths not null
-    resultsItemSearchResponse.copy(
+    multiSearchResponseItem.copy(
       backdropPath = "7/path.jpg",
       posterPath = "7/path.jpg",
       profilePath = "7/path.jpg"
     ),
 
     // all empty - should be filtered out
-    resultsItemSearchResponse.copy(backdropPath = "", posterPath = "", profilePath = "")
+    multiSearchResponseItem.copy(backdropPath = "", posterPath = "", profilePath = "")
   ).map { it.toMultiSearchItem() }
 
   private val mockRepository: ISearchRepository = mockk()
@@ -129,12 +129,12 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.copy(
+          multiSearchResponseItem.copy(
             backdropPath = "/backdrop_path0.jpg",
             posterPath = "/poster_path0.jpg",
             profilePath = "/profile_path0.jpg"
           ).toMultiSearchItem(),
-          resultsItemSearchResponse2.copy(
+          multiSearchResponseItem2.copy(
             backdropPath = "/backdrop_path1.jpg",
             posterPath = "/poster_path1.jpg",
             profilePath = "/profile_path1.jpg"
@@ -167,8 +167,8 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.toMultiSearchItem(),
-          resultsItemSearchResponse2.toMultiSearchItem()
+          multiSearchResponseItem.toMultiSearchItem(),
+          multiSearchResponseItem2.toMultiSearchItem()
         )
       )
 
@@ -182,11 +182,11 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.copy(
+          multiSearchResponseItem.copy(
             posterPath = "/poster_path3.jpg",
             profilePath = "/profile_path3.jpg"
           ).toMultiSearchItem(),
-          resultsItemSearchResponse2.copy(
+          multiSearchResponseItem2.copy(
             posterPath = "/poster_path4.jpg",
             profilePath = "/profile_path4.jpg"
           ).toMultiSearchItem()
@@ -209,11 +209,11 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.copy(
+          multiSearchResponseItem.copy(
             backdropPath = "/backdrop_path5.jpg",
             profilePath = "/profile_path5.jpg"
           ).toMultiSearchItem(),
-          resultsItemSearchResponse2.copy(
+          multiSearchResponseItem2.copy(
             backdropPath = "/backdrop_path6.jpg",
             profilePath = "/profile_path6.jpg"
           ).toMultiSearchItem()
@@ -236,11 +236,11 @@ class MultiSearchInteractorTest {
     val fakePagingData =
       PagingData.from(
         listOf(
-          resultsItemSearchResponse.copy(
+          multiSearchResponseItem.copy(
             backdropPath = "/backdrop_path7.jpg",
             posterPath = "/poster_path7.jpg",
           ).toMultiSearchItem(),
-          resultsItemSearchResponse2.copy(
+          multiSearchResponseItem2.copy(
             backdropPath = "/backdrop_path8.jpg",
             posterPath = "/poster_path8.jpg",
           ).toMultiSearchItem()
@@ -263,7 +263,7 @@ class MultiSearchInteractorTest {
     // case 1: only backdropPath
     val fakePagingData1 = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = "/backdrop_path9.jpg",
           posterPath = null,
           profilePath = null
@@ -284,7 +284,7 @@ class MultiSearchInteractorTest {
     // case 2: only posterPath
     val fakePagingData2 = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = null,
           posterPath = "/poster_path10.jpg",
           profilePath = null
@@ -305,7 +305,7 @@ class MultiSearchInteractorTest {
     // case 3: only profilePath
     val fakePagingData3 = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = null,
           posterPath = null,
           profilePath = "/profile_path11.jpg"
@@ -326,7 +326,7 @@ class MultiSearchInteractorTest {
     // case 1: empty strings (not null)
     val fakePagingDataEmpty = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = "",
           posterPath = "",
           profilePath = ""
@@ -344,7 +344,7 @@ class MultiSearchInteractorTest {
     // case 2: one path is empty string, one is null, one has content
     val fakePagingDataMixed = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = "",
           posterPath = null,
           profilePath = "/profile_path12.jpg"
@@ -365,7 +365,7 @@ class MultiSearchInteractorTest {
     // case 3: all are empty or null but in different ways
     val fakePagingDataVariedEmpty = PagingData.from(
       listOf(
-        resultsItemSearchResponse.copy(
+        multiSearchResponseItem.copy(
           backdropPath = "",
           posterPath = null,
           profilePath = ""
