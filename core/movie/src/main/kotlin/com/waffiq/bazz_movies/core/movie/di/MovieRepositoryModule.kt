@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.movie.di
 
-import com.waffiq.bazz_movies.core.movie.data.repository.MoviesRepository
+import com.waffiq.bazz_movies.core.movie.data.repository.MoviesRepositoryImpl
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import dagger.Binds
 import dagger.Module
@@ -14,6 +14,6 @@ abstract class MovieRepositoryModule {
 
   @Binds
   abstract fun bindMovieRepository(
-    moviesRepository: MoviesRepository
+    moviesRepository: MoviesRepositoryImpl
   ): IMoviesRepository
 }

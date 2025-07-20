@@ -27,7 +27,7 @@ import org.junit.Test
 
 class MovieRepositoryTest {
 
-  private lateinit var movieRepository: MoviesRepository
+  private lateinit var movieRepository: MoviesRepositoryImpl
   private val mockMovieDataSource: MovieDataSource = mockk()
 
   @get:Rule
@@ -35,7 +35,7 @@ class MovieRepositoryTest {
 
   @Before
   fun setup() {
-    movieRepository = MoviesRepository(mockMovieDataSource)
+    movieRepository = MoviesRepositoryImpl(mockMovieDataSource)
   }
 
   @Test

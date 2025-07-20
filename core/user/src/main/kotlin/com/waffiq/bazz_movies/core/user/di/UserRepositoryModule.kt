@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.user.di
 
-import com.waffiq.bazz_movies.core.user.data.repository.UserRepository
+import com.waffiq.bazz_movies.core.user.data.repository.UserRepositoryImpl
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import dagger.Binds
 import dagger.Module
@@ -14,6 +14,6 @@ abstract class UserRepositoryModule {
 
   @Binds
   abstract fun bindUserRepository(
-    userRepository: UserRepository
+    userRepository: UserRepositoryImpl
   ): IUserRepository
 }

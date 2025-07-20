@@ -5,8 +5,8 @@ import androidx.paging.map
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
@@ -29,77 +29,30 @@ import javax.inject.Inject
 class DetailRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IDetailRepository {
+
   override suspend fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
-    movieDataSource.getOMDbDetails(imdbId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toOMDbDetails())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getOMDbDetails(imdbId).toOutcome { it.toOMDbDetails() }
 
   override suspend fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>> =
-    movieDataSource.getMovieDetail(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toDetailMovie())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getMovieDetail(movieId).toOutcome { it.toDetailMovie() }
 
   override suspend fun getTvDetail(tvId: Int): Flow<Outcome<DetailTv>> =
-    movieDataSource.getTvDetail(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toDetailTv())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getTvDetail(tvId).toOutcome { it.toDetailTv() }
 
   override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
-    movieDataSource.getTvExternalIds(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toExternalTvID())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getTvExternalIds(tvId).toOutcome { it.toExternalTvID() }
 
   override suspend fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>> =
-    movieDataSource.getMovieVideo(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getMovieVideo(movieId).toOutcome { it.toVideo() }
 
   override suspend fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>> =
-    movieDataSource.getTvVideo(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toVideo())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getTvVideo(tvId).toOutcome { it.toVideo() }
 
   override suspend fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
-    movieDataSource.getMovieCredits(movieId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMediaCredits())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getMovieCredits(movieId).toOutcome { it.toMediaCredits() }
 
   override suspend fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
-    movieDataSource.getTvCredits(tvId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toMediaCredits())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getTvCredits(tvId).toOutcome { it.toMediaCredits() }
 
   override fun getMovieRecommendationPagingData(
     movieId: Int,
@@ -119,11 +72,5 @@ class DetailRepositoryImpl @Inject constructor(
     params: String,
     id: Int,
   ): Flow<Outcome<WatchProviders>> =
-    movieDataSource.getWatchProviders(params, id).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toWatchProviders())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    movieDataSource.getWatchProviders(params, id).toOutcome { it.toWatchProviders() }
 }
