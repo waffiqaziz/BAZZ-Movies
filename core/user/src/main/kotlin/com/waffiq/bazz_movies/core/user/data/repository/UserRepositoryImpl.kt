@@ -3,9 +3,9 @@ package com.waffiq.bazz_movies.core.user.data.repository
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -24,60 +24,30 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
   private val pref: UserPreference,
-  private val userDataSource: UserDataSource
+  private val userDataSource: UserDataSource,
 ) : IUserRepository {
 
   // region AUTH
   override suspend fun createToken(): Flow<Outcome<Authentication>> =
-    userDataSource.createToken().map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAuthentication())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.createToken().toOutcome { it.toAuthentication() }
 
   override suspend fun login(
     username: String,
     pass: String,
-    sessionId: String
+    sessionId: String,
   ): Flow<Outcome<Authentication>> =
-    userDataSource.login(username, pass, sessionId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAuthentication())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.login(username, pass, sessionId).toOutcome { it.toAuthentication() }
 
   override suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
-    userDataSource.createSessionLogin(requestToken).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toCreateSession())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.createSessionLogin(requestToken).toOutcome { it.toCreateSession() }
 
   override suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
-    userDataSource.deleteSession(sessionId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toPost())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.deleteSession(sessionId).toOutcome { it.toPost() }
 
   override suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
-    userDataSource.getUserDetail(sessionId).map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toAccountDetails())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.getUserDetail(sessionId).toOutcome { it.toAccountDetails() }
   // endregion AUTH
 
   // region PREF
@@ -96,11 +66,5 @@ class UserRepository @Inject constructor(
   // endregion PREF
 
   override suspend fun getCountryCode(): Flow<Outcome<CountryIP>> =
-    userDataSource.getCountryCode().map { networkResult ->
-      when (networkResult) {
-        is NetworkResult.Success -> Outcome.Success(networkResult.data.toCountryIP())
-        is NetworkResult.Error -> Outcome.Error(networkResult.message)
-        is NetworkResult.Loading -> Outcome.Loading
-      }
-    }
+    userDataSource.getCountryCode().toOutcome { it.toCountryIP() }
 }

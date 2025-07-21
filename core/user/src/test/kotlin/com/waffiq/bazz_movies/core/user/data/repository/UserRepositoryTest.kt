@@ -67,7 +67,7 @@ class UserRepositoryTest {
     tmdbAvatar = "avatar.jpg"
   )
 
-  private lateinit var userRepository: UserRepository
+  private lateinit var userRepository: UserRepositoryImpl
   private val mockUserPreference: UserPreference = mockk()
   private val mockUserDataSource: UserDataSource = mockk()
 
@@ -76,7 +76,7 @@ class UserRepositoryTest {
 
   @Before
   fun setup() {
-    userRepository = UserRepository(mockUserPreference, mockUserDataSource)
+    userRepository = UserRepositoryImpl(mockUserPreference, mockUserDataSource)
   }
 
   @Test

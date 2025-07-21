@@ -1,12 +1,17 @@
 package com.waffiq.bazz_movies.core.network.utils.helpers
 
+import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.executeApiCall
 import com.waffiq.bazz_movies.core.network.utils.helpers.SafeApiCallHelper.safeApiCall
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
@@ -15,6 +20,8 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class SafeApiCallHelperTest {
+
+  private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher()
 
   @Test
   fun safeApiCall_whenSuccessful_returnsResponseWithBody() = runTest {
@@ -282,5 +289,45 @@ class SafeApiCallHelperTest {
       "An unknown error occurred",
       (result as NetworkResult.Error).message
     )
+  }
+
+  @Test
+  fun executeApiCall_whenApiCallSucceeds_emitsLoadingThenSuccess() = runTest {
+    val mockResponse = mockk<Response<String>> {
+      every { isSuccessful } returns true
+      every { body() } returns "data"
+    }
+    val apiCall: suspend () -> Response<String> = { mockResponse }
+
+    val result = executeApiCall(apiCall, testDispatcher).toList()
+
+    assertEquals(2, result.size)
+    assertTrue(result[0] is NetworkResult.Loading)
+    assertTrue(result[1] is NetworkResult.Success)
+  }
+
+  @Test
+  fun executeApiCall_whenApiCallFails_emitsLoadingThenError() = runTest {
+    val mockResponse = mockk<Response<String>> {
+      every { isSuccessful } returns false
+    }
+    val apiCall: suspend () -> Response<String> = { mockResponse }
+
+    val result = executeApiCall(apiCall, testDispatcher).toList()
+
+    assertEquals(2, result.size)
+    assertTrue(result[0] is NetworkResult.Loading)
+    assertTrue(result[1] is NetworkResult.Error)
+  }
+
+  @Test
+  fun executeApiCall_whenExceptionThrown_emitsLoadingThenError() = runTest {
+    val apiCall: suspend () -> Response<String> = { throw Exception() }
+
+    val result = executeApiCall(apiCall, testDispatcher).toList()
+
+    assertEquals(2, result.size)
+    assertTrue(result[0] is NetworkResult.Loading)
+    assertTrue(result[1] is NetworkResult.Error)
   }
 }

@@ -33,7 +33,7 @@ dependencies {
   implementation(project(":core:coroutines"))
 
   implementation(libs.androidx.paging.common)
-  implementation(libs.jetbrains.coroutines.core)
+  implementation(libs.kotlinx.coroutines.core)
 
   // retrofit & moshi
   implementation(libs.retrofit)
