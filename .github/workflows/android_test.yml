@@ -48,12 +48,21 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 (with cache)
+        if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Set up JDK 17 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
 
       - name: Google Service
         env:
@@ -87,14 +96,24 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 (with cache)
+        if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
+      - name: Set up JDK 17 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
+        if: github.actor != 'renovate[bot]'
         uses: actions/cache@v4
         with:
           path: |
@@ -270,12 +289,20 @@ jobs:
           cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
           echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 (with cache)
+        if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Set up JDK 17 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
 
       # Restore cached unit test results
       - name: Restore unit test results

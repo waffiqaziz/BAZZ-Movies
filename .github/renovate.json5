@@ -138,6 +138,7 @@
         enabled: false,
       },
       matchPackageNames: [
+        'gradle/actions/{/,}**',
         'actions/{/,}**',
         'reactivecircus/{/,}**',
         '!/^codecov//',

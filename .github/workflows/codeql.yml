@@ -25,6 +25,11 @@ on:
   schedule:
     - cron: '31 7 * * 3'
 
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+  GRADLE_CACHE: 'gradle'
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
@@ -66,12 +71,20 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
-      - name: Set up JDK 17
+      - name: Set up JDK 17 (with cache)
+        if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'gradle'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Set up JDK 17 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3

@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
 object NetworkResultMapper {
 
   /**

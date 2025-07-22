@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
+
 /**
  * Configure base Kotlin with Android options
  */
@@ -25,11 +26,8 @@ internal fun Project.configureKotlinAndroid(
     }
 
     compileOptions {
-      // Up to Java 11 APIs are available through desugaring
-      // https://developer.android.com/studio/write/java11-minimal-support-table
       sourceCompatibility = JavaVersion.VERSION_17
       targetCompatibility = JavaVersion.VERSION_17
-//      isCoreLibraryDesugaringEnabled = true
     }
   }
   configureKotlin<KotlinAndroidProjectExtension>()
@@ -40,8 +38,6 @@ internal fun Project.configureKotlinAndroid(
  */
 internal fun Project.configureKotlinJvm() {
   extensions.configure<JavaPluginExtension> {
-    // Up to Java 11 APIs are available through desugaring
-    // https://developer.android.com/studio/write/java11-minimal-support-table
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
@@ -55,7 +51,7 @@ internal fun Project.configureKotlinJvm() {
 @Suppress("ComplexCondition")
 private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() = configure<T> {
   // Treat all Kotlin warnings as errors (disabled by default)
-  // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
+  // Override by setting warningsAsErrors=true in `~/.gradle/gradle.properties`
   val warningsAsErrors = providers.gradleProperty("warningsAsErrors").map {
     it.toBoolean()
   }.orElse(false)
