@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
+import com.waffiq.bazz_movies.configureMockitoAgent
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -20,6 +21,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
       extensions.configure<ApplicationExtension> {
         configureKotlinAndroid(this)
         configureCommonAndroidSettings(this)
+        configureMockitoAgent()
         buildFeatures {
           viewBinding = true
           buildConfig = true

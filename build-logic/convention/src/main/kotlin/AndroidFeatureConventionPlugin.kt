@@ -1,5 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
+import com.waffiq.bazz_movies.configureMockitoAgent
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,6 +19,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
       extensions.configure<LibraryExtension> {
         configureCommonAndroidSettings(this)
+        configureMockitoAgent()
         buildFeatures.viewBinding = true
         defaultConfig {
           consumerProguardFiles("consumer-rules.pro")

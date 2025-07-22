@@ -1,6 +1,7 @@
 import com.android.build.gradle.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
+import com.waffiq.bazz_movies.configureMockitoAgent
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,6 +18,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
       extensions.configure<LibraryExtension> {
         configureKotlinAndroid(this)
         configureCommonAndroidSettings(this)
+        configureMockitoAgent()
         defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
         defaultConfig.consumerProguardFiles("consumer-rules.pro")
         // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
