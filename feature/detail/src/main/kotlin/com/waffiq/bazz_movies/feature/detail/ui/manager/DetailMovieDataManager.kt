@@ -81,7 +81,7 @@ class DetailMovieDataManager(
   private fun loadTvData() {
     detailViewModel.getTvExternalIds(dataExtra.id)
     detailViewModel.tvExternalID.observe(lifecycleOwner) {
-      if (it?.imdbId != null) detailViewModel.getOMDbDetails(it.imdbId)
+      if (it.imdbId != null) detailViewModel.getOMDbDetails(it.imdbId)
     }
     detailViewModel.getTvCredits(dataExtra.id)
     detailViewModel.getTvTrailerLink(dataExtra.id)

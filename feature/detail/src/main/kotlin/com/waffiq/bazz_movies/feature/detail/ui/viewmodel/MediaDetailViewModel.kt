@@ -101,7 +101,10 @@ class MediaDetailViewModel @Inject constructor(
       getMovieDetailUseCase.getMovieVideoLinks(movieId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -116,7 +119,10 @@ class MediaDetailViewModel @Inject constructor(
       getMovieDetailUseCase.getMovieDetail(id, userRegion).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _detailMedia.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -131,7 +137,10 @@ class MediaDetailViewModel @Inject constructor(
       getMovieDetailUseCase.getMovieCredits(movieId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _mediaCredits.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -154,7 +163,10 @@ class MediaDetailViewModel @Inject constructor(
       getMovieStateUseCase.getMovieState(sessionId, id).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _itemState.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -177,7 +189,10 @@ class MediaDetailViewModel @Inject constructor(
       getTvDetailUseCase.getTvTrailerLink(tvId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -192,7 +207,10 @@ class MediaDetailViewModel @Inject constructor(
       getTvDetailUseCase.getTvExternalIds(tvId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> _tvExternalID.value = outcome.data
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> _errorState.emit(outcome.message)
         }
       }
@@ -204,7 +222,10 @@ class MediaDetailViewModel @Inject constructor(
       getTvDetailUseCase.getTvDetail(id, userRegion).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _detailMedia.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -219,7 +240,10 @@ class MediaDetailViewModel @Inject constructor(
       getTvDetailUseCase.getTvCredits(tvId).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _mediaCredits.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -242,7 +266,10 @@ class MediaDetailViewModel @Inject constructor(
       getTvStateUseCase.getTvState(sessionId, id).collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _itemState.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -287,7 +314,10 @@ class MediaDetailViewModel @Inject constructor(
             _loadingState.value = false
           }
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.emit(outcome.message)
@@ -333,7 +363,7 @@ class MediaDetailViewModel @Inject constructor(
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
-        is DbResult.Success -> result.data.let { _isFavorite.value = it }
+        is DbResult.Success -> if (result.data) _isFavorite.value = true
         is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
@@ -342,7 +372,7 @@ class MediaDetailViewModel @Inject constructor(
   fun isWatchlistDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
-        is DbResult.Success -> result.data.let { _isWatchlist.value = it }
+        is DbResult.Success -> if (result.data) _isWatchlist.value = true
         is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
@@ -477,6 +507,7 @@ class MediaDetailViewModel @Inject constructor(
                 isFavorite = true,
               )
             )
+//            _isFavorite.value = data.favorite
             _loadingState.value = false
           }
 
@@ -489,7 +520,6 @@ class MediaDetailViewModel @Inject constructor(
                 isFavorite = true,
               )
             )
-            data.favorite.let { _isFavorite.value = it }
             _errorState.emit(outcome.message)
             _loadingState.value = false
           }
@@ -515,7 +545,7 @@ class MediaDetailViewModel @Inject constructor(
                 isFavorite = false
               )
             )
-            data.watchlist.let { _isWatchlist.value = it }
+            _isWatchlist.value = data.watchlist
             _loadingState.value = false
           }
 
@@ -548,7 +578,6 @@ class MediaDetailViewModel @Inject constructor(
           is Outcome.Loading -> _loadingState.value = true
           is Outcome.Error -> {
             _loadingState.value = false
-            _rateState.value = Event(false)
             _errorState.emit(outcome.message)
           }
         }
@@ -568,7 +597,6 @@ class MediaDetailViewModel @Inject constructor(
           is Outcome.Loading -> _loadingState.value = true
           is Outcome.Error -> {
             _loadingState.value = false
-            _rateState.value = Event(false)
             _errorState.emit(outcome.message)
           }
         }

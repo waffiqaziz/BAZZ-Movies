@@ -4,6 +4,7 @@ import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,6 +20,9 @@ class WatchProvidersAdapter(
   RecyclerView.Adapter<WatchProvidersAdapter.ViewHolder>() {
 
   private val providerList = ArrayList<Provider>()
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getListProvider(): List<Provider> = providerList
 
   fun setProviders(newList: List<Provider>) {
     val diffCallback = DiffCallback(this.providerList, newList)
