@@ -108,7 +108,9 @@ class MoreFragment : Fragment() {
               removePrefUserData() // remove preference user data
             }
 
-            is Outcome.Loading -> {}
+            is Outcome.Loading -> {
+              /* do nothing */
+            }
 
             is Outcome.Error -> {
               Log.d("TEST_DEBUG", "Received signOutState: ${outcome.message}")
@@ -118,7 +120,9 @@ class MoreFragment : Fragment() {
               mSnackbar = snackbar.showSnackbarWarning(Event(outcome.message))
             }
 
-            else -> {}
+            else -> {
+              /* do nothing */
+            }
           }
         }
       }
@@ -136,7 +140,9 @@ class MoreFragment : Fragment() {
               mSnackbar = snackbar.showSnackbarWarning(Event(it.errorMessage))
             }
 
-            else -> {}
+            else -> {
+              /* do nothing */
+            }
           }
         }
       }

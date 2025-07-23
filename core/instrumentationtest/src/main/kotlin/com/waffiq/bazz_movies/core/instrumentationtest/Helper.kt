@@ -57,7 +57,7 @@ object Helper {
           try {
             if (matcher.matches(view)) return
           } catch (_: Throwable) {
-            /* Do nothing */
+            /* do nothing */
           }
           Thread.sleep(DELAY_TIME)
         } while (System.currentTimeMillis() < endTime)

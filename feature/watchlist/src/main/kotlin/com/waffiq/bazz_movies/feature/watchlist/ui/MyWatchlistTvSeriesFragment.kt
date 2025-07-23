@@ -75,7 +75,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentMyWatchlistTvSeriesBinding.inflate(inflater, container, false)
     return binding.root
@@ -248,7 +248,7 @@ class MyWatchlistTvSeriesFragment : Fragment() {
   private fun showSnackBarUserLogin(
     title: String,
     fav: FavoriteModel?,
-    wtc: WatchlistModel?
+    wtc: WatchlistModel?,
   ) {
     val delete = isWantToDelete && wtc != null
     val addToFavorite = !isWantToDelete && fav != null
@@ -356,7 +356,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Error -> requireContext().toastShort(it.errorMessage)
-          else -> {}
+          else -> {
+            /* do nothing */
+          }
         }
       }
     }
