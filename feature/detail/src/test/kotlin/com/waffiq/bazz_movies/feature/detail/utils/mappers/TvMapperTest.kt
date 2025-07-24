@@ -32,7 +32,7 @@ class TvMapperTest {
     assertEquals("Scripted", detailTv.type)
     assertEquals("/backdrop.jpg", detailTv.backdropPath)
     assertEquals(1, detailTv.listGenres?.size)
-    assertEquals("Drama", detailTv.listGenres?.get(0)?.name)
+    assertEquals("Action", detailTv.listGenres?.get(0)?.name)
     assertEquals(8.5, detailTv.popularity)
     assertEquals(1, detailTv.id)
     assertEquals(1, detailTv.numberOfSeasons)

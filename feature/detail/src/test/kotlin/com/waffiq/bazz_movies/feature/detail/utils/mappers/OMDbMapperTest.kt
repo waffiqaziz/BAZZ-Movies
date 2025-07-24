@@ -27,7 +27,7 @@ class OMDbMapperTest {
     assertEquals("Internet Movie Database", omdbDetails.ratings?.get(0)?.source)
     assertEquals("148 min", omdbDetails.runtime)
     assertEquals("English", omdbDetails.language)
-    assertEquals("PG-13", omdbDetails.rated) 
+    assertEquals("PG-13", omdbDetails.rated)
     assertEquals("Warner Bros", omdbDetails.production)
     assertEquals("15 Jul 2008", omdbDetails.released)
     assertEquals("tt0468569", omdbDetails.imdbID)
