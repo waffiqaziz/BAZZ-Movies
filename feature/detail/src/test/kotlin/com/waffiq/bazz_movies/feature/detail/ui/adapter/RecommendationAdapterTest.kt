@@ -23,7 +23,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 
-class RecommendationAdapterTest  : BaseAdapterTest(){
+class RecommendationAdapterTest : BaseAdapterTest() {
 
   @Mock
   lateinit var navigator: INavigator
@@ -221,7 +221,7 @@ class RecommendationAdapterTest  : BaseAdapterTest(){
         title = "title",
         originalTitle = "original title",
         originalName = "original name",
-        )
+      )
     )
   }
 

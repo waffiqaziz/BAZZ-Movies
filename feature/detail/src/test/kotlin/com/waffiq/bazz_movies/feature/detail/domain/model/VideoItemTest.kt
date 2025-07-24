@@ -81,17 +81,15 @@ class VideoItemTest {
   fun videoItemDestructuring_withNullValues_extractsNullValues() {
     val videoItem = VideoItem(name = "Test")
 
-    val (site, size, iso31661, name, official, id, publishedAt, type, iso6391, key) = videoItem
-
-    assertNull(site)
-    assertNull(size)
-    assertNull(iso31661)
-    assertEquals("Test", name)
-    assertNull(official)
-    assertNull(id)
-    assertNull(publishedAt)
-    assertNull(type)
-    assertNull(iso6391)
-    assertNull(key)
+    assertNull(videoItem.site)
+    assertNull(videoItem.size)
+    assertNull(videoItem.iso31661)
+    assertEquals("Test", videoItem.name)
+    assertNull(videoItem.official)
+    assertNull(videoItem.id)
+    assertNull(videoItem.publishedAt)
+    assertNull(videoItem.type)
+    assertNull(videoItem.iso6391)
+    assertNull(videoItem.key)
   }
 }

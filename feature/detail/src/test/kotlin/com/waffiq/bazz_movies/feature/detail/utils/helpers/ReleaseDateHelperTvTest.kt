@@ -260,7 +260,6 @@ class ReleaseDateHelperTvTest {
     checkTvReleaseDate(data, "(US)", "2020")
   }
 
-  // Test for: val years = filteredSeasons?.mapNotNull { it?.airDate?.take(YEAR)?.toIntOrNull() } // 2 of 8 branches is missed
   @Test
   fun getReleaseDateRegionTv_withNullSeasonItemInFilteredList_triggersMapNotNullBranch() {
     val data = DetailTv(
@@ -273,7 +272,6 @@ class ReleaseDateHelperTvTest {
     checkTvReleaseDate(data, "(US)", "2020")
   }
 
-  // Test for: val years = filteredSeasons?.mapNotNull { it?.airDate?.take(YEAR)?.toIntOrNull() } // Another branch
   @Test
   fun getReleaseDateRegionTv_withNullAirDateInFilteredSeason_triggersMapNotNullBranch() {
     val data = DetailTv(
