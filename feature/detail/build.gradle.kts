@@ -1,6 +1,3 @@
-import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.libs
-
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.glide)
@@ -19,8 +16,17 @@ dependencies {
   implementation(libs.androidx.activity)
   implementation(libs.androidx.cardview)
   implementation(libs.androidx.swiperefreshlayout)
-
   implementation(libs.androidx.paging.runtime)
-
   implementation(libs.expandable.textview)
+
+  testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.junit)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockito.android.kotlin)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockk)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.truth)
+  testImplementation(libs.turbine)
 }

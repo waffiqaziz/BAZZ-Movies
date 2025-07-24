@@ -266,7 +266,8 @@ class UserInteractionHandler(
    * Sends a request to TMDB to update favorite or watchlist status.
    *
    * @param isModeFavorite Determines if action is for favorite or watchlist.
-   * @param state Current state of the button.
+   * @param state Current state of the button. The state is used to determinate the operation,
+   * if its **true** perform delete, if its **false** perform add
    */
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) {

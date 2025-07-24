@@ -97,48 +97,24 @@ class MediaDetailViewModel @Inject constructor(
 
   // region MOVIE
   fun getMovieVideoLink(movieId: Int) {
-    viewModelScope.launch {
-      getMovieDetailUseCase.getMovieVideoLinks(movieId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getMovieDetailUseCase.getMovieVideoLinks(movieId) },
+      onSuccess = { _linkVideo.value = it }
+    )
   }
 
   fun getMovieDetail(id: Int, userRegion: String) {
-    viewModelScope.launch {
-      getMovieDetailUseCase.getMovieDetail(id, userRegion).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _detailMedia.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getMovieDetailUseCase.getMovieDetail(id, userRegion) },
+      onSuccess = { _detailMedia.value = it }
+    )
   }
 
   fun getMovieCredits(movieId: Int) {
-    viewModelScope.launch {
-      getMovieDetailUseCase.getMovieCredits(movieId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _mediaCredits.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getMovieDetailUseCase.getMovieCredits(movieId) },
+      onSuccess = { _mediaCredits.value = it }
+    )
   }
 
   fun getMovieRecommendation(movieId: Int) {
@@ -150,18 +126,10 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   fun getMovieState(sessionId: String, id: Int) {
-    viewModelScope.launch {
-      getMovieStateUseCase.getMovieState(sessionId, id).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _itemState.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getMovieStateUseCase.getMovieState(sessionId, id) },
+      onSuccess = { _itemState.value = it }
+    )
   }
 
   fun getMovieWatchProviders(countryCode: String, movieId: Int) {
@@ -173,60 +141,31 @@ class MediaDetailViewModel @Inject constructor(
 
   // region TV-SERIES
   fun getTvTrailerLink(tvId: Int) {
-    viewModelScope.launch {
-      getTvDetailUseCase.getTvTrailerLink(tvId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _linkVideo.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getTvDetailUseCase.getTvTrailerLink(tvId) },
+      onSuccess = { _linkVideo.value = it }
+    )
   }
 
   fun getTvExternalIds(tvId: Int) {
-    viewModelScope.launch {
-      getTvDetailUseCase.getTvExternalIds(tvId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> _tvExternalID.value = outcome.data
-          is Outcome.Loading -> {}
-          is Outcome.Error -> _errorState.emit(outcome.message)
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getTvDetailUseCase.getTvExternalIds(tvId) },
+      onSuccess = { _tvExternalID.value = it }
+    )
   }
 
   fun getTvDetail(id: Int, userRegion: String) {
-    viewModelScope.launch {
-      getTvDetailUseCase.getTvDetail(id, userRegion).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _detailMedia.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getTvDetailUseCase.getTvDetail(id, userRegion) },
+      onSuccess = { _detailMedia.value = it }
+    )
   }
 
   fun getTvCredits(tvId: Int) {
-    viewModelScope.launch {
-      getTvDetailUseCase.getTvCredits(tvId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _mediaCredits.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getTvDetailUseCase.getTvCredits(tvId) },
+      onSuccess = { _mediaCredits.value = it }
+    )
   }
 
   fun getTvRecommendation(tvId: Int) {
@@ -238,18 +177,10 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   fun getTvState(sessionId: String, id: Int) {
-    viewModelScope.launch {
-      getTvStateUseCase.getTvState(sessionId, id).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> outcome.data.let { _itemState.value = it }
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getTvStateUseCase.getTvState(sessionId, id) },
+      onSuccess = { _itemState.value = it }
+    )
   }
 
   fun getTvWatchProviders(countryCode: String, tvId: Int) {
@@ -263,7 +194,6 @@ class MediaDetailViewModel @Inject constructor(
     viewModelScope.launch {
       flow.collect { outcome ->
         _watchProvidersUiState.value = when (outcome) {
-          is Outcome.Loading -> WatchProvidersUiState.Loading
           is Outcome.Success -> WatchProvidersUiState.Success(
             ads = outcome.data.ads.orEmpty(),
             buy = outcome.data.buy.orEmpty(),
@@ -272,6 +202,7 @@ class MediaDetailViewModel @Inject constructor(
             rent = outcome.data.rent.orEmpty(),
           )
 
+          is Outcome.Loading -> WatchProvidersUiState.Loading
           is Outcome.Error -> WatchProvidersUiState.Error(outcome.message)
         }
       }
@@ -279,22 +210,11 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   fun getOMDbDetails(imdbId: String) {
-    viewModelScope.launch {
-      getOMDbDetailUseCase.getOMDbDetails(imdbId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            outcome.data.let { _omdbResult.value = it }
-            _loadingState.value = false
-          }
-
-          is Outcome.Loading -> {}
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+    executeUseCase(
+      flowProvider = { getOMDbDetailUseCase.getOMDbDetails(imdbId) },
+      onSuccess = { _omdbResult.value = it },
+      onFinallySuccess = { _loadingState.value = false },
+    )
   }
 
   // region DB FUNCTION
@@ -333,7 +253,7 @@ class MediaDetailViewModel @Inject constructor(
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
-        is DbResult.Success -> result.data.let { _isFavorite.value = it }
+        is DbResult.Success -> if (result.data) _isFavorite.value = true
         is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
@@ -342,7 +262,7 @@ class MediaDetailViewModel @Inject constructor(
   fun isWatchlistDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
-        is DbResult.Success -> result.data.let { _isWatchlist.value = it }
+        is DbResult.Success -> if (result.data) _isWatchlist.value = true
         is DbResult.Error -> _errorState.emit(result.errorMessage)
       }
     }
@@ -461,119 +381,124 @@ class MediaDetailViewModel @Inject constructor(
 
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
-    viewModelScope.launch {
-      postMethodUseCase.postFavorite(sessionId, data, userId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (data.mediaType == MOVIE_MEDIA_TYPE) {
-              getMovieState(sessionId, data.mediaId)
-            } else {
-              getTvState(sessionId, data.mediaId)
-            }
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = !data.favorite,
-                isFavorite = true,
-              )
-            )
-            _loadingState.value = false
-          }
-
-          is Outcome.Loading -> _loadingState.value = true
-          is Outcome.Error -> {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = false,
-                isDelete = !data.favorite,
-                isFavorite = true,
-              )
-            )
-            data.favorite.let { _isFavorite.value = it }
-            _errorState.emit(outcome.message)
-            _loadingState.value = false
-          }
+    executeUseCase(
+      flowProvider = { postMethodUseCase.postFavorite(sessionId, data, userId) },
+      onSuccess = {
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = !data.favorite,
+            isFavorite = true,
+          )
+        )
+      },
+      onFinallySuccess = {
+        if (data.mediaType == MOVIE_MEDIA_TYPE) {
+          getMovieState(sessionId, data.mediaId)
+        } else {
+          getTvState(sessionId, data.mediaId)
         }
+        _isFavorite.value = data.favorite
+        _loadingState.value = false
+      },
+      onLoading = { _loadingState.value = true },
+      onFinallyError = {
+        _loadingState.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = false,
+            isDelete = !data.favorite,
+            isFavorite = true,
+          )
+        )
       }
-    }
+    )
   }
 
   fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
-    viewModelScope.launch {
-      postMethodUseCase.postWatchlist(sessionId, data, userId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (data.mediaType == MOVIE_MEDIA_TYPE) {
-              getMovieState(sessionId, data.mediaId)
-            } else {
-              getTvState(sessionId, data.mediaId)
-            }
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = !data.watchlist,
-                isFavorite = false
-              )
-            )
-            data.watchlist.let { _isWatchlist.value = it }
-            _loadingState.value = false
-          }
-
-          is Outcome.Loading -> _loadingState.value = true
-          is Outcome.Error -> {
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = false,
-                isDelete = !data.watchlist,
-                isFavorite = false
-              )
-            )
-            _errorState.emit(outcome.message)
-            _loadingState.value = false
-          }
+    executeUseCase(
+      flowProvider = { postMethodUseCase.postWatchlist(sessionId, data, userId) },
+      onSuccess = {
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = !data.watchlist,
+            isFavorite = false
+          )
+        )
+      },
+      onFinallySuccess = {
+        if (data.mediaType == MOVIE_MEDIA_TYPE) {
+          getMovieState(sessionId, data.mediaId)
+        } else {
+          getTvState(sessionId, data.mediaId)
         }
+        _isWatchlist.value = data.watchlist
+        _loadingState.value = false
+      },
+      onLoading = { _loadingState.value = true },
+      onFinallyError = {
+        _loadingState.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = false,
+            isDelete = !data.watchlist,
+            isFavorite = false
+          )
+        )
       }
-    }
+    )
   }
 
-  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
-    viewModelScope.launch {
-      postMethodUseCase.postMovieRate(sessionId, rating, movieId).collectLatest { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            _rateState.value = Event(true)
-            _loadingState.value = false
-          }
 
-          is Outcome.Loading -> _loadingState.value = true
-          is Outcome.Error -> {
-            _loadingState.value = false
-            _rateState.value = Event(false)
-            _errorState.emit(outcome.message)
-          }
-        }
-      }
-    }
+  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
+    executeUseCase(
+      flowProvider = { postMethodUseCase.postMovieRate(sessionId, rating, movieId) },
+      onSuccess = { _rateState.value = Event(true) },
+      onFinallySuccess = { _loadingState.value = false },
+      onLoading = { _loadingState.value = true },
+    )
   }
 
   fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
+    executeUseCase(
+      flowProvider = { postMethodUseCase.postTvRate(sessionId, rating, tvId) },
+      onSuccess = { _rateState.value = Event(true) },
+      onFinallySuccess = { _loadingState.value = false },
+      onLoading = { _loadingState.value = true },
+    )
+  }
+  // endregion POST FAVORITE, WATCHLIST, RATE
+
+  /**
+   * Helper to handle fetch from API
+   */
+  fun <T> executeUseCase(
+    flowProvider: suspend () -> Flow<Outcome<T>>,
+    onSuccess: (T) -> Unit = { /* default do nothing */ },
+    onFinallySuccess: () -> Unit = { /* default do nothing */ },
+    onLoading: () -> Unit = { /* default do nothing */ },
+    onError: suspend (String) -> Unit = { _errorState.emit(it) },
+    onFinallyError: () -> Unit = { /* default do nothing */ },
+  ) {
     viewModelScope.launch {
-      postMethodUseCase.postTvRate(sessionId, rating, tvId).collectLatest { outcome ->
+      val flow = flowProvider()
+      flow.collectLatest { outcome ->
         when (outcome) {
           is Outcome.Success -> {
-            _rateState.value = Event(true)
-            _loadingState.value = false
+            onSuccess(outcome.data)
+            onFinallySuccess()
           }
 
-          is Outcome.Loading -> _loadingState.value = true
+          is Outcome.Loading -> onLoading()
+
           is Outcome.Error -> {
             _loadingState.value = false
-            _rateState.value = Event(false)
-            _errorState.emit(outcome.message)
+            onError(outcome.message)
+            onFinallyError()
           }
         }
       }
     }
   }
-  // endregion POST FAVORITE, WATCHLIST, RATE
 }
