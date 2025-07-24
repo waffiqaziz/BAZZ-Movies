@@ -109,10 +109,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   @Test
   fun postFavorite_whenUnsuccessful_emitsError() = runTest {
     coEvery { postMethodUseCase.postFavorite(sessionId, postFavoriteMovieData, userId) } returns
-      flow {
-        emit(Outcome.Loading)
-        emit(Outcome.Error(errorMessage))
-      }
+      flowFailedWithLoading
 
     testViewModelFlowEvent(
       runBlock = { viewModel.postFavorite(sessionId, postFavoriteMovieData, userId) },

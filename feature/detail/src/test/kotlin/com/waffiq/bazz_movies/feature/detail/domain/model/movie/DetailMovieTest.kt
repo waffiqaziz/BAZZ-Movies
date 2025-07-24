@@ -12,6 +12,42 @@ import org.junit.Test
 
 class DetailMovieTest {
 
+  private val listGenres = listOf(GenresItem())
+  private val releaseDates = ReleaseDates()
+  private val listProductionCountriesItem = listOf(ProductionCountriesItem(), null)
+  private val listSpokenLanguagesItem = listOf(SpokenLanguagesItem(), null)
+  private val listProductionCompaniesItem = listOf(ProductionCompaniesItem(), null)
+  private val belongsToCollection = BelongsToCollection()
+
+  private val item = MovieDetail(
+    originalLanguage = "en",
+    imdbId = "tt1234567",
+    video = true,
+    title = "Movie Title",
+    backdropPath = "/backdrop.jpg",
+    revenue = 1000000L,
+    listGenres = listGenres,
+    popularity = 8.5,
+    releaseDates = releaseDates,
+    listProductionCountriesItem = listProductionCountriesItem,
+    id = 123,
+    voteCount = 1000,
+    budget = 500000,
+    overview = "Movie overview",
+    originalTitle = "Original Title",
+    runtime = 120,
+    posterPath = "/poster.jpg",
+    listSpokenLanguagesItem = listSpokenLanguagesItem,
+    listProductionCompaniesItem = listProductionCompaniesItem,
+    releaseDate = "2024-01-01",
+    voteAverage = 7.5,
+    belongsToCollection = belongsToCollection,
+    tagline = "Tagline",
+    adult = false,
+    homepage = "https://example.com",
+    status = "Released"
+  )
+
   @Test
   fun createDetailMovie_withDefaultValues_shouldCreateInstance() {
     val item = MovieDetail()
@@ -46,42 +82,6 @@ class DetailMovieTest {
 
   @Test
   fun createDetailMovie_withAllValues_shouldSetPropertiesCorrectly() {
-    val listGenres = listOf(GenresItem())
-    val releaseDates = ReleaseDates()
-    val listProductionCountriesItem = listOf(ProductionCountriesItem(), null)
-    val listSpokenLanguagesItem = listOf(SpokenLanguagesItem(), null)
-    val listProductionCompaniesItem = listOf(ProductionCompaniesItem(), null)
-    val belongsToCollection = BelongsToCollection()
-
-    val item = MovieDetail(
-      originalLanguage = "en",
-      imdbId = "tt1234567",
-      video = true,
-      title = "Movie Title",
-      backdropPath = "/backdrop.jpg",
-      revenue = 1000000L,
-      listGenres = listGenres,
-      popularity = 8.5,
-      releaseDates = releaseDates,
-      listProductionCountriesItem = listProductionCountriesItem,
-      id = 123,
-      voteCount = 1000,
-      budget = 500000,
-      overview = "Movie overview",
-      originalTitle = "Original Title",
-      runtime = 120,
-      posterPath = "/poster.jpg",
-      listSpokenLanguagesItem = listSpokenLanguagesItem,
-      listProductionCompaniesItem = listProductionCompaniesItem,
-      releaseDate = "2024-01-01",
-      voteAverage = 7.5,
-      belongsToCollection = belongsToCollection,
-      tagline = "Tagline",
-      adult = false,
-      homepage = "https://example.com",
-      status = "Released"
-    )
-
     assertEquals("en", item.originalLanguage)
     assertEquals("tt1234567", item.imdbId)
     assertEquals(true, item.video)

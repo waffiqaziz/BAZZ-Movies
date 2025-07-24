@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailMovieResponse
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -20,65 +21,6 @@ class MovieMapperTest {
 
   @Test
   fun toDetailMovie_withValidValues_returnsDetailMovie() {
-    val genresItemResponse = GenresResponseItem(
-      id = 1,
-      name = "Action"
-    )
-
-    val releaseDatesItemValueResponse = ReleaseDatesResponseItemValue(
-      descriptors = listOf("R"),
-      note = "Test note",
-      type = 3,
-      iso6391 = "en",
-      certification = "R",
-      releaseDate = "2024-01-01"
-    )
-
-    val releaseDatesItemResponse = ReleaseDatesResponseItem(
-      iso31661 = "US",
-      listReleaseDateResponseItemValue = listOf(releaseDatesItemValueResponse)
-    )
-
-    val releaseDatesResponse = ReleaseDatesResponse(
-      listReleaseDatesItemResponse = listOf(releaseDatesItemResponse)
-    )
-
-    val belongsToCollectionResponse = BelongsToCollectionResponse(
-      backdropPath = "/backdrop.jpg",
-      name = "Test Collection",
-      id = 1,
-      posterPath = "/poster.jpg"
-    )
-
-    val detailMovieResponse = DetailMovieResponse(
-      originalLanguage = "en",
-      imdbId = "tt1234567",
-      video = false,
-      title = "Test Movie",
-      backdropPath = "/backdrop.jpg",
-      revenue = 1000000,
-      listGenresItemResponse = listOf(genresItemResponse),
-      popularity = 8.5,
-      releaseDatesResponse = releaseDatesResponse,
-      listProductionCountriesItemResponse = listOf(),
-      id = 1,
-      voteCount = 100,
-      budget = 500000,
-      overview = "Test overview",
-      originalTitle = "Test Movie Original",
-      runtime = 120,
-      posterPath = "/poster.jpg",
-      listSpokenLanguagesItemResponse = listOf(),
-      listProductionCompaniesItemResponse = listOf(),
-      releaseDate = "2024-01-01",
-      voteAverage = 7.5,
-      belongsToCollectionResponse = belongsToCollectionResponse,
-      tagline = "Test tagline",
-      adult = false,
-      homepage = "https://testmovie.com",
-      status = "Released"
-    )
-
     val detailMovie: MovieDetail = detailMovieResponse.toDetailMovie()
 
     assertEquals("en", detailMovie.originalLanguage)

@@ -13,7 +13,7 @@ class ReleaseDateHelperMovieTest {
 
   // region Movie
   @Test
-  fun getReleaseDateRegion_withMatchingUserRegion_returnsFormattedDate() {
+  fun getReleaseDateRegion_matchUserRegion_returnsCorrectly() {
     val data = movieWithRelease(
       releaseRegion = "US",
       releaseDate = "2023-10-20T00:00:00.000Z",
@@ -24,7 +24,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withNoMatchingRegion_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_noValidRegion_usesProductionCountry() {
     val data = movieWithRelease(
       releaseRegion = "FR",
       releaseDate = null,
@@ -51,7 +51,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withMatchingRegionButEmptyDate_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_matchingRegionButEmptyDate_usesProductionCountry() {
     val data = movieWithRelease(
       releaseRegion = "US",
       releaseDate = "",
@@ -62,7 +62,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withNonEmptyProductionCountriesButAllInvalidIso_usesAnyValidRegion() {
+  fun getReleaseDateRegion_noMatchingEmptyProductionAndReleaseDate_usesAnyValidRegion() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -106,7 +106,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withNullReleaseDates_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withNullReleaseDates_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = null,
       listProductionCountriesItem = listOf(ProductionCountriesItem("CA")),
@@ -249,7 +249,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withMatchingRegionButNullReleaseDate_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withMatchingRegionButNullReleaseDate_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -268,7 +268,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withMatchingRegionButEmptyReleaseValuesList_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withMatchingRegionButEmptyReleaseValuesList_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -285,7 +285,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withMatchingRegionButNullReleaseValuesList_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withMatchingRegionButNullReleaseValuesList_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -302,7 +302,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withEmptyReleaseDatesItemList_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withEmptyReleaseDatesItemList_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = emptyList()
@@ -314,7 +314,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withProductionCountryButEmptyFallbackDate_usesAnyValidRegion() {
+  fun getReleaseDateRegion_withProductionCountryButEmptyDate_usesAnyValidRegion() {
     val data = movieWithRelease(
       releaseRegion = "FR",
       releaseDate = "2021-11-01T00:00:00.000Z",
@@ -325,7 +325,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withProductionCountryButNullFallbackDate() {
+  fun getReleaseDateRegion_withProductionCountryButNullDate() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -338,7 +338,7 @@ class ReleaseDateHelperMovieTest {
         )
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = null // Null fallback date
+      releaseDate = null
     )
     checkMovieReleaseDate(data, "US", "FR", "Nov 01, 2021")
   }
@@ -356,7 +356,7 @@ class ReleaseDateHelperMovieTest {
           )
         )
       ),
-      listProductionCountriesItem = null, // Null production countries
+      listProductionCountriesItem = null,
       releaseDate = ""
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
@@ -375,7 +375,7 @@ class ReleaseDateHelperMovieTest {
           )
         )
       ),
-      listProductionCountriesItem = emptyList(), // Empty production countries
+      listProductionCountriesItem = emptyList(),
       releaseDate = ""
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
@@ -389,7 +389,7 @@ class ReleaseDateHelperMovieTest {
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesitemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "") // Empty release date
+              ReleaseDatesItemValue(releaseDate = "")
             )
           )
         )
@@ -401,7 +401,7 @@ class ReleaseDateHelperMovieTest {
   }
 
   @Test
-  fun getReleaseDateRegion_withNullIso31661InReleaseItem_usesProductionCountryFallback() {
+  fun getReleaseDateRegion_withNullIso31661InReleaseItem_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -419,9 +419,8 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
-  // Test for: regionRelease = data?.listProductionCountriesItem?.firstOrNull { // 1 of 6 branches is missed
   @Test
-  fun getReleaseDateRegion_withAllProductionCountriesHavingEmptyIso_skipsProductionCountryFallback() {
+  fun getReleaseDateRegion_withAllProductionCountriesHavingEmptyIso_skipsProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
@@ -434,16 +433,14 @@ class ReleaseDateHelperMovieTest {
         )
       ),
       listProductionCountriesItem = listOf(
-        ProductionCountriesItem(""), // Empty iso31661
-        ProductionCountriesItem(null) // Null iso31661
+        ProductionCountriesItem(""),
+        ProductionCountriesItem(null)
       ),
       releaseDate = "2022-07-01"
     )
-    // This should skip production country fallback and go to final fallback
     checkMovieReleaseDate(data, "US", "FR", "Nov 01, 2021")
   }
 
-  // Test for: productionCountryRegionAndDate.regionRelease.isNotEmpty() // 2 of 4 branches is missed
   @Test
   fun getReleaseDateRegion_withProductionCountryButEmptyRegionRelease_usesAnyValidRegion() {
     val data = MovieDetail(
@@ -457,19 +454,17 @@ class ReleaseDateHelperMovieTest {
           )
         )
       ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("")), // Empty iso31661
-      releaseDate = "2022-07-01" // Non-empty release date
+      listProductionCountriesItem = listOf(ProductionCountriesItem("")),
+      releaseDate = "2022-07-01"
     )
-    // Production country has empty region, so should use any valid region
     checkMovieReleaseDate(data, "US", "FR", "Nov 01, 2021")
   }
 
-  // Test for: val fallback = getAnyValidRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem) // 1 of 4 branches is missed
   @Test
-  fun getReleaseDateRegion_withNullReleaseDatesListInFallback_returnsEmptyResult() {
+  fun getReleaseDateRegion_withNullReleaseDatesList_returnsEmptyResult() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
-        listReleaseDatesItem = null // Null list triggers different branch in getAnyValidRegionAndReleaseDateMovie
+        listReleaseDatesItem = null
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("")),
       releaseDate = ""
@@ -477,14 +472,13 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "", "")
   }
 
-  // Test for: it.iso31661 ?: "", // 1 of 2 branches is missed in getMatchingRegionAndReleaseDateMovie
   @Test
   fun getReleaseDateRegion_withNullIso31661InMatchingRegion_triggersElvisBranch() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
-            iso31661 = null, // Null iso31661 triggers ?: "" branch
+            iso31661 = null,
             listReleaseDatesitemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
@@ -497,7 +491,6 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
-  // Test for: it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: "" // 3 of 6 branches is missed in getMatchingRegionAndReleaseDateMovie
   @Test
   fun getReleaseDateRegion_withNullReleaseValuesList_triggersElvisBranch() {
     val data = MovieDetail(
@@ -505,7 +498,7 @@ class ReleaseDateHelperMovieTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = null // Null list triggers ?.firstOrNull() branch
+            listReleaseDatesitemValue = null
           )
         )
       ),
@@ -515,7 +508,6 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
-  // Test for: it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: "" // Another branch
   @Test
   fun getReleaseDateRegion_withNullFirstReleaseValue_triggersElvisBranch() {
     val data = MovieDetail(
@@ -523,7 +515,7 @@ class ReleaseDateHelperMovieTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf() // Null first item triggers ?.releaseDate branch
+            listReleaseDatesitemValue = listOf()
           )
         )
       ),
@@ -533,14 +525,13 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
-  // Test for: it.iso31661 ?: "", // 1 of 2 branches is missed in getAnyValidRegionAndReleaseDateMovie
   @Test
   fun getReleaseDateRegion_withNullIso31661InAnyValidRegion_triggersElvisBranch() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
-            iso31661 = null, // Null iso31661 in any valid region lookup
+            iso31661 = null,
             listReleaseDatesitemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
@@ -553,12 +544,11 @@ class ReleaseDateHelperMovieTest {
     checkMovieReleaseDate(data, "US", "", "")
   }
 
-  // Test for: item?.iso31661 != null && // 1 of 4 branches is missed in isValidRegionAndReleaseDate
   @Test
   fun getReleaseDateRegion_withNullReleaseItem_triggersIsValidRegionCheck() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(null) // Null item triggers item?.iso31661 != null check
+        listReleaseDatesItem = listOf(null)
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
       releaseDate = "2022-07-01"
@@ -572,7 +562,7 @@ class ReleaseDateHelperMovieTest {
     releaseRegion: String,
     releaseDate: String?,
     productionCountries: List<String>,
-    fallbackDate: String
+    fallbackDate: String,
   ): MovieDetail {
     return MovieDetail(
       releaseDates = ReleaseDates(
@@ -594,7 +584,7 @@ class ReleaseDateHelperMovieTest {
     data: MovieDetail?,
     region: String,
     expectedRegion: String,
-    expectedDate: String
+    expectedDate: String,
   ) {
     val result = getReleaseDateRegion(data, region)
     assertEquals(expectedRegion, result.regionRelease)

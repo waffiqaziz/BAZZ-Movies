@@ -65,18 +65,16 @@ class VideoItemTest {
       key = "abc123"
     )
 
-    val (site, size, iso31661, name, official, id, publishedAt, type, iso6391, key) = videoItem
-
-    assertEquals("YouTube", site)
-    assertEquals(1080, size)
-    assertEquals("US", iso31661)
-    assertEquals("Test", name)
-    assertEquals(true, official)
-    assertEquals("123", id)
-    assertEquals("2024-01-01", publishedAt)
-    assertEquals("Trailer", type)
-    assertEquals("en", iso6391)
-    assertEquals("abc123", key)
+    assertEquals("YouTube", videoItem.site)
+    assertEquals(1080, videoItem.size)
+    assertEquals("US", videoItem.iso31661)
+    assertEquals("Test", videoItem.name)
+    assertEquals(true, videoItem.official)
+    assertEquals("123", videoItem.id)
+    assertEquals("2024-01-01", videoItem.publishedAt)
+    assertEquals("Trailer", videoItem.type)
+    assertEquals("en", videoItem.iso6391)
+    assertEquals("abc123", videoItem.key)
   }
 
   @Test

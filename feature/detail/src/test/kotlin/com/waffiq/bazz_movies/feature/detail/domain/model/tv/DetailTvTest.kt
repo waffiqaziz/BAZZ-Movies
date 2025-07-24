@@ -4,6 +4,8 @@ import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTvFull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -14,41 +16,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withValidValues_setsPropertiesCorrectly() {
-    val detailTv = DetailTv(
-      originalLanguage = "en",
-      numberOfEpisodes = 62,
-      listNetworksItem = listOf(NetworksItem(name = "AMC")),
-      type = "Scripted",
-      backdropPath = "/backdrop.jpg",
-      listGenres = listOf(GenresItem()),
-      popularity = 100.5,
-      listProductionCountriesItem = listOf(ProductionCountriesItem()),
-      id = 1396,
-      numberOfSeasons = 5,
-      voteCount = 5000,
-      firstAirDate = "2008-01-20",
-      overview = "Show overview",
-      listSeasonsItem = listOf(SeasonsItem()),
-      listLanguages = listOf("en"),
-      listCreatedByItem = listOf(CreatedByItem()),
-      lastEpisodeToAir = LastEpisodeToAir(),
-      posterPath = "/poster.jpg",
-      listOriginCountry = listOf("US"),
-      listSpokenLanguagesItem = listOf(SpokenLanguagesItem()),
-      listProductionCompaniesItem = listOf(ProductionCompaniesItem()),
-      originalName = "Breaking Bad",
-      voteAverage = 9.3,
-      name = "Breaking Bad",
-      tagline = "All Bad Things Must Come to an End",
-      listEpisodeRunTime = listOf(47),
-      contentRatings = ContentRatings(),
-      adult = false,
-      nextEpisodeToAir = "Episode data",
-      inProduction = false,
-      lastAirDate = "2013-09-29",
-      homepage = "http://www.amc.com/shows/breaking-bad",
-      status = "Ended"
-    )
+    val detailTv = detailTvFull
 
     assertEquals("en", detailTv.originalLanguage)
     assertEquals(62, detailTv.numberOfEpisodes)

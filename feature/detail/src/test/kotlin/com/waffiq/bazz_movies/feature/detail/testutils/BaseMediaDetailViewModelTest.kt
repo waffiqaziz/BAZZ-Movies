@@ -201,7 +201,7 @@ abstract class BaseMediaDetailViewModelTest {
       override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem == newItem
       override fun areContentsTheSame(oldItem: T, newItem: T) = oldItem == newItem
     },
-    itemAssertions: (List<T>) -> Unit = {},
+    itemAssertions: (List<T>) -> Unit = { /* do nothing */ },
   ) = runTest {
     val differ = AsyncPagingDataDiffer(
       diffCallback = diffCallback,
@@ -246,14 +246,14 @@ abstract class BaseMediaDetailViewModelTest {
     // observe the test block
     liveData.observeForever(observer)
     if (checkLoading) {
-      // Capture the initial loading state
+      // capture initial loading state
       viewModel.loadingState.value?.let { initialState ->
         collectedLoadingStates.add(initialState)
       }
       viewModel.loadingState.observeForever(loadingObserver)
     }
 
-    // perform the test block
+    // trigger the test block
     runBlock()
     advanceUntilIdle()
 
@@ -264,6 +264,27 @@ abstract class BaseMediaDetailViewModelTest {
     }
     errorJob.cancel()
 
+    // perform success check
+    checkEventSuccess(liveData, expectedSuccess, collectedData)
+
+    // perform error check
+    expectError?.let {
+      assertThat(errorStates).containsExactly(it)
+    } ?: assertThat(errorStates).isEmpty()
+
+    // perform loading check
+    if (checkLoading) {
+      checkEventLoading(collectedLoadingStates, expectedSuccess, expectError)
+    }
+
+    verifyBlock()
+  }
+
+  private fun <T> checkEventSuccess(
+    liveData: LiveData<T>,
+    expectedSuccess: T? = null,
+    collectedData: MutableList<T>,
+  ) {
     expectedSuccess?.let { expected ->
       assertThat(collectedData).hasSize(1)
       val actual = collectedData.first()
@@ -282,43 +303,52 @@ abstract class BaseMediaDetailViewModelTest {
         assertThat(liveData.value).isEqualTo(expected)
       }
     } ?: assertThat(collectedData).isEmpty()
+  }
 
-    expectError?.let {
-      assertThat(errorStates).containsExactly(it)
-    } ?: assertThat(errorStates).isEmpty()
+  private fun <T> checkEventLoading(
+    collectedLoadingStates: MutableList<Boolean>,
+    expectedSuccess: T? = null,
+    expectError: String? = null,
+  ) {
+    when {
+      expectedSuccess != null -> {
+        // success case: should start loading, then stop
+        assertThat(collectedLoadingStates).contains(true)
+        assertThat(collectedLoadingStates.last()).isFalse()
+        assertThat(viewModel.loadingState.value).isFalse()
+      }
 
-    if (checkLoading) {
-      when {
-        expectedSuccess != null -> {
-          // success case: should start loading, then stop
+      expectError != null -> {
+        // error case: should start loading, then stop
+        assertThat(collectedLoadingStates).contains(true)
+        assertThat(collectedLoadingStates.last()).isFalse()
+        assertThat(viewModel.loadingState.value).isFalse()
+      }
+
+      else -> {
+        // loading only case
+        if (collectedLoadingStates.isNotEmpty()) {
           assertThat(collectedLoadingStates).contains(true)
-          assertThat(collectedLoadingStates.last()).isFalse()
-          assertThat(viewModel.loadingState.value).isFalse()
-        }
-
-        expectError != null -> {
-          // error case: should start loading, then stop
-          assertThat(collectedLoadingStates).contains(true)
-          assertThat(collectedLoadingStates.last()).isFalse()
-          assertThat(viewModel.loadingState.value).isFalse()
-        }
-
-        else -> {
-          // loading only case
-          if (collectedLoadingStates.isNotEmpty()) {
-            assertThat(collectedLoadingStates).contains(true)
-          }
         }
       }
     }
-
-    verifyBlock()
   }
 
   private class TestListCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {}
-    override fun onRemoved(position: Int, count: Int) {}
-    override fun onMoved(fromPosition: Int, toPosition: Int) {}
-    override fun onChanged(position: Int, count: Int, payload: Any?) {}
+    override fun onInserted(position: Int, count: Int) {
+      /* do nothing */
+    }
+
+    override fun onRemoved(position: Int, count: Int) {
+      /* do nothing */
+    }
+
+    override fun onMoved(fromPosition: Int, toPosition: Int) {
+      /* do nothing */
+    }
+
+    override fun onChanged(position: Int, count: Int, payload: Any?) {
+      /* do nothing */
+    }
   }
 }

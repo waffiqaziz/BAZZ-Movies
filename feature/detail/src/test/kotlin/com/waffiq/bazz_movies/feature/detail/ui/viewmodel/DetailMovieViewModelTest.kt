@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
@@ -242,5 +243,17 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
 
     assertThat(viewModel.watchProvidersUiState.value)
       .isInstanceOf(WatchProvidersUiState.Success::class.java)
+  }
+
+  @Test
+  fun executeUseCase_whenNoOnSuccessProvided_shouldStillComplete() = runTest {
+    val flow = flowOf(Outcome.Success(Unit))
+
+    viewModel.executeUseCase(
+      flowProvider = { flow }
+    )
+
+    advanceUntilIdle()
+    assertThat(viewModel.loadingState.value).isNull()
   }
 }
