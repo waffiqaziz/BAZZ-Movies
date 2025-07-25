@@ -6,8 +6,8 @@ import android.os.LocaleList
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
+import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getNetworkLocation
 import java.util.Locale
-import java.util.TimeZone
 
 /**
  * Helper object to determine the user's region using SIM card information or default phone settings.
@@ -78,16 +78,5 @@ object GetRegionHelper {
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun LocaleList.getOrNull(index: Int): Locale? {
     return if (index in 0 until size()) get(index) else null
-  }
-}
-
-/**
- * Used as wrapper time zone
- *
- * @return A string region code. Example : "ID", "MY", "RU", etc
- */
-object TimeZoneHelper {
-  fun getDefaultTimeZoneId(): String {
-    return TimeZone.getDefault().id
   }
 }
