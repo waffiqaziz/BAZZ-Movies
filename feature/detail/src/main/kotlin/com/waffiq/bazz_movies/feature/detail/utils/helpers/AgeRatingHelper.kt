@@ -29,14 +29,14 @@ object AgeRatingHelper {
     return if (region != "false") { // find age rating based on user region
       releaseDatesItems
         .find { it?.iso31661 == region }
-        ?.listReleaseDatesitemValue
+        ?.listReleaseDatesItemValue
         ?.find { !it.certification.isNullOrEmpty() }
         ?.certification
         ?: ""
     } else { // find age rating from any country
       releaseDatesItems
         .asSequence()
-        .flatMap { item -> item?.listReleaseDatesitemValue?.asSequence() ?: emptySequence() }
+        .flatMap { item -> item?.listReleaseDatesItemValue?.asSequence() ?: emptySequence() }
         .firstOrNull { !it.certification.isNullOrEmpty() }
         ?.certification
         ?: ""

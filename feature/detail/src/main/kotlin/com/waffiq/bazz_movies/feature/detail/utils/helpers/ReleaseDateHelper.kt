@@ -35,7 +35,7 @@ object ReleaseDateHelper {
   fun getReleaseDateRegion(data: MovieDetail?, userRegion: String): ReleaseDateRegion {
     var releaseDateRegion: ReleaseDateRegion? = null
 
-    // Step 1: Look for a release date in the user's specified region.
+    // Step 1: get release date based user's region.
     val userRegionAndDate =
       getMatchingRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem, userRegion)
     if (userRegionAndDate != null) {
@@ -43,10 +43,14 @@ object ReleaseDateHelper {
         regionRelease = userRegionAndDate.first,
         releaseDate = dateFormatterISO8601(userRegionAndDate.second)
       )
+      println("STEP 1")
     }
 
-    // Step 2: Fallback - Use production country and its release date if no match is found for the user region.
+    // Step 2: fallback - use production country and its release date
+    // if no match is found for the user region.
     if (releaseDateRegion == null) {
+
+      // get production country
       val productionCountryRegionAndDate = ReleaseDateRegion(
         regionRelease = data?.listProductionCountriesItem?.firstOrNull {
           !it?.iso31661.isNullOrEmpty()
@@ -58,15 +62,17 @@ object ReleaseDateHelper {
       ) {
         releaseDateRegion = productionCountryRegionAndDate
       }
+      println("STEP 2")
     }
 
-    // Step 3: Final Fallback - Retrieve any available valid region and release date.
+    // Step 3: final Fallback - use any valid region and release date.
     if (releaseDateRegion == null) {
       val fallback = getAnyValidRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem)
       releaseDateRegion = ReleaseDateRegion(
         regionRelease = fallback.first,
         releaseDate = dateFormatterISO8601(fallback.second)
       )
+      println("STEP 3")
     }
 
     return releaseDateRegion
@@ -87,7 +93,7 @@ object ReleaseDateHelper {
       ?.let {
         Pair(
           it.iso31661 ?: "",
-          it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: ""
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate ?: ""
         )
       }
   }
@@ -104,7 +110,7 @@ object ReleaseDateHelper {
       ?.let {
         Pair(
           it.iso31661 ?: "",
-          it.listReleaseDatesitemValue?.firstOrNull()?.releaseDate ?: ""
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate ?: ""
         )
       }
       ?: Pair("", "")
@@ -123,7 +129,7 @@ object ReleaseDateHelper {
   ): Boolean {
     return item?.iso31661 != null &&
       (region == null || item.iso31661 == region) &&
-      item.listReleaseDatesitemValue?.any { !it.releaseDate.isNullOrEmpty() } == true
+      item.listReleaseDatesItemValue?.any { !it.releaseDate.isNullOrEmpty() } == true
   }
 
   /**

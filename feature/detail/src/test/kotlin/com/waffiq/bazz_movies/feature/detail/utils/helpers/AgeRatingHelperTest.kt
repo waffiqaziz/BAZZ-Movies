@@ -63,7 +63,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(
                 iso6391 = "US",
                 certification = ""
@@ -97,7 +97,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = null
+            listReleaseDatesItemValue = null
           )
         )
       )
@@ -112,7 +112,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = emptyList()
+            listReleaseDatesItemValue = emptyList()
           )
         )
       )
@@ -127,7 +127,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = null)
             )
           )
@@ -144,7 +144,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = ""),
               ReleaseDatesItemValue(certification = "PG-13"),
               ReleaseDatesItemValue(certification = "R")
@@ -177,7 +177,7 @@ class AgeRatingHelperTest {
           null,
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = "PG-13")
             )
           )
@@ -194,7 +194,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(descriptors = null, certification = "PG-13")
             )
           )
@@ -212,7 +212,7 @@ class AgeRatingHelperTest {
           null,
           ReleaseDatesItem(
             iso31661 = "UK",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = "15")
             )
           )
@@ -229,11 +229,11 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "UK",
-            listReleaseDatesitemValue = null
+            listReleaseDatesItemValue = null
           ),
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = "16")
             )
           )
@@ -250,7 +250,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "UK",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = ""),
               ReleaseDatesItemValue(certification = "15")
             )
@@ -268,7 +268,7 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "UK",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = null),
               ReleaseDatesItemValue(certification = "15")
             )
@@ -519,7 +519,7 @@ class AgeRatingHelperTest {
 
   private fun movieReleaseItem(region: String?, certification: String?) = ReleaseDatesItem(
     iso31661 = region,
-    listReleaseDatesitemValue = listOf(
+    listReleaseDatesItemValue = listOf(
       ReleaseDatesItemValue(certification = certification)
     )
   )

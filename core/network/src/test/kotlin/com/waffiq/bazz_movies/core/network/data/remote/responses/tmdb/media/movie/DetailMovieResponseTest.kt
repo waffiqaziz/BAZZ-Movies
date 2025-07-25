@@ -30,7 +30,7 @@ class DetailMovieResponseTest {
     assertEquals("Released", detailMovieResponse.status)
     assertEquals(
       "AD",
-      detailMovieResponse.releaseDatesResponse?.listReleaseDatesItemResponse?.get(0)?.iso31661
+      detailMovieResponse.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661
     )
   }
 

@@ -5,13 +5,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
-import com.waffiq.bazz_movies.feature.detail.testutils.ReleaseDateHelperMovieTestBase
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseReleaseDateHelperMovieTest
 import org.junit.Test
 
 /**
  * This test to testing ReleaseDateHelperMovieBasicTest core function
  */
-class ReleaseDateHelperMovieBasicTest : ReleaseDateHelperMovieTestBase() {
+class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
 
   @Test
   fun getReleaseDateRegion_matchUserRegion_returnsCorrectly() {
@@ -69,7 +69,7 @@ class ReleaseDateHelperMovieBasicTest : ReleaseDateHelperMovieTestBase() {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "")
             )
           )

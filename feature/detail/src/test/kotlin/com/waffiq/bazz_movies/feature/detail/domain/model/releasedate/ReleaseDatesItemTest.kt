@@ -12,7 +12,7 @@ class ReleaseDatesItemTest {
     val item = ReleaseDatesItem()
 
     assertNull(item.iso31661)
-    assertNull(item.listReleaseDatesitemValue)
+    assertNull(item.listReleaseDatesItemValue)
   }
 
   @Test
@@ -22,10 +22,10 @@ class ReleaseDatesItemTest {
 
     val item = ReleaseDatesItem(
       iso31661 = iso31661,
-      listReleaseDatesitemValue = list
+      listReleaseDatesItemValue = list
     )
 
     assertEquals(iso31661, item.iso31661)
-    assertEquals(list, item.listReleaseDatesitemValue)
+    assertEquals(list, item.listReleaseDatesItemValue)
   }
 }

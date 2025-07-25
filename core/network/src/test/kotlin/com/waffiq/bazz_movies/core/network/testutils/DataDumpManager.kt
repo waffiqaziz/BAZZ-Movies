@@ -793,7 +793,7 @@ object DataDumpManager {
     ),
     popularity = 856.096,
     releaseDatesResponse = ReleaseDatesResponse(
-      listReleaseDatesItemResponse = listOf(
+      listReleaseDatesResponseItem = listOf(
         ReleaseDatesResponseItem(
           iso31661 = "AD",
           listReleaseDateResponseItemValue = listOf(
