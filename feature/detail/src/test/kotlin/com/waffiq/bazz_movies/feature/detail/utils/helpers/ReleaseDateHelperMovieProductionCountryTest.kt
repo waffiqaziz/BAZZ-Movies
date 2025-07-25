@@ -5,10 +5,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
-import com.waffiq.bazz_movies.feature.detail.testutils.ReleaseDateHelperMovieTestBase
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseReleaseDateHelperMovieTest
 import org.junit.Test
 
-class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBase() {
+class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTest() {
 
   @Test
   fun getReleaseDateRegion_withNullProductionCountriesItem_usesAnyValidRegion() {
@@ -17,7 +17,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
           )
@@ -36,7 +36,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
           )
@@ -55,7 +55,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "JP",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2022-09-10T00:00:00.000Z")
             )
           )
@@ -77,7 +77,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
           )
@@ -100,7 +100,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
           )
@@ -122,7 +122,7 @@ class ReleaseDateHelperMovieProductionCountryTest : ReleaseDateHelperMovieTestBa
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "FR",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "")
             )
           )

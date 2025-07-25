@@ -5,10 +5,10 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
-import com.waffiq.bazz_movies.feature.detail.testutils.ReleaseDateHelperMovieTestBase
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseReleaseDateHelperMovieTest
 import org.junit.Test
 
-class ReleaseDateHelperMovieNullHandlingTest : ReleaseDateHelperMovieTestBase() {
+class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() {
 
   @Test
   fun getReleaseDateRegion_withNullReleaseDates_usesProductionCountry() {
@@ -63,7 +63,7 @@ class ReleaseDateHelperMovieNullHandlingTest : ReleaseDateHelperMovieTestBase() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = null,
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
             )
           )
@@ -82,7 +82,7 @@ class ReleaseDateHelperMovieNullHandlingTest : ReleaseDateHelperMovieTestBase() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = null)
             )
           )
@@ -101,7 +101,7 @@ class ReleaseDateHelperMovieNullHandlingTest : ReleaseDateHelperMovieTestBase() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = null
+            listReleaseDatesItemValue = null
           )
         )
       ),
@@ -118,7 +118,7 @@ class ReleaseDateHelperMovieNullHandlingTest : ReleaseDateHelperMovieTestBase() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesitemValue = emptyList()
+            listReleaseDatesItemValue = emptyList()
           )
         )
       ),

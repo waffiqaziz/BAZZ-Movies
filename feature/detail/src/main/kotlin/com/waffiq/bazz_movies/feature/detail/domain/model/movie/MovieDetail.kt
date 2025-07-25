@@ -14,7 +14,7 @@ data class MovieDetail(
   val title: String? = null,
   val backdropPath: String? = null,
   val revenue: Long? = null,
-  val listGenres: List<GenresItem>? = null,
+  val listGenres: List<GenresItem?>? = null,
   val popularity: Double? = null,
   val releaseDates: ReleaseDates? = null,
   val listProductionCountriesItem: List<ProductionCountriesItem?>? = null,

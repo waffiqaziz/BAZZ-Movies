@@ -9,7 +9,7 @@ class ReleaseDatesResponseTest {
   @Test
   fun releaseDatesResponse_withValidValues_setsPropertiesCorrectly() {
     val releaseDatesResponse = ReleaseDatesResponse(
-      listReleaseDatesItemResponse = listOf(
+      listReleaseDatesResponseItem = listOf(
         ReleaseDatesResponseItem(
           iso31661 = "ID",
           listReleaseDateResponseItemValue = listOf(
@@ -20,17 +20,17 @@ class ReleaseDatesResponseTest {
         )
       )
     )
-    assertEquals("ID", releaseDatesResponse.listReleaseDatesItemResponse?.get(0)?.iso31661)
+    assertEquals("ID", releaseDatesResponse.listReleaseDatesResponseItem?.get(0)?.iso31661)
     assertEquals(
       "Lembaga Sensor Film (LSF)",
       releaseDatesResponse
-        .listReleaseDatesItemResponse?.get(0)?.listReleaseDateResponseItemValue?.get(0)?.note
+        .listReleaseDatesResponseItem?.get(0)?.listReleaseDateResponseItemValue?.get(0)?.note
     )
   }
 
   @Test
   fun releaseDatesResponse_withDefaultValues_setsPropertiesCorrectly() {
     val releaseDatesResponse = ReleaseDatesResponse()
-    assertNull(releaseDatesResponse.listReleaseDatesItemResponse)
+    assertNull(releaseDatesResponse.listReleaseDatesResponseItem)
   }
 }

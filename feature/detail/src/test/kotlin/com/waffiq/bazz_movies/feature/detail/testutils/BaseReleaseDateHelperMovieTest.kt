@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import org.junit.Assert.assertEquals
 
-abstract class ReleaseDateHelperMovieTestBase {
+abstract class BaseReleaseDateHelperMovieTest {
 
   protected fun movieWithRelease(
     releaseRegion: String,
@@ -21,7 +21,7 @@ abstract class ReleaseDateHelperMovieTestBase {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = releaseRegion,
-            listReleaseDatesitemValue = listOf(
+            listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(releaseDate = releaseDate)
             )
           )

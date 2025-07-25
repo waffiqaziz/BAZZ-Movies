@@ -79,7 +79,7 @@ class MediaDetailViewModel @Inject constructor(
   private val _postModelState = MutableLiveData<Event<PostModelState>>()
   val postModelState: LiveData<Event<PostModelState>> get() = _postModelState
 
-  private var _linkVideo = MutableLiveData<String>()
+  private val _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
 
   private val _detailMedia = MutableLiveData<MediaDetail>()

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
@@ -25,7 +24,7 @@ object MovieMapper {
     title = title,
     backdropPath = backdropPath,
     revenue = revenue,
-    listGenres = listGenresItemResponse?.map { it?.toGenresItem() ?: GenresItem() },
+    listGenres = listGenresItemResponse?.map { it?.toGenresItem() },
     popularity = popularity,
     releaseDates = releaseDatesResponse?.toReleaseDates(),
     listProductionCountriesItem = listProductionCountriesItemResponse?.map { it?.toProductionCountriesItem() },
@@ -48,12 +47,12 @@ object MovieMapper {
   )
 
   private fun ReleaseDatesResponse.toReleaseDates() = ReleaseDates(
-    listReleaseDatesItem = listReleaseDatesItemResponse?.map { it?.toReleaseDatesItem() }
+    listReleaseDatesItem = listReleaseDatesResponseItem?.map { it?.toReleaseDatesItem() }
   )
 
   private fun ReleaseDatesResponseItem.toReleaseDatesItem() = ReleaseDatesItem(
     iso31661 = iso31661,
-    listReleaseDatesitemValue = listReleaseDateResponseItemValue?.map { it.toReleaseDatesItemValue() }
+    listReleaseDatesItemValue = listReleaseDateResponseItemValue?.map { it.toReleaseDatesItemValue() }
   )
 
   private fun ReleaseDatesResponseItemValue.toReleaseDatesItemValue() = ReleaseDatesItemValue(

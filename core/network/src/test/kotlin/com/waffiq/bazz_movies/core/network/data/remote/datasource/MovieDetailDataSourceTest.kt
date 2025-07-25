@@ -193,7 +193,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
     ) { data ->
       assertEquals("Deadpool & Wolverine", data.title)
       assertEquals("tt6263850", data.imdbId)
-      assertEquals("AD", data.releaseDatesResponse?.listReleaseDatesItemResponse?.get(0)?.iso31661)
+      assertEquals("AD", data.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661)
       assertEquals(200000000, data.budget)
     }
   }

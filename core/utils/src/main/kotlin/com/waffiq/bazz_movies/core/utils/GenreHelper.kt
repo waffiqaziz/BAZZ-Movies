@@ -133,8 +133,8 @@ object GenreHelper {
    * @param list A list of `GenresItem` objects, each containing a genre name.
    * @return A comma-separated string of genre names, or null if the list is null.
    */
-  fun transformListGenreToJoinString(list: List<GenresItem>?): String? =
-    list?.joinToString(separator = ", ") { it.name.toString() }
+  fun transformListGenreToJoinString(list: List<GenresItem?>?): String? =
+    list?.joinToString(separator = ", ") { it?.name.toString() }
 
   /**
    * Transforms a list of `GenresItem` objects into a list of genre IDs.
@@ -142,6 +142,6 @@ object GenreHelper {
    * @param list A list of `GenresItem` objects, each containing a genre ID.
    * @return A list of genre IDs, or null if the list is null.
    */
-  fun transformToGenreIDs(list: List<GenresItem>?): List<Int>? =
-    list?.map { it.id ?: 0 }
+  fun transformToGenreIDs(list: List<GenresItem?>?): List<Int>? =
+    list?.map { it?.id ?: 0 }
 }

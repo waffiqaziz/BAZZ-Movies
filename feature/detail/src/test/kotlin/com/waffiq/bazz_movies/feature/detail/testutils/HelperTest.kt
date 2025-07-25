@@ -73,7 +73,7 @@ object HelperTest {
   )
 
   val releaseDatesResponse = ReleaseDatesResponse(
-    listReleaseDatesItemResponse = listOf(releaseDatesItemResponse)
+    listReleaseDatesResponseItem = listOf(releaseDatesItemResponse)
   )
 
   val belongsToCollectionResponse = BelongsToCollectionResponse(
@@ -311,7 +311,7 @@ object HelperTest {
       listReleaseDatesItem = listOf(
         ReleaseDatesItem(
           iso31661 = "US",
-          listReleaseDatesitemValue = listOf(
+          listReleaseDatesItemValue = listOf(
             ReleaseDatesItemValue(
               releaseDate = "2023-11-20T00:00:00.000Z",
               certification = "PG-13"
