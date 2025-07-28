@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.kotlin
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -38,7 +39,10 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("implementation", project(":core:designsystem"))
         add("implementation", project(":navigation"))
 
+        add("testImplementation", kotlin("test"))
         add("testImplementation", project(":core:test"))
+
+        add("androidTestImplementation", kotlin("test"))
         add("androidTestImplementation", project(":core:instrumentationtest"))
       }
     }

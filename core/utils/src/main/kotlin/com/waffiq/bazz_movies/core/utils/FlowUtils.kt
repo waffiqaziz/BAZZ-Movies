@@ -33,7 +33,6 @@ object FlowUtils {
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
       fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-
         // NOTE: collectLatest may not show coverage in JaCoCo due to suspend lambda bytecode,
         // but is functionally tested and required for correct Paging behavior.
         flowProvider().collectLatest { pagingData ->

@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.feature.about.databinding.ActivityAboutBinding
 
-class AboutActivity : AppCompatActivity() {
+open class AboutActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityAboutBinding
 
@@ -18,9 +18,7 @@ class AboutActivity : AppCompatActivity() {
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    setSupportActionBar(binding.toolbarLayout.toolbar)
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    supportActionBar?.setDisplayShowHomeEnabled(true)
+    setupActionBar()
 
     // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
@@ -33,6 +31,16 @@ class AboutActivity : AppCompatActivity() {
 
     justifyTextView(binding.tvTmdbAttribute)
     justifyTextView(binding.tvAboutText)
+  }
+
+  protected open fun setupActionBar() {
+    setSupportActionBar(binding.toolbarLayout.toolbar)
+    val actionBar = supportActionBar
+
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true)
+      actionBar.setDisplayShowHomeEnabled(true)
+    }
   }
 
   override fun onSupportNavigateUp(): Boolean {
