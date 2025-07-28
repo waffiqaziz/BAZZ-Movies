@@ -23,7 +23,6 @@ internal fun Project.configureCommonAndroidSettings(
       }
     }
 
-    @Suppress("UnstableApiUsage")
     testOptions {
       animationsDisabled = true
       unitTests.apply {
