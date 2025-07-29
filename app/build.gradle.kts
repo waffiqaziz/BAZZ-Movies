@@ -23,15 +23,12 @@ dependencies {
   implementation(project(":feature:watchlist"))
   implementation(project(":navigation"))
 
-  // jetpack library
-  implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity)
+  implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core.splashscreen)
-
-  implementation(libs.androidx.swiperefreshlayout)
-
   implementation(libs.androidx.navigation.ui)
   implementation(libs.androidx.navigation.fragment)
+  implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.play.integrity)
 
   // leakcanary
@@ -41,21 +38,20 @@ dependencies {
   implementation(libs.expandable.textview)
 
   // testing
-  androidTestImplementation(project(":core:instrumentationtest"))
-  androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.junit)
-  androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.intents)
-
   testImplementation(libs.mockk)
-  androidTestImplementation(libs.mockk.android)
+
+  androidTestImplementation(project(":core:instrumentationtest"))
   androidTestImplementation(libs.androidx.datastore.core)
   androidTestImplementation(libs.androidx.datastore.preferences)
-
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.intents)
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.junit)
   androidTestImplementation(libs.mockito.core)
   androidTestImplementation(libs.mockito.android)
   androidTestImplementation(libs.mockito.android.kotlin)
+  androidTestImplementation(libs.mockk.android)
 }
 
 dependencyGuard {

@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PersonViewModel @Inject constructor(
-  private val getDetailPersonUseCase: GetDetailPersonUseCase
+  private val getDetailPersonUseCase: GetDetailPersonUseCase,
 ) : ViewModel() {
 
   private val _detailPerson = MutableLiveData<DetailPerson>()
@@ -62,7 +62,10 @@ class PersonViewModel @Inject constructor(
       getDetailPersonUseCase.getKnownForPerson(id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _knownFor.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.value = Event(outcome.message)
@@ -80,7 +83,10 @@ class PersonViewModel @Inject constructor(
             _imagePerson.value = it.profiles ?: emptyList()
           }
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.value = Event(outcome.message)
@@ -95,7 +101,10 @@ class PersonViewModel @Inject constructor(
       getDetailPersonUseCase.getExternalIDPerson(id).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> outcome.data.let { _externalIdPerson.value = it }
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.value = Event(outcome.message)

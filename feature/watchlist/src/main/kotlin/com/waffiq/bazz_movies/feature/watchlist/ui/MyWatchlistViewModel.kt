@@ -31,7 +31,7 @@ class MyWatchlistViewModel @Inject constructor(
   private val getWatchlistTvUseCase: GetWatchlistTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,
   private val getStatedMovieUseCase: GetMovieStateUseCase,
-  private val getStatedTvUseCase: GetTvStateUseCase
+  private val getStatedTvUseCase: GetTvStateUseCase,
 ) : ViewModel() {
 
   private val _snackBarAlready = MutableLiveData<Event<String>>()
@@ -59,7 +59,9 @@ class MyWatchlistViewModel @Inject constructor(
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
         }
       }
     }
@@ -77,7 +79,9 @@ class MyWatchlistViewModel @Inject constructor(
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
         }
       }
     }
@@ -86,7 +90,7 @@ class MyWatchlistViewModel @Inject constructor(
   fun checkTvStatedThenPostFavorite(
     user: UserModel,
     id: Int,
-    title: String
+    title: String,
   ) {
     viewModelScope.launch {
       getStatedTvUseCase.getTvState(user.token, id).collect { outcome ->
@@ -104,7 +108,10 @@ class MyWatchlistViewModel @Inject constructor(
             }
           }
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(false, outcome.message, null, null))
@@ -116,7 +123,7 @@ class MyWatchlistViewModel @Inject constructor(
   fun checkMovieStatedThenPostFavorite(
     user: UserModel,
     id: Int,
-    title: String
+    title: String,
   ) {
     viewModelScope.launch {
       getStatedMovieUseCase.getMovieState(user.token, id).collect { outcome ->
@@ -134,7 +141,10 @@ class MyWatchlistViewModel @Inject constructor(
             }
           }
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error ->
             _snackBarAdded.value =
               Event(SnackBarUserLoginData(false, outcome.message, null, null))

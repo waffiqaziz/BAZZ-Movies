@@ -356,7 +356,9 @@ class MyFavoriteMoviesFragment : Fragment() {
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Error -> requireContext().toastShort(it.errorMessage)
-          else -> {}
+          else -> {
+            /* do nothing */
+          }
         }
       }
     }

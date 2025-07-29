@@ -36,7 +36,10 @@ class RegionViewModel @Inject constructor(
             }
           }
 
-          is Outcome.Loading -> {}
+          is Outcome.Loading -> {
+            /* do nothing */
+          }
+
           is Outcome.Error -> {
             _countryCode.value = ""
             _errorState.value =
