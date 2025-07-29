@@ -93,7 +93,10 @@ class PersonActivity : AppCompatActivity() {
     typefaceTitle(binding.collapse)
 
     showLoading(true)
-    getDataExtra()
+
+    // get the data from intent, if not available, finish the activity
+    if (!getDataExtra()) return
+
     setupView()
     showData()
   }
@@ -103,11 +106,10 @@ class PersonActivity : AppCompatActivity() {
     collapse.setExpandedTitleTypeface(ResourcesCompat.getFont(this, nunito_sans_bold))
   }
 
-  private fun getDataExtra() {
-    // check if intent hasExtra for early return
+  private fun getDataExtra(): Boolean {
     if (!intent.hasExtra(EXTRA_PERSON)) {
       finish()
-      return
+      return false
     }
 
     dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -116,6 +118,8 @@ class PersonActivity : AppCompatActivity() {
       @Suppress("DEPRECATION")
       intent.getParcelableExtra(EXTRA_PERSON)
     } ?: error("No DataExtra")
+
+    return true
   }
 
   private fun setupView() {

@@ -65,11 +65,13 @@ object Helper {
    * @param block What to do with the launched [PersonActivity].
    */
   inline fun Context.launchPersonActivity(
-    person: MediaCastItem = testMediaCastItem,
+    person: MediaCastItem? = testMediaCastItem,
     block: (ActivityScenario<PersonActivity>) -> Unit
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, person)
+      if (person != null) {
+        putExtra(PersonActivity.EXTRA_PERSON, person)
+      }
     }
 
     ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
