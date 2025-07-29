@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -22,6 +23,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
@@ -47,6 +50,7 @@ import com.waffiq.bazz_movies.feature.person.R.id.tv_born
 import com.waffiq.bazz_movies.feature.person.R.id.tv_dead_header
 import com.waffiq.bazz_movies.feature.person.R.id.tv_death
 import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media
+import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media2
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.isRefreshing
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.launchPersonActivity
 import com.waffiq.bazz_movies.feature.person.testutils.Helper.testCastItem
@@ -76,6 +80,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertTrue
 
 @HiltAndroidTest
 class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper() {
@@ -139,6 +144,24 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
       verify { mockPersonViewModel.getExternalIDPerson(testExternalIDPerson.id!!) }
     }
   }
+
+  @Test
+  fun launchPersonActivity_whenPersonIdIsNull_closesTheActivity() = runTest {
+    context.launchPersonActivity(null) {
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+      val resumedActivities = mutableListOf<Activity>()
+      InstrumentationRegistry.getInstrumentation().runOnMainSync {
+        val activities = ActivityLifecycleMonitorRegistry.getInstance()
+          .getActivitiesInStage(Stage.RESUMED)
+        resumedActivities.addAll(activities)
+      }
+
+      // assert that PersonActivity is NOT resumed (means it was finished)
+      assertTrue(resumedActivities.none { it is PersonActivity })
+    }
+  }
+
 
   @Test
   fun personScreen_whenNavigateUpPressed_finishesActivity() = runTest {
@@ -270,15 +293,17 @@ class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper()
   @Test
   fun homePageLink_withUrlWhenClicked_opensBrowser() = runTest {
     val testDetailPersonWithHomepage = testDetailPerson.copy(
-      homepage = "https://example.com"
+      homepage = "https://example.com",
+      imdbId = "nm1234567"
     )
 
     context.launchPersonActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         detailPersonLiveData.postValue(testDetailPersonWithHomepage)
       }
+      shortDelay()
 
-      onView(withId(iv_link)).perform(scrollTo())
+      onView(withId(rv_photos)).perform(scrollTo())
       checkHomePageLink(isDisplayed())
       onView(withId(iv_link)).perform(click())
 
