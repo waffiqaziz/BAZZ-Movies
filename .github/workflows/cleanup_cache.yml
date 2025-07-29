@@ -1,0 +1,163 @@
+name: Cleanup Cache on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run mode (true/false)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      min_age_hours:
+        description: 'Minimum age in hours before deleting cache'
+        required: false
+        default: '1'
+        type: string
+      max_deletions:
+        description: 'Maximum number of caches to delete per run'
+        required: false
+        default: '50'
+        type: string
+
+jobs:
+  cleanup_cache:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup specific caches
+        run: |
+          echo "Starting cache cleanup..."
+          
+          # Configuration
+          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          MIN_AGE_HOURS="${{ inputs.min_age_hours || '1' }}"  # Don't delete caches newer than this
+          MAX_DELETIONS="${{ inputs.max_deletions || '50' }}"  # Limit deletions per run
+          
+          echo "Configuration: DRY_RUN=$DRY_RUN, MIN_AGE_HOURS=$MIN_AGE_HOURS, MAX_DELETIONS=$MAX_DELETIONS"
+          
+          # Get branch name if this is a PR merge
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+            echo "Cleaning caches for merged branch: $BRANCH_NAME"
+            REF_FILTER="refs/heads/$BRANCH_NAME"
+          else
+            echo "Manual cleanup - processing all branches"
+            REF_FILTER=""
+          fi
+          
+          # Calculate cutoff time (MIN_AGE_HOURS ago)
+          CUTOFF_TIME=$(date -d "$MIN_AGE_HOURS hours ago" -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          # Function to delete caches matching a pattern
+          delete_cache_pattern() {
+            local pattern="$1"
+            local ref="$2"
+            local deletion_count=0
+          
+            echo "Searching for caches with pattern: $pattern"
+          
+            # Build the API query
+            if [ -n "$ref" ]; then
+              QUERY="gh api /repos/${{ github.repository }}/actions/caches --field ref=$ref --paginate"
+            else
+              QUERY="gh api /repos/${{ github.repository }}/actions/caches --paginate"
+            fi
+          
+            # Get matching caches with metadata
+            CACHE_DATA=$($QUERY --jq ".actions_caches[] | select(.key | startswith(\"$pattern\")) | \"\(.id)|\(.key)|\(.created_at)|\(.last_accessed_at)\"" 2>/dev/null || true)
+          
+            if [ -z "$CACHE_DATA" ]; then
+              echo "No caches found for pattern: $pattern"
+              return
+            fi
+          
+            echo "Found $(echo "$CACHE_DATA" | wc -l) caches matching pattern: $pattern"
+          
+            # Process each cache
+            echo "$CACHE_DATA" | while IFS='|' read -r cache_id cache_key created_at last_accessed; do
+              if [ -n "$cache_id" ] && [ $deletion_count -lt $MAX_DELETIONS ]; then
+          
+                # Check if cache is old enough
+                if [[ "$created_at" > "$CUTOFF_TIME" ]]; then
+                  echo "Skipping recent cache: $cache_key (created: $created_at)"
+                  continue
+                fi
+          
+                # Check if cache was recently accessed
+                if [[ -n "$last_accessed" ]] && [[ "$last_accessed" > "$CUTOFF_TIME" ]]; then
+                  echo "Skipping recently used cache: $cache_key (last used: $last_accessed)"
+                  continue
+                fi
+          
+                if [ "$DRY_RUN" = "true" ]; then
+                  echo "[DRY RUN] Would delete cache: $cache_key (ID: $cache_id, created: $created_at)"
+                else
+                  echo "Deleting cache: $cache_key (ID: $cache_id)"
+                  if gh api -X DELETE "/repos/${{ github.repository }}/actions/caches/$cache_id"; then
+                    echo "✓ Successfully deleted cache $cache_id"
+                    deletion_count=$((deletion_count + 1))
+                    # Add small delay to avoid rate limiting
+                    sleep 0.5
+                  else
+                    echo "✗ Failed to delete cache $cache_id"
+                  fi
+                fi
+              elif [ $deletion_count -ge $MAX_DELETIONS ]; then
+                echo "Reached maximum deletions limit ($MAX_DELETIONS). Stopping."
+                break
+              fi
+            done
+          
+            echo "Processed $deletion_count deletions for pattern: $pattern"
+          }
+          
+          # Delete test result caches
+          delete_cache_pattern "instrumentation-test-results-" "$REF_FILTER"
+          delete_cache_pattern "unit-test-results-" "$REF_FILTER"
+          
+          echo "Cache cleanup completed"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup_old_duplicates:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: cleanup_cache
+    steps:
+      - name: Remove old duplicate caches
+        run: |
+          echo "Cleaning up old duplicate caches..."
+          
+          # Get all caches and find duplicates
+          gh api /repos/${{ github.repository }}/actions/caches --paginate \
+            --jq '.actions_caches[] | "\(.id)|\(.key)|\(.created_at)"' | \
+          sort -t'|' -k2,2 -k3,3r | \
+          awk -F'|' '
+          {
+            # Extract base key (remove timestamps and hashes)
+            base_key = $2
+            gsub(/-[0-9]{10,}$/, "", base_key)  # Remove timestamps
+            gsub(/-[a-f0-9]{32,}$/, "", base_key)  # Remove hashes
+          
+            if (seen[base_key]) {
+              # This is a duplicate, mark for deletion
+              print $1 " " $2
+            } else {
+              seen[base_key] = 1
+            }
+          }' | \
+          while read cache_id cache_key; do
+            if [ -n "$cache_id" ]; then
+              echo "Deleting duplicate cache: $cache_key (ID: $cache_id)"
+              gh api -X DELETE "/repos/${{ github.repository }}/actions/caches/$cache_id" || echo "Failed to delete $cache_id"
+            fi
+          done
+          
+          echo "Duplicate cleanup completed"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
