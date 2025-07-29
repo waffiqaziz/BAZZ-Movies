@@ -33,8 +33,7 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@e14351bdf4707c4cecc25a86a9190745b7b40de8
         with:
-          cache-default-branch-only: true
-
+          use-caches: false
           pr-mode: true
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
