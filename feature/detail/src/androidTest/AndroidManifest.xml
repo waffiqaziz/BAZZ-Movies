@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <application
+    android:allowBackup="false"
+    android:theme="@style/Base.Theme.BAZZ_movies"
+    tools:ignore="AllowBackup">
+
+    <activity
+      android:name="com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity"
+      android:autofillHints=""
+      android:windowSoftInputMode="stateHidden" />
+  </application>
+</manifest>

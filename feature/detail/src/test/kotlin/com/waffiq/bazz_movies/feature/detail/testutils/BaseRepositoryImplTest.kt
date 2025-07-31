@@ -1,9 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
-
 import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
@@ -20,10 +19,10 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 abstract class BaseRepositoryImplTest {
 
@@ -37,7 +36,7 @@ abstract class BaseRepositoryImplTest {
   @get:Rule
   val mainDispatcherRule = UnconfinedDispatcherRule()
 
-  @Before
+  @BeforeTest
   fun setUp() {
     repository = DetailRepositoryImpl(movieDataSource)
   }
@@ -50,7 +49,7 @@ abstract class BaseRepositoryImplTest {
     dataSourceCall: suspend () -> Flow<NetworkResult<T>>,
     repositoryCall: suspend () -> Flow<Outcome<R>>,
     expectedData: R,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) {
     val networkResult = NetworkResult.Success(mockResponse)
 
@@ -74,7 +73,7 @@ abstract class BaseRepositoryImplTest {
   protected suspend fun <R> testUnsuccessfulCall(
     dataSourceCall: suspend () -> Flow<NetworkResult<*>>,
     repositoryCall: suspend () -> Flow<Outcome<R>>,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) {
     coEvery { dataSourceCall() } returns flow {
       emit(NetworkResult.Loading)
@@ -96,7 +95,7 @@ abstract class BaseRepositoryImplTest {
   protected suspend fun <R> testLoadingState(
     dataSourceCall: suspend () -> Flow<NetworkResult<*>>,
     repositoryCall: suspend () -> Flow<Outcome<R>>,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) {
     coEvery { dataSourceCall() } returns flow {
       emit(NetworkResult.Loading)
@@ -115,7 +114,7 @@ abstract class BaseRepositoryImplTest {
     mockPagingData: PagingData<MediaResponseItem>,
     dataSourceCall: suspend () -> Flow<PagingData<MediaResponseItem>>,
     repositoryCall: suspend () -> Flow<PagingData<MediaItem>>,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) = runTest {
     coEvery { dataSourceCall() } returns flowOf(mockPagingData)
 
@@ -140,7 +139,7 @@ abstract class BaseRepositoryImplTest {
   protected fun testEmptyPagingData(
     dataSourceCall: suspend () -> Flow<PagingData<MediaResponseItem>>,
     repositoryCall: suspend () -> Flow<PagingData<MediaItem>>,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) = runTest {
     val emptyPagingData = PagingData.from(emptyList<MediaResponseItem>())
     coEvery { dataSourceCall() } returns flowOf(emptyPagingData)
@@ -165,7 +164,7 @@ abstract class BaseRepositoryImplTest {
   protected fun testPagingDataWithMockItems(
     dataSourceCall: suspend () -> Flow<PagingData<MediaResponseItem>>,
     repositoryCall: suspend () -> Flow<PagingData<MediaItem>>,
-    verifyDataSourceCall: () -> Unit
+    verifyDataSourceCall: () -> Unit,
   ) = runTest {
     val invalidItem = mockk<MediaResponseItem>(relaxed = true)
     val pagingDataWithMock = PagingData.from(listOf(invalidItem))
@@ -189,7 +188,10 @@ abstract class BaseRepositoryImplTest {
   /**
    * Creates sample test data for paging tests
    */
-  protected fun createSampleMediaItemResponse(id: Int = 1, name: String = "Test Name"): MediaResponseItem {
+  protected fun createSampleMediaItemResponse(
+    id: Int = 1,
+    name: String = "Test Name",
+  ): MediaResponseItem {
     return MediaResponseItem(id = id, name = name)
   }
 

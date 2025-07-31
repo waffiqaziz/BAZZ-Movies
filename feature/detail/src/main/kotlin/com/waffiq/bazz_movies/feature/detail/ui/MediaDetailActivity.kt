@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
@@ -36,7 +37,9 @@ class MediaDetailActivity : AppCompatActivity() {
   private val detailViewModel: MediaDetailViewModel by viewModels()
   private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
-  private lateinit var uiManager: DetailMovieUIManager
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  lateinit var uiManager: DetailMovieUIManager
+
   private lateinit var watchProvidersManager: WatchProvidersManager
   private lateinit var userInteractionHandler: UserInteractionHandler
   private lateinit var dataManager: DetailMovieDataManager
@@ -128,8 +131,8 @@ class MediaDetailActivity : AppCompatActivity() {
       dataExtra = dataExtra.copy(listGenreIds = details.genreId)
 
       // only for movie while tv-series is missing imdb id
-      details.imdbId?.takeIf { it.isNotEmpty() }?.let { imdbId ->
-        detailViewModel.getOMDbDetails(imdbId)
+      if (details.imdbId != null && details.imdbId.isNotEmpty()) {
+        detailViewModel.getOMDbDetails(details.imdbId)
       }
     }
 

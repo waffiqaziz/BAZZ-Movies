@@ -1,11 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -24,17 +23,13 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
-import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.designsystem.R.string.invalid_url
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.R.string.security_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.status_
-import com.waffiq.bazz_movies.core.designsystem.R.string.unknown_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
@@ -49,6 +44,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -81,6 +77,9 @@ class DetailMovieUIManager(
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  var trailerLauncher = DefaultTrailerLauncher()
 
   init {
     setupRecyclerViews()
@@ -148,7 +147,7 @@ class DetailMovieUIManager(
    */
   private fun showBackdropAndPoster(dataExtra: MediaItem) {
     val backdropUrl = when {
-      dataExtra.backdropPath == NOT_AVAILABLE || dataExtra.posterPath == NOT_AVAILABLE ->
+      dataExtra.backdropPath == NOT_AVAILABLE && dataExtra.posterPath == NOT_AVAILABLE ->
         ic_backdrop_error_filled
 
       !dataExtra.backdropPath.isNullOrEmpty() ->
@@ -306,25 +305,12 @@ class DetailMovieUIManager(
   /**
    * Open trailer in youtube link.
    */
-  private fun playTrailer(link: String) {
+  fun playTrailer(link: String) {
     try {
-      activity.startActivity(
-        Intent(Intent.ACTION_VIEW).apply {
-          data = "$YOUTUBE_LINK_VIDEO$link".toUri()
-        }
-      )
+      trailerLauncher.launch(activity, link)
     } catch (e: ActivityNotFoundException) {
       Log.e(TAG, "YouTube app not installed", e)
       showSnackbarWarning(activity.getString(yt_not_installed))
-    } catch (e: SecurityException) {
-      Log.e(TAG, "SecurityException while trying to start activity", e)
-      showSnackbarWarning(activity.getString(security_error))
-    } catch (e: IllegalArgumentException) {
-      Log.e(TAG, "Invalid URL format: $link", e)
-      showSnackbarWarning(activity.getString(invalid_url))
-    } catch (e: Exception) {
-      Log.e(TAG, "Unknown error occurred while trying to play video", e)
-      showSnackbarWarning(activity.getString(unknown_error))
     }
   }
 
