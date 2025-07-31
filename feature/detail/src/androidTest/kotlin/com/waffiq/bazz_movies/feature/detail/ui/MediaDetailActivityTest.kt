@@ -107,24 +107,22 @@ class MediaDetailActivityTest :
   @Test
   fun imdbId_withValidValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      // valid imdbId
       detailMedia.postValue(testMediaDetail.copy(imdbId = "tt1234567"))
       waitFor(500)
     }
   }
-    @Test
-    fun imdbId_withNullValue_shouldHandleAllPossibility() {
-      context.launchMediaDetailActivity {
-        // null imdbId
-        detailMedia.postValue(testMediaDetail.copy(imdbId = null))
-        waitFor(500)
-      }
+
+  @Test
+  fun imdbId_withNullValue_shouldHandleAllPossibility() {
+    context.launchMediaDetailActivity {
+      detailMedia.postValue(testMediaDetail.copy(imdbId = null))
+      waitFor(500)
     }
+  }
 
   @Test
   fun imdbId_withEmptyValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      // empty imdbId
       detailMedia.postValue(testMediaDetail.copy(imdbId = ""))
       waitFor(500)
     }
@@ -133,7 +131,6 @@ class MediaDetailActivityTest :
   @Test
   fun imdbId_withBlankValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      // blank imdbId
       detailMedia.postValue(testMediaDetail.copy(imdbId = " "))
       waitFor(500)
     }

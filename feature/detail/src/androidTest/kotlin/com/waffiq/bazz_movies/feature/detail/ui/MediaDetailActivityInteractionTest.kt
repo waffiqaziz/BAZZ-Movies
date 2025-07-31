@@ -52,6 +52,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.text.NumberFormat
+import java.util.Locale
 
 /** Instrumented test for [MediaDetailActivity] interactions.
  * This test checks various user interactions and UI responses in the media detail screen.
@@ -186,7 +188,7 @@ class MediaDetailActivityInteractionTest :
       submitRating()
 
       // shows user rating correctly
-      onView(withId(tv_score_your_score)).check(matches(withText("10,0")))
+      onView(withId(tv_score_your_score)).check(matches(withText("10.0")))
     }
   }
 
@@ -200,7 +202,10 @@ class MediaDetailActivityInteractionTest :
       setupLoginUser()
 
       submitRating()
-      onView(withId(tv_score_your_score)).check(matches(not(withText("10,0"))))
+
+      // shows user rating correctly
+      val expected = NumberFormat.getNumberInstance(Locale.US).format(10.0)
+      onView(withId(tv_score_your_score)).check(matches(not(withText(expected))))
     }
   }
 

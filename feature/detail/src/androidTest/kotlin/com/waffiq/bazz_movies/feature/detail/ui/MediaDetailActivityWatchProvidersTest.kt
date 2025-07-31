@@ -84,14 +84,16 @@ class MediaDetailActivityWatchProvidersTest :
   @Test
   fun expandWatchProvider_whenClicked_opensWatchProvider() {
     context.launchMediaDetailActivity {
+      onView(withId(tv_toggle_watch_providers)).perform(scrollTo())
       onView(withId(tv_toggle_watch_providers))
         .check(matches(isDisplayed())).perform(click())
       onView(withId(layout_ads)).check(matches(isDisplayed()))
-      onView(withId(layout_buy)).check(matches(isDisplayed()))
       onView(withId(layout_free)).perform(scrollTo())
       onView(withId(layout_free)).check(matches(isDisplayed()))
       onView(withId(layout_rent)).check(matches(isDisplayed()))
       onView(withId(layout_streaming)).check(matches(isDisplayed()))
+      onView(withId(layout_buy)).perform(scrollTo())
+      onView(withId(layout_buy)).check(matches(isDisplayed()))
     }
   }
 
