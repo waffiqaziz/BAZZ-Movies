@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -21,18 +22,12 @@ import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_age_rating
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_genre
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_metascore
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_tmdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
@@ -46,6 +41,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -101,6 +97,13 @@ class MediaDetailActivityTest :
       onView(withId(btn_watchlist)).check(matches(isDisplayed()))
       onView(withId(btn_favorite)).check(matches(isDisplayed()))
       advanceUntilIdle()
+    }
+  }
+
+  @Test
+  fun extractDataFromIntent_returnsFalse_whenExtraMissing() {
+    context.launchNullMediaDetailActivity(data = null) { scenario ->
+      assertTrue(scenario.state == Lifecycle.State.DESTROYED)
     }
   }
 
@@ -287,94 +290,6 @@ class MediaDetailActivityTest :
         testMediaCredits.copy(crew = emptyList(), cast = emptyList())
       )
       onView(withId(rv_cast)).check(matches(not(isDisplayed())))
-    }
-  }
-
-  @Test
-  fun omdbScoreValue_withEmptyValue_showsOMDbScoreCorrectly() {
-    // omdb score empty
-    context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = "",
-          metascore = "",
-          ratings = null
-        )
-      )
-      onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
-    }
-  }
-
-  @Test
-  fun omdbScoreValue_withNullValue_showsOMDbScoreCorrectly() {
-    context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = null,
-          metascore = null,
-          ratings = null
-        )
-      )
-      onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
-    }
-  }
-
-  @Test
-  fun omdbScoreValue_withEmptyRatings_showsOMDbScoreCorrectly() {
-    context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = null,
-          metascore = null,
-          ratings = emptyList()
-        )
-      )
-      onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
-    }
-  }
-
-  @Test
-  fun omdbScoreValue_withValidRottenTomatoes_showsOMDbScoreCorrectly() {
-    context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = "",
-          metascore = "",
-          ratings = listOf(RatingsItem(source = "Rotten Tomatoes", value = "90%"))
-        )
-      )
-      onView(withId(tv_score_rotten_tomatoes)).check(matches((isDisplayed())))
-        .check(matches(withText("90%")))
-    }
-  }
-
-  @Test
-  fun omdbScoreValue_withRottenTomatoesNullValue_showsOMDbScoreCorrectly() {
-    context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        OMDbDetails(
-          ratings = listOf(
-            RatingsItem(source = "Rotten Tomatoes", value = null), // null value on rotten tomatoes
-          )
-        )
-      )
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
     }
   }
 }

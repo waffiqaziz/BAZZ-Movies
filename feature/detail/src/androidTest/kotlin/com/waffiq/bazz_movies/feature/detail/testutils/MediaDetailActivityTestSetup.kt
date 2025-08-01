@@ -1,14 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
@@ -18,7 +13,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
@@ -67,6 +61,11 @@ interface MediaDetailActivityTestSetup {
   fun Context.launchMediaDetailActivity(
     data: MediaItem,
     block: (ActivityScenario<MediaDetailActivity>) -> Unit
+  )
+
+  fun Context.launchNullMediaDetailActivity(
+    data: MediaItem? = null,
+    block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   )
 
   fun checkIntentData(link: String)

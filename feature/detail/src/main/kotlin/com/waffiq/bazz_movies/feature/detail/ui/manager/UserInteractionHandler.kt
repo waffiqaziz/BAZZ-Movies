@@ -39,7 +39,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewMode
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
-import java.util.Locale
+import kotlin.math.roundToInt
 
 /**
  * Handles all user interactions within the movie detail screen.
@@ -232,7 +232,7 @@ class UserInteractionHandler(
   /** Refreshes data and user states when swipe refresh is triggered. */
   private fun handleSwipeRefresh() {
     // refresh user state
-    prefViewModel.getUserToken().value?.let { token ->
+    prefViewModel.getUserToken().observe(activity) { token ->
       if (token != NAN && token.isNotEmpty()) {
         getStatedData(token)
       }
@@ -277,14 +277,8 @@ class UserInteractionHandler(
         dataExtra.id,
         !state
       )
-      prefViewModel.getUserPref().value?.let { user ->
+      prefViewModel.getUserPref().observe(activity) { user ->
         detailViewModel.postFavorite(user.token, fav, user.userId)
-      } ?: run {
-        // handle case where user pref is not available
-        prefViewModel.getUserPref().observe(activity) { user ->
-          detailViewModel.postFavorite(user.token, fav, user.userId)
-          prefViewModel.getUserPref().removeObservers(activity) // remove after use
-        }
       }
     } else {
       watchlist = !state
@@ -321,11 +315,7 @@ class UserInteractionHandler(
     MaterialAlertDialogBuilder(activity, CustomAlertDialogTheme).apply {
       setTitle(activity.resources.getString(not_available_full))
       setMessage(activity.resources.getString(cant_provide_a_score))
-    }.show().also { dialog ->
-      if (activity.isFinishing) {
-        dialog.cancel()
-      }
-    }
+    }.show()
   }
 
   /** Shows the rating dialog for user to submit a rating. */
@@ -358,7 +348,7 @@ class UserInteractionHandler(
       detailViewModel.rateState.observe(activity) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
-            binding.tvScoreYourScore.text = String.format(Locale.getDefault(), "%.1f", rating)
+            binding.tvScoreYourScore.text = ((rating * 10).roundToInt() / 10.0).toString()
           }
         }
       }

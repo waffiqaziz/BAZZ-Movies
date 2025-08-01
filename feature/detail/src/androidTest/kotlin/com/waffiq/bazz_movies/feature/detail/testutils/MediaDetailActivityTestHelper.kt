@@ -162,6 +162,21 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     }
   }
 
+  override fun Context.launchNullMediaDetailActivity(
+    data: MediaItem?,
+    block: (ActivityScenario<MediaDetailActivity>) -> Unit,
+  ) {
+    val intent = Intent(this, MediaDetailActivity::class.java).apply {
+      data?.let {
+        putExtra(MediaDetailActivity.EXTRA_MOVIE, it)
+      }
+    }
+
+    ActivityScenario.launch<MediaDetailActivity>(intent).use { scenario ->
+      block(scenario)
+    }
+  }
+
   override fun checkIntentData(link: String){
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))

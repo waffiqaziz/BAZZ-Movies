@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.SystemBarStyle
@@ -21,6 +20,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
 import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -72,17 +72,9 @@ class MediaDetailActivity : AppCompatActivity() {
     justifyTextView(binding.tvOverview as TextView)
   }
 
-  @Suppress("ReturnCount")
   private fun extractDataFromIntent(): Boolean {
-    if (!intent.hasExtra(EXTRA_MOVIE)) return false
-
-    dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      intent.getParcelableExtra(EXTRA_MOVIE, MediaItem::class.java)
-    } else {
-      @Suppress("DEPRECATION")
-      intent.getParcelableExtra(EXTRA_MOVIE)
-    } ?: return false
-
+    val item = extractMediaItemFromIntent(intent) ?: return false
+    dataExtra = item
     return true
   }
 
@@ -172,7 +164,9 @@ class MediaDetailActivity : AppCompatActivity() {
 
   override fun onDestroy() {
     super.onDestroy()
-    uiManager.cleanup()
+    if (::uiManager.isInitialized) {
+      uiManager.cleanup()
+    }
   }
 
   companion object {

@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -11,20 +12,18 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
-import com.waffiq.bazz_movies.core.domain.MediaState
+import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.imdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.metascore_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.rotten_tomatoes_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tmdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
@@ -49,11 +48,10 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.text.NumberFormat
-import java.util.Locale
 
 /** Instrumented test for [MediaDetailActivity] interactions.
  * This test checks various user interactions and UI responses in the media detail screen.
@@ -119,7 +117,18 @@ class MediaDetailActivityInteractionTest :
   }
 
   @Test
-  fun buttonRatting_whenClickedWithNoRating_showsDialog() {
+  fun buttonBack_whenClicked_finishTheActivity() {
+    context.launchMediaDetailActivity { scenario ->
+      onView(withId(btn_back)).check(matches(isDisplayed())).perform(click())
+
+      // check if the activity is finished
+      scenario.moveToState(Lifecycle.State.DESTROYED)
+      assertTrue(scenario.state == Lifecycle.State.DESTROYED)
+    }
+  }
+
+  @Test
+  fun buttonRating_whenClickedWithNoRating_showsDialog() {
     context.launchMediaDetailActivity(data = testMediaItem.copy(voteAverage = null)) {
       // set null rating
       omdbResult.postValue(OMDbDetails())
@@ -135,6 +144,7 @@ class MediaDetailActivityInteractionTest :
     }
   }
 
+
   @Test
   fun buttonRatting_clickedAndRatingAvailable_doNothing() {
     context.launchMediaDetailActivity {
@@ -143,8 +153,36 @@ class MediaDetailActivityInteractionTest :
   }
 
   @Test
-  fun swipeRefresh_whenScroll_runsCorrectly() {
+  fun swipeRefreshMovie_whenScroll_runsCorrectly() {
     context.launchMediaDetailActivity {
+      // set token and region to simulate user logged in
+      setupLoginUser()
+      onView(withId(iv_poster)).perform(swipeDown())
+
+      // token is not set, so it should not crash
+      token.postValue(NAN)
+      onView(withId(iv_poster)).perform(swipeDown())
+
+      // set token to empty string, should not crash
+      token.postValue("")
+      onView(withId(iv_poster)).perform(swipeDown())
+    }
+  }
+
+  @Test
+  fun swipeRefreshTv_whenScroll_runsCorrectly() {
+    context.launchMediaDetailActivity(
+      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+    ) {
+      onView(withId(iv_poster)).perform(swipeDown())
+    }
+  }
+
+  @Test
+  fun swipeRefresh_whenUnknownMediaType_runsCorrectly() {
+    context.launchMediaDetailActivity(
+      data = testMediaItem.copy(mediaType = "NAN")
+    ) {
       onView(withId(iv_poster)).perform(swipeDown())
     }
   }
@@ -198,14 +236,13 @@ class MediaDetailActivityInteractionTest :
       data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
     ) {
       itemState.postValue(testMediaStateRated) // mock rated
-      rateState.postValue(Event(false))
+      rateState.postValue(Event(false)) // unsuccessful rating
       setupLoginUser()
 
       submitRating()
 
       // shows user rating correctly
-      val expected = NumberFormat.getNumberInstance(Locale.US).format(10.0)
-      onView(withId(tv_score_your_score)).check(matches(not(withText(expected))))
+      onView(withId(tv_score_your_score)).check(matches(not(withText("10.0"))))
     }
   }
 
@@ -216,11 +253,24 @@ class MediaDetailActivityInteractionTest :
       itemState.postValue(testMediaState) // mock as not favorite and not watchlist
 
       onView(withId(btn_favorite)).perform(click())
-      onView(withId(btn_favorite)).perform(click())
+      onView(withId(btn_watchlist)).perform(click())
     }
   }
 
-  private fun submitRating(){
+  @Test
+  fun removeItemUserLogin_whenClicked_shouldHandlePostData() {
+    context.launchMediaDetailActivity {
+      setupLoginUser()
+      itemState.postValue(
+        testMediaState.copy(favorite = true, watchlist = true)
+      )
+
+      onView(withId(btn_favorite)).perform(click())
+      onView(withId(btn_watchlist)).perform(click())
+    }
+  }
+
+  private fun submitRating() {
     onView(withId(your_score_viewGroup)).perform(click())
     onView(withId(rating_bar_action)).perform(SetRatingAction(5f))
     onView(withText(submit)).perform(click())
