@@ -69,6 +69,8 @@ class UserInteractionHandler(
   private var watchlist = false
   private var isLogin = false
 
+  const val SCORE_ROUNDING_FACTOR = 10
+
   init {
     initializeTags()
   }
@@ -348,7 +350,9 @@ class UserInteractionHandler(
       detailViewModel.rateState.observe(activity) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
-            binding.tvScoreYourScore.text = ((rating * 10).roundToInt() / 10.0).toString()
+            binding.tvScoreYourScore.text =
+              ((rating * SCORE_ROUNDING_FACTOR).roundToInt() / SCORE_ROUNDING_FACTOR.toDouble())
+                .toString()
           }
         }
       }
