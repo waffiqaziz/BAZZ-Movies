@@ -1,14 +1,14 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DetailOMDbRepositoryImplTest:BaseRepositoryImplTest()  {
+class DetailOMDbRepositoryImplTest:BaseDetailRepositoryImplTest()  {
 
   private val imdb =  "IMDB ID"
 

@@ -235,6 +235,7 @@ jobs:
           disable-animations: true
           script: |
             ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
+            ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
@@ -355,6 +356,7 @@ jobs:
           script: |
             adb wait-for-device
             ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
+            ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue

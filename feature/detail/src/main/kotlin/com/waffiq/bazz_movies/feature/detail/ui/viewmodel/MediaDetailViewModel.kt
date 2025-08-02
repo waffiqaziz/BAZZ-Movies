@@ -450,7 +450,6 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-
   fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
     executeUseCase(
       flowProvider = { postMethodUseCase.postMovieRate(sessionId, rating, movieId) },
@@ -478,7 +477,6 @@ class MediaDetailViewModel @Inject constructor(
     onSuccess: (T) -> Unit = { /* default do nothing */ },
     onFinallySuccess: () -> Unit = { /* default do nothing */ },
     onLoading: () -> Unit = { /* default do nothing */ },
-    onError: suspend (String) -> Unit = { _errorState.emit(it) },
     onFinallyError: () -> Unit = { /* default do nothing */ },
   ) {
     viewModelScope.launch {
@@ -494,7 +492,7 @@ class MediaDetailViewModel @Inject constructor(
 
           is Outcome.Error -> {
             _loadingState.value = false
-            onError(outcome.message)
+            _errorState.emit(outcome.message)
             onFinallyError()
           }
         }

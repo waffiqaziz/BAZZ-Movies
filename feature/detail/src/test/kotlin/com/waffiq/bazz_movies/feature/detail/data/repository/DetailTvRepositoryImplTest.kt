@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
@@ -15,7 +15,7 @@ import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DetailTvRepositoryImplTest : BaseRepositoryImplTest() {
+class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
   @Test
   fun getDetailTv_whenSuccessful_returnsSuccessResult() = runTest {

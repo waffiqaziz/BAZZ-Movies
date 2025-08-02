@@ -49,7 +49,6 @@ object ReleaseDateHelper {
     // Step 2: fallback - use production country and its release date
     // if no match is found for the user region.
     if (releaseDateRegion == null) {
-
       // get production country
       val productionCountryRegionAndDate = ReleaseDateRegion(
         regionRelease = data?.listProductionCountriesItem?.firstOrNull {
