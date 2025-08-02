@@ -1,14 +1,14 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DetailWatchProviderRepositoryImplTest : BaseRepositoryImplTest() {
+class DetailWatchProviderRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
   private val params = "params"
 

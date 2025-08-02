@@ -24,7 +24,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-abstract class BaseRepositoryImplTest {
+abstract class BaseDetailRepositoryImplTest {
 
   protected lateinit var repository: DetailRepositoryImpl
   protected val movieDataSource: MovieDataSource = mockk()

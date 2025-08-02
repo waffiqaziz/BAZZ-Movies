@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.data.repository
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
@@ -13,7 +13,7 @@ import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DetailMovieRepositoryImplTest : BaseRepositoryImplTest() {
+class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
   @Test
   fun getMovieDetail_whenSuccessful_returnsSuccessResult() = runTest {
