@@ -69,8 +69,6 @@ class UserInteractionHandler(
   private var watchlist = false
   private var isLogin = false
 
-  private val roundingFactor = 10
-
   init {
     initializeTags()
   }
@@ -351,7 +349,7 @@ class UserInteractionHandler(
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
             binding.tvScoreYourScore.text =
-              ((rating * roundingFactor).roundToInt() / roundingFactor.toDouble()).toString()
+              ((rating * ROUNDING_FACTOR).roundToInt() / ROUNDING_FACTOR.toDouble()).toString()
           }
         }
       }
@@ -361,5 +359,9 @@ class UserInteractionHandler(
     val btnCancel: Button = dialogView.findViewById(btn_cancel)
     btnCancel.setOnClickListener { dialog.dismiss() }
     dialog.show()
+  }
+
+  companion object {
+    private const val ROUNDING_FACTOR = 10
   }
 }
