@@ -69,7 +69,7 @@ class UserInteractionHandler(
   private var watchlist = false
   private var isLogin = false
 
-  const val SCORE_ROUNDING_FACTOR = 10
+  private val roundingFactor = 10
 
   init {
     initializeTags()
@@ -351,8 +351,7 @@ class UserInteractionHandler(
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
             binding.tvScoreYourScore.text =
-              ((rating * SCORE_ROUNDING_FACTOR).roundToInt() / SCORE_ROUNDING_FACTOR.toDouble())
-                .toString()
+              ((rating * roundingFactor).roundToInt() / roundingFactor.toDouble()).toString()
           }
         }
       }
