@@ -1,7 +1,38 @@
 # 🧪 Testing
 
-We use testing to ensure the stability and quality of our code. For testing name convention,
-please [follow this naming guide](../docs/BAZZMoviesTestNamingConvention.md).
+We use testing to ensure the stability and quality of our code. The
+testing reports are generated using [JaCoCo](https://github.com/jacoco/jacoco) and updated regularly via [CI (GitHub Action)](../.github/workflows/android_test.yml).
+
+## Test Naming Convention
+
+We follow the format **`Given_When_Then`** structure. This helps clearly express:
+
+- **`Given`**: What is being tested
+- **`When`**: Under which condition
+- **`Then`**: What the expected outcome is
+
+Here some example:
+
+### Do
+
+```kotlin
+loadInitialPage_whenApiCallSucceeds_returnCorrectPage()
+tiggerButton_withDoubleTouch_shouldDoNothing()
+fetchUser_withValidValue_callsTheAPI()
+logout_whenSessionExpired_clearUserSession()
+dataResponse_withCorrectValues_setsPropertiesCorrectly()
+```
+
+### Dont
+
+```kotlin
+test1()
+checkSomething()
+shouldWork()
+```
+
+> [!NOTE]
+> Stick to descriptive and consistent naming across all tests (unit and instrumentation).
 
 ## Module-Level Coverage
 
@@ -34,10 +65,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:feature:person`][feature-person-link]                     | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                     |
 | [`:feature:search`][feature-search-link]                     | [![Coverage][feature-search-coverage-badge]][feature-search-coverage-link]                     |
 | [`:feature:watchlist`][feature-watchlist-link]               | [![Coverage][feature-watchlist-coverage-badge]][feature-watchlist-coverage-link]               |
-
-> [!NOTE]
-> Reports are generated using [JaCoCo](https://github.com/jacoco/jacoco)
-> and updated regularly via [CI (GitHub Action)](../.github/workflows/android_test.yml).
+| **TOTAL COVERAGE**                                           | [![Codecov][BADGE-CODECOV]][CODECOV]                                                           |
 
 ## Unit Tests
 
@@ -47,58 +75,67 @@ Run all unit tests with the following command:
 ./gradlew test
 ```
 
-The result can see through the console. Unit tests are also automatically executed via GitHub
-Actions on every push or pull request. You can review the results directly on the GitHub.
-interface.
+Results will be shown in the console, or you can view them in a more readable format at `build/reports/tests/testDebugUnitTest/index.html`
 
-## UI Tests
+## Instrumentation Tests
 
-To run Android-specific UI tests, use:
+To run all instrumentation tests, use:
 
 ```terminal
 ./gradlew connectedAndroidTest
 ```
 
-This runs tests on a connected Android device or emulator.
-
-_Note that UI test coverage is still work in progress._
+The results can be viewed at `build/reports/androidTests/connected/debug/index.html`
 
 ## Code Coverage Reports with [JaCoCo](https://github.com/jacoco/jacoco)
 
-Generate a combined coverage report using the following command:
+Generate a combined coverage report from unit and instrumentation test for all modules separately using the following command:
 
 ```terminal
 ./gradlew create<Variant>CombinedCoverageReport
 ```
 
+> This command will generate a coverage report only if the module contains test code. If not, the module will be skipped in the report.
+
 ### Generating a Report for a specific module
 
-For [`:core:user`](../core/user/) module on debug variant:
+For [`:feature:detail`](../feature/detail/) module on debug variant:
 
 - Clean and run unit tests:
 
   ```terminal
-  ./gradlew :core:user:testDebugUnitTest
+  ./gradlew clean
+  ./gradlew :feature:detail:testDebugUnitTest
+  ```
+
+- Run instrumentation test
+
+  ```terminal
+  ./gradlew :feature:detail:connectedDebugAndroidTest   
   ```
 
 - Generate a combined coverage report:
 
   ```terminal
-  ./gradlew :core:user:createDebugCombinedCoverageReport
+  ./gradlew :feature:detail:createDebugCombinedCoverageReport
   ```
+  
+  > This step generates a report that combines results from unit tests and instrumentation tests.
 
 - The generate report available at:
 
   ```terminal
-  core/user/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
+  feature/detail/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
   ```
 
 ### Generating a Report for all Module
 
-- Clean and run unit tests:
+- Clean, then run unit tests and instrumentation test:
 
   ```terminal
+  ./gradlew clean
   ./gradlew testDebugUnitTest
+  ./gradlew connectedDebugAndroidTest  
   ```
 
 - Generate a combined coverage report:
@@ -191,3 +228,5 @@ For [`:core:user`](../core/user/) module on debug variant:
 [feature-watchlist-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist
 [feature-watchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-watchlist
 [feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist
+[CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
+[BADGE-CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ
