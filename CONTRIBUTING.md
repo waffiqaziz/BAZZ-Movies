@@ -180,8 +180,8 @@ functionality and performance, rather than formatting tweaks.
 For example: If methods use camelCase (e.g., `thisIsMyNewMethod`), avoid switching to
 `this_is_my_new_method`.
 
-For testing name convention,
-please [follow this naming guide](./docs/BAZZMoviesTesting.md).
+For testing name convention, please
+[follow this naming guide](./docs/BAZZMoviesTesting.md/#test-naming-convention).
 
 > [!NOTE]
 > **A Note on Package Naming**
