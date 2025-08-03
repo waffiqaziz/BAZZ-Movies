@@ -3,7 +3,7 @@
 *Pull requests, bug reports, and all other forms of contribution are welcomed and highly
 encouraged!* :octocat:
 
-### 📚 Contents
+## 📚 Contents
 
 - [Code of Conduct](#-code-of-conduct)
 - [Asking Questions](#-asking-questions)
@@ -59,7 +59,7 @@ receive yourself. Here are some tips to make your report as helpful as possible:
 
 - Prefer use
   [reactions](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/)
-  (👍, 👎, etc.) to show your support for an issue, rather than adding a comment like “+1.” or “I have
+  (👍 or 👎) to show your support for an issue, rather than adding a comment like “+1.” or “I have
   this problem too” This helps keep the discussion clear and lets us focus on the most important
   problems.
 
@@ -108,10 +108,6 @@ and [creating a pull request](https://help.github.com/en/github/collaborating-wi
 for non-trivial changes, it is usually best to first open an issue to discuss the changes, or
 discuss your intended approach for solving the problem in the comments for an existing issue.
 
-For most contributions, after your first pull request is accepted and merged, you will
-be [invited to the project](https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/inviting-collaborators-to-a-personal-repository)
-and given **push access**. :tada:
-
 📚 *Note: All contributions will be licensed under the project's license.*
 
 - **Smaller is better**. Try to submit one pull request per bug fix or feature. Keeping each pull
@@ -139,9 +135,6 @@ and given **push access**. :tada:
   or UI tests to go along with it. If there’s an existing pattern for tests in the project, please
   follow it to keep things consistent.
 
-- Update the example project (if there is one) to showcase any new functionality you’ve added. It
-  helps others quickly see how your change fits into the project.
-
 - **Add documentation**. Be sure to update any relevant documentation, whether it’s inline code
   comments
   or external guides. This makes it easier for others to use and understand your work.
@@ -154,9 +147,9 @@ and given **push access**. :tada:
   that occur.
 
 - **Promptly address any CI failures**. If your pull request fails to build or pass tests, please
-  push another commit to fix it.
+  push another commit to fix it. If you believe the failure is a false positive (e.g., caused by code analysis tools), please provide write a comment and tag the maintainer.
 
-- When writing comments, use properly constructed sentences, including punctuation.
+- **Writing a comment**, use properly constructed sentences, including punctuation.
 
 ## 📝 Writing Commit Messages
 
@@ -187,25 +180,26 @@ functionality and performance, rather than formatting tweaks.
 For example: If methods use camelCase (e.g., `thisIsMyNewMethod`), avoid switching to
 `this_is_my_new_method`.
 
-For testing name convention,
-please [follow this naming guide](./docs/BAZZMoviesTestNamingConvention.md).
+For testing name convention, please
+[follow this naming guide](./docs/BAZZMoviesTesting.md/#test-naming-convention).
 
+> [!NOTE]
 > **A Note on Package Naming**
 >
->The current package naming uses snake_case, which does not align with Java and Kotlin conventions.
+> The current package naming uses snake_case, which does not align with Java and Kotlin conventions.
 > However,
 > because the app is already live on the Play Store, this naming style will continue to be used.
 > Please follow this convention when working with packages in the project.
 >
->When in doubt, feel free to ask or look for similar patterns in the codebase.
+> When in doubt, feel free to ask or look for similar patterns in the codebase.
 >
->To help ensure consistency, you can run `./gradlew detekt` to check the code style before
+> To help ensure consistency, you can run `./gradlew detekt` to check the code style before
 > submitting
 > your changes. It’s a handy tool to catch most issues early!
 
 ## :medal_sports: Certificate of Origin
 
-*Developer's Certificate of Origin 1.1*
+Developer's Certificate of Origin 1.1
 
 By making a contribution to this project, I certify that:
 

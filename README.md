@@ -74,16 +74,16 @@ BAZZ Movies available downloaded via Google Play Store
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=200  alt="Get BAZZ Movies on Google Play"/>
 </a>
 
-## 📝 Installation
+## 📝 Development Set Up
 
 1. Make sure already install [Android Studio](https://developer.android.com/studio).
 2. Clone this project.
 3. (Optional)
-   Configure [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
+   Set up [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
    and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
-4. Get your api on [TMDB](https://developer.themoviedb.org/docs/getting-started)
+4. Obtain API keys from [TMDB](https://developer.themoviedb.org/docs/getting-started)
    and [OMDb](https://www.omdbapi.com/apikey.aspx).
-5. Create or edit `local.properties` and put your API keys:
+5. Create or edit `local.properties` file and add your API keys:
 
    ```properties
    TMDB_API_KEY = { TMDB_API_KEY }
@@ -91,18 +91,19 @@ BAZZ Movies available downloaded via Google Play Store
    ```
 
 6. Build the project (`Ctrl + F9`).
-7. Run with your virtual or phone devices
+7. Run the project on an emulator or a physical device.
+
+## 🛠️ Architecture
+
+**BAZZ Movies** app follows the
+[official architecture guidance](https://developer.android.com/topic/architecture)
+and is described in detail in the
+[BAZZ Movies modularization](docs/BAZZMoviesModularization.md).
+
 
 ## 🧪 Testing
 
 Please read this [page](/docs/BAZZMoviesTesting.md).
-
-## 🛠️ Architecture
-
-The **BAZZ Movies** app follows the
-[official architecture guidance](https://developer.android.com/topic/architecture)
-and is described in detail in the
-[BAZZ Movies modularization](docs/BAZZMoviesModularization.md).
 
 ## 🤝 How to Contribute
 
