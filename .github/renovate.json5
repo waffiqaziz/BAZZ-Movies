@@ -9,6 +9,9 @@
   addLabels: [
     'dependencies',
   ],
+  digest: {
+    enabled: false,
+  },
   packageRules: [
     {
       groupName: 'Kotlin and KSP',
