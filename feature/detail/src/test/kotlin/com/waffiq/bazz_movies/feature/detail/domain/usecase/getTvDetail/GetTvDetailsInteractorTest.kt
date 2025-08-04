@@ -148,7 +148,7 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvWatchProviders_whenNoDataForCountry_emitsError() = runTest {
     val emptyWatchProviders = WatchProviders(results = emptyMap(), id = 12345)
-     coEvery { mockRepository.getWatchProviders("tv", TV_ID) } returns
+    coEvery { mockRepository.getWatchProviders("tv", TV_ID) } returns
       flowOf(Outcome.Success(emptyWatchProviders))
 
     interactor.getTvWatchProviders("US", TV_ID).test {
