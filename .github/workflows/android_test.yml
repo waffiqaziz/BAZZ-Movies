@@ -679,7 +679,8 @@ jobs:
           find . -type f -name "createDebugCombinedCoverageReport.xml" | while read filepath; do
             echo "Uploading coverage: $filepath"
             ./bin/deepsource report \
-              --analyzer kotlin \
+              --analyzer test-coverage \
+              --key kotlin \
               --value-file "$filepath"
           done
         env:
