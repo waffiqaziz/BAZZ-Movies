@@ -671,13 +671,19 @@ jobs:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
+      - name: Install DeepSource CLI
+        run: curl https://deepsource.io/cli | sh
+
       - name: Upload coverage reports to DeepSource
-        uses: deepsourcelabs/test-coverage-action@4284bb73a04adb39faaa6bfcc2d0e3dd137ffed7
-        with:
-          key: kotlin
-          fail-ci-on-error: true
-          coverage-file: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          dsn: ${{ secrets.DEEPSOURCE_DSN }}
+        run: |
+          find . -type f -name "createDebugCombinedCoverageReport.xml" | while read filepath; do
+            echo "Uploading coverage: $filepath"
+            ./bin/deepsource report \
+              --analyzer kotlin \
+              --coverage-file "$filepath"
+          done
+        env:
+          DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
 
       # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
       # v1.1.0
