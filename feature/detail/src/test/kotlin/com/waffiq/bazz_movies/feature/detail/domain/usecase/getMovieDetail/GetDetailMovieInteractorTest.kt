@@ -3,26 +3,21 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
+import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailMovie
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.differ
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.video
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -38,158 +33,103 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getDetailMovie_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { mockRepository.getMovieDetail(MOVIE_ID) } returns
-      flowOf(Outcome.Success(detailMovie))
+    testSuccessScenario(
+      mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
+      mockResponse = detailMovie,
+      interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
+    ) { emission ->
+      val mediaDetail = emission.data as MediaDetail
 
-    interactor.getMovieDetail(MOVIE_ID, USER_REGION).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      emission as Outcome.Success
-
-      assertEquals(MOVIE_ID, emission.data.id)
-      assertEquals("Action", emission.data.genre)
-      assertEquals(listOf(1), emission.data.genreId)
-      assertEquals("2h 0m", emission.data.duration)
-      assertEquals("tt1234567", emission.data.imdbId)
-      assertEquals("PG-13", emission.data.ageRating)
-      assertEquals("7.5", emission.data.tmdbScore)
-      assertEquals("Nov 20, 2023", emission.data.releaseDateRegion.releaseDate)
-      assertEquals("US", emission.data.releaseDateRegion.regionRelease)
-
-      awaitComplete()
+      assertEquals(MOVIE_ID, mediaDetail.id)
+      assertEquals("Action", mediaDetail.genre)
+      assertEquals(listOf(1), mediaDetail.genreId)
+      assertEquals("2h 0m", mediaDetail.duration)
+      assertEquals("tt1234567", mediaDetail.imdbId)
+      assertEquals("PG-13", mediaDetail.ageRating)
+      assertEquals("7.5", mediaDetail.tmdbScore)
+      assertEquals("Nov 20, 2023", mediaDetail.releaseDateRegion.releaseDate)
+      assertEquals("US", mediaDetail.releaseDateRegion.regionRelease)
     }
-
-    coVerify { mockRepository.getMovieDetail(MOVIE_ID) }
   }
 
   @Test
   fun getDetailMovie_whenUnsuccessful_emitsError() = runTest {
-    coEvery { mockRepository.getMovieDetail(MOVIE_ID) } returns
-      flowOf(Outcome.Error(message = ERROR_MESSAGE))
-
-    interactor.getMovieDetail(MOVIE_ID, USER_REGION).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(ERROR_MESSAGE, emission.message)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getMovieDetail(MOVIE_ID) }
+    testErrorScenario(
+      mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
+      interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
+    )
   }
 
   @Test
   fun getMovieDetail_whenLoading_emitsLoading() = runTest {
-    coEvery { mockRepository.getMovieDetail(MOVIE_ID) } returns
-      flowOf(Outcome.Loading)
-
-    interactor.getMovieDetail(MOVIE_ID, USER_REGION).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Loading)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getMovieDetail(MOVIE_ID) }
+    testLoadingScenario(
+      mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
+      interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
+    )
   }
 
   @Test
   fun getMovieVideoLinks_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { mockRepository.getMovieTrailerLink(MOVIE_ID) } returns
-      flowOf(Outcome.Success(video))
-
-    interactor.getMovieVideoLinks(MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      assertEquals("Link Trailer", (emission as Outcome.Success).data)
-      awaitComplete()
+    testSuccessScenario(
+      mockCall = { mockRepository.getMovieTrailerLink(MOVIE_ID) },
+      mockResponse = video,
+      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
+    ) { emission ->
+      assertEquals("Link Trailer", emission.data)
     }
-
-    coVerify { mockRepository.getMovieTrailerLink(MOVIE_ID) }
   }
 
   @Test
   fun getLinkVideoMovies_whenUnsuccessful_emitsError() = runTest {
-    val flow = flowOf(Outcome.Error(ERROR_MESSAGE))
-    coEvery { mockRepository.getMovieTrailerLink(MOVIE_ID) } returns flow
-
-    interactor.getMovieVideoLinks(MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      assertEquals(ERROR_MESSAGE, (emission as Outcome.Error).message)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getMovieTrailerLink(MOVIE_ID) }
+    testErrorScenario(
+      mockCall = { mockRepository.getMovieTrailerLink(MOVIE_ID) },
+      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
+    )
   }
 
   @Test
   fun getMovieVideoLinks_whenLoading_emitsLoading() = runTest {
-    val flow = flowOf(Outcome.Loading)
-    coEvery { mockRepository.getMovieTrailerLink(MOVIE_ID) } returns flow
-
-    interactor.getMovieVideoLinks(MOVIE_ID).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getMovieTrailerLink(MOVIE_ID) }
+    testLoadingScenario(
+      mockCall = { mockRepository.getMovieTrailerLink(MOVIE_ID) },
+      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
+    )
   }
 
   @Test
   fun getMovieCredits_whenSuccessful_emitsSuccess() = runTest {
-    val flow = flowOf(Outcome.Success(movieCredits))
-    coEvery { mockRepository.getMovieCredits(MOVIE_ID) } returns flow
-
-    interactor.getMovieCredits(MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      assertEquals(movieCredits, (emission as Outcome.Success).data)
-      awaitComplete()
+    testSuccessScenario(
+      mockCall = { mockRepository.getMovieCredits(MOVIE_ID) },
+      mockResponse = movieCredits,
+      interactorCall = { interactor.getMovieCredits(MOVIE_ID) }
+    ) { emission ->
+      assertEquals(movieCredits, emission.data)
     }
-
-    coVerify { mockRepository.getMovieCredits(MOVIE_ID) }
   }
 
   @Test
   fun getMovieCredits_whenUnsuccessful_emitsError() = runTest {
-    val flow = flowOf(Outcome.Error(ERROR_MESSAGE))
-    coEvery { mockRepository.getMovieCredits(MOVIE_ID) } returns flow
-
-    interactor.getMovieCredits(MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      assertEquals(ERROR_MESSAGE, (emission as Outcome.Error).message)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getMovieCredits(MOVIE_ID) }
+    testErrorScenario(
+      mockCall = { mockRepository.getMovieCredits(MOVIE_ID) },
+      interactorCall = { interactor.getMovieCredits(MOVIE_ID) }
+    )
   }
 
   @Test
   fun getWatchProvidersMovies_whenSuccessful_emitsSuccess() = runTest {
-    val flow = flowOf(Outcome.Success(watchProviders))
-    coEvery { mockRepository.getWatchProviders("movie", MOVIE_ID) } returns flow
-
-    interactor.getMovieWatchProviders("US", MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      assertEquals("https://some-provider.com", (emission as Outcome.Success).data.link)
-      awaitComplete()
+    testSuccessScenario(
+      mockCall = { mockRepository.getWatchProviders(MOVIE_MEDIA_TYPE, MOVIE_ID) },
+      mockResponse = watchProviders,
+      interactorCall = { interactor.getMovieWatchProviders("US", MOVIE_ID) }
+    ) { emission ->
+      val data = emission.data as WatchProvidersItem
+      assertEquals("https://some-provider.com", data.link)
     }
-
-    coVerify { mockRepository.getWatchProviders("movie", MOVIE_ID) }
   }
 
   @Test
   fun getMovieWatchProviders_whenNoDataForCountry_emitsError() = runTest {
-    val flow = flowOf(
-      Outcome.Success(
-        WatchProviders(
-          results = emptyMap(),
-          id = 123456
-        )
-      )
-    )
+    val flow = flowOf(Outcome.Success(WatchProviders(results = emptyMap(), id = 123456)))
+
     coEvery { mockRepository.getWatchProviders("movie", MOVIE_ID) } returns flow
 
     interactor.getMovieWatchProviders("US", MOVIE_ID).test {
@@ -207,63 +147,33 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getWatchProvidersMovies_whenUnsuccessful_emitsError() = runTest {
-    val flow = flowOf(Outcome.Error(ERROR_MESSAGE))
-    coEvery { mockRepository.getWatchProviders("movie", MOVIE_ID) } returns flow
-
-    interactor.getMovieWatchProviders("US", MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      assertEquals(ERROR_MESSAGE, (emission as Outcome.Error).message)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getWatchProviders("movie", MOVIE_ID) }
+    testErrorScenario(
+      mockCall = { mockRepository.getWatchProviders("movie", MOVIE_ID) },
+      interactorCall = { interactor.getMovieWatchProviders("US", MOVIE_ID) }
+    )
   }
 
   @Test
   fun getMovieWatchProviders_whenLoading_emitsLoading() = runTest {
-    val flow = flowOf(Outcome.Loading)
-    coEvery { mockRepository.getWatchProviders("movie", MOVIE_ID) } returns flow
-
-    interactor.getMovieWatchProviders("US", MOVIE_ID).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      awaitComplete()
-    }
-
-    coVerify { mockRepository.getWatchProviders("movie", MOVIE_ID) }
+    testLoadingScenario(
+      mockCall = { mockRepository.getWatchProviders("movie", MOVIE_ID) },
+      interactorCall = { interactor.getMovieWatchProviders("US", MOVIE_ID) }
+    )
   }
 
   @Test
   fun getMovieRecommendationPagingData_whenValueIsValid_returnsDataCorrectly() = runTest {
-    val fakePagingData =
-      PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))
+    val fakePagingData = PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))
 
-    testPagingData(fakePagingData) { pagingList ->
+    testPagingData(
+      mockCall = { mockRepository.getMovieRecommendationPagingData(MOVIE_ID) },
+      pagingData = fakePagingData,
+      interactorCall = { interactor.getMovieRecommendationPagingData(MOVIE_ID) },
+    ) { pagingList ->
       assertEquals("Transformers", pagingList[0].title)
       assertEquals(MOVIE_MEDIA_TYPE, pagingList[0].mediaType)
       assertEquals(99999, pagingList[0].id)
       assertEquals(8000, pagingList[0].voteCount)
     }
-  }
-
-  private fun testPagingData(
-    pagingData: PagingData<MediaItem>,
-    assertions: (List<MediaItem>) -> Unit,
-  ) = runTest {
-    every { mockRepository.getMovieRecommendationPagingData(MOVIE_ID) } returns flowOf(pagingData)
-
-    interactor.getMovieRecommendationPagingData(MOVIE_ID).test {
-      val actualPagingData = awaitItem()
-      val job = launch { differ.submitData(actualPagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
-      assertions(pagingList)
-
-      job.cancel()
-      awaitComplete()
-    }
-
-    verify { mockRepository.getMovieRecommendationPagingData(MOVIE_ID) }
   }
 }
