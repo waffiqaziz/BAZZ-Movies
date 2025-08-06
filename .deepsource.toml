@@ -7,5 +7,9 @@ name = "kotlin"
   runtime_version = "17"
   language_version = "2.1"
 
+[[analyzers]]
+name = "test-coverage"
+enabled = true
+
 [[transformers]]
 name = "ktlint"
