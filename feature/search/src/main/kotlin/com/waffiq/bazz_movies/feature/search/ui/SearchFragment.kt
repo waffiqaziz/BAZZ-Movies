@@ -36,6 +36,7 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_search
+import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
@@ -62,7 +63,7 @@ class SearchFragment : Fragment() {
   lateinit var snackbar: ISnackbar
 
   private var _binding: FragmentSearchBinding? = null
-  private val binding get() = _binding!!
+  private val binding get() = _binding ?: error(getString(binding_error))
 
   private val searchViewModel: SearchViewModel by viewModels()
   private lateinit var searchAdapter: SearchAdapter
@@ -275,14 +276,15 @@ class SearchFragment : Fragment() {
     val activity = activity as? AppCompatActivity ?: return
     if (!isAdded || isDetached || view == null) return
 
+    @Suppress("TooGenericExceptionCaught")
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.withStarted {
         try {
           activity.supportActionBar?.show()
           binding.appBarLayout.setExpanded(true, true)
           searchViewModel.setExpandSearchView(true)
-        } catch (e: Exception) {
-          Log.w("SearchFragment", "Failed to open search view. ", e)
+        } catch (e: IllegalStateException) {
+          Log.w("SearchFragment", "Illegal state while opening search view.", e)
         }
       }
     }
@@ -317,7 +319,7 @@ class SearchFragment : Fragment() {
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  internal fun onKeyboardHidden() {
+  fun onKeyboardHidden() {
     binding.appBarLayout.setExpanded(true)
   }
 

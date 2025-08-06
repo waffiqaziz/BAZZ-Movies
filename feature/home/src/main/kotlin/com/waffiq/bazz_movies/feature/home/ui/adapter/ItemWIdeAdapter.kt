@@ -104,19 +104,11 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
     private const val PADDING_DP = 40f
     private const val MAX_WIDTH_DP = 350f
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
-      override fun areItemsTheSame(
-        oldItem: MediaItem,
-        newItem: MediaItem
-      ): Boolean {
-        return oldItem.id == newItem.id
-      }
+      override fun areItemsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean =
+        oldItem.id == newItem.id
 
-      override fun areContentsTheSame(
-        oldItem: MediaItem,
-        newItem: MediaItem
-      ): Boolean {
-        return oldItem == newItem
-      }
+      override fun areContentsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean =
+        oldItem == newItem
     }
   }
 }

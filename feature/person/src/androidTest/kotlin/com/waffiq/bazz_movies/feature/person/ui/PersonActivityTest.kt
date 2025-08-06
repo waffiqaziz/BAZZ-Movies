@@ -50,17 +50,16 @@ import com.waffiq.bazz_movies.feature.person.R.id.tv_born
 import com.waffiq.bazz_movies.feature.person.R.id.tv_dead_header
 import com.waffiq.bazz_movies.feature.person.R.id.tv_death
 import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media
-import com.waffiq.bazz_movies.feature.person.R.id.view_group_social_media2
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.isRefreshing
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.launchPersonActivity
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testDetailPerson
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testMediaCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.testProfileItem
-import com.waffiq.bazz_movies.feature.person.testutils.Helper.withCollapsingToolbarTitle
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testDetailPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testExternalIDPerson
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testProfileItem
+import com.waffiq.bazz_movies.feature.person.testutils.DefaultPersonActivityTestHelper
 import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
-import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestSetup
+import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
+import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.launchPersonActivity
+import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
@@ -83,7 +82,7 @@ import org.junit.Test
 import kotlin.test.assertTrue
 
 @HiltAndroidTest
-class PersonActivityTest : PersonActivityTestSetup by PersonActivityTestHelper() {
+class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)

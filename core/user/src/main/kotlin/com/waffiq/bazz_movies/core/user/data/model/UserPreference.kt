@@ -24,8 +24,8 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[REGION_KEY] = user.region
       it[TOKEN_KEY] = user.token
       it[STATE_KEY] = user.isLogin
-      it[GRAVATAR_KEY] = user.gravatarHast ?: ""
-      it[TMDB_AVATAR_KEY] = user.tmdbAvatar ?: ""
+      it[GRAVATAR_KEY] = user.gravatarHast.orEmpty()
+      it[TMDB_AVATAR_KEY] = user.tmdbAvatar.orEmpty()
     }
   }
 
@@ -33,14 +33,14 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     dataStore.data.map {
       UserModelPref(
         it[USERID_KEY] ?: 0,
-        it[NAME_KEY] ?: "",
-        it[USERNAME_KEY] ?: "",
-        it[PASSWORD_KEY] ?: "",
-        it[REGION_KEY] ?: "",
-        it[TOKEN_KEY] ?: "",
+        it[NAME_KEY].orEmpty(),
+        it[USERNAME_KEY].orEmpty(),
+        it[PASSWORD_KEY].orEmpty(),
+        it[REGION_KEY].orEmpty(),
+        it[TOKEN_KEY].orEmpty(),
         it[STATE_KEY] == true,
-        it[GRAVATAR_KEY] ?: "",
-        it[TMDB_AVATAR_KEY] ?: ""
+        it[GRAVATAR_KEY].orEmpty(),
+        it[TMDB_AVATAR_KEY].orEmpty()
       )
     }
 
@@ -48,9 +48,9 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     dataStore.edit { it[REGION_KEY] = region }
   }
 
-  fun getToken(): Flow<String> = dataStore.data.map { it[TOKEN_KEY] ?: "" }
+  fun getToken(): Flow<String> = dataStore.data.map { it[TOKEN_KEY].orEmpty() }
 
-  fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY] ?: "" }
+  fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY].orEmpty() }
 
   suspend fun removeUserData() { // remove all data from datastore
     dataStore.edit {

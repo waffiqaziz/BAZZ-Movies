@@ -67,7 +67,7 @@ object GetRegionHelper {
         // Fallback to the single locale for older Android versions.
         context.resources.configuration.locale
       }
-      locale?.country?.lowercase(Locale.getDefault()) ?: ""
+      locale?.country?.lowercase(Locale.getDefault()).orEmpty()
     }
   }
 

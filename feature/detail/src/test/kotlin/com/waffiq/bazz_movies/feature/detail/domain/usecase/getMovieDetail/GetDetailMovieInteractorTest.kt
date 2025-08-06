@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.test.assertIs
 
 class GetDetailMovieInteractorTest : BaseInteractorTest() {
 
@@ -38,7 +39,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
       mockResponse = detailMovie,
       interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
     ) { emission ->
-      val mediaDetail = emission.data as MediaDetail
+      val mediaDetail = assertIs<MediaDetail>(emission.data)
 
       assertEquals(MOVIE_ID, mediaDetail.id)
       assertEquals("Action", mediaDetail.genre)
@@ -121,7 +122,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
       mockResponse = watchProviders,
       interactorCall = { interactor.getMovieWatchProviders("US", MOVIE_ID) }
     ) { emission ->
-      val data = emission.data as WatchProvidersItem
+      val data = assertIs<WatchProvidersItem>(emission.data)
       assertEquals("https://some-provider.com", data.link)
     }
   }

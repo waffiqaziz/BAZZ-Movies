@@ -46,9 +46,7 @@ object GenreHelper {
 
   // Private function to retrieve the genre name for a given genre ID.
   // If no matching genre is found, it returns an empty string.
-  private fun getGenreName(int: Int): String {
-    return genreNameMap[int] ?: ""
-  }
+  private fun getGenreName(int: Int): String = genreNameMap[int].orEmpty()
 
   /**
    * Transforms a list of genre IDs into a comma-separated string of genre names.

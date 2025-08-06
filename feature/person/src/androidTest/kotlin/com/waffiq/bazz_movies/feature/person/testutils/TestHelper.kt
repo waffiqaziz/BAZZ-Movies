@@ -8,15 +8,18 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.matcher.BoundedMatcher
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
-import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
-import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
-object Helper {
+/** * Helper functions and matchers for testing [PersonActivity].
+ *
+ * Provides utility methods to simplify UI tests, such as checking if a
+ * [SwipeRefreshLayout] is refreshing and verifying the title of a
+ * [CollapsingToolbarLayout].
+ */
+object TestHelper {
 
   /**
    * Returns a matcher that checks whether a [SwipeRefreshLayout] is currently refreshing.
@@ -29,9 +32,8 @@ object Helper {
         description?.appendText("is refreshing")
       }
 
-      override fun matchesSafely(view: SwipeRefreshLayout?): Boolean {
-        return view?.isRefreshing == true
-      }
+      override fun matchesSafely(view: SwipeRefreshLayout?): Boolean =
+        view?.isRefreshing == true
     }
   }
 
@@ -47,12 +49,11 @@ object Helper {
     return object :
       BoundedMatcher<View, CollapsingToolbarLayout>(CollapsingToolbarLayout::class.java) {
       override fun describeTo(description: Description) {
-        description.appendText("with CollapsingToolbarLayout title: $expectedTitle")
+        description.appendText("with CollapsingToolbarLayout title: ${expectedTitle ?: "null title"}")
       }
 
-      override fun matchesSafely(view: CollapsingToolbarLayout): Boolean {
-        return view.title?.toString() == expectedTitle
-      }
+      override fun matchesSafely(view: CollapsingToolbarLayout): Boolean =
+        view.title?.toString() == expectedTitle
     }
   }
 
@@ -66,7 +67,7 @@ object Helper {
    */
   inline fun Context.launchPersonActivity(
     person: MediaCastItem? = testMediaCastItem,
-    block: (ActivityScenario<PersonActivity>) -> Unit
+    block: (ActivityScenario<PersonActivity>) -> Unit,
   ) {
     val intent = Intent(this, PersonActivity::class.java).apply {
       if (person != null) {
@@ -78,76 +79,4 @@ object Helper {
       block(scenario)
     }
   }
-
-  // helper methods to create test data
-  val testMediaCastItem =
-    MediaCastItem(
-      id = 123,
-      name = "Test Actor",
-      originalName = "Test Actor Original",
-      profilePath = "/test_profile.jpg",
-    )
-
-
-  val testDetailPerson =
-    DetailPerson(
-      id = 123,
-      name = "Test Actor",
-      biography = "Test biography for the actor",
-      birthday = "1990-01-01",
-      placeOfBirth = "Test City",
-      homepage = "https://example.com"
-    )
-
-
-  val testCastItem =
-    CastItem(
-      id = 456,
-      title = "Test Movie",
-      character = "Test Character",
-      posterPath = "/test_poster.jpg",
-      releaseDate = "2023-01-01"
-    )
-
-
-  val testProfileItem =
-    ProfilesItem(
-      filePath = "/test_image.jpg",
-      width = 500,
-      height = 750
-    )
-
-
-  val testExternalIDPerson =
-    ExternalIDPerson(
-      id = 123,
-      imdbId = "nm1234567",
-      instagramId = "test_instagram",
-      twitterId = "test_twitter",
-      facebookId = "test_facebook",
-      tiktokId = null,
-      youtubeId = null,
-      wikidataId = "Q123456"
-    )
-
-
-  val testKnownForList =
-    listOf(
-      CastItem(
-        id = 1,
-        title = "Test Movie",
-        character = "Test Character",
-        posterPath = "/test.jpg"
-      )
-    )
-
-
-  val testImagesList =
-    listOf(
-      ProfilesItem(
-        filePath = "/test1.jpg",
-        width = 300,
-        height = 450
-      )
-    )
 }

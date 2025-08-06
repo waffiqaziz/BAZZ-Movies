@@ -152,8 +152,8 @@ class PersonActivity : AppCompatActivity() {
 
     binding.collapse.title = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
     val imageToLoad = if (!dataExtra.profilePath.isNullOrEmpty()) {
-      TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
       binding.ivPicture.contentDescription = "with_profile"
+      TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
     } else {
       binding.ivPicture.contentDescription = "no_profile"
       ic_no_profile

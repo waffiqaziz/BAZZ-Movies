@@ -22,7 +22,9 @@ class SetRatingAction(private val rating: Float) : ViewAction {
   }
 
   override fun perform(uiController: UiController?, view: View?) {
-    val ratingBar = view as RatingBar
+    val ratingBar = view as? RatingBar
+      ?: error("Expected a RatingBar but got ${view?.javaClass?.simpleName ?: "null"}")
+
     ratingBar.rating = rating
   }
 }

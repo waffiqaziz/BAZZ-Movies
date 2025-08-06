@@ -59,19 +59,14 @@ class SearchRepositoryImplTestTwo {
     // Use AsyncPagingDataDiffer to extract the actual items
     val differ = AsyncPagingDataDiffer(
       diffCallback = object : DiffUtil.ItemCallback<MultiSearchItem>() {
-        override fun areItemsTheSame(
-          oldItem: MultiSearchItem,
-          newItem: MultiSearchItem
-        ): Boolean {
-          return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItem: MultiSearchItem, newItem: MultiSearchItem): Boolean =
+          oldItem.id == newItem.id
 
         override fun areContentsTheSame(
           oldItem: MultiSearchItem,
-          newItem: MultiSearchItem
-        ): Boolean {
-          return oldItem == newItem
-        }
+          newItem: MultiSearchItem,
+        ): Boolean =
+          oldItem == newItem
       },
       updateCallback = NoopListUpdateCallback(),
       workerDispatcher = Dispatchers.Main
@@ -93,9 +88,16 @@ class SearchRepositoryImplTestTwo {
 
   // No-op implementation of ListUpdateCallback for testing
   private class NoopListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) { /* no used */ }
-    override fun onRemoved(position: Int, count: Int) { /* no used */ }
-    override fun onMoved(fromPosition: Int, toPosition: Int) { /* no used */ }
-    override fun onChanged(position: Int, count: Int, payload: Any?) { /* no used */ }
+    override fun onInserted(position: Int, count: Int) { /* no used */
+    }
+
+    override fun onRemoved(position: Int, count: Int) { /* no used */
+    }
+
+    override fun onMoved(fromPosition: Int, toPosition: Int) { /* no used */
+    }
+
+    override fun onChanged(position: Int, count: Int, payload: Any?) { /* no used */
+    }
   }
 }
