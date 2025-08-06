@@ -680,7 +680,7 @@ jobs:
             echo "Uploading coverage: $filepath"
             ./bin/deepsource report \
               --analyzer kotlin \
-              --coverage-file "$filepath"
+              --value-file "$filepath"
           done
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
