@@ -98,17 +98,15 @@ class MediaDetailActivityTrailerLinkTest :
         mockTrailerLauncher.launch(any(), any())
       } throws ActivityNotFoundException("YouTube app not found")
 
-      context.launchMediaDetailActivity { scenario ->
-        scenario.onActivity { activity ->
-          activity.uiManager.trailerLauncher = mockTrailerLauncher
-        }
-
-        linkVideo.postValue("test_video_id")
-        onView(withId(ib_play)).perform(click())
-        onView(withText(yt_not_installed)).check(matches(isDisplayed()))
-
-        verify { mockTrailerLauncher.launch(any(), "test_video_id") }
+      scenario.onActivity { activity ->
+        activity.uiManager.trailerLauncher = mockTrailerLauncher
       }
+
+      linkVideo.postValue("test_video_id")
+      onView(withId(ib_play)).perform(click())
+      onView(withText(yt_not_installed)).check(matches(isDisplayed()))
+
+      verify { mockTrailerLauncher.launch(any(), "test_video_id") }
     }
   }
 }

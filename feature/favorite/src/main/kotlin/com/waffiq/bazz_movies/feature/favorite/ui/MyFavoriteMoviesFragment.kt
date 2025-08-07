@@ -335,16 +335,17 @@ class MyFavoriteMoviesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      val fav = viewModelDBFav.undoDB.value?.getContentIfNotHandled() as Favorite
-      if (isWantToDelete) { // undo remove from favorite
-        if (fav.isWatchlist) {
-          viewModelDBFav.updateToFavoriteDB(fav)
-        } else {
-          viewModelDBFav.insertToDB(fav.copy(isFavorite = true))
+      viewModelDBFav.undoDB.value?.getContentIfNotHandled()?.let { fav ->
+        if (isWantToDelete) { // undo remove from favorite
+          if (fav.isWatchlist) {
+            viewModelDBFav.updateToFavoriteDB(fav)
+          } else {
+            viewModelDBFav.insertToDB(fav.copy(isFavorite = true))
+          }
+          binding.rvFavMovies.scrollToPosition(pos)
+        } else { // undo add to watchlist
+          viewModelDBFav.updateToRemoveFromWatchlistDB(fav)
         }
-        binding.rvFavMovies.scrollToPosition(pos)
-      } else { // undo add to watchlist
-        viewModelDBFav.updateToRemoveFromWatchlistDB(fav)
       }
     }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
       .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))

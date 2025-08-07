@@ -48,8 +48,7 @@ object MediaHelper {
     return this.results
       .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) }
       .map { it.key }.firstOrNull()?.trim()
-      ?: this.results.map { it.key }.firstOrNull()?.trim()
-      ?: ""
+      ?: this.results.map { it.key }.firstOrNull()?.trim().orEmpty()
   }
 
   fun getTransformTMDBScore(tmdbScore: Double?): String? =

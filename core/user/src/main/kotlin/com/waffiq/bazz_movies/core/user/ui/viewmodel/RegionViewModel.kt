@@ -32,7 +32,7 @@ class RegionViewModel @Inject constructor(
         when (outcome) {
           is Outcome.Success -> {
             outcome.data.let {
-              _countryCode.value = it.country ?: ""
+              _countryCode.value = it.country.orEmpty()
             }
           }
 

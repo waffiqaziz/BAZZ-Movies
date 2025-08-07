@@ -12,8 +12,6 @@ import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personDump1
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMultiSearchResponse
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper.differ
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper.differSearch
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlowSearch
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSearchSource
@@ -50,7 +48,6 @@ class TrendingDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getTrendingThisWeek("id").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump4, pagingList[0])
       assertEquals(movieDump2, pagingList[1])
       assertEquals(movieDump3, pagingList[2])
@@ -92,7 +89,6 @@ class TrendingDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getTrendingToday("ca").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(tvShowDump1, pagingList[0])
       assertEquals(movieDump7, pagingList[1])
       assertTrue(pagingList.isNotEmpty())
@@ -131,7 +127,6 @@ class TrendingDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.search("john").testPagingFlowSearch(this) { pagingList ->
-      val pagingList = differSearch.snapshot().items
       assertEquals(personDump1, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(102.851, pagingList[0].popularity)

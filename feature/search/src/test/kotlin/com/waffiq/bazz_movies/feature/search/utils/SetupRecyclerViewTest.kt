@@ -41,9 +41,11 @@ class SetupRecyclerViewTest {
     // verify that layoutManager is a LinearLayoutManager with vertical orientation
     val layoutManager = recyclerView.layoutManager
     assertTrue("LayoutManager should be LinearLayoutManager", layoutManager is LinearLayoutManager)
-    assertEquals("Orientation should be vertical",
+    assertEquals(
+      "Orientation should be vertical",
       RecyclerView.VERTICAL,
-      (layoutManager as LinearLayoutManager).orientation)
+      (layoutManager as LinearLayoutManager).orientation
+    )
 
     // verify adapter is a ConcatAdapter (also wraps PagingAdapter with footer)
     val adapter = recyclerView.adapter
@@ -55,11 +57,13 @@ class SetupRecyclerViewTest {
 
     // expect PagingAdapter is ConcatAdapter
     val adapters = concatAdapter.adapters
-    assertTrue("ConcatAdapter should contain our PagingAdapter",
+    assertTrue(
+      "ConcatAdapter should contain our PagingAdapter",
       adapters.any { it is PagingDataAdapter<*, *> })
 
     // expect LoadStateAdapter in the ConcatAdapter
-    assertTrue("ConcatAdapter should contain a LoadStateAdapter",
+    assertTrue(
+      "ConcatAdapter should contain a LoadStateAdapter",
       adapters.any { it is LoadStateAdapter<*> })
   }
 
@@ -76,13 +80,11 @@ class SetupRecyclerViewTest {
 
     companion object {
       private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-          return oldItem == newItem
-        }
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+          oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-          return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+          oldItem == newItem
       }
     }
   }
@@ -98,7 +100,8 @@ class SetupRecyclerViewTest {
 
     // extract the LoadStateAdapter from the ConcatAdapter
     val concatAdapter = recyclerView.adapter as ConcatAdapter
-    val loadStateAdapter = concatAdapter.adapters.find { it is LoadStateAdapter<*> } as LoadStateAdapter<*>
+    val loadStateAdapter =
+      concatAdapter.adapters.find { it is LoadStateAdapter<*> } as LoadStateAdapter<*>
 
     // get retry function using reflection
     // this approach avoids needing to create and click a button

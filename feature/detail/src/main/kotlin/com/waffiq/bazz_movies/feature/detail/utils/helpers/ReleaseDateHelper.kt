@@ -17,6 +17,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
  */
 object ReleaseDateHelper {
 
+  private const val YEAR_LENGTH = 4
+
   /**
    * For Movie
    *
@@ -53,7 +55,7 @@ object ReleaseDateHelper {
       val productionCountryRegionAndDate = ReleaseDateRegion(
         regionRelease = data?.listProductionCountriesItem?.firstOrNull {
           !it?.iso31661.isNullOrEmpty()
-        }?.iso31661 ?: "",
+        }?.iso31661.orEmpty(),
         releaseDate = dateFormatterStandard(data?.releaseDate)
       )
       if (productionCountryRegionAndDate.releaseDate.isNotEmpty() &&
@@ -91,8 +93,8 @@ object ReleaseDateHelper {
     return data?.firstOrNull { isValidRegionAndReleaseDate(it, region) }
       ?.let {
         Pair(
-          it.iso31661 ?: "",
-          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate ?: ""
+          it.iso31661.orEmpty(),
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty()
         )
       }
   }
@@ -108,8 +110,8 @@ object ReleaseDateHelper {
     return data?.firstOrNull { isValidRegionAndReleaseDate(it) }
       ?.let {
         Pair(
-          it.iso31661 ?: "",
-          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate ?: ""
+          it.iso31661.orEmpty(),
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty()
         )
       }
       ?: Pair("", "")
@@ -165,8 +167,8 @@ object ReleaseDateHelper {
         val airDate = season?.airDate
 
         // take the first 4 characters of airDate if available, and convert to Int
-        if (airDate != null && airDate.length >= 4) {
-          val yearStr = airDate.take(4)
+        if (airDate != null && airDate.length >= YEAR_LENGTH) {
+          val yearStr = airDate.take(YEAR_LENGTH)
           yearStr.toIntOrNull()
         } else {
           null
@@ -185,7 +187,7 @@ object ReleaseDateHelper {
     }
 
     // fallback: use the show's firstAirDate if no valid seasons exist
-    val yearStr = data.firstAirDate?.takeIf { it.length >= 4 }?.take(4)
+    val yearStr = data.firstAirDate?.takeIf { it.length >= YEAR_LENGTH }?.take(YEAR_LENGTH)
     val firstAirYear = yearStr?.toIntOrNull()
 
     // return the fallback year or an empty string if invalid
@@ -199,7 +201,6 @@ object ReleaseDateHelper {
    *
    * @return string of origin country.
    */
-  private fun getOriginalCountryTv(data: DetailTv): String {
-    return data.listOriginCountry?.firstOrNull() ?: ""
-  }
+  private fun getOriginalCountryTv(data: DetailTv): String =
+    data.listOriginCountry?.firstOrNull().orEmpty()
 }

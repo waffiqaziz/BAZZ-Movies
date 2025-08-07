@@ -49,7 +49,7 @@ class RatedResponseAdapter {
 
       else -> {
         // log and return fallback for unknown or unexpected data types
-        logError("Unknown type for rated field: $rated")
+        logError("Unknown type for rated field: ${rated ?: "Null value"}")
         RatedResponse.Unrated
       }
     }

@@ -8,6 +8,9 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
  */
 @Suppress("unused")
 object AgeRatingHelper {
+
+  private const val FLAG_ANY_COUNTRY = "any country"
+
   // region CALCULATE AGE RATING MOVIE
   fun getAgeRating(
     data: MovieDetail?,
@@ -15,7 +18,7 @@ object AgeRatingHelper {
   ): String {
     // if age rating based on user region return empty, get age rating from any region
     return getTransformAgeRatingMovie(data, userRegion).takeIf { it.isNotEmpty() }
-      ?: getTransformAgeRatingMovie(data, "false")
+      ?: getTransformAgeRatingMovie(data, FLAG_ANY_COUNTRY)
   }
 
   private fun getTransformAgeRatingMovie(data: MovieDetail?, region: String): String {
@@ -26,20 +29,18 @@ object AgeRatingHelper {
 
     val releaseDatesItems = data.releaseDates.listReleaseDatesItem
 
-    return if (region != "false") { // find age rating based on user region
+    return if (region != FLAG_ANY_COUNTRY) { // find age rating based on user region
       releaseDatesItems
         .find { it?.iso31661 == region }
         ?.listReleaseDatesItemValue
         ?.find { !it.certification.isNullOrEmpty() }
-        ?.certification
-        ?: ""
+        ?.certification.orEmpty()
     } else { // find age rating from any country
       releaseDatesItems
         .asSequence()
         .flatMap { item -> item?.listReleaseDatesItemValue?.asSequence() ?: emptySequence() }
         .firstOrNull { !it.certification.isNullOrEmpty() }
-        ?.certification
-        ?: ""
+        ?.certification.orEmpty()
     }
   }
   // endregion CALCULATE AGE RATING MOVIE
@@ -63,14 +64,13 @@ object AgeRatingHelper {
         ?: // if not found or empty, try US as fallback
         data?.contentRatings?.contentRatingsItem
           ?.find { it?.iso31661 == "US" }
-          ?.rating?.takeIf { it.isNotEmpty() }
-        ?: ""
+          ?.rating?.takeIf { it.isNotEmpty() }.orEmpty()
     } else {
       data?.contentRatings?.contentRatingsItem
         // Map to ratings, exclude empty/null values and get the first value
         ?.firstNotNullOfOrNull { contentRatingsItem ->
           contentRatingsItem?.rating?.takeIf { it.isNotEmpty() }
-        } ?: "" // get the first
+        }.orEmpty() // get the first
     }
   // endregion CALCULATE AGE RATING TV
 }

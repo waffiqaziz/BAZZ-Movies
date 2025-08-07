@@ -194,8 +194,7 @@ class DetailMovieUIManager(
       tvMediaType.text = dataExtra.mediaType.uppercase()
       tvYearReleased.text = dateFormatterStandard(
         dataExtra.releaseDate?.takeIf { it.isNotEmpty() }
-          ?: dataExtra.firstAirDate?.takeIf { it.isNotEmpty() }
-          ?: ""
+          ?: dataExtra.firstAirDate?.takeIf { it.isNotEmpty() }.orEmpty()
       )
       tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
         ?: activity.getString(no_overview)

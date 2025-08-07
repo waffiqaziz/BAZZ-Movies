@@ -5,12 +5,8 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.R.id.search_src_text
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -32,7 +28,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.action_search
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -40,21 +35,17 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
-import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
+import com.waffiq.bazz_movies.feature.search.testutils.DefaultFragmentTestHelper
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
+import com.waffiq.bazz_movies.feature.search.testutils.SearchFragmentTestHelper
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.core.IsNot.not
@@ -63,17 +54,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchFragmentTest {
-
-  private lateinit var searchFragment: SearchFragment
-  private lateinit var activity: AppCompatActivity
-  private lateinit var toolbar: ActionBar
-  private lateinit var searchAdapter: SearchAdapter
-
-  private val searchResultsFlow: Flow<PagingData<MultiSearchItem>> = flowOf()
-  private val queryLiveData = MutableLiveData<String>()
-  private val expandSearchViewLiveData = MutableLiveData<Boolean>()
-  private val testQuery = "test_query"
+class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -93,23 +74,10 @@ class SearchFragmentTest {
   @Before
   fun setUp() {
     hiltRule.inject()
-    val spyAdapter = spyk(SearchAdapter(mockNavigator))
-    searchAdapter = spyAdapter
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment> {
-      this.setAdapterForTest(spyAdapter)
-    }
-
-    activity = searchFragment.requireActivity() as AppCompatActivity
-    toolbar = activity.supportActionBar ?: return
-
-    // setup mock ViewModel responses
-    every { mockSearchViewModel.searchResults } returns searchResultsFlow
-    every { mockSearchViewModel.query } returns queryLiveData
-    every { mockSearchViewModel.expandSearchView } returns expandSearchViewLiveData
-    every { mockSearchViewModel.search(any()) } just Runs
-    every { mockSearchViewModel.setExpandSearchView(any()) } just Runs
-    every { mockSnackbar.showSnackbarWarning(ofType<String>()) } returns mockk(relaxed = true)
+    setupFragment(mockNavigator)
+    setupToolbar()
+    setupViewModelMocks(mockSearchViewModel)
   }
 
   @Test

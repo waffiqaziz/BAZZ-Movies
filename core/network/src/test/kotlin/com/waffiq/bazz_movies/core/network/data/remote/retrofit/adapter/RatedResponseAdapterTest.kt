@@ -17,8 +17,7 @@ class RatedResponseAdapterTest {
 
   @Test
   fun fromJson_withEmptyMap_returnsUnrated() {
-    val result = adapter.fromJson(emptyMap<String, Any>())
-    assertTrue(result is RatedResponse.Unrated)
+    assertUnrated(adapter.fromJson(emptyMap<String, Any>()))
   }
 
   @Test
@@ -30,25 +29,25 @@ class RatedResponseAdapterTest {
 
   @Test
   fun fromJson_withInvalidValue_returnsUnrated() {
-    val result = adapter.fromJson(mapOf("value" to "invalid"))
-    assertTrue(result is RatedResponse.Unrated)
+    assertUnrated(adapter.fromJson(mapOf("value" to "invalid")))
   }
 
   @Test
   fun fromJson_withBooleanFalse_returnsUnrated() {
-    val result = adapter.fromJson(false)
-    assertTrue(result is RatedResponse.Unrated)
+    assertUnrated(adapter.fromJson(false))
   }
 
   @Test
   fun fromJson_withBooleanTrue_returnsUnrated() {
-    val result = adapter.fromJson(true)
-    assertTrue(result is RatedResponse.Unrated)
+    assertUnrated(adapter.fromJson(true))
   }
 
   @Test
   fun fromJson_withUnknownType_returnsUnrated() {
-    val result = adapter.fromJson("unexpected type")
-    assertTrue(result is RatedResponse.Unrated)
+    assertUnrated(adapter.fromJson("unexpected type"))
+  }
+
+  private fun assertUnrated(response: RatedResponse) {
+    assertTrue(response is RatedResponse.Unrated)
   }
 }

@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.movieDump4
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.movieDump5
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.movieDump6
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper.differ
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coVerify
@@ -45,7 +44,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getTopRatedMovies().testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump1, pagingList[0])
       assertEquals(movieDump2, pagingList[1])
       assertTrue(pagingList.isNotEmpty())
@@ -81,7 +79,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getPopularMovies().testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump5, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(389, pagingList[0].id)
@@ -113,7 +110,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getFavoriteMovies("session_id").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump6, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(823219, pagingList[0].id)
@@ -145,7 +141,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getWatchlistMovies("session_id").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump2, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(220.965, pagingList[0].popularity)
@@ -177,7 +172,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getMovieRecommendation(12345678).testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump3, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(240, pagingList[0].id)
@@ -208,7 +202,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getUpcomingMovies("cn").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump4, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(424, pagingList[0].id)
@@ -239,7 +232,6 @@ class MovieDataSourceTest : BaseMediaDataSourceTest() {
 
     // test using paging data
     movieDataSource.getPlayingNowMovies("gb").testPagingFlow(this) { pagingList ->
-      val pagingList = differ.snapshot().items
       assertEquals(movieDump5, pagingList[0])
       assertTrue(pagingList.isNotEmpty())
       assertEquals(58.538, pagingList[0].popularity)
