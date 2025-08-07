@@ -10,6 +10,3 @@ name = "kotlin"
 [[analyzers]]
 name = "test-coverage"
 enabled = true
-
-[[transformers]]
-name = "ktlint"
