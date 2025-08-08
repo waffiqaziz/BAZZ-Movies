@@ -14,7 +14,6 @@ import dagger.hilt.android.qualifiers.ActivityContext
 object SnackbarModule {
 
   @Provides
-  fun provideSnackbar(@ActivityContext context: Context): ISnackbar {
-    return AppSnackbarManager(context)
-  }
+  fun provideSnackbar(@ActivityContext context: Context): ISnackbar =
+    AppSnackbarManager(context)
 }

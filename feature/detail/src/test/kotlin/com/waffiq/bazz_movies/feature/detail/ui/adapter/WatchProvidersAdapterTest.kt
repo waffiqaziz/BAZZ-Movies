@@ -123,7 +123,7 @@ class WatchProvidersAdapterTest : BaseAdapterTest(){
     val newItem = pvd // same content
 
     val diffCallback =
-      WatchProvidersAdapter(clickListener).DiffCallback(listOf(oldItem), listOf(newItem))
+      WatchProvidersAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
 
@@ -133,7 +133,7 @@ class WatchProvidersAdapterTest : BaseAdapterTest(){
     val newItem = pvd.copy(providerId = 12) // different content
 
     val diffCallback =
-      WatchProvidersAdapter(clickListener).DiffCallback(listOf(oldItem), listOf(newItem))
+      WatchProvidersAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }
 }

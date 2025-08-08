@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.snackbar
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -29,8 +30,11 @@ class AppSnackbarManager @Inject constructor(
       if (!rootView.isAttachedToWindow) return null
 
       snackBarWarning(rootView, bottomNav, message)?.apply { show() }
-    } catch (e: Exception) {
-      Log.e("AppSnackbarManager", "Error creating snackbar", e)
+    } catch (e: IllegalStateException) {
+      Log.e(TAG, "Illegal state when creating snackbar", e)
+      null
+    } catch (e: WindowManager.BadTokenException) {
+      Log.e(TAG, "Invalid window token when creating snackbar", e)
       null
     }
   }
@@ -43,9 +47,16 @@ class AppSnackbarManager @Inject constructor(
       if (!rootView.isAttachedToWindow) return null
 
       snackBarWarning(rootView, bottomNav, eventMessage)?.apply { show() }
-    } catch (e: Exception) {
-      Log.e("AppSnackbarManager", "Error creating snackbar", e)
+    } catch (e: IllegalStateException) {
+      Log.e(TAG, "Illegal state when creating snackbar", e)
+      null
+    } catch (e: WindowManager.BadTokenException) {
+      Log.e(TAG, "Invalid window token when creating snackbar", e)
       null
     }
+  }
+
+  companion object {
+    private const val TAG = "AppSnackbarManager"
   }
 }

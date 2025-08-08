@@ -324,14 +324,14 @@ class LoginActivityTest {
     onView(withId(ed_pass)).check(matches(withText(validPassword)))
   }
 
-  private fun typeValidLogin(){
+  private fun typeValidLogin() {
     onView(withId(ed_username)).perform(typeText(validUsername))
     closeSoftKeyboard()
     onView(withId(ed_pass)).perform(typeText(validPassword))
     closeSoftKeyboard()
   }
 
-  private fun performValidLogin(){
+  private fun performValidLogin() {
     typeValidLogin()
     onView(withId(btn_login)).perform(click())
   }
@@ -343,9 +343,8 @@ class LoginActivityTest {
         description.appendText("with error text: $expectedError")
       }
 
-      override fun matchesSafely(editText: EditText): Boolean {
-        return editText.error?.toString() == expectedError
-      }
+      override fun matchesSafely(editText: EditText): Boolean =
+        editText.error?.toString() == expectedError
     }
   }
 
@@ -355,21 +354,15 @@ class LoginActivityTest {
         description.appendText("without error text")
       }
 
-      override fun matchesSafely(editText: EditText): Boolean {
-        return editText.error == null
-      }
+      override fun matchesSafely(editText: EditText): Boolean = editText.error == null
     }
   }
 
   private fun clickAtPosition(position: Int): ViewAction {
     return object : ViewAction {
-      override fun getConstraints(): Matcher<View> {
-        return isAssignableFrom(EditText::class.java)
-      }
+      override fun getConstraints(): Matcher<View> = isAssignableFrom(EditText::class.java)
 
-      override fun getDescription(): String {
-        return "Click at position $position"
-      }
+      override fun getDescription(): String = "Click at position $position"
 
       override fun perform(uiController: UiController, view: View) {
         val editText = view as EditText
@@ -384,10 +377,9 @@ class LoginActivityTest {
         description.appendText("Password is hidden")
       }
 
-      override fun matchesSafely(editText: EditText): Boolean {
-        // returns true if password is hidden
-        return editText.transformationMethod is PasswordTransformationMethod
-      }
+      // returns true if password is hidden
+      override fun matchesSafely(editText: EditText): Boolean =
+        editText.transformationMethod is PasswordTransformationMethod
     }
   }
 }

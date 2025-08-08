@@ -53,7 +53,7 @@ class ImagePersonAdapterTest {
 
     val inflater = LayoutInflater.from(context)
     val binding = ItemPosterBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
+    val viewHolder = ImagePersonAdapter.ViewHolder(binding)
 
     // Set the test data
     adapter.setImage(testProfiles)
@@ -115,9 +115,7 @@ class ImagePersonAdapterTest {
   @Test
   fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
     val binding = ItemPosterBinding.inflate(LayoutInflater.from(context))
-    val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
-    val adapter = ImagePersonAdapter(onItemClick)
-    val viewHolder = adapter.ViewHolder(binding)
+    val viewHolder = ImagePersonAdapter.ViewHolder(binding)
 
     val testCases = listOf(
       ProfilesItem(filePath = "valid_image.jpg") to (TMDB_IMG_LINK_POSTER_W185 + "valid_image.jpg"),
@@ -137,12 +135,8 @@ class ImagePersonAdapterTest {
   fun areContentsTheSame_whenFilePathAreTheSame_returnsTrue() {
     val oldItem = ProfilesItem(filePath = "image1.jpg")
     val newItem = ProfilesItem(filePath = "image1.jpg") // same content
-    val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
 
-    val diffCallback = ImagePersonAdapter(
-      onItemClick = onItemClick
-    ).DiffCallback(listOf(oldItem), listOf(newItem))
-
+    val diffCallback = ImagePersonAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
 
@@ -150,12 +144,8 @@ class ImagePersonAdapterTest {
   fun areContentsTheSame_whenDifferentFilePath_returnsFalse() {
     val oldItem = ProfilesItem(filePath = "image1.jpg")
     val newItem = ProfilesItem(filePath = "image2.jpg") // different content
-    val onItemClick: (Int, List<String>) -> Unit = { _, _ -> }
 
-    val diffCallback = ImagePersonAdapter(
-      onItemClick = onItemClick
-    ).DiffCallback(listOf(oldItem), listOf(newItem))
-
+    val diffCallback = ImagePersonAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }
 }

@@ -18,6 +18,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
 import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.core.designsystem.R.id.toolbar
+import com.waffiq.bazz_movies.core.designsystem.R.id.tv_title
 import com.waffiq.bazz_movies.feature.about.R.id.btn_about_us
 import com.waffiq.bazz_movies.feature.about.R.id.iv_tmdb_logo
 import com.waffiq.bazz_movies.feature.about.R.id.toolbar_layout
@@ -48,6 +50,7 @@ class AboutActivityTest {
   @Test
   fun actionBar_initial_isSetupCorrectly() {
     onView(withId(toolbar_layout)).check(matches(isDisplayed()))
+    onView(withId(tv_title)).check(matches(isDisplayed()))
     onView(withContentDescription("Navigate up")).check(matches(isDisplayed()))
   }
 

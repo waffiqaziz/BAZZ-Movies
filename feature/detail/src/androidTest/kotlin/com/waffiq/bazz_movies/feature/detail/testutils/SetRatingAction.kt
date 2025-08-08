@@ -13,13 +13,10 @@ import org.hamcrest.Matcher
  * @param rating The rating value to set on the RatingBar.
  */
 class SetRatingAction(private val rating: Float) : ViewAction {
-  override fun getConstraints(): Matcher<View?>? {
-    return ViewMatchers.isAssignableFrom(RatingBar::class.java)
-  }
+  override fun getConstraints(): Matcher<View?>? =
+    ViewMatchers.isAssignableFrom(RatingBar::class.java)
 
-  override fun getDescription(): String {
-    return "Set rating on RatingBar to $rating"
-  }
+  override fun getDescription(): String = "Set rating on RatingBar to $rating"
 
   override fun perform(uiController: UiController?, view: View?) {
     val ratingBar = view as? RatingBar

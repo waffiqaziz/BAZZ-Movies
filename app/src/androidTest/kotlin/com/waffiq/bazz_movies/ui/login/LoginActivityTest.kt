@@ -134,9 +134,8 @@ class LoginActivityTest {
         description.appendText("with error text: $expectedError")
       }
 
-      override fun matchesSafely(editText: EditText): Boolean {
-        return editText.error?.toString() == expectedError
-      }
+      override fun matchesSafely(editText: EditText): Boolean =
+        editText.error?.toString() == expectedError
     }
   }
 
@@ -146,10 +145,9 @@ class LoginActivityTest {
         description.appendText("Password is hidden")
       }
 
-      override fun matchesSafely(editText: EditText): Boolean {
-        // returns true if password is hidden
-        return editText.transformationMethod is PasswordTransformationMethod
-      }
+      // returns true if password is hidden
+      override fun matchesSafely(editText: EditText): Boolean =
+        editText.transformationMethod is PasswordTransformationMethod
     }
   }
 

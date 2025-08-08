@@ -184,8 +184,7 @@ class KnownForAdapterTest {
   fun areContentsTheSame_whenFilePathIsSame_returnsTrue() {
     val oldItem = CastItem(id = 1, name = "Test Name", character = "Bjorn")
     val newItem = CastItem(id = 1, name = "Test Name", character = "Bjorn") // same content
-
-    val diffCallback = KnownForAdapter(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = KnownForAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
@@ -194,8 +193,7 @@ class KnownForAdapterTest {
   fun areContentsTheSame_whenDifferentFilePath_returnsFalse() {
     val oldItem = CastItem(id = 1, name = "Test Name", character = "Bjorn")
     val newItem = CastItem(id = 2, name = "Test Name2", character = "Ragnar") // different content
-
-    val diffCallback = KnownForAdapter(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = KnownForAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }

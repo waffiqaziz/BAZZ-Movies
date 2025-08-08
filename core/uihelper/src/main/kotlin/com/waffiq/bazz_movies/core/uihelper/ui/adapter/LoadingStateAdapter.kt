@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemLoadingBinding
  * It is used in scenarios where pagination or network loading is involved.
  */
 class LoadingStateAdapter(
-  private val retry: () -> Unit
+  private val retry: () -> Unit,
 ) : LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
 
   /**
@@ -46,7 +46,7 @@ class LoadingStateAdapter(
    * A ViewHolder class that binds the layout to represent the loading, error, and retry states.
    * It includes a retry button that triggers the retry logic when clicked.
    */
-  inner class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) :
+  class LoadingStateViewHolder(private val binding: ItemLoadingBinding, retry: () -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     init {

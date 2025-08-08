@@ -12,9 +12,8 @@ object Helper {
 
   fun triggerSwipeRefresh(): ViewAction {
     return object : ViewAction {
-      override fun getConstraints(): Matcher<View> {
-        return ViewMatchers.isAssignableFrom(SwipeRefreshLayout::class.java)
-      }
+      override fun getConstraints(): Matcher<View> =
+        ViewMatchers.isAssignableFrom(SwipeRefreshLayout::class.java)
 
       override fun getDescription(): String = "Trigger swipe refresh"
 

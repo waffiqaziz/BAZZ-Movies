@@ -36,7 +36,12 @@ class SearchAdapter(private val navigator: INavigator) :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     val data = getItem(position) ?: return
-    if (data.mediaType == PERSON_MEDIA_TYPE) holder.bindPerson(data) else holder.bindMultiSearch(data)
+    if (data.mediaType == PERSON_MEDIA_TYPE) {
+      holder.bindPerson(data)
+    } else {
+      holder.bindMultiSearch(data)
+    }
+
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
@@ -141,19 +146,11 @@ class SearchAdapter(private val navigator: INavigator) :
 
   companion object {
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MultiSearchItem>() {
-      override fun areItemsTheSame(
-        oldItem: MultiSearchItem,
-        newItem: MultiSearchItem
-      ): Boolean {
-        return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
-      }
+      override fun areItemsTheSame(oldItem: MultiSearchItem, newItem: MultiSearchItem): Boolean =
+        oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
 
-      override fun areContentsTheSame(
-        oldItem: MultiSearchItem,
-        newItem: MultiSearchItem
-      ): Boolean {
-        return oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
-      }
+      override fun areContentsTheSame(oldItem: MultiSearchItem, newItem: MultiSearchItem): Boolean =
+        oldItem.id == newItem.id && oldItem.mediaType == newItem.mediaType
     }
   }
 }

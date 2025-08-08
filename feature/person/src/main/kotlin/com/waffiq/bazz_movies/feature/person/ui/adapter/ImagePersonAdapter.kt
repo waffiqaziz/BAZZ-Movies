@@ -56,7 +56,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
 
   override fun getItemCount(): Int = listCast.size
 
-  inner class ViewHolder(private var binding: ItemPosterBinding) :
+  class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(cast: ProfilesItem) {
@@ -81,7 +81,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     }
   }
 
-  inner class DiffCallback(
+  class DiffCallback(
     private val oldList: List<ProfilesItem>,
     private val newList: List<ProfilesItem>
   ) : DiffUtil.Callback() {

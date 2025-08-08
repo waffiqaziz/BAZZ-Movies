@@ -6,15 +6,10 @@ import android.os.LocaleList
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
-import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getNetworkLocation
 import java.util.Locale
 
 /**
  * Helper object to determine the user's region using SIM card information or default phone settings.
- *
- * [GetRegionHelper] provides a mechanism to detect the user's region based on the state of the SIM card
- * in the device's telephony system using [getNetworkLocation]. If no valid region can be derived
- * from the SIM card, it falls back to using the phone's locale settings.
  */
 object GetRegionHelper {
 
@@ -76,7 +71,5 @@ object GetRegionHelper {
    */
   @RequiresApi(Build.VERSION_CODES.N)
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun LocaleList.getOrNull(index: Int): Locale? {
-    return if (index in 0 until size()) get(index) else null
-  }
+  fun LocaleList.getOrNull(index: Int): Locale? = if (index in 0 until size()) get(index) else null
 }

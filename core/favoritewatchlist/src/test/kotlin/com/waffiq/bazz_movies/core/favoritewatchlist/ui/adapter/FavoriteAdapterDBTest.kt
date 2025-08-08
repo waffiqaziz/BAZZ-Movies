@@ -33,7 +33,7 @@ class FavoriteAdapterDBTest {
   private lateinit var adapter: FavoriteAdapterDB
 
   private val indonesianMovie = "Indonesian Movie"
-  private val indonesianMovie2 ="Indonesian Movie 2"
+  private val indonesianMovie2 = "Indonesian Movie 2"
   private val favorite = Favorite(
     id = 1,
     mediaId = 1,
@@ -201,7 +201,7 @@ class FavoriteAdapterDBTest {
     val oldItem = favorite
     val newItem = favorite // same content
 
-    val diffCallback = FavoriteAdapterDB(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
@@ -225,7 +225,7 @@ class FavoriteAdapterDBTest {
       isWatchlist = false
     ) // different content
 
-    val diffCallback = FavoriteAdapterDB(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }
@@ -242,7 +242,7 @@ class FavoriteAdapterDBTest {
     )
 
     testCases.forEach { (oldItem, newItem) ->
-      val diffCallback = FavoriteAdapterDB(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+      val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
       assertFalse(diffCallback.areContentsTheSame(0, 0))
     }
   }
@@ -259,12 +259,11 @@ class FavoriteAdapterDBTest {
     )
 
     testCases.forEach { (oldItem, newItem) ->
-      val diffCallback = FavoriteAdapterDB(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+      val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
       assertFalse(diffCallback.areItemsTheSame(0, 0))
     }
 
-    val diffCallbackSame =
-      FavoriteAdapterDB(navigator).DiffCallback(listOf(favorite), listOf(favorite))
+    val diffCallbackSame = FavoriteAdapterDB.DiffCallback(listOf(favorite), listOf(favorite))
     assertTrue(diffCallbackSame.areItemsTheSame(0, 0))
   }
 

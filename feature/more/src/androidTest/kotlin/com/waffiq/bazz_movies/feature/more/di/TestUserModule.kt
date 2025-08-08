@@ -43,16 +43,15 @@ object TestUserModule {
 
   @Provides
   @Singleton
-  fun provideUserPreference(dataStore: DataStore<Preferences>): UserPreference {
-    return UserPreference(dataStore)
-  }
+  fun provideUserPreference(
+    dataStore: DataStore<Preferences>,
+  ): UserPreference = UserPreference(dataStore)
+
 
   @Provides
   @Singleton
   fun provideUserRepository(
     userPreference: UserPreference,
-    userDataSource: UserDataSource
-  ): IUserRepository {
-    return UserRepositoryImpl(userPreference, userDataSource)
-  }
+    userDataSource: UserDataSource,
+  ): IUserRepository = UserRepositoryImpl(userPreference, userDataSource)
 }

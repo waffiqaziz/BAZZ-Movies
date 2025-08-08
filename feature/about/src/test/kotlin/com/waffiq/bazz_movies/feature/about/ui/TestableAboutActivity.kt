@@ -10,9 +10,7 @@ class TestableAboutActivity : AboutActivity() {
     super.onCreate(savedInstanceState)
   }
 
-  override fun getSupportActionBar(): ActionBar? {
-    return mockSupportActionBar
-  }
+  override fun getSupportActionBar(): ActionBar? = mockSupportActionBar
 
   public override fun setupActionBar() {
     val actionBar = supportActionBar

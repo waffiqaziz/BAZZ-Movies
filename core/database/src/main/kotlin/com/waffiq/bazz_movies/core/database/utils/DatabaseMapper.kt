@@ -12,7 +12,7 @@ object DatabaseMapper {
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun MediaItem.toFavorite(
     isFavorite: Boolean,
-    isWatchlist: Boolean
+    isWatchlist: Boolean,
   ) = Favorite(
     id = 0,
     mediaId = id,
@@ -29,17 +29,14 @@ object DatabaseMapper {
     isWatchlist = isWatchlist
   )
 
-  fun favTrueWatchlistTrue(data: MediaItem): Favorite {
-    return data.toFavorite(isFavorite = true, isWatchlist = true)
-  }
+  fun favTrueWatchlistTrue(data: MediaItem): Favorite =
+    data.toFavorite(isFavorite = true, isWatchlist = true)
 
-  fun favTrueWatchlistFalse(data: MediaItem): Favorite {
-    return data.toFavorite(isFavorite = true, isWatchlist = false)
-  }
+  fun favTrueWatchlistFalse(data: MediaItem): Favorite =
+    data.toFavorite(isFavorite = true, isWatchlist = false)
 
-  fun favFalseWatchlistTrue(data: MediaItem): Favorite {
-    return data.toFavorite(isFavorite = false, isWatchlist = true)
-  }
+  fun favFalseWatchlistTrue(data: MediaItem): Favorite =
+    data.toFavorite(isFavorite = false, isWatchlist = true)
 
   fun FavoriteEntity.toFavorite() = Favorite(
     id = id,

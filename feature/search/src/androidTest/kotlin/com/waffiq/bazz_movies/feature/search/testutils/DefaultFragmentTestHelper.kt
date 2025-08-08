@@ -19,6 +19,10 @@ import io.mockk.spyk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+/**
+ * Default implementation of [SearchFragmentTestHelper] for testing purposes.
+ * Provides default mock implementations and setup for the SearchFragment.
+ */
 class DefaultFragmentTestHelper : SearchFragmentTestHelper {
 
   override lateinit var searchFragment: SearchFragment

@@ -33,7 +33,7 @@ class ImagePagerAdapterTest {
     val adapter = ImagePagerAdapter(images = listOf("image1"))
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
     val binding = ItemImageSliderBinding.inflate(inflater, parentView, false)
-    val viewHolder = adapter.ImageViewHolder(binding)
+    val viewHolder = ImagePagerAdapter.ImageViewHolder(binding)
     adapter.onBindViewHolder(viewHolder, 0)
 
     // expect the placeholder image is displayed

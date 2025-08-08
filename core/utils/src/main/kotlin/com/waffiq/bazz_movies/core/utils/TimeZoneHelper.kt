@@ -8,7 +8,5 @@ import java.util.TimeZone
  * @return A string region code. Example : "ID", "MY", "RU", etc
  */
 object TimeZoneHelper {
-  fun getDefaultTimeZoneId(): String {
-    return TimeZone.getDefault().id
-  }
+  fun getDefaultTimeZoneId(): String = TimeZone.getDefault().id
 }

@@ -1,4 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
+
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -191,14 +192,12 @@ abstract class BaseDetailRepositoryImplTest {
   protected fun createSampleMediaItemResponse(
     id: Int = 1,
     name: String = "Test Name",
-  ): MediaResponseItem {
-    return MediaResponseItem(id = id, name = name)
-  }
+  ): MediaResponseItem = MediaResponseItem(id = id, name = name)
 
   /**
    * Creates paging data with sample items
    */
-  protected fun createSamplePagingData(vararg items: MediaResponseItem): PagingData<MediaResponseItem> {
-    return PagingData.from(items.toList())
-  }
+  protected fun createSamplePagingData(
+    vararg items: MediaResponseItem,
+  ): PagingData<MediaResponseItem> = PagingData.from(items.toList())
 }
