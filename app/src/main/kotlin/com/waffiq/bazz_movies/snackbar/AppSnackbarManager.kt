@@ -52,16 +52,12 @@ class AppSnackbarManager @Inject constructor(
   ): Snackbar? {
     return try {
       val rootView = activity.findViewById<View>(android.R.id.content)
-      val bottomNav = activity.findViewById<BottomNavigationView?>(bottom_navigation)
-
       if (!rootView.isAttachedToWindow) return null
 
+      val bottomNav = activity.findViewById<BottomNavigationView?>(bottom_navigation)
       snackbarFactory(rootView, bottomNav)?.apply { show() }
-    } catch (e: IllegalStateException) {
-      Log.e(TAG, "Illegal state when creating snackbar", e)
-      null
-    } catch (e: WindowManager.BadTokenException) {
-      Log.e(TAG, "Invalid window token when creating snackbar", e)
+    } catch (e: Exception) {
+      Log.e(TAG, "Error creating snackbar", e)
       null
     }
   }

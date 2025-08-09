@@ -82,8 +82,8 @@ object SnackBarManager {
         setBackgroundTint(ContextCompat.getColor(view.context, red_matte))
         show()
       }
-    } catch (e: IllegalStateException) {
-      Log.e(TAG, "Invalid state when creating snackbar", e)
+    } catch (e: Exception) {
+      Log.e(TAG, "Error creating snackbar", e)
       null
     }
   }
