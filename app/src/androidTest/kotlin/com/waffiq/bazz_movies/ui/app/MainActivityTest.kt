@@ -138,13 +138,11 @@ class MainActivityTest {
 
   private fun selectMenuItem(menuItemId: Int): ViewAction {
     return object : ViewAction {
-      override fun getConstraints(): Matcher<View> {
-        return isAssignableFrom(BottomNavigationView::class.java)
-      }
+      override fun getConstraints(): Matcher<View> =
+        isAssignableFrom(BottomNavigationView::class.java)
 
-      override fun getDescription(): String {
-        return "Click on menu item with id $menuItemId"
-      }
+      override fun getDescription(): String =
+        "Click on menu item with id $menuItemId"
 
       override fun perform(uiController: UiController, view: View) {
         val bottomNavigationView = view as BottomNavigationView

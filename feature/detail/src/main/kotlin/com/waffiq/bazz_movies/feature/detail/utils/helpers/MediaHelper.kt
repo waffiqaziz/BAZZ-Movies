@@ -54,7 +54,6 @@ object MediaHelper {
   fun getTransformTMDBScore(tmdbScore: Double?): String? =
     tmdbScore?.takeIf { it > 0 }?.toString()
 
-  fun getTransformDuration(runtime: Int?): String? {
-    return if (runtime == 0 || runtime == null) null else convertRuntime(runtime)
-  }
+  fun getTransformDuration(runtime: Int?): String? =
+    if (runtime == 0 || runtime == null) null else convertRuntime(runtime)
 }

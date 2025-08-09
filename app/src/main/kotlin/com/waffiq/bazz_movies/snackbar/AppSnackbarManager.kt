@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.snackbar
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -14,6 +15,13 @@ import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * AppSnackbarManager is a singleton class that manages Snackbar messages in the application.
+ * It provides methods to show warning messages using Snackbar, handling the context and view
+ * retrieval internally.
+ *
+ * @property context The application context used to find views and display Snackbar.
+ */
 @Singleton
 class AppSnackbarManager @Inject constructor(
   @ActivityContext private val context: Context,
@@ -22,30 +30,39 @@ class AppSnackbarManager @Inject constructor(
   private val activity: AppCompatActivity by lazy { context as AppCompatActivity }
 
   override fun showSnackbarWarning(message: String): Snackbar? {
-    return try {
-      val rootView = activity.findViewById<View>(android.R.id.content)
-      val bottomNav = activity.findViewById<BottomNavigationView?>(bottom_navigation)
-
-      if (!rootView.isAttachedToWindow) return null
-
-      snackBarWarning(rootView, bottomNav, message)?.apply { show() }
-    } catch (e: Exception) {
-      Log.e("AppSnackbarManager", "Error creating snackbar", e)
-      null
+    return createAndShowSnackbar { rootView, bottomNav ->
+      snackBarWarning(rootView, bottomNav, message)
     }
   }
 
   override fun showSnackbarWarning(eventMessage: Event<String>): Snackbar? {
+    return createAndShowSnackbar { rootView, bottomNav ->
+      snackBarWarning(rootView, bottomNav, eventMessage)
+    }
+  }
+
+  /**
+   * Common method to handle snackbar creation with proper error handling and validation.
+   *
+   * @param snackbarFactory Function that creates the snackbar given rootView and bottomNav
+   * @return The created and shown Snackbar, or null if creation failed
+   */
+  private inline fun createAndShowSnackbar(
+    snackbarFactory: (rootView: View, bottomNav: View?) -> Snackbar?
+  ): Snackbar? {
     return try {
       val rootView = activity.findViewById<View>(android.R.id.content)
-      val bottomNav = activity.findViewById<BottomNavigationView?>(bottom_navigation)
-
       if (!rootView.isAttachedToWindow) return null
 
-      snackBarWarning(rootView, bottomNav, eventMessage)?.apply { show() }
+      val bottomNav = activity.findViewById<BottomNavigationView?>(bottom_navigation)
+      snackbarFactory(rootView, bottomNav)?.apply { show() }
     } catch (e: Exception) {
-      Log.e("AppSnackbarManager", "Error creating snackbar", e)
+      Log.e(TAG, "Error creating snackbar", e)
       null
     }
+  }
+
+  companion object {
+    private const val TAG = "AppSnackbarManager"
   }
 }

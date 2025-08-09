@@ -17,10 +17,10 @@ class UserPreferenceViewModel @Inject constructor(
 ) : ViewModel() {
 
   fun getUserPref(): LiveData<UserModel> =
-    userPrefUseCase.getUser().asLiveData().distinctUntilChanged()
+    userPrefUseCase.getUser().asLiveData()
 
   fun getUserRegionPref(): LiveData<String> =
-    userPrefUseCase.getUserRegionPref().asLiveData().distinctUntilChanged()
+    userPrefUseCase.getUserRegionPref().asLiveData()
 
   fun saveUserPref(userModel: UserModel) {
     viewModelScope.launch { userPrefUseCase.saveUserPref(userModel) }

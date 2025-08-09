@@ -37,10 +37,8 @@ dependencies {
 class RoomSchemaArgProvider(
   @get:InputDirectory
   @get:PathSensitive(PathSensitivity.RELATIVE)
-  val schemaDir: File
+  val schemaDir: File,
 ) : CommandLineArgumentProvider {
 
-  override fun asArguments(): Iterable<String> {
-    return listOf("room.schemaLocation=${schemaDir.path}")
-  }
+  override fun asArguments(): Iterable<String> = listOf("room.schemaLocation=${schemaDir.path}")
 }

@@ -40,7 +40,7 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
   @Suppress("ReturnCount")
   override fun calculateDistanceToFinalSnap(
     layoutManager: RecyclerView.LayoutManager,
-    targetView: View
+    targetView: View,
   ): IntArray? {
     // ensure the targetView is a child of the RecyclerView
     if (layoutManager.childCount == 0) {
@@ -60,17 +60,10 @@ class CustomSnapHelper(private val offsetPx: Int = DEFAULT_OFFSET) : LinearSnapH
 
   // methods to make easier for testing
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun getSuperDistances(
-    layoutManager: RecyclerView.LayoutManager,
-    targetView: View
-  ): IntArray? {
-    return super.calculateDistanceToFinalSnap(layoutManager, targetView)
-  }
+  fun getSuperDistances(layoutManager: RecyclerView.LayoutManager, targetView: View): IntArray? =
+    super.calculateDistanceToFinalSnap(layoutManager, targetView)
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun canLayoutManagerScrollHorizontally(
-    layoutManager: RecyclerView.LayoutManager
-  ): Boolean {
-    return layoutManager.canScrollHorizontally()
-  }
+  fun canLayoutManagerScrollHorizontally(layoutManager: RecyclerView.LayoutManager): Boolean =
+    layoutManager.canScrollHorizontally()
 }

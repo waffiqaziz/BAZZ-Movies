@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +39,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
@@ -74,18 +74,15 @@ class MoreFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null
 
-  private var isCancelSignOut = false
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
     // initialize for guest user
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != NAN) signOutStateObserver(true) else signOutStateObserver(false)
+      setData(user)
+      btnAction(user)
     }
-
-    setData()
-    btnAction()
   }
 
   override fun onCreateView(
@@ -113,7 +110,6 @@ class MoreFragment : Fragment() {
             }
 
             is Outcome.Error -> {
-              Log.d("TEST_DEBUG", "Received signOutState: ${outcome.message}")
               fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
               btnSignOutIsEnable(true)
               progressIsVisible(false)
@@ -149,7 +145,7 @@ class MoreFragment : Fragment() {
     }
   }
 
-  private fun btnAction() {
+  private fun btnAction(user: UserModel) {
     binding.btnFaq.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, FAQ_LINK.toUri()))
     }
@@ -167,15 +163,10 @@ class MoreFragment : Fragment() {
     }
 
     binding.btnSignout.setOnClickListener {
-      isCancelSignOut = false
-      userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-        if (!isCancelSignOut) {
-          if (user.token == NAN) {
-            dialogSignOutGuestMode()
-          } else {
-            dialogSignOutLoggedIn(user.token)
-          }
-        }
+      if (user.token == NAN) {
+        dialogSignOutGuestMode()
+      } else {
+        dialogSignOutLoggedIn(user.token)
       }
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
@@ -194,7 +185,6 @@ class MoreFragment : Fragment() {
           HtmlCompat.FROM_HTML_MODE_LEGACY
         )
       ) { dialog, _ ->
-        isCancelSignOut = !isCancelSignOut
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
@@ -224,7 +214,6 @@ class MoreFragment : Fragment() {
           HtmlCompat.FROM_HTML_MODE_LEGACY
         )
       ) { dialog, _ ->
-        isCancelSignOut = !isCancelSignOut
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
@@ -249,27 +238,25 @@ class MoreFragment : Fragment() {
     activity?.finishAfterTransition()
   }
 
-  private fun setData() {
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) {
-      binding.apply {
-        tvFullName.text = it.name
-        tvUsername.text = it.username
-        val link = if (!it.gravatarHast.isNullOrEmpty()) {
-          "$GRAVATAR_LINK${it.gravatarHast}" + ".jpg?s=200"
-        } else if (!it.tmdbAvatar.isNullOrEmpty()) {
-          "$TMDB_IMG_LINK_AVATAR${it.tmdbAvatar}" + ".png"
-        } else {
-          GRAVATAR_LINK
-        }
-
-        Glide.with(binding.imgAvatar)
-          .load(link)
-          .transform(CenterCrop())
-          .transition(withCrossFade())
-          .placeholder(ic_bazz_logo)
-          .error(ic_broken_image)
-          .into(binding.imgAvatar)
+  private fun setData(user: UserModel) {
+    binding.apply {
+      tvFullName.text = user.name
+      tvUsername.text = user.username
+      val link = if (!user.gravatarHast.isNullOrEmpty()) {
+        "$GRAVATAR_LINK${user.gravatarHast}" + ".jpg?s=200"
+      } else if (!user.tmdbAvatar.isNullOrEmpty()) {
+        "$TMDB_IMG_LINK_AVATAR${user.tmdbAvatar}" + ".png"
+      } else {
+        GRAVATAR_LINK
       }
+
+      Glide.with(binding.imgAvatar)
+        .load(link)
+        .transform(CenterCrop())
+        .transition(withCrossFade())
+        .placeholder(ic_bazz_logo)
+        .error(ic_broken_image)
+        .into(binding.imgAvatar)
     }
 
     // check if user already have countryCode

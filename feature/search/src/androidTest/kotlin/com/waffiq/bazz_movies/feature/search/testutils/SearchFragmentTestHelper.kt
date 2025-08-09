@@ -12,6 +12,9 @@ import com.waffiq.bazz_movies.feature.search.ui.SearchViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface to help with setting up the SearchFragment for testing purposes.
+ * */
 interface SearchFragmentTestHelper {
   var searchFragment: SearchFragment
   var activity: AppCompatActivity

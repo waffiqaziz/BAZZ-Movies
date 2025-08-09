@@ -76,7 +76,7 @@ class CastAdapter(private val navigator: INavigator) :
     }
   }
 
-  inner class DiffCallback(
+  class DiffCallback(
     private val oldList: List<MediaCastItem>,
     private val newList: List<MediaCastItem>
   ) : DiffUtil.Callback() {

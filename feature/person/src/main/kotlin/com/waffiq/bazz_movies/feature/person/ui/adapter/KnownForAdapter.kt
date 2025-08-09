@@ -99,7 +99,7 @@ class KnownForAdapter(private val navigator: INavigator) :
     }
   }
 
-  inner class DiffCallback(
+  class DiffCallback(
     private val oldList: List<CastItem>,
     private val newList: List<CastItem>
   ) : DiffUtil.Callback() {

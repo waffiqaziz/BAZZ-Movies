@@ -48,7 +48,7 @@ class SwipeCallbackHelper(
 
   override fun getMovementFlags(
     recyclerView: RecyclerView,
-    viewHolder: RecyclerView.ViewHolder
+    viewHolder: RecyclerView.ViewHolder,
   ): Int {
     val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
     return makeMovementFlags(0, swipeFlags)
@@ -57,10 +57,8 @@ class SwipeCallbackHelper(
   override fun onMove(
     recyclerView: RecyclerView,
     viewHolder: RecyclerView.ViewHolder,
-    target: RecyclerView.ViewHolder
-  ): Boolean {
-    return false
-  }
+    target: RecyclerView.ViewHolder,
+  ): Boolean = false
 
   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
     val position = viewHolder.bindingAdapterPosition
@@ -78,7 +76,7 @@ class SwipeCallbackHelper(
     dX: Float,
     dY: Float,
     actionState: Int,
-    isCurrentlyActive: Boolean
+    isCurrentlyActive: Boolean,
   ) {
     val background = ColorDrawable()
     val itemView = viewHolder.itemView

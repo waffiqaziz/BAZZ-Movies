@@ -97,7 +97,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
     }
   }
 
-  inner class DiffCallback(
+  class DiffCallback(
     private val oldList: List<Favorite>,
     private val newList: List<Favorite>
   ) : DiffUtil.Callback() {

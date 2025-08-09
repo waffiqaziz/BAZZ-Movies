@@ -41,7 +41,6 @@ class SnackbarUtilsTest {
   @Before
   fun setup() {
     val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
-
     activity.setTheme(Base_Theme_BAZZ_movies)
 
     parentView = FrameLayout(activity)
@@ -105,10 +104,10 @@ class SnackbarUtilsTest {
   fun snackBarWarning_withAnchorView_returnsSnackbar() {
     every { eventMessage.getContentIfNotHandled() } returns testMessage
 
-    val snackbar = snackBarWarning(view = parentView, anchorView = anchorView, eventMessage = eventMessage)
+    val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(view = parentView, anchorView = anchorView, message = testMessage)
+    val snackbar2 = snackBarWarning(parentView, anchorView,testMessage)
     assertNull(snackbar2)
   }
 

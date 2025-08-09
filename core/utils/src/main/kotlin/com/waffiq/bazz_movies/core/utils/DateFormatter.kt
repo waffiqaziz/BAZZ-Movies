@@ -9,11 +9,6 @@ import java.util.Locale
 /**
  * Utility object that provides functions for formatting date strings into a human-readable format.
  * It includes methods to handle standard date formats and ISO 8601 date strings.
- *
- * - [dateFormatterStandard] method takes a date string in the format "yyyy-MM-dd" and converts it to
- *   a more readable format, "MMM dd, yyyy".
- * - [dateFormatterISO8601] method takes an ISO 8601 formatted date string (e.g., "2025-01-06T15:30:00.000+0000")
- *   and converts it to "MMM dd, yyyy".
  */
 object DateFormatter {
   const val TAG = "DateFormatter"
@@ -25,9 +20,8 @@ object DateFormatter {
    * @param date The date string in "yyyy-MM-dd" format to be parsed.
    * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
    */
-  fun dateFormatterStandard(date: String?): String {
-    return formatDate(date, "yyyy-MM-dd")
-  }
+  fun dateFormatterStandard(date: String?): String =
+    formatDate(date, "yyyy-MM-dd")
 
   /**
    * Converts an ISO 8601 formatted date string (e.g., "2025-01-06T15:30:00.000+0000")

@@ -18,13 +18,9 @@ object TestUserModule {
 
   @Provides
   @ViewModelScoped
-  fun provideUserPrefUseCase(): UserPrefUseCase {
-    return mockk(relaxed = true) // Mock the implementation
-  }
+  fun provideUserPrefUseCase(): UserPrefUseCase = mockk(relaxed = true)
 
   @Provides
   @ViewModelScoped
-  fun provideGetRegionUseCase(): GetRegionUseCase {
-    return mockk(relaxed = true) // Mock the implementation
-  }
+  fun provideGetRegionUseCase(): GetRegionUseCase = mockk(relaxed = true)
 }

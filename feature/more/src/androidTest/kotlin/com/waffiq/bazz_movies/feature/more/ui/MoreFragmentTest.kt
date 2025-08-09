@@ -3,12 +3,10 @@ package com.waffiq.bazz_movies.feature.more.ui
 import android.content.Intent
 import android.view.View
 import androidx.core.net.toUri
-import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
@@ -29,11 +27,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
-import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -49,29 +45,25 @@ import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
 import com.waffiq.bazz_movies.feature.more.R.id.tv_privacy_policy
 import com.waffiq.bazz_movies.feature.more.R.id.tv_terms_conditon
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
+import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
+import com.waffiq.bazz_movies.feature.more.testutils.MoreFragmentTestHelper
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matcher
 import org.hamcrest.core.IsNot.not
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MoreFragmentTest {
-
-  private lateinit var moreFragment: MoreFragment
+class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -100,38 +92,23 @@ class MoreFragmentTest {
   @JvmField
   val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
 
-  private val mockRegionPref = MutableLiveData<String>()
-  private val mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
-  private val mockSignOutState = MutableSharedFlow<Outcome<Post>>()
-  private val mockCountryCode = MutableLiveData<String>()
-  private val mockUserModel = MutableLiveData(userModel)
-
   @Before
-  fun setUp() {
+  override fun setUp() {
     hiltRule.inject()
-    Intents.init()
 
-    every { mockNavigator.openLoginActivity(any()) } just Runs
-    every { mockNavigator.openAboutActivity(any()) } just Runs
-    every { mockMoreLocalViewModel.dbResult } returns mockDbResult
-    every { mockMoreLocalViewModel.deleteAll() } just Runs
-    every { mockUserViewModel.signOutState } returns mockSignOutState
-    every { mockUserViewModel.deleteSession(any()) } just Runs
-    every { mockUserViewModel.removeState() } just Runs
-    every { mockRegionViewModel.countryCode } returns mockCountryCode
-    // every { mockRegionViewModel.getCountryCode() } just Runs
-    every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } returns mockk(relaxed = true)
-    every { mockUserPrefViewModel.getUserPref() } returns mockUserModel
-    every { mockUserPrefViewModel.getUserRegionPref() } returns mockRegionPref
-    every { mockUserPrefViewModel.removeUserDataPref() } just Runs
-    every { mockUserPrefViewModel.saveUserPref(userModel) } just Runs
+    setupMocks(
+      mockNavigator,
+      mockSnackbar,
+    )
 
-    moreFragment = launchFragmentInHiltContainer<MoreFragment>()
-  }
+    setupViewModelMocks(
+      mockMoreLocalViewModel,
+      mockUserViewModel,
+      mockRegionViewModel,
+      mockUserPrefViewModel,
+    )
 
-  @After
-  fun tearDown() {
-    Intents.release()
+    super.setUp()
   }
 
   @Test
@@ -220,11 +197,11 @@ class MoreFragmentTest {
   }
 
   @Test
-  fun signOutStateLogin_whenLoading_shouldShowLoadingState() {
-    runBlocking {
-      mockSignOutState.emit(Outcome.Loading)
-    }
+  fun signOutStateLogin_whenLoading_shouldShowLoadingState() = runTest {
+    mockSignOutState.emit(Outcome.Loading)
     performSignOutAction()
+
+    onView(withId(progress_bar)).check(matches(isDisplayed()))
   }
 
   @Test
@@ -239,11 +216,10 @@ class MoreFragmentTest {
 
 
   @Test
-  fun signOutStateLogin_whenErrorOccurs_shouldShowErrorSnackbar() {
-    runBlocking {
-      mockSignOutState.emit(Outcome.Error("Sign out failed"))
-    }
+  fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() = runTest {
+    mockSignOutState.emit(Outcome.Error("Sign out failed"))
     performSignOutAction()
+    advanceUntilIdle()
     shortDelay()
 
     onView(withId(btn_signout)).check(matches(not(isEnabled())))
@@ -394,7 +370,7 @@ class MoreFragmentTest {
     verify(exactly = 1) { mockUserViewModel.removeState() }
   }
 
-  private fun checkIntentData(link: String){
+  private fun checkIntentData(link: String) {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
   }
@@ -409,7 +385,7 @@ class MoreFragmentTest {
     onView(withText(yes)).perform(click())
   }
 
-  private fun  checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>){
+  private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {
     mockUserModel.postValue(userModel)
     shortDelay()
 

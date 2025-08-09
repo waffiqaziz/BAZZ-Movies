@@ -32,9 +32,9 @@ object FavWatchlistHelper {
    *
    * @param voteAverage is user rating
    */
-  fun ratingHandler(voteAverage: Float?): String {
-    return DecimalFormat("#.#").format((voteAverage ?: 0F)).toString() + "/10"
-  }
+  fun ratingHandler(voteAverage: Float?): String =
+    DecimalFormat("#.#").format((voteAverage ?: 0F)).toString() + "/10"
+
 
   /**
    * Handles the paging load state for a PagingDataAdapter.
@@ -61,7 +61,7 @@ object FavWatchlistHelper {
     progressBar: ProgressBar,
     errorView: View,
     emptyView: View,
-    onError: (Event<String>?) -> Unit // A callback for when there’s an error
+    onError: (Event<String>?) -> Unit, // A callback for when there’s an error
   ) {
     lifecycleScope.launch {
       @OptIn(FlowPreview::class)

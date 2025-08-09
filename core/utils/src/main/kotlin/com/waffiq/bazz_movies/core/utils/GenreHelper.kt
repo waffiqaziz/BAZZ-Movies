@@ -52,11 +52,11 @@ object GenreHelper {
    * Transforms a list of genre IDs into a comma-separated string of genre names.
    * It filters out empty genre names (for invalid genre IDs).
    *
-   * @param data A list of genre IDs to be transformed.
+   * @param listGenreIds A list of genre IDs to be transformed.
    * @return A string of genre names separated by commas.
    */
-  fun transformListGenreIdsToJoinName(data: List<Int>): String {
-    return data
+  fun transformListGenreIdsToJoinName(listGenreIds: List<Int>): String {
+    return listGenreIds
       .map { getGenreName(it) }
       .filter { it.isNotEmpty() }
       .joinToString(", ")
@@ -98,9 +98,7 @@ object GenreHelper {
 
   // Private function to retrieve the genre ID for a given genre name.
   // If no matching genre is found, it returns 0.
-  private fun getGenreCode(genreName: String): Int {
-    return genreCodeMap[genreName] ?: 0
-  }
+  private fun getGenreCode(genreName: String): Int = genreCodeMap[genreName] ?: 0
 
   /**
    * Transforms a list of genre names into a string of genre IDs.
@@ -108,10 +106,10 @@ object GenreHelper {
    *
    * A comma (",") is treated as an AND operator, and pipes ("|") represent OR in the context of genre queries.
    *
-   * @param data A list of genre names to be transformed into genre IDs.
+   * @param listGenre A list of genre names to be transformed into genre IDs.
    * @return A string of genre IDs joined by a pipe ("|"), or an empty string if no valid genre codes are found.
    */
-  fun transformToGenreCode(data: List<String>): String {
+  fun transformToGenreCode(listGenre: List<String>): String {
     var temp = ""
 
     /**
@@ -120,7 +118,7 @@ object GenreHelper {
      *
      *  used to get id genre
      */
-    data.forEach { temp = temp + getGenreCode(it) + "|" } // using OR
+    listGenre.forEach { temp = temp + getGenreCode(it) + "|" } // using OR
     temp = temp.dropLast(1)
     return if (temp == "0") "" else temp
   }
@@ -128,21 +126,21 @@ object GenreHelper {
   /**
    * Transforms a list of `GenresItem` objects into a comma-separated string of genre names.
    *
-   * @param list A list of `GenresItem` objects, each containing a genre name.
+   * @param listGenresItem A list of `GenresItem` objects, each containing a genre name.
    * @return A comma-separated string of genre names, or null if the list is null.
    */
-  fun transformListGenreToJoinString(list: List<GenresItem?>?): String? {
-    if (list.isNullOrEmpty()) return null
-    val names = list.mapNotNull { it?.name }
+  fun transformListGenreToJoinString(listGenresItem: List<GenresItem?>?): String? {
+    if (listGenresItem.isNullOrEmpty()) return null
+    val names = listGenresItem.mapNotNull { it?.name }
     return if (names.isEmpty()) null else names.joinToString(", ")
   }
 
   /**
    * Transforms a list of `GenresItem` objects into a list of genre IDs.
    *
-   * @param list A list of `GenresItem` objects, each containing a genre ID.
+   * @param listGenresItem A list of `GenresItem` objects, each containing a genre ID.
    * @return A list of genre IDs, or null if the list is null.
    */
-  fun transformToGenreIDs(list: List<GenresItem?>?): List<Int>? =
-    list?.map { it?.id ?: 0 }
+  fun transformToGenreIDs(listGenresItem: List<GenresItem?>?): List<Int>? =
+    listGenresItem?.map { it?.id ?: 0 }
 }

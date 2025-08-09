@@ -26,7 +26,7 @@ class ShimmerItemWideAdapter(private val itemCount: Int = SHIMMER_DATA) :
 
   override fun getItemCount(): Int = itemCount
 
-  inner class ShimmerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ShimmerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
   companion object {
     const val SHIMMER_DATA = 10

@@ -162,7 +162,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val oldItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn")
     val newItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn") // same content
 
-    val diffCallback = CastAdapter(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = CastAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
 
@@ -172,7 +172,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val newItem =
       MediaCastItem(id = 2, name = "Test Name2", character = "Ragnar") // different content
 
-    val diffCallback = CastAdapter(navigator).DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = CastAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }
 }

@@ -37,7 +37,7 @@ class LoadingStateAdapterTest {
     parentView = FrameLayout(context)
     adapter = LoadingStateAdapter(retryMock)
     binding = ItemLoadingBinding.inflate(inflater, parentView, false)
-    viewHolder = adapter.LoadingStateViewHolder(binding, retryMock)
+    viewHolder = LoadingStateAdapter.LoadingStateViewHolder(binding, retryMock)
   }
 
   @Test

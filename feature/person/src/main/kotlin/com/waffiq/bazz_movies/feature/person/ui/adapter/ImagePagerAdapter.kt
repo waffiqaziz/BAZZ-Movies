@@ -30,7 +30,7 @@ class ImagePagerAdapter(private val images: List<String>) :
 
   override fun getItemCount(): Int = images.size
 
-  inner class ImageViewHolder(private var binding: ItemImageSliderBinding) :
+  class ImageViewHolder(private var binding: ItemImageSliderBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: String) {

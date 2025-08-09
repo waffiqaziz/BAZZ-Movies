@@ -9,6 +9,8 @@ import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
+import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 
 /**
  * Utility object responsible for displaying Toast and Snackbar messages.
@@ -54,19 +56,8 @@ object SnackBarManager {
     anchorView: View? = null,
     eventMessage: Event<String>,
   ): Snackbar? {
-    return try {
-      val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
-      if (!view.isAttachedToWindow || message == null) return null
-
-      Snackbar.make(view, message, Snackbar.LENGTH_SHORT).apply {
-        anchorView?.let { this.anchorView = it }
-        setBackgroundTint(ContextCompat.getColor(view.context, red_matte))
-        show()
-      }
-    } catch (e: Exception) {
-      Log.e("SnackBarManager", e.toString())
-      null
-    }
+    val message = eventMessage.getContentIfNotHandled()?.takeIf { it.isNotEmpty() }
+    return if (message != null) snackBarWarning(view, anchorView, message) else null
   }
 
   /**
@@ -81,7 +72,7 @@ object SnackBarManager {
   fun snackBarWarning(
     view: View,
     anchorView: View? = null,
-    message: String
+    message: String,
   ): Snackbar? {
     return try {
       if (!view.isAttachedToWindow || message.isEmpty() || message.isBlank()) return null
@@ -92,8 +83,10 @@ object SnackBarManager {
         show()
       }
     } catch (e: Exception) {
-      Log.e("SnackBarManager", e.toString())
+      Log.e(TAG, "Error creating snackbar", e)
       null
     }
   }
+
+  private const val TAG = "SnackBarManager"
 }

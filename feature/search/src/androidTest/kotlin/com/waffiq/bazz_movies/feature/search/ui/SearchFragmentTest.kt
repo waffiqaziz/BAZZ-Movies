@@ -78,6 +78,7 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
     setupFragment(mockNavigator)
     setupToolbar()
     setupViewModelMocks(mockSearchViewModel)
+    setupSnackbarMocks(mockSnackbar)
   }
 
   @Test
