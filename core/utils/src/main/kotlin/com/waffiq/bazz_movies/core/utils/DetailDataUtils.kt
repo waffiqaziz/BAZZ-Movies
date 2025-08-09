@@ -21,7 +21,7 @@ object DetailDataUtils {
    */
   fun Context.titleHandler(item: MediaItem): String {
     return item.name ?: item.title ?: item.originalTitle ?: item.originalName
-      ?: getString(not_available)
+    ?: getString(not_available)
   }
 
   /**
@@ -37,7 +37,7 @@ object DetailDataUtils {
    * @return The title of the item, or "Item" if no title is found.
    */
   fun titleHandler(item: MediaItem): String =
-     item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
+    item.name ?: item.title ?: item.originalTitle ?: item.originalName ?: "Item"
 
   /**
    * Returns valid years. The function checks the following properties in order:
