@@ -3,8 +3,16 @@ plugins {
   alias(libs.plugins.bazzmovies.android.library.jacoco)
 }
 
-android.namespace = "com.waffiq.bazz_movies.core.designsystem"
-android.buildFeatures.viewBinding = true
+android{
+  namespace = "com.waffiq.bazz_movies.core.designsystem"
+  buildFeatures.viewBinding = true
+
+  testOptions {
+    unitTests.apply {
+      isIncludeAndroidResources = false
+    }
+  }
+}
 
 dependencies {
   implementation(libs.androidx.appcompat)

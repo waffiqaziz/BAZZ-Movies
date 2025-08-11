@@ -6,7 +6,15 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android.namespace = "com.waffiq.bazz_movies.feature.watchlist"
+android{
+  namespace = "com.waffiq.bazz_movies.feature.watchlist"
+
+  testOptions {
+    unitTests.apply {
+      isIncludeAndroidResources = false
+    }
+  }
+}
 
 dependencies {
   implementation(project(":core:favoritewatchlist"))
