@@ -2,7 +2,15 @@ plugins {
   alias(libs.plugins.bazzmovies.android.library)
 }
 
-android.namespace = "com.waffiq.bazz_movies.core.test"
+android{
+  namespace = "com.waffiq.bazz_movies.core.test"
+
+  testOptions {
+    unitTests.apply {
+      isIncludeAndroidResources = false
+    }
+  }
+}
 
 dependencies {
   implementation(libs.androidx.appcompat.resources)

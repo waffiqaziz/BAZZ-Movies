@@ -4,7 +4,15 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android.namespace = "com.waffiq.bazz_movies.feature.home"
+android{
+  namespace = "com.waffiq.bazz_movies.feature.home"
+
+  testOptions {
+    unitTests.apply {
+      isIncludeAndroidResources = false
+    }
+  }
+}
 
 dependencies {
   implementation(project(":core:common"))
