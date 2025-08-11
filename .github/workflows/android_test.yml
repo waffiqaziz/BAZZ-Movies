@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
@@ -85,7 +85,7 @@ jobs:
       actions: write # Needed for cache and artifact upload
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
@@ -176,7 +176,7 @@ jobs:
       actions: write # Needed for cache and artifact upload
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
@@ -273,7 +273,7 @@ jobs:
       actions: write # Needed for cache and artifact upload
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 

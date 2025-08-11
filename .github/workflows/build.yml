@@ -30,7 +30,7 @@ jobs:
       actions: write # Needed for cache
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
