@@ -235,12 +235,12 @@ jobs:
           disable-animations: true
           script: |
             ./gradlew \
-            :feature:about:connectedDebugAndroidTest \
-            :feature:detail:connectedDebugAndroidTest \
-            :feature:login:connectedDebugAndroidTest \
-            :feature:more:connectedDebugAndroidTest \
-            :feature:person:connectedDebugAndroidTest \
-            :feature:search:connectedDebugAndroidTest \
+            ":feature:about:connectedDebugAndroidTest" \
+            ":feature:detail:connectedDebugAndroidTest" \
+            ":feature:login:connectedDebugAndroidTest" \
+            ":feature:more:connectedDebugAndroidTest" \
+            ":feature:person:connectedDebugAndroidTest" \
+            ":feature:search:connectedDebugAndroidTest" \
             --stacktrace --continue && killall -INT crashpad_handler || true
 
       # Cache instrumentation test results for the coverage job
@@ -360,12 +360,12 @@ jobs:
           script: |
             adb wait-for-device
             ./gradlew \
-            :feature:about:connectedDebugAndroidTest \
-            :feature:detail:connectedDebugAndroidTest \
-            :feature:login:connectedDebugAndroidTest \
-            :feature:more:connectedDebugAndroidTest \
-            :feature:person:connectedDebugAndroidTest \
-            :feature:search:connectedDebugAndroidTest \
+            ":feature:about:connectedDebugAndroidTest" \
+            ":feature:detail:connectedDebugAndroidTest" \
+            ":feature:login:connectedDebugAndroidTest" \
+            ":feature:more:connectedDebugAndroidTest" \
+            ":feature:person:connectedDebugAndroidTest" \
+            ":feature:search:connectedDebugAndroidTest" \
             --stacktrace --continue && killall -INT crashpad_handler || true
 
       - name: Check cached test results
