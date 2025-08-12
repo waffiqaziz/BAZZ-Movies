@@ -234,12 +234,14 @@ jobs:
           profile: ${{ env.ANDROID_PROFILE }}
           disable-animations: true
           script: |
-            ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:search:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
+            ./gradlew \
+            :feature:about:connectedDebugAndroidTest \
+            :feature:detail:connectedDebugAndroidTest \
+            :feature:login:connectedDebugAndroidTest \
+            :feature:more:connectedDebugAndroidTest \
+            :feature:person:connectedDebugAndroidTest \
+            :feature:search:connectedDebugAndroidTest \
+            --stacktrace --continue && killall -INT crashpad_handler || true
 
       # Cache instrumentation test results for the coverage job
       - name: Cache instrumentation test results
@@ -357,12 +359,14 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
+            ./gradlew \
+            :feature:about:connectedDebugAndroidTest \
+            :feature:detail:connectedDebugAndroidTest \
+            :feature:login:connectedDebugAndroidTest \
+            :feature:more:connectedDebugAndroidTest \
+            :feature:person:connectedDebugAndroidTest \
+            :feature:search:connectedDebugAndroidTest \
+            --stacktrace --continue && killall -INT crashpad_handler || true
 
       - name: Check cached test results
         run: |
