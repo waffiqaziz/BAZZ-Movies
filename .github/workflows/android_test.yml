@@ -240,7 +240,7 @@ jobs:
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
-            ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
+            ./gradlew :feature:search:connectedDebugAndroidTest --stacktrace && killall -INT crashpad_handler || true
 
       # Cache instrumentation test results for the coverage job
       - name: Cache instrumentation test results
