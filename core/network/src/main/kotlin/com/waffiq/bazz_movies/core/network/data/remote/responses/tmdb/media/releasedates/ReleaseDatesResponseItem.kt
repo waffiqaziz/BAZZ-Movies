@@ -8,6 +8,6 @@ data class ReleaseDatesResponseItem(
   @Json(name = "iso_3166_1")
   val iso31661: String? = null,
 
-  @Json(name = "releasedates")
+  @Json(name = "release_dates")
   val listReleaseDateResponseItemValue: List<ReleaseDatesResponseItemValue>? = null,
 )

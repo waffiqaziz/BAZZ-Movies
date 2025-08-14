@@ -189,7 +189,7 @@ interface TMDBApiService {
     @Path("tvId") tvId: Int,
   ): Response<MediaCreditsResponse>
 
-  @GET("3/movie/{movieId}?language=en-US&append_to_response=releasedates")
+  @GET("3/movie/{movieId}?language=en-US&append_to_response=release_dates")
   suspend fun getMovieDetail(
     @Path("movieId") movieId: Int,
   ): Response<DetailMovieResponse>

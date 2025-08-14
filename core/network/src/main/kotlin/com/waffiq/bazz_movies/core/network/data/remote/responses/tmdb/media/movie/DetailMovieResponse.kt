@@ -35,7 +35,7 @@ data class DetailMovieResponse(
   @Json(name = "popularity")
   val popularity: Double? = null,
 
-  @Json(name = "releasedates")
+  @Json(name = "release_dates")
   val releaseDatesResponse: ReleaseDatesResponse? = null,
 
   @Json(name = "production_countries")
