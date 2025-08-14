@@ -23,6 +23,7 @@ import com.waffiq.bazz_movies.feature.home.ui.adapter.TvAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
@@ -32,7 +33,6 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -160,19 +160,19 @@ class TvSeriesFragment : Fragment() {
     viewLifecycleOwner.handleLoadState(
       popularAdapter,
       binding.rvPopular,
-      getString(no_popular_series, Locale("", region).displayCountry),
+      getString(no_popular_series, getCountryDisplayName(region)),
       binding.layoutNoPopular
     )
     viewLifecycleOwner.handleLoadState(
       airingTodayAdapter,
       binding.rvAiringToday,
-      getString(no_series_airing_today, Locale("", region).displayCountry),
+      getString(no_series_airing_today, getCountryDisplayName(region)),
       binding.layoutNoAiringToday
     )
     viewLifecycleOwner.handleLoadState(
       airingThisWeekAdapter,
       binding.rvAiringThisWeek,
-      getString(no_series_airing_this_week, Locale("", region).displayCountry),
+      getString(no_series_airing_this_week, getCountryDisplayName(region)),
       binding.layoutNoAiringThisWeek
     )
   }
