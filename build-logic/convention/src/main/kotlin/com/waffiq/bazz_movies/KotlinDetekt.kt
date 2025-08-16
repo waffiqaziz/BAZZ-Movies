@@ -28,7 +28,7 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
   }
 
   tasks.withType(Detekt::class.java).configureEach {
-    jvmTarget = JavaVersion.VERSION_17.toString()
+    jvmTarget = JavaVersion.VERSION_21.toString()
     reports {
       xml.required.set(false)
       html.required.set(true)
@@ -39,6 +39,6 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
     }
   }
   tasks.withType(DetektCreateBaselineTask::class.java).configureEach {
-    jvmTarget = JavaVersion.VERSION_17.toString()
+    jvmTarget = JavaVersion.VERSION_21.toString()
   }
 }

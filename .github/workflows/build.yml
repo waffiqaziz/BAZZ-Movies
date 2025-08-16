@@ -15,7 +15,7 @@ on:
       - '**.md'
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: 'temurin'
   GRADLE_CACHE: 'gradle'
 
@@ -46,7 +46,7 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
-      - name: Set up JDK 17 (with cache)
+      - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v4
         with:
@@ -54,7 +54,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 17 (without cache)
+      - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v4
         with:

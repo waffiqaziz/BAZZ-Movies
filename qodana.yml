@@ -1,6 +1,6 @@
 version: "1.0"
 linter: jetbrains/qodana-jvm-android:2025.1
-projectJDK: 17
+projectJDK: 21
 
 # Exclude files/directories from analysis
 exclude:
