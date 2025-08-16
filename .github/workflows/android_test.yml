@@ -200,6 +200,21 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Set up JDK 21 (with cache)
+        if: github.actor != 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Set up JDK 21 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@b65944464e3d6ea5b462dd9ca3e388e7f377b284
 
