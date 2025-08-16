@@ -4,18 +4,16 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.testutils.PostTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddFavoriteStateSuccess
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddWatchlistStateSuccess
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteFavoriteStateSuccess
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteWatchlistStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.PostTestHelper
 import io.mockk.coEvery
 import io.mockk.coVerify
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -57,7 +55,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postFavorite_withMovieWhenSuccessful_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postFavorite(sessionId, postFavoriteMovieData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMovieStateUseCase.getMovieState(sessionId, movieId) } returns
+    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -75,7 +73,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postFavorite_withTvWhenSuccessful_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postFavorite(sessionId, postFavoriteTvData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getTvStateUseCase.getTvState(sessionId, tvId) } returns
+    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -92,7 +90,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postFavorite_performDelete_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postFavorite(sessionId, postFavoriteDeleteData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMovieStateUseCase.getMovieState(sessionId, movieId) } returns
+    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -159,7 +157,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postWatchlist_withMovieWhenSuccessful_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postWatchlist(sessionId, postWatchlistMovieData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMovieStateUseCase.getMovieState(sessionId, movieId) } returns
+    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -177,7 +175,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postWatchlist_withTvWhenSuccessful_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postWatchlist(sessionId, postWatchlistTvData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getTvStateUseCase.getTvState(sessionId, tvId) } returns
+    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -194,7 +192,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   fun postWatchlist_whenDelete_emitsSuccess() = runTest {
     coEvery { postMethodUseCase.postWatchlist(sessionId, postWatchlistDeleteData, userId) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMovieStateUseCase.getMovieState(sessionId, movieId) } returns
+    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(

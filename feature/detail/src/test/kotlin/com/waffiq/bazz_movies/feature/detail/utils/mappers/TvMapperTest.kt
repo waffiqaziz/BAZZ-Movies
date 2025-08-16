@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
@@ -23,7 +23,7 @@ class TvMapperTest {
 
   @Test
   fun toDetailTv_withValidValues_returnsDetailTv() {
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toDetailTv()
 
     assertEquals("en", detailTv.originalLanguage)
     assertEquals(10, detailTv.numberOfEpisodes)
@@ -66,7 +66,7 @@ class TvMapperTest {
   fun toDetailTv_withDefaultValues_returnsDetailTv() {
     val detailTvResponse = DetailTvResponse()
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toDetailTv()
     assertEquals(null, detailTv.listNetworksItem)
     assertEquals(null, detailTv.backdropPath)
     assertEquals(null, detailTv.listGenres)
@@ -97,7 +97,7 @@ class TvMapperTest {
       ),
     )
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toDetailTv()
 
     assertEquals(emptyList<NetworksItem>(), detailTv.listNetworksItem)
     assertEquals(emptyList<GenresItem>(), detailTv.listGenres)
@@ -131,7 +131,7 @@ class TvMapperTest {
       nextEpisodeToAir = null,
     )
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toDetailTv()
     assertEquals(2, detailTv.listNetworksItem?.size)
     assertEquals(2, detailTv.listGenres?.size)
     assertEquals(GenresItem(), detailTv.listGenres?.get(0))

@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -36,7 +36,7 @@ class DetailRepositoryImpl @Inject constructor(
   override suspend fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>> =
     movieDataSource.getMovieDetail(movieId).toOutcome { it.toDetailMovie() }
 
-  override suspend fun getTvDetail(tvId: Int): Flow<Outcome<DetailTv>> =
+  override suspend fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
     movieDataSource.getTvDetail(tvId).toOutcome { it.toDetailTv() }
 
   override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =

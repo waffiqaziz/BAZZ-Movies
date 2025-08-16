@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.movie.domain.usecase.getstated
+package com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate
 
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
