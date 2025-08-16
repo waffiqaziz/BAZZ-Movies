@@ -50,7 +50,7 @@ class MovieRepositoryTest {
     coEvery { mockMovieDataSource.getMovieState("sessionId", 1234) } returns
       flowOf(NetworkResult.Success(statedResponse))
 
-    movieRepository.getStatedMovie("sessionId", 1234).test {
+    movieRepository.getMovieState("sessionId", 1234).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success
@@ -74,7 +74,7 @@ class MovieRepositoryTest {
     coEvery { mockMovieDataSource.getTvState("sessionId", 8888) } returns
       flowOf(NetworkResult.Success(statedResponse))
 
-    movieRepository.getStatedTv("sessionId", 8888).test {
+    movieRepository.getTvState("sessionId", 8888).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success

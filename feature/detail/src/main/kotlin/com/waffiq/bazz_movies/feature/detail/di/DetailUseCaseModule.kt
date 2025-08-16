@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.di
 
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetDetailMovieInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
@@ -20,7 +20,7 @@ abstract class DetailUseCaseModule {
   @Binds
   @ViewModelScoped
   abstract fun bindDetailMovieUseCase(
-    getDetailMovieInteractor: GetDetailMovieInteractor
+    getDetailMovieInteractor: GetMovieDetailInteractor
   ): GetMovieDetailUseCase
 
   @Binds

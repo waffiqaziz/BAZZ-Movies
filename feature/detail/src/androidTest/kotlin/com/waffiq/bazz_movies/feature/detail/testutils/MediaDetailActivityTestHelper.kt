@@ -85,18 +85,18 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
   override fun setupMediaDetailViewModelMocks(mockMediaDetailViewModel: MediaDetailViewModel) {
     every { mockMediaDetailViewModel.getMovieVideoLink(any()) } just Runs
-    every { mockMediaDetailViewModel.getMovieDetail(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.getMovieDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieRecommendation(any()) } just Runs
-    every { mockMediaDetailViewModel.getMovieState(any(), any()) } just Runs
-    every { mockMediaDetailViewModel.getMovieWatchProviders(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.getMovieState(any()) } just Runs
+    every { mockMediaDetailViewModel.getMovieWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getTvTrailerLink(any()) } just Runs
     every { mockMediaDetailViewModel.getTvExternalIds(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvDetail(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.getTvDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getTvCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getTvRecommendation(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvState(any(), any()) } just Runs
-    every { mockMediaDetailViewModel.getTvWatchProviders(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.getTvState(any()) } just Runs
+    every { mockMediaDetailViewModel.getTvWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getOMDbDetails(any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnFavorite(any(), any(), any()) } just Runs
     every { mockMediaDetailViewModel.handleBtnWatchlist(any(), any(), any()) } just Runs
@@ -111,7 +111,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   override fun setupPreferencesViewModelMocks(mockPrefViewModel: DetailUserPrefViewModel) {
     every { mockPrefViewModel.getUserToken() } returns token
     every { mockPrefViewModel.getUserPref() } returns userModel
-    every { mockPrefViewModel.getUserRegion() } returns region
   }
 
   override fun setupObservables(mockMediaDetailViewModel: MediaDetailViewModel) {

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
@@ -49,7 +48,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
@@ -67,7 +66,7 @@ import kotlinx.coroutines.launch
  * @param activity The parent activity for accessing lifecycle, resources, and context.
  * @param navigator A navigation interface used for handling item clicks.
  */
-class DetailMovieUIManager(
+class DetailUIManager(
   private val binding: ActivityDetailMovieBinding,
   private val activity: AppCompatActivity,
   private val navigator: INavigator,
@@ -348,7 +347,9 @@ class DetailMovieUIManager(
   fun setupErrorObserver(errorState: Flow<String>) {
     activity.lifecycleScope.launch {
       activity.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        errorState.debounce(DEBOUNCE_LONG)
+        errorState
+//          .debounce(DEBOUNCE_LONG)
+          .distinctUntilChanged()
           .collect { errorMessage ->
             showSnackbarWarning(errorMessage)
           }

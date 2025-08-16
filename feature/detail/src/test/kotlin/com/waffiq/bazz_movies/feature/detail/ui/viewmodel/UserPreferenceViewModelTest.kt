@@ -63,15 +63,4 @@ class UserPreferenceViewModelTest {
 
     coVerify { observer.onChanged(userModel) }
   }
-
-  @Test
-  fun getUserRegion_whenSuccessful_emitsRegionString() = runTest {
-    val region = "US"
-    every { userPrefUseCase.getUserRegionPref() } returns flowOf(region)
-
-    val observer = mockk<Observer<String>>(relaxed = true)
-    viewModel.getUserRegion().observeForever(observer)
-    advanceUntilIdle()
-    coVerify { observer.onChanged(region) }
-  }
 }

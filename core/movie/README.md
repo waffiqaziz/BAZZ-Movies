@@ -29,8 +29,8 @@
   - **[IMoviesRepository](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/repository/IMoviesRepository.kt)** – Defines methods for retrieving movie data.
 
 - **Use Cases**
-  - **[Get Stated Movies](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt)** – Fetches trending or popular movies.
-  - **[Get Stated TV Shows](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt)** – Retrieves trending or top-rated TV shows.
+  - **[Get Stated Movies](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedMovieUseCase.kt)** – Fetches trending or popular movies.
+  - **[Get Stated TV Shows](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedTvUseCase.kt)** – Retrieves trending or top-rated TV shows.
   - **[Post Method Use Case](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt)** – Handles posting movie-related data (e.g., adding to watchlist).
 
 ### Dependency Injection
@@ -39,7 +39,7 @@
 
 - **[PostMethodUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/PostMethodUseCaseModule.kt)** – Supplies [`PostMethodUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt) for use in ViewModels and repositories.
 
-- **[StatedUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/StatedUseCaseModule.kt)** – Provides [`GetStatedMovieUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedMovieUseCase.kt) and [`GetStatedTvUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/getstated/GetStatedTvUseCase.kt).
+- **[StatedUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/StatedUseCaseModule.kt)** – Provides [`GetStatedMovieUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedMovieUseCase.kt) and [`GetStatedTvUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedTvUseCase.kt).
 
 ### Utility Classes
 

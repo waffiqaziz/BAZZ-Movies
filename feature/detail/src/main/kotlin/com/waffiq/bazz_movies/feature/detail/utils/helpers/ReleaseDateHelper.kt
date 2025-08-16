@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 
 /**
  * Helper object responsible for retrieving release dates and their associated regions for movies.
@@ -143,7 +143,7 @@ object ReleaseDateHelper {
    *        dates and original country.
    * @return A `ReleaseDateRegion` object that contains the release date and original country.
    */
-  fun getReleaseDateRegion(data: DetailTv): ReleaseDateRegion {
+  fun getReleaseDateRegion(data: TvDetail): ReleaseDateRegion {
     return ReleaseDateRegion(
       "(${getOriginalCountryTv(data)})",
       getYearRangeTv(data)
@@ -159,7 +159,7 @@ object ReleaseDateHelper {
    *
    * Example: return `2017-2019` for multiple seasons, return `2017` if only one season`
    */
-  private fun getYearRangeTv(data: DetailTv): String {
+  private fun getYearRangeTv(data: TvDetail): String {
     // extract years from season items that start with "Season"
     val seasonYears = data.listSeasonsItem
       ?.filter { it?.name?.startsWith("Season") == true } // Filter only "Season X"
@@ -201,6 +201,6 @@ object ReleaseDateHelper {
    *
    * @return string of origin country.
    */
-  private fun getOriginalCountryTv(data: DetailTv): String =
+  private fun getOriginalCountryTv(data: TvDetail): String =
     data.listOriginCountry?.firstOrNull().orEmpty()
 }

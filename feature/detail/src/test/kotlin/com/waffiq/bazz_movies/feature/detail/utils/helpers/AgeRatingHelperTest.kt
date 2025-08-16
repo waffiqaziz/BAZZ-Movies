@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -315,13 +315,13 @@ class AgeRatingHelperTest {
   // NEW TESTS FOR TV COVERAGE
   @Test
   fun getAgeRatingTv_withNullContentRatings_returnsEmptyString() {
-    val data = DetailTv(contentRatings = null)
+    val data = TvDetail(contentRatings = null)
     checkAgeRatingTv(data, "US", "")
   }
 
   @Test
   fun getAgeRatingTv_withNullContentRatingsItem_returnsEmptyString() {
-    val data = DetailTv(
+    val data = TvDetail(
       contentRatings = ContentRatings(contentRatingsItem = null)
     )
     checkAgeRatingTv(data, "US", "")
@@ -329,7 +329,7 @@ class AgeRatingHelperTest {
 
   @Test
   fun getAgeRatingTv_withEmptyContentRatingsItem_returnsEmptyString() {
-    val data = DetailTv(
+    val data = TvDetail(
       contentRatings = ContentRatings(contentRatingsItem = emptyList())
     )
     checkAgeRatingTv(data, "US", "")
@@ -337,7 +337,7 @@ class AgeRatingHelperTest {
 
   @Test
   fun getAgeRatingTv_withNullRating_returnsEmptyString() {
-    val data = DetailTv(
+    val data = TvDetail(
       contentRatings = ContentRatings(
         contentRatingsItem = listOf(
           ContentRatingsItem(
@@ -352,7 +352,7 @@ class AgeRatingHelperTest {
 
   @Test
   fun getAgeRatingTv_withNullListContentRatingsItem_returnsEmptyString() {
-    val data = DetailTv(
+    val data = TvDetail(
       contentRatings = ContentRatings(
         contentRatingsItem = listOf(null)
       )
@@ -417,7 +417,7 @@ class AgeRatingHelperTest {
 
   @Test
   fun getAgeRatingTv_withNullContentRatingsItemInList_skipsNull() {
-    val data = DetailTv(
+    val data = TvDetail(
       contentRatings = ContentRatings(
         contentRatingsItem = listOf(
           null,
@@ -504,7 +504,7 @@ class AgeRatingHelperTest {
     assertEquals(expected, result)
   }
 
-  private fun checkAgeRatingTv(data: DetailTv?, region: String, expected: String) {
+  private fun checkAgeRatingTv(data: TvDetail?, region: String, expected: String) {
     val result = getAgeRating(data, region)
     assertEquals(expected, result)
   }
@@ -524,7 +524,7 @@ class AgeRatingHelperTest {
     )
   )
 
-  private fun tvWithRatings(vararg regionToRating: Pair<String?, String?>) = DetailTv(
+  private fun tvWithRatings(vararg regionToRating: Pair<String?, String?>) = TvDetail(
     contentRatings = ContentRatings(
       contentRatingsItem = regionToRating.map {
         ContentRatingsItem(

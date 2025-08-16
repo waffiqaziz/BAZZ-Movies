@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 
-data class DetailTv(
+data class TvDetail(
   val originalLanguage: String? = null,
   val numberOfEpisodes: Int? = null,
   val listNetworksItem: List<NetworksItem?>? = null,

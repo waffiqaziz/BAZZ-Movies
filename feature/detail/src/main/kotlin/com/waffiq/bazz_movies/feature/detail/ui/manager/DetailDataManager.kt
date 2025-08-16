@@ -19,9 +19,8 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
  * @param dataExtra The [MediaItem] representing the movie or TV show being viewed.
  * @param lifecycleOwner The lifecycle owner used to observe LiveData from ViewModels.
  */
-class DetailMovieDataManager(
+class DetailDataManager(
   private val detailViewModel: MediaDetailViewModel,
-  private val prefViewModel: DetailUserPrefViewModel,
   private var dataExtra: MediaItem,
   private val lifecycleOwner: LifecycleOwner,
 ) {
@@ -63,10 +62,8 @@ class DetailMovieDataManager(
   private fun loadMovieData() {
     detailViewModel.getMovieCredits(dataExtra.id)
     detailViewModel.getMovieVideoLink(dataExtra.id)
-    prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
-      detailViewModel.getMovieDetail(dataExtra.id, region)
-      detailViewModel.getMovieWatchProviders(region.uppercase(), dataExtra.id)
-    }
+    detailViewModel.getMovieDetail(dataExtra.id)
+    detailViewModel.getMovieWatchProviders(dataExtra.id)
   }
 
   /**
@@ -85,9 +82,7 @@ class DetailMovieDataManager(
     }
     detailViewModel.getTvCredits(dataExtra.id)
     detailViewModel.getTvTrailerLink(dataExtra.id)
-    prefViewModel.getUserRegion().observe(lifecycleOwner) { region ->
-      detailViewModel.getTvDetail(dataExtra.id, region)
-      detailViewModel.getTvWatchProviders(region.uppercase(), dataExtra.id)
-    }
+    detailViewModel.getTvDetail(dataExtra.id)
+    detailViewModel.getTvWatchProviders(dataExtra.id)
   }
 }

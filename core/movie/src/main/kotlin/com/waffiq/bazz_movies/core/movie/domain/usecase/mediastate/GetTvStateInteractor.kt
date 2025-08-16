@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.movie.domain.usecase.getstated
+package com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate
 
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
@@ -6,9 +6,10 @@ import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetStatedTvInteractor @Inject constructor(
-  private val getStatedTvRepository: IMoviesRepository
+class GetTvStateInteractor @Inject constructor(
+  private val getStateTvRepository: IMoviesRepository
 ) : GetTvStateUseCase {
+
   override suspend fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =
-    getStatedTvRepository.getStatedTv(sessionId, tvId)
+    getStateTvRepository.getTvState(sessionId, tvId)
 }
