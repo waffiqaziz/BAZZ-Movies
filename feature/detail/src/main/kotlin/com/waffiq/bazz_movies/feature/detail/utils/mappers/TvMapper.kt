@@ -24,13 +24,13 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toS
 
 object TvMapper {
 
-  fun DetailTvResponse.toDetailTv() = TvDetail(
+  fun DetailTvResponse.toTvDetail() = TvDetail(
     originalLanguage = originalLanguage,
     numberOfEpisodes = numberOfEpisodes,
     listNetworksItem = networksResponse?.map { it?.toNetworksItem() },
     type = type,
     backdropPath = backdropPath,
-    listGenres = genres?.map { it?.toGenresItem() ?: GenresItem() },
+    listGenres = genres?.map { it?.toGenresItem() },
     popularity = popularity,
     listProductionCountriesItem = productionCountriesResponse?.map { it?.toProductionCountriesItem() },
     id = id,

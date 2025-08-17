@@ -19,7 +19,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toM
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class DetailRepositoryImpl @Inject constructor(
     movieDataSource.getMovieDetail(movieId).toOutcome { it.toDetailMovie() }
 
   override suspend fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
-    movieDataSource.getTvDetail(tvId).toOutcome { it.toDetailTv() }
+    movieDataSource.getTvDetail(tvId).toOutcome { it.toTvDetail() }
 
   override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     movieDataSource.getTvExternalIds(tvId).toOutcome { it.toExternalTvID() }
