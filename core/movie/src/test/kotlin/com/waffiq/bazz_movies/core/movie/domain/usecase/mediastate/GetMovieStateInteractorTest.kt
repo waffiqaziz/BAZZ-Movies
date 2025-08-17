@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.movie.domain.usecase.getstated
+package com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.Outcome
@@ -15,17 +15,17 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-class GetStatedMovieInteractorTest {
+class GetMovieStateInteractorTest {
   private val mockRepository: IMoviesRepository = mockk()
-  private lateinit var getStatedMovieInteractor: GetStatedMovieInteractor
+  private lateinit var getMovieStateInteractor: GetMovieStateInteractor
 
   @Before
   fun setup() {
-    getStatedMovieInteractor = GetStatedMovieInteractor(mockRepository)
+    getMovieStateInteractor = GetMovieStateInteractor(mockRepository)
   }
 
   @Test
-  fun getStatedIMovieRepository_whenSuccessful_returnsCorrectData() = runTest {
+  fun getMovieState_whenSuccessful_returnsCorrectData() = runTest {
     val stated = MediaState(
       id = 1234,
       favorite = true,
@@ -33,10 +33,10 @@ class GetStatedMovieInteractorTest {
       watchlist = false
     )
 
-    coEvery { mockRepository.getStatedMovie("sessionId", 1234) } returns
+    coEvery { mockRepository.getMovieState("sessionId", 1234) } returns
       flowOf(Outcome.Success(stated))
 
-    getStatedMovieInteractor.getMovieState("sessionId", 1234).test {
+    getMovieStateInteractor.getMovieState("sessionId", 1234).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success

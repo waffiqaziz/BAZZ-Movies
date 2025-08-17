@@ -24,16 +24,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.test.assertIs
 
-class GetDetailMovieInteractorTest : BaseInteractorTest() {
+class GetMovieDetailInteractorTest : BaseInteractorTest() {
 
-  private lateinit var interactor: GetDetailMovieInteractor
+  private lateinit var interactor: GetMovieDetailInteractor
 
   override fun initInteractor() {
-    interactor = GetDetailMovieInteractor(mockRepository)
+    interactor = GetMovieDetailInteractor(mockRepository)
   }
 
   @Test
-  fun getDetailMovie_whenSuccessful_emitsSuccess() = runTest {
+  fun getMovieDetail_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       mockResponse = detailMovie,
@@ -54,7 +54,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
   }
 
   @Test
-  fun getDetailMovie_whenUnsuccessful_emitsError() = runTest {
+  fun getMovieDetail_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
@@ -81,7 +81,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
   }
 
   @Test
-  fun getLinkVideoMovies_whenUnsuccessful_emitsError() = runTest {
+  fun getMovieVideoLinks_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
       mockCall = { mockRepository.getMovieTrailerLink(MOVIE_ID) },
       interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
@@ -116,7 +116,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
   }
 
   @Test
-  fun getWatchProvidersMovies_whenSuccessful_emitsSuccess() = runTest {
+  fun getMovieWatchProviders_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
       mockCall = { mockRepository.getWatchProviders(MOVIE_MEDIA_TYPE, MOVIE_ID) },
       mockResponse = watchProviders,
@@ -147,7 +147,7 @@ class GetDetailMovieInteractorTest : BaseInteractorTest() {
   }
 
   @Test
-  fun getWatchProvidersMovies_whenUnsuccessful_emitsError() = runTest {
+  fun getMovieWatchProviders_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
       mockCall = { mockRepository.getWatchProviders("movie", MOVIE_ID) },
       interactorCall = { interactor.getMovieWatchProviders("US", MOVIE_ID) }

@@ -62,8 +62,8 @@ class UserInteractionHandler(
   private val detailViewModel: MediaDetailViewModel,
   private val prefViewModel: DetailUserPrefViewModel,
   private val dataExtra: MediaItem,
-  private val uiManager: DetailMovieUIManager,
-  private val dataManager: DetailMovieDataManager,
+  private val uiManager: DetailUIManager,
+  private val dataManager: DetailDataManager,
 ) {
   private var favorite = false
   private var watchlist = false
@@ -96,7 +96,7 @@ class UserInteractionHandler(
       binding.yourScoreViewGroup.isVisible = isLogin
 
       if (isLogin) {
-        setupLoginUserObservers(lifecycleOwner, token)
+        setupLoginUserObservers(lifecycleOwner)
         binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
       } else {
         setupGuestUserObservers(lifecycleOwner)
@@ -107,8 +107,8 @@ class UserInteractionHandler(
   /**
    * Observes data for a logged-in user such as favorite/watchlist state and ratings.
    */
-  private fun setupLoginUserObservers(lifecycleOwner: LifecycleOwner, token: String) {
-    getStatedData(token)
+  private fun setupLoginUserObservers(lifecycleOwner: LifecycleOwner) {
+    getStatedData()
 
     detailViewModel.itemState.observe(lifecycleOwner) { state ->
       state?.let {
@@ -234,7 +234,7 @@ class UserInteractionHandler(
     // refresh user state
     prefViewModel.getUserToken().observe(activity) { token ->
       if (token != NAN && token.isNotEmpty()) {
-        getStatedData(token)
+        getStatedData()
       }
     }
 
@@ -254,11 +254,11 @@ class UserInteractionHandler(
   /**
    * Retrieves stated data (favorite/watchlist) from TMDB based on media type.
    */
-  private fun getStatedData(token: String) {
+  private fun getStatedData() {
     if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-      detailViewModel.getMovieState(token, dataExtra.id)
+      detailViewModel.getMovieState(dataExtra.id)
     } else {
-      detailViewModel.getTvState(token, dataExtra.id)
+      detailViewModel.getTvState(dataExtra.id)
     }
   }
 

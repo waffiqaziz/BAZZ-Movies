@@ -14,8 +14,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNa
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailMovieDataManager
-import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailMovieUIManager
+import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
+import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
 import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
@@ -38,11 +38,11 @@ class MediaDetailActivity : AppCompatActivity() {
   private val prefViewModel: DetailUserPrefViewModel by viewModels()
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  lateinit var uiManager: DetailMovieUIManager
+  lateinit var uiManager: DetailUIManager
 
   private lateinit var watchProvidersManager: WatchProvidersManager
   private lateinit var userInteractionHandler: UserInteractionHandler
-  private lateinit var dataManager: DetailMovieDataManager
+  private lateinit var dataManager: DetailDataManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
@@ -79,7 +79,7 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun initializeManagers() {
-    uiManager = DetailMovieUIManager(
+    uiManager = DetailUIManager(
       binding = binding,
       activity = this,
       navigator = navigator
@@ -91,9 +91,8 @@ class MediaDetailActivity : AppCompatActivity() {
       dataExtra = dataExtra
     )
 
-    dataManager = DetailMovieDataManager(
+    dataManager = DetailDataManager(
       detailViewModel = detailViewModel,
-      prefViewModel = prefViewModel,
       dataExtra = dataExtra,
       lifecycleOwner = this
     )

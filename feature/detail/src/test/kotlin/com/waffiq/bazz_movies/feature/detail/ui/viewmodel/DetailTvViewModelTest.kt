@@ -15,37 +15,37 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun getTvDetail_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { getTvDetailUseCase.getTvDetail(tvId, usRegion) } returns
+    coEvery { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } returns
       successFlow(mockMediaDetail)
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvDetail(tvId, usRegion) },
+      runBlock = { viewModel.getTvDetail(tvId) },
       liveData = viewModel.detailMedia,
       expectedSuccess = mockMediaDetail,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvDetail(tvId, usRegion) } },
+      verifyBlock = { coVerify { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } },
     )
   }
 
   @Test
   fun getTvDetail_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getTvDetailUseCase.getTvDetail(tvId, usRegion) } returns errorFlow
+    coEvery { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } returns errorFlow
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvDetail(tvId, usRegion) },
+      runBlock = { viewModel.getTvDetail(tvId) },
       liveData = viewModel.detailMedia,
       expectError = errorMessage,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvDetail(tvId, usRegion) } }
+      verifyBlock = { coVerify { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } }
     )
   }
 
   @Test
   fun getTvDetail_whenLoading_doesNothing() = runTest {
-    coEvery { getTvDetailUseCase.getTvDetail(tvId, usRegion) } returns loadingFlow
+    coEvery { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } returns loadingFlow
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvDetail(tvId, usRegion) },
+      runBlock = { viewModel.getTvDetail(tvId) },
       liveData = viewModel.detailMedia,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvDetail(tvId, usRegion) } }
+      verifyBlock = { coVerify { getTvDataWithUserPrefUseCase.getTvDetailWithUserRegion(tvId) } }
     )
   }
 
@@ -159,46 +159,46 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun getTvState_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { getTvStateUseCase.getTvState(sessionId, tvId) } returns
+    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvState(sessionId, tvId) },
+      runBlock = { viewModel.getTvState(tvId) },
       liveData = viewModel.itemState,
       expectedSuccess = mockMediaStated,
-      verifyBlock = { coVerify { getTvStateUseCase.getTvState(sessionId, tvId) } },
+      verifyBlock = { coVerify { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } },
     )
   }
 
   @Test
   fun getTvState_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getTvStateUseCase.getTvState(sessionId, tvId) } returns errorFlow
+    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns errorFlow
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvState(sessionId, tvId) },
+      runBlock = { viewModel.getTvState(tvId) },
       liveData = viewModel.itemState,
       expectError = errorMessage,
-      verifyBlock = { coVerify { getTvStateUseCase.getTvState(sessionId, tvId) } }
+      verifyBlock = { coVerify { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } }
     )
   }
 
   @Test
   fun getTvState_whenLoading_doesNothing() = runTest {
-    coEvery { getTvStateUseCase.getTvState(sessionId, tvId) } returns loadingFlow
+    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns loadingFlow
 
     testViewModelFlow(
-      runBlock = { viewModel.getTvState(sessionId, tvId) },
+      runBlock = { viewModel.getTvState(tvId) },
       liveData = viewModel.itemState,
-      verifyBlock = { coVerify { getTvStateUseCase.getTvState(sessionId, tvId) } }
+      verifyBlock = { coVerify { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } }
     )
   }
 
   @Test
   fun getTvWatchProviders_withNullFields_triggersOrEmptyBranches() = runTest {
-    coEvery { getTvDetailUseCase.getTvWatchProviders(usRegion, tvId) } returns
+    coEvery { getTvDataWithUserPrefUseCase.getTvWatchProvidersWithUserRegion(tvId) } returns
       successFlow(nullProvider)
 
-    viewModel.getTvWatchProviders(usRegion, tvId)
+    viewModel.getTvWatchProviders(tvId)
     advanceUntilIdle()
 
     assertThat(viewModel.watchProvidersUiState.value).isEqualTo(
@@ -211,10 +211,11 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun getTvWatchProviders_withNonNullFields_skipsOrEmptyBranches() = runTest {
-    coEvery { getTvDetailUseCase.getTvWatchProviders(usRegion, tvId) } returns
-      successFlow(fullProvider)
+    coEvery {
+      getTvDataWithUserPrefUseCase.getTvWatchProvidersWithUserRegion(tvId)
+    } returns successFlow(fullProvider)
 
-    viewModel.getTvWatchProviders(usRegion, tvId)
+    viewModel.getTvWatchProviders(tvId)
     advanceUntilIdle()
 
     assertThat(viewModel.watchProvidersUiState.value)

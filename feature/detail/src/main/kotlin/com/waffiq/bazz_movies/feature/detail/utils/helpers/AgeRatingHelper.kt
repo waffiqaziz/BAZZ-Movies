@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 
 /**
  * Used to retrieving age ratings based on the user's or others region
@@ -47,7 +47,7 @@ object AgeRatingHelper {
 
   // region CALCULATE AGE RATING TV
   fun getAgeRating(
-    data: DetailTv?,
+    data: TvDetail?,
     userRegion: String,
   ): String {
     // if age rating based on user region return empty, get age rating from any region
@@ -55,7 +55,7 @@ object AgeRatingHelper {
       ?: getTransformAgeRatingTv(data, "false")
   }
 
-  private fun getTransformAgeRatingTv(data: DetailTv?, region: String): String =
+  private fun getTransformAgeRatingTv(data: TvDetail?, region: String): String =
     if (region != "false") {
       // try to find rating for the specific user region
       data?.contentRatings?.contentRatingsItem
