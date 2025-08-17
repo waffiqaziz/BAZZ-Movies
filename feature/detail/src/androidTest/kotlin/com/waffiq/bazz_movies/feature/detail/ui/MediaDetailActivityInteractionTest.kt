@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
@@ -28,6 +29,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.rotten_tomatoes_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tmdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
+import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
@@ -247,27 +249,111 @@ class MediaDetailActivityInteractionTest :
   }
 
   @Test
+  fun observeRatingState_whenEventAlreadyHandled_shouldNotProcessAgain() {
+    context.launchMediaDetailActivity(
+      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+    ) {
+      // same event
+      val event = Event(true)
+
+      setupLoginUser()
+      itemState.postValue(testMediaStateRated)
+
+      submitRating()
+      rateState.postValue(event)
+
+      submitRating()
+      rateState.postValue(event)
+    }
+  }
+
+  @Test
   fun buttonActionUserLogin_whenClicked_shouldHandlePostData() {
     context.launchMediaDetailActivity {
       setupLoginUser()
       itemState.postValue(testMediaState) // mock as not favorite and not watchlist
 
-      onView(withId(btn_favorite)).perform(click())
-      onView(withId(btn_watchlist)).perform(click())
+      performClickButtonFavorite()
+      performClickButtonWatchlist()
     }
   }
 
   @Test
-  fun removeItemUserLogin_whenClicked_shouldHandlePostData() {
+  fun itemState_whenNullValue_doNothing() {
     context.launchMediaDetailActivity {
       setupLoginUser()
-      itemState.postValue(
-        testMediaState.copy(favorite = true, watchlist = true)
+      itemState.postValue(null)
+
+      performClickButtonFavorite()
+    }
+  }
+
+  @Test
+  fun buttonActionUserLogin_whenClickedWithMultipleCase_shouldHandlePostData() {
+    context.launchMediaDetailActivity {
+      setupLoginUser()
+      itemState.postValue(testMediaState.copy(favorite = false, watchlist = false))
+
+      // post to watchlist success
+      performClickButtonWatchlist()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = true, isFavorite = false, isDelete = false))
       )
 
-      onView(withId(btn_favorite)).perform(click())
-      onView(withId(btn_watchlist)).perform(click())
+      // delete from watchlist success
+      performClickButtonWatchlist()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = true, isFavorite = false, isDelete = true))
+      )
+
+      // post to watchlist failed
+      performClickButtonWatchlist()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = false, isFavorite = false, isDelete = false))
+      )
+
+      // post to favorite success
+      performClickButtonFavorite()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = false))
+      )
+
+      // delete from favorite success
+      performClickButtonFavorite()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = true))
+      )
+
+      // post to favorite failed
+      performClickButtonFavorite()
+      postModelState.postValue(
+        Event(PostModelState(isSuccess = false, isFavorite = true, isDelete = false))
+      )
     }
+  }
+
+  @Test
+  fun observeFavoriteWatchlistPost_whenEventAlreadyHandled_shouldNotProcessAgain() {
+    context.launchMediaDetailActivity {
+      // same event
+      val event = Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = false))
+
+      setupLoginUser()
+      itemState.postValue(testMediaState.copy(favorite = false, watchlist = false))
+
+      performClickButtonFavorite()
+      postModelState.postValue(event)
+      performClickButtonFavorite()
+      postModelState.postValue(event)
+    }
+  }
+
+  private fun performClickButtonFavorite(){
+    onView(withId(btn_favorite)).check(matches(isDisplayed())).perform(click())
+  }
+
+  private fun performClickButtonWatchlist(){
+    onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
   }
 
   private fun submitRating() {

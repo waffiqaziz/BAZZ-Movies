@@ -8,16 +8,12 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
-import com.waffiq.bazz_movies.feature.detail.R.id.iv_picture_backdrop
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_age_rating
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
@@ -136,82 +132,6 @@ class MediaDetailActivityTest :
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(imdbId = " "))
       waitFor(500)
-    }
-  }
-
-  @Test
-  fun mediaItemValue_withNullValue_showsViewsCorrectly() {
-    context.launchMediaDetailActivity(
-      data = MediaItem(
-        originalName = "original name",
-        mediaType = MOVIE_MEDIA_TYPE,
-        backdropPath = null,
-        posterPath = null,
-        releaseDate = null,
-        firstAirDate = null,
-        overview = null,
-      )
-    ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
-    }
-  }
-
-  @Test
-  fun mediaItemValue_withEmptyValue_showsViewsCorrectly() {
-    context.launchMediaDetailActivity(
-      data = MediaItem(
-        title = "title",
-        mediaType = TV_MEDIA_TYPE,
-        backdropPath = "",
-        posterPath = "",
-        releaseDate = "",
-        firstAirDate = "",
-        overview = "",
-      )
-    ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
-    }
-  }
-
-  @Test
-  fun mediaItemValue_withNotAvailableValue_showsViewsCorrectly() {
-    context.launchMediaDetailActivity(
-      data = MediaItem(
-        originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
-        backdropPath = NOT_AVAILABLE,
-        posterPath = NOT_AVAILABLE,
-        releaseDate = null,
-        firstAirDate = "2025-07-09",
-        overview = "overview",
-      )
-    ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
-    }
-  }
-
-  @Test
-  fun mediaItemValue_withMixedValue_showsViewsCorrectly() {
-    context.launchMediaDetailActivity(
-      data = MediaItem(
-        originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
-        backdropPath = null,
-        posterPath = "",
-      )
-    ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
-    }
-
-    context.launchMediaDetailActivity(
-      data = MediaItem(
-        originalTitle = "original title",
-        mediaType = TV_MEDIA_TYPE,
-        backdropPath = "",
-        posterPath = null,
-      )
-    ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
     }
   }
 

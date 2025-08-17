@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
@@ -48,6 +49,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
@@ -348,8 +350,7 @@ class DetailUIManager(
     activity.lifecycleScope.launch {
       activity.repeatOnLifecycle(Lifecycle.State.STARTED) {
         errorState
-//          .debounce(DEBOUNCE_LONG)
-          .distinctUntilChanged()
+          .debounce(DEBOUNCE_LONG)
           .collect { errorMessage ->
             showSnackbarWarning(errorMessage)
           }

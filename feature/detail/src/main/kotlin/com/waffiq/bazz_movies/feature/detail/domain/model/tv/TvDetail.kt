@@ -11,7 +11,7 @@ data class TvDetail(
   val listNetworksItem: List<NetworksItem?>? = null,
   val type: String? = null,
   val backdropPath: String? = null,
-  val listGenres: List<GenresItem>? = null,
+  val listGenres: List<GenresItem?>? = null,
   val popularity: Double? = null,
   val listProductionCountriesItem: List<ProductionCountriesItem?>? = null,
   val id: Int? = null,
