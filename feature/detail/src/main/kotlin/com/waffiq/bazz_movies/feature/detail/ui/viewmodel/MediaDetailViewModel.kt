@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
@@ -19,7 +18,6 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
@@ -29,6 +27,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
@@ -48,7 +47,7 @@ class MediaDetailViewModel @Inject constructor(
   private val getMovieDetailUseCase: GetMovieDetailUseCase,
   private val getTvDetailUseCase: GetTvDetailUseCase,
   private val localDatabaseUseCase: LocalDatabaseUseCase,
-  private val postMethodUseCase: PostMethodUseCase,
+  private val postMethodWithUserUseCase: PostMethodWithUserUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
   private val getMediaStateUseCase: GetMediaStateWithUserUseCase,
   private val getMovieDetailWithUserRegionUseCase: GetMovieDataWithUserRegionUseCase,
@@ -390,9 +389,9 @@ class MediaDetailViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
+  fun postFavorite(data: FavoriteModel) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postFavorite(sessionId, data, userId) },
+      flowProvider = { postMethodWithUserUseCase.postFavorite(data) },
       onSuccess = {
         _postModelState.value = Event(
           PostModelState(
@@ -425,9 +424,9 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
+  fun postWatchlist(data: WatchlistModel) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postWatchlist(sessionId, data, userId) },
+      flowProvider = { postMethodWithUserUseCase.postWatchlist(data) },
       onSuccess = {
         _postModelState.value = Event(
           PostModelState(
@@ -460,18 +459,18 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
+  fun postMovieRate(rating: Float, movieId: Int) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postMovieRate(sessionId, rating, movieId) },
+      flowProvider = { postMethodWithUserUseCase.postMovieRate(rating, movieId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
     )
   }
 
-  fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
+  fun postTvRate(rating: Float, tvId: Int) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postTvRate(sessionId, rating, tvId) },
+      flowProvider = { postMethodWithUserUseCase.postTvRate(rating, tvId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },

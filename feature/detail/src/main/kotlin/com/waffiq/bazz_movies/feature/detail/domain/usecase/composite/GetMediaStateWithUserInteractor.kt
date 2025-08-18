@@ -7,7 +7,6 @@ import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUse
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 class GetMediaStateWithUserInteractor @Inject constructor(

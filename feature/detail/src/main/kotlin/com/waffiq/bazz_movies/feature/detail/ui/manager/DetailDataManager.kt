@@ -4,7 +4,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 
 /**
@@ -15,7 +14,6 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
  * providers, depending on whether the item is a movie or TV show.
  *
  * @param detailViewModel The ViewModel that provides methods for retrieving movie/TV details.
- * @param prefViewModel The ViewModel used to retrieve user preferences such as region.
  * @param dataExtra The [MediaItem] representing the movie or TV show being viewed.
  * @param lifecycleOwner The lifecycle owner used to observe LiveData from ViewModels.
  */

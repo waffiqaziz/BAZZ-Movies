@@ -44,7 +44,9 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.Called
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -345,6 +347,17 @@ class MediaDetailActivityInteractionTest :
       postModelState.postValue(event)
       performClickButtonFavorite()
       postModelState.postValue(event)
+    }
+  }
+
+  @Test
+  fun buttonWatchlist_whenStateNotInitialized_doNothing() {
+    context.launchMediaDetailActivity {
+      it.onActivity { activity ->
+        activity.userInteractionHandler.resetUserStateForTest()
+      }
+      performClickButtonWatchlist()
+      performClickButtonFavorite()
     }
   }
 
