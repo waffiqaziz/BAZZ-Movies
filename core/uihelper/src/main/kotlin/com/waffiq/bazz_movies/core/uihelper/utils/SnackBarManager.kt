@@ -9,16 +9,9 @@ import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 
 /**
  * Utility object responsible for displaying Toast and Snackbar messages.
- *
- * This object provides helper methods to display:
- * - [toastShort], Short-duration toast messages with HTML formatting.
- * - [snackBarWarning], Warning Snackbar messages, which can be optionally anchored to another view.
- * It is used for consistent, easy-to-display alerts throughout the application.
  */
 object SnackBarManager {
 

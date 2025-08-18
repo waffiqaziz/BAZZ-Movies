@@ -20,8 +20,12 @@ object DetailDataUtils {
    * @return The title of the item, or "Item" if no title is found.
    */
   fun Context.titleHandler(item: MediaItem): String {
-    return item.name ?: item.title ?: item.originalTitle ?: item.originalName
-    ?: getString(not_available)
+    return listOf(
+      item.name,
+      item.title,
+      item.originalTitle,
+      item.originalName
+    ).firstNotNullOfOrNull { it } ?: getString(not_available)
   }
 
   /**
