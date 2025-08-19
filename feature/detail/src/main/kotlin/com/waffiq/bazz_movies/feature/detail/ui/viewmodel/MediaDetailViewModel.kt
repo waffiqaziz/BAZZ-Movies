@@ -14,6 +14,7 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.MediaData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
@@ -390,72 +391,22 @@ class MediaDetailViewModel @Inject constructor(
 
   // region POST FAVORITE, WATCHLIST, RATE
   fun postFavorite(data: FavoriteModel) {
-    executeUseCase(
-      flowProvider = { postMethodWithUserUseCase.postFavorite(data) },
-      onSuccess = {
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = !data.favorite,
-            isFavorite = true,
-          )
-        )
-      },
-      onFinallySuccess = {
-        if (data.mediaType == MOVIE_MEDIA_TYPE) {
-          getMovieState(data.mediaId)
-        } else {
-          getTvState(data.mediaId)
-        }
-        _isFavorite.value = data.favorite
-        _loadingState.value = false
-      },
-      onLoading = { _loadingState.value = true },
-      onFinallyError = {
-        _loadingState.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = false,
-            isDelete = !data.favorite,
-            isFavorite = true,
-          )
-        )
-      }
+    postItem(
+      data = data,
+      isFavorite = true,
+      isChecked = data.favorite,
+      postAction = { item: FavoriteModel -> postMethodWithUserUseCase.postFavorite(item) },
+      updateState = { value: Boolean -> _isFavorite.value = value }
     )
   }
 
   fun postWatchlist(data: WatchlistModel) {
-    executeUseCase(
-      flowProvider = { postMethodWithUserUseCase.postWatchlist(data) },
-      onSuccess = {
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = !data.watchlist,
-            isFavorite = false
-          )
-        )
-      },
-      onFinallySuccess = {
-        if (data.mediaType == MOVIE_MEDIA_TYPE) {
-          getMovieState(data.mediaId)
-        } else {
-          getTvState(data.mediaId)
-        }
-        _isWatchlist.value = data.watchlist
-        _loadingState.value = false
-      },
-      onLoading = { _loadingState.value = true },
-      onFinallyError = {
-        _loadingState.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = false,
-            isDelete = !data.watchlist,
-            isFavorite = false
-          )
-        )
-      }
+    postItem(
+      data = data,
+      isFavorite = false,
+      isChecked = data.watchlist,
+      postAction = { item: WatchlistModel -> postMethodWithUserUseCase.postWatchlist(item) },
+      updateState = { value: Boolean -> _isWatchlist.value = value }
     )
   }
 
@@ -507,5 +458,50 @@ class MediaDetailViewModel @Inject constructor(
         }
       }
     }
+  }
+
+
+  /**
+   * Helper to handle post action
+   */
+  private fun <T : MediaData, R> postItem(
+    data: T,
+    isFavorite: Boolean,
+    isChecked: Boolean,
+    postAction: suspend(T) -> Flow<Outcome<R>>,
+    updateState: (Boolean) -> Unit
+  ) {
+    executeUseCase(
+      flowProvider = { postAction(data) },
+      onSuccess = {
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = !isChecked,
+            isFavorite = isFavorite,
+          )
+        )
+      },
+      onFinallySuccess = {
+        if (data.mediaType == MOVIE_MEDIA_TYPE) {
+          getMovieState(data.mediaId)
+        } else {
+          getTvState(data.mediaId)
+        }
+        updateState(isChecked)
+        _loadingState.value = false
+      },
+      onLoading = { _loadingState.value = true },
+      onFinallyError = {
+        _loadingState.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = false,
+            isDelete = !isChecked,
+            isFavorite = isFavorite,
+          )
+        )
+      }
+    )
   }
 }
