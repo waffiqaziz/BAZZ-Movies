@@ -35,6 +35,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
@@ -353,28 +354,20 @@ class UserInteractionHandler(
 
   /** Shows the rating dialog for user to submit a rating. */
   private fun showDialogRate() {
-    val dialog = Dialog(activity)
-    val dialogView = View.inflate(activity, dialog_rating, null)
-
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    dialog.setContentView(dialogView)
-    dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-
-    val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
     val rateNow = binding.tvScoreYourScore.text.toString()
-    ratingBar.rating =
-      if (rateNow == activity.getString(not_available)) 0.0f else rateNow.toFloat() / 2
 
-    val btnSubmit: Button = dialogView.findViewById(btn_submit)
-    btnSubmit.setOnClickListener {
-      val rating: Float = ratingBar.rating * 2
+    RateDialog(
+      context = activity,
+      currentRating = rateNow,
+    ) { rating ->
+      // Submit to ViewModel
       if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
         detailViewModel.postMovieRate(rating, dataExtra.id)
       } else {
         detailViewModel.postTvRate(rating, dataExtra.id)
       }
 
-      // update rating display
+      // observe once
       detailViewModel.rateState.observe(activity) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
@@ -383,12 +376,7 @@ class UserInteractionHandler(
           }
         }
       }
-      dialog.dismiss()
-    }
-
-    val btnCancel: Button = dialogView.findViewById(btn_cancel)
-    btnCancel.setOnClickListener { dialog.dismiss() }
-    dialog.show()
+    }.show()
   }
 
   companion object {
