@@ -7,4 +7,4 @@ data class FavoriteModel(
   override val mediaType: String,
   override val mediaId: Int,
   val favorite: Boolean,
-): MediaData
+) : MediaData

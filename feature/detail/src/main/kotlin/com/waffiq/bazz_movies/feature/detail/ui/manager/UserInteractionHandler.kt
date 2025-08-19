@@ -1,14 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import android.app.Dialog
-import android.graphics.Color
-import android.view.View
-import android.view.Window
-import android.widget.Button
-import android.widget.RatingBar
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,10 +23,6 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
-import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
-import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
@@ -107,7 +96,6 @@ class UserInteractionHandler(
    * Observes the user token to determine login state and setup appropriate observers.
    */
   private fun setupUser(lifecycleOwner: LifecycleOwner) {
-
     when (userState) {
       is UserAuthState.LoggedIn -> {
         binding.yourScoreViewGroup.isVisible = true

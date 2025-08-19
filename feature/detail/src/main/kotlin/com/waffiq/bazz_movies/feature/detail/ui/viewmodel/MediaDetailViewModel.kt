@@ -75,7 +75,9 @@ class MediaDetailViewModel @Inject constructor(
   val loadingState: LiveData<Boolean> get() = _loadingState
 
   private val _errorState = MutableSharedFlow<String>(
-    replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+    replay = 0,
+    extraBufferCapacity = 1,
+    onBufferOverflow = BufferOverflow.DROP_OLDEST
   )
   val errorState: SharedFlow<String> get() = _errorState
 
@@ -460,7 +462,6 @@ class MediaDetailViewModel @Inject constructor(
     }
   }
 
-
   /**
    * Helper to handle post action
    */
@@ -468,8 +469,8 @@ class MediaDetailViewModel @Inject constructor(
     data: T,
     isFavorite: Boolean,
     isChecked: Boolean,
-    postAction: suspend(T) -> Flow<Outcome<R>>,
-    updateState: (Boolean) -> Unit
+    postAction: suspend (T) -> Flow<Outcome<R>>,
+    updateState: (Boolean) -> Unit,
   ) {
     executeUseCase(
       flowProvider = { postAction(data) },

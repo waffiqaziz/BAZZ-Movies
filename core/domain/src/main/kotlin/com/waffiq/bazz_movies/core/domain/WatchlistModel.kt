@@ -7,4 +7,4 @@ data class WatchlistModel(
   override val mediaType: String,
   override val mediaId: Int,
   val watchlist: Boolean,
-): MediaData
+) : MediaData

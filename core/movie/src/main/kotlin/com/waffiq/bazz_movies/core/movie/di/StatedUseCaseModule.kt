@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.movie.di
 
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateInteractor
+import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateInteractor
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
 import dagger.Binds

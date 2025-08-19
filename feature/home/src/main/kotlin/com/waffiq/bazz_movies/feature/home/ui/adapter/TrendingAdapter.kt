@@ -74,7 +74,6 @@ class TrendingAdapter(private val navigator: INavigator) :
 
       override fun areContentsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean =
         oldItem == newItem
-
     }
   }
 }

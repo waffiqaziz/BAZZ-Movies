@@ -50,7 +50,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCr
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
