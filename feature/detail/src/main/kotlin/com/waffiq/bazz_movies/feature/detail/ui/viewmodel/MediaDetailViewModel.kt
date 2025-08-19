@@ -397,7 +397,12 @@ class MediaDetailViewModel @Inject constructor(
       data = data,
       isFavorite = true,
       isChecked = data.favorite,
-      postAction = { item: FavoriteModel -> postMethodWithUserUseCase.postFavorite(item) },
+
+      // function reference = (FavoriteModel) -> Flow<Outcome<...>>
+      // same as { item -> postMethodWithUserUseCase.postFavorite(item) }
+      // only works if the function signatures match exactly.
+      postAction = postMethodWithUserUseCase::postFavorite,
+
       updateState = { value: Boolean -> _isFavorite.value = value }
     )
   }
@@ -407,7 +412,7 @@ class MediaDetailViewModel @Inject constructor(
       data = data,
       isFavorite = false,
       isChecked = data.watchlist,
-      postAction = { item: WatchlistModel -> postMethodWithUserUseCase.postWatchlist(item) },
+      postAction = postMethodWithUserUseCase::postWatchlist,
       updateState = { value: Boolean -> _isWatchlist.value = value }
     )
   }
