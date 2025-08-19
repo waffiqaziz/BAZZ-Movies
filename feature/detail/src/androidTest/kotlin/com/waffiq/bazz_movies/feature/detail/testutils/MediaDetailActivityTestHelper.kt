@@ -102,15 +102,14 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.handleBtnWatchlist(any(), any(), any()) } just Runs
     every { mockMediaDetailViewModel.isFavoriteDB(any(), any()) } just Runs
     every { mockMediaDetailViewModel.isWatchlistDB(any(), any()) } just Runs
-    every { mockMediaDetailViewModel.postFavorite(any(), any(), any()) } just Runs
-    every { mockMediaDetailViewModel.postWatchlist(any(), any(), any()) } just Runs
-    every { mockMediaDetailViewModel.postMovieRate(any(), any(), any()) } just Runs
-    every { mockMediaDetailViewModel.postTvRate(any(), any(), any()) } just Runs
+    every { mockMediaDetailViewModel.postFavorite(any()) } just Runs
+    every { mockMediaDetailViewModel.postWatchlist(any()) } just Runs
+    every { mockMediaDetailViewModel.postMovieRate(any(), any()) } just Runs
+    every { mockMediaDetailViewModel.postTvRate(any(), any()) } just Runs
   }
 
   override fun setupPreferencesViewModelMocks(mockPrefViewModel: DetailUserPrefViewModel) {
     every { mockPrefViewModel.getUserToken() } returns token
-    every { mockPrefViewModel.getUserPref() } returns userModel
   }
 
   override fun setupObservables(mockMediaDetailViewModel: MediaDetailViewModel) {
@@ -143,7 +142,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   }
 
   override fun Context.launchMediaDetailActivity(
-    block: (ActivityScenario<MediaDetailActivity>) -> Unit
+    block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
     this.launchMediaDetailActivity(testMediaItem, block)
   }
@@ -176,7 +175,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     }
   }
 
-  override fun checkIntentData(link: String){
+  override fun checkIntentData(link: String) {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
   }

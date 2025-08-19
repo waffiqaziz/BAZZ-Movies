@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
@@ -26,6 +27,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
@@ -53,11 +55,12 @@ abstract class BaseMediaDetailViewModelTest {
   protected val getMovieDetailUseCase: GetMovieDetailUseCase = mockk()
   protected val getTvDetailUseCase: GetTvDetailUseCase = mockk()
   protected val localDatabaseUseCase: LocalDatabaseUseCase = mockk()
-  protected val postMethodUseCase: PostMethodUseCase = mockk()
+  protected val postMethodWithUserUseCase: PostMethodWithUserUseCase = mockk()
   protected val getOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
   protected val getMediaStateWithUserUseCase: GetMediaStateWithUserUseCase = mockk()
   protected val getMovieDataWithUserPrefUseCase: GetMovieDataWithUserRegionUseCase = mockk()
   protected val getTvDataWithUserPrefUseCase: GetTvDataWithUserRegionUseCase = mockk()
+  protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
 
   protected val imdbId = IMDB_ID
   protected val sessionId = "session ID"
@@ -114,12 +117,12 @@ abstract class BaseMediaDetailViewModelTest {
   val mainDispatcherRule = MainDispatcherRule()
 
   @Before
-  fun setup() {
+  open fun setup() {
     viewModel = MediaDetailViewModel(
       getMovieDetailUseCase,
       getTvDetailUseCase,
       localDatabaseUseCase,
-      postMethodUseCase,
+      postMethodWithUserUseCase,
       getOMDbDetailUseCase,
       getMediaStateWithUserUseCase,
       getMovieDataWithUserPrefUseCase,

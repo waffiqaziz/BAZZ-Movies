@@ -6,6 +6,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDa
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,18 +22,24 @@ abstract class CompositeUseCaseModule {
   @Binds
   @ViewModelScoped
   abstract fun bindMovieDetailWithUserPrefUseCaseSingleton(
-    getMovieDetailWithUserPrefInteractor: GetMovieDataWithUserRegionInteractor
+    getMovieDetailWithUserPrefInteractor: GetMovieDataWithUserRegionInteractor,
   ): GetMovieDataWithUserRegionUseCase
 
   @Binds
   @ViewModelScoped
   abstract fun bindTvDetailWithUserPrefUseCaseSingleton(
-    getTvDetailWithUserPrefInteractor: GetTvDataWithUserRegionInteractor
+    getTvDetailWithUserPrefInteractor: GetTvDataWithUserRegionInteractor,
   ): GetTvDataWithUserRegionUseCase
 
   @Binds
   @ViewModelScoped
   abstract fun bindMediaStateWithUserUseCaseSingleton(
-    getMediaStateWithUserInteractor: GetMediaStateWithUserInteractor
+    getMediaStateWithUserInteractor: GetMediaStateWithUserInteractor,
   ): GetMediaStateWithUserUseCase
+
+  @Binds
+  @ViewModelScoped
+  abstract fun bindPostMethodWithUserUseCaseSingleton(
+    postMethodWithUserInteractor: PostMethodWithUserInteractor,
+  ): PostMethodWithUserUseCase
 }

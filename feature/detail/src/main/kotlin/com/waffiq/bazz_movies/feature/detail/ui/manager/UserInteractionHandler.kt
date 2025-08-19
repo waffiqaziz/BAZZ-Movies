@@ -1,18 +1,11 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import android.app.Dialog
-import android.graphics.Color
-import android.view.View
-import android.view.Window
-import android.widget.Button
-import android.widget.RatingBar
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
@@ -30,12 +23,9 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_cancel
-import com.waffiq.bazz_movies.feature.detail.R.id.btn_submit
-import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
-import com.waffiq.bazz_movies.feature.detail.R.layout.dialog_rating
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
-import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
+import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
+import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
@@ -51,7 +41,6 @@ import kotlin.math.roundToInt
  * @param binding View binding for the detail movie activity layout.
  * @param activity Reference to the hosting [AppCompatActivity].
  * @param detailViewModel ViewModel responsible for detail-related data operations.
- * @param prefViewModel ViewModel for managing user preferences and login state.
  * @param dataExtra The movie or TV show data passed via intent.
  * @param uiManager Utility class for managing UI feedback like toast/snackbar.
  * @param dataManager Utility class for managing data refresh or reload logic.
@@ -60,17 +49,41 @@ class UserInteractionHandler(
   private val binding: ActivityDetailMovieBinding,
   private val activity: AppCompatActivity,
   private val detailViewModel: MediaDetailViewModel,
-  private val prefViewModel: DetailUserPrefViewModel,
   private val dataExtra: MediaItem,
   private val uiManager: DetailUIManager,
   private val dataManager: DetailDataManager,
 ) {
   private var favorite = false
   private var watchlist = false
-  private var isLogin = false
+  private var userState: UserAuthState = UserAuthState.NotInitialized
 
+  /** Initializes the UserInteractionHandler with necessary setup.
+   * This includes setting up tags for buttons, user state, click listeners,
+   * and observing favorite/watchlist post results.
+   *
+   * @param activity The activity context where this handler is used.
+   */
   init {
     initializeTags()
+    setupUser(activity)
+    setupClickListeners()
+    observeFavoriteWatchlistPost(activity)
+  }
+
+  /**
+   * Sets the user state to either logged in or guest and updates the UI accordingly.
+   *
+   * @param isLogin Boolean indicating if the user is logged in.
+   */
+  fun setUserState(isLogin: Boolean) {
+    userState = if (isLogin) UserAuthState.LoggedIn else UserAuthState.Guest
+    setupUser(activity)
+  }
+
+  // only for test purposes, to cover test cases where user state is not initialized
+  @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+  fun resetUserStateForTest() {
+    userState = UserAuthState.NotInitialized
   }
 
   /** Initializes button tags for favorite and watchlist actions. */
@@ -79,27 +92,26 @@ class UserInteractionHandler(
     binding.btnWatchlist.tag = ic_bookmark
   }
 
-  /** Sets up LiveData observers related to the user state and interaction outcomes. */
-  fun setupUserStateObservers() {
-    observeUserToken(activity)
-    observeFavoriteWatchlistPost(activity)
-    observeRatingState(activity)
-  }
-
   /**
    * Observes the user token to determine login state and setup appropriate observers.
    */
-  private fun observeUserToken(lifecycleOwner: LifecycleOwner) {
-    prefViewModel.getUserToken().observe(lifecycleOwner) { token ->
-      isLogin = token != NAN && token.isNotEmpty()
-
-      binding.yourScoreViewGroup.isVisible = isLogin
-
-      if (isLogin) {
+  private fun setupUser(lifecycleOwner: LifecycleOwner) {
+    when (userState) {
+      is UserAuthState.LoggedIn -> {
+        binding.yourScoreViewGroup.isVisible = true
         setupLoginUserObservers(lifecycleOwner)
+        observeRatingState(activity)
         binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
-      } else {
+      }
+
+      is UserAuthState.Guest -> {
+        binding.yourScoreViewGroup.isVisible = false
         setupGuestUserObservers(lifecycleOwner)
+      }
+
+      is UserAuthState.NotInitialized -> {
+        binding.yourScoreViewGroup.isVisible = false
+        // do nothing, wait for user state to be set
       }
     }
   }
@@ -108,7 +120,7 @@ class UserInteractionHandler(
    * Observes data for a logged-in user such as favorite/watchlist state and ratings.
    */
   private fun setupLoginUserObservers(lifecycleOwner: LifecycleOwner) {
-    getStatedData()
+    getMediaState()
 
     detailViewModel.itemState.observe(lifecycleOwner) { state ->
       state?.let {
@@ -173,7 +185,7 @@ class UserInteractionHandler(
   }
 
   /** Sets up all UI click listeners related to user interactions. */
-  fun setupClickListeners() {
+  private fun setupClickListeners() {
     binding.apply {
       btnBack.setOnClickListener {
         activity.finish()
@@ -211,10 +223,18 @@ class UserInteractionHandler(
   private fun handleFavoriteClick() {
     uiManager.dismissSnackbar()
 
-    if (!isLogin) {
-      detailViewModel.handleBtnFavorite(favorite, watchlist, dataExtra)
-    } else {
-      postDataToTMDB(isModeFavorite = true, state = favorite)
+    when (userState) {
+      is UserAuthState.Guest -> {
+        detailViewModel.handleBtnFavorite(favorite, watchlist, dataExtra)
+      }
+
+      is UserAuthState.LoggedIn -> {
+        postDataToTMDB(isModeFavorite = true, state = favorite)
+      }
+
+      else -> {
+        // Not initialized, do nothing
+      }
     }
   }
 
@@ -222,20 +242,26 @@ class UserInteractionHandler(
   private fun handleWatchlistClick() {
     uiManager.dismissSnackbar()
 
-    if (!isLogin) {
-      detailViewModel.handleBtnWatchlist(favorite, watchlist, dataExtra)
-    } else {
-      postDataToTMDB(isModeFavorite = false, state = watchlist)
+    when (userState) {
+      is UserAuthState.Guest -> {
+        detailViewModel.handleBtnWatchlist(favorite, watchlist, dataExtra)
+      }
+
+      is UserAuthState.LoggedIn -> {
+        postDataToTMDB(isModeFavorite = false, state = watchlist)
+      }
+
+      else -> {
+        // Not initialized, do nothing
+      }
     }
   }
 
   /** Refreshes data and user states when swipe refresh is triggered. */
   private fun handleSwipeRefresh() {
-    // refresh user state
-    prefViewModel.getUserToken().observe(activity) { token ->
-      if (token != NAN && token.isNotEmpty()) {
-        getStatedData()
-      }
+    // refresh user login media state
+    if (userState is UserAuthState.LoggedIn) {
+      getMediaState()
     }
 
     // refresh detail data based on media type
@@ -254,7 +280,7 @@ class UserInteractionHandler(
   /**
    * Retrieves stated data (favorite/watchlist) from TMDB based on media type.
    */
-  private fun getStatedData() {
+  private fun getMediaState() {
     if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
       detailViewModel.getMovieState(dataExtra.id)
     } else {
@@ -277,9 +303,7 @@ class UserInteractionHandler(
         dataExtra.id,
         !state
       )
-      prefViewModel.getUserPref().observe(activity) { user ->
-        detailViewModel.postFavorite(user.token, fav, user.userId)
-      }
+      detailViewModel.postFavorite(fav)
     } else {
       watchlist = !state
       val wtc = WatchlistModel(
@@ -287,9 +311,7 @@ class UserInteractionHandler(
         dataExtra.id,
         !state
       )
-      prefViewModel.getUserPref().observe(activity) { user ->
-        detailViewModel.postWatchlist(user.token, wtc, user.userId)
-      }
+      detailViewModel.postWatchlist(wtc)
     }
   }
 
@@ -320,31 +342,20 @@ class UserInteractionHandler(
 
   /** Shows the rating dialog for user to submit a rating. */
   private fun showDialogRate() {
-    val dialog = Dialog(activity)
-    val dialogView = View.inflate(activity, dialog_rating, null)
-
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    dialog.setContentView(dialogView)
-    dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-
-    val ratingBar = dialogView.findViewById<RatingBar>(rating_bar_action)
     val rateNow = binding.tvScoreYourScore.text.toString()
-    ratingBar.rating =
-      if (rateNow == activity.getString(not_available)) 0.0f else rateNow.toFloat() / 2
 
-    val btnSubmit: Button = dialogView.findViewById(btn_submit)
-    btnSubmit.setOnClickListener {
-      val rating: Float = ratingBar.rating * 2
-      prefViewModel.getUserToken().observe(activity) { token ->
-        if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
-          detailViewModel.postMovieRate(token, rating, dataExtra.id)
-        } else {
-          detailViewModel.postTvRate(token, rating, dataExtra.id)
-        }
-        prefViewModel.getUserToken().removeObservers(activity)
+    RateDialog(
+      context = activity,
+      currentRating = rateNow,
+    ) { rating ->
+      // Submit to ViewModel
+      if (dataExtra.mediaType == MOVIE_MEDIA_TYPE) {
+        detailViewModel.postMovieRate(rating, dataExtra.id)
+      } else {
+        detailViewModel.postTvRate(rating, dataExtra.id)
       }
 
-      // update rating display
+      // observe once
       detailViewModel.rateState.observe(activity) { eventResult ->
         eventResult.peekContent().let { isRateSuccessful ->
           if (isRateSuccessful) {
@@ -353,12 +364,7 @@ class UserInteractionHandler(
           }
         }
       }
-      dialog.dismiss()
-    }
-
-    val btnCancel: Button = dialogView.findViewById(btn_cancel)
-    btnCancel.setOnClickListener { dialog.dismiss() }
-    dialog.show()
+    }.show()
   }
 
   companion object {

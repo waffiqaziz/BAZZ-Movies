@@ -19,8 +19,8 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toM
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

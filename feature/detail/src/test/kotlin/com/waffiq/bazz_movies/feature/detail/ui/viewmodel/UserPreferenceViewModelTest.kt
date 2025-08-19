@@ -19,17 +19,6 @@ class UserPreferenceViewModelTest {
 
   private val userPrefUseCase: UserPrefUseCase = mockk(relaxed = true)
   private lateinit var viewModel: DetailUserPrefViewModel
-  private val userModel = UserModel(
-    userId = 2,
-    name = "Jane Doe",
-    username = "janedoe",
-    password = "",
-    region = "US",
-    token = "anotherToken",
-    isLogin = false,
-    gravatarHast = null,
-    tmdbAvatar = null
-  )
 
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -51,16 +40,5 @@ class UserPreferenceViewModelTest {
     advanceUntilIdle()
 
     coVerify { observer.onChanged("US") }
-  }
-
-  @Test
-  fun getUserPref_whenSuccessful_emitsUserModel() = runTest {
-    every { userPrefUseCase.getUser() } returns flowOf(userModel)
-
-    val observer = mockk<Observer<UserModel>>(relaxed = true)
-    viewModel.getUserPref().observeForever(observer)
-    advanceUntilIdle()
-
-    coVerify { observer.onChanged(userModel) }
   }
 }

@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
@@ -40,8 +41,10 @@ class MediaDetailActivity : AppCompatActivity() {
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   lateinit var uiManager: DetailUIManager
 
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  lateinit var userInteractionHandler: UserInteractionHandler
+
   private lateinit var watchProvidersManager: WatchProvidersManager
-  private lateinit var userInteractionHandler: UserInteractionHandler
   private lateinit var dataManager: DetailDataManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,16 +104,20 @@ class MediaDetailActivity : AppCompatActivity() {
       binding = binding,
       activity = this,
       detailViewModel = detailViewModel,
-      prefViewModel = prefViewModel,
       dataExtra = dataExtra,
       uiManager = uiManager,
       dataManager = dataManager
     )
+
+    // observe user login state
+    prefViewModel.getUserToken().observe(this) { token ->
+      val isLogin = token != NAN && token.isNotEmpty()
+      userInteractionHandler.setUserState(isLogin)
+    }
   }
 
   private fun setupObservers() {
     setupViewModelObservers()
-    setupUserStateObservers()
     uiManager.setupLoadingObserver(detailViewModel.loadingState)
     uiManager.setupErrorObserver(detailViewModel.errorState)
   }
@@ -147,11 +154,6 @@ class MediaDetailActivity : AppCompatActivity() {
       detailViewModel.watchProvidersUiState,
       this
     )
-  }
-
-  private fun setupUserStateObservers() {
-    userInteractionHandler.setupUserStateObservers()
-    userInteractionHandler.setupClickListeners()
   }
 
   private fun loadInitialData() {

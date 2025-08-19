@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
@@ -59,6 +60,7 @@ import kotlinx.coroutines.Dispatchers
 object HelperTest {
 
   const val IMDB_ID = "tt1234567"
+  const val USER_ID = 1234567890
   const val USER_REGION = "US"
   const val ERROR_MESSAGE = "Network error"
   const val SESSION_ID = "session123"
@@ -497,4 +499,16 @@ object HelperTest {
   )
 
   val tvMediaState = movieMediaState.copy(id = TV_ID)
+
+  val userModel = UserModel(
+    userId = USER_ID,
+    name = "Jane Doe",
+    username = "janedoe",
+    password = "",
+    region = "US",
+    token = SESSION_ID,
+    isLogin = true,
+    gravatarHast = null,
+    tmdbAvatar = null
+  )
 }

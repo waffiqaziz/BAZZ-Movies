@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -41,6 +42,7 @@ abstract class BaseInteractorTest {
   protected val mockGetMovieStateUseCase: GetMovieStateUseCase = mockk()
   protected val mockGetTvStateUseCase: GetTvStateUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
+  protected val mockPostMethodUseCase: PostMethodUseCase = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()

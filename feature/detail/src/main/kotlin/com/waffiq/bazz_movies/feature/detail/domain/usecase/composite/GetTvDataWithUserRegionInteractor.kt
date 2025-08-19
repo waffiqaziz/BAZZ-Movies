@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class GetTvDataWithUserRegionInteractor @Inject constructor(
@@ -15,12 +15,12 @@ class GetTvDataWithUserRegionInteractor @Inject constructor(
 ) : GetTvDataWithUserRegionUseCase {
 
   override suspend fun getTvDetailWithUserRegion(tvId: Int): Flow<Outcome<MediaDetail>> =
-    userPrefUseCase.getUserRegionPref().flatMapLatest { userRegion ->
+    userPrefUseCase.getUserRegionPref().first().let { userRegion ->
       getTvDetailUseCase.getTvDetail(tvId, userRegion)
     }
 
   override suspend fun getTvWatchProvidersWithUserRegion(tvId: Int): Flow<Outcome<WatchProvidersItem>> =
-    userPrefUseCase.getUserRegionPref().flatMapLatest { userRegion ->
+    userPrefUseCase.getUserRegionPref().first().let { userRegion ->
       getTvDetailUseCase.getTvWatchProviders(userRegion.uppercase(), tvId)
     }
 }

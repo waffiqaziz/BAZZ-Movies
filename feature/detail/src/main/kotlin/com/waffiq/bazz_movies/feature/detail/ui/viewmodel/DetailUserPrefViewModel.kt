@@ -13,6 +13,4 @@ class DetailUserPrefViewModel @Inject constructor(
 ) : ViewModel() {
 
   fun getUserToken() = userPrefUseCase.getUserToken().asLiveData().distinctUntilChanged()
-
-  fun getUserPref() = userPrefUseCase.getUser().asLiveData().distinctUntilChanged()
 }
