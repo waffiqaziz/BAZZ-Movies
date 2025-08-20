@@ -18,6 +18,8 @@
 [![Change Log][BADGE-CHANGE-LOG]][CHANGE-LOG]
 [![Activity][BADGE-ACTIVITY]][ACTIVITY]
 [![Issue][BADGE-ISSUE]][ISSUE]
+[![Average time to resolve an issue][BADGE_IS_MAINTAINED]][IS_MAINTAINED]
+
 
 <!-- Android SDK -->
 [![Android SDK][BADGE-ANDROID-SDK]][ANDROID-SDK]
@@ -177,6 +179,7 @@ Licensed under [Open Font License](https://openfontlicense.org/):
 [BADGE-CHANGE-LOG]:https://img.shields.io/badge/change%20log-%E2%96%A4-yellow.svg
 [BADGE-ACTIVITY]: https://img.shields.io/github/commit-activity/m/waffiqaziz/BAZZ-Movies
 [BADGE-ISSUE]: https://img.shields.io/github/issues/waffiqaziz/BAZZ-Movies
+[BADGE_IS_MAINTAINED]: https://isitmaintained.com/badge/resolution/waffiqaziz/BAZZ-Movies.svg
 [BADGE-BUILD]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml/badge.svg
 [BADGE-TESTING]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml/badge.svg
 [BADGE-CODEQL]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml/badge.svg
@@ -195,6 +198,7 @@ Licensed under [Open Font License](https://openfontlicense.org/):
 [ISSUE]: https://github.com/waffiqaziz/BAZZ-Movies/issues
 [BUILD]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/build.yml
 [TESTING]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/android_test.yml
+[IS_MAINTAINED]: http://isitmaintained.com/project/waffiqaziz/BAZZ-Movies
 [CODEQL]: https://github.com/waffiqaziz/BAZZ-Movies/actions/workflows/codeql.yml
 [CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
 [SONARQUBE]: https://sonarcloud.io/project/overview?id=waffiqaziz_BAZZ-Movies
