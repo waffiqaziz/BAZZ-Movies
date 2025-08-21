@@ -26,8 +26,8 @@ internal fun Project.configureKotlinAndroid(
     }
 
     compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_17
-      targetCompatibility = JavaVersion.VERSION_17
+      sourceCompatibility = JavaVersion.VERSION_21
+      targetCompatibility = JavaVersion.VERSION_21
     }
   }
   configureKotlin<KotlinAndroidProjectExtension>()
@@ -38,8 +38,8 @@ internal fun Project.configureKotlinAndroid(
  */
 internal fun Project.configureKotlinJvm() {
   extensions.configure<JavaPluginExtension> {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
   }
 
   configureKotlin<KotlinJvmProjectExtension>()
@@ -62,7 +62,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     is KotlinJvmProjectExtension -> compilerOptions
     else -> error("Unsupported project extension $this ${T::class}")
   }.apply {
-    jvmTarget = JvmTarget.JVM_17
+    jvmTarget = JvmTarget.JVM_21
     allWarningsAsErrors = warningsAsErrors
 
     // Directly adding to the freeCompilerArgs list

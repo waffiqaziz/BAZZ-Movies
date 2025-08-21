@@ -32,4 +32,13 @@ object Helper {
       formatter.format(Calendar.getInstance().time)
     }
   }
+
+  fun getCountryDisplayName(region: String): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+      Locale.of("", region).displayCountry
+    } else {
+      @Suppress("DEPRECATION")
+      Locale("", region).displayCountry
+    }
+  }
 }
