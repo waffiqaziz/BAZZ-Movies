@@ -4,9 +4,45 @@ We use testing to ensure the stability and quality of our code. The
 testing reports are generated using [JaCoCo](https://github.com/jacoco/jacoco) and updated regularly
 via [CI (GitHub Action)](../.github/workflows/android_test.yml).
 
+## Test Frameworks
+
+- [JUnit4](https://github.com/junit-team/junit4) → The main test framework used across the project
+  for both unit tests and instrumentation tests.
+- [Kotest](https://github.com/kotest/kotest) → Currently being explored for more expressive testing.
+  For now, it is only adopted in unit tests within the [`:feature:favorite`](../feature/favorite)
+  module
+
+## Testing Library
+
+We use various libraries for different testing purposes, including mocking, Android-specific tests,
+coroutines, and assertions.
+
+### Mocking
+
+- [MockK](https://github.com/mockk/mockk) (preferred for Kotlin)
+- [Mockito](https://github.com/mockito/mockito) (legacy/Java compatibility)
+
+### Android Testing
+
+- [Robolectric](https://github.com/robolectric/robolectric) → run Android code on JVM
+- [Espresso](https://github.com/android/android-test) → UI testing
+
+### Coroutines & Flow
+
+- [kotlinx-coroutines-test](https://github.com/Kotlin/kotlinx.coroutines) → test coroutine
+  dispatchers
+- [Turbine](https://github.com/cashapp/turbine) → test Flow emissions
+
+### Assertions
+
+- [JUnit4](https://github.com/junit-team/junit4) → default assertions
+- [Truth](https://github.com/google/truth)
+  and [Kotest assertions](https://github.com/kotest/kotest) → human-readable checks
+
 ## Test Naming Convention
 
-We stick to the **`method_whenCondition_expected`** style for naming tests. It follows Kotlin’s **camelCase**
+We stick to the **`method_whenCondition_expected`** style for naming tests. It follows Kotlin’s *
+*camelCase**
 method style, with underscores (`_`) as separators.
 
 This format makes each test’s purpose clear at a glance by showing **what is being tested**,
