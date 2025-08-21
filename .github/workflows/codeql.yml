@@ -73,7 +73,7 @@ jobs:
 
       - name: Set up JDK 17 (with cache)
         if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -81,7 +81,7 @@ jobs:
 
       - name: Set up JDK 17 (without cache)
         if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
