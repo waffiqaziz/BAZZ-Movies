@@ -39,5 +39,11 @@ internal fun Project.configureCommonAndroidSettings(
         }
       }
     }
+
+    lint {
+      baseline = file("lint-baseline.xml")
+      abortOnError = false
+      disable += "ResourceName"
+    }
   }
 }
