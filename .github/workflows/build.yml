@@ -70,10 +70,14 @@ jobs:
       # Skip if this was triggered by a bot commit to avoid infinite loops
       - name: Check if triggered by bot
         id: bot_check
+        env:
+          AUTHOR_EMAIL: ${{ github.event.head_commit.author.email }}
+          COMMITTER_EMAIL: ${{ github.event.head_commit.committer.email }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
-          if [[ "${{ github.event.head_commit.author.email }}" == "github-actions[bot]@users.noreply.github.com" ]] || \
-             [[ "${{ github.event.head_commit.committer.email }}" == "github-actions[bot]@users.noreply.github.com" ]] || \
-             [[ "${{ github.event.head_commit.message }}" == *"chore(ci): update baselines"* ]]; then
+          if [[ "$AUTHOR_EMAIL" == "github-actions[bot]@users.noreply.github.com" ]] || \
+             [[ "$COMMITTER_EMAIL" == "github-actions[bot]@users.noreply.github.com" ]] || \
+             [[ "$COMMIT_MESSAGE" == *"chore(ci): update baselines"* ]]; then
             echo "skip=true" >> $GITHUB_OUTPUT
             echo "This run was triggered by a bot commit, skipping baseline updates to prevent infinite loops"
           else
