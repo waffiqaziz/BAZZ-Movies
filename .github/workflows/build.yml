@@ -67,5 +67,11 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
+      - name: Run lint and update baseline
+        run: ./gradlew updateLintBaseline --stacktrace
+
+      - name: Run dependencyGuardBaseline
+        run: ./gradlew dependencyGuardBaseline --stacktrace
+
       - name: Build with Gradle Wrapper
         run: ./gradlew build --stacktrace
