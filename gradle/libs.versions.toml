@@ -177,7 +177,6 @@ kotest-framework-concurrency = { module = "io.kotest:kotest-framework-concurrenc
 kotest-kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
-kotest-runner-junit5-android = { module = "io.kotest:kotest-runner-junit5-android", version.ref = "kotest" }
 
 # Kotlin Testing Libraries
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }

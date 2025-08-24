@@ -50,13 +50,12 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Create file
-        run: cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Putting data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+      - name: Setup Google Services JSON
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Set up JDK 17 (with cache)
         if: github.actor != 'renovate[bot]'
@@ -73,155 +72,12 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-      # Skip if this was triggered by a bot commit to avoid infinite loops
-      - name: Check if triggered by bot
-        id: bot_check
-        env:
-          AUTHOR_EMAIL: ${{ github.event.head_commit.author.email }}
-          COMMITTER_EMAIL: ${{ github.event.head_commit.committer.email }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-        run: |
-          if [[ "$AUTHOR_EMAIL" == "github-actions[bot]@users.noreply.github.com" ]] || \
-             [[ "$COMMITTER_EMAIL" == "github-actions[bot]@users.noreply.github.com" ]] || \
-             [[ "$COMMIT_MESSAGE" == *"chore(ci): update baselines"* ]]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "This run was triggered by a bot commit, skipping baseline updates to prevent infinite loops"
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
-      # -------------------------------
-      # 1. Update lint baseline
-      # -------------------------------
       - name: Run lint and update baseline
-        if: steps.bot_check.outputs.skip != 'true'
         run: ./gradlew updateLintBaseline --stacktrace
 
-      - name: Check lint baseline changes
-        if: steps.bot_check.outputs.skip != 'true'
-        id: lint_diff
-        run: |
-          if git diff --quiet -- '**/lint-baseline.xml'; then
-            echo "diff_found=false" >> $GITHUB_OUTPUT
-          else
-            echo "diff_found=true" >> $GITHUB_OUTPUT
-            # Create a readable summary
-            echo "## 🔍 Lint Baseline Changes" > lint-summary.md
-            echo "" >> lint-summary.md
-          
-            # Count changes
-            ADDED=$(git diff --name-only --diff-filter=A -- '**/lint-baseline.xml' | wc -l)
-            MODIFIED=$(git diff --name-only --diff-filter=M -- '**/lint-baseline.xml' | wc -l)
-            DELETED=$(git diff --name-only --diff-filter=D -- '**/lint-baseline.xml' | wc -l)
-          
-            if [ "$ADDED" -gt 0 ]; then
-              echo "- ✅ **$ADDED** new baseline file(s) created" >> lint-summary.md
-            fi
-            if [ "$MODIFIED" -gt 0 ]; then
-              echo "- 📝 **$MODIFIED** baseline file(s) updated" >> lint-summary.md
-            fi
-            if [ "$DELETED" -gt 0 ]; then
-              echo "- 🗑️ **$DELETED** baseline file(s) removed" >> lint-summary.md
-            fi
-          
-            echo "" >> lint-summary.md
-            echo "### Files changed:" >> lint-summary.md
-            git diff --name-only -- '**/lint-baseline.xml' | sed 's/^/- `/' | sed 's/$/`/' >> lint-summary.md
-          
-            echo "" >> lint-summary.md
-            echo "<details>" >> lint-summary.md
-            echo "<summary>🔧 Click to view detailed changes</summary>" >> lint-summary.md
-            echo "" >> lint-summary.md
-            echo '```diff' >> lint-summary.md
-            git diff --unified=3 -- '**/lint-baseline.xml' >> lint-summary.md
-            echo '```' >> lint-summary.md
-            echo "</details>" >> lint-summary.md
-          
-            echo "" >> lint-summary.md
-            echo "_This baseline was automatically updated by the CI workflow._" >> lint-summary.md
-          fi
-
-      - name: Comment lint baseline changes on PR
-        if: github.event_name == 'pull_request' && steps.lint_diff.outputs.diff_found == 'true' && steps.bot_check.outputs.skip != 'true'
-        uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405
-        with:
-          header: lint-baseline
-          path: lint-summary.md
-
-      # -------------------------------
-      # 2. Update dependency baseline
-      # -------------------------------
       - name: Run dependencyGuardBaseline
-        if: steps.bot_check.outputs.skip != 'true'
         run: ./gradlew dependencyGuardBaseline --stacktrace
 
-      - name: Check dependency baseline changes
-        if: steps.bot_check.outputs.skip != 'true'
-        id: dep_diff
-        run: |
-          if git diff --quiet -- '**/dependencies/*.txt'; then
-            echo "diff_found=false" >> $GITHUB_OUTPUT
-          else
-            echo "diff_found=true" >> $GITHUB_OUTPUT
-            # Create a readable summary
-            echo "## 📦 Dependency Baseline Changes" > dep-summary.md
-            echo "" >> dep-summary.md
-          
-            # Count changes
-            ADDED=$(git diff --name-only --diff-filter=A -- '**/dependencies/*.txt' | wc -l)
-            MODIFIED=$(git diff --name-only --diff-filter=M -- '**/dependencies/*.txt' | wc -l)
-            DELETED=$(git diff --name-only --diff-filter=D -- '**/dependencies/*.txt' | wc -l)
-          
-            if [ "$ADDED" -gt 0 ]; then
-              echo "- ✅ **$ADDED** new dependency file(s) created" >> dep-summary.md
-            fi
-            if [ "$MODIFIED" -gt 0 ]; then
-              echo "- 📝 **$MODIFIED** dependency file(s) updated" >> dep-summary.md
-            fi
-            if [ "$DELETED" -gt 0 ]; then
-              echo "- 🗑️ **$DELETED** dependency file(s) removed" >> dep-summary.md
-            fi
-          
-            echo "" >> dep-summary.md
-            echo "### Files changed:" >> dep-summary.md
-            git diff --name-only -- '**/dependencies/*.txt' | sed 's/^/- `/' | sed 's/$/`/' >> dep-summary.md
-          
-            echo "" >> dep-summary.md
-            echo "<details>" >> dep-summary.md
-            echo "<summary>🔧 Click to view detailed changes</summary>" >> dep-summary.md
-            echo "" >> dep-summary.md
-            echo '```diff' >> dep-summary.md
-            git diff --unified=3 -- '**/dependencies/*.txt' >> dep-summary.md
-            echo '```' >> dep-summary.md
-            echo "</details>" >> dep-summary.md
-          
-            echo "" >> dep-summary.md
-            echo "_This baseline was automatically updated by the CI workflow._" >> dep-summary.md
-          fi
-
-      - name: Comment dependency baseline changes on PR
-        if: github.event_name == 'pull_request' && steps.dep_diff.outputs.diff_found == 'true' && steps.bot_check.outputs.skip != 'true'
-        uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405
-        with:
-          header: dependency-guard
-          path: dep-summary.md
-
-      # -------------------------------
-      # 3. Commit updated baselines
-      # -------------------------------
-      - name: Commit updated baselines
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && (steps.lint_diff.outputs.diff_found == 'true' || steps.dep_diff.outputs.diff_found == 'true') && steps.bot_check.outputs.skip != 'true'
-        uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0
-        with:
-          commit_message: "chore(ci): update baselines (lint, dependencies)"
-          branch: ${{ github.head_ref }}
-          commit_user_name: github-actions
-          commit_user_email: github-actions[bot]@users.noreply.github.com
-          skip_dirty_check: true
-
-      # -------------------------------
-      # 4. Build (runs on all events, including after baseline updates)
-      # -------------------------------
       - name: Build with Gradle Wrapper
         run: ./gradlew build --stacktrace
 
