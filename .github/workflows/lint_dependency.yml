@@ -48,7 +48,7 @@ jobs:
 
       - name: Set up JDK
         if: steps.renovate_check.outputs.is_renovate == 'true'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
