@@ -54,13 +54,15 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Setup Google Services JSON
+      - name: Setup Google Services JSON, local.properties, and Gradle properties
         if: steps.renovate_check.outputs.is_renovate == 'true'
         env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          DATA: temp
         run: |
           if [ -n "$DATA" ]; then
             echo "$DATA" > ./app/google-services.json
+            echo "sdk.dir=$ANDROID_HOME" > $GITHUB_WORKSPACE/local.properties
+            mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
           else
             echo "Warning: GOOGLE_SERVICES_JSON secret not found"
           fi

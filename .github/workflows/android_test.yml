@@ -63,7 +63,6 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-
       - name: Google Service
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}

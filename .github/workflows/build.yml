@@ -44,13 +44,15 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Create file
-        run: cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Putting data
+      - name: Google Service
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+        run: |
+          cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
+          echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
       - name: Set up JDK 17 (with cache)
         if: github.actor != 'renovate[bot]'
