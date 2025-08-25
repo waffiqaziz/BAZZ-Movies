@@ -14,7 +14,7 @@ jobs:
   create-follow-up-pr:
     runs-on: ubuntu-latest
     # Check if the push was from a renovate merge
-    if: github.event.head_commit.author.name == 'renovate[bot]'
+    if: github.actor == 'renovate[bot]' || github.event.sender.login == 'renovate[bot]'
     permissions:
       contents: write
       pull-requests: write
