@@ -14,7 +14,7 @@ jobs:
   create-follow-up-pr:
     runs-on: ubuntu-latest
     # Check if the push was from a renovate merge
-    if: contains(github.event.head_commit.message, 'renovate') || github.event.head_commit.author.name == 'renovate[bot]'
+    if: github.actor == 'renovate[bot]' || github.event.sender.login == 'renovate[bot]'
     permissions:
       contents: write
       pull-requests: write
@@ -23,10 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          # Fetch more history for better commit analysis
-          fetch-depth: 10
-          # Use a token to enable create PRs
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_PAT }}
 
       - name: Check if this is a renovate merge
         id: renovate_check
