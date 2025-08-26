@@ -4,6 +4,9 @@ import androidx.paging.AsyncPagingDataDiffer
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.MediaState
+import com.waffiq.bazz_movies.core.domain.Rated
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
@@ -21,7 +24,10 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.N
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
+import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
@@ -37,21 +43,27 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import kotlinx.coroutines.Dispatchers
 
 // Used as data dumb testing
 object HelperTest {
 
   const val IMDB_ID = "tt1234567"
+  const val USER_ID = 1234567890
   const val USER_REGION = "US"
   const val ERROR_MESSAGE = "Network error"
+  const val SESSION_ID = "session123"
 
   val genresItemResponse = GenresResponseItem(
     id = 1,
@@ -230,7 +242,7 @@ object HelperTest {
     status = "Returning Series"
   )
 
-  val detailTvFull = DetailTv(
+  val tvDetailFull = TvDetail(
     originalLanguage = "en",
     numberOfEpisodes = 62,
     listNetworksItem = listOf(NetworksItem(name = "AMC")),
@@ -322,6 +334,20 @@ object HelperTest {
     )
   )
 
+  val movieMediaDetail = MediaDetail(
+    id = MOVIE_ID,
+    genre = transformListGenreToJoinString(detailMovie.listGenres),
+    genreId = transformToGenreIDs(detailMovie.listGenres),
+    duration = getTransformDuration(detailMovie.runtime),
+    imdbId = detailMovie.imdbId,
+    ageRating = getAgeRating(
+      detailMovie,
+      getReleaseDateRegion(detailMovie, USER_REGION).regionRelease
+    ),
+    tmdbScore = getTransformTMDBScore(detailMovie.voteAverage),
+    releaseDateRegion = getReleaseDateRegion(detailMovie, USER_REGION)
+  )
+
   val movieCredits = MediaCredits(
     cast = listOf(),
     crew = listOf(),
@@ -339,7 +365,7 @@ object HelperTest {
 
   // region TV
   const val TV_ID = 2002
-  val detailTv = DetailTv(
+  val detailTv = TvDetail(
     id = TV_ID,
     status = "Returning Series",
     voteAverage = 8.2,
@@ -422,6 +448,21 @@ object HelperTest {
     originCountry = listOf()
   )
 
+  val tvMediaDetail = MediaDetail(
+    id = TV_ID,
+    genre = transformListGenreToJoinString(tvDetailFull.listGenres),
+    genreId = transformToGenreIDs(tvDetailFull.listGenres),
+    duration = tvDetailFull.status,
+    imdbId = "",
+    ageRating = getAgeRating(
+      tvDetailFull,
+      getReleaseDateRegion(tvDetailFull).regionRelease
+    ),
+    tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
+    releaseDateRegion = getReleaseDateRegion(tvDetailFull)
+  )
+
+
   val postModelAddFavoriteStateSuccess =
     PostModelState(
       isSuccess = true,
@@ -449,4 +490,25 @@ object HelperTest {
       isDelete = true,
       isFavorite = false
     )
+
+  val movieMediaState = MediaState(
+    id = MOVIE_ID,
+    favorite = true,
+    rated = Rated.Unrated,
+    watchlist = false
+  )
+
+  val tvMediaState = movieMediaState.copy(id = TV_ID)
+
+  val userModel = UserModel(
+    userId = USER_ID,
+    name = "Jane Doe",
+    username = "janedoe",
+    password = "",
+    region = "US",
+    token = SESSION_ID,
+    isLogin = true,
+    gravatarHast = null,
+    tmdbAvatar = null
+  )
 }

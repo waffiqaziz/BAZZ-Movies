@@ -30,6 +30,5 @@ object PagingDataHelperTest {
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: T & Any, newItem: T & Any): Boolean =
       oldItem == newItem
-
   }
 }

@@ -15,8 +15,8 @@ import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetTvStateUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
@@ -50,19 +50,16 @@ class MyFavoriteViewModel @Inject constructor(
   fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postFavorite(sesId, data, userId).collect { outcome ->
-        when (outcome) {
+        val event = when (outcome) {
           is Outcome.Success ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(true, title, data, null))
+            Event(SnackBarUserLoginData(true, title, data, null))
 
           is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+            Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
+          is Outcome.Loading -> return@collect
         }
+        _snackBarAdded.value = event
       }
     }
   }
@@ -70,19 +67,16 @@ class MyFavoriteViewModel @Inject constructor(
   fun postWatchlist(sesId: String, userId: Int, data: WatchlistModel, title: String) {
     viewModelScope.launch {
       postMethodUseCase.postWatchlist(sesId, data, userId).collect { outcome ->
-        when (outcome) {
+        val event = when (outcome) {
           is Outcome.Success ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(true, title, null, data))
+            Event(SnackBarUserLoginData(true, title, null, data))
 
           is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+            Event(SnackBarUserLoginData(false, outcome.message, null, null))
 
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
+          is Outcome.Loading -> return@collect
         }
+        _snackBarAdded.value = event
       }
     }
   }

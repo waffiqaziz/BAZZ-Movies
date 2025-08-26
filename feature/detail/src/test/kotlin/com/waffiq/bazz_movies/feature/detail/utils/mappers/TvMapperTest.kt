@@ -1,29 +1,33 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.domain.GenresItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTvResponse
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TvMapperTest {
 
   @Test
-  fun toDetailTv_withValidValues_returnsDetailTv() {
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+  fun toTvDetail_withValidValues_returnsTvDetail() {
+    val detailTv: TvDetail = detailTvResponse.toTvDetail()
 
     assertEquals("en", detailTv.originalLanguage)
     assertEquals(10, detailTv.numberOfEpisodes)
@@ -63,10 +67,10 @@ class TvMapperTest {
   }
 
   @Test
-  fun toDetailTv_withDefaultValues_returnsDetailTv() {
+  fun toTvDetail_withDefaultValues_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse()
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toTvDetail()
     assertEquals(null, detailTv.listNetworksItem)
     assertEquals(null, detailTv.backdropPath)
     assertEquals(null, detailTv.listGenres)
@@ -80,7 +84,7 @@ class TvMapperTest {
   }
 
   @Test
-  fun toDetailTv_withEmptyLists_returnsDetailTv() {
+  fun toTvDetail_withEmptyLists_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
       networksResponse = emptyList(),
       genres = emptyList(),
@@ -97,7 +101,7 @@ class TvMapperTest {
       ),
     )
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toTvDetail()
 
     assertEquals(emptyList<NetworksItem>(), detailTv.listNetworksItem)
     assertEquals(emptyList<GenresItem>(), detailTv.listGenres)
@@ -113,7 +117,7 @@ class TvMapperTest {
   }
 
   @Test
-  fun toDetailTv_withNullItemsInList_returnsDetailTvWithEmptyGenres() {
+  fun toTvDetail_withNullItemsInList_returnsTvDetailWithEmptyGenres() {
     val detailTvResponse = DetailTvResponse(
       networksResponse = listOf(null, null),
       genres = listOf(null, null),
@@ -131,17 +135,57 @@ class TvMapperTest {
       nextEpisodeToAir = null,
     )
 
-    val detailTv: DetailTv = detailTvResponse.toDetailTv()
+    val detailTv: TvDetail = detailTvResponse.toTvDetail()
     assertEquals(2, detailTv.listNetworksItem?.size)
     assertEquals(2, detailTv.listGenres?.size)
-    assertEquals(GenresItem(), detailTv.listGenres?.get(0))
-    assertEquals(GenresItem(), detailTv.listGenres?.get(1))
+    assertEquals(null, detailTv.listGenres?.get(0))
+    assertEquals(null, detailTv.listGenres?.get(1))
     assertEquals(1, detailTv.listProductionCountriesItem?.size)
     assertEquals(1, detailTv.listSeasonsItem?.size)
     assertEquals(1, detailTv.listCreatedByItem?.size)
     assertEquals(1, detailTv.listSpokenLanguagesItem?.size)
     assertEquals(1, detailTv.listProductionCompaniesItem?.size)
     assertEquals(1, detailTv.contentRatings?.contentRatingsItem?.size)
+  }
+
+  @Test
+  fun toTvDetail_withGenresResponseItemNull_returnsTvDetail() {
+    val detailTvResponse = DetailTvResponse(genres = listOf(null))
+    detailTvResponse.toTvDetail()
+  }
+
+  @Test
+  fun toTvDetail_withProductionCountriesResponseItemNull_returnsTvDetail() {
+    val detailTvResponse = DetailTvResponse(
+      productionCountriesResponse = listOf(ProductionCountriesResponseItem())
+    )
+    detailTvResponse.toTvDetail()
+  }
+
+  @Test
+  fun toTvDetail_withContentRatingsItemResponseNull_returnsTvDetail() {
+    val detailTvResponse = DetailTvResponse(
+      contentRatingsResponse = ContentRatingsResponse(
+        contentRatingsItemResponse = null
+      )
+    )
+    detailTvResponse.toTvDetail()
+  }
+
+  @Test
+  fun toTvDetail_withSpokenLanguagesResponseNull_returnsTvDetail() {
+    val detailTvResponse = DetailTvResponse(
+      spokenLanguagesResponse = listOf(SpokenLanguagesResponseItem())
+    )
+    detailTvResponse.toTvDetail()
+  }
+
+  @Test
+  fun toTvDetail_withProductionCompaniesResponseNull_returnsTvDetail() {
+    val detailTvResponse = DetailTvResponse(
+      productionCompaniesResponse = listOf(ProductionCompaniesResponseItem())
+    )
+    detailTvResponse.toTvDetail()
   }
 
   @Test

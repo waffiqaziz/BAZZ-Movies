@@ -35,7 +35,6 @@ object FavWatchlistHelper {
   fun ratingHandler(voteAverage: Float?): String =
     DecimalFormat("#.#").format((voteAverage ?: 0F)).toString() + "/10"
 
-
   /**
    * Handles the paging load state for a PagingDataAdapter.
    * Based on the load state, it shows or hides the progress bar, recycler view, error view, and empty view.

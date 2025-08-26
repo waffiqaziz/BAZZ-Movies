@@ -28,7 +28,6 @@ class DatastoreModule {
 
   @Provides
   @Singleton
-  fun provideUserPreference(dataStore: DataStore<Preferences>): UserPreference {
-    return UserPreference(dataStore)
-  }
+  fun provideUserPreference(dataStore: DataStore<Preferences>): UserPreference =
+    UserPreference(dataStore)
 }

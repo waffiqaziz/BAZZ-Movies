@@ -1,11 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.tv
 
-import com.waffiq.bazz_movies.core.domain.GenresItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTvFull
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.tvDetailFull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -16,43 +11,43 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withValidValues_setsPropertiesCorrectly() {
-    val detailTv = detailTvFull
+    val tvDetail = tvDetailFull
 
-    assertEquals("en", detailTv.originalLanguage)
-    assertEquals(62, detailTv.numberOfEpisodes)
-    assertEquals(1, detailTv.listNetworksItem?.size)
-    assertEquals("Scripted", detailTv.type)
-    assertEquals("/backdrop.jpg", detailTv.backdropPath)
-    assertEquals(1, detailTv.listGenres?.size)
-    assertEquals(100.5, detailTv.popularity)
-    assertEquals(1396, detailTv.id)
-    assertEquals(5, detailTv.numberOfSeasons)
-    assertEquals(5000, detailTv.voteCount)
-    assertEquals("2008-01-20", detailTv.firstAirDate)
-    assertEquals("Show overview", detailTv.overview)
-    assertEquals(1, detailTv.listSeasonsItem?.size)
-    assertEquals(1, detailTv.listLanguages?.size)
-    assertEquals(1, detailTv.listCreatedByItem?.size)
-    assertNotNull(detailTv.lastEpisodeToAir)
-    assertEquals("/poster.jpg", detailTv.posterPath)
-    assertEquals(1, detailTv.listOriginCountry?.size)
-    assertEquals("Breaking Bad", detailTv.originalName)
-    assertEquals(9.3, detailTv.voteAverage)
-    assertEquals("Breaking Bad", detailTv.name)
-    assertEquals("All Bad Things Must Come to an End", detailTv.tagline)
-    assertEquals(1, detailTv.listEpisodeRunTime?.size)
-    assertNotNull(detailTv.contentRatings)
-    assertEquals(false, detailTv.adult)
-    assertEquals("Episode data", detailTv.nextEpisodeToAir)
-    assertEquals(false, detailTv.inProduction)
-    assertEquals("2013-09-29", detailTv.lastAirDate)
-    assertEquals("http://www.amc.com/shows/breaking-bad", detailTv.homepage)
-    assertEquals("Ended", detailTv.status)
+    assertEquals("en", tvDetail.originalLanguage)
+    assertEquals(62, tvDetail.numberOfEpisodes)
+    assertEquals(1, tvDetail.listNetworksItem?.size)
+    assertEquals("Scripted", tvDetail.type)
+    assertEquals("/backdrop.jpg", tvDetail.backdropPath)
+    assertEquals(1, tvDetail.listGenres?.size)
+    assertEquals(100.5, tvDetail.popularity)
+    assertEquals(1396, tvDetail.id)
+    assertEquals(5, tvDetail.numberOfSeasons)
+    assertEquals(5000, tvDetail.voteCount)
+    assertEquals("2008-01-20", tvDetail.firstAirDate)
+    assertEquals("Show overview", tvDetail.overview)
+    assertEquals(1, tvDetail.listSeasonsItem?.size)
+    assertEquals(1, tvDetail.listLanguages?.size)
+    assertEquals(1, tvDetail.listCreatedByItem?.size)
+    assertNotNull(tvDetail.lastEpisodeToAir)
+    assertEquals("/poster.jpg", tvDetail.posterPath)
+    assertEquals(1, tvDetail.listOriginCountry?.size)
+    assertEquals("Breaking Bad", tvDetail.originalName)
+    assertEquals(9.3, tvDetail.voteAverage)
+    assertEquals("Breaking Bad", tvDetail.name)
+    assertEquals("All Bad Things Must Come to an End", tvDetail.tagline)
+    assertEquals(1, tvDetail.listEpisodeRunTime?.size)
+    assertNotNull(tvDetail.contentRatings)
+    assertEquals(false, tvDetail.adult)
+    assertEquals("Episode data", tvDetail.nextEpisodeToAir)
+    assertEquals(false, tvDetail.inProduction)
+    assertEquals("2013-09-29", tvDetail.lastAirDate)
+    assertEquals("http://www.amc.com/shows/breaking-bad", tvDetail.homepage)
+    assertEquals("Ended", tvDetail.status)
   }
 
   @Test
   fun createDetailTv_withDefaultValues_setsAllPropertiesToNull() {
-    val detailTv = DetailTv()
+    val detailTv = TvDetail()
 
     assertNull(detailTv.originalLanguage)
     assertNull(detailTv.numberOfEpisodes)
@@ -91,7 +86,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withPartialValues_setsSpecifiedPropertiesOnly() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       name = "Game of Thrones",
       id = 1399,
       adult = true,
@@ -109,7 +104,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withZeroValues_setsZeroValues() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       numberOfEpisodes = 0,
       popularity = 0.0,
       id = 0,
@@ -128,7 +123,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withEmptyLists_setsEmptyLists() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       listNetworksItem = emptyList(),
       listGenres = emptyList(),
       listLanguages = emptyList(),
@@ -145,7 +140,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withNullListItems_setsNullListItems() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       listNetworksItem = listOf(null, null),
       listLanguages = listOf(null, "en", null),
       listEpisodeRunTime = listOf(null, 45, null)
@@ -168,7 +163,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withEmptyStrings_setsEmptyStrings() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       originalLanguage = "",
       type = "",
       backdropPath = "",
@@ -189,7 +184,7 @@ class DetailTvTest {
 
   @Test
   fun createDetailTv_withNegativeValues_setsNegativeValues() {
-    val detailTv = DetailTv(
+    val detailTv = TvDetail(
       numberOfEpisodes = -1,
       popularity = -5.0,
       id = -100,

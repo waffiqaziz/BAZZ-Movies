@@ -14,24 +14,27 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.MediaData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.getstated.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -45,10 +48,11 @@ class MediaDetailViewModel @Inject constructor(
   private val getMovieDetailUseCase: GetMovieDetailUseCase,
   private val getTvDetailUseCase: GetTvDetailUseCase,
   private val localDatabaseUseCase: LocalDatabaseUseCase,
-  private val postMethodUseCase: PostMethodUseCase,
+  private val postMethodWithUserUseCase: PostMethodWithUserUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
-  private val getMovieStateUseCase: GetMovieStateUseCase,
-  private val getTvStateUseCase: GetTvStateUseCase,
+  private val getMediaStateUseCase: GetMediaStateWithUserUseCase,
+  private val getMovieDetailWithUserRegionUseCase: GetMovieDataWithUserRegionUseCase,
+  private val getTvDetailWithUserRegionUseCase: GetTvDataWithUserRegionUseCase,
 ) : ViewModel() {
 
   // region OBSERVABLES
@@ -70,7 +74,11 @@ class MediaDetailViewModel @Inject constructor(
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
 
-  private val _errorState = MutableSharedFlow<String>(replay = 0)
+  private val _errorState = MutableSharedFlow<String>(
+    replay = 0,
+    extraBufferCapacity = 1,
+    onBufferOverflow = BufferOverflow.DROP_OLDEST
+  )
   val errorState: SharedFlow<String> get() = _errorState
 
   private val _rateState = MutableLiveData<Event<Boolean>>()
@@ -103,9 +111,9 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun getMovieDetail(id: Int, userRegion: String) {
+  fun getMovieDetail(movieId: Int) {
     executeUseCase(
-      flowProvider = { getMovieDetailUseCase.getMovieDetail(id, userRegion) },
+      flowProvider = { getMovieDetailWithUserRegionUseCase.getMovieDetailWithUserRegion(movieId) },
       onSuccess = { _detailMedia.value = it }
     )
   }
@@ -125,16 +133,18 @@ class MediaDetailViewModel @Inject constructor(
     }
   }
 
-  fun getMovieState(sessionId: String, id: Int) {
+  fun getMovieState(id: Int) {
     executeUseCase(
-      flowProvider = { getMovieStateUseCase.getMovieState(sessionId, id) },
+      flowProvider = { getMediaStateUseCase.getMovieStateWithUser(id) },
       onSuccess = { _itemState.value = it }
     )
   }
 
-  fun getMovieWatchProviders(countryCode: String, movieId: Int) {
+  fun getMovieWatchProviders(movieId: Int) {
     viewModelScope.launch {
-      collectWatchProviders(getMovieDetailUseCase.getMovieWatchProviders(countryCode, movieId))
+      collectWatchProviders(
+        getMovieDetailWithUserRegionUseCase.getMovieWatchProvidersWithUserRegion(movieId)
+      )
     }
   }
   // endregion MOVIE
@@ -154,9 +164,9 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun getTvDetail(id: Int, userRegion: String) {
+  fun getTvDetail(tvId: Int) {
     executeUseCase(
-      flowProvider = { getTvDetailUseCase.getTvDetail(id, userRegion) },
+      flowProvider = { getTvDetailWithUserRegionUseCase.getTvDetailWithUserRegion(tvId) },
       onSuccess = { _detailMedia.value = it }
     )
   }
@@ -176,16 +186,18 @@ class MediaDetailViewModel @Inject constructor(
     }
   }
 
-  fun getTvState(sessionId: String, id: Int) {
+  fun getTvState(id: Int) {
     executeUseCase(
-      flowProvider = { getTvStateUseCase.getTvState(sessionId, id) },
+      flowProvider = { getMediaStateUseCase.getTvStateWithUser(id) },
       onSuccess = { _itemState.value = it }
     )
   }
 
-  fun getTvWatchProviders(countryCode: String, tvId: Int) {
+  fun getTvWatchProviders(tvId: Int) {
     viewModelScope.launch {
-      collectWatchProviders(getTvDetailUseCase.getTvWatchProviders(countryCode, tvId))
+      collectWatchProviders(
+        getTvDetailWithUserRegionUseCase.getTvWatchProvidersWithUserRegion(tvId)
+      )
     }
   }
   // endregion TV-SERIES
@@ -380,88 +392,43 @@ class MediaDetailViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(sessionId: String, data: FavoriteModel, userId: Int) {
-    executeUseCase(
-      flowProvider = { postMethodUseCase.postFavorite(sessionId, data, userId) },
-      onSuccess = {
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = !data.favorite,
-            isFavorite = true,
-          )
-        )
-      },
-      onFinallySuccess = {
-        if (data.mediaType == MOVIE_MEDIA_TYPE) {
-          getMovieState(sessionId, data.mediaId)
-        } else {
-          getTvState(sessionId, data.mediaId)
-        }
-        _isFavorite.value = data.favorite
-        _loadingState.value = false
-      },
-      onLoading = { _loadingState.value = true },
-      onFinallyError = {
-        _loadingState.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = false,
-            isDelete = !data.favorite,
-            isFavorite = true,
-          )
-        )
-      }
+  fun postFavorite(data: FavoriteModel) {
+    postItem(
+      data = data,
+      isFavorite = true,
+      isChecked = data.favorite,
+
+      // function reference = (FavoriteModel) -> Flow<Outcome<...>>
+      // same as { item -> postMethodWithUserUseCase.postFavorite(item) }
+      // only works if the function signatures match exactly.
+      postAction = postMethodWithUserUseCase::postFavorite,
+
+      updateState = { value: Boolean -> _isFavorite.value = value }
     )
   }
 
-  fun postWatchlist(sessionId: String, data: WatchlistModel, userId: Int) {
-    executeUseCase(
-      flowProvider = { postMethodUseCase.postWatchlist(sessionId, data, userId) },
-      onSuccess = {
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = !data.watchlist,
-            isFavorite = false
-          )
-        )
-      },
-      onFinallySuccess = {
-        if (data.mediaType == MOVIE_MEDIA_TYPE) {
-          getMovieState(sessionId, data.mediaId)
-        } else {
-          getTvState(sessionId, data.mediaId)
-        }
-        _isWatchlist.value = data.watchlist
-        _loadingState.value = false
-      },
-      onLoading = { _loadingState.value = true },
-      onFinallyError = {
-        _loadingState.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = false,
-            isDelete = !data.watchlist,
-            isFavorite = false
-          )
-        )
-      }
+  fun postWatchlist(data: WatchlistModel) {
+    postItem(
+      data = data,
+      isFavorite = false,
+      isChecked = data.watchlist,
+      postAction = postMethodWithUserUseCase::postWatchlist,
+      updateState = { value: Boolean -> _isWatchlist.value = value }
     )
   }
 
-  fun postMovieRate(sessionId: String, rating: Float, movieId: Int) {
+  fun postMovieRate(rating: Float, movieId: Int) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postMovieRate(sessionId, rating, movieId) },
+      flowProvider = { postMethodWithUserUseCase.postMovieRate(rating, movieId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
     )
   }
 
-  fun postTvRate(sessionId: String, rating: Float, tvId: Int) {
+  fun postTvRate(rating: Float, tvId: Int) {
     executeUseCase(
-      flowProvider = { postMethodUseCase.postTvRate(sessionId, rating, tvId) },
+      flowProvider = { postMethodWithUserUseCase.postTvRate(rating, tvId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
@@ -498,5 +465,49 @@ class MediaDetailViewModel @Inject constructor(
         }
       }
     }
+  }
+
+  /**
+   * Helper to handle post action
+   */
+  private fun <T : MediaData, R> postItem(
+    data: T,
+    isFavorite: Boolean,
+    isChecked: Boolean,
+    postAction: suspend (T) -> Flow<Outcome<R>>,
+    updateState: (Boolean) -> Unit,
+  ) {
+    executeUseCase(
+      flowProvider = { postAction(data) },
+      onSuccess = {
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = true,
+            isDelete = !isChecked,
+            isFavorite = isFavorite,
+          )
+        )
+      },
+      onFinallySuccess = {
+        if (data.mediaType == MOVIE_MEDIA_TYPE) {
+          getMovieState(data.mediaId)
+        } else {
+          getTvState(data.mediaId)
+        }
+        updateState(isChecked)
+        _loadingState.value = false
+      },
+      onLoading = { _loadingState.value = true },
+      onFinallyError = {
+        _loadingState.value = false
+        _postModelState.value = Event(
+          PostModelState(
+            isSuccess = false,
+            isDelete = !isChecked,
+            isFavorite = isFavorite,
+          )
+        )
+      }
+    )
   }
 }

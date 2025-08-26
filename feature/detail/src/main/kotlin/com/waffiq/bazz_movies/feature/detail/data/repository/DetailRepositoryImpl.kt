@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
@@ -19,8 +19,8 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toM
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toDetailTv
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -36,8 +36,8 @@ class DetailRepositoryImpl @Inject constructor(
   override suspend fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>> =
     movieDataSource.getMovieDetail(movieId).toOutcome { it.toDetailMovie() }
 
-  override suspend fun getTvDetail(tvId: Int): Flow<Outcome<DetailTv>> =
-    movieDataSource.getTvDetail(tvId).toOutcome { it.toDetailTv() }
+  override suspend fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
+    movieDataSource.getTvDetail(tvId).toOutcome { it.toTvDetail() }
 
   override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     movieDataSource.getTvExternalIds(tvId).toOutcome { it.toExternalTvID() }

@@ -144,6 +144,8 @@
         'gradle/actions/{/,}**',
         'actions/{/,}**',
         'reactivecircus/{/,}**',
+        'stefanzweifel/{/,}**',
+        'marocchino/{/,}**',
         '!/^codecov//',
         '!/^codacy//',
       ],

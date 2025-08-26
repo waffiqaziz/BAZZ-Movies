@@ -56,6 +56,11 @@ dependencies {
 }
 ```
 
+## Testing
+
+In this module, we uses JUnit4 for standard unit and instrumentation testing but also leverage 
+Kotest for more expressive behavior-driven for unit tests.
+
 <!-- LINK -->
 
 [feature-search-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-search

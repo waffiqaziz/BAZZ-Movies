@@ -23,14 +23,14 @@ class MoviesRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IMoviesRepository {
 
-  override suspend fun getStatedMovie(
+  override suspend fun getMovieState(
     sessionId: String,
     movieId: Int,
   ): Flow<Outcome<MediaState>> =
     movieDataSource.getMovieState(sessionId, movieId)
       .toOutcome { it.toMediaState() }
 
-  override suspend fun getStatedTv(
+  override suspend fun getTvState(
     sessionId: String,
     tvId: Int,
   ): Flow<Outcome<MediaState>> =

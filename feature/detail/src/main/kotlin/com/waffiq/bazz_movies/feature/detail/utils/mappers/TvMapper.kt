@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.CreatedByItemResponse
@@ -12,10 +11,10 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.S
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatings
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.ContentRatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.CreatedByItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.LastEpisodeToAir
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toGenresItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toProductionCompaniesItem
@@ -24,13 +23,13 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toS
 
 object TvMapper {
 
-  fun DetailTvResponse.toDetailTv() = DetailTv(
+  fun DetailTvResponse.toTvDetail() = TvDetail(
     originalLanguage = originalLanguage,
     numberOfEpisodes = numberOfEpisodes,
     listNetworksItem = networksResponse?.map { it?.toNetworksItem() },
     type = type,
     backdropPath = backdropPath,
-    listGenres = genres?.map { it?.toGenresItem() ?: GenresItem() },
+    listGenres = genres?.map { it?.toGenresItem() },
     popularity = popularity,
     listProductionCountriesItem = productionCountriesResponse?.map { it?.toProductionCountriesItem() },
     id = id,

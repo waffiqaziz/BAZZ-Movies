@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.DetailTv
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
@@ -41,7 +41,7 @@ class ReleaseDateHelperTvTest {
   @Test
   fun getReleaseDateRegionTv_withNullSeasonName_returnsEmpty() {
     val seasonData = SeasonsItem(name = null, airDate = "2020-01-01")
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(seasonData)
     )
@@ -51,7 +51,7 @@ class ReleaseDateHelperTvTest {
   @Test
   fun getReleaseDateRegionTv_withInvalidSeason_returnsEmpty() {
     val seasonData = SeasonsItem(name = "Season 1", airDate = "12")
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = null,
       listSeasonsItem = listOf(seasonData)
     )
@@ -78,7 +78,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullSeasonsList_returnsEmptyDate() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = emptyList()
     )
@@ -96,7 +96,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullOriginCountryList_returnsEmptyRegion() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = null,
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "2020-06-01")
@@ -120,7 +120,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withEmptyOriginCountryList_returnsEmptyRegion() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = emptyList(),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "2020-06-01")
@@ -131,7 +131,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullSeasonsItem_returnsEmptyDate() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = null // Null seasons list
     )
@@ -140,7 +140,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withSeasonsContainingNullItems_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         null, // Null season item
@@ -153,7 +153,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withSeasonsContainingNullNames_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = null, airDate = "2019-06-01"), 
@@ -165,7 +165,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withSeasonsNotStartingWithSeason_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Specials", airDate = "2019-06-01"),
@@ -178,7 +178,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withInvalidYearFormat_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "invalid-date"),
@@ -190,7 +190,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withShortAirDate_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "20"), // Too short for year
@@ -202,7 +202,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullAirDate_filtersCorrectly() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // Null air date
@@ -214,7 +214,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withOnlyInvalidSeasons_returnsEmptyDate() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Specials", airDate = "2019-06-01"),
@@ -226,7 +226,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withMultipleSeasonsButOnlyOneValidYear_returnsSingleYear() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
@@ -238,7 +238,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullSeasonItemInList_triggersMapNotNullBranch() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         null, // This triggers the it?.airDate branch in mapNotNull
@@ -250,7 +250,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullAirDateInSeason_triggersMapNotNullBranch() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // This triggers the ?.take(YEAR) branch
@@ -262,7 +262,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullSeasonItemInFilteredList_triggersMapNotNullBranch() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         null, // This null item should be filtered out, but triggers it?.airDate branch
@@ -274,7 +274,7 @@ class ReleaseDateHelperTvTest {
 
   @Test
   fun getReleaseDateRegionTv_withNullAirDateInFilteredSeason_triggersMapNotNullBranch() {
-    val data = DetailTv(
+    val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // Null airDate triggers ?.take(YEAR) branch
@@ -286,8 +286,8 @@ class ReleaseDateHelperTvTest {
   // endregion
 
   // region Helpers
-  private fun tvWithSeasons(origin: String, vararg seasons: Pair<String, String>): DetailTv {
-    return DetailTv(
+  private fun tvWithSeasons(origin: String, vararg seasons: Pair<String, String>): TvDetail {
+    return TvDetail(
       listOriginCountry = listOf(origin),
       listSeasonsItem = seasons.map {
         SeasonsItem(name = it.first, airDate = it.second)
@@ -296,7 +296,7 @@ class ReleaseDateHelperTvTest {
   }
 
   private fun checkTvReleaseDate(
-    data: DetailTv,
+    data: TvDetail,
     expectedRegion: String,
     expectedDate: String,
   ) {

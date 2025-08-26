@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.snackbar
 import android.content.Context
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar

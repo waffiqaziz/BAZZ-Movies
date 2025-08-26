@@ -20,35 +20,46 @@ env:
   GRADLE_CACHE: 'gradle'
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      actions: write # Needed for cache
+      contents: write
+      actions: write
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x ./gradlew
 
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Create file
-        run: cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Putting data
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+      - name: Setup Google Services JSON
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -56,10 +67,28 @@ jobs:
 
       - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
+      - name: Run lint and update baseline
+        run: ./gradlew updateLintBaseline --stacktrace
+
+      - name: Run dependencyGuardBaseline
+        run: ./gradlew dependencyGuardBaseline --stacktrace
+
       - name: Build with Gradle Wrapper
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew build --stacktrace
+
+      # -------------------------------
+      # 5. Upload Gradle problem reports
+      # -------------------------------
+      - name: Upload Gradle problem reports
+        if: ${{ always() && (hashFiles('build/reports/configuration-cache/**') != '' || hashFiles('build/reports/problems/**') != '') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-problems-report
+          path: |
+            build/reports/configuration-cache/
+            build/reports/problems/

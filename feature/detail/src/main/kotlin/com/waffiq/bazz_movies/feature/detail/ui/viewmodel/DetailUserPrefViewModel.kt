@@ -11,9 +11,6 @@ import javax.inject.Inject
 class DetailUserPrefViewModel @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase
 ) : ViewModel() {
+
   fun getUserToken() = userPrefUseCase.getUserToken().asLiveData().distinctUntilChanged()
-
-  fun getUserRegion() = userPrefUseCase.getUserRegionPref().asLiveData().distinctUntilChanged()
-
-  fun getUserPref() = userPrefUseCase.getUser().asLiveData().distinctUntilChanged()
 }
