@@ -50,7 +50,7 @@ jobs:
 
       - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -58,18 +58,14 @@ jobs:
 
       - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-
-      - name: Google Service
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - name: Setup Google Services JSON
         run: |
-          cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
-          echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Run Detekt
         run: ./gradlew detekt
@@ -96,9 +92,13 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
+      - name: Setup Google Services JSON
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
       - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -106,7 +106,7 @@ jobs:
 
       - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -123,13 +123,6 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
-
-      - name: Google Service
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: |
-          cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
-          echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
 
       - name: Restore build cache
         uses: actions/cache@v4
@@ -187,33 +180,15 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Google Service
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - name: Setup Google Services JSON
         run: |
-          cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
-          echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-
-      - name: Set up JDK 21 (with cache)
-        if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          cache: ${{ env.GRADLE_CACHE }}
-
-      - name: Set up JDK 21 (without cache)
-        if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
 
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@b65944464e3d6ea5b462dd9ca3e388e7f377b284
@@ -302,16 +277,13 @@ jobs:
       - name: Get local.properties from secrets
         run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
 
-      - name: Google Service
-        env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - name: Setup Google Services JSON
         run: |
-          cat /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json | base64
-          echo $DATA > /home/runner/work/BAZZ-Movies/BAZZ-Movies/app/google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
@@ -319,7 +291,7 @@ jobs:
 
       - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
