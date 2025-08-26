@@ -25,6 +25,7 @@ import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
@@ -34,7 +35,6 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -75,7 +75,7 @@ class MovieFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentMovieBinding.inflate(inflater, container, false)
     return binding.root
@@ -171,13 +171,13 @@ class MovieFragment : Fragment() {
     viewLifecycleOwner.handleLoadState(
       nowPlayingAdapter,
       binding.rvNowPlaying,
-      getString(no_movies_currently_playing, Locale("", region).displayCountry),
+      getString(no_movies_currently_playing, getCountryDisplayName(region)),
       binding.layoutNoPlaying
     )
     viewLifecycleOwner.handleLoadState(
       upComingAdapter,
       binding.rvUpcoming,
-      getString(no_upcoming_movies, Locale("", region).displayCountry),
+      getString(no_upcoming_movies, getCountryDisplayName(region)),
       binding.layoutNoUpcoming
     )
   }

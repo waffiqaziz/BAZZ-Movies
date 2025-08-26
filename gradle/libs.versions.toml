@@ -1,7 +1,7 @@
 [versions]
 # SDK Versions
-targetSdk = "35"
-compileSdk = "35"
+targetSdk = "36"
+compileSdk = "36"
 minSdk = "23"
 ndkVersion = "27.2.12479018"
 
@@ -79,7 +79,7 @@ mockk = "1.14.5"
 mockitoAndroid = "5.19.0"
 mockitoKotlin = "6.0.0"
 mockitoCore = "5.19.0"
-robolectric = "4.15.1"
+robolectric = "4.16"
 testCore = "1.7.0"
 testRules = "1.7.0"
 testRunner = "1.7.0"

@@ -30,6 +30,7 @@ import com.waffiq.bazz_movies.feature.home.ui.adapter.TrendingAdapter
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
@@ -39,7 +40,6 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -179,19 +179,19 @@ class FeaturedFragment : Fragment() {
     viewLifecycleOwner.handleLoadState(
       adapterPlayingNow,
       binding.rvPlayingNow,
-      getString(no_movies_currently_playing, Locale("", region).displayCountry),
+      getString(no_movies_currently_playing, getCountryDisplayName(region)),
       binding.layoutNoPlaying
     )
     viewLifecycleOwner.handleLoadState(
       adapterUpcoming,
       binding.rvUpcoming,
-      getString(no_upcoming_movies, Locale("", region).displayCountry),
+      getString(no_upcoming_movies, getCountryDisplayName(region)),
       binding.layoutNoUpcoming
     )
     viewLifecycleOwner.handleLoadState(
       adapterTrending,
       binding.rvTrending,
-      getString(no_trending, Locale("", region).displayCountry),
+      getString(no_trending, getCountryDisplayName(region)),
       binding.layoutNoUpcoming
     )
 

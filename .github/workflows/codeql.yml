@@ -26,7 +26,7 @@ on:
     - cron: '31 7 * * 3'
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: 'temurin'
   GRADLE_CACHE: 'gradle'
 
@@ -70,7 +70,7 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
-      - name: Set up JDK 17 (with cache)
+      - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -78,7 +78,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 17 (without cache)
+      - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v5
         with:

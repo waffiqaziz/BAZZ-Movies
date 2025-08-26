@@ -15,7 +15,7 @@ on:
       - '**.md'
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
   JAVA_DISTRIBUTION: 'temurin'
   GRADLE_CACHE: 'gradle'
 
@@ -48,7 +48,7 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Set up JDK 17 (with cache)
+      - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -56,7 +56,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 17 (without cache)
+      - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -96,7 +96,7 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
-      - name: Set up JDK 17 (with cache)
+      - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -104,7 +104,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 17 (without cache)
+      - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -190,8 +190,44 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Gradle cache
-        uses: gradle/actions/setup-gradle@b65944464e3d6ea5b462dd9ca3e388e7f377b284
+      - name: Set up JDK 21 (with cache)
+        if: github.actor != 'renovate[bot]'
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+          cache: ${{ env.GRADLE_CACHE }}
+
+      - name: Set up JDK 21 (without cache)
+        if: github.actor == 'renovate[bot]'
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+      # skip cache operations for Renovate PRs
+      - name: Cache Gradle dependencies
+        if: github.actor != 'renovate[bot]'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Restore build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/build/
+            !**/build/outputs/
+            !**/build/reports/
+          key: build-cache-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/src/**/*.kt', '**/src/**/*.java') }}
+          restore-keys: |
+            build-cache-${{ runner.os }}-
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -281,7 +317,7 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
-      - name: Set up JDK 17 (with cache)
+      - name: Set up JDK 21 (with cache)
         if: github.actor != 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
@@ -289,7 +325,7 @@ jobs:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           cache: ${{ env.GRADLE_CACHE }}
 
-      - name: Set up JDK 17 (without cache)
+      - name: Set up JDK 21 (without cache)
         if: github.actor == 'renovate[bot]'
         uses: actions/setup-java@v5
         with:
