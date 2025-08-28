@@ -45,7 +45,7 @@ viewpager2 = "1.1.0"
 kotlinxCoroutines = "1.10.2"
 
 # Lifecycle Libraries
-lifecycle = "2.9.2"
+lifecycle = "2.9.3"
 
 # Datastore
 datastore = "1.1.7"
