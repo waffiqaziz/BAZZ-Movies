@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyFavoriteViewModel @Inject constructor(
+class FavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
   private val postMethodUseCase: PostMethodUseCase,

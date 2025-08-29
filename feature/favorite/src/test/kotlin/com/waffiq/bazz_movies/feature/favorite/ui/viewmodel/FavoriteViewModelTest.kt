@@ -25,7 +25,7 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlowCustomDispatcher
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlowEvent
 import com.waffiq.bazz_movies.feature.favorite.testutils.InstantExecutorExtension
-import com.waffiq.bazz_movies.feature.favorite.ui.MyFavoriteViewModel
+import com.waffiq.bazz_movies.feature.favorite.ui.FavoriteViewModel
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -38,10 +38,10 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
 /**
- * Unit tests for [MyFavoriteViewModel] using Kotest BehaviorSpec.
+ * Unit tests for [FavoriteViewModel] using Kotest BehaviorSpec.
  * This class tests the ViewModel's functional
  */
-class MyFavoriteViewModelTest : BehaviorSpec({
+class FavoriteViewModelTest : BehaviorSpec({
 
   extensions(InstantExecutorExtension)
   val testDispatcher = UnconfinedTestDispatcher()
@@ -57,11 +57,11 @@ class MyFavoriteViewModelTest : BehaviorSpec({
   val getStatedMovieUseCase: GetMovieStateUseCase = mockk()
   val getStatedTvUseCase: GetTvStateUseCase = mockk()
 
-  lateinit var viewModel: MyFavoriteViewModel
+  lateinit var viewModel: FavoriteViewModel
 
   beforeTest {
     Dispatchers.setMain(testDispatcher)
-    viewModel = MyFavoriteViewModel(
+    viewModel = FavoriteViewModel(
       getFavoriteMovieUseCase,
       getFavoriteTvUseCase,
       postMethodUseCase,

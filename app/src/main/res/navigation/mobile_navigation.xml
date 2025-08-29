@@ -18,9 +18,9 @@
 
   <fragment
     android:id="@+id/navigation_my_favorite"
-    android:name="com.waffiq.bazz_movies.feature.favorite.ui.MyFavoriteFragment"
+    android:name="com.waffiq.bazz_movies.feature.favorite.ui.FavoriteFragment"
     android:label="@string/title_my_favorite"
-    tools:layout="@layout/fragment_my_favorite_movies" />
+    tools:layout="@layout/fragment_favorite_movies" />
 
   <fragment
     android:id="@+id/navigation_my_watchlist"

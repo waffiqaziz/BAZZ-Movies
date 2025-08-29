@@ -39,13 +39,13 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentMyFavoriteTvSeriesBinding
+import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteTvSeriesBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MyFavoriteTvSeriesFragment : Fragment() {
+class FavoriteTvSeriesFragment : Fragment() {
 
   @Inject
   lateinit var navigator: INavigator
@@ -55,13 +55,13 @@ class MyFavoriteTvSeriesFragment : Fragment() {
 
   private var snackbarAnchor: Int = 0
 
-  private var _binding: FragmentMyFavoriteTvSeriesBinding? = null
+  private var _binding: FragmentFavoriteTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var adapterPaging: FavoriteTvAdapter
   private lateinit var adapterDB: FavoriteAdapterDB
 
-  private val viewModelFav: MyFavoriteViewModel by viewModels()
+  private val viewModelFav: FavoriteViewModel by viewModels()
   private val viewModelDBFav: SharedDBViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private val baseViewModel: BaseViewModel by viewModels({ requireParentFragment() })
@@ -77,7 +77,7 @@ class MyFavoriteTvSeriesFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentMyFavoriteTvSeriesBinding.inflate(inflater, container, false)
+    _binding = FragmentFavoriteTvSeriesBinding.inflate(inflater, container, false)
     return binding.root
   }
 

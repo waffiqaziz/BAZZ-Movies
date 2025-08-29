@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,13 +40,13 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentMyFavoriteMoviesBinding
+import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteMoviesBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MyFavoriteMoviesFragment : Fragment() {
+class FavoriteMoviesFragment : Fragment() {
 
   @Inject
   lateinit var navigator: INavigator
@@ -55,11 +56,11 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private var snackbarAnchor: Int = 0
 
-  private var _binding: FragmentMyFavoriteMoviesBinding? = null
+  private var _binding: FragmentFavoriteMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val viewModelFav: MyFavoriteViewModel by viewModels()
-  private val viewModelDBFav: SharedDBViewModel by viewModels()
+  private val favoriteViewModel: FavoriteViewModel by viewModels()
+  private val sharedDBViewModel: SharedDBViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   private val baseViewModel: BaseViewModel by viewModels({ requireParentFragment() })
 
@@ -77,7 +78,7 @@ class MyFavoriteMoviesFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentMyFavoriteMoviesBinding.inflate(inflater, container, false)
+    _binding = FragmentFavoriteMoviesBinding.inflate(inflater, container, false)
     return binding.root
   }
 
@@ -176,11 +177,11 @@ class MyFavoriteMoviesFragment : Fragment() {
       baseViewModel.resetSnackbarShown()
       adapterPaging.refresh()
     }
-    collectAndSubmitData(this, { viewModelFav.favoriteMovies(userToken) }, adapterPaging)
+    collectAndSubmitData(this, { favoriteViewModel.favoriteMovies(userToken) }, adapterPaging)
   }
 
   private fun handleSnackbarLoginUser() {
-    viewModelFav.snackBarAlready.observe(viewLifecycleOwner) {
+    favoriteViewModel.snackBarAlready.observe(viewLifecycleOwner) {
       mSnackbar = snackBarAlready(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
@@ -190,7 +191,7 @@ class MyFavoriteMoviesFragment : Fragment() {
       )
     }
 
-    viewModelFav.snackBarAdded.observe(viewLifecycleOwner) { event ->
+    favoriteViewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
         if (!isUndo) {
           if (it.isSuccess && isWantToDelete) { // remove item success
@@ -226,7 +227,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun postToRemoveFavTMDB(title: String, movieId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.postFavorite(
+      favoriteViewModel.postFavorite(
         user.token,
         user.userId,
         FavoriteModel(
@@ -241,7 +242,7 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun postToAddWatchlistTMDB(title: String, movieId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      viewModelFav.checkMovieStatedThenPostWatchlist(user, movieId, title)
+      favoriteViewModel.checkMovieStatedThenPostWatchlist(user, movieId, title)
     }
   }
 
@@ -265,12 +266,12 @@ class MyFavoriteMoviesFragment : Fragment() {
         isUndo = true
         if (fav != null) { // undo remove from favorite
           userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postFavorite(user.token, user.userId, fav.copy(favorite = true), title)
+            favoriteViewModel.postFavorite(user.token, user.userId, fav.copy(favorite = true), title)
           }
           isWantToDelete = !isWantToDelete // to prevent show same snackbar when undo is triggered
         } else if (wtc != null) { // undo add to watchlist
           userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            viewModelFav.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
+            favoriteViewModel.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
           }
         }
       }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
@@ -289,9 +290,9 @@ class MyFavoriteMoviesFragment : Fragment() {
   private fun performSwipeGuestUser(isWantToDelete: Boolean, fav: Favorite, pos: Int) {
     if (isWantToDelete) { // delete from favorite
       if (fav.isWatchlist) {
-        viewModelDBFav.updateToRemoveFromFavoriteDB(fav)
+        sharedDBViewModel.updateToRemoveFromFavoriteDB(fav)
       } else {
-        viewModelDBFav.delFromFavoriteDB(fav)
+        sharedDBViewModel.delFromFavoriteDB(fav)
       }
       showSnackBarUndoGuest(fav.title, pos)
     } else { // add to watchlist action
@@ -304,7 +305,7 @@ class MyFavoriteMoviesFragment : Fragment() {
           false
         )
       } else {
-        viewModelDBFav.updateToWatchlistDB(fav)
+        sharedDBViewModel.updateToWatchlistDB(fav)
         showSnackBarUndoGuest(fav.title, pos)
       }
     }
@@ -312,7 +313,8 @@ class MyFavoriteMoviesFragment : Fragment() {
 
   private fun setDataGuestUserProgressBarEmptyView() {
     binding.rvFavMovies.adapter = adapterDB
-    viewModelDBFav.favoriteMoviesFromDB.observe(viewLifecycleOwner) {
+    sharedDBViewModel.favoriteMoviesFromDB.observe(viewLifecycleOwner) {
+      Log.e("LLLLLLLLLLLLL", it.toString())
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
         binding.rvFavMovies.visibility = View.VISIBLE
@@ -335,16 +337,16 @@ class MyFavoriteMoviesFragment : Fragment() {
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      viewModelDBFav.undoDB.value?.getContentIfNotHandled()?.let { fav ->
+      sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { fav ->
         if (isWantToDelete) { // undo remove from favorite
           if (fav.isWatchlist) {
-            viewModelDBFav.updateToFavoriteDB(fav)
+            sharedDBViewModel.updateToFavoriteDB(fav)
           } else {
-            viewModelDBFav.insertToDB(fav.copy(isFavorite = true))
+            sharedDBViewModel.insertToDB(fav.copy(isFavorite = true))
           }
           binding.rvFavMovies.scrollToPosition(pos)
         } else { // undo add to watchlist
-          viewModelDBFav.updateToRemoveFromWatchlistDB(fav)
+          sharedDBViewModel.updateToRemoveFromWatchlistDB(fav)
         }
       }
     }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
@@ -353,7 +355,7 @@ class MyFavoriteMoviesFragment : Fragment() {
   }
 
   private fun insertDBObserver() {
-    viewModelDBFav.dbResult.observe(viewLifecycleOwner) { eventResult ->
+    sharedDBViewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Error -> requireContext().toastShort(it.errorMessage)
