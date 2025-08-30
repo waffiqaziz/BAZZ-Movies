@@ -13,15 +13,14 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_fav_tv"
+      android:id="@+id/rv_favorite"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipToPadding="false"
-
       android:paddingTop="10dp"
       android:paddingBottom="?attr/actionBarSize"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:listitem="@layout/item_mulmed" />
+      tools:listitem="@layout/item_result" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -44,7 +43,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/margin_to_centered"
-    android:visibility="gone" />
+    android:visibility="gone"
+    tools:visibility="invisible" />
 
   <ProgressBar
     android:id="@+id/progress_bar"

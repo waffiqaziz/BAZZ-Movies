@@ -12,13 +12,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.viewpager.GenericViewPagerAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.common.Constants.tabMoviesTvHeadingArray
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentMyFavoriteBinding
+import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyFavoriteFragment : Fragment() {
+class FavoriteFragment : Fragment() {
 
-  private var _binding: FragmentMyFavoriteBinding? = null
+  private var _binding: FragmentFavoriteBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewpager: ViewPager2
@@ -30,7 +30,7 @@ class MyFavoriteFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    _binding = FragmentMyFavoriteBinding.inflate(inflater, container, false)
+    _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
     (activity as AppCompatActivity).supportActionBar?.show()
     return binding.root
   }
@@ -48,7 +48,7 @@ class MyFavoriteFragment : Fragment() {
     val adapter = GenericViewPagerAdapter(
       childFragmentManager,
       lifecycle,
-      listOf(MyFavoriteMoviesFragment(), MyFavoriteTvSeriesFragment())
+      listOf(FavoriteMoviesFragment(), FavoriteTvSeriesFragment())
     )
     viewpager.adapter = adapter
 
