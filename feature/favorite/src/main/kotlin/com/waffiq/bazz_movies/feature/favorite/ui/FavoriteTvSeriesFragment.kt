@@ -84,7 +84,7 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem =
-    (viewHolder as FavoriteMovieAdapter.ViewHolder).data
+    (viewHolder as FavoriteTvAdapter.ViewHolder).data
 
   override fun getMediaType(): String = MOVIE_MEDIA_TYPE
 
