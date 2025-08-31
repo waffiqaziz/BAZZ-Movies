@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui
+package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
+import com.waffiq.bazz_movies.core.common.utils.Constants
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
@@ -30,15 +30,16 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterD
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
-import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils
+import com.waffiq.bazz_movies.core.utils.FlowUtils
+import com.waffiq.bazz_movies.core.utils.GeneralHelper
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
+import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -49,7 +50,7 @@ import javax.inject.Inject
  * for adding/removing favorites and watchlist items, as well as swipe actions
  * with undo capabilities via Snackbar.
  *
- * @param T The type of data, which [MediaItem].
+ * @param T The type of data, which [com.waffiq.bazz_movies.core.domain.MediaItem].
  */
 abstract class BaseFavoriteFragment<T : Any> : Fragment() {
 
@@ -111,7 +112,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     setupRecyclerView()
 
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != NAN) {
+      if (user.token != Constants.NAN) {
         initAction(isLogin = true)
         setupRefresh(isLogin = true)
         setDataUserLoginProgressBarEmptyView(user.token)
@@ -128,7 +129,8 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * Setup the RecyclerView with a vertical linear layout manager and default item animator.
    */
   private fun setupRecyclerView() {
-    binding.rvFavorite.layoutManager = initLinearLayoutManagerVertical(requireContext())
+    binding.rvFavorite.layoutManager =
+      GeneralHelper.initLinearLayoutManagerVertical(requireContext())
     binding.rvFavorite.itemAnimator = DefaultItemAnimator()
   }
 
@@ -168,7 +170,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
       isWantToDelete = false
-      postToAddWatchlist(titleHandler(itemData), itemData.id)
+      postToAddWatchlist(DetailDataUtils.titleHandler(itemData), itemData.id)
       notifyPagingAdapterChanged(position)
     } else {
       val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
@@ -190,7 +192,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
       isWantToDelete = true
-      postToRemoveFavTMDB(titleHandler(itemData), itemData.id)
+      postToRemoveFavTMDB(DetailDataUtils.titleHandler(itemData), itemData.id)
       notifyPagingAdapterChanged(position)
     } else {
       val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
@@ -236,7 +238,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       getPagingAdapter().refresh()
     }
 
-    collectAndSubmitData(this, { getFavoriteData(userToken) }, getPagingAdapter())
+    FlowUtils.collectAndSubmitData(this, { getFavoriteData(userToken) }, getPagingAdapter())
   }
 
   /**
@@ -246,7 +248,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    */
   private fun handleSnackbarLoginUser() {
     favoriteViewModel.snackBarAlready.observe(viewLifecycleOwner) {
-      mSnackbar = snackBarAlready(
+      mSnackbar = SnackbarAlreadyUtils.snackBarAlready(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
         requireActivity().findViewById(snackbarAnchor),
@@ -314,7 +316,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    *
    * @param title title of the media item involved in the action.
    * @param fav [FavoriteModel]  representing the favorite item.
-   * @param wtc [WatchlistModel]  representing the watchlist item.
+   * @param wtc [com.waffiq.bazz_movies.core.domain.WatchlistModel]  representing the watchlist item.
    */
   protected fun showSnackBarUserLogin(
     title: String,
@@ -336,12 +338,22 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
         isUndo = true
         if (fav != null) {
           userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            favoriteViewModel.postFavorite(user.token, user.userId, fav.copy(favorite = true), title)
+            favoriteViewModel.postFavorite(
+              user.token,
+              user.userId,
+              fav.copy(favorite = true),
+              title
+            )
           }
           isWantToDelete = !isWantToDelete
         } else if (wtc != null) {
           userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            favoriteViewModel.postWatchlist(user.token, user.userId, wtc.copy(watchlist = false), title)
+            favoriteViewModel.postWatchlist(
+              user.token,
+              user.userId,
+              wtc.copy(watchlist = false),
+              title
+            )
           }
         }
       }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
@@ -372,7 +384,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       showSnackBarUndoGuest(fav.title, pos)
     } else {
       if (fav.isWatchlist) {
-        mSnackbar = snackBarAlready(
+        mSnackbar = SnackbarAlreadyUtils.snackBarAlready(
           requireContext(),
           requireActivity().findViewById(snackbarAnchor),
           requireActivity().findViewById(snackbarAnchor),
@@ -470,7 +482,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     super.onResume()
     baseViewModel.resetSnackbarShown()
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != NAN) {
+      if (user.token != Constants.NAN) {
         getPagingAdapter().refresh()
       }
     }

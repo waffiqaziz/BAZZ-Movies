@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui
+package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

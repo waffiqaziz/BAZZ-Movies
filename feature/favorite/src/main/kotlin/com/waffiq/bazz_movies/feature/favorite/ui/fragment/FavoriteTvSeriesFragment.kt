@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui
+package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
+import com.waffiq.bazz_movies.feature.favorite.ui.fragment.BaseFavoriteFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 
