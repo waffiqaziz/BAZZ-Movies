@@ -57,17 +57,6 @@
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-bom than 34.1.0 is available: 34.2.0"
-        errorLine1="firebaseBom = &quot;34.1.0&quot;"
-        errorLine2="              ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="22"
-            column="15"/>
-    </issue>
-
-    <issue
         id="NewerVersionAvailable"
         message="A newer version of com.github.bumptech.glide:glide than 4.16.0 is available: 5.0.0"
         errorLine1="glide = &quot;4.16.0&quot;"
