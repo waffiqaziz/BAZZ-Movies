@@ -112,7 +112,7 @@ class MyWatchlistMoviesFragment : Fragment() {
 
   private fun initAction(isLogin: Boolean) {
     val swipeCallback = SwipeCallbackHelper(
-      onSwipeLeft = {  viewHolder, position ->
+      onSwipeLeft = { viewHolder, position ->
         isUndo = false
         if (isLogin) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
@@ -126,7 +126,7 @@ class MyWatchlistMoviesFragment : Fragment() {
           adapterDB.notifyItemChanged(position)
         }
       },
-      onSwipeRight = {  viewHolder, position ->
+      onSwipeRight = { viewHolder, position ->
         if (isLogin) {
           val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
           isWantToDelete = true

@@ -52,6 +52,7 @@ import javax.inject.Inject
  *
  * @param T The type of data, which [com.waffiq.bazz_movies.core.domain.MediaItem].
  */
+@Suppress("TooManyFunctions")
 abstract class BaseFavoriteFragment<T : Any> : Fragment() {
 
   @Inject

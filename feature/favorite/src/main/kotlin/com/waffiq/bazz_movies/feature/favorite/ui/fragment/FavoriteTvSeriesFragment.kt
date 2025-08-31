@@ -17,7 +17,6 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
-import com.waffiq.bazz_movies.feature.favorite.ui.fragment.BaseFavoriteFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 
