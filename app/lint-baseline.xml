@@ -2,19 +2,8 @@
 <issues format="6" by="lint 8.12.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.12.0)" variant="all" version="8.12.0">
 
     <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
-        errorLine1="targetSdk = &quot;35&quot;"
-        errorLine2="            ~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="3"
-            column="13"/>
-    </issue>
-
-    <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.application than 8.12.0 is available: 8.12.1"
+        message="A newer version of com.android.application than 8.12.0 is available: 8.12.2"
         errorLine1="agp = &quot;8.12.0&quot;"
         errorLine2="      ~~~~~~~~">
         <location
@@ -25,7 +14,7 @@
 
     <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.library than 8.12.0 is available: 8.12.1"
+        message="A newer version of com.android.library than 8.12.0 is available: 8.12.2"
         errorLine1="agp = &quot;8.12.0&quot;"
         errorLine2="      ~~~~~~~~">
         <location
@@ -36,7 +25,7 @@
 
     <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.test than 8.12.0 is available: 8.12.1"
+        message="A newer version of com.android.test than 8.12.0 is available: 8.12.2"
         errorLine1="agp = &quot;8.12.0&quot;"
         errorLine2="      ~~~~~~~~">
         <location
@@ -47,7 +36,7 @@
 
     <issue
         id="AndroidGradlePluginVersion"
-        message="A newer version of com.android.tools.build:gradle than 8.12.0 is available: 8.12.1"
+        message="A newer version of com.android.tools.build:gradle than 8.12.0 is available: 8.12.2"
         errorLine1="agp = &quot;8.12.0&quot;"
         errorLine2="      ~~~~~~~~">
         <location
@@ -58,18 +47,7 @@
 
     <issue
         id="GradleDependency"
-        message="A newer version of `compileSdkVersion` than 35 is available: 36"
-        errorLine1="compileSdk = &quot;35&quot;"
-        errorLine2="             ~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="4"
-            column="14"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.android.tools:common than 31.12.0 is available: 31.12.1"
+        message="A newer version of com.android.tools:common than 31.12.0 is available: 31.12.2"
         errorLine1="androidTools = &quot;31.12.0&quot;"
         errorLine2="               ~~~~~~~~~">
         <location
@@ -80,156 +58,24 @@
 
     <issue
         id="GradleDependency"
-        message="A newer version of androidx.core:core than 1.16.0 is available: 1.17.0"
-        errorLine1="coreKtx = &quot;1.16.0&quot;"
-        errorLine2="          ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="35"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.core:core-ktx than 1.16.0 is available: 1.17.0"
-        errorLine1="coreKtx = &quot;1.16.0&quot;"
-        errorLine2="          ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="35"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.fragment:fragment-ktx than 1.8.8 is available: 1.8.9"
-        errorLine1="fragmentKtx = &quot;1.8.8&quot;"
-        errorLine2="              ~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="38"
-            column="15"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.fragment:fragment-testing than 1.8.8 is available: 1.8.9"
-        errorLine1="fragmentKtx = &quot;1.8.8&quot;"
-        errorLine2="              ~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="38"
-            column="15"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of org.jetbrains.kotlin.android than 2.2.0 is available: 2.2.10"
-        errorLine1="kotlin = &quot;2.2.0&quot;"
-        errorLine2="         ~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="15"
-            column="10"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of org.jetbrains.kotlin.jvm than 2.2.0 is available: 2.2.10"
-        errorLine1="kotlin = &quot;2.2.0&quot;"
-        errorLine2="         ~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="15"
-            column="10"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger.hilt.android than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger:hilt-android than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger:hilt-android-compiler than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger:hilt-android-testing than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger:hilt-compiler than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.google.dagger:hilt-core than 2.57 is available: 2.57.1"
-        errorLine1="hilt = &quot;2.57&quot;"
-        errorLine2="       ~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="17"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of org.mockito:mockito-android than 5.18.0 is available: 5.19.0"
-        errorLine1="mockitoAndroid = &quot;5.18.0&quot;"
-        errorLine2="                 ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="79"
-            column="18"/>
-    </issue>
-
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of org.mockito:mockito-core than 5.18.0 is available: 5.19.0"
-        errorLine1="mockitoCore = &quot;5.18.0&quot;"
+        message="A newer version of com.google.firebase:firebase-bom than 34.1.0 is available: 34.2.0"
+        errorLine1="firebaseBom = &quot;34.1.0&quot;"
         errorLine2="              ~~~~~~~~">
         <location
             file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="81"
+            line="22"
             column="15"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.github.bumptech.glide:glide than 4.16.0 is available: 5.0.0"
+        errorLine1="glide = &quot;4.16.0&quot;"
+        errorLine2="        ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="90"
+            column="9"/>
     </issue>
 
 </issues>
