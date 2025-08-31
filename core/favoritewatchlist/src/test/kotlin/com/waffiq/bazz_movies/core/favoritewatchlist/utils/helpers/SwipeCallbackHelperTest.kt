@@ -27,8 +27,8 @@ import kotlin.test.assertFailsWith
 class SwipeCallbackHelperTest {
 
   // mocked callbacks for swipe actions
-  private val mockSwipeLeft: (Boolean, RecyclerView.ViewHolder, Int) -> Unit = mockk(relaxed = true)
-  private val mockSwipeRight: (Boolean, RecyclerView.ViewHolder, Int) -> Unit =
+  private val mockSwipeLeft: (RecyclerView.ViewHolder, Int) -> Unit = mockk(relaxed = true)
+  private val mockSwipeRight: (RecyclerView.ViewHolder, Int) -> Unit =
     mockk(relaxed = true)
   private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -58,7 +58,6 @@ class SwipeCallbackHelperTest {
 
     // initialize the class under test with required dependencies
     swipeCallbackHelper = SwipeCallbackHelper(
-      isLogin = true,
       onSwipeLeft = mockSwipeLeft,
       onSwipeRight = mockSwipeRight,
       context = context,
@@ -80,7 +79,7 @@ class SwipeCallbackHelperTest {
 
     // capture the actual position to verify what's being passed
     val positionSlot = slot<Int>()
-    verify { mockSwipeLeft(true, viewHolder, capture(positionSlot)) }
+    verify { mockSwipeLeft(viewHolder, capture(positionSlot)) }
 
     println("Actual position passed: ${positionSlot.captured}")
 
@@ -101,7 +100,7 @@ class SwipeCallbackHelperTest {
 
     // capture the actual position to verify what's being passed
     val positionSlot = slot<Int>()
-    verify { mockSwipeRight(true, viewHolder, capture(positionSlot)) }
+    verify { mockSwipeRight(viewHolder, capture(positionSlot)) }
 
     println("Actual position passed: ${positionSlot.captured}")
 
@@ -124,8 +123,8 @@ class SwipeCallbackHelperTest {
     swipeCallbackHelper.onSwiped(viewHolder, invalidDirection)
 
     // verify that neither callback was triggered
-    verify(exactly = 0) { mockSwipeLeft(any(), any(), any()) }
-    verify(exactly = 0) { mockSwipeRight(any(), any(), any()) }
+    verify(exactly = 0) { mockSwipeLeft(any(), any()) }
+    verify(exactly = 0) { mockSwipeRight(any(), any()) }
   }
 
   @Test
@@ -224,9 +223,8 @@ class SwipeCallbackHelperTest {
   fun swipeCallbackHelper_initWithCorrectParameters_returnsTheInstance() {
     // verify that the helper can be instantiated with different parameters
     val helper = SwipeCallbackHelper(
-      isLogin = false,
-      onSwipeLeft = { _, _, _ -> },
-      onSwipeRight = { _, _, _ -> },
+      onSwipeLeft = { _, _ -> },
+      onSwipeRight = { _, _ -> },
       context = context,
       deleteIconResId = 0,
       actionIconResId = 0
@@ -239,7 +237,6 @@ class SwipeCallbackHelperTest {
   fun swipeCallbackHelper_swipeRightWithNullIcon_handlesNullValue() {
     // create a new SwipeCallbackHelper with null resource IDs
     val helperWithNullIcons = SwipeCallbackHelper(
-      isLogin = true,
       onSwipeLeft = mockSwipeLeft,
       onSwipeRight = mockSwipeRight,
       context = context,
@@ -268,7 +265,6 @@ class SwipeCallbackHelperTest {
   fun swipeCallbackHelper_swipeLeftWithNullIcon_handlesNullValue() {
     // create a new SwipeCallbackHelper with null resource IDs
     val helperWithNullIcons = SwipeCallbackHelper(
-      isLogin = true,
       onSwipeLeft = mockSwipeLeft,
       onSwipeRight = mockSwipeRight,
       context = context,

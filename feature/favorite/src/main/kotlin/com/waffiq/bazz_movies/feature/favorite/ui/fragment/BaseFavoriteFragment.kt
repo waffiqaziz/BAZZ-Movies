@@ -136,18 +136,14 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
 
   /**
    * Initialize swipe actions for the RecyclerView.
-   * Sets up swipe callbacks for left and right swipes, handling different actions based on login status.
-   *
-   * @param isLogin Boolean indicating if the user is logged in or not.
    */
   private fun initAction(isLogin: Boolean) {
     val swipeCallback = SwipeCallbackHelper(
-      isLogin = isLogin,
-      onSwipeLeft = { login, viewHolder, position ->
-        handleSwipeLeft(login, viewHolder, position)
+      onSwipeLeft = { viewHolder, position ->
+        handleSwipeLeft(isLogin, viewHolder, position)
       },
-      onSwipeRight = { login, viewHolder, position ->
-        handleSwipeRight(login, viewHolder, position)
+      onSwipeRight = { viewHolder, position ->
+        handleSwipeRight(isLogin, viewHolder, position)
       },
       context = requireContext(),
       deleteIconResId = ic_trash,
