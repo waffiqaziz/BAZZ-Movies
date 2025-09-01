@@ -10,9 +10,19 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
+
+      // Check for the existence of google-services.json to decide whether to apply Firebase plugins
+      val googleServicesFile = rootProject.file("app/google-services.json")
+      if (!googleServicesFile.exists()) {
+        logger.warn("[WARNING] google-services.json not found. Firebase will be disabled for this build.")
+        return
+      }
+
       apply(plugin = "com.google.gms.google-services")
       apply(plugin = "com.google.firebase.firebase-perf")
       apply(plugin = "com.google.firebase.crashlytics")
+
+      logger.lifecycle("[INFO] google-services.json found. Firebase plugins applied.")
 
       dependencies {
         val bom = libs.findLibrary("firebase-bom").get()
@@ -24,11 +34,9 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
 
       extensions.configure<ApplicationExtension> {
         buildTypes.configureEach {
-          // Disable the Crashlytics mapping file upload. This feature should only be
-          // enabled if a Firebase backend is available and configured in
-          // google-services.json.
+          // Enable mapping file upload for release builds only
           configure<CrashlyticsExtension> {
-            mappingFileUploadEnabled = false
+            mappingFileUploadEnabled = name == "release"
           }
         }
       }
