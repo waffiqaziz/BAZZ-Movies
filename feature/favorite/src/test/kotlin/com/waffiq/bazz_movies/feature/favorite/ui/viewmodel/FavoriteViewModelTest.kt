@@ -25,7 +25,7 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlowCustomDispatcher
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlowEvent
 import com.waffiq.bazz_movies.feature.favorite.testutils.InstantExecutorExtension
-import com.waffiq.bazz_movies.feature.favorite.ui.FavoriteViewModel
+import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery

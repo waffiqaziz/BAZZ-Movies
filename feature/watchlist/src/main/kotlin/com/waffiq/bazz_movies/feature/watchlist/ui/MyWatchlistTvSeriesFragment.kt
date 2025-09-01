@@ -112,10 +112,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
 
   private fun initAction(isLogin: Boolean) {
     val swipeCallback = SwipeCallbackHelper(
-      isLogin = isLogin,
-      onSwipeLeft = { login, viewHolder, position ->
+      onSwipeLeft = { viewHolder, position ->
         isUndo = false
-        if (login) {
+        if (isLogin) {
           val fav = (viewHolder as FavoriteTvAdapter.ViewHolder).data
           isWantToDelete = false
           postToAddFavoriteTMDB(titleHandler(fav), fav.id)
@@ -127,9 +126,9 @@ class MyWatchlistTvSeriesFragment : Fragment() {
           adapterDB.notifyItemChanged(position)
         }
       },
-      onSwipeRight = { login, viewHolder, position ->
+      onSwipeRight = { viewHolder, position ->
         isUndo = false
-        if (login) {
+        if (isLogin) {
           val fav = (viewHolder as FavoriteTvAdapter.ViewHolder).data
           isWantToDelete = true
           postToRemoveWatchlistTMDB(titleHandler(fav), fav.id)

@@ -18,10 +18,7 @@ import kotlin.math.abs
  * This class extends [ItemTouchHelper.Callback] to manage swipe gestures (left and right) on items
  * within a RecyclerView.
  *
- * @property isLogin A boolean flag indicating whether the user is logged in. This is used to determine
- *                   the behavior of swipe actions.
- * @property onSwipeLeft A callback function triggered when an item is swiped left. It takes three parameters:
- *  - A boolean indicating if the user is logged in.
+ * @property onSwipeLeft A callback function triggered when an item is swiped left. It takes two parameters:
  *  - The [RecyclerView.ViewHolder] being swiped.
  *  - The position of the item in the adapter.
  * @property onSwipeRight A callback function triggered when an item is swiped right.
@@ -38,9 +35,8 @@ import kotlin.math.abs
  *  - Customize swipe behavior, such as setting a threshold in [getSwipeThreshold].
  */
 class SwipeCallbackHelper(
-  private val isLogin: Boolean,
-  private val onSwipeLeft: (Boolean, RecyclerView.ViewHolder, Int) -> Unit,
-  private val onSwipeRight: (Boolean, RecyclerView.ViewHolder, Int) -> Unit,
+  private val onSwipeLeft: (RecyclerView.ViewHolder, Int) -> Unit,
+  private val onSwipeRight: (RecyclerView.ViewHolder, Int) -> Unit,
   private val context: Context,
   private val deleteIconResId: Int,
   private val actionIconResId: Int,
@@ -63,9 +59,9 @@ class SwipeCallbackHelper(
   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
     val position = viewHolder.bindingAdapterPosition
     if (direction == ItemTouchHelper.START) { // swipe left
-      onSwipeLeft(isLogin, viewHolder, position)
+      onSwipeLeft(viewHolder, position)
     } else if (direction == ItemTouchHelper.END) { // swipe right
-      onSwipeRight(isLogin, viewHolder, position)
+      onSwipeRight(viewHolder, position)
     }
   }
 

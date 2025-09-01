@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui
+package com.waffiq.bazz_movies.feature.favorite.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -96,7 +95,7 @@ class FavoriteViewModel @Inject constructor(
               postWatchlist(
                 user.token,
                 user.userId,
-                WatchlistModel(MOVIE_MEDIA_TYPE, id, true),
+                WatchlistModel(Constants.MOVIE_MEDIA_TYPE, id, true),
                 title
               )
             }
@@ -129,7 +128,7 @@ class FavoriteViewModel @Inject constructor(
               postWatchlist(
                 user.token,
                 user.userId,
-                WatchlistModel(TV_MEDIA_TYPE, id, true),
+                WatchlistModel(Constants.TV_MEDIA_TYPE, id, true),
                 title
               )
             }

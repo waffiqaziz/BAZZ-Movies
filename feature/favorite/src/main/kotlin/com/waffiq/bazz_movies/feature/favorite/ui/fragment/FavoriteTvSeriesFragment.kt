@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui
+package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,23 +9,24 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 
 @AndroidEntryPoint
-class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
+class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
 
   private var _binding: FragmentFavoriteChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var adapterPaging: FavoriteMovieAdapter
+  private lateinit var adapterPaging: FavoriteTvAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -37,7 +38,7 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    adapterPaging = FavoriteMovieAdapter(navigator)
+    adapterPaging = FavoriteTvAdapter(navigator)
     super.onViewCreated(view, savedInstanceState)
   }
 
@@ -63,26 +64,26 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
-    favoriteViewModel.favoriteMovies(token)
+    favoriteViewModel.favoriteTvSeries(token)
 
   override fun getDBFavoriteData(): LiveData<List<Favorite>> =
-    sharedDBViewModel.favoriteMoviesFromDB
+    sharedDBViewModel.favoriteTvFromDB
 
   override fun createFavoriteModel(mediaId: Int): FavoriteModel =
     FavoriteModel(
-      mediaType = MOVIE_MEDIA_TYPE,
+      mediaType = TV_MEDIA_TYPE,
       mediaId = mediaId,
       favorite = false
     )
 
   override fun postToAddWatchlist(title: String, mediaId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      favoriteViewModel.checkMovieStatedThenPostWatchlist(user, mediaId, title)
+      favoriteViewModel.checkTvStatedThenPostWatchlist(user, mediaId, title)
     }
   }
 
   override fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem =
-    (viewHolder as FavoriteMovieAdapter.ViewHolder).data
+    (viewHolder as FavoriteTvAdapter.ViewHolder).data
 
   override fun getMediaType(): String = MOVIE_MEDIA_TYPE
 
