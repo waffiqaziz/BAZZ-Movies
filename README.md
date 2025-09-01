@@ -76,24 +76,48 @@ BAZZ Movies available downloaded via Google Play Store
 <img src="https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png" width=200  alt="Get BAZZ Movies on Google Play"/>
 </a>
 
-## 📝 Development Set Up
+## 📝 Project Setup Instructions
 
-1. Make sure already install [Android Studio](https://developer.android.com/studio).
-2. Clone this project.
-3. (Optional)
-   Set up [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
-   and [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
-4. Obtain API keys from [TMDB](https://developer.themoviedb.org/docs/getting-started)
-   and [OMDb](https://www.omdbapi.com/apikey.aspx).
-5. Create or edit `local.properties` file and add your API keys:
+1. **Install Android Studio**
+
+   - Download and install [Android Studio](https://developer.android.com/studio).
+   - Minimum required version: **Narwhal Feature Drop | 2025.1.2**.
+
+2. **Install JDK 21**
+
+   Ensure that **JDK 21** is installed and [properly configured in your environment](https://developer.android.com/build/jdks#jdk-config-in-studio).
+
+3. **Clone the Project**
+
+   Clone this repository to your local machine using Git.
+
+4. **(Optional) Set up Firebase Services**
+
+   - [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=android)
+   - [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=android)
+
+5. **Obtain API Keys**
+
+   - [TMDB](https://developer.themoviedb.org/docs/getting-started)
+   - [OMDb](https://www.omdbapi.com/apikey.aspx)
+
+6. **Configure API Keys**
+
+   Create or update your `local.properties` file in the project root and add the following lines:
 
    ```properties
    TMDB_API_KEY = { TMDB_API_KEY }
    OMDB_API_KEY = { OMDB_API_KEY }
    ```
 
-6. Build the project (`Ctrl + F9`).
-7. Run the project on an emulator or a physical device.
+7. **Build the Project**
+
+   Use **Ctrl + F9** (or `Build > Make Project`) in Android Studio.
+
+8. **Run the Project**
+
+   Launch the project on either an emulator or a connected physical device.
+
 
 ## 🛠️ Architecture
 
@@ -164,7 +188,7 @@ Licensed under [Open Font License](https://openfontlicense.org/):
 [PLAY-STORE]: https://play.google.com/store/apps/details?id=com.bazz.bazz_movies
 [FAQ]: https://docs.google.com/document/d/1HNrj5i3Rnpr50Ldwgfz5ODpaJoWF17TXIop7xwtXkiU/edit?usp=sharing
 
-[BADGE-ANDROID-SDK]: https://img.shields.io/badge/Android%20SDK-23%20→%2035-brightgreen
+[BADGE-ANDROID-SDK]: https://img.shields.io/badge/Android%20SDK-23%20→%2036-brightgreen
 [BADGE-UI]: https://img.shields.io/badge/View%20Binding-using-green?logo=android
 [BADGE-HILT]: https://img.shields.io/badge/Hilt-DI-blue?logo=dagger
 [BADGE-ROOM]: https://img.shields.io/badge/Room-DB-FF6F00?logo=android
