@@ -87,7 +87,7 @@ truth = "1.4.4"
 turbine = "1.2.1"
 
 # Image Loading
-glide = "4.16.0"
+glide = "5.0.4"
 
 # Third-party Libraries
 expandableTextView = "1.0.7"
