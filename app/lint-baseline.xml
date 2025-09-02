@@ -56,15 +56,4 @@
             column="16"/>
     </issue>
 
-    <issue
-        id="NewerVersionAvailable"
-        message="A newer version of com.github.bumptech.glide:glide than 4.16.0 is available: 5.0.0"
-        errorLine1="glide = &quot;4.16.0&quot;"
-        errorLine2="        ~~~~~~~~">
-        <location
-            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
-            line="90"
-            column="9"/>
-    </issue>
-
 </issues>
