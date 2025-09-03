@@ -81,7 +81,7 @@ class GetRegionHelperTest {
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
     mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
 
-    val locale = Locale("en", "GB") // Simulate a UK locale
+    val locale = Locale.of("en", "GB") // Simulate a UK locale
     every { context.resources } returns resources
     every { resources.configuration } returns configuration
 
@@ -117,7 +117,7 @@ class GetRegionHelperTest {
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
 
-    val locale = Locale("en", "US")
+    val locale = Locale.of("en", "US")
     mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
     every { configuration.locales } returns LocaleList(locale)
 
@@ -129,7 +129,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23]) // ensures API level < 24
   fun getLocationApi23_fallbackToSingleLocale() {
-    val locale = Locale("es", "ES")
+    val locale = Locale.of("es", "ES")
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -159,7 +159,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [Build.VERSION_CODES.N])
   fun localeListGetOrNullUutOfBounds_returnsNull() {
-    val localeList = LocaleList(Locale("en", "US"), Locale("fr", "FR")) // list with 2 locales
+    val localeList = LocaleList(Locale.of("en", "US"), Locale.of("fr", "FR")) // list with 2 locales
 
     assertNull(localeList.getOrNull(-1))
     assertNull(localeList.getOrNull(2))
@@ -168,7 +168,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withEmptyCountry_returnEmptyString() {
-    val locale = Locale("", "")
+    val locale = Locale.of("", "")
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -202,7 +202,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withMixedCaseCountry_returnLowercase() {
-    val locale = Locale("en", "Us") // mixed-case country code
+    val locale = Locale.of("en", "Us") // mixed-case country code
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -220,7 +220,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withDifferentCaseCountry_returnLowercase() {
-    val locale = Locale("en", "uS")
+    val locale = Locale.of("en", "uS")
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -237,7 +237,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withDifferentDefaultLocale_returnLowercase() {
-    val locale = Locale("en", "DE")
+    val locale = Locale.of("en", "DE")
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -261,7 +261,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withRootLocale_returnLowercase() {
-    val locale = Locale("en", "JP") // Example: Japan region
+    val locale = Locale.of("en", "JP") // Example: Japan region
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
@@ -285,7 +285,7 @@ class GetRegionHelperTest {
   @Test
   @Config(sdk = [23])
   fun getLocationApi23_withBlankCountry_returnEmptyString() {
-    val locale = Locale("en", "   ")
+    val locale = Locale.of("en", "   ")
 
     mockkObject(TimeZoneHelper)
     every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
