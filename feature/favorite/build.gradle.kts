@@ -7,7 +7,7 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android{
+android {
   namespace = "com.waffiq.bazz_movies.feature.favorite"
 
   // required for Kotest
@@ -32,9 +32,7 @@ dependencies {
 
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
-  testImplementation(libs.kotest.kotest.assertions.core)
-  testImplementation(libs.kotest.property)
-  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
   testImplementation(libs.truth)

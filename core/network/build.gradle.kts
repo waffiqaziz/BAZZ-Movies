@@ -36,15 +36,11 @@ dependencies {
   implementation(libs.kotlinx.coroutines.core)
 
   // retrofit & moshi
-  implementation(libs.retrofit)
-  implementation(libs.retrofit.converter.moshi)
-  implementation(libs.moshi.kotlin)
-  implementation(libs.okhttp.logging.interceptor)
+  implementation(libs.bundles.retrofit)
   ksp(libs.moshi.kotlin.codegen)
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.paging.runtime)
-  testImplementation(libs.junit)
   testImplementation(libs.json) // using to test JSONObject
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)

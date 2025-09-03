@@ -3,7 +3,7 @@
 targetSdk = "36"
 compileSdk = "36"
 minSdk = "23"
-ndkVersion = "27.2.12479018"
+ndkVersion = "28.2.13676358"
 
 # App Version
 versionCode = "27"
@@ -173,7 +173,6 @@ junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 json = { module = "org.json:json", version.ref = "json" }
 
 # Kotest Libraries
-kotest-framework-concurrency = { module = "io.kotest:kotest-framework-concurrency", version.ref = "kotest" }
 kotest-kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
@@ -188,8 +187,8 @@ mockito-android = { module = "org.mockito:mockito-android", version.ref = "mocki
 mockito-android-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 
 # Mockk Libraries
-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" } # use for instrumentation tests
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" } # use for unit tests
 
 # Other Testing Libraries
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
@@ -265,3 +264,27 @@ bazzmovies-glide = { id = "bazzmovies.glide" }
 bazzmovies-hilt = { id = "bazzmovies.hilt" }
 bazzmovies-hilt-test = { id = "bazzmovies.hilt.test" }
 bazzmovies-jvm-library = { id = "bazzmovies.jvm.library" }
+
+[bundles]
+datastore = [
+  "androidx-datastore-core",
+  "androidx-datastore-preferences"
+]
+
+firebase = [
+  "firebase-analytics",
+  "firebase-crashlytics",
+  "firebase-performance"]
+
+kotest = [
+  "kotest-kotest-assertions-core",
+  "kotest-property",
+  "kotest-runner-junit5"
+]
+
+retrofit = [
+  "retrofit",
+  "retrofit-converter-moshi",
+  "moshi-kotlin",
+  "okhttp-logging-interceptor"
+]
