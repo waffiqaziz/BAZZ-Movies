@@ -23,7 +23,7 @@ import org.robolectric.Shadows.shadowOf
 @RunWith(RobolectricTestRunner::class)
 class SnackbarUtilsTest {
   /**
-   * This test is always return null because `Roboelectric` cant return true for
+   * This test is always return null because `Robolectric` cant return true for
    * `view.isAttachedToWindow`, so in this test we just assume the function is called,
    * return throw, and no error as `snackBarWarning` is always return null when exception happen.
    *

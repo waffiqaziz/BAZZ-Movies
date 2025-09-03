@@ -53,14 +53,15 @@ class DatabaseModuleUnitTest {
       val dao = database.favoriteDao()
       assertNotNull("DAO should not be null", dao)
 
-      // OPTIONAL DATABASE VERSION CHECK
+      // Force Room to create/open the database
+      database.openHelper.writableDatabase
+
       // get the path where the database should be stored
       val dbPath = context.getDatabasePath("$TABLE_NAME.db")
 
       println("Database file exists: ${dbPath.exists()}")
 
       // check the version if the database file exists
-      // *important because Room may create the database lazily
       if (dbPath.exists()) {
         // open the SQLite database directly to check its properties
         // "use" extension ensures the database will be closed properly
