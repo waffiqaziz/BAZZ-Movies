@@ -27,7 +27,7 @@ class CustomSnapHelperTest {
 
   @Before
   fun setup() {
-    context = ApplicationProvider.getApplicationContext<Context>()
+    context = ApplicationProvider.getApplicationContext()
     recyclerView = RecyclerView(context)
     recyclerView.layoutManager = LinearLayoutManager(
       recyclerView.context, LinearLayoutManager.HORIZONTAL, false
