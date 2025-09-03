@@ -12,7 +12,7 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
     with(target) {
 
       // Check for the existence of google-services.json to decide whether to apply Firebase plugins
-      val googleServicesFile = target.file("app/google-services.json")
+      val googleServicesFile = rootProject.file("app/google-services.json")
       if (!googleServicesFile.exists()) {
         logger.warn("[WARNING] google-services.json not found. Firebase will be disabled for this build.")
         return
