@@ -27,7 +27,6 @@ dependencies {
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
-  testImplementation(libs.junit)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.kotlin.test.junit)
   testImplementation(libs.mockk)

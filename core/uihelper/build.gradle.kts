@@ -13,9 +13,7 @@ dependencies {
   api(libs.androidx.core.ktx)
   implementation(libs.androidx.paging.runtime)
 
-  testImplementation(libs.androidx.core)
   testImplementation(libs.androidx.test.core)
-  testImplementation(libs.junit)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
 }

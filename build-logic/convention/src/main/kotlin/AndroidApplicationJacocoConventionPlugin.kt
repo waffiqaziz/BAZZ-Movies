@@ -18,6 +18,7 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
         enableUnitTestCoverage = true
       }
 
+      // Set the JaCoCo version to match the one used by the Android Gradle Plugin
       androidExtension.testCoverage {
         jacocoVersion = libs.findVersion("jacoco").get().toString()
       }

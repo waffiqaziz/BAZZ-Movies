@@ -41,8 +41,7 @@ dependencies {
   testImplementation(libs.mockk)
 
   androidTestImplementation(project(":core:instrumentationtest"))
-  androidTestImplementation(libs.androidx.datastore.core)
-  androidTestImplementation(libs.androidx.datastore.preferences)
+  androidTestImplementation(libs.bundles.datastore)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.espresso.intents)
   androidTestImplementation(libs.androidx.junit)

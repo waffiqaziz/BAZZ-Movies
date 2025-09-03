@@ -15,7 +15,6 @@ dependencies {
   implementation(libs.country.picker.android)
 
   testImplementation(libs.androidx.core.testing)
-  testImplementation(libs.junit)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
 
@@ -24,7 +23,6 @@ dependencies {
   androidTestImplementation(libs.androidx.espresso.intents)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.junit)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
 }

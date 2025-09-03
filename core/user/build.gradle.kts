@@ -18,14 +18,12 @@ dependencies {
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)
 
-  implementation(libs.androidx.datastore.core)
-  implementation(libs.androidx.datastore.preferences)
+  implementation(libs.bundles.datastore)
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.junit)
   testImplementation(libs.hilt.test)
-  testImplementation(libs.junit)
   testImplementation(libs.mockk)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.android.kotlin)

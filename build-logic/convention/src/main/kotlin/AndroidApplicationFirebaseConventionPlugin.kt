@@ -12,7 +12,7 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
     with(target) {
 
       // Check for the existence of google-services.json to decide whether to apply Firebase plugins
-      val googleServicesFile = rootProject.file("app/google-services.json")
+      val googleServicesFile = target.file("app/google-services.json")
       if (!googleServicesFile.exists()) {
         logger.warn("[WARNING] google-services.json not found. Firebase will be disabled for this build.")
         return
@@ -27,9 +27,7 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
       dependencies {
         val bom = libs.findLibrary("firebase-bom").get()
         add("implementation", platform(bom))
-        "implementation"(libs.findLibrary("firebase.analytics").get())
-        "implementation"(libs.findLibrary("firebase.performance").get())
-        "implementation"(libs.findLibrary("firebase.crashlytics").get())
+        "implementation"(libs.findBundle("firebase").get())
       }
 
       extensions.configure<ApplicationExtension> {

@@ -29,10 +29,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
           testInstrumentationRunner =
             "com.waffiq.bazz_movies.core.instrumentationtest.CustomTestRunner"
         }
-
-        testCoverage {
-          jacocoVersion = libs.findVersion("jacoco").get().toString()
-        }
       }
 
       dependencies {
