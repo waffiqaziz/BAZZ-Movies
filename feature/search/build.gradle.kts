@@ -24,7 +24,6 @@ dependencies {
 
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
-  testImplementation(libs.junit)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockito.android.kotlin)
@@ -35,7 +34,6 @@ dependencies {
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.junit)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
   androidTestImplementation(libs.truth)
