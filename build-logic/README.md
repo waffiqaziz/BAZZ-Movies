@@ -36,6 +36,7 @@ Current list of convention plugins:
 - [`bazzmovies.android.feature`](convention/src/main/kotlin/AndroidFeatureConventionPlugin.kt)
 - [`bazzmovies.android.library`](convention/src/main/kotlin/AndroidLibraryConventionPlugin.kt)
 - [`bazzmovies.android.library.jacoco`](convention/src/main/kotlin/AndroidLibraryJacocoConventionPlugin.kt)
+- [`bazzmovies.android.library.kover`](convention/src/main/kotlin/AndroidLibraryKoverConventionPlugin.kt)
 - [`bazzmovies.android.room`](convention/src/main/kotlin/AndroidRoomConventionPlugin.kt)
 - [`bazzmovies.detekt`](convention/src/main/kotlin/DetektConventionPlugin.kt)
 - [`bazzmovies.glide`](convention/src/main/kotlin/GlideConventionPlugin.kt)

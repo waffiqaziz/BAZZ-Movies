@@ -204,6 +204,49 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
   core/mappers/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
   ```
 
+## Code Coverage Reports with [Kotlinx Kover](https://github.com/Kotlin/kotlinx-kover)
+
+> [!NOTE]
+> Kotlinx Kover coverage is currently applied only to the `:feature:favorite` module as an
+> alternative coverage tool for Kotlin. However, JaCoCo remains the primary coverage tool
+> due to its better compatibility with external services.
+
+### Generating Kover Report for feature:favorite module
+
+For [`:feature:favorite`](../feature/favorite/) module:
+
+- Clean and run tests with coverage:
+
+  ```bash
+  # run test
+  ./gradlew clean
+  ./gradlew :feature:favorite:test
+
+  # html format
+  ./gradlew :feature:favorite:koverHtmlReport
+
+  # xml format (useful for CI/CD integration)
+  ./gradlew :feature:favorite:koverXmlReport
+
+  # binary coverage
+  ./gradlew :feature:favorite:koverBinaryReport
+  ```
+
+  The results can be viewed at:
+  - `build/reports/kover/html/index.html`
+  - `build/reports/kover/report.xml`
+  - `build/reports/kover/report.bin`
+
+### Coverage Verification
+
+To verify that coverage meets minimum thresholds:
+
+```terminal
+./gradlew :feature:favorite:koverVerify
+```
+
+This will return failed if not passing the thresholds, and return nothing if passing.
+
 <!-- LINK -->
 
 [app-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/app

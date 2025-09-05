@@ -75,6 +75,7 @@ jacoco = "0.8.13"
 junitVersion = "4.13.2"
 json = "20250517"
 kotest = "6.0.2"
+kotlinxKover = "0.9.1"
 mockk = "1.14.5"
 mockitoAndroid = "5.19.0"
 mockitoKotlin = "6.0.0"
@@ -227,6 +228,7 @@ firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "fir
 firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+kover-gradlePlugin = { group = "org.jetbrains.kotlinx.kover", name = "org.jetbrains.kotlinx.kover.gradle.plugin", version.ref = "kotlinxKover" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 
@@ -250,12 +252,14 @@ room = { id = "androidx.room", version.ref = "room" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraph" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinxKover" }
 
 # Custom Plugins
 bazzmovies-android-application = { id = "bazzmovies.android.application" }
 bazzmovies-android-application-firebase = { id = "bazzmovies.android.application.firebase" }
 bazzmovies-android-application-jacoco = { id = "bazzmovies.android.application.jacoco" }
 bazzmovies-android-library-jacoco = { id = "bazzmovies.android.library.jacoco" }
+bazzmovies-android-library-kover = { id = "bazzmovies.android.library.kover" }
 bazzmovies-android-library = { id = "bazzmovies.android.library" }
 bazzmovies-android-feature = { id = "bazzmovies.android.feature" }
 bazzmovies-android-room = { id = "bazzmovies.android.room" }

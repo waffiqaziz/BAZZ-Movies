@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.testImplementation
 
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
+  alias(libs.plugins.bazzmovies.android.library.kover)
   id("kotlin-parcelize")
 }
 
