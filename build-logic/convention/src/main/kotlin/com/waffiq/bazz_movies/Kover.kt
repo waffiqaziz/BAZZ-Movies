@@ -47,7 +47,9 @@ internal fun Project.configureKover() {
 
           // Exclude classes
           classes(koverExclusions)
-          println("Kover exclusions applied: ${koverExclusions.joinToString()}")
+        }
+        includes {
+          packages("com.waffiq.bazz_movies.*")
         }
       }
 
@@ -88,21 +90,5 @@ internal fun Project.configureKover() {
         }
       }
     }
-//
-//    tasks.withType<KoverVerifyTask>().configureEach {
-//      doLast {
-//        println("---- Kover Coverage Verify Report ----")
-//        results.forEach { result ->
-//          println("Rule: ${result.name}")
-//          result.bounds.forEach { bound ->
-//            println(
-//              "  ${bound.metric} ${bound.unit}: ${bound.value} " +
-//                "(min=${bound.minValue}, max=${bound.maxValue})"
-//            )
-//          }
-//        }
-//        println("--------------------------------------")
-//      }
-//    }
   }
 }
