@@ -29,6 +29,7 @@ dependencies {
   compileOnly(libs.kotlin.gradlePlugin)
   compileOnly(libs.ksp.gradlePlugin)
   compileOnly(libs.room.gradlePlugin)
+  compileOnly(libs.kover.gradlePlugin)
 }
 
 tasks {
@@ -59,6 +60,10 @@ gradlePlugin {
     register("androidLibraryJacoco") {
       id = libs.plugins.bazzmovies.android.library.jacoco.get().pluginId
       implementationClass = "AndroidLibraryJacocoConventionPlugin"
+    }
+    register("androidLibraryKover") {
+      id = libs.plugins.bazzmovies.android.library.kover.get().pluginId
+      implementationClass = "AndroidLibraryKoverConventionPlugin"
     }
     register("hilt") {
       id = libs.plugins.bazzmovies.hilt.asProvider().get().pluginId

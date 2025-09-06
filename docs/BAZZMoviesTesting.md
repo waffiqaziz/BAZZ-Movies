@@ -204,6 +204,62 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
   core/mappers/build/reports/jacoco/createDebugCombinedCoverageReport/html/index.html
   ```
 
+## Code Coverage Reports with [Kotlinx Kover](https://github.com/Kotlin/kotlinx-kover)
+
+> [!NOTE]
+> Kotlinx Kover coverage is currently enabled only for the [`:feature:favorite`](../feature/favorite/)
+> as an alternative coverage tool for Kotlin.
+>
+> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES],
+> **JaCoCo remains the primary coverage tool** due to its broader compatibility.
+
+### Generating Kover Report for feature:favorite module
+
+For [`:feature:favorite`](../feature/favorite/) module:
+
+- Clean and run tests with coverage:
+
+  ```bash
+  # run test
+  ./gradlew clean
+  ./gradlew :feature:favorite:test
+
+  # html format
+  ./gradlew :feature:favorite:koverHtmlReport
+
+  # xml format (useful for CI/CD integration)
+  ./gradlew :feature:favorite:koverXmlReport
+
+  # binary coverage
+  ./gradlew :feature:favorite:koverBinaryReport
+  ```
+
+  The results can be viewed at:
+  - `build/reports/kover/html/index.html`
+  - `build/reports/kover/report.xml`
+  - `build/reports/kover/report.bin`
+
+### Coverage Verification
+
+To verify that coverage meets minimum thresholds:
+
+```terminal
+./gradlew :feature:favorite:koverVerify
+```
+
+This will return failed if not passing the thresholds, and return nothing if passing.
+
+### Using Kover in Other Modules
+
+To enable Kover in additional modules, apply the custom Kover plugin inside each
+module’s `build.gradle.kts` file:
+
+```kt
+plugins {
+  alias(libs.plugins.bazzmovies.android.library.kover)
+}
+```
+
 <!-- LINK -->
 
 [app-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/app
@@ -359,3 +415,5 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
 [CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
 
 [BADGE-CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ
+
+[KOVER-FEATURES]: https://github.com/Kotlin/kotlinx-kover?tab=readme-ov-file#features
