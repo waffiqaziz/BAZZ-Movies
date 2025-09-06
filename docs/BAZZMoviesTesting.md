@@ -207,9 +207,11 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
 ## Code Coverage Reports with [Kotlinx Kover](https://github.com/Kotlin/kotlinx-kover)
 
 > [!NOTE]
-> Kotlinx Kover coverage is currently applied only to the `:feature:favorite` module as an
-> alternative coverage tool for Kotlin. However, JaCoCo remains the primary coverage tool
-> due to its better compatibility with external services.
+> Kotlinx Kover coverage is currently enabled only for the [`:feature:favorite`](../feature/favorite/)
+> as an alternative coverage tool for Kotlin.
+>
+> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES],
+> **JaCoCo remains the primary coverage tool** due to its broader compatibility.
 
 ### Generating Kover Report for feature:favorite module
 
@@ -246,6 +248,17 @@ To verify that coverage meets minimum thresholds:
 ```
 
 This will return failed if not passing the thresholds, and return nothing if passing.
+
+### Using Kover in Other Modules
+
+To enable Kover in additional modules, apply the custom Kover plugin inside each
+module’s `build.gradle.kts` file:
+
+```kt
+plugins {
+  alias(libs.plugins.bazzmovies.android.library.kover)
+}
+```
 
 <!-- LINK -->
 
@@ -402,3 +415,5 @@ This will return failed if not passing the thresholds, and return nothing if pas
 [CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
 
 [BADGE-CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/graph/badge.svg?token=4SV6Z18HKZ
+
+[KOVER-FEATURES]: https://github.com/Kotlin/kotlinx-kover?tab=readme-ov-file#features
