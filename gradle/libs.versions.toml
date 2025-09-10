@@ -12,7 +12,7 @@ versionName = "1.2.6-dev"
 # Plugin Versions
 agp = "8.12.0"
 androidTools = "31.12.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 ksp = "2.2.10-2.0.2"
 hilt = "2.57.1"
 
@@ -84,7 +84,7 @@ robolectric = "4.16"
 testCore = "1.7.0"
 testRules = "1.7.0"
 testRunner = "1.7.0"
-truth = "1.4.4"
+truth = "1.4.5"
 turbine = "1.2.1"
 
 # Image Loading
