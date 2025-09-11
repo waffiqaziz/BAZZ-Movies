@@ -67,4 +67,37 @@
             column="12"/>
     </issue>
 
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.android than 2.2.10 is available: 2.2.20"
+        errorLine1="kotlin = &quot;2.2.10&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="15"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.jvm than 2.2.10 is available: 2.2.20"
+        errorLine1="kotlin = &quot;2.2.10&quot;"
+        errorLine2="         ~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="15"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.google.truth:truth than 1.4.4 is available: 1.4.5"
+        errorLine1="truth = &quot;1.4.4&quot;"
+        errorLine2="        ~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
+            line="87"
+            column="9"/>
+    </issue>
+
 </issues>
