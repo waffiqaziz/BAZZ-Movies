@@ -17,7 +17,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
@@ -44,9 +43,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Called
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest

@@ -22,7 +22,7 @@ import java.util.Locale
 private val coverageExclusions = listOf(
   // Android
   "**/R.class",
-  "**/R\$*.class",
+  "**/R*.class",
   "**/BuildConfig.*",
   "**/Manifest*.*",
   "**/*_Hilt*.class",

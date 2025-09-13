@@ -114,7 +114,7 @@ object TestHelper {
       val firstItem = awaitItem()
       assertTrue(firstItem is NetworkResult.Loading)
 
-      var secondItem = awaitItem()
+      val secondItem = awaitItem()
       assertTrue(secondItem is NetworkResult.Error)
       val errorResult = secondItem as NetworkResult.Error
       assertEquals(expectedErrorMessage, errorResult.message)
@@ -139,7 +139,7 @@ object TestHelper {
       val firstItem = awaitItem()
       assertTrue(firstItem is NetworkResult.Loading)
 
-      var secondItem = awaitItem()
+      val secondItem = awaitItem()
       assertTrue(secondItem is NetworkResult.Error)
       val errorResult = secondItem as NetworkResult.Error
       assertEquals(expectedErrorMessage, errorResult.message)

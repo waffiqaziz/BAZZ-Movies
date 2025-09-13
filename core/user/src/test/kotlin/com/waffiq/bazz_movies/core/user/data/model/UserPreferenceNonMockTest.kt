@@ -30,7 +30,7 @@ class UserPreferenceNonMockTest {
 
   @Before
   fun setup() = runTest {
-    testContext = ApplicationProvider.getApplicationContext<Context>()
+    testContext = ApplicationProvider.getApplicationContext()
     testDataStore = PreferenceDataStoreFactory.create(
       produceFile = { testContext.preferencesDataStoreFile(DATASTORE_NAME) }
     )

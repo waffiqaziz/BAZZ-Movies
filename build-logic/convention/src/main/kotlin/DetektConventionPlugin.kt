@@ -12,7 +12,7 @@ class DetektConventionPlugin : Plugin<Project> {
     with(target) {
       apply(plugin = "io.gitlab.arturbosch.detekt")
       pluginManager.apply(
-        libs.findLibrary("detekt-gradlePlugin").get().get().group.toString()
+        libs.findLibrary("detekt-gradlePlugin").get().get().group
       )
       configureDetekt(extensions.getByType<DetektExtension>())
     }

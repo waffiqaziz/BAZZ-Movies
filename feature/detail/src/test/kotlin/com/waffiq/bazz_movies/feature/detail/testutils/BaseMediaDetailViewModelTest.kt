@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits

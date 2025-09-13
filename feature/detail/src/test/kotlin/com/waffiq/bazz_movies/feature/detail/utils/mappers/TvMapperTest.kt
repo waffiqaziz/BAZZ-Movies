@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.domain.GenresItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.ProductionCountriesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ContentRatingsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse

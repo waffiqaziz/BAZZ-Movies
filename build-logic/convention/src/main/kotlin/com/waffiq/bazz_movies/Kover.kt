@@ -78,7 +78,7 @@ internal fun Project.configureKover() {
       }
 
       total {
-        html() {
+        html {
           onCheck.set(true)
           title.set("Code Coverage Report - ${project.path.removePrefix(":")}")
           htmlDir.set(layout.buildDirectory.dir("reports/kover/html"))

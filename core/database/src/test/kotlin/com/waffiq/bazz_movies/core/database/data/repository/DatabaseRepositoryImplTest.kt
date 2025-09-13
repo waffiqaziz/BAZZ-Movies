@@ -178,7 +178,7 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateFavoriteItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(false, true, 101, "movie")
+      localDataSource.update(isFavorite = false, isWatchlist = true, id = 101, mediaType = "movie")
     } returns DbResult.Success(1)
 
     val result = repository.updateFavoriteItemDB(
@@ -188,13 +188,20 @@ class DatabaseRepositoryImplTest {
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { localDataSource.update(false, true, 101, "movie") }
+    coVerify {
+      localDataSource.update(
+        isFavorite = false,
+        isWatchlist = true,
+        id = 101,
+        mediaType = "movie"
+      )
+    }
   }
 
   @Test
   fun updateFavoriteItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(true, true, 101, "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = "movie")
     } returns DbResult.Success(1)
 
     val result = repository.updateFavoriteItemDB(
@@ -204,32 +211,53 @@ class DatabaseRepositoryImplTest {
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { localDataSource.update(true, true, 101, "movie") }
+    coVerify {
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = true,
+        id = 101,
+        mediaType = "movie"
+      )
+    }
   }
 
   @Test
   fun updateWatchlistItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(true, false, 101, "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = "movie")
     } returns DbResult.Success(1)
 
     val result = repository.updateWatchlistItemDB(isDelete = true, fav = favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { localDataSource.update(true, false, 101, "movie") }
+    coVerify {
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = false,
+        id = 101,
+        mediaType = "movie"
+      )
+    }
   }
 
   @Test
   fun updateWatchlistItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(true, true, 101, "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = "movie")
     } returns DbResult.Success(1)
 
     val result = repository.updateWatchlistItemDB(isDelete = false, fav = favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { localDataSource.update(true, true, 101, "movie") }
+    coVerify {
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = true,
+        id = 101,
+        mediaType = "movie"
+      )
+    }
   }
 }

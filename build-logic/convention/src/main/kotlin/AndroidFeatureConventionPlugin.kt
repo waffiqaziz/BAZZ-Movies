@@ -1,7 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureMockitoAgent
-import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply

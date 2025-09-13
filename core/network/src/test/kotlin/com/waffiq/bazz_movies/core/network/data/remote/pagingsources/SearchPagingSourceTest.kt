@@ -114,7 +114,7 @@ class SearchPagingSourceTest {
       setupMock = { page ->
         coEvery {
           apiServiceMock.search(query, page)
-        } returns MultiSearchResponse(results = emptyList<MultiSearchResponseItem>())
+        } returns MultiSearchResponse(results = emptyList())
       },
       expectedData = emptyList()
     )

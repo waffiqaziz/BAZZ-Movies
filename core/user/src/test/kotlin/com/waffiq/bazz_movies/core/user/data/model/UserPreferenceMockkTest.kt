@@ -98,7 +98,7 @@ class UserPreferenceMockkTest {
   fun getRegion_whenSuccessful_returnsCorrectRegion() = runTest {
     every { mockDataStore.data } returns flowOf(mockPreferences)
 
-    val region = userPreference.getRegion().first().toString().uppercase()
+    val region = userPreference.getRegion().first().uppercase()
     assertEquals("US", region)
 
     // inline test

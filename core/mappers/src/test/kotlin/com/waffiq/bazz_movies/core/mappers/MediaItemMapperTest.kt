@@ -126,7 +126,7 @@ class MediaItemMapperTest {
     assertEquals(false, mediaItem.video)
     assertEquals("", mediaItem.title)
     assertEquals("", mediaItem.releaseDate)
-    assertEquals(emptyList<String>(), mediaItem.listGenreIds)
+    assertEquals(emptyList<Int>(), mediaItem.listGenreIds)
   }
 
   @Test
