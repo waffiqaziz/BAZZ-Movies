@@ -112,7 +112,7 @@ class LocalDataSourceMockkTest {
   private fun <T> runDbErrorTest(
     expectedMessage: String,
     mockDaoCall: () -> Unit,
-    functionUnderTest: suspend () -> DbResult<T>
+    functionUnderTest: suspend () -> DbResult<T>,
   ) = runTest {
     mockDaoCall()
 
@@ -162,7 +162,7 @@ class LocalDataSourceMockkTest {
       } throws SQLiteException("General SQLite error")
     }
   ) {
-    localDataSource.update(true, false, 101, "movie")
+    localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = "movie")
   }
 
   @Test
