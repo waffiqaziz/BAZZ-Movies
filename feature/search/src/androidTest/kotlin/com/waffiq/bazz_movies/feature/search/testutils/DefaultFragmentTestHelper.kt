@@ -41,6 +41,7 @@ class DefaultFragmentTestHelper : SearchFragmentTestHelper {
   }
 
   override fun setupViewModelMocks(mockSearchViewModel: SearchViewModel) {
+    expandSearchViewLiveData.postValue(false)
     every { mockSearchViewModel.searchResults } returns searchResultsFlow
     every { mockSearchViewModel.query } returns queryLiveData
     every { mockSearchViewModel.expandSearchView } returns expandSearchViewLiveData
