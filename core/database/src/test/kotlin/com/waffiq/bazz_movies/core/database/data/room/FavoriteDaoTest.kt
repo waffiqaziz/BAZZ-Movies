@@ -279,7 +279,12 @@ class FavoriteDaoTest {
     )
     favoriteDao.insert(tvShow)
 
-    val updateCount = favoriteDao.update(true, true, 10, TV_MEDIA_TYPE)
+    val updateCount = favoriteDao.update(
+      isFavorite = true,
+      isWatchlist = true,
+      id = 10,
+      mediaType = TV_MEDIA_TYPE
+    )
 
     assertEquals(1, updateCount)
     val isFavorite = favoriteDao.isFavorite(10, TV_MEDIA_TYPE)

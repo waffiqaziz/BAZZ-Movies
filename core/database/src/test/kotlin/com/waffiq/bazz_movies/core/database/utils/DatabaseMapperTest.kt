@@ -63,7 +63,7 @@ class DatabaseMapperTest {
       voteAverage = null,
       popularity = null
     )
-    val favorite2 = mediaItem2.toFavorite(false, false)
+    val favorite2 = mediaItem2.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite2.title, "originalName")
     assertEquals(favorite2.releaseDate, "firstAirDate")
     assertEquals(favorite2.rating, 0.0f)
@@ -73,18 +73,18 @@ class DatabaseMapperTest {
 
     // test case 3: title using title, release date null
     val mediaItem3 = MediaItem(title = "title")
-    val favorite3 = mediaItem3.toFavorite(false, false)
+    val favorite3 = mediaItem3.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite3.title, "title")
     assertEquals(favorite3.releaseDate, "N/A")
 
     // test case 4: title using originalTitle
     val mediaItem4 = MediaItem(originalTitle = "originalTitle")
-    val favorite4 = mediaItem4.toFavorite(false, false)
+    val favorite4 = mediaItem4.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite4.title, "originalTitle")
 
     // test case 5: title null
     val mediaItem = MediaItem()
-    val favorite5 = mediaItem.toFavorite(false, false)
+    val favorite5 = mediaItem.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite5.title, "N/A")
   }
 
@@ -99,13 +99,13 @@ class DatabaseMapperTest {
   fun favTrueWatchlistFalse_withValidValue_returnCorrectData() {
     val result = favTrueWatchlistFalse(mediaItem1)
     assertTrue(result.isFavorite)
-    assertTrue(result.isWatchlist == false)
+    assertTrue(!result.isWatchlist)
   }
 
   @Test
   fun favFalseWatchlistTrue_withValidValue_returnCorrectData() {
     val result = favFalseWatchlistTrue(mediaItem1)
-    assertTrue(result.isFavorite == false)
+    assertTrue(!result.isFavorite)
     assertTrue(result.isWatchlist)
   }
 

@@ -98,7 +98,7 @@ class GenericPagingSourceTest {
     testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
       pagingSourceFactory = { GenericPagingSource(apiCallMock) },
       setupMock = { page ->
-        coEvery { apiCallMock(page) } returns emptyList<MediaResponseItem>()
+        coEvery { apiCallMock(page) } returns emptyList()
       },
       expectedData = emptyList()
     )

@@ -8,7 +8,6 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDatabase
-import com.waffiq.bazz_movies.core.database.utils.Constants.TABLE_NAME
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -21,11 +20,15 @@ import org.robolectric.RobolectricTestRunner
 class DatabaseModuleUnitTest {
 
   private lateinit var context: Context
+  private lateinit var dbPath: String
   private val testDatabaseName = "favorite.db"
 
   @Before
   fun setup() {
     context = ApplicationProvider.getApplicationContext()
+
+    // get the path where the database should be stored
+    dbPath = context.getDatabasePath(testDatabaseName).path
   }
 
   /**
@@ -57,7 +60,7 @@ class DatabaseModuleUnitTest {
       database.openHelper.writableDatabase
 
       // get the path where the database should be stored
-      val dbPath = context.getDatabasePath("$TABLE_NAME.db")
+      val dbPath = context.getDatabasePath("$testDatabaseName.db")
 
       println("Database file exists: ${dbPath.exists()}")
 
@@ -65,11 +68,12 @@ class DatabaseModuleUnitTest {
       if (dbPath.exists()) {
         // open the SQLite database directly to check its properties
         // "use" extension ensures the database will be closed properly
-        SQLiteDatabase.openDatabase(dbPath.toString(), null, SQLiteDatabase.OPEN_READONLY).use { sqliteDb ->
-          // verify the database has at least version 1
-          // the version might not be 2 yet if no operations triggered the migration
-          assertTrue(sqliteDb.version >= 1)
-        }
+        SQLiteDatabase.openDatabase(dbPath.toString(), null, SQLiteDatabase.OPEN_READONLY)
+          .use { sqliteDb ->
+            // verify the database has at least version 1
+            // the version might not be 2 yet if no operations triggered the migration
+            assertTrue(sqliteDb.version >= 1)
+          }
       }
     } finally {
       // cleanup
@@ -77,7 +81,7 @@ class DatabaseModuleUnitTest {
 
       // delete the database file to clean up after the test  ensures tests are isolated
       // and don't affect each other
-      context.deleteDatabase("$TABLE_NAME.db")
+      context.deleteDatabase("$testDatabaseName.db")
     }
   }
 
@@ -108,7 +112,7 @@ class DatabaseModuleUnitTest {
     )
 
     // create v1 database and insert test data
-    helper.createDatabase(testDatabaseName, 1).apply {
+    helper.createDatabase(dbPath, 1).apply {
       // create original v1 schema
       execSQL(
         """
@@ -145,7 +149,7 @@ class DatabaseModuleUnitTest {
     val migration = DatabaseModule().getMigrationOneToTwo()
 
     // test the migration
-    val db = helper.runMigrationsAndValidate(testDatabaseName, 2, true, migration)
+    val db = helper.runMigrationsAndValidate(dbPath, 2, true, migration)
 
     // query the database to verify migration worked correctly
     val cursor = db.query("SELECT * FROM favorite")

@@ -152,7 +152,7 @@ class UserModelTest {
       userId = 5,
       name = "John@Doe",
       username = "user_name!123",
-      password = "pa\$\$word!@#",
+      password = "password!@#",
       region = "US-West!$",
       token = "tok#en$123",
       isLogin = true,
@@ -162,7 +162,7 @@ class UserModelTest {
 
     assertEquals("John@Doe", specialCharUser.name)
     assertEquals("user_name!123", specialCharUser.username)
-    assertEquals("pa\$\$word!@#", specialCharUser.password)
+    assertEquals("password!@#", specialCharUser.password)
     assertEquals("US-West!$", specialCharUser.region)
     assertEquals("tok#en$123", specialCharUser.token)
     assertEquals("!hash*special", specialCharUser.gravatarHast)

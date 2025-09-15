@@ -38,8 +38,4 @@ class GenericViewPagerAdapter(
   override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
     super.onDetachedFromRecyclerView(recyclerView)
   }
-
-  override fun unregisterFragmentTransactionCallback(callback: FragmentTransactionCallback) {
-    super.unregisterFragmentTransactionCallback(callback)
-  }
 }
