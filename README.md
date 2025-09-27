@@ -81,7 +81,7 @@ BAZZ Movies available downloaded via Google Play Store
 1. **Install Android Studio**
 
    - Download and install [Android Studio](https://developer.android.com/studio).
-   - Minimum required version: **Narwhal Feature Drop | 2025.1.2**.
+   - Minimum required version: **Narwhal 3 Feature Drop | 2025.1.3**
 
 2. **Install JDK 21**
 
