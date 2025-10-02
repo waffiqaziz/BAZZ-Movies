@@ -18,7 +18,7 @@ dependencies {
   implementation(libs.androidx.lifecycle.livedata.core)
   implementation(libs.androidx.lifecycle.viewmodel)
 
-  implementation(libs.bundles.datastore)
+  api(libs.bundles.datastore)
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)
