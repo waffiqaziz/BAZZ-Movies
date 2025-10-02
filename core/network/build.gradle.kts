@@ -36,7 +36,7 @@ dependencies {
   implementation(libs.kotlinx.coroutines.core)
 
   // retrofit & moshi
-  implementation(libs.bundles.retrofit)
+  api(libs.bundles.retrofit)
   ksp(libs.moshi.kotlin.codegen)
 
   testImplementation(project(":core:test"))
