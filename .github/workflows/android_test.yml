@@ -145,7 +145,7 @@ jobs:
 
       - name: Upload Unit Test Reports (if needed)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: unit-test-report
           path: '**/build/reports/tests/testDebugUnitTest/'
@@ -272,7 +272,7 @@ jobs:
 
       - name: Upload Instrumentation Test Reports (if needed)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: instrumentation-test-report
           path: '**/build/reports/androidTests/connected/'
@@ -705,7 +705,7 @@ jobs:
 
       - name: Upload Test Reports (if needed)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: combined-test-reports
           path: |
