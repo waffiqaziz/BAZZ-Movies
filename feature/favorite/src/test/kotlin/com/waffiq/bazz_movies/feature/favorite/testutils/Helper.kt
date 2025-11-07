@@ -96,7 +96,7 @@ object Helper {
    */
   fun <T : Any> differ(): AsyncPagingDataDiffer<T> {
     return AsyncPagingDataDiffer(
-      diffCallback = TestDiffCallback<T>(),
+      diffCallback = TestDiffCallback(),
       updateCallback = TestListCallback(),
       workerDispatcher = Dispatchers.Main
     )
