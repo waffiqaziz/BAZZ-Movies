@@ -14,6 +14,20 @@
   },
   packageRules: [
     {
+      // Default prefix for all dependencies
+      matchPackageNames: [
+        '*',
+      ],
+      commitMessagePrefix: 'chore(deps):',
+    },
+    {
+      // Specific prefix for GitHub Actions
+      matchDepTypes: [
+        'action',
+      ],
+      commitMessagePrefix: 'chore(ci):',
+    },
+    {
       groupName: 'Kotlin and KSP',
       matchPackageNames: [
         'org.jetbrains.kotlin{/,}**',
@@ -21,6 +35,7 @@
         '/kotlin/',
         '/ksp/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX Core',
@@ -29,6 +44,7 @@
         'androidx.activity{/,}**',
         'androidx.fragment{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX UI Components',
@@ -40,36 +56,42 @@
         '/androidx.swiperefreshlayout/',
         '/androidx.viewpager2/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX Lifecycle',
       matchPackageNames: [
         'androidx.lifecycle{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX Navigation',
       matchPackageNames: [
         'androidx.navigation{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX Room',
       matchPackageNames: [
         'androidx.room{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'AndroidX Paging',
       matchPackageNames: [
         'androidx.paging{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Firebase',
       matchPackageNames: [
         'com.google.firebase{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Google Play Services',
@@ -77,6 +99,7 @@
         '/com.google.android.gms/',
         '/com.google.android.play/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Networking Libraries',
@@ -85,6 +108,7 @@
         '/com.squareup.moshi/',
         '/com.squareup.okhttp3/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Testing Libraries',
@@ -97,12 +121,14 @@
         '/androidx.arch.core:core-testing/',
         '/com.google.truth/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Hilt DI',
       matchPackageNames: [
         'com.google.dagger{/,}**',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Gradle Plugins',
@@ -112,6 +138,7 @@
         '/com.android.application/',
         '/com.android.library/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'Development Tools',
@@ -120,6 +147,7 @@
         '/io.gitlab.arturbosch.detekt/',
         '/com.dropbox.dependency-guard/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
     {
       groupName: 'GitHub Actions - Code Coverage',
@@ -131,6 +159,7 @@
         '/^codecov/test-results-action$/',
         '/^codacy/codacy-coverage-reporter-action$/',
       ],
+      commitMessagePrefix: 'chore(ci):',
     },
     {
       groupName: 'GitHub Actions',
@@ -149,6 +178,7 @@
         '!/^codecov//',
         '!/^codacy//',
       ],
+      commitMessagePrefix: 'chore(ci):',
     },
     {
       matchUpdateTypes: [
@@ -163,6 +193,7 @@
         '!/com.google.devtools.ksp/',
         '!/androidx.room/',
       ],
+      commitMessagePrefix: 'chore(deps):',
     },
   ],
   ignoreDeps: [],
