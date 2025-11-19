@@ -19,6 +19,7 @@
         '*',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update dependency {{{depName}}}'
     },
     {
       // Specific prefix for GitHub Actions
@@ -26,6 +27,7 @@
         'action',
       ],
       commitMessagePrefix: 'chore(ci):',
+      commitMessageTopic: 'update action {{{depName}}}'
     },
     {
       groupName: 'Kotlin and KSP',
@@ -36,6 +38,7 @@
         '/ksp/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX Core',
@@ -45,6 +48,7 @@
         'androidx.fragment{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX UI Components',
@@ -57,6 +61,7 @@
         '/androidx.viewpager2/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX Lifecycle',
@@ -64,6 +69,7 @@
         'androidx.lifecycle{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX Navigation',
@@ -71,6 +77,7 @@
         'androidx.navigation{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX Room',
@@ -78,6 +85,7 @@
         'androidx.room{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'AndroidX Paging',
@@ -85,6 +93,7 @@
         'androidx.paging{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Firebase',
@@ -92,6 +101,7 @@
         'com.google.firebase{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Google Play Services',
@@ -100,6 +110,7 @@
         '/com.google.android.play/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Networking Libraries',
@@ -109,6 +120,7 @@
         '/com.squareup.okhttp3/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Testing Libraries',
@@ -122,6 +134,7 @@
         '/com.google.truth/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Hilt DI',
@@ -129,6 +142,7 @@
         'com.google.dagger{/,}**',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Gradle Plugins',
@@ -139,6 +153,7 @@
         '/com.android.library/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'Development Tools',
@@ -148,6 +163,7 @@
         '/com.dropbox.dependency-guard/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'GitHub Actions - Code Coverage',
@@ -160,6 +176,7 @@
         '/^codacy/codacy-coverage-reporter-action$/',
       ],
       commitMessagePrefix: 'chore(ci):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       groupName: 'GitHub Actions',
@@ -179,6 +196,7 @@
         '!/^codacy//',
       ],
       commitMessagePrefix: 'chore(ci):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
     {
       matchUpdateTypes: [
@@ -194,6 +212,7 @@
         '!/androidx.room/',
       ],
       commitMessagePrefix: 'chore(deps):',
+      commitMessageTopic: 'update {{{groupName}}}',
     },
   ],
   ignoreDeps: [],
