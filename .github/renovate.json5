@@ -6,6 +6,7 @@
   assignees: [
     'waffiqaziz',
   ],
+  commitMessageAction: 'update',
   addLabels: [
     'dependencies',
   ],
