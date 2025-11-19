@@ -30,18 +30,7 @@
       commitMessageTopic: 'update action {{{depName}}}'
     },
     {
-      groupName: 'Kotlin and KSP',
-      matchPackageNames: [
-        'org.jetbrains.kotlin{/,}**',
-        'com.google.devtools.ksp{/,}**',
-        '/kotlin/',
-        '/ksp/',
-      ],
-      commitMessagePrefix: 'chore(deps):',
-      commitMessageTopic: 'update {{{groupName}}}',
-    },
-    {
-      groupName: 'AndroidX Core',
+      groupName: 'androidX core',
       matchPackageNames: [
         'androidx.core{/,}**',
         'androidx.activity{/,}**',
@@ -51,20 +40,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'AndroidX UI Components',
-      matchPackageNames: [
-        '/androidx.appcompat/',
-        '/androidx.cardview/',
-        '/androidx.constraintlayout/',
-        '/androidx.recyclerview/',
-        '/androidx.swiperefreshlayout/',
-        '/androidx.viewpager2/',
-      ],
-      commitMessagePrefix: 'chore(deps):',
-      commitMessageTopic: 'update {{{groupName}}}',
-    },
-    {
-      groupName: 'AndroidX Lifecycle',
+      groupName: 'androidX lifecycle',
       matchPackageNames: [
         'androidx.lifecycle{/,}**',
       ],
@@ -72,7 +48,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'AndroidX Navigation',
+      groupName: 'androidX navigation',
       matchPackageNames: [
         'androidx.navigation{/,}**',
       ],
@@ -80,7 +56,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'AndroidX Room',
+      groupName: 'androidX room',
       matchPackageNames: [
         'androidx.room{/,}**',
       ],
@@ -88,7 +64,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'AndroidX Paging',
+      groupName: 'androidX paging',
       matchPackageNames: [
         'androidx.paging{/,}**',
       ],
@@ -96,7 +72,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Firebase',
+      groupName: 'firebase',
       matchPackageNames: [
         'com.google.firebase{/,}**',
       ],
@@ -104,7 +80,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Google Play Services',
+      groupName: 'google services',
       matchPackageNames: [
         '/com.google.android.gms/',
         '/com.google.android.play/',
@@ -113,7 +89,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Networking Libraries',
+      groupName: 'networking libraries',
       matchPackageNames: [
         '/com.squareup.retrofit2/',
         '/com.squareup.moshi/',
@@ -123,7 +99,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Testing Libraries',
+      groupName: 'testing libraries',
       matchPackageNames: [
         '/junit/',
         '/mockito/',
@@ -137,7 +113,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Hilt DI',
+      groupName: 'hilt dependency injection',
       matchPackageNames: [
         'com.google.dagger{/,}**',
       ],
@@ -145,7 +121,7 @@
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
-      groupName: 'Gradle Plugins',
+      groupName: 'android gradle plugin',
       separateMinorPatch: true,
       matchPackageNames: [
         '/com.android.tools.build/',
@@ -153,29 +129,6 @@
         '/com.android.library/',
       ],
       commitMessagePrefix: 'chore(deps):',
-      commitMessageTopic: 'update {{{groupName}}}',
-    },
-    {
-      groupName: 'Development Tools',
-      matchPackageNames: [
-        '/com.squareup.leakcanary/',
-        '/io.gitlab.arturbosch.detekt/',
-        '/com.dropbox.dependency-guard/',
-      ],
-      commitMessagePrefix: 'chore(deps):',
-      commitMessageTopic: 'update {{{groupName}}}',
-    },
-    {
-      groupName: 'GitHub Actions - Code Coverage',
-      digest: {
-        enabled: false,
-      },
-      matchPackageNames: [
-        '/^codecov/codecov-action$/',
-        '/^codecov/test-results-action$/',
-        '/^codacy/codacy-coverage-reporter-action$/',
-      ],
-      commitMessagePrefix: 'chore(ci):',
       commitMessageTopic: 'update {{{groupName}}}',
     },
     {
