@@ -51,7 +51,7 @@ lifecycle = "2.10.0"
 datastore = "1.1.7"
 
 # Room Libraries
-room = "2.8.3"
+room = "2.8.4"
 
 # Paging3
 paging = "3.3.6"
