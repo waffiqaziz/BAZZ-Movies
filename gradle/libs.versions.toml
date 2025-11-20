@@ -48,7 +48,7 @@ kotlinxCoroutines = "1.10.2"
 lifecycle = "2.10.0"
 
 # Datastore
-datastore = "1.1.7"
+datastore = "1.2.0"
 
 # Room Libraries
 room = "2.8.4"
