@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
@@ -20,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 
 @AndroidEntryPoint
-class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
+class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragment<MediaItem>() {
 
   private var _binding: FragmentFavoriteChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
@@ -37,7 +36,7 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    adapterPaging = FavoritePagingAdapter(navigator, TV_MEDIA_TYPE)
+    adapterPaging = FavoritePagingAdapter(navigator, mediaType)
     super.onViewCreated(view, savedInstanceState)
   }
 
@@ -59,21 +58,21 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
-    favoriteViewModel.favoriteTvSeries(token)
+    favoriteViewModel.favoriteMovies(token)
 
   override fun getDBFavoriteData(): LiveData<List<Favorite>> =
-    sharedDBViewModel.favoriteTvFromDB
+    sharedDBViewModel.favoriteMoviesFromDB
 
   override fun createFavoriteModel(mediaId: Int): FavoriteModel =
     FavoriteModel(
-      mediaType = TV_MEDIA_TYPE,
+      mediaType = mediaType,
       mediaId = mediaId,
       favorite = false
     )
 
   override fun postToAddWatchlist(title: String, mediaId: Int) {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      favoriteViewModel.checkTvStatedThenPostWatchlist(user, mediaId, title)
+      favoriteViewModel.checkMovieStatedThenPostWatchlist(user, mediaId, title)
     }
   }
 
