@@ -26,7 +26,7 @@ import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterDB
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -58,7 +58,7 @@ class MyWatchlistMoviesFragment : Fragment() {
   private var _binding: FragmentMyWatchlistMoviesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var adapterPaging: FavoriteMovieAdapter
+  private lateinit var adapterPaging: FavoritePagingAdapter
   private lateinit var adapterDB: FavoriteAdapterDB
 
   private val viewModel: MyWatchlistViewModel by viewModels()
@@ -84,7 +84,7 @@ class MyWatchlistMoviesFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    adapterPaging = FavoriteMovieAdapter(navigator)
+    adapterPaging = FavoritePagingAdapter(navigator, MOVIE_MEDIA_TYPE)
     adapterDB = FavoriteAdapterDB(navigator)
 
     snackbarAnchor = navigator.snackbarAnchor()
@@ -115,7 +115,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       onSwipeLeft = { viewHolder, position ->
         isUndo = false
         if (isLogin) {
-          val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
+          val fav = (viewHolder as FavoritePagingAdapter.ViewHolder).data
           isWantToDelete = false
           postToAddFavoriteTMDB(titleHandler(fav), fav.id)
           adapterPaging.notifyItemChanged(position)
@@ -128,7 +128,7 @@ class MyWatchlistMoviesFragment : Fragment() {
       },
       onSwipeRight = { viewHolder, position ->
         if (isLogin) {
-          val fav = (viewHolder as FavoriteMovieAdapter.ViewHolder).data
+          val fav = (viewHolder as FavoritePagingAdapter.ViewHolder).data
           isWantToDelete = true
           postToRemoveWatchlistTMDB(titleHandler(fav), fav.id)
           adapterPaging.notifyItemChanged(position)

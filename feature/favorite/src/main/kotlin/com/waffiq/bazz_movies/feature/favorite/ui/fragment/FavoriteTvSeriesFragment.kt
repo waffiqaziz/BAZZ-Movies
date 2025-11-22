@@ -8,13 +8,12 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteTvAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +25,7 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   private var _binding: FragmentFavoriteChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var adapterPaging: FavoriteTvAdapter
+  private lateinit var adapterPaging: FavoritePagingAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -38,7 +37,7 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    adapterPaging = FavoriteTvAdapter(navigator)
+    adapterPaging = FavoritePagingAdapter(navigator, TV_MEDIA_TYPE)
     super.onViewCreated(view, savedInstanceState)
   }
 
@@ -57,10 +56,6 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   override fun refreshPagingAdapter() {
     adapterPaging.retry()
     adapterPaging.refresh()
-  }
-
-  override fun retryPagingAdapter() {
-    adapterPaging.retry()
   }
 
   override fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
@@ -83,9 +78,7 @@ class FavoriteTvSeriesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem =
-    (viewHolder as FavoriteTvAdapter.ViewHolder).data
-
-  override fun getMediaType(): String = MOVIE_MEDIA_TYPE
+    (viewHolder as FavoritePagingAdapter.ViewHolder).data
 
   override fun onDestroyView() {
     super.onDestroyView()

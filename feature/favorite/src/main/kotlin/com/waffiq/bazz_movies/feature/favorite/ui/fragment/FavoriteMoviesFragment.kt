@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteMovieAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +25,7 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   private var _binding: FragmentFavoriteChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
-  private lateinit var adapterPaging: FavoriteMovieAdapter
+  private lateinit var adapterPaging: FavoritePagingAdapter
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -37,7 +37,7 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    adapterPaging = FavoriteMovieAdapter(navigator)
+    adapterPaging = FavoritePagingAdapter(navigator, MOVIE_MEDIA_TYPE)
     super.onViewCreated(view, savedInstanceState)
   }
 
@@ -56,10 +56,6 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   override fun refreshPagingAdapter() {
     adapterPaging.retry()
     adapterPaging.refresh()
-  }
-
-  override fun retryPagingAdapter() {
-    adapterPaging.retry()
   }
 
   override fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
@@ -82,9 +78,7 @@ class FavoriteMoviesFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem =
-    (viewHolder as FavoriteMovieAdapter.ViewHolder).data
-
-  override fun getMediaType(): String = MOVIE_MEDIA_TYPE
+    (viewHolder as FavoritePagingAdapter.ViewHolder).data
 
   override fun onDestroyView() {
     super.onDestroyView()
