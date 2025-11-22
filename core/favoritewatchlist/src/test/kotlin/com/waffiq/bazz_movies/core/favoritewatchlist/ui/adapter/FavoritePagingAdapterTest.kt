@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemMulmedBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -32,13 +33,13 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class FavoriteMovieAdapterTest {
+class FavoritePagingAdapterTest {
   private lateinit var context: Context
   private lateinit var navigator: INavigator
-  private lateinit var adapter: FavoriteMovieAdapter
+  private lateinit var adapter: FavoritePagingAdapter
   private lateinit var inflater: LayoutInflater
   private lateinit var binding: ItemMulmedBinding
-  private lateinit var viewHolder: FavoriteMovieAdapter.ViewHolder
+  private lateinit var viewHolder: FavoritePagingAdapter.ViewHolder
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -60,7 +61,7 @@ class FavoriteMovieAdapterTest {
   @Before
   fun setup() {
     navigator = mockk(relaxed = true)
-    adapter = FavoriteMovieAdapter(navigator)
+    adapter = FavoritePagingAdapter(navigator, MOVIE_MEDIA_TYPE)
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
@@ -204,7 +205,7 @@ class FavoriteMovieAdapterTest {
   fun onBindViewHolder_whenDataIsNull_handlesNullDataProperly() {
     // create a minimal test adapter with just the functionality needed for testing
     val testAdapter = object : PagingDataAdapter<MediaItem, RecyclerView.ViewHolder>(
-      FavoriteMovieAdapter.DIFF_CALLBACK
+      FavoritePagingAdapter.DIFF_CALLBACK
     ) {
       // simplified test method that focuses only on the null handling behavior
       fun testNullDataHandling() {
@@ -262,7 +263,7 @@ class FavoriteMovieAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem = MediaItem(id = 1, mediaType = "movie")
 
-    assertTrue(FavoriteMovieAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
+    assertTrue(FavoritePagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
   }
 
   @Test
@@ -270,7 +271,7 @@ class FavoriteMovieAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
-    assertFalse(FavoriteMovieAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
+    assertFalse(FavoritePagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
   }
 
   @Test
@@ -278,7 +279,7 @@ class FavoriteMovieAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie", title = "Movie 1")
     val newItem = MediaItem(id = 1, mediaType = "movie", title = "Different Title")
 
-    assertTrue(FavoriteMovieAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
+    assertTrue(FavoritePagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
@@ -286,6 +287,6 @@ class FavoriteMovieAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
-    assertFalse(FavoriteMovieAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
+    assertFalse(FavoritePagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
   }
 }

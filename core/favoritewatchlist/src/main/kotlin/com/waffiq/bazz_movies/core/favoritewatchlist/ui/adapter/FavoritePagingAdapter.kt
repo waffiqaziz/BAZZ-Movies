@@ -1,16 +1,18 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter
 
 import android.R.anim.fade_in
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
@@ -22,8 +24,11 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class FavoriteTvAdapter(private val navigator: INavigator) :
-  androidx.paging.PagingDataAdapter<MediaItem, FavoriteTvAdapter.ViewHolder>(DIFF_CALLBACK) {
+class FavoritePagingAdapter(
+  private val navigator: INavigator,
+  private val mediaType: String,
+) :
+  PagingDataAdapter<MediaItem, FavoritePagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemMulmedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -46,37 +51,44 @@ class FavoriteTvAdapter(private val navigator: INavigator) :
 
     fun bind(mediaItem: MediaItem) {
       data = mediaItem
-      showImage(binding, mediaItem)
-
-      binding.tvTitle.text = itemView.context.titleHandler(mediaItem)
-      binding.tvYearReleased.text = itemView.context.releaseDateHandler(mediaItem)
-      binding.tvGenre.text = mediaItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-        .takeUnless { it.isNullOrBlank() } ?: itemView.context.getString(not_available)
-      binding.ratingBar.rating = (mediaItem.voteAverage ?: 0F) / 2
-      binding.tvRating.text = ratingHandler(mediaItem.voteAverage)
+      setImagePoster(binding, data)
+      itemView.context.setTitleYearGenreRating(binding, mediaItem)
 
       // OnClickListener
       binding.container.setOnClickListener {
-        navigator.openDetails(itemView.context, mediaItem.copy(mediaType = TV_MEDIA_TYPE))
+        navigator.openDetails(itemView.context, mediaItem.copy(mediaType = mediaType))
       }
     }
+  }
 
-    private fun showImage(binding: ItemMulmedBinding, mediaItem: MediaItem) {
-      binding.ivPicture.contentDescription = titleHandler(mediaItem)
-      Glide.with(binding.ivPicture)
-        .load(
-          if (!mediaItem.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + mediaItem.posterPath
-          } else {
-            ic_poster_error
-          }
-        )
-        .placeholder(ic_bazz_placeholder_poster)
-        .transform(CenterCrop())
-        .transition(withCrossFade())
-        .error(ic_poster_error)
-        .into(binding.ivPicture)
-    }
+  private fun Context.setTitleYearGenreRating(
+    binding: ItemMulmedBinding,
+    mediaItem: MediaItem,
+  ) {
+    binding.tvTitle.text = titleHandler(mediaItem)
+    binding.tvYearReleased.text = releaseDateHandler(mediaItem)
+    binding.tvGenre.text = mediaItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
+      .takeUnless { it.isNullOrBlank() } ?: getString(not_available)
+    binding.ratingBar.rating = (mediaItem.voteAverage ?: 0F) / 2
+    binding.tvRating.text = ratingHandler(mediaItem.voteAverage)
+  }
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun setImagePoster(binding: ItemMulmedBinding, data: MediaItem) {
+    binding.ivPicture.contentDescription = titleHandler(data)
+    Glide.with(binding.ivPicture)
+      .load(
+        if (!data.posterPath.isNullOrEmpty()) {
+          TMDB_IMG_LINK_POSTER_W185 + data.posterPath
+        } else {
+          ic_poster_error
+        }
+      )
+      .placeholder(ic_bazz_placeholder_poster)
+      .transform(CenterCrop())
+      .transition(withCrossFade())
+      .error(ic_poster_error)
+      .into(binding.ivPicture)
   }
 
   companion object {

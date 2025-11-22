@@ -86,13 +86,11 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   protected abstract fun setupPagingAdapterWithFooter()
   protected abstract fun notifyPagingAdapterChanged(position: Int)
   protected abstract fun refreshPagingAdapter()
-  protected abstract fun retryPagingAdapter()
 
   protected abstract fun getDBFavoriteData(): LiveData<List<Favorite>>
   protected abstract fun createFavoriteModel(mediaId: Int): FavoriteModel
   protected abstract fun postToAddWatchlist(title: String, mediaId: Int)
   protected abstract fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem
-  protected abstract fun getMediaType(): String
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
