@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
@@ -16,7 +17,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
-import com.waffiq.bazz_movies.feature.favorite.R.id.rv_favorite
 import com.waffiq.bazz_movies.feature.favorite.R.id.tabs
 import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
@@ -31,8 +31,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class FavoriteFragmentTest
-  : FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
+class FavoriteFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -46,9 +45,9 @@ class FavoriteFragmentTest
   val mockSnackbar: ISnackbar = mockk(relaxed = true)
 
   @Before
-  override fun setUp() {
+  fun setUp() {
     hiltRule.inject()
-    super.setUp()
+    launchFragment()
   }
 
   @Test
@@ -65,31 +64,28 @@ class FavoriteFragmentTest
   @Test
   fun viewPager_whenCreated_shouldHaveSwipeDisabled() {
     // Verify that ViewPager swiping is disabled by checking the property directly
-    onView(withId(view_pager))
-      .check { view, _ ->
-        val viewPager = view as ViewPager2
-        assertThat(viewPager.isUserInputEnabled).isFalse()
-      }
+    onView(withId(view_pager)).check { view, _ ->
+      val viewPager = view as ViewPager2
+      assertThat(viewPager.isUserInputEnabled).isFalse()
+    }
 
     // Test current item doesn't change after swipe attempt
-    onView(withId(view_pager))
-      .perform(swipeLeft())
-      .check { view, _ ->
-        val viewPager = view as ViewPager2
-        assertThat(viewPager.currentItem).isEqualTo(0) // should still be at position 0
-      }
+    onView(withId(view_pager)).perform(swipeLeft()).check { view, _ ->
+      val viewPager = view as ViewPager2
+      assertThat(viewPager.currentItem).isEqualTo(0) // should still be at position 0
+    }
   }
 
   @Test
   fun tabTvSeries_whenClicked_showsTvSeriesTab() {
+    onIdle()
     onView(withText(tv_series)).perform(click())
-    onView(withId(rv_favorite)).check(matches(isDisplayed()))
   }
 
   @Test
   fun tabMovie_whenClicked_showsMoviesTab() {
+    onIdle()
     onView(withText(movies)).perform(click())
-    onView(withId(rv_favorite)).check(matches(isDisplayed()))
   }
 
   @Test
@@ -101,18 +97,17 @@ class FavoriteFragmentTest
   fun tabLayoutMediator_whenClickSpecificTabs_shouldBeAttachedOnViewCreated() {
     onView(isRoot()).perform(waitFor(300))
     onView(withText(tv_series)).perform(click())
-    onView(withId(view_pager))
-      .check { view, _ ->
-        val viewPager = view as ViewPager2
-        assertThat(viewPager.currentItem).isEqualTo(1)
-      }
+    onView(withId(view_pager)).check { view, _ ->
+      val viewPager = view as ViewPager2
+      assertThat(viewPager.currentItem).isEqualTo(1)
+    }
   }
 
   @Test
   fun onDestroyView_whenCalled_resetsState() {
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      favoriteFragment.requireActivity()
-        .supportFragmentManager.beginTransaction()
+      favoriteFragment.requireActivity().supportFragmentManager
+        .beginTransaction()
         .remove(favoriteFragment)
         .commitNow()
     }

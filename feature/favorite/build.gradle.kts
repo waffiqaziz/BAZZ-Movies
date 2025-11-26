@@ -1,7 +1,3 @@
-import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.libs
-import org.gradle.kotlin.dsl.testImplementation
-
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.android.library.kover)
@@ -42,6 +38,7 @@ dependencies {
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.datastore.preferences)
   androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(libs.androidx.espresso.contrib)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)

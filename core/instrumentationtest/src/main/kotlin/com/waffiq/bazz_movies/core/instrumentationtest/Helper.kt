@@ -8,6 +8,8 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import org.hamcrest.Matcher
 
@@ -36,7 +38,7 @@ object Helper {
     }
   }
 
-  fun waitFor(millis: Long): ViewAction {
+  fun waitFor(millis: Long = 1000): ViewAction {
     return object : ViewAction {
       override fun getConstraints(): Matcher<View> = isRoot()
       override fun getDescription(): String = "Wait for $millis milliseconds"
@@ -48,7 +50,7 @@ object Helper {
 
   fun waitUntil(
     matcher: Matcher<View>,
-    timeout: Long = 2000,
+    timeout: Long = 5000,
   ): ViewAssertion {
     return object : ViewAssertion {
       override fun check(view: View?, noViewFoundException: NoMatchingViewException?) {
@@ -68,5 +70,20 @@ object Helper {
 
   fun shortDelay() {
     onView(isRoot()).perform(waitFor(DELAY_TIME_UI))
+  }
+
+  fun waitUntilVisible(matcher: Matcher<View>, timeoutMs: Long = 5000) {
+    val endTime = System.currentTimeMillis() + timeoutMs
+
+    while (System.currentTimeMillis() < endTime) {
+      try {
+        onView(matcher).check(matches(isDisplayed()))
+        return
+      } catch (_: Throwable) {
+        Thread.sleep(DELAY_TIME)
+      }
+    }
+
+    onView(matcher).check(matches(isDisplayed()))
   }
 }

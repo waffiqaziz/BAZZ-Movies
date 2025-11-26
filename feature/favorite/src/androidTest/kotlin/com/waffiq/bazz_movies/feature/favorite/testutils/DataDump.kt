@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.UserModel
 
 // Placeholder for data dump or test data related utilities
@@ -48,5 +50,27 @@ object DataDump {
     overview = "Overview of the TV show",
     popularity = 0.0,
     rating = 6.0f
+  )
+
+  val testMediaItem = MediaItem(
+    firstAirDate = "2025-07-09",
+    overview = "Overview",
+    originalLanguage = "en",
+    listGenreIds = listOf(28),
+    posterPath = "poster.jpg",
+    backdropPath = "backdrop.jpg",
+    mediaType = MOVIE_MEDIA_TYPE,
+    popularity = 354.5509,
+    voteAverage = 7.453f,
+    name = "name",
+    title = "title",
+    originalTitle = "original title",
+    originalName = "original name",
+    id = 1061474,
+    adult = false,
+    voteCount = 1102,
+    video = false,
+    releaseDate = "2025-07-09",
+    originCountry = null
   )
 }
