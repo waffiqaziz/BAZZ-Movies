@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvResponse
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

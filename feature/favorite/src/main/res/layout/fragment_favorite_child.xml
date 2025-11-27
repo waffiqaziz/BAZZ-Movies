@@ -53,4 +53,13 @@
     android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
 
+  <!-- for testing only -->
+  <View
+    android:id="@+id/snackbar_anchor_test"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:paddingBottom="75dp"
+    android:layout_gravity="bottom"
+    android:visibility="invisible"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
