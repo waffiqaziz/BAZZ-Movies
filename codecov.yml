@@ -54,11 +54,6 @@ flag_management:
         - core/database/
       carryforward: true
         
-    - name: core-designsystem
-      paths:
-        - core/designsystem/
-      carryforward: true
-        
     - name: core-domain
       paths:
         - core/domain/

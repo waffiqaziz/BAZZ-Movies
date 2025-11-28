@@ -458,16 +458,6 @@ jobs:
           name: core-database-coverage
         continue-on-error: true
 
-      - name: Upload coverage with core-designsystem flag
-        if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
-        with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          flags: core-designsystem
-          token: ${{ secrets.CODECOV_TOKEN }}
-          name: core-designsystem-coverage
-        continue-on-error: true
-
       - name: Upload coverage with core-domain flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae

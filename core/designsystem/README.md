@@ -1,6 +1,6 @@
 # \:core\:designsystem Module
 
-[![Code Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]
+>_No Coverage — UI Resources Only_
 
 ![Dependency graph](../../docs/images/module-graphs/core-designsystem.svg)
 
@@ -9,10 +9,6 @@
 `:core:designsystem` is a module dedicated to managing the UI components and design resources used across the application. It provides a centralized place for reusable UI elements, styles, and animations, ensuring consistency and reducing redundancy in the project.
 
 ## Responsibilities
-
-- **ViewPager Adapter**
-
-  - [GenericViewPagerAdapter](../designsystem/src/main/kotlin/com/waffiq/bazz_movies/core/designsystem/viewpager/GenericViewPagerAdapter.kt): A generic `FragmentStateAdapter` implementation for managing a list of fragments inside a ViewPager.
 
 - **UI Resources**
   - **Animations:** Contains reusable animations for UI transitions.
@@ -34,13 +30,6 @@ dependencies {
 
 ## Example Usage
 
-Using `GenericViewPagerAdapter` in a `ViewPager2`:
-
-```kotlin
-val adapter = GenericViewPagerAdapter(supportFragmentManager, lifecycle, listOf(fragment1, fragment2))
-viewPager.adapter = adapter
-```
-
 Applying a custom background drawable:
 
 ```xml
@@ -52,13 +41,7 @@ Applying a custom background drawable:
 
 ## Best Practices
 
-- **Encapsulate reusable UI components** – Avoid duplicating UI logic across modules.
-- **Follow Material Design guidelines** – Ensure a consistent and accessible user experience.
+- **Encapsulate reusable UI components** – Avoid duplicating UI resource across modules.
 - **Use theme attributes instead of hardcoded values** – Improves flexibility and adaptability to dark mode.
 
 This module provides a structured approach to UI design, making the application more scalable and maintainable.
-
-<!-- LINK -->
-
-[core-designsystem-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-designsystem
-[core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/designsystem/src/main/kotlin/com/waffiq/bazz_movies/core/designsystem
