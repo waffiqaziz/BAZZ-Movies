@@ -32,7 +32,9 @@
 
 - **[ScrollActionBarUtils](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ScrollActionBarUtils.kt)** – Utility for managing scroll-based ActionBar visibility.
 
-- **[SnackBarManager](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SnackBarManager.kt)** – Manages showing and dismissing Snackbars warning in a consistent way.
+- **[SnackBarManager](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SnackBarManager.kt)** – Manages showing and dismissing SnackBars and Toast in a consistent way.
+
+- **[GenericViewPagerAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/GenericViewPagerAdapter.kt)** – A custom adapter for managing fragments in a `ViewPager2`.
 
 ## Integration
 

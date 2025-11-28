@@ -12,8 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
-import com.waffiq.bazz_movies.core.designsystem.viewpager.GenericViewPagerAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.common.Constants.tabMoviesTvHeadingArray
+import com.waffiq.bazz_movies.core.uihelper.utils.GenericViewPagerAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteBinding
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -4,7 +4,7 @@ plugins {
   id("kotlin-parcelize")
 }
 
-android{
+android {
   namespace = "com.waffiq.bazz_movies.feature.home"
 
   testOptions {
