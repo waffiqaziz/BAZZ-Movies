@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.times
@@ -35,7 +37,7 @@ class UserPreferenceMockTwoTest {
   }
 
   @Test
-  fun saveRegion_whenSuccessful_savesCorrectRegion() = runTest {
+  fun saveRegion_whenSuccessful_callsDatastoreEdit() = runTest {
     userPreference.saveRegion("ID")
 
     val updatedPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID"))
@@ -43,6 +45,22 @@ class UserPreferenceMockTwoTest {
 
     val savedRegion = userPreference.getRegion().first() // This should return "ID"
     assertEquals("ID", savedRegion)
+
+    verify(mockDataStore).edit(any())
+  }
+
+  @Test
+  fun savePermissionAsked_whenSuccessful_callsDatastoreEdit() = runTest {
+    val isAsked = userPreference.getPermissionAsked().first()
+    assertFalse(isAsked)
+
+    userPreference.savePermissionAsked()
+
+    val updatedPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.NOTIFICATION_PERMISSION_ASKED to true))
+    `when`(mockDataStore.data).thenReturn(updatedPreferencesFlow)
+
+    val isAsked2 = userPreference.getPermissionAsked().first()
+    assertTrue(isAsked2)
 
     verify(mockDataStore).edit(any())
   }

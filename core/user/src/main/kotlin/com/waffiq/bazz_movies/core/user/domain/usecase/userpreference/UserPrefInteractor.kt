@@ -20,4 +20,8 @@ class UserPrefInteractor @Inject constructor(private val userPrefRepository: IUs
     userPrefRepository.saveUserPref(userModel)
 
   override suspend fun removeUserDataPref() = userPrefRepository.removeUserDataPref()
+
+  override suspend fun savePermissionAsked() = userPrefRepository.savePermissionAsked()
+
+  override fun getPermissionAsked(): Flow<Boolean> = userPrefRepository.getPermissionAsked()
 }
