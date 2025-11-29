@@ -62,6 +62,10 @@ class UserRepositoryImpl @Inject constructor(
 
   override fun getUserRegionPref(): Flow<String> = pref.getRegion()
 
+  override suspend fun savePermissionAsked() = pref.savePermissionAsked()
+
+  override fun getPermissionAsked(): Flow<Boolean> = pref.getPermissionAsked()
+
   override suspend fun removeUserDataPref() = pref.removeUserData()
   // endregion PREF
 

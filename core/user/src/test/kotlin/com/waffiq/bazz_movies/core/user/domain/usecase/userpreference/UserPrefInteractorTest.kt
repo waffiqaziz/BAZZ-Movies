@@ -108,7 +108,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun saveUserPref_whenSuccessful_savesUserData() = runTest {
+  fun saveUserPref_whenSuccessful_callsSaveUserPrefFromRepository() = runTest {
     val userModel = UserModel(
       userId = 3,
       name = "Alice",
@@ -126,9 +126,23 @@ class UserPrefInteractorTest {
   }
 
   @Test
+  fun savePermissionAsked_whenSuccessful_callsSavesPermissionAskedFromRepository() = runTest {
+    coEvery { mockRepository.savePermissionAsked() } just Runs
+    userPrefInteractor.savePermissionAsked()
+    coVerify { mockRepository.savePermissionAsked() }
+  }
+
+  @Test
   fun removeUserDataPref_whenCalled_callsRemoveUserDataPrefFromRepository() = runTest {
     coEvery { mockRepository.removeUserDataPref() } just Runs
     userPrefInteractor.removeUserDataPref()
     coVerify { mockRepository.removeUserDataPref() }
+  }
+
+  @Test
+  fun savePermissionAsked_whenCalled_callsSavePermissionAskedRepository() = runTest {
+    coEvery { mockRepository.savePermissionAsked() } just Runs
+    userPrefInteractor.savePermissionAsked()
+    coVerify { mockRepository.savePermissionAsked() }
   }
 }

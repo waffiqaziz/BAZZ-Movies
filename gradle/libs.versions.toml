@@ -20,6 +20,7 @@ hilt = "2.59.1"
 gms = "4.4.4"
 crashlytics = "3.0.6"
 firebaseBom = "34.9.0"
+firebaseMessaging = "25.0.1"
 firebasePerfPlugin = "2.0.2"
 playIntegrity = "1.6.0"
 
@@ -208,6 +209,7 @@ play-integrity = { group = "com.google.android.play", name = "integrity", versio
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 
 # Third-party Libraries
@@ -282,6 +284,7 @@ datastore = [
 firebase = [
   "firebase-analytics",
   "firebase-crashlytics",
+  "firebase-messaging",
   "firebase-performance"
 ]
 

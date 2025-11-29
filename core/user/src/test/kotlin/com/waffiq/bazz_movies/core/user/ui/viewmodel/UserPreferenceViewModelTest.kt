@@ -68,6 +68,16 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
+  fun getPermissionAsked_whenSuccessful_emitsBoolean() = runTest {
+    every { userPrefUseCase.getPermissionAsked() } returns flowOf(false)
+
+    val observer = mockk<Observer<Boolean>>(relaxed = true)
+    viewModel.getPermissionAsked().observeForever(observer)
+    advanceUntilIdle()
+    coVerify { observer.onChanged(false) }
+  }
+
+  @Test
   fun saveUserPref_whenSuccessful_callsSaveUserPrefFromUseCase() = runTest {
     coEvery { userPrefUseCase.saveUserPref(userModel) } just Runs
     viewModel.saveUserPref(userModel)
@@ -89,5 +99,13 @@ class UserPreferenceViewModelTest {
     viewModel.removeUserDataPref()
     advanceUntilIdle()
     coVerify { userPrefUseCase.removeUserDataPref() }
+  }
+
+  @Test
+  fun savePermissionAsked_whenSuccessful_callsSavePermissionAskedFromUseCase() = runTest {
+    coEvery { userPrefUseCase.savePermissionAsked() } just Runs
+    viewModel.savePermissionAsked()
+    advanceUntilIdle()
+    coVerify { userPrefUseCase.savePermissionAsked() }
   }
 }
