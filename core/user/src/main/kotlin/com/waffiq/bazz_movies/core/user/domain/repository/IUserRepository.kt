@@ -26,6 +26,8 @@ interface IUserRepository {
   fun getUserPref(): Flow<UserModel>
   fun getUserToken(): Flow<String>
   fun getUserRegionPref(): Flow<String>
+  suspend fun savePermissionAsked()
+  fun getPermissionAsked(): Flow<Boolean>
   suspend fun removeUserDataPref()
 
   fun getCountryCode(): Flow<Outcome<CountryIP>>
