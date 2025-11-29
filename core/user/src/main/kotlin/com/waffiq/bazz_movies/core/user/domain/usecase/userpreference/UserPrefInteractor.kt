@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserPrefInteractor @Inject constructor(
-  private val userPrefRepository: IUserRepository
+  private val userPrefRepository: IUserRepository,
 ) : UserPrefUseCase {
 
   override fun getUser(): Flow<UserModel> =
@@ -26,4 +26,10 @@ class UserPrefInteractor @Inject constructor(
 
   override suspend fun removeUserDataPref() =
     userPrefRepository.removeUserDataPref()
+
+  override suspend fun savePermissionAsked() =
+    userPrefRepository.savePermissionAsked()
+
+  override fun getPermissionAsked(): Flow<Boolean> =
+    userPrefRepository.getPermissionAsked()
 }

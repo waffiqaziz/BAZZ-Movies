@@ -153,4 +153,29 @@ class UserPreferenceMockkTest {
     // Verify the correct value was set in preferences
     verify { mutablePrefs[UserPreference.REGION_KEY] = "US" }
   }
+
+  @Test
+  fun savePermissionAsked_whenCalled_shouldCallEdit() = runTest {
+    val transformSlot = slot<suspend (Preferences) -> Preferences>()
+
+    val testPrefs = mockk<Preferences>()
+    val mutablePrefs = mockk<MutablePreferences>()
+
+    every { testPrefs.toMutablePreferences() } returns mutablePrefs
+    every { mutablePrefs[UserPreference.NOTIFICATION_PERMISSION_ASKED] = true } just Runs
+
+    coEvery {
+      mockDataStore.updateData(capture(transformSlot))
+    } coAnswers {
+      transformSlot.captured.invoke(testPrefs)
+      mockPreferences
+    }
+
+    userPreference.savePermissionAsked()
+    advanceUntilIdle()
+
+    coVerify { mockDataStore.updateData(any()) }
+
+    verify { mutablePrefs[UserPreference.NOTIFICATION_PERMISSION_ASKED] = true }
+  }
 }
