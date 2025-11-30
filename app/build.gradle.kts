@@ -4,7 +4,6 @@ plugins {
   alias(libs.plugins.bazzmovies.android.application.jacoco)
   alias(libs.plugins.bazzmovies.hilt)
   alias(libs.plugins.bazzmovies.hilt.test)
-  alias(libs.plugins.gms.googleServices)
   id("kotlin-parcelize")
 }
 
@@ -37,7 +36,6 @@ dependencies {
 
   // third-party library
   implementation(libs.expandable.textview)
-  implementation(libs.firebase.messaging)
 
   // testing
   testImplementation(libs.mockk)
