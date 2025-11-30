@@ -18,12 +18,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.messaging.FirebaseMessaging
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
-import com.waffiq.bazz_movies.core.designsystem.R.string.allow
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_now
-import com.waffiq.bazz_movies.core.designsystem.R.string.notification_description
-import com.waffiq.bazz_movies.core.designsystem.R.string.notification_later
-import com.waffiq.bazz_movies.core.designsystem.R.string.stay_updated
+import com.waffiq.bazz_movies.core.designsystem.R
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,9 +36,12 @@ class RoutingActivity : AppCompatActivity() {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
 
+    Log.d("RoutingActivity", "Running with Firebase Messaging")
+
     userPreferenceViewModel.getUserPref().observe(this) { user ->
       Log.d("RoutingActivity", "User is  $user")
       isLogin = user.isLogin
+      if(isLogin) gotoMainActivity(true)
     }
 
     requestNotificationPermission()
@@ -54,10 +52,7 @@ class RoutingActivity : AppCompatActivity() {
           Log.w("TOKEN", "Fetching FCM registration token failed", task.exception)
           return@OnCompleteListener
         }
-        val token = task.result
-
-        Log.d("TOKEN", token)
-        Toast.makeText(baseContext, "TOKEN : $token", Toast.LENGTH_SHORT).show()
+        Log.d("TOKEN", task.result)
       }
     )
   }
@@ -94,15 +89,15 @@ class RoutingActivity : AppCompatActivity() {
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   private fun showNotificationRationaleDialog() {
     MaterialAlertDialogBuilder(this)
-      .setTitle(getString(stay_updated))
-      .setMessage(getString(notification_description))
-      .setIcon(ic_bazz_logo)
-      .setPositiveButton(getString(allow)) { _, _ ->
+      .setTitle(getString(R.string.stay_updated))
+      .setMessage(getString(R.string.notification_description))
+      .setIcon(R.drawable.ic_bazz_logo)
+      .setPositiveButton(getString(R.string.allow)) { _, _ ->
         requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
       }
-      .setNegativeButton(getString(not_now)) { _, _ ->
+      .setNegativeButton(getString(R.string.not_now)) { _, _ ->
         userPreferenceViewModel.savePermissionAsked()
-        Toast.makeText(this, getString(notification_later), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.notification_later), Toast.LENGTH_SHORT).show()
         gotoMainActivity(isLogin)
       }
       .setCancelable(false) // prevent dismissing by tapping outside
