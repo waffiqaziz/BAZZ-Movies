@@ -24,13 +24,14 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[REGION_KEY] = user.region
       it[TOKEN_KEY] = user.token
       it[STATE_KEY] = user.isLogin
+      it[NOTIFICATION_PERMISSION_ASKED] = false
       it[GRAVATAR_KEY] = user.gravatarHast.orEmpty()
       it[TMDB_AVATAR_KEY] = user.tmdbAvatar.orEmpty()
     }
   }
 
-  fun getUser(): Flow<UserModelPref> =
-    dataStore.data.map {
+  fun getUser(): Flow<UserModelPref> {
+    return dataStore.data.map {
       UserModelPref(
         it[USERID_KEY] ?: 0,
         it[NAME_KEY].orEmpty(),
@@ -43,6 +44,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
         it[TMDB_AVATAR_KEY].orEmpty()
       )
     }
+  }
 
   suspend fun saveRegion(region: String) {
     dataStore.edit { it[REGION_KEY] = region }
@@ -51,6 +53,13 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
   fun getToken(): Flow<String> = dataStore.data.map { it[TOKEN_KEY].orEmpty() }
 
   fun getRegion(): Flow<String> = dataStore.data.map { it[REGION_KEY].orEmpty() }
+
+  fun getPermissionAsked(): Flow<Boolean> =
+    dataStore.data.map { it[NOTIFICATION_PERMISSION_ASKED] ?: false }
+
+  suspend fun savePermissionAsked() {
+    dataStore.edit { it[NOTIFICATION_PERMISSION_ASKED] = true }
+  }
 
   suspend fun removeUserData() { // remove all data from datastore
     dataStore.edit {
@@ -63,6 +72,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[GRAVATAR_KEY] = ""
       it[TMDB_AVATAR_KEY] = ""
       it[STATE_KEY] = false
+      it[NOTIFICATION_PERMISSION_ASKED] = false
     }
   }
 
@@ -75,6 +85,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
     val TOKEN_KEY = stringPreferencesKey("token")
     val REGION_KEY = stringPreferencesKey("region")
     val STATE_KEY = booleanPreferencesKey("state")
+    val NOTIFICATION_PERMISSION_ASKED = booleanPreferencesKey("notification_permission_asked")
     val GRAVATAR_KEY = stringPreferencesKey("gravatar")
     val TMDB_AVATAR_KEY = stringPreferencesKey("tmdb_avatar")
   }
