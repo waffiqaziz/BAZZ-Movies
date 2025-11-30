@@ -5,7 +5,6 @@ plugins {
   alias(libs.plugins.bazzmovies.glide)
   alias(libs.plugins.bazzmovies.hilt)
   alias(libs.plugins.bazzmovies.hilt.test)
-  alias(libs.plugins.gms.googleServices)
   id("kotlin-parcelize")
 }
 
@@ -40,7 +39,6 @@ dependencies {
 
   // third-party library
   implementation(libs.expandable.textview)
-  implementation(libs.firebase.messaging)
 
   // testing
   testImplementation(libs.mockk)
@@ -59,8 +57,11 @@ dependencies {
 }
 
 dependencyGuard {
-  configuration("releaseCompileClasspath")
-  configuration("releaseRuntimeClasspath")
+  configuration("withFirebaseReleaseCompileClasspath")
+  configuration("withFirebaseReleaseRuntimeClasspath")
+
+  configuration("withoutFirebaseReleaseCompileClasspath")
+  configuration("withoutFirebaseReleaseRuntimeClasspath")
 }
 
 // Disabling detekt from the check task
