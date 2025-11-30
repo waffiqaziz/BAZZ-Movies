@@ -6,13 +6,12 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import java.io.File
 
 class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
-
-      // Check for the existence of google-services.json to decide whether to apply Firebase plugins
-      val googleServicesFile = rootProject.file("app/google-services.json")
+      val googleServicesFile = File(project.rootDir, "app/google-services.json")
       if (!googleServicesFile.exists()) {
         logger.warn("[WARNING] google-services.json not found. Firebase will be disabled for this build.")
         return
