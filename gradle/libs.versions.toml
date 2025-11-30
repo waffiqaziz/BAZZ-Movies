@@ -283,7 +283,9 @@ datastore = [
 firebase = [
   "firebase-analytics",
   "firebase-crashlytics",
-  "firebase-performance"]
+  "firebase-messaging",
+  "firebase-performance",
+]
 
 kotest = [
   "kotest-kotest-assertions-core",
