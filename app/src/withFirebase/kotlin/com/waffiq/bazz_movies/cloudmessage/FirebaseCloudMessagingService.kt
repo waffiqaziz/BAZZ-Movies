@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.cloudmessage
 
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -27,7 +28,7 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
   private fun showNotification(title: String, message: String) {
     val intent = Intent(this, RoutingActivity::class.java).apply {
       flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-      setPackage(packageName)
+      component = ComponentName(packageName, RoutingActivity::class.java.name)
     }
 
     val pendingIntent = PendingIntent.getActivity(
