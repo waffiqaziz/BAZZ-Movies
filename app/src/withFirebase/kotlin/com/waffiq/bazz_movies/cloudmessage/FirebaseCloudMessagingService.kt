@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.cloudmessage
 
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.waffiq.bazz_movies.RoutingActivity
@@ -28,18 +28,19 @@ class FirebaseCloudMessagingService : FirebaseMessagingService() {
   private fun showNotification(title: String, message: String) {
     val intent = Intent(this, RoutingActivity::class.java).apply {
       flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+      component = ComponentName(packageName, RoutingActivity::class.java.name)
     }
 
     val pendingIntent = PendingIntent.getActivity(
       this,
       NOTIFICATION_ID,
       intent,
-      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
     )
 
     val builder = NotificationCompat.Builder(
       this,
-      ContextCompat.getString(this, default_notification_channel_id)
+      getString(default_notification_channel_id)
     )
       .setSmallIcon(ic_bazz_monochrome)
       .setContentTitle(title)
