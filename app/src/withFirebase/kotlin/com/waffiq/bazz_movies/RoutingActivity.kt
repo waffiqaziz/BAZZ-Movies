@@ -36,16 +36,26 @@ class RoutingActivity : AppCompatActivity() {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
 
+    firebaseChecking()
+
     Log.d("RoutingActivity", "Running with Firebase Messaging")
 
     userPreferenceViewModel.getUserPref().observe(this) { user ->
       Log.d("RoutingActivity", "User is  $user")
       isLogin = user.isLogin
-      if(isLogin) gotoMainActivity(true)
+
+      // if already login its mean permission is asked, then open main activity
+      if (isLogin) gotoMainActivity(true)
     }
 
-    requestNotificationPermission()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      requestNotificationPermission()
+    } else {
+      gotoMainActivity(isLogin)
+    }
+  }
 
+  private fun firebaseChecking() {
     FirebaseMessaging.getInstance().token.addOnCompleteListener(
       OnCompleteListener { task ->
         if (!task.isSuccessful) {
@@ -69,19 +79,18 @@ class RoutingActivity : AppCompatActivity() {
     gotoMainActivity(isLogin)
   }
 
+  @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   private fun requestNotificationPermission() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      userPreferenceViewModel.getPermissionAsked().observe(this) {
-        if (!it) {
-          if (ContextCompat.checkSelfPermission(
-              this, Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-          ) {
-            showNotificationRationaleDialog()
-          }
-        } else {
-          gotoMainActivity(isLogin)
+    userPreferenceViewModel.getPermissionAsked().observe(this) {
+      if (!it) {
+        if (ContextCompat.checkSelfPermission(
+            this, Manifest.permission.POST_NOTIFICATIONS
+          ) != PackageManager.PERMISSION_GRANTED
+        ) {
+          showNotificationRationaleDialog()
         }
+      } else {
+        gotoMainActivity(isLogin)
       }
     }
   }
