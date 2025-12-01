@@ -6,12 +6,13 @@ coverage:
     project:
       default:
         target: auto
-        threshold: 0%
+        threshold: 1%
         base: auto
         informational: false
     patch:
       default:
         target: 75%
+        threshold: 1%
         informational: false
 
 codecov:
@@ -27,6 +28,7 @@ flag_management:
         threshold: 1%
       - name_prefix: patch-
         type: patch
+        threshold: 1%
         target: 75%
   individual_flags:
     # App module
