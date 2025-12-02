@@ -34,7 +34,6 @@ class DetailMovieDataManagerTest {
     val regionLiveData = MutableLiveData("US")
     manager = DetailDataManager(detailViewModel, dataMediaItem, activity)
 
-
     manager.loadAllData()
 
     // trigger LiveData emission manually

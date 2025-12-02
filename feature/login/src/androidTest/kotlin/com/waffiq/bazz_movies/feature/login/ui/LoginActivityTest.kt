@@ -265,11 +265,13 @@ class LoginActivityTest {
 
     // verify guest user is saved
     verify {
-      mockUserPrefViewModel.saveUserPref(match { userModel ->
-        userModel.userId == 0 &&
-          userModel.name == context.getString(guest_user) &&
-          userModel.username == context.getString(guest_user) && userModel.isLogin
-      })
+      mockUserPrefViewModel.saveUserPref(
+        match { userModel ->
+          userModel.userId == 0 &&
+            userModel.name == context.getString(guest_user) &&
+            userModel.username == context.getString(guest_user) && userModel.isLogin
+        }
+      )
     }
 
     // verify navigation to main activity
@@ -335,7 +337,6 @@ class LoginActivityTest {
     typeValidLogin()
     onView(withId(btn_login)).perform(click())
   }
-
 
   private fun withErrorText(expectedError: String): Matcher<View> {
     return object : BoundedMatcher<View, EditText>(EditText::class.java) {

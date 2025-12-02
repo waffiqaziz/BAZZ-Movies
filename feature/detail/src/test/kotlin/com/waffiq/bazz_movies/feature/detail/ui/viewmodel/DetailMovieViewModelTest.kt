@@ -240,7 +240,11 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
     assertThat(viewModel.watchProvidersUiState.value).isEqualTo(
       WatchProvidersUiState
         .Success(
-          emptyList(), emptyList(), emptyList(), emptyList(), emptyList()
+          emptyList(),
+          emptyList(),
+          emptyList(),
+          emptyList(),
+          emptyList()
         )
     )
   }

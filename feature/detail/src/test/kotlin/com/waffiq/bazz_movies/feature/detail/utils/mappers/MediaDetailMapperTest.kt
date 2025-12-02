@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCrewResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ProductionCompaniesResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SpokenLanguagesResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem

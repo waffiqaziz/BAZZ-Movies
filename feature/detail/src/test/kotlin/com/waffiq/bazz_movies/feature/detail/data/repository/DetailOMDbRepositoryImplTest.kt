@@ -8,9 +8,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DetailOMDbRepositoryImplTest:BaseDetailRepositoryImplTest()  {
+class DetailOMDbRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
-  private val imdb =  "IMDB ID"
+  private val imdb = "IMDB ID"
 
   @Test
   fun getDetailOMDb_whenSuccessful_returnsSuccessResult() = runTest {

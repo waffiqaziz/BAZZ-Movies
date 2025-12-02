@@ -7,8 +7,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.vide
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
-import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify

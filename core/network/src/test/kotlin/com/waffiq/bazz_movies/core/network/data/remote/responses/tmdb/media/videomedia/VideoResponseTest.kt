@@ -11,10 +11,12 @@ class VideoResponseTest {
   fun videoResponse_withValidValues_setsPropertiesCorrectly() {
     val videoResponse = VideoResponse(
       id = 455765,
-      results = listOf(VideoResponseItem(
-        iso6391 = "en",
-        name = "Trailer",
-      ))
+      results = listOf(
+        VideoResponseItem(
+          iso6391 = "en",
+          name = "Trailer",
+        )
+      )
     )
     assertEquals(455765, videoResponse.id)
     assertEquals("en", videoResponse.results[0].iso6391)
@@ -23,10 +25,14 @@ class VideoResponseTest {
 
   @Test
   fun videoResponse_withDefaultValues_setsPropertiesCorrectly() {
-    val videoResponse = VideoResponse(      results = listOf(VideoResponseItem(
-      iso6391 = "id",
-      name = "Trailer Film",
-    )))
+    val videoResponse = VideoResponse(
+      results = listOf(
+        VideoResponseItem(
+          iso6391 = "id",
+          name = "Trailer Film",
+        )
+      )
+    )
     assertNull(videoResponse.id)
     assertNotNull(videoResponse.results)
   }

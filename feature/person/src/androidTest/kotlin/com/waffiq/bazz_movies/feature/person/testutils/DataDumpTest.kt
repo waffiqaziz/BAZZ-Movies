@@ -17,7 +17,6 @@ object DataDumpTest {
       profilePath = "/test_profile.jpg",
     )
 
-
   val testDetailPerson =
     DetailPerson(
       id = 123,
@@ -28,7 +27,6 @@ object DataDumpTest {
       homepage = "https://example.com"
     )
 
-
   val testCastItem =
     CastItem(
       id = 456,
@@ -38,14 +36,12 @@ object DataDumpTest {
       releaseDate = "2023-01-01"
     )
 
-
   val testProfileItem =
     ProfilesItem(
       filePath = "/test_image.jpg",
       width = 500,
       height = 750
     )
-
 
   val testExternalIDPerson =
     ExternalIDPerson(
@@ -59,7 +55,6 @@ object DataDumpTest {
       wikidataId = "Q123456"
     )
 
-
   val testKnownForList =
     listOf(
       CastItem(
@@ -69,7 +64,6 @@ object DataDumpTest {
         posterPath = "/test.jpg"
       )
     )
-
 
   val testImagesList =
     listOf(

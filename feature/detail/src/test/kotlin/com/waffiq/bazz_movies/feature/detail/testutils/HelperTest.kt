@@ -124,7 +124,6 @@ object HelperTest {
     status = "Released"
   )
 
-
   val ratingsItem = listOf(RatingsItem())
 
   val oMDbDetails = OMDbDetails(
@@ -461,7 +460,6 @@ object HelperTest {
     tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
     releaseDateRegion = getReleaseDateRegion(tvDetailFull)
   )
-
 
   val postModelAddFavoriteStateSuccess =
     PostModelState(

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.releasedate
 
-
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -49,7 +49,6 @@ class VideoItemTest {
     assertEquals("dQw4w9WgXcQ", videoItem.key)
   }
 
-
   @Test
   fun videoItemDestructuring_withAllComponents_extractsCorrectValues() {
     val videoItem = VideoItem(

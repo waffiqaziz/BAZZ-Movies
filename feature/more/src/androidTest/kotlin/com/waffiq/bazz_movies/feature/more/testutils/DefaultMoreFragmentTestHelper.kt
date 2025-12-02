@@ -20,13 +20,13 @@ import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-class DefaultMoreFragmentTestHelper: MoreFragmentTestHelper{
+class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
   override lateinit var moreFragment: MoreFragment
 
-  override val mockRegionPref= MutableLiveData<String>()
-  override val mockDbResult= MutableLiveData<Event<DbResult<Int>>>()
-  override val mockSignOutState= MutableSharedFlow<Outcome<Post>>()
-  override val mockCountryCode= MutableLiveData<String>()
+  override val mockRegionPref = MutableLiveData<String>()
+  override val mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
+  override val mockSignOutState = MutableSharedFlow<Outcome<Post>>()
+  override val mockCountryCode = MutableLiveData<String>()
   override val mockUserModel = MutableLiveData<UserModel>()
 
   override fun setupMocks(

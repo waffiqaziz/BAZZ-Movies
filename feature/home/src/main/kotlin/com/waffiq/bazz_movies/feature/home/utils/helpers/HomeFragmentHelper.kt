@@ -40,9 +40,10 @@ object HomeFragmentHelper {
   ) {
     this.lifecycleScope.launch {
       @OptIn(FlowPreview::class)
-      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged()
-        .collectLatest { loadState ->
-          if (loadState.source.refresh is LoadState.NotLoading &&
+      adapter.loadStateFlow.debounce(DEBOUNCE_SHORT)
+        .distinctUntilChanged().collectLatest { loadState ->
+          if (
+            loadState.source.refresh is LoadState.NotLoading &&
             loadState.append.endOfPaginationReached &&
             adapter.itemCount < 1
           ) {
@@ -84,7 +85,9 @@ object HomeFragmentHelper {
     this.apply {
       itemAnimator = DefaultItemAnimator()
       adapter = pagingDataAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { pagingDataAdapter.retry() }
+        footer = LoadingStateAdapter {
+          pagingDataAdapter.retry()
+        }
       )
     }
   }
@@ -97,30 +100,26 @@ object HomeFragmentHelper {
     onError: (Event<String>?) -> Unit,
   ) {
     lifecycleScope.launch {
-      loadStateFlow
-        .debounce(DEBOUNCE_VERY_LONG)
-        .distinctUntilChanged()
-        .collectLatest { loadState ->
-          when {
-            (loadState.refresh is LoadState.Loading
-              || loadState.append is LoadState.Loading)
-              && loadState.append.endOfPaginationReached -> {
-              onLoading()
-            }
+      loadStateFlow.debounce(DEBOUNCE_VERY_LONG).distinctUntilChanged().collectLatest { loadState ->
+        when {
+          (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
+            loadState.append.endOfPaginationReached -> {
+            onLoading()
+          }
 
-            loadState.refresh is LoadState.NotLoading
-              && loadState.prepend is LoadState.NotLoading
-              && loadState.append is LoadState.NotLoading -> {
-              delay(DEBOUNCE_SHORT)
-              onSuccess()
-            }
+          loadState.refresh is LoadState.NotLoading &&
+            loadState.prepend is LoadState.NotLoading &&
+            loadState.append is LoadState.NotLoading -> {
+            delay(DEBOUNCE_SHORT)
+            onSuccess()
+          }
 
-            loadState.refresh is LoadState.Error -> {
-              val error = (loadState.refresh as LoadState.Error).error
-              onError(Event(pagingErrorHandling(error)))
-            }
+          loadState.refresh is LoadState.Error -> {
+            val error = (loadState.refresh as LoadState.Error).error
+            onError(Event(pagingErrorHandling(error)))
           }
         }
+      }
     }
   }
 

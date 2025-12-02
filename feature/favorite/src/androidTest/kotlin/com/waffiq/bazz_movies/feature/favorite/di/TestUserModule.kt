@@ -47,7 +47,6 @@ object TestUserModule {
     dataStore: DataStore<Preferences>,
   ): UserPreference = UserPreference(dataStore)
 
-
   @Provides
   @Singleton
   fun provideUserRepository(
