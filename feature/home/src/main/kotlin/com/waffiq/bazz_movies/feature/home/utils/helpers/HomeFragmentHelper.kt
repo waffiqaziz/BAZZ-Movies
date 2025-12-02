@@ -56,7 +56,7 @@ object HomeFragmentHelper {
 
   fun setupSwipeRefresh(
     swipeRefresh: SwipeRefreshLayout,
-    vararg adapters: PagingDataAdapter<*, *>
+    vararg adapters: PagingDataAdapter<*, *>,
   ) {
     swipeRefresh.setOnRefreshListener {
       adapters.forEach { it.refresh() }
@@ -66,10 +66,10 @@ object HomeFragmentHelper {
 
   fun setupRetryButton(
     binding: IllustrationErrorBinding,
-    vararg adapters: PagingDataAdapter<*, *>
+    vararg adapters: PagingDataAdapter<*, *>,
   ) {
     binding.btnTryAgain.setOnClickListener {
-      adapters.forEach { it.refresh() }
+      adapters.forEach { pagingDataAdapter -> pagingDataAdapter.refresh() }
       binding.btnTryAgain.isVisible = false
       binding.progressCircular.isVisible = true
     }
@@ -94,7 +94,7 @@ object HomeFragmentHelper {
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,
     onSuccess: () -> Unit,
-    onError: (Event<String>?) -> Unit
+    onError: (Event<String>?) -> Unit,
   ) {
     lifecycleScope.launch {
       loadStateFlow
@@ -102,14 +102,15 @@ object HomeFragmentHelper {
         .distinctUntilChanged()
         .collectLatest { loadState ->
           when {
-            (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
-              loadState.append.endOfPaginationReached -> {
+            (loadState.refresh is LoadState.Loading
+              || loadState.append is LoadState.Loading)
+              && loadState.append.endOfPaginationReached -> {
               onLoading()
             }
 
-            loadState.refresh is LoadState.NotLoading &&
-              loadState.prepend is LoadState.NotLoading &&
-              loadState.append is LoadState.NotLoading -> {
+            loadState.refresh is LoadState.NotLoading
+              && loadState.prepend is LoadState.NotLoading
+              && loadState.append is LoadState.NotLoading -> {
               delay(DEBOUNCE_SHORT)
               onSuccess()
             }
@@ -125,7 +126,7 @@ object HomeFragmentHelper {
 
   fun setupRecyclerWideItem(
     recyclerView: RecyclerView,
-    layoutManager: LinearLayoutManager? = null
+    layoutManager: LinearLayoutManager? = null,
   ) {
     // Safely attach SnapHelper
     if (recyclerView.onFlingListener == null) {
