@@ -43,6 +43,13 @@ private val coverageExclusions = listOf(
   "**/dagger/**/*.class",
   "**/io/github/**/*.class",
 
+  // Only Flow builder state machines
+  "**/*\$invokeSuspend\$*.class",
+
+  // Only methods that return Flow and use flow {} builder
+  "**/*Interactor\$get*\$*.class",
+  "**/*UseCase\$get*\$*.class",
+
   // Room
   //  "**/*_Impl*.*",
   //  "**/*Database_Impl*.*",
@@ -102,7 +109,6 @@ internal fun Project.configureJacoco(
         ?.map { directories -> directories.map { it.asFile.path } }
         ?: provider { emptyList() }
 
-      @Suppress("UnstableApiUsage")
       sourceDirectories.setFrom(
         files(
           variant.sources.java.toFilePaths(),
