@@ -440,7 +440,7 @@ class MediaDetailViewModel @Inject constructor(
    * Helper to handle fetch from API
    */
   fun <T> executeUseCase(
-    flowProvider: suspend () -> Flow<Outcome<T>>,
+    flowProvider: () -> Flow<Outcome<T>>,
     onSuccess: (T) -> Unit = { /* default do nothing */ },
     onFinallySuccess: () -> Unit = { /* default do nothing */ },
     onLoading: () -> Unit = { /* default do nothing */ },
@@ -474,7 +474,7 @@ class MediaDetailViewModel @Inject constructor(
     data: T,
     isFavorite: Boolean,
     isChecked: Boolean,
-    postAction: suspend (T) -> Flow<Outcome<R>>,
+    postAction: (T) -> Flow<Outcome<R>>,
     updateState: (Boolean) -> Unit,
   ) {
     executeUseCase(

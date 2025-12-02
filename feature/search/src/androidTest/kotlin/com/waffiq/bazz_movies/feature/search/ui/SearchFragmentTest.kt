@@ -237,7 +237,6 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
       ).perform(typeText(testQuery), pressImeActionButton()) // perform submit
 
       verify { mockSearchViewModel.search(testQuery) }
-
     } catch (e: Exception) {
       println("Manual trigger failed: ${e.message}")
       throw e

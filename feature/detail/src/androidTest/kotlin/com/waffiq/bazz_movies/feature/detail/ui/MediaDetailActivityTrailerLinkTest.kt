@@ -89,7 +89,6 @@ class MediaDetailActivityTrailerLinkTest :
     }
   }
 
-
   @Test
   fun playTrailer_whenActivityNotFoundException_showsSnackbar() {
     context.launchMediaDetailActivity { scenario ->

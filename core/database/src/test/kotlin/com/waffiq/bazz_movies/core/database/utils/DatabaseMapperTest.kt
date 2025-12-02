@@ -38,7 +38,6 @@ class DatabaseMapperTest {
 
   @Test
   fun toFavorite_withValidAllTrueValues_returnsFavorite() {
-
     // test case 1: valid data
     val favorite1 = mediaItem1.toFavorite(isFavorite = true, isWatchlist = true)
     assertEquals(favorite1.id, 0)

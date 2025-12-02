@@ -31,7 +31,7 @@ class SnackbarUtilsTestWithMockk {
   @Before
   fun setup() {
     parentView = mockk(relaxed = true)
-    anchorView =  mockk(relaxed = true)
+    anchorView = mockk(relaxed = true)
     eventMessage = mockk()
   }
 

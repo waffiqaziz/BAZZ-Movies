@@ -13,17 +13,17 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class UserModule {
+interface UserModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindUserPrefUseCase(
-    userPrefInteractor: UserPrefInteractor
+  fun bindUserPrefUseCase(
+    userPrefInteractor: UserPrefInteractor,
   ): UserPrefUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindGetRegionUseCase(
-    getRegionInteractor: GetRegionInteractor
+  fun bindGetRegionUseCase(
+    getRegionInteractor: GetRegionInteractor,
   ): GetRegionUseCase
 }

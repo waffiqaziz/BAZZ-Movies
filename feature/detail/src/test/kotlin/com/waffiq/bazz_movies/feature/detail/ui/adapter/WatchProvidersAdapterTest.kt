@@ -19,7 +19,7 @@ import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 
-class WatchProvidersAdapterTest : BaseAdapterTest(){
+class WatchProvidersAdapterTest : BaseAdapterTest() {
 
   private val pvd = Provider(
     providerId = 1,
@@ -89,9 +89,9 @@ class WatchProvidersAdapterTest : BaseAdapterTest(){
       pvd to "provider name1",
       pvd.copy(providerId = 22, providerName = "name2") to "name2",
       pvd.copy(providerId = 4, providerName = "name3") to "name3",
-      pvd.copy(providerId = 5,providerName = "name5", logoPath = "") to "name5",
-      pvd.copy(providerId = 6,providerName = "name6", logoPath = " ") to "name6",
-      pvd.copy(providerId = 7,providerName = "name7", logoPath = null) to "name7",
+      pvd.copy(providerId = 5, providerName = "name5", logoPath = "") to "name5",
+      pvd.copy(providerId = 6, providerName = "name6", logoPath = " ") to "name6",
+      pvd.copy(providerId = 7, providerName = "name7", logoPath = null) to "name7",
     )
 
     testCases.forEach { (provider, castId) ->

@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.ProviderResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponseItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

@@ -38,7 +38,7 @@ object AgeRatingHelper {
     } else { // find age rating from any country
       releaseDatesItems
         .asSequence()
-        .flatMap { item -> item?.listReleaseDatesItemValue?.asSequence() ?: emptySequence() }
+        .flatMap { item -> item?.listReleaseDatesItemValue?.asSequence().orEmpty() }
         .firstOrNull { !it.certification.isNullOrEmpty() }
         ?.certification.orEmpty()
     }

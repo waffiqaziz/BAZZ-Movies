@@ -1,3 +1,5 @@
+@file:Suppress("UnnecessaryAbstractClass")
+
 package com.waffiq.bazz_movies.core.network.testutils
 
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource

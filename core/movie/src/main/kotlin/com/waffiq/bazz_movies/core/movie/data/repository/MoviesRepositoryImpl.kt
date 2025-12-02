@@ -23,14 +23,14 @@ class MoviesRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IMoviesRepository {
 
-  override suspend fun getMovieState(
+  override fun getMovieState(
     sessionId: String,
     movieId: Int,
   ): Flow<Outcome<MediaState>> =
     movieDataSource.getMovieState(sessionId, movieId)
       .toOutcome { it.toMediaState() }
 
-  override suspend fun getTvState(
+  override fun getTvState(
     sessionId: String,
     tvId: Int,
   ): Flow<Outcome<MediaState>> =
@@ -38,7 +38,7 @@ class MoviesRepositoryImpl @Inject constructor(
       .toOutcome { it.toMediaState() }
 
   // region POST FAVORITE AND WATCHLIST
-  override suspend fun postFavorite(
+  override fun postFavorite(
     sessionId: String,
     fav: FavoriteModel,
     userId: Int,
@@ -46,7 +46,7 @@ class MoviesRepositoryImpl @Inject constructor(
     movieDataSource.postFavorite(sessionId, fav.toFavoritePostModel(), userId)
       .toOutcome { it.toPostFavoriteWatchlist() }
 
-  override suspend fun postWatchlist(
+  override fun postWatchlist(
     sessionId: String,
     wtc: WatchlistModel,
     userId: Int,
@@ -54,7 +54,7 @@ class MoviesRepositoryImpl @Inject constructor(
     movieDataSource.postWatchlist(sessionId, wtc.toWatchlistPostModel(), userId)
       .toOutcome { it.toPostFavoriteWatchlist() }
 
-  override suspend fun postMovieRate(
+  override fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int,
@@ -62,7 +62,7 @@ class MoviesRepositoryImpl @Inject constructor(
     movieDataSource.postMovieRate(sessionId, rating, movieId)
       .toOutcome { it.toPost() }
 
-  override suspend fun postTvRate(
+  override fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int,

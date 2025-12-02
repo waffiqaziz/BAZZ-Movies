@@ -10,6 +10,6 @@ class GetTvStateInteractor @Inject constructor(
   private val getStateTvRepository: IMoviesRepository
 ) : GetTvStateUseCase {
 
-  override suspend fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =
+  override fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =
     getStateTvRepository.getTvState(sessionId, tvId)
 }

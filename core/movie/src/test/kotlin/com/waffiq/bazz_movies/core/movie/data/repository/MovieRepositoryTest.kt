@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult

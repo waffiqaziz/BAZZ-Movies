@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate
 
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import io.mockk.coEvery
 import io.mockk.mockk

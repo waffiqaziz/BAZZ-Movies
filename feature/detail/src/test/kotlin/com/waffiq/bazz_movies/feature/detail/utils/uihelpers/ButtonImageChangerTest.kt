@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.utils.uihelpers
 import android.content.Context
 import android.widget.ImageButton
 import androidx.test.core.app.ApplicationProvider
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG

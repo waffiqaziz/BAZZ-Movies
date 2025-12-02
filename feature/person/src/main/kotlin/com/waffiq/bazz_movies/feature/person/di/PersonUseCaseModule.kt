@@ -11,11 +11,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class PersonUseCaseModule {
+interface PersonUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindDetailPersonUseCase(
-    getDetailPersonInteractor: GetDetailPersonInteractor
+  fun bindDetailPersonUseCase(
+    getDetailPersonInteractor: GetDetailPersonInteractor,
   ): GetDetailPersonUseCase
 }

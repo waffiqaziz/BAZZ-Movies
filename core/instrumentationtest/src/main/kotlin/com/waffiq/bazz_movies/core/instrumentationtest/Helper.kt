@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
@@ -52,19 +51,17 @@ object Helper {
     matcher: Matcher<View>,
     timeout: Long = 5000,
   ): ViewAssertion {
-    return object : ViewAssertion {
-      override fun check(view: View?, noViewFoundException: NoMatchingViewException?) {
-        val endTime = System.currentTimeMillis() + timeout
-        do {
-          try {
-            if (matcher.matches(view)) return
-          } catch (_: Throwable) {
-            /* do nothing */
-          }
-          Thread.sleep(DELAY_TIME)
-        } while (System.currentTimeMillis() < endTime)
-        throw AssertionError("View did not match $matcher within $timeout ms")
-      }
+    return ViewAssertion { view, noViewFoundException ->
+      val endTime = System.currentTimeMillis() + timeout
+      do {
+        try {
+          if (matcher.matches(view)) return@ViewAssertion
+        } catch (_: Throwable) {
+          /* do nothing */
+        }
+        Thread.sleep(DELAY_TIME)
+      } while (System.currentTimeMillis() < endTime)
+      throw AssertionError("View did not match $matcher within $timeout ms")
     }
   }
 

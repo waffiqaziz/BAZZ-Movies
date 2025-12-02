@@ -59,7 +59,7 @@ object Helper {
    * @param flow The PagingData flow to test.
    * @param expectedAssertions A lambda that takes the list of items and performs assertions.
    */
-  suspend fun  testPagingFlowCustomDispatcher(
+  suspend fun testPagingFlowCustomDispatcher(
     flow: Flow<PagingData<MediaItem>>,
     expectedAssertions: (List<MediaItem>) -> Unit
   ) {

@@ -10,11 +10,11 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import kotlinx.coroutines.flow.Flow
 
 interface GetTvDetailUseCase {
-  suspend fun getTvDetail(tvId: Int, userRegion: String): Flow<Outcome<MediaDetail>>
-  suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
-  suspend fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
-  suspend fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>>
-  suspend fun getTvWatchProviders(
+  fun getTvDetail(tvId: Int, userRegion: String): Flow<Outcome<MediaDetail>>
+  fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
+  fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
+  fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>>
+  fun getTvWatchProviders(
     countryCode: String,
     tvId: Int,
   ): Flow<Outcome<WatchProvidersItem>>

@@ -59,12 +59,14 @@ class SetupRecyclerViewTest {
     val adapters = concatAdapter.adapters
     assertTrue(
       "ConcatAdapter should contain our PagingAdapter",
-      adapters.any { it is PagingDataAdapter<*, *> })
+      adapters.any { it is PagingDataAdapter<*, *> }
+    )
 
     // expect LoadStateAdapter in the ConcatAdapter
     assertTrue(
       "ConcatAdapter should contain a LoadStateAdapter",
-      adapters.any { it is LoadStateAdapter<*> })
+      adapters.any { it is LoadStateAdapter<*> }
+    )
   }
 
   // simple test PagingAdapter implementation

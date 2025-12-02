@@ -127,7 +127,7 @@ class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonA
     }
   }
 
-  private fun performClickListPhotos(position : Int){
+  private fun performClickListPhotos(position: Int) {
     // delay before perform action
     shortDelay()
 

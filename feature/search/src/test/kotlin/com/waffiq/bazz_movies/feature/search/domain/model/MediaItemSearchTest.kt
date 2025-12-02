@@ -8,7 +8,7 @@ import org.junit.Test
 class MediaItemSearchTest {
 
   @Test
-  fun mediaItemSearch_withNullValue_returnDefaultValue(){
+  fun mediaItemSearch_withNullValue_returnDefaultValue() {
     val resultsItemSearch = MultiSearchItem(id = 1)
 
     assertEquals(resultsItemSearch.mediaType, "movie")

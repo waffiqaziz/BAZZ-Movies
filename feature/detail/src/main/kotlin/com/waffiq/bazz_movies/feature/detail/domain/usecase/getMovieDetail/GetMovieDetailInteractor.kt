@@ -22,7 +22,7 @@ class GetMovieDetailInteractor @Inject constructor(
   private val detailRepository: IDetailRepository,
 ) : GetMovieDetailUseCase {
 
-  override suspend fun getMovieDetail(
+  override fun getMovieDetail(
     movieId: Int,
     userRegion: String,
   ): Flow<Outcome<MediaDetail>> =
@@ -50,7 +50,7 @@ class GetMovieDetailInteractor @Inject constructor(
       }
     }
 
-  override suspend fun getMovieVideoLinks(movieId: Int): Flow<Outcome<String>> =
+  override fun getMovieVideoLinks(movieId: Int): Flow<Outcome<String>> =
     detailRepository.getMovieTrailerLink(movieId).map { outcome ->
       when (outcome) {
         is Outcome.Success -> Outcome.Success(outcome.data.toLink())
@@ -59,10 +59,10 @@ class GetMovieDetailInteractor @Inject constructor(
       }
     }
 
-  override suspend fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
+  override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getMovieCredits(movieId)
 
-  override suspend fun getMovieWatchProviders(
+  override fun getMovieWatchProviders(
     countryCode: String,
     movieId: Int,
   ): Flow<Outcome<WatchProvidersItem>> =

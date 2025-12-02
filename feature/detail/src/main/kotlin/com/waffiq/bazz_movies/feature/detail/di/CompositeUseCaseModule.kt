@@ -17,29 +17,29 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class CompositeUseCaseModule {
+interface CompositeUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindMovieDetailWithUserPrefUseCaseSingleton(
+  fun bindMovieDetailWithUserPrefUseCaseSingleton(
     getMovieDetailWithUserPrefInteractor: GetMovieDataWithUserRegionInteractor,
   ): GetMovieDataWithUserRegionUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindTvDetailWithUserPrefUseCaseSingleton(
+  fun bindTvDetailWithUserPrefUseCaseSingleton(
     getTvDetailWithUserPrefInteractor: GetTvDataWithUserRegionInteractor,
   ): GetTvDataWithUserRegionUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindMediaStateWithUserUseCaseSingleton(
+  fun bindMediaStateWithUserUseCaseSingleton(
     getMediaStateWithUserInteractor: GetMediaStateWithUserInteractor,
   ): GetMediaStateWithUserUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindPostMethodWithUserUseCaseSingleton(
+  fun bindPostMethodWithUserUseCaseSingleton(
     postMethodWithUserInteractor: PostMethodWithUserInteractor,
   ): PostMethodWithUserUseCase
 }

@@ -177,11 +177,13 @@ class ScrollActionBarBehaviorTest {
 
     assertEquals(
       "Status bar color should not change when maxScroll <= 0",
-      initialStatusBarColor, currentStatusBarColor
+      initialStatusBarColor,
+      currentStatusBarColor
     )
     assertEquals(
       "AppBar color should not change when maxScroll <= 0",
-      initialAppBarColor, currentAppBarColor
+      initialAppBarColor,
+      currentAppBarColor
     )
   }
 
@@ -196,7 +198,7 @@ class ScrollActionBarBehaviorTest {
     // set dimensions to ensure maxScroll <= 0
     every { mockScrollView.getChildAt(0) } returns mockChildView
     every { mockScrollView.height } returns 1000
-    every { mockChildView.height } returns 800  // Ensures maxScroll is negative
+    every { mockChildView.height } returns 800 // Ensures maxScroll is negative
 
     // capture the scroll listener when it's set
     val listenerSlot = slot<NestedScrollView.OnScrollChangeListener>()
@@ -223,7 +225,8 @@ class ScrollActionBarBehaviorTest {
     assertNotNull("AppBarLayout should have a ColorDrawable background", backgroundDrawable)
     assertEquals(
       "AppBarLayout color should be the fromColor when maxScroll <= 0",
-      fromColor, backgroundDrawable?.color
+      fromColor,
+      backgroundDrawable?.color
     )
   }
 
@@ -252,7 +255,6 @@ class ScrollActionBarBehaviorTest {
     // cleanup to avoid test interference
     unmockkConstructor(WindowInsetsControllerCompat::class)
   }
-
 
   @Test
   @Config(sdk = [35])
@@ -287,7 +289,8 @@ class ScrollActionBarBehaviorTest {
     val backgroundDrawable = currentBackground.background as ColorDrawable
     assertNotEquals(
       "Background should be replaced with a new color",
-      Color.RED, backgroundDrawable.color
+      Color.RED,
+      backgroundDrawable.color
     )
   }
 }

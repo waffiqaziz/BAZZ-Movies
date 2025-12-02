@@ -112,7 +112,6 @@ class GenreHelperTest {
     assertEquals(expectedOutput, actualOutput)
   }
 
-
   @Test
   fun transformToGenreIDs_withNullGenresItem_returnEmptyList() {
     val input = listOf(null)

@@ -15,23 +15,23 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class DetailUseCaseModule {
+interface DetailUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindDetailMovieUseCase(
-    getDetailMovieInteractor: GetMovieDetailInteractor
+  fun bindDetailMovieUseCase(
+    getDetailMovieInteractor: GetMovieDetailInteractor,
   ): GetMovieDetailUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindDetailTvUseCase(
-    getDetailTvInteractor: GetTvDetailInteractor
+  fun bindDetailTvUseCase(
+    getDetailTvInteractor: GetTvDetailInteractor,
   ): GetTvDetailUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindDetailOMDbUseCase(
-    getDetailOMDbInteractor: GetOMDbDetailInteractor
+  fun bindDetailOMDbUseCase(
+    getDetailOMDbInteractor: GetOMDbDetailInteractor,
   ): GetOMDbDetailUseCase
 }

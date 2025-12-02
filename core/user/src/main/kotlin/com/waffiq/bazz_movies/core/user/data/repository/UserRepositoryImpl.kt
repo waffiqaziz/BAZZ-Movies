@@ -30,23 +30,23 @@ class UserRepositoryImpl @Inject constructor(
 ) : IUserRepository {
 
   // region AUTH
-  override suspend fun createToken(): Flow<Outcome<Authentication>> =
+  override fun createToken(): Flow<Outcome<Authentication>> =
     userDataSource.createToken().toOutcome { it.toAuthentication() }
 
-  override suspend fun login(
+  override fun login(
     username: String,
     pass: String,
     sessionId: String,
   ): Flow<Outcome<Authentication>> =
     userDataSource.login(username, pass, sessionId).toOutcome { it.toAuthentication() }
 
-  override suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
+  override fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
     userDataSource.createSessionLogin(requestToken).toOutcome { it.toCreateSession() }
 
-  override suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
+  override fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
     userDataSource.deleteSession(sessionId).toOutcome { it.toPost() }
 
-  override suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
+  override fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
     userDataSource.getUserDetail(sessionId).toOutcome { it.toAccountDetails() }
   // endregion AUTH
 
@@ -65,6 +65,6 @@ class UserRepositoryImpl @Inject constructor(
   override suspend fun removeUserDataPref() = pref.removeUserData()
   // endregion PREF
 
-  override suspend fun getCountryCode(): Flow<Outcome<CountryIP>> =
+  override fun getCountryCode(): Flow<Outcome<CountryIP>> =
     userDataSource.getCountryCode().toOutcome { it.toCountryIP() }
 }

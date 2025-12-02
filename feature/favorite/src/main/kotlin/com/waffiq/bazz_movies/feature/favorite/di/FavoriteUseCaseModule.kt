@@ -13,19 +13,19 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class FavoriteUseCaseModule {
+interface FavoriteUseCaseModule {
 
   // region MOVIE
   @Binds
   @ViewModelScoped
-  abstract fun bindFavoriteMovieUseCase(
-    getFavoriteMovieInteractor: GetFavoriteMovieInteractor
+  fun bindFavoriteMovieUseCase(
+    getFavoriteMovieInteractor: GetFavoriteMovieInteractor,
   ): GetFavoriteMovieUseCase
 
   // region TV
   @Binds
   @ViewModelScoped
-  abstract fun bindFavoriteTvUseCase(
-    getFavoriteTvInteractor: GetFavoriteTvInteractor
+  fun bindFavoriteTvUseCase(
+    getFavoriteTvInteractor: GetFavoriteTvInteractor,
   ): GetFavoriteTvUseCase
 }

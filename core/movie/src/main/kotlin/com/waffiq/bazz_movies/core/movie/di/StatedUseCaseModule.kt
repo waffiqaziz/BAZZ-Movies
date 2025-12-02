@@ -13,17 +13,17 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class StatedUseCaseModule {
+interface StatedUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindStatedMovieUseCase(
-    getStatedMovieInteractor: GetMovieStateInteractor
+  fun bindStatedMovieUseCase(
+    getStatedMovieInteractor: GetMovieStateInteractor,
   ): GetMovieStateUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindStatedTvUseCase(
-    getStatedTvInteractor: GetTvStateInteractor
+  fun bindStatedTvUseCase(
+    getStatedTvInteractor: GetTvStateInteractor,
   ): GetTvStateUseCase
 }

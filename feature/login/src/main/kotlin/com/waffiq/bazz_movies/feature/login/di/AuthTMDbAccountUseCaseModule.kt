@@ -11,12 +11,12 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class AuthTMDbAccountUseCaseModule {
+interface AuthTMDbAccountUseCaseModule {
 
   // region USER
   @Binds
   @ViewModelScoped
-  abstract fun bindAuthTMDbAccountUseCase(
-    authTMDbAccountInteractor: AuthTMDbAccountInteractor
+  fun bindAuthTMDbAccountUseCase(
+    authTMDbAccountInteractor: AuthTMDbAccountInteractor,
   ): AuthTMDbAccountUseCase
 }

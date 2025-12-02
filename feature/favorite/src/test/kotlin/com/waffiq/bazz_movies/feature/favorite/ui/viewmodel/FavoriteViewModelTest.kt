@@ -286,7 +286,6 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
   }
 
-
   Given("checks movie state before posting to watchlist") {
     val movieId = 111
     val title = "Inception"

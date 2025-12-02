@@ -107,7 +107,7 @@ class SnackbarUtilsTest {
     val snackbar = snackBarWarning(parentView, anchorView, eventMessage)
     assertNull(snackbar)
 
-    val snackbar2 = snackBarWarning(parentView, anchorView,testMessage)
+    val snackbar2 = snackBarWarning(parentView, anchorView, testMessage)
     assertNull(snackbar2)
   }
 

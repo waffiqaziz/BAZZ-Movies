@@ -10,10 +10,10 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class FavoriteRepositoryModule {
+interface FavoriteRepositoryModule {
 
   @Binds
-  abstract fun bindFavoriteRepository(
-    favoriteRepository: FavoriteRepositoryImpl
+  fun bindFavoriteRepository(
+    favoriteRepository: FavoriteRepositoryImpl,
   ): IFavoriteRepository
 }

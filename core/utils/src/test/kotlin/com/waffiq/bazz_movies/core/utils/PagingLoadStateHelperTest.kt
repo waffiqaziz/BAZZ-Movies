@@ -73,8 +73,8 @@ class PagingLoadStateHelperTest {
     val refreshError = LoadState.Error(UnknownHostException("Refresh error"))
 
     every { loadState.refresh } returns refreshError
-    every { loadState.append } returns LoadState.NotLoading(false)  // Not loading for append
-    every { loadState.prepend } returns LoadState.NotLoading(false)  // Not loading for prepend
+    every { loadState.append } returns LoadState.NotLoading(false) // Not loading for append
+    every { loadState.prepend } returns LoadState.NotLoading(false) // Not loading for prepend
 
     val result = PagingLoadStateHelper.pagingErrorState(loadState)
     assertEquals(refreshError, result)

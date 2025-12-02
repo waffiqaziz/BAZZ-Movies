@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class GetDetailPersonInteractor @Inject constructor(
-  private val personRepository: IPersonRepository
+  private val personRepository: IPersonRepository,
 ) : GetDetailPersonUseCase {
-  override suspend fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
+  override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
     personRepository.getDetailPerson(id)
 
-  override suspend fun getKnownForPerson(id: Int): Flow<Outcome<List<CastItem>>> =
+  override fun getKnownForPerson(id: Int): Flow<Outcome<List<CastItem>>> =
     personRepository.getKnownForPerson(id).mapNotNull { outcome ->
       when (outcome) {
         is Outcome.Success -> {
@@ -30,9 +30,9 @@ class GetDetailPersonInteractor @Inject constructor(
       }
     }
 
-  override suspend fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
+  override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
     personRepository.getImagePerson(id)
 
-  override suspend fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
+  override fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
     personRepository.getExternalIDPerson(id)
 }

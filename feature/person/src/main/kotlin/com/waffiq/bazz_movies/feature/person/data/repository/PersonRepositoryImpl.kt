@@ -20,15 +20,15 @@ import javax.inject.Singleton
 class PersonRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IPersonRepository {
-  override suspend fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
+  override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
     movieDataSource.getPersonDetail(id).toOutcome { it.toDetailPerson() }
 
-  override suspend fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
+  override fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
     movieDataSource.getPersonKnownFor(id).toOutcome { it.toCombinedCredit() }
 
-  override suspend fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
+  override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
     movieDataSource.getPersonImage(id).toOutcome { it.toImagePerson() }
 
-  override suspend fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
+  override fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
     movieDataSource.getPersonExternalID(id).toOutcome { it.toExternalIDPerson() }
 }

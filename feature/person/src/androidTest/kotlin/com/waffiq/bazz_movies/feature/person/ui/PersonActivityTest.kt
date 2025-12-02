@@ -161,7 +161,6 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
     }
   }
 
-
   @Test
   fun personScreen_whenNavigateUpPressed_finishesActivity() = runTest {
     val monitor = InstrumentationRegistry.getInstrumentation()

@@ -30,28 +30,28 @@ class DetailRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IDetailRepository {
 
-  override suspend fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
+  override fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
     movieDataSource.getOMDbDetails(imdbId).toOutcome { it.toOMDbDetails() }
 
-  override suspend fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>> =
+  override fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>> =
     movieDataSource.getMovieDetail(movieId).toOutcome { it.toDetailMovie() }
 
-  override suspend fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
+  override fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>> =
     movieDataSource.getTvDetail(tvId).toOutcome { it.toTvDetail() }
 
-  override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
+  override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     movieDataSource.getTvExternalIds(tvId).toOutcome { it.toExternalTvID() }
 
-  override suspend fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>> =
+  override fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>> =
     movieDataSource.getMovieVideo(movieId).toOutcome { it.toVideo() }
 
-  override suspend fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>> =
+  override fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>> =
     movieDataSource.getTvVideo(tvId).toOutcome { it.toVideo() }
 
-  override suspend fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
+  override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     movieDataSource.getMovieCredits(movieId).toOutcome { it.toMediaCredits() }
 
-  override suspend fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
+  override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     movieDataSource.getTvCredits(tvId).toOutcome { it.toMediaCredits() }
 
   override fun getMovieRecommendationPagingData(
@@ -68,7 +68,7 @@ class DetailRepositoryImpl @Inject constructor(
       pagingData.map { it.toMediaItem() }
     }
 
-  override suspend fun getWatchProviders(
+  override fun getWatchProviders(
     params: String,
     id: Int,
   ): Flow<Outcome<WatchProviders>> =
