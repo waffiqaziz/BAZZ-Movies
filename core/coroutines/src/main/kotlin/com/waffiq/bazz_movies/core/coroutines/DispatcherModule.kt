@@ -1,3 +1,5 @@
+@file:Suppress("InjectDispatcher", "DispatcherInject", "CoroutineDispatcherInject")
+
 package com.waffiq.bazz_movies.core.coroutines
 
 import dagger.Module
