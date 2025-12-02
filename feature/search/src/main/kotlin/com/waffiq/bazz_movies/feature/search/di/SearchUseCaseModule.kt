@@ -11,11 +11,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class SearchUseCaseModule {
+interface SearchUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindMultiSearchUseCase(
-    multiSearchInteractor: MultiSearchInteractor
+  fun bindMultiSearchUseCase(
+    multiSearchInteractor: MultiSearchInteractor,
   ): MultiSearchUseCase
 }

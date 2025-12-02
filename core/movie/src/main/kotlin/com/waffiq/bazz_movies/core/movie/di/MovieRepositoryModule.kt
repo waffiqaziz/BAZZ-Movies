@@ -10,10 +10,10 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MovieRepositoryModule {
+interface MovieRepositoryModule {
 
   @Binds
-  abstract fun bindMovieRepository(
+  fun bindMovieRepository(
     moviesRepository: MoviesRepositoryImpl
   ): IMoviesRepository
 }

@@ -10,8 +10,8 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class HomeRepositoryModule {
+interface HomeRepositoryModule {
 
   @Binds
-  abstract fun bindHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): IHomeRepository
+  fun bindHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): IHomeRepository
 }
