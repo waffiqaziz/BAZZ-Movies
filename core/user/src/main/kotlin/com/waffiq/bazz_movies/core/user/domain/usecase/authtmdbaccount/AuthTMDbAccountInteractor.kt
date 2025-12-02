@@ -10,24 +10,24 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AuthTMDbAccountInteractor @Inject constructor(
-  private val authTMDbAccountRepository: IUserRepository
+  private val authTMDbAccountRepository: IUserRepository,
 ) : AuthTMDbAccountUseCase {
-  override suspend fun login(
+  override fun login(
     username: String,
     pass: String,
-    sessionId: String
+    sessionId: String,
   ): Flow<Outcome<Authentication>> =
     authTMDbAccountRepository.login(username, pass, sessionId)
 
-  override suspend fun createToken(): Flow<Outcome<Authentication>> =
+  override fun createToken(): Flow<Outcome<Authentication>> =
     authTMDbAccountRepository.createToken()
 
-  override suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
+  override fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
     authTMDbAccountRepository.deleteSession(sessionId)
 
-  override suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
+  override fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
     authTMDbAccountRepository.createSessionLogin(requestToken)
 
-  override suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
+  override fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
     authTMDbAccountRepository.getUserDetail(sessionId)
 }

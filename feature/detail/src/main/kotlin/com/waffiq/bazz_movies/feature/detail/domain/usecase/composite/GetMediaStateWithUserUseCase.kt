@@ -5,6 +5,6 @@ import com.waffiq.bazz_movies.core.domain.Outcome
 import kotlinx.coroutines.flow.Flow
 
 interface GetMediaStateWithUserUseCase {
-  suspend fun getMovieStateWithUser(movieId: Int): Flow<Outcome<MediaState>>
-  suspend fun getTvStateWithUser(tvId: Int): Flow<Outcome<MediaState>>
+  fun getMovieStateWithUser(movieId: Int): Flow<Outcome<MediaState>>
+  fun getTvStateWithUser(tvId: Int): Flow<Outcome<MediaState>>
 }

@@ -10,6 +10,6 @@ class GetMovieStateInteractor @Inject constructor(
   private val getStateMovieRepository: IMoviesRepository,
 ) : GetMovieStateUseCase {
 
-  override suspend fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>> =
+  override fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>> =
     getStateMovieRepository.getMovieState(sessionId, movieId)
 }

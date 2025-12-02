@@ -22,35 +22,35 @@ class UserDataSource @Inject constructor(
   @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserDataSourceInterface {
 
-  override suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = executeApiCall(
+  override fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = executeApiCall(
     apiCall = { tmdbApiService.createToken() },
     ioDispatcher = ioDispatcher
   )
 
-  override suspend fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
+  override fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.delSession(sessionId) },
       ioDispatcher = ioDispatcher
     )
 
-  override suspend fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>> =
+  override fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.createSessionLogin(sessionId) },
       ioDispatcher = ioDispatcher
     )
 
-  override suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
+  override fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getAccountDetails(sessionId) },
       ioDispatcher = ioDispatcher
     )
 
-  override suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = executeApiCall(
+  override fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = executeApiCall(
     apiCall = { countryIPApiService.getIP() },
     ioDispatcher = ioDispatcher
   )
 
-  override suspend fun login(
+  override fun login(
     username: String,
     pass: String,
     sessionId: String,

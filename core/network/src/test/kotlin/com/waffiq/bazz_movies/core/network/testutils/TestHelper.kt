@@ -51,7 +51,6 @@ object TestHelper {
     workerDispatcher = Dispatchers.Main
   )
 
-
   /**
    * Differ used for testing [PagingData] of [MultiSearchResponseItem].
    */
@@ -73,7 +72,7 @@ object TestHelper {
   suspend fun <T> testSuccessResponse(
     apiEndpoint: suspend () -> Response<*>,
     mockApiResponse: Response<T>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<T>>,
+    dataSourceEndpointCall: () -> Flow<NetworkResult<T>>,
     expectedData: T,
     additionalAssertions: (T) -> Unit,
   ) {
@@ -97,7 +96,6 @@ object TestHelper {
     }
     coVerify { apiEndpoint() }
   }
-
 
   /**
    * Verifies a flow response with an exception (e.g., network failure).
@@ -200,7 +198,6 @@ object TestHelper {
     )
   }
 
-
   /**
    * Verifies a generic [HttpException] error scenario.
    */
@@ -224,7 +221,7 @@ object TestHelper {
    */
   suspend fun testIOExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
+    dataSourceEndpointCall: () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
@@ -239,7 +236,7 @@ object TestHelper {
    */
   suspend fun testGeneralExceptionResponse(
     apiEndpoint: suspend () -> Response<*>,
-    dataSourceEndpointCall: suspend () -> Flow<NetworkResult<*>>,
+    dataSourceEndpointCall: () -> Flow<NetworkResult<*>>,
   ) {
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },

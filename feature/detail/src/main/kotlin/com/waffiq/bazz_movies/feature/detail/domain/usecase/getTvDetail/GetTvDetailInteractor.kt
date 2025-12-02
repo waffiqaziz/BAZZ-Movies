@@ -23,7 +23,7 @@ class GetTvDetailInteractor @Inject constructor(
 ) : GetTvDetailUseCase {
 
   /** notes: for tv, imdb will null and get later using [getTvExternalIds] **/
-  override suspend fun getTvDetail(
+  override fun getTvDetail(
     tvId: Int,
     userRegion: String,
   ): Flow<Outcome<MediaDetail>> =
@@ -49,10 +49,10 @@ class GetTvDetailInteractor @Inject constructor(
       }
     }
 
-  override suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
+  override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     detailRepository.getTvExternalIds(tvId)
 
-  override suspend fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>> =
+  override fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>> =
     detailRepository.getTvTrailerLink(tvId).map { outcome ->
       when (outcome) {
         is Outcome.Success -> Outcome.Success(outcome.data.toLink())
@@ -61,10 +61,10 @@ class GetTvDetailInteractor @Inject constructor(
       }
     }
 
-  override suspend fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
+  override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getTvCredits(tvId)
 
-  override suspend fun getTvWatchProviders(
+  override fun getTvWatchProviders(
     countryCode: String,
     tvId: Int,
   ): Flow<Outcome<WatchProvidersItem>> =

@@ -13,15 +13,15 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import kotlinx.coroutines.flow.Flow
 
 interface IDetailRepository {
-  suspend fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>>
-  suspend fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>>
-  suspend fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>>
-  suspend fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
-  suspend fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
-  suspend fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
-  suspend fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>>
-  suspend fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
+  fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>>
+  fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>>
+  fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>>
+  fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
+  fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
+  fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
+  fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>>
+  fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
   fun getMovieRecommendationPagingData(movieId: Int): Flow<PagingData<MediaItem>>
   fun getTvRecommendationPagingData(tvId: Int): Flow<PagingData<MediaItem>>
-  suspend fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>>
+  fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>>
 }

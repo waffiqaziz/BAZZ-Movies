@@ -54,47 +54,47 @@ interface MovieDataSourceInterface {
   fun search(query: String): Flow<PagingData<MultiSearchResponseItem>>
 
   // DETAIL PAGE
-  suspend fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
-  suspend fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>>
-  suspend fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>>
-  suspend fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>>
-  suspend fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>>
-  suspend fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>>
-  suspend fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>>
-  suspend fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>>
-  suspend fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
-  suspend fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
-  suspend fun getWatchProviders(
+  fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
+  fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>>
+  fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>>
+  fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>>
+  fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>>
+  fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>>
+  fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>>
+  fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>>
+  fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
+  fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
+  fun getWatchProviders(
     params: String,
     id: Int,
   ): Flow<NetworkResult<WatchProvidersResponse>>
 
   // PERSON
-  suspend fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>>
-  suspend fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>>
-  suspend fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
-  suspend fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
+  fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>>
+  fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>>
+  fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
+  fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
 
   // POST
-  suspend fun postFavorite(
+  fun postFavorite(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 
-  suspend fun postWatchlist(
+  fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 
-  suspend fun postTvRate(
+  fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int,
   ): Flow<NetworkResult<PostResponse>>
 
-  suspend fun postMovieRate(
+  fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int,

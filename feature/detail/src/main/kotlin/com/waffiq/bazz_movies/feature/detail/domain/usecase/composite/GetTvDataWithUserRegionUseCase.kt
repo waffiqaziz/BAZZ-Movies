@@ -6,6 +6,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import kotlinx.coroutines.flow.Flow
 
 interface GetTvDataWithUserRegionUseCase {
-  suspend fun getTvDetailWithUserRegion(tvId: Int): Flow<Outcome<MediaDetail>>
-  suspend fun getTvWatchProvidersWithUserRegion(tvId: Int): Flow<Outcome<WatchProvidersItem>>
+  fun getTvDetailWithUserRegion(tvId: Int): Flow<Outcome<MediaDetail>>
+  fun getTvWatchProvidersWithUserRegion(tvId: Int): Flow<Outcome<WatchProvidersItem>>
 }
