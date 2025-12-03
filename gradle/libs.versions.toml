@@ -38,7 +38,7 @@ coreSplashscreen = "1.2.0"
 fragmentKtx = "1.8.9"
 navigation = "2.9.6"
 recyclerview = "1.4.0"
-swiperefreshlayout = "1.2.0-rc01"
+swiperefreshlayout = "1.2.0"
 viewpager2 = "1.1.0"
 
 # Kotlin Coroutines
