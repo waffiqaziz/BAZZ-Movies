@@ -10,16 +10,16 @@ import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
 import kotlinx.coroutines.flow.Flow
 
 interface IUserRepository {
-  suspend fun login(
+  fun login(
     username: String,
     pass: String,
-    sessionId: String
+    sessionId: String,
   ): Flow<Outcome<Authentication>>
 
-  suspend fun createToken(): Flow<Outcome<Authentication>>
-  suspend fun deleteSession(sessionId: String): Flow<Outcome<Post>>
-  suspend fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>>
-  suspend fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>>
+  fun createToken(): Flow<Outcome<Authentication>>
+  fun deleteSession(sessionId: String): Flow<Outcome<Post>>
+  fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>>
+  fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>>
 
   suspend fun saveUserPref(userModel: UserModel)
   suspend fun saveRegionPref(region: String)
@@ -28,5 +28,5 @@ interface IUserRepository {
   fun getUserRegionPref(): Flow<String>
   suspend fun removeUserDataPref()
 
-  suspend fun getCountryCode(): Flow<Outcome<CountryIP>>
+  fun getCountryCode(): Flow<Outcome<CountryIP>>
 }

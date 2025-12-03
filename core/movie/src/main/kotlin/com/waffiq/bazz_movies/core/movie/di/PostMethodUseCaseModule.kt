@@ -11,11 +11,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class PostMethodUseCaseModule {
+interface PostMethodUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindPostMethodUseCase(
+  fun bindPostMethodUseCase(
     postMethodInteractor: PostMethodInteractor
   ): PostMethodUseCase
 }

@@ -145,7 +145,6 @@ class MediaDetailActivityInteractionTest :
     }
   }
 
-
   @Test
   fun buttonRatting_clickedAndRatingAvailable_doNothing() {
     context.launchMediaDetailActivity {
@@ -358,11 +357,11 @@ class MediaDetailActivityInteractionTest :
     }
   }
 
-  private fun performClickButtonFavorite(){
+  private fun performClickButtonFavorite() {
     onView(withId(btn_favorite)).check(matches(isDisplayed())).perform(click())
   }
 
-  private fun performClickButtonWatchlist(){
+  private fun performClickButtonWatchlist() {
     onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
   }
 

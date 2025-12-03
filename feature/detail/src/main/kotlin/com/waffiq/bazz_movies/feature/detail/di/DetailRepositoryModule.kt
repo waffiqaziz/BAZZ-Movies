@@ -10,10 +10,10 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DetailRepositoryModule {
+interface DetailRepositoryModule {
 
   @Binds
-  abstract fun bindDetailRepository(
-    detailRepositoryImpl: DetailRepositoryImpl
+  fun bindDetailRepository(
+    detailRepositoryImpl: DetailRepositoryImpl,
   ): IDetailRepository
 }

@@ -10,30 +10,30 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMoviesRepository {
 
-  suspend fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>>
+  fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>>
 
-  suspend fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>>
+  fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>>
 
   // region POST FAVORITE AND WATCHLIST
-  suspend fun postFavorite(
+  fun postFavorite(
     sessionId: String,
     fav: FavoriteModel,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
-  suspend fun postWatchlist(
+  fun postWatchlist(
     sessionId: String,
     wtc: WatchlistModel,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
-  suspend fun postMovieRate(
+  fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int
   ): Flow<Outcome<Post>>
 
-  suspend fun postTvRate(
+  fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int

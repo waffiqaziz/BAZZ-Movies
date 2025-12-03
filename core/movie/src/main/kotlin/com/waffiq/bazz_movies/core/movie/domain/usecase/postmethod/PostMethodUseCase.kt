@@ -11,27 +11,27 @@ import kotlinx.coroutines.flow.Flow
  * Used for detail, favorite and watchlist module
  */
 interface PostMethodUseCase {
-  suspend fun postFavorite(
+  fun postFavorite(
     sessionId: String,
     fav: FavoriteModel,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
-  suspend fun postWatchlist(
+  fun postWatchlist(
     sessionId: String,
     wtc: WatchlistModel,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
-  suspend fun postMovieRate(
+  fun postMovieRate(
     sessionId: String,
     rating: Float,
-    movieId: Int
+    movieId: Int,
   ): Flow<Outcome<Post>>
 
-  suspend fun postTvRate(
+  fun postTvRate(
     sessionId: String,
     rating: Float,
-    tvId: Int
+    tvId: Int,
   ): Flow<Outcome<Post>>
 }

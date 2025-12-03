@@ -9,12 +9,12 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataSourceInterface {
-  suspend fun createToken(): Flow<NetworkResult<AuthenticationResponse>>
-  suspend fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>>
-  suspend fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>>
-  suspend fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
-  suspend fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>>
-  suspend fun login(
+  fun createToken(): Flow<NetworkResult<AuthenticationResponse>>
+  fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>>
+  fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>>
+  fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
+  fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>>
+  fun login(
     username: String,
     pass: String,
     sessionId: String

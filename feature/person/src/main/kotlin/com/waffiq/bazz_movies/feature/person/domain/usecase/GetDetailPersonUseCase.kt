@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import kotlinx.coroutines.flow.Flow
 
 interface GetDetailPersonUseCase {
-  suspend fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>>
-  suspend fun getKnownForPerson(id: Int): Flow<Outcome<List<CastItem>>>
-  suspend fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>>
-  suspend fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>>
+  fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>>
+  fun getKnownForPerson(id: Int): Flow<Outcome<List<CastItem>>>
+  fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>>
+  fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>>
 }

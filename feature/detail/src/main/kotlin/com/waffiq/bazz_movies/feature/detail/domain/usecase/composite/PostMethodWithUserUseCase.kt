@@ -8,8 +8,8 @@ import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import kotlinx.coroutines.flow.Flow
 
 interface PostMethodWithUserUseCase {
-  suspend fun postFavorite(fav: FavoriteModel): Flow<Outcome<PostFavoriteWatchlist>>
-  suspend fun postWatchlist(wtc: WatchlistModel): Flow<Outcome<PostFavoriteWatchlist>>
-  suspend fun postMovieRate(rating: Float, movieId: Int): Flow<Outcome<Post>>
-  suspend fun postTvRate(rating: Float, tvId: Int): Flow<Outcome<Post>>
+  fun postFavorite(fav: FavoriteModel): Flow<Outcome<PostFavoriteWatchlist>>
+  fun postWatchlist(wtc: WatchlistModel): Flow<Outcome<PostFavoriteWatchlist>>
+  fun postMovieRate(rating: Float, movieId: Int): Flow<Outcome<Post>>
+  fun postTvRate(rating: Float, tvId: Int): Flow<Outcome<Post>>
 }

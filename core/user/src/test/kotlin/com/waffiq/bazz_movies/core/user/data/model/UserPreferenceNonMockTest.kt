@@ -37,7 +37,6 @@ class UserPreferenceNonMockTest {
     userPreference = UserPreference(testDataStore)
   }
 
-
   @Test
   fun saveUserAndGetUser_whenCalled_storesAndReturnsSameData() = runTest {
     userPreference.saveUser(userModelPref)

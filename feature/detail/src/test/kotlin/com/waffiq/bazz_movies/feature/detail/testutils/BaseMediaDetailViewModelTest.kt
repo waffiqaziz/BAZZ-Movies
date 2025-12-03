@@ -108,7 +108,6 @@ abstract class BaseMediaDetailViewModelTest {
     link = String()
   )
 
-
   @get:Rule
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 

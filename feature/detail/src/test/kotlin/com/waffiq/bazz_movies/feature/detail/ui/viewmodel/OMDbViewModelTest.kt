@@ -6,7 +6,7 @@ import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class OMDbViewModelTest: BaseMediaDetailViewModelTest() {
+class OMDbViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun getScoreOMDb_whenSuccessful_emitsSuccess() = runTest {

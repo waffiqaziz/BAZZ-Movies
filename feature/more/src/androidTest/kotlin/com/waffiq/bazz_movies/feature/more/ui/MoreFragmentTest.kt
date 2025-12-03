@@ -214,7 +214,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
   }
 
-
   @Test
   fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() = runTest {
     mockSignOutState.emit(Outcome.Error("Sign out failed"))
@@ -223,6 +222,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     shortDelay()
 
     onView(withId(btn_signout)).check(matches(not(isEnabled())))
+    shortDelay()
     onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
   }
 

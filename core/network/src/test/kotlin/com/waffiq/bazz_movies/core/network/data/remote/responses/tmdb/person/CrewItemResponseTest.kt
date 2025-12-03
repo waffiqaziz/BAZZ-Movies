@@ -17,7 +17,8 @@ class CrewItemResponseTest {
     assertEquals(616, crewItemResponse.id)
     assertEquals("en", crewItemResponse.originalLanguage)
     assertEquals("The Last Samurai", crewItemResponse.originalTitle)
-    assertEquals("Nathan Algren is an American hired",
+    assertEquals(
+      "Nathan Algren is an American hired",
       crewItemResponse.overview
     )
     assertEquals(44.954f, crewItemResponse.popularity)

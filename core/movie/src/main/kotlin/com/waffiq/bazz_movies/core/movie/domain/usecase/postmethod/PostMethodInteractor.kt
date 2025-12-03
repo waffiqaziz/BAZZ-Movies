@@ -12,28 +12,28 @@ import javax.inject.Inject
 class PostMethodInteractor @Inject constructor(
   private val postMethodRepository: IMoviesRepository
 ) : PostMethodUseCase {
-  override suspend fun postFavorite(
+  override fun postFavorite(
     sessionId: String,
     fav: FavoriteModel,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postFavorite(sessionId, fav, userId)
 
-  override suspend fun postWatchlist(
+  override fun postWatchlist(
     sessionId: String,
     wtc: WatchlistModel,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postWatchlist(sessionId, wtc, userId)
 
-  override suspend fun postMovieRate(
+  override fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int
   ): Flow<Outcome<Post>> =
     postMethodRepository.postMovieRate(sessionId, rating, movieId)
 
-  override suspend fun postTvRate(
+  override fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int

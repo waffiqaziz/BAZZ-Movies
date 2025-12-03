@@ -22,9 +22,9 @@ object DataDump {
 
   val outcomeError = Outcome.Error(ERROR_MESSAGE)
   val outcomeLoading = Outcome.Loading
-  fun  <T>outcomeSuccess(data: T) = Outcome.Success(data)
+  fun <T>outcomeSuccess(data: T) = Outcome.Success(data)
 
-  val tvStateNotWatchlist =  MediaState(
+  val tvStateNotWatchlist = MediaState(
     id = TV_ID,
     watchlist = false,
     favorite = false,

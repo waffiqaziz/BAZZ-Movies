@@ -26,7 +26,7 @@ abstract class BaseFavoriteInteractorTest : ShouldSpec() {
     flow: Flow<PagingData<MediaItem>>,
     expectedAssertions: (List<MediaItem>) -> Unit,
   ) {
-    testPagingFlow<MediaItem>(flow){
+    testPagingFlow<MediaItem>(flow) {
       expectedAssertions(it)
     }
   }

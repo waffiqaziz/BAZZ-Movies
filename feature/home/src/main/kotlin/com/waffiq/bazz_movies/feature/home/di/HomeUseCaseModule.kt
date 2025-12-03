@@ -13,17 +13,17 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class HomeUseCaseModule {
+interface HomeUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindListMoviesUseCase(
+  fun bindListMoviesUseCase(
     getListMoviesInteractor: GetListMoviesInteractor
   ): GetListMoviesUseCase
 
   @Binds
   @ViewModelScoped
-  abstract fun bindListTvUseCase(
+  fun bindListTvUseCase(
     getListTvInteractor: GetListTvInteractor
   ): GetListTvUseCase
 }

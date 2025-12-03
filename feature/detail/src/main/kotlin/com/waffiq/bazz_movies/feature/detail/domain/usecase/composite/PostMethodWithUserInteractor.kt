@@ -8,7 +8,9 @@ import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class PostMethodWithUserInteractor @Inject constructor(
@@ -16,49 +18,56 @@ class PostMethodWithUserInteractor @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase,
 ) : PostMethodWithUserUseCase {
 
-  override suspend fun postFavorite(fav: FavoriteModel): Flow<Outcome<PostFavoriteWatchlist>> {
-    userPrefUseCase.getUser().first().let {
-      return postMethodUseCase.postFavorite(
-        sessionId = it.token,
+  override fun postFavorite(fav: FavoriteModel): Flow<Outcome<PostFavoriteWatchlist>> = flow {
+    val user = userPrefUseCase.getUser().first()
+    emitAll(
+      postMethodUseCase.postFavorite(
+        sessionId = user.token,
         fav = fav,
-        userId = it.userId
+        userId = user.userId
       )
-    }
+    )
   }
 
-  override suspend fun postWatchlist(wtc: WatchlistModel): Flow<Outcome<PostFavoriteWatchlist>> {
-    userPrefUseCase.getUser().first().let {
-      return postMethodUseCase.postWatchlist(
-        sessionId = it.token,
+  override fun postWatchlist(wtc: WatchlistModel): Flow<Outcome<PostFavoriteWatchlist>> = flow {
+    val user = userPrefUseCase.getUser().first()
+
+    emitAll(
+      postMethodUseCase.postWatchlist(
+        sessionId = user.token,
         wtc = wtc,
-        userId = it.userId
+        userId = user.userId
       )
-    }
+    )
   }
 
-  override suspend fun postMovieRate(
+  override fun postMovieRate(
     rating: Float,
     movieId: Int,
-  ): Flow<Outcome<Post>> {
-    userPrefUseCase.getUser().first().let {
-      return postMethodUseCase.postMovieRate(
-        sessionId = it.token,
+  ): Flow<Outcome<Post>> = flow {
+    val token = userPrefUseCase.getUser().first().token
+
+    emitAll(
+      postMethodUseCase.postMovieRate(
+        sessionId = token,
         rating = rating,
         movieId = movieId
       )
-    }
+    )
   }
 
-  override suspend fun postTvRate(
+  override fun postTvRate(
     rating: Float,
     tvId: Int,
-  ): Flow<Outcome<Post>> {
-    userPrefUseCase.getUser().first().let {
-      return postMethodUseCase.postTvRate(
-        sessionId = it.token,
+  ): Flow<Outcome<Post>> = flow {
+    val token = userPrefUseCase.getUser().first().token
+
+    emitAll(
+      postMethodUseCase.postTvRate(
+        sessionId = token,
         rating = rating,
         tvId = tvId
       )
-    }
+    )
   }
 }

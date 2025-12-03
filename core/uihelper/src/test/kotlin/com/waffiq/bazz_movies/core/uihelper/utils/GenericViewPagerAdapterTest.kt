@@ -142,7 +142,6 @@ class GenericViewPagerAdapterTest {
     assertTrue(true)
   }
 
-
   @Test
   fun adapter_whenCalled_shouldHandlesSingleFragment() {
     val singleFragment = TestFragment1()

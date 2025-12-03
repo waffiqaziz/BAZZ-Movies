@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.uihelper.utils
 
+import android.R.color.transparent
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -15,6 +16,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
+import com.waffiq.bazz_movies.core.uihelper.testutils.Helper.getAppBarColor
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import io.mockk.Runs
 import io.mockk.every
@@ -100,22 +102,20 @@ class ScrollActionBarBehaviorTest {
     // save initial color
     val initialStatusBarColor = window.statusBarColor
     assertNotNull(initialStatusBarColor)
-    val initialAppBarColor = (appBarLayout.background as MaterialShapeDrawable)
-      .fillColor?.defaultColor
-    assertNotNull(initialStatusBarColor)
+    val initialAppBarColor = getAppBarColor(appBarLayout)
     assertNotNull(initialAppBarColor)
 
     // scroll halfway
     nestedScrollView.scrollTo(0, maxScrollY / 2)
     val halfwayStatusBarColor = window.statusBarColor
-    val halfwayAppBarColor = (appBarLayout.background as ColorDrawable).color
+    val halfwayAppBarColor = getAppBarColor(appBarLayout)
     assertNotNull(halfwayAppBarColor)
     assertNotNull(halfwayStatusBarColor)
 
     // scroll to the end
     nestedScrollView.scrollTo(0, maxScrollY)
     val finalStatusBarColor = window.statusBarColor
-    val finalAppBarColor = (appBarLayout.background as ColorDrawable).color
+    val finalAppBarColor = getAppBarColor(appBarLayout)
     assertNotNull(finalStatusBarColor)
     assertNotNull(finalAppBarColor)
 
@@ -177,11 +177,13 @@ class ScrollActionBarBehaviorTest {
 
     assertEquals(
       "Status bar color should not change when maxScroll <= 0",
-      initialStatusBarColor, currentStatusBarColor
+      initialStatusBarColor,
+      currentStatusBarColor
     )
     assertEquals(
       "AppBar color should not change when maxScroll <= 0",
-      initialAppBarColor, currentAppBarColor
+      initialAppBarColor,
+      currentAppBarColor
     )
   }
 
@@ -196,7 +198,7 @@ class ScrollActionBarBehaviorTest {
     // set dimensions to ensure maxScroll <= 0
     every { mockScrollView.getChildAt(0) } returns mockChildView
     every { mockScrollView.height } returns 1000
-    every { mockChildView.height } returns 800  // Ensures maxScroll is negative
+    every { mockChildView.height } returns 800 // Ensures maxScroll is negative
 
     // capture the scroll listener when it's set
     val listenerSlot = slot<NestedScrollView.OnScrollChangeListener>()
@@ -206,7 +208,7 @@ class ScrollActionBarBehaviorTest {
     val spyAppBarLayout = spyk(appBarLayout)
 
     // get the fromColor (transparent) used in the implementation
-    val fromColor = ContextCompat.getColor(context, android.R.color.transparent)
+    val fromColor = ContextCompat.getColor(context, transparent)
 
     // apply the behavior with mock objects
     spyContext.scrollActionBarBehavior(window, spyAppBarLayout, mockScrollView)
@@ -219,11 +221,12 @@ class ScrollActionBarBehaviorTest {
     assertTrue("maxScroll should be <= 0", maxScroll <= 0)
 
     // when maxScroll <= 0, percentage should be 0, so the background is set to `fromColor` (transparent)
-    val backgroundDrawable = spyAppBarLayout.background as? ColorDrawable
+    val backgroundDrawable = getAppBarColor(spyAppBarLayout)
     assertNotNull("AppBarLayout should have a ColorDrawable background", backgroundDrawable)
     assertEquals(
       "AppBarLayout color should be the fromColor when maxScroll <= 0",
-      fromColor, backgroundDrawable?.color
+      fromColor,
+      backgroundDrawable
     )
   }
 
@@ -252,7 +255,6 @@ class ScrollActionBarBehaviorTest {
     // cleanup to avoid test interference
     unmockkConstructor(WindowInsetsControllerCompat::class)
   }
-
 
   @Test
   @Config(sdk = [35])
@@ -287,7 +289,8 @@ class ScrollActionBarBehaviorTest {
     val backgroundDrawable = currentBackground.background as ColorDrawable
     assertNotEquals(
       "Background should be replaced with a new color",
-      Color.RED, backgroundDrawable.color
+      Color.RED,
+      backgroundDrawable.color
     )
   }
 }

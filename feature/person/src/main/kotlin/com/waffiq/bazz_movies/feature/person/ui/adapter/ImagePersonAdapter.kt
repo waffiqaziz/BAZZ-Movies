@@ -49,7 +49,9 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
     holder.itemView.setOnClickListener {
       onItemClick.invoke(
         position,
-        listCast.map { TMDB_IMG_LINK_POSTER_W500 + it.filePath.toString() }
+        listCast.map { profilesItem ->
+          TMDB_IMG_LINK_POSTER_W500 + profilesItem.filePath.toString()
+        }
       )
     }
   }
@@ -83,7 +85,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
 
   class DiffCallback(
     private val oldList: List<ProfilesItem>,
-    private val newList: List<ProfilesItem>
+    private val newList: List<ProfilesItem>,
   ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

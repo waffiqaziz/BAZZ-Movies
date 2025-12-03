@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetRegionInteractor @Inject constructor(
   private val getRegionRepository: IUserRepository
 ) : GetRegionUseCase {
-  override suspend fun getCountryCode(): Flow<Outcome<CountryIP>> =
+  override fun getCountryCode(): Flow<Outcome<CountryIP>> =
     getRegionRepository.getCountryCode()
 }

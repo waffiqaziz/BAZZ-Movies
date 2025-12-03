@@ -59,7 +59,7 @@ class PersonViewModel @Inject constructor(
   fun getImagePerson(id: Int) {
     executeUseCase(
       flowProvider = { getDetailPersonUseCase.getImagePerson(id) },
-      onSuccess = { _imagePerson.value = it.profiles ?: emptyList() }
+      onSuccess = { _imagePerson.value = it.profiles.orEmpty() }
     )
   }
 

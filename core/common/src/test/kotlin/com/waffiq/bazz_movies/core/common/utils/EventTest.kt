@@ -34,7 +34,6 @@ class EventTest {
 
   @Test
   fun peekContent_whenCalled_returnsContent() {
-
     assertEquals(testContent, testEvent.peekContent())
     assertFalse(testEvent.hasBeenHandled)
 

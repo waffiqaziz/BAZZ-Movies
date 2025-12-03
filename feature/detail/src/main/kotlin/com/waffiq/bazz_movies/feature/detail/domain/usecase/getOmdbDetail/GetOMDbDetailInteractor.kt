@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetOMDbDetailInteractor @Inject constructor(
-  private val detailRepository: IDetailRepository
+  private val detailRepository: IDetailRepository,
 ) : GetOMDbDetailUseCase {
-  override suspend fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
+  override fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
     detailRepository.getOMDbDetails(imdbId)
 }

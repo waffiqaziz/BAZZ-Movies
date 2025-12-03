@@ -56,9 +56,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   override var mockSnackBarAlready = MutableLiveData<Event<String>>()
   override var mockSnackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
 
-
   override fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel) {
-
     mockUserModel = MutableLiveData<UserModel>()
     mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
     mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()

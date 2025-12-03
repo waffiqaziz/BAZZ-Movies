@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import org.junit.Assert.assertEquals
@@ -58,10 +58,14 @@ class ReleaseDateHelperTvTest {
 
     checkTvReleaseDate(data, "()", "")
     checkTvReleaseDate(
-      data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = "invalid"))), "()", ""
+      data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = "invalid"))),
+      "()",
+      ""
     )
     checkTvReleaseDate(
-      data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = null))), "()", ""
+      data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = null))),
+      "()",
+      ""
     )
     checkTvReleaseDate(data.copy(listSeasonsItem = listOf(null)), "()", "")
     checkTvReleaseDate(data.copy(listSeasonsItem = null), "()", "")
@@ -156,7 +160,7 @@ class ReleaseDateHelperTvTest {
     val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
-        SeasonsItem(name = null, airDate = "2019-06-01"), 
+        SeasonsItem(name = null, airDate = "2019-06-01"),
         SeasonsItem(name = "Season 1", airDate = "2020-06-01")
       )
     )
