@@ -126,9 +126,11 @@ jobs:
       # -------------------------------
       # Create PR only if there are changes
       # -------------------------------
+      # https://github.com/peter-evans/create-pull-request/commit/84ae59a2cdc2258d6fa0732dd66352dddae2a412
+      # v7.0.9
       - name: Create Pull Request
         if: steps.renovate_check.outputs.is_renovate == 'true' && (steps.lint_diff.outputs.diff_found == 'true' || steps.dep_diff.outputs.diff_found == 'true')
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412
         with:
           token: ${{ secrets.BOT_PAT }}
           commit-message: "chore(ci): update baselines after renovate merge"
