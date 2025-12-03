@@ -1,0 +1,745 @@
+"roboscript": {
+  "executionMode": {
+    "strict": false
+  },
+  "postscript": {
+    "terminate": false
+  }
+}
+[
+  {
+    "crawlStage": "crawl",
+    "contextDescriptor": {
+      "condition": "app_under_test_shown"
+    },
+    "actions": [
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206451914,
+        "replacementText": "Guest Session",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.button.MaterialButton",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 8,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tv_guest",
+            "contentDescription": "",
+            "text": "Guest Session"
+          },
+          {
+            "className": "androidx.constraintlayout.widget.ConstraintLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/activity_login",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.appcompat.widget.ContentFrameLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "android:id/content",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206465765,
+        "replacementText": "Today",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": true,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.radiobutton.MaterialRadioButton",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/rb_today",
+            "contentDescription": "",
+            "text": "Today"
+          },
+          {
+            "className": "android.widget.RadioGroup",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/toggle",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206471801,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.tabs.TabLayout$TabView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "Movies",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout$SlidingTabIndicator",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tabs",
+            "contentDescription": "change to featured, movie, or tv-series",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206475784,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.tabs.TabLayout$TabView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 2,
+            "resourceId": "",
+            "contentDescription": "TV Series",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout$SlidingTabIndicator",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tabs",
+            "contentDescription": "change to featured, movie, or tv-series",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206479760,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": 0,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": -1,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.recyclerview.widget.RecyclerView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 2,
+            "resourceId": "com.bazz.bazz_movies.debug:id/rv_popular",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206487593,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "androidx.appcompat.widget.AppCompatImageButton",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/btn_favorite",
+            "contentDescription": "add to favorite",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.RelativeLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206492034,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "androidx.appcompat.widget.AppCompatImageButton",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/btn_watchlist",
+            "contentDescription": "add to watchlist",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.RelativeLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206498068,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/container",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.cardview.widget.CardView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/cv_cast",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.recyclerview.widget.RecyclerView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 9,
+            "resourceId": "com.bazz.bazz_movies.debug:id/rv_cast",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206504793,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/container",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.cardview.widget.CardView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/cv_cast",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.recyclerview.widget.RecyclerView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 3,
+            "resourceId": "com.bazz.bazz_movies.debug:id/rv_known_for",
+            "contentDescription": "Playing as",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "PRESSED_BACK",
+        "timestamp": 1758206510096,
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": []
+      },
+      {
+        "eventType": "PRESSED_BACK",
+        "timestamp": 1758206511765,
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": []
+      },
+      {
+        "eventType": "PRESSED_BACK",
+        "timestamp": 1758206513278,
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": []
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206515923,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 2,
+            "resourceId": "com.bazz.bazz_movies.debug:id/navigation_my_favorite",
+            "contentDescription": "My Favorite",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/bottom_navigation",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206520896,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.tabs.TabLayout$TabView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "TV Series",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout$SlidingTabIndicator",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tabs",
+            "contentDescription": "tab selection",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206524772,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 3,
+            "resourceId": "com.bazz.bazz_movies.debug:id/navigation_my_watchlist",
+            "contentDescription": "My Watchlist",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/bottom_navigation",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206528448,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.tabs.TabLayout$TabView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "TV Series",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout$SlidingTabIndicator",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tabs",
+            "contentDescription": "tab selection",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206532073,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 4,
+            "resourceId": "com.bazz.bazz_movies.debug:id/navigation_more",
+            "contentDescription": "More",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/bottom_navigation",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206536608,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": true,
+        "elementDescriptors": [
+          {
+            "className": "com.waffiq.CountryPickerButton",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 4,
+            "resourceId": "com.bazz.bazz_movies.debug:id/btn_country_picker",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.constraintlayout.widget.ConstraintLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.ScrollView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/scroll_view",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_TEXT_CHANGED",
+        "timestamp": 1758206543472,
+        "replacementText": "japan",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "androidx.appcompat.widget.AppCompatEditText",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/et_search",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.constraintlayout.widget.ConstraintLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/container",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206558764,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.card.MaterialCardView",
+            "recyclerViewChildPosition": 0,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": -1,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "androidx.recyclerview.widget.RecyclerView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 2,
+            "resourceId": "com.bazz.bazz_movies.debug:id/rv_country",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "android.widget.LinearLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/container",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206563911,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "com.bazz.bazz_movies.debug:id/navigation_home",
+            "contentDescription": "Home",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/bottom_navigation",
+            "contentDescription": "",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "eventType": "VIEW_CLICKED",
+        "timestamp": 1758206572715,
+        "replacementText": "",
+        "actionCode": -1,
+        "delayTime": 0,
+        "canScrollTo": false,
+        "elementDescriptors": [
+          {
+            "className": "com.google.android.material.tabs.TabLayout$TabView",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "Featured",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout$SlidingTabIndicator",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 0,
+            "resourceId": "",
+            "contentDescription": "",
+            "text": ""
+          },
+          {
+            "className": "com.google.android.material.tabs.TabLayout",
+            "recyclerViewChildPosition": -1,
+            "adapterViewChildPosition": -1,
+            "groupViewChildPosition": 1,
+            "resourceId": "com.bazz.bazz_movies.debug:id/tabs",
+            "contentDescription": "change to featured, movie, or tv-series",
+            "text": ""
+          }
+        ]
+      }
+    ]
+  }
+]

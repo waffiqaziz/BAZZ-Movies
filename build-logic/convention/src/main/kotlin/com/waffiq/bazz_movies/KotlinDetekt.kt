@@ -28,6 +28,7 @@ internal fun Project.configureDetekt(extension: DetektExtension) {
   }
 
   tasks.withType(Detekt::class.java).configureEach {
+    exclude("**/build/**")
     jvmTarget = JavaVersion.VERSION_21.toString()
     reports {
       xml.required.set(false)
