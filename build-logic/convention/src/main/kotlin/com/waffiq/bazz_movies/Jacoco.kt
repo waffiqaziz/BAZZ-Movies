@@ -43,10 +43,10 @@ private val coverageExclusions = listOf(
   "**/dagger/**/*.class",
   "**/io/github/**/*.class",
 
-  // Only Flow builder state machines
+  // Flow/coroutine synthetic classes
   "**/*\$invokeSuspend\$*.class",
 
-  // Only methods that return Flow and use flow {} builder
+  // Interactor/UseCase flow builders
   "**/*Interactor\$get*\$*.class",
   "**/*UseCase\$get*\$*.class",
 
