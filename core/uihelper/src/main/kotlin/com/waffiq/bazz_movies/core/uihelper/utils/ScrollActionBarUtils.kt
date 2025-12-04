@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.animation.ArgbEvaluator
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.appbar.AppBarLayout
 import com.waffiq.bazz_movies.core.designsystem.R.color.gray_1000
+import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 
 /**
  * A utility object that provides scroll helper functions using [scrollActionBarBehavior],
@@ -36,58 +38,40 @@ object ScrollActionBarUtils {
   ) {
     val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
     val toColor = ContextCompat.getColor(this, gray_1000)
+    val argbEvaluator = ArgbEvaluator()
+    val gradientDrawable = GradientDrawable()
 
     nestedScrollView.setOnScrollChangeListener(
       NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
         val maxScroll = nestedScrollView.getChildAt(0).height - nestedScrollView.height
         val percentage = if (maxScroll > 0) scrollY.toFloat() / maxScroll.toFloat() else 0f
-        setAppBarColor(appBarLayout, fromColor, toColor, percentage)
-        setStatusBarColorWithAnimation(window, fromColor, toColor, percentage)
+        val interpolatedColor =
+          argbEvaluator.evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
+
+        // change background appbar layout using drawable
+        val drawable = gradientDrawable.apply {
+          shape = GradientDrawable.RECTANGLE
+          cornerRadius = 0f
+          setColor(interpolatedColor)
+        }
+        appBarLayout.background = drawable
+
+        // change status bar color
+        setStatusBarColorWithAnimation(window, interpolatedColor)
       }
     )
-  }
-
-  /**
-   * Animates the color change of the AppBarLayout based on the scroll percentage.
-   *
-   * @param appBarLayout The [AppBarLayout] whose background color will change.
-   * @param fromColor The starting color of the animation.
-   * @param toColor The ending color of the animation.
-   * @param percentage The scroll percentage that dictates the color interpolation.
-   */
-  private fun setAppBarColor(
-    appBarLayout: AppBarLayout,
-    fromColor: Int,
-    toColor: Int,
-    percentage: Float
-  ) {
-    // calculate the adjusted progress based on the percentage scrolled
-    val adjustedProgress = percentage.coerceIn(0f, 1f) // Ensure the progress is between 0 and 1
-
-    // calculate the interpolated color based on the adjusted progress
-    val interpolatedColor = ArgbEvaluator().evaluate(adjustedProgress, fromColor, toColor) as Int
-
-    // set the interpolated color as the background color of the AppBarLayout
-    appBarLayout.setBackgroundColor(interpolatedColor)
   }
 
   /**
    * Animates the status bar color change based on the scroll percentage.
    *
    * @param window The [Window] whose status bar color will be animated.
-   * @param fromColor The starting color of the animation.
-   * @param toColor The ending color of the animation.
-   * @param percentage The scroll percentage that dictates the color interpolation.
+   * @param interpolatedColor The color changes
    */
   private fun Context.setStatusBarColorWithAnimation(
     window: Window,
-    fromColor: Int,
-    toColor: Int,
-    percentage: Float
+    interpolatedColor: Int
   ) {
-    val interpolatedColor =
-      ArgbEvaluator().evaluate(percentage.coerceIn(0f, 1f), fromColor, toColor) as Int
-
     // set status bar color based on API level
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
       // For Android 14 and below
