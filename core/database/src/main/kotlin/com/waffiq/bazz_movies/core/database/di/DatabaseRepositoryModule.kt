@@ -10,10 +10,10 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DatabaseRepositoryModule {
+fun interface DatabaseRepositoryModule {
 
   @Binds
-  abstract fun bindDatabaseRepository(
-    databaseRepository: DatabaseRepositoryImpl
+  fun bindDatabaseRepository(
+    databaseRepository: DatabaseRepositoryImpl,
   ): IDatabaseRepository
 }
