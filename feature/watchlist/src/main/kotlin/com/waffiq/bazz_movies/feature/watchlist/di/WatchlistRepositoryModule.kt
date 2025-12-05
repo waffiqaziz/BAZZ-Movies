@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-interface WatchlistRepositoryModule {
+fun interface WatchlistRepositoryModule {
 
   @Binds
   fun bindWatchlistRepository(
