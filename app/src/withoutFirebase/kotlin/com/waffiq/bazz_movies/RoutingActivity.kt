@@ -22,11 +22,11 @@ class RoutingActivity : AppCompatActivity() {
     splashScreen = installSplashScreen()
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
-    splashScreen.setKeepOnScreenCondition { true }
 
-    userPreferenceViewModel.getUserPref().observe(this) {
-      Log.d("RoutingActivity", "User is  $it")
-      if (it.isLogin) gotoMainActivity(true) else gotoMainActivity(false)
+    Log.d("RoutingActivity", "Running without Firebase Messaging")
+    userPreferenceViewModel.getUserPref().observe(this) { user ->
+      Log.d("RoutingActivity", "User is $user")
+      gotoMainActivity(user.isLogin)
     }
   }
 
