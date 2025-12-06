@@ -12,8 +12,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -27,11 +25,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(authenticationResponseDump),
       dataSourceEndpointCall = { userDataSource.createToken() },
       expectedData = authenticationResponseDump,
-    ) { data ->
-      assertTrue(data.success)
-      assertEquals("expire_date", data.expireAt)
-      assertEquals("request_token", data.requestToken)
-    }
+    )
   }
 
   @Test
@@ -101,11 +95,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(postResponseDump),
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
       expectedData = postResponseDump,
-    ) { data ->
-      assertTrue(data.success == true)
-      assertEquals(200, data.statusCode)
-      assertEquals("Success", data.statusMessage)
-    }
+    )
   }
 
   @Test
@@ -175,10 +165,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(createSessionResponseDump),
       dataSourceEndpointCall = { userDataSource.createSessionLogin("request_token") },
       expectedData = createSessionResponseDump,
-    ) { data ->
-      assertTrue(data.success)
-      assertEquals("session_id", data.sessionId)
-    }
+    )
   }
 
   @Test
@@ -248,10 +235,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(authenticationResponseDump),
       dataSourceEndpointCall = { userDataSource.login("username", "password", "session_id") },
       expectedData = authenticationResponseDump,
-    ) { data ->
-      assertEquals("expire_date", data.expireAt)
-      assertEquals("request_token", data.requestToken)
-    }
+    )
   }
 
   @Test

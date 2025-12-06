@@ -51,7 +51,7 @@ object Helper {
     matcher: Matcher<View>,
     timeout: Long = 5000,
   ): ViewAssertion {
-    return ViewAssertion { view, noViewFoundException ->
+    return ViewAssertion { view, _ ->
       val endTime = System.currentTimeMillis() + timeout
       do {
         try {

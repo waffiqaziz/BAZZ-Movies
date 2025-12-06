@@ -2,8 +2,11 @@ package com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.domain.repository.IDatabaseRepository
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovie
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTv
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovie
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTv
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -16,74 +19,11 @@ import org.junit.Before
 import org.junit.Test
 
 class LocalDatabaseInteractorTest {
-  private val favListMovie = listOf(
-    Favorite(
-      id = 1,
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "backdrop1",
-      poster = "poster1",
-      overview = "overview1",
-      title = "Movie1",
-      releaseDate = "2023-11-01",
-      popularity = 8.5,
-      rating = 4.5f,
-      isFavorite = true,
-      isWatchlist = false
-    )
-  )
-  private val wtcListMovie = listOf(
-    Favorite(
-      id = 1,
-      mediaId = 102,
-      mediaType = "movie",
-      genre = "Comedy",
-      backDrop = "backdrop2",
-      poster = "poster2",
-      overview = "overview2",
-      title = "Movie2",
-      releaseDate = "2023-01-02",
-      popularity = 7.5,
-      rating = 3.5f,
-      isFavorite = false,
-      isWatchlist = true
-    )
-  )
-  val wtcListTv = listOf(
-    Favorite(
-      id = 1,
-      mediaId = 103,
-      mediaType = "tv",
-      genre = "Drama",
-      backDrop = "backdrop3",
-      poster = "poster3",
-      overview = "overview3",
-      title = "Show1",
-      releaseDate = "2023-01-03",
-      popularity = 9.0,
-      rating = 4.8f,
-      isFavorite = false,
-      isWatchlist = true
-    )
-  )
-  val favListTv = listOf(
-    Favorite(
-      id = 1,
-      mediaId = 104,
-      mediaType = "tv",
-      genre = "Sci-Fi",
-      backDrop = "backdrop4",
-      poster = "poster4",
-      overview = "overview4",
-      title = "Show2",
-      releaseDate = "2023-01-04",
-      popularity = 8.7,
-      rating = 4.3f,
-      isFavorite = true,
-      isWatchlist = false
-    )
-  )
+
+  private val favListMovie = listOf(favoriteMovie)
+  private val wtcListMovie = listOf(watchlistMovie)
+  val favListTv = listOf(favoriteTv)
+  val wtcListTv = listOf(watchlistTv)
 
   private val mockRepository: IDatabaseRepository = mockk(relaxed = true)
   private lateinit var localDatabaseInteractor: LocalDatabaseInteractor
@@ -102,9 +42,7 @@ class LocalDatabaseInteractorTest {
     localDatabaseInteractor.favoriteMoviesFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
-      assertEquals(101, result[0].mediaId)
-      assertEquals("movie", result[0].mediaType)
-      assertEquals(true, result[0].isFavorite)
+      assertEquals(favoriteMovie, result[0])
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -114,9 +52,7 @@ class LocalDatabaseInteractorTest {
     localDatabaseInteractor.watchlistMovieFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
-      assertEquals(102, result[0].mediaId)
-      assertEquals("movie", result[0].mediaType)
-      assertEquals(true, result[0].isWatchlist)
+      assertEquals(watchlistMovie, result[0])
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -126,9 +62,7 @@ class LocalDatabaseInteractorTest {
     localDatabaseInteractor.favoriteTvFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
-      assertEquals(104, result[0].mediaId)
-      assertEquals("tv", result[0].mediaType)
-      assertEquals(true, result[0].isFavorite)
+      assertEquals(favoriteTv, result[0])
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -138,65 +72,31 @@ class LocalDatabaseInteractorTest {
     localDatabaseInteractor.watchlistTvFromDB.test {
       val result = awaitItem()
       assertEquals(1, result.size)
-      assertEquals(103, result[0].mediaId)
-      assertEquals("tv", result[0].mediaType)
-      assertEquals(true, result[0].isWatchlist)
+      assertEquals(watchlistTv, result[0])
       cancelAndIgnoreRemainingEvents()
     }
   }
 
   @Test
   fun insertToDB_whenSuccessful_returnsSuccess() = runTest {
-    val favorite = Favorite(
-      id = 1,
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "backdrop1",
-      poster = "poster1",
-      overview = "overview1",
-      title = "Movie1",
-      releaseDate = "2024-01-01",
-      popularity = 8.5,
-      rating = 4.5f,
-      isFavorite = true,
-      isWatchlist = false
-    )
+    coEvery { mockRepository.insertToDB(favoriteTv) } returns DbResult.Success(1)
 
-    coEvery { mockRepository.insertToDB(favorite) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.insertToDB(favorite)
+    val result = localDatabaseInteractor.insertToDB(favoriteTv)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.insertToDB(favorite) }
+    coVerify { mockRepository.insertToDB(favoriteTv) }
   }
 
   @Test
   fun deleteFromDB_whenSuccessful_returnsSuccess() = runTest {
-    val favorite = Favorite(
-      id = 1,
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "backdrop1",
-      poster = "poster1",
-      overview = "overview1",
-      title = "Movie1",
-      releaseDate = "2025-01-11",
-      popularity = 8.5,
-      rating = 4.5f,
-      isFavorite = true,
-      isWatchlist = false
-    )
+    coEvery { mockRepository.deleteFromDB(favoriteMovie) } returns DbResult.Success(1)
 
-    coEvery { mockRepository.deleteFromDB(favorite) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.deleteFromDB(favorite)
+    val result = localDatabaseInteractor.deleteFromDB(favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.deleteFromDB(favorite) }
+    coVerify { mockRepository.deleteFromDB(favoriteMovie) }
   }
 
   @Test
@@ -234,55 +134,25 @@ class LocalDatabaseInteractorTest {
 
   @Test
   fun updateFavoriteItemDB_whenSuccessful_returnsSuccess() = runTest {
-    val favorite = Favorite(
-      id = 1,
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "backdrop1",
-      poster = "poster1",
-      overview = "overview1",
-      title = "Movie1",
-      releaseDate = "2023-06-12",
-      popularity = 8.5,
-      rating = 4.5f,
-      isFavorite = true,
-      isWatchlist = false
-    )
+    coEvery { mockRepository.updateFavoriteItemDB(true, favoriteMovie) } returns DbResult.Success(1)
 
-    coEvery { mockRepository.updateFavoriteItemDB(true, favorite) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.updateFavoriteItemDB(true, favorite)
+    val result = localDatabaseInteractor.updateFavoriteItemDB(true, favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.updateFavoriteItemDB(true, favorite) }
+    coVerify { mockRepository.updateFavoriteItemDB(true, favoriteMovie) }
   }
 
   @Test
   fun updateWatchlistItemDB_whenSuccessful_returnsSuccess() = runTest {
-    val favorite = Favorite(
-      id = 1,
-      mediaId = 101,
-      mediaType = "movie",
-      genre = "Action",
-      backDrop = "backdrop1",
-      poster = "poster1",
-      overview = "overview1",
-      title = "Movie1",
-      releaseDate = "2022-04-02",
-      popularity = 8.5,
-      rating = 4.5f,
-      isFavorite = true,
-      isWatchlist = false
+    coEvery { mockRepository.updateWatchlistItemDB(false, favoriteMovie) } returns DbResult.Success(
+      1
     )
 
-    coEvery { mockRepository.updateWatchlistItemDB(false, favorite) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.updateWatchlistItemDB(false, favorite)
+    val result = localDatabaseInteractor.updateWatchlistItemDB(false, favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.updateWatchlistItemDB(false, favorite) }
+    coVerify { mockRepository.updateWatchlistItemDB(false, favoriteMovie) }
   }
 }

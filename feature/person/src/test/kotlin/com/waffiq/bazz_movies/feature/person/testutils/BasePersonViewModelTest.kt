@@ -94,7 +94,11 @@ abstract class BasePersonViewModelTest {
 
     personViewModel.loadingState.observeForever { loadingStates.add(it) }
     personViewModel.errorState.observeForever { errorEvents.add(it) }
-    liveData.observeForever { it?.let { successData.add(it) } }
+    liveData.observeForever { data ->
+      data?.let {
+        successData.add(it)
+      }
+    }
 
     runBlock()
     advanceUntilIdle()

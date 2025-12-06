@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.core.database.testdummy
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.domain.Favorite
 
@@ -7,7 +9,7 @@ object DummyData {
   val favoriteTvEntity = FavoriteEntity(
     id = 12345,
     mediaId = 103,
-    mediaType = "tv",
+    mediaType = TV_MEDIA_TYPE,
     genre = "Drama",
     backDrop = "backdrop3",
     poster = "poster3",
@@ -22,7 +24,7 @@ object DummyData {
   val favoriteMovieEntity = FavoriteEntity(
     id = 1,
     mediaId = 101,
-    mediaType = "movie",
+    mediaType = MOVIE_MEDIA_TYPE,
     genre = "Action",
     backDrop = "backdrop1",
     poster = "poster1",
@@ -38,7 +40,7 @@ object DummyData {
   val favoriteMovie = Favorite(
     id = 0,
     mediaId = 101,
-    mediaType = "movie",
+    mediaType = MOVIE_MEDIA_TYPE,
     genre = "Action",
     backDrop = "",
     poster = "",
@@ -50,4 +52,9 @@ object DummyData {
     isFavorite = true,
     isWatchlist = false
   )
+  val watchlistMovie = favoriteMovie.copy(isWatchlist = true)
+
+  val favoriteTv = favoriteMovie.copy(mediaType = TV_MEDIA_TYPE)
+
+  val watchlistTv = favoriteMovie.copy(mediaType = TV_MEDIA_TYPE, isWatchlist = true)
 }

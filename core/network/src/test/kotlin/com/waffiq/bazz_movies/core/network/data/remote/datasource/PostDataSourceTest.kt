@@ -15,7 +15,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -54,10 +53,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(postResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postFavorite(sessionId, fav, userId) },
       expectedData = postResponseSuccessDump,
-    ) { data ->
-      assertEquals(200, data.statusCode)
-      assertEquals("Success", data.statusMessage)
-    }
+    )
   }
 
   @Test
@@ -127,10 +123,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(postResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postWatchlist(sessionId, wtc, userId) },
       expectedData = postResponseSuccessDump,
-    ) { data ->
-      assertEquals(200, data.statusCode)
-      assertEquals("Success", data.statusMessage)
-    }
+    )
   }
 
   @Test
@@ -200,10 +193,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(ratePostResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
       expectedData = ratePostResponseSuccessDump,
-    ) { data ->
-      assertEquals(200, data.statusCode)
-      assertEquals("Successfully", data.statusMessage)
-    }
+    )
   }
 
   @Test
@@ -273,10 +263,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(ratePostResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
       expectedData = ratePostResponseSuccessDump,
-    ) { data ->
-      assertEquals(200, data.statusCode)
-      assertEquals("Successfully", data.statusMessage)
-    }
+    )
   }
 
   @Test

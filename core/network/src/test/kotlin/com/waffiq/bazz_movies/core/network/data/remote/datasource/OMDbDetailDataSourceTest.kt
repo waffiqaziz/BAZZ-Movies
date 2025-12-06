@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -24,12 +23,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(omdbDetailsResponseDump),
       dataSourceEndpointCall = { movieDataSource.getOMDbDetails("tt1630029") },
       expectedData = omdbDetailsResponseDump,
-    ) { data ->
-      assertEquals("Avatar: The Way of Water", data.title)
-      assertEquals("tt1630029", data.imdbID)
-      assertEquals("2022", data.year)
-      assertEquals("James Cameron, Rick Jaffa, Amanda Silver", data.writer)
-    }
+    )
   }
 
   @Test

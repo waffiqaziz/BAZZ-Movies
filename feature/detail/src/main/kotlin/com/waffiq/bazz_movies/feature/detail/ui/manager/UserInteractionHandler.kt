@@ -8,7 +8,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_selected
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
@@ -27,8 +29,7 @@ import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBind
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnFavoriteBG
-import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnWatchlistBG
+import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnAction
 import kotlin.math.roundToInt
 
 /**
@@ -127,8 +128,18 @@ class UserInteractionHandler(
         favorite = it.favorite
         watchlist = it.watchlist
         showRatingUserLogin(it)
-        changeBtnFavoriteBG(binding.btnFavorite, it.favorite)
-        changeBtnWatchlistBG(binding.btnWatchlist, it.watchlist)
+        changeBtnAction(
+          button = binding.btnFavorite,
+          isActivated = it.favorite,
+          iconActive = ic_hearth_selected,
+          iconInactive = ic_hearth
+        )
+        changeBtnAction(
+          button = binding.btnWatchlist,
+          isActivated = it.watchlist,
+          iconActive = ic_bookmark_selected,
+          iconInactive = ic_bookmark
+        )
       }
     }
   }
@@ -140,13 +151,23 @@ class UserInteractionHandler(
     // guest user observers
     detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
     detailViewModel.isFavorite.observe(lifecycleOwner) { isFav ->
-      changeBtnFavoriteBG(binding.btnFavorite, isFav)
+      changeBtnAction(
+        button = binding.btnFavorite,
+        isActivated = isFav,
+        iconActive = ic_hearth_selected,
+        iconInactive = ic_hearth
+      )
       favorite = isFav
     }
 
     detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
     detailViewModel.isWatchlist.observe(lifecycleOwner) { isWatch ->
-      changeBtnWatchlistBG(binding.btnWatchlist, isWatch)
+      changeBtnAction(
+        button = binding.btnWatchlist,
+        isActivated = isWatch,
+        iconActive = ic_bookmark_selected,
+        iconInactive = ic_bookmark
+      )
       watchlist = isWatch
     }
   }

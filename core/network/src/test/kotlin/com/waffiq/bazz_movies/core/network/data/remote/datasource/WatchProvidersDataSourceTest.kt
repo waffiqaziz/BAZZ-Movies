@@ -10,9 +10,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -26,28 +23,7 @@ class WatchProvidersDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(watchProviderResponseDump),
       dataSourceEndpointCall = { movieDataSource.getWatchProviders("movie", 1234567890) },
       expectedData = watchProviderResponseDump,
-    ) { data ->
-      assertEquals(1234567890, data.id)
-
-      val usProviders = data.results?.get("US")
-      assertNotNull(usProviders)
-      assertEquals("https://www.link.com/us/movie/example-movie", usProviders?.link)
-      assertEquals(2, usProviders?.flatrate?.size)
-      assertEquals("Netflix", usProviders?.flatrate?.get(0)?.providerName)
-      assertEquals("Disney+", usProviders?.flatrate?.get(1)?.providerName)
-      assertEquals("WeTV", usProviders?.ads?.get(0)?.providerName)
-      assertNotNull(usProviders?.rent?.get(0))
-
-      val idProviders = data.results?.get("ID")
-      assertNotNull(idProviders)
-      assertEquals("https://www.link.com/id/movie/example-movie", idProviders?.link)
-      assertEquals("Vidio", idProviders?.buy?.get(0)?.providerName)
-      assertEquals("/logo6.png", idProviders?.free?.get(0)?.logoPath)
-      assertEquals("WeTV", idProviders?.free?.get(0)?.providerName)
-      assertEquals(6, idProviders?.free?.get(0)?.providerId)
-      assertNull(idProviders?.ads?.get(0))
-      assertEquals(12, idProviders?.free?.get(0)?.displayPriority)
-    }
+    )
   }
 
   @Test

@@ -19,7 +19,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 
 @RunWith(RobolectricTestRunner::class)
 class GetRegionHelperTest {
@@ -29,16 +30,11 @@ class GetRegionHelperTest {
   private val resources = mockk<Resources>(relaxed = true)
   private val telephonyManager = mockk<TelephonyManager>(relaxed = true)
 
-  private fun mockTelephonyManager(simState: Int, networkCountryIso: String?) {
-    every { context.getSystemService(Context.TELEPHONY_SERVICE) } returns telephonyManager
-    every { telephonyManager.simState } returns simState
-    every { telephonyManager.networkCountryIso } returns networkCountryIso
-  }
-
   @Before
   fun setup() {
     every { context.resources } returns resources
     every { resources.configuration } returns configuration
+    every { context.getSystemService(Context.TELEPHONY_SERVICE) } returns telephonyManager
   }
 
   @After
@@ -47,263 +43,194 @@ class GetRegionHelperTest {
     unmockkObject(TimeZoneHelper)
   }
 
+  // region test helper
+  private fun mockSimState(simState: Int, networkCountryIso: String? = null) {
+    every { telephonyManager.simState } returns simState
+    every { telephonyManager.networkCountryIso } returns networkCountryIso
+  }
+
+  private fun mockTimeZoneHelper(timeZoneId: String = "") {
+    mockkObject(TimeZoneHelper)
+    every { TimeZoneHelper.getDefaultTimeZoneId() } returns timeZoneId
+  }
+
+  private fun mockLocaleApi23(locale: Locale?) {
+    setFinalField(configuration, locale)
+  }
+
+  private fun mockLocaleApi24(vararg locales: Locale) {
+    every { configuration.locales } returns LocaleList(*locales)
+  }
+
+  private fun setFinalField(target: Any, value: Any?) {
+    val field = target.javaClass.getDeclaredField("locale")
+    field.isAccessible = true
+    field.set(target, value)
+  }
+  // endregion test helper
+
+  // region SIM state scenarios
   @Test
-  fun getNetworkLocation_SIMStateAbsent_returnCorrectLocation() {
+  fun getLocation_whenSimAbsent_returnsTimeZoneBasedLocation() {
     val originalTimeZone = TimeZone.getDefault()
     val testTimeZone = TimeZone.getTimeZone("America/New_York")
-    TimeZone.setDefault(testTimeZone) // Set the default time zone for the test
+    TimeZone.setDefault(testTimeZone)
 
     try {
-      mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-      val expectedOutput = "america/new_york"
-      val actualOutput = GetRegionHelper.getLocation(context)
-      assertEquals(expectedOutput, actualOutput)
+      mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+
+      assertEquals("america/new_york", GetRegionHelper.getLocation(context))
     } finally {
-      TimeZone.setDefault(originalTimeZone) // restore the original time zone after the test
+      TimeZone.setDefault(originalTimeZone)
     }
   }
 
   @Test
-  fun getNetworkLocation_SIMStateReady_returnCorrectLocation() {
-    mockTelephonyManager(TelephonyManager.SIM_STATE_READY, "us")
+  fun getLocation_whenSimReady_returnsNetworkCountryIso() {
+    mockSimState(TelephonyManager.SIM_STATE_READY, "us")
+
     assertEquals("us", GetRegionHelper.getLocation(context))
   }
 
   @Test
-  fun getNetworkLocation_SIMStateUnknown_returnCorrectLocation() {
-    mockTelephonyManager(TelephonyManager.SIM_STATE_UNKNOWN, null)
+  fun getLocation_whenSimUnknown_returnsEmptyString() {
+    mockSimState(TelephonyManager.SIM_STATE_UNKNOWN)
+
     assertEquals("", GetRegionHelper.getLocation(context))
   }
+  // endregion SIM state scenarios
 
+  // region locale fallback scenarios
   @Test
-  fun getLocation_SIMAbsent_fallbackToDeviceLocale() {
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
+  fun getLocation_whenSimAbsentAndNoTimeZone_fallsBackToDeviceLocale() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
 
-    val locale = Locale.of("en", "GB") // Simulate a UK locale
-    every { context.resources } returns resources
-    every { resources.configuration } returns configuration
-
+    val locale = Locale.of("en", "GB")
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      every { configuration.locales } returns LocaleList(locale)
+      mockLocaleApi24(locale)
     } else {
-      @Suppress("DEPRECATION")
-      every { configuration.locale } returns locale
+      mockLocaleApi23(locale)
     }
 
     assertEquals("gb", GetRegionHelper.getLocation(context))
   }
+  // endregion locale fallback scenarios
 
+  // region API 23 specific tests
   @Test
-  fun getLocation_noSIM_noLocale_handleCorrectly() {
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      every { configuration.locales } returns LocaleList()
-    } else {
-      @Suppress("DEPRECATION")
-      every { configuration.locale } returns null
-    }
+  @Config(sdk = [23])
+  fun getLocation_api23_whenNoSimAndNoLocale_returnsEmpty() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi23(null)
 
     assertEquals("", GetRegionHelper.getLocation(context))
   }
 
   @Test
-  @Config(sdk = [Build.VERSION_CODES.N])
-  fun getLocation_onApi24AndAbove_withLocale_returnCorrectLocation() {
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-
-    val locale = Locale.of("en", "US")
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-    every { configuration.locales } returns LocaleList(locale)
-
-    val expectedOutput = "us"
-    val actualOutput = GetRegionHelper.getLocation(context)
-    assertEquals(expectedOutput, actualOutput)
-  }
-
-  @Test
-  @Config(sdk = [23]) // ensures API level < 24
-  fun getLocationApi23_fallbackToSingleLocale() {
-    val locale = Locale.of("es", "ES")
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
+  @Config(sdk = [23])
+  fun getLocation_api23_withLocale_returnsLowercaseCountry() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi23(Locale.of("es", "ES"))
 
     assertEquals("es", GetRegionHelper.getLocation(context))
-
-    unmockkObject(TimeZoneHelper)
   }
 
   @Test
-  @Config(sdk = [Build.VERSION_CODES.N])
-  fun getLocationApi24_withEmptyLocale_handleCorrectly() {
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-    every { configuration.locales } returns LocaleList()
+  @Config(sdk = [23])
+  fun getLocation_api23_withEmptyCountry_returnsEmptyString() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi23(Locale.of("", ""))
 
     assertEquals("", GetRegionHelper.getLocation(context))
   }
 
   @Test
+  @Config(sdk = [23])
+  fun getLocation_api23_withBlankCountry_returnsBlankString() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi23(Locale.of("en", "   "))
+
+    assertEquals("   ", GetRegionHelper.getLocation(context))
+  }
+
+  @Test
+  @Config(sdk = [23])
+  fun getLocation_api23_normalizesCountryToLowercase() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+
+    val testCases = listOf("Us", "uS", "US", "DE")
+    val expected = listOf("us", "us", "us", "de")
+
+    testCases.zip(expected).forEach { (country, expectedResult) ->
+      mockLocaleApi23(Locale.of("en", country))
+      assertEquals(expectedResult, GetRegionHelper.getLocation(context))
+    }
+  }
+
+  @Test
+  @Config(sdk = [23])
+  fun getLocation_api23_independentOfDefaultLocale() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi23(Locale.of("en", "JP"))
+
+    val originalDefault = Locale.getDefault()
+    try {
+      listOf(Locale.FRANCE, Locale.ROOT).forEach { defaultLocale ->
+        Locale.setDefault(defaultLocale)
+        assertEquals("jp", GetRegionHelper.getLocation(context))
+      }
+    } finally {
+      Locale.setDefault(originalDefault)
+    }
+  }
+  // endregion API 23 specific tests
+
+  // region API 24+ specific tests
+  @Test
+  @Config(sdk = [24])
+  fun getLocation_api24_whenNoSimAndNoLocale_returnsEmpty() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi24()
+
+    assertEquals("", GetRegionHelper.getLocation(context))
+  }
+
+  @Test
+  @Config(sdk = [24])
+  fun getLocation_api24_withLocale_returnsLowercaseCountry() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi24(Locale.of("en", "US"))
+
+    assertEquals("us", GetRegionHelper.getLocation(context))
+  }
+
+  @Test
   @Config(sdk = [Build.VERSION_CODES.N])
-  fun localeListGetOrNullUutOfBounds_returnsNull() {
-    val localeList = LocaleList(Locale.of("en", "US"), Locale.of("fr", "FR")) // list with 2 locales
+  fun getLocation_api24_withEmptyLocaleList_handlesCorrectly() {
+    mockTimeZoneHelper()
+    mockSimState(TelephonyManager.SIM_STATE_ABSENT)
+    mockLocaleApi24()
+
+    assertEquals("", GetRegionHelper.getLocation(context))
+  }
+  // endregion API 24+ specific tests
+
+  // LocaleList utility tests
+  @Test
+  @Config(sdk = [Build.VERSION_CODES.N])
+  fun localeListGetOrNull_whenOutOfBounds_returnsNull() {
+    val localeList = LocaleList(Locale.of("en", "US"), Locale.of("fr", "FR"))
 
     assertNull(localeList.getOrNull(-1))
     assertNull(localeList.getOrNull(2))
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withEmptyCountry_returnEmptyString() {
-    val locale = Locale.of("", "")
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    assertEquals("", GetRegionHelper.getLocation(context))
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withNullLocale_returnEmptyString() {
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", null)
-
-    assertEquals("", GetRegionHelper.getLocation(context))
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withMixedCaseCountry_returnLowercase() {
-    val locale = Locale.of("en", "Us") // mixed-case country code
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    assertEquals("us", GetRegionHelper.getLocation(context))
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withDifferentCaseCountry_returnLowercase() {
-    val locale = Locale.of("en", "uS")
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    assertEquals("us", GetRegionHelper.getLocation(context))
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withDifferentDefaultLocale_returnLowercase() {
-    val locale = Locale.of("en", "DE")
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    val originalDefault = Locale.getDefault()
-    Locale.setDefault(Locale.FRANCE)
-    try {
-      assertEquals("de", GetRegionHelper.getLocation(context))
-    } finally {
-      Locale.setDefault(originalDefault)
-    }
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withRootLocale_returnLowercase() {
-    val locale = Locale.of("en", "JP") // Example: Japan region
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    val originalDefault = Locale.getDefault()
-    Locale.setDefault(Locale.ROOT) // special locale with neutral behavior
-    try {
-      assertEquals("jp", GetRegionHelper.getLocation(context))
-    } finally {
-      Locale.setDefault(originalDefault)
-    }
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  @Test
-  @Config(sdk = [23])
-  fun getLocationApi23_withBlankCountry_returnEmptyString() {
-    val locale = Locale.of("en", "   ")
-
-    mockkObject(TimeZoneHelper)
-    every { TimeZoneHelper.getDefaultTimeZoneId() } returns ""
-    mockTelephonyManager(TelephonyManager.SIM_STATE_ABSENT, null)
-
-    every { resources.configuration } returns configuration
-    every { context.resources } returns resources
-    setFinalField(configuration, "locale", locale)
-
-    assertEquals("   ", GetRegionHelper.getLocation(context))
-
-    unmockkObject(TimeZoneHelper)
-  }
-
-  // set final fields using reflection
-  private fun setFinalField(target: Any, fieldName: String, value: Any?) {
-    val field = target.javaClass.getDeclaredField(fieldName)
-    field.isAccessible = true
-    field.set(target, value)
   }
 }

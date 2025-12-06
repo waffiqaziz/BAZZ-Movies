@@ -11,11 +11,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class LocalDatabaseUseCaseModule {
+fun interface LocalDatabaseUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindLocalDatabaseUseCase(
-    localDatabaseInteractor: LocalDatabaseInteractor
+  fun bindLocalDatabaseUseCase(
+    localDatabaseInteractor: LocalDatabaseInteractor,
   ): LocalDatabaseUseCase
 }

@@ -67,14 +67,12 @@ object TestHelper {
    * @param mockApiResponse The mocked successful API response.
    * @param dataSourceEndpointCall The data source method returning [Flow]<[NetworkResult]<T>>.
    * @param expectedData The expected successful data.
-   * @param additionalAssertions Optional lambda to perform further assertions on the result.
    */
   suspend fun <T> testSuccessResponse(
     apiEndpoint: suspend () -> Response<*>,
     mockApiResponse: Response<T>,
     dataSourceEndpointCall: () -> Flow<NetworkResult<T>>,
     expectedData: T,
-    additionalAssertions: (T) -> Unit,
   ) {
     coEvery { apiEndpoint() } returns mockApiResponse
 
@@ -89,8 +87,6 @@ object TestHelper {
       assertTrue(secondItem is NetworkResult.Success)
       val successResult = secondItem as NetworkResult.Success
       assertEquals(expectedData, successResult.data)
-
-      additionalAssertions(successResult.data)
 
       cancelAndIgnoreRemainingEvents()
     }
@@ -266,7 +262,16 @@ object TestHelper {
     assert(result is LoadResult.Page)
 
     val page = result as LoadResult.Page
+    assertEquals(mockResults.results.size, page.data.size) // check size
+
+    // assert each item matches
+    page.data.forEachIndexed { index, item ->
+      assertEquals("Item at index $index doesn't match", mockResults.results[index], item)
+    }
     resultAssertions(page)
+
+    assertEquals(null, page.prevKey)
+    assertEquals(2, page.nextKey)
     coVerify { mockApiCall() }
   }
 
@@ -313,11 +318,11 @@ object TestHelper {
    * Collects and verifies a [PagingData] flow for [MediaResponseItem].
    *
    * @param testScope The [TestScope] for advancing coroutine execution.
-   * @param itemAssertions Assertions to verify the loaded items.
+   * @param expectedItems Expected result
    */
   suspend fun Flow<PagingData<MediaResponseItem>>.testPagingFlow(
     testScope: TestScope,
-    itemAssertions: (List<MediaResponseItem>) -> Unit,
+    expectedItems: List<MediaResponseItem>,
   ) {
     test {
       val pagingData = awaitItem()
@@ -325,7 +330,9 @@ object TestHelper {
       testScope.advanceUntilIdle()
 
       val pagingList = differ.snapshot().items
-      itemAssertions(pagingList)
+      assertTrue("Paging list should not be empty", pagingList.isNotEmpty())
+      assertEquals("Paged items don't match expected items", expectedItems, pagingList)
+
       assertTrue(pagingList.isNotEmpty())
 
       job.cancel()
@@ -338,7 +345,7 @@ object TestHelper {
    */
   suspend fun Flow<PagingData<MultiSearchResponseItem>>.testPagingFlowSearch(
     testScope: TestScope,
-    itemAssertions: (List<MultiSearchResponseItem>) -> Unit,
+    expectedItems: List<MultiSearchResponseItem>,
   ) {
     test {
       val pagingData = awaitItem()
@@ -346,7 +353,8 @@ object TestHelper {
       testScope.advanceUntilIdle()
 
       val pagingList = differSearch.snapshot().items
-      itemAssertions(pagingList)
+      assertTrue("Paging list should not be empty", pagingList.isNotEmpty())
+      assertEquals("Paged items don't match expected items", expectedItems, pagingList)
       assertTrue(pagingList.isNotEmpty())
 
       job.cancel()

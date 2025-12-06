@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIdResponseDump
@@ -15,9 +14,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -31,12 +27,7 @@ class TvDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(mediaCreditsResponseDump2),
       dataSourceEndpointCall = { movieDataSource.getTvCredits(22222) },
       expectedData = mediaCreditsResponseDump2,
-    ) { data ->
-      assertEquals("Zach Tyler Eisen", data.cast[0].name)
-      assertEquals("Mae Whitman", data.cast[1].name)
-      assertEquals("Dao Le", data.crew[0].name)
-      assertEquals("Heiko von Drengenberg", data.crew[1].name)
-    }
+    )
   }
 
   @Test
@@ -106,11 +97,7 @@ class TvDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(videoTvResponseDump),
       dataSourceEndpointCall = { movieDataSource.getTvVideo(95479) },
       expectedData = videoTvResponseDump,
-    ) { data ->
-      assertEquals("JUJUTSU KAISEN Opening | Kaikai Kitan by Eve", data.results[0].name)
-      assertEquals("Official Trailer 3 [Subtitled]", data.results[1].name)
-      assertEquals("Official Trailer [Subtitled]", data.results[2].name)
-    }
+    )
   }
 
   @Test
@@ -180,13 +167,7 @@ class TvDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(detailTvResponseDump),
       dataSourceEndpointCall = { movieDataSource.getTvDetail(253905) },
       expectedData = detailTvResponseDump,
-    ) { data ->
-      assertEquals(253905, data.id)
-      assertEquals("When the Phone Rings", data.name)
-      assertEquals("MBC", data.networksResponse?.get(0)?.name)
-      assertEquals("South Korea", data.productionCountriesResponse?.get(0)?.name)
-      assertEquals(8.4, data.voteAverage)
-    }
+    )
   }
 
   @Test
@@ -256,13 +237,7 @@ class TvDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(externalIdResponseDump),
       dataSourceEndpointCall = { movieDataSource.getTvExternalIds(246) },
       expectedData = externalIdResponseDump,
-    ) { data ->
-      assertEquals(246, data.id)
-      assertEquals(74852, data.tvdbId)
-      assertEquals(2680, data.tvrageId)
-      assertEquals("avatarthelastairbender", data.facebookId)
-      assertEquals("avatarthelastairbender", data.instagramId)
-    }
+    )
   }
 
   @Test
@@ -332,12 +307,7 @@ class TvDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(statedResponseDump2),
       dataSourceEndpointCall = { movieDataSource.getTvState("session_id", 544321) },
       expectedData = statedResponseDump2,
-    ) { data ->
-      assertEquals(544321, data.id)
-      assertTrue(data.watchlist)
-      assertFalse(data.favorite)
-      assertTrue(data.ratedResponse is RatedResponse.Unrated)
-    }
+    )
   }
 
   @Test

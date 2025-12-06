@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-interface UserRepositoryModule {
+fun interface UserRepositoryModule {
 
   @Binds
   fun bindUserRepository(

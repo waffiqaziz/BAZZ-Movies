@@ -1,17 +1,10 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.hilt)
+  alias(libs.plugins.bazzmovies.shared.test)
 }
 
-android{
-  namespace = "com.waffiq.bazz_movies.core.instrumentationtest"
-
-  testOptions {
-    unitTests.apply {
-      isIncludeAndroidResources = false
-    }
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.core.instrumentationtest"
 
 dependencies {
   implementation(project(":core:designsystem"))

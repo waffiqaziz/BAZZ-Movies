@@ -10,8 +10,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -25,12 +23,7 @@ class UserDataSourceDetailTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(accountDetailsResponse),
       dataSourceEndpointCall = { userDataSource.getUserDetail("session_id") },
       expectedData = accountDetailsResponse,
-    ) { data ->
-      assertEquals(543798538, data.id)
-      assertEquals("en", data.iso6391)
-      assertEquals("USERNAME", data.username)
-      assertTrue(data.includeAdult == false)
-    }
+    )
   }
 
   @Test

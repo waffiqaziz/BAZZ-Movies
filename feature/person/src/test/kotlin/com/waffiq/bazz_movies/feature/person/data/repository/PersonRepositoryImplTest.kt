@@ -4,6 +4,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.Com
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.DetailPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ExternalIDPersonResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.person.ImagePersonResponse
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonRepositoryImplTest
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toCombinedCredit
 import com.waffiq.bazz_movies.feature.person.utils.mapper.PersonMapper.toDetailPerson

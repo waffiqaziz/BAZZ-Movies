@@ -93,5 +93,9 @@ gradlePlugin {
       id = libs.plugins.bazzmovies.detekt.get().pluginId
       implementationClass = "DetektConventionPlugin"
     }
+    register("sharedTest") {
+      id = libs.plugins.bazzmovies.shared.test.get().pluginId
+      implementationClass = "SharedTestConventionPlugin"
+    }
   }
 }
