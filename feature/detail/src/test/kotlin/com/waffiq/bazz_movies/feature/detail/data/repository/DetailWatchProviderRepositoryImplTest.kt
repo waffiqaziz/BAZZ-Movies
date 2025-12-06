@@ -1,6 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders.WatchProvidersResponse
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
+import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import io.mockk.coVerify

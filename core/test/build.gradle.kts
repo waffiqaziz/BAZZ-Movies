@@ -14,4 +14,5 @@ dependencies {
   implementation(libs.androidx.recyclerview)
   implementation(libs.junit)
   implementation(libs.kotlinx.coroutines.test)
+  implementation(libs.mockk)
 }
