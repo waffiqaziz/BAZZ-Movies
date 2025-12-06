@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailMovieResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.mediaCreditsResponseDump1
@@ -14,9 +13,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -32,12 +28,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(mediaCreditsResponseDump1),
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
       expectedData = mediaCreditsResponseDump1,
-    ) { data ->
-      assertEquals("Alexa Goodall", data.cast[0].name)
-      assertEquals("Martin Freeman", data.cast[1].name)
-      assertEquals("Frank Schlegel", data.crew[0].name)
-      assertEquals("Christian Ditter", data.crew[1].name)
-    }
+    )
   }
 
   @Test
@@ -107,20 +98,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(videoMovieResponseDump),
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
       expectedData = videoMovieResponseDump,
-    ) { data ->
-      assertEquals(
-        "'Oppenheimer' Wins Best Cinematography | 96th Oscars (2024)",
-        data.results[0].name
-      )
-      assertEquals(
-        "'Oppenheimer' Wins Best Film Editing | 96th Oscars (2024)",
-        data.results[1].name
-      )
-      assertEquals(
-        "Cillian Murphy | Best Actor in a Leading Role | Oscars 2024 Press Room Speech",
-        data.results[2].name
-      )
-    }
+    )
   }
 
   @Test
@@ -190,12 +168,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(detailMovieResponseDump),
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
       expectedData = detailMovieResponseDump,
-    ) { data ->
-      assertEquals("Deadpool & Wolverine", data.title)
-      assertEquals("tt6263850", data.imdbId)
-      assertEquals("AD", data.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661)
-      assertEquals(200000000, data.budget)
-    }
+    )
   }
 
   @Test
@@ -265,12 +238,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(statedResponseDump1),
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
       expectedData = statedResponseDump1,
-    ) { data ->
-      assertEquals(12345, data.id)
-      assertTrue(data.favorite)
-      assertFalse(data.watchlist)
-      assertEquals(10.0, (data.ratedResponse as RatedResponse.Value).value)
-    }
+    )
   }
 
   @Test

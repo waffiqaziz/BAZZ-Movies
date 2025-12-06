@@ -13,8 +13,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -28,12 +26,7 @@ class PersonDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(personResponseDump),
       dataSourceEndpointCall = { movieDataSource.getPersonDetail(1810) },
       expectedData = personResponseDump,
-    ) { data ->
-      assertEquals("Heath Ledger", data.name)
-      assertEquals(1810, data.id)
-      assertEquals("nm0005132", data.imdbId)
-      assertEquals("Acting", data.knownForDepartment)
-    }
+    )
   }
 
   @Test
@@ -103,11 +96,7 @@ class PersonDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(imagePersonResponseDump),
       dataSourceEndpointCall = { movieDataSource.getPersonImage(1878952) },
       expectedData = imagePersonResponseDump,
-    ) { data ->
-      assertEquals("/iJ1ekhu73bCRkpggLiKQh6MoHi8.jpg", data.profiles?.get(4)?.filePath)
-      assertEquals(1878952, data.id)
-      assertNull(data.profiles?.get(4)?.iso6391)
-    }
+    )
   }
 
   @Test
@@ -177,13 +166,7 @@ class PersonDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(combinedCreditResponseDump),
       dataSourceEndpointCall = { movieDataSource.getPersonKnownFor(500) },
       expectedData = combinedCreditResponseDump,
-    ) { data ->
-      assertEquals(500, data.id)
-      assertEquals("War of the Worlds", data.cast?.get(0)?.title)
-      assertEquals("Minority Report", data.cast?.get(1)?.title)
-      assertEquals("The Last Samurai", data.crew?.get(0)?.title)
-      assertEquals("Producer", data.crew?.get(0)?.job)
-    }
+    )
   }
 
   @Test
@@ -253,14 +236,7 @@ class PersonDataSourceTest : BaseMediaDataSourceTest() {
       mockApiResponse = Response.success(externalIDPersonResponseDump),
       dataSourceEndpointCall = { movieDataSource.getPersonExternalID(114253) },
       expectedData = externalIDPersonResponseDump,
-    ) { data ->
-      assertEquals(114253, data.id)
-      assertEquals("/m/027xw9j", data.freebaseMid)
-      assertEquals("nm1375030", data.imdbId)
-      assertNull(data.freebaseId)
-      assertNull(data.youtubeId)
-      assertNull(data.instagramId)
-    }
+    )
   }
 
   @Test

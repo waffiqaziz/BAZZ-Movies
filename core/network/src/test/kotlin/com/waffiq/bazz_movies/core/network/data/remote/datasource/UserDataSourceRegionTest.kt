@@ -10,7 +10,6 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionR
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
@@ -24,10 +23,7 @@ class UserDataSourceRegionTest : BaseUserDataSourceTest() {
       mockApiResponse = Response.success(countryIPResponseDump),
       dataSourceEndpointCall = { userDataSource.getCountryCode() },
       expectedData = countryIPResponseDump,
-    ) { data ->
-      assertEquals("ID", data.country)
-      assertEquals("103.187.242.255", data.ip)
-    }
+    )
   }
 
   @Test

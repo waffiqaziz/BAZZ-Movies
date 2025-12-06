@@ -2,7 +2,10 @@
 
 package com.waffiq.bazz_movies.core.network.testutils
 
+import androidx.paging.PagingSource.LoadParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
+import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.OMDbApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
@@ -65,4 +68,10 @@ abstract class BaseMediaDataSourceTest {
 
     movieDataSource = MovieDataSource(tmdbApiService, omDbApiService, testDispatcher.IO)
   }
+
+  protected suspend fun GenericPagingSource.toLoadResult() =
+    this.load(LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false))
+
+  protected suspend fun SearchPagingSource.toLoadResult() =
+    this.load(LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false))
 }
