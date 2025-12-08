@@ -43,33 +43,23 @@ class FavoriteViewModel @Inject constructor(
   fun favoriteTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
     getFavoriteTvUseCase.getFavoriteTv(sesId).cachedIn(viewModelScope)
 
-  fun postFavorite(
-    data: FavoriteModel,
-    title: String,
-  ) {
+  fun postFavorite(data: FavoriteModel, title: String) {
     launchAndHandleOutcome(
       flow = postActionUseCase.postFavoriteWithAuth(data),
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
       },
-      onError = { message ->
-        _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
-      }
+      onError = { onError(it) }
     )
   }
 
-  fun postWatchlist(
-    data: WatchlistModel,
-    title: String,
-  ) {
+  fun postWatchlist(data: WatchlistModel, title: String) {
     launchAndHandleOutcome(
       flow = postActionUseCase.postWatchlistWithAuth(data),
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
       },
-      onError = { message ->
-        _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
-      }
+      onError = { onError(it) }
     )
   }
 
@@ -84,9 +74,7 @@ class FavoriteViewModel @Inject constructor(
             )
           }
 
-          WatchlistActionResult.AlreadyInWatchlist -> {
-            _snackBarAlready.value = Event(title)
-          }
+          WatchlistActionResult.AlreadyInWatchlist -> already(title)
         }
       },
       onError = { onError(it) }
@@ -104,13 +92,15 @@ class FavoriteViewModel @Inject constructor(
             )
           }
 
-          WatchlistActionResult.AlreadyInWatchlist -> {
-            _snackBarAlready.value = Event(title)
-          }
+          WatchlistActionResult.AlreadyInWatchlist -> already(title)
         }
       },
       onError = { onError(it) }
     )
+  }
+
+  private fun already(title: String) {
+    _snackBarAlready.value = Event(title)
   }
 
   private fun onError(message: String) {

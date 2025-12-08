@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +44,6 @@ class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    Log.d("FavoriteChild", "Fragment created with mediaType: $mediaType")
-    Log.d("FavoriteChild", "Arguments: ${arguments?.getString(ARG_MEDIA_TYPE)}")
     adapterPaging = FavoritePagingAdapter(navigator, mediaType)
     super.onViewCreated(view, savedInstanceState)
   }
