@@ -6,13 +6,12 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.testMediaItem
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.userModel
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
@@ -53,9 +52,8 @@ class BaseFavoriteFragmentTest :
 
   val getFavoriteMovieUseCase: GetFavoriteMovieUseCase = mockk()
   val getFavoriteTvUseCase: GetFavoriteTvUseCase = mockk()
-  val postMethodUseCase: PostMethodUseCase = mockk()
-  val getStatedMovieUseCase: GetMovieStateUseCase = mockk()
-  val getStatedTvUseCase: GetTvStateUseCase = mockk()
+  val postActionUseCase: PostActionUseCase = mockk()
+  val checkAndAddToWatchlistUseCase: CheckAndAddToWatchlistUseCase = mockk()
 
   lateinit var mockFavoriteViewModel: FavoriteViewModel
 
@@ -65,9 +63,8 @@ class BaseFavoriteFragmentTest :
     mockFavoriteViewModel = FavoriteViewModel(
       getFavoriteMovieUseCase,
       getFavoriteTvUseCase,
-      postMethodUseCase,
-      getStatedMovieUseCase,
-      getStatedTvUseCase,
+      postActionUseCase,
+      checkAndAddToWatchlistUseCase,
     )
     setupMocks(mockUserPrefViewModel)
   }

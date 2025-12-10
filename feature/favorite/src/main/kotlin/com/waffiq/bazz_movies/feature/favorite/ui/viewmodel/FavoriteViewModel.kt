@@ -11,15 +11,14 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -28,9 +27,8 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
-  private val postMethodUseCase: PostMethodUseCase,
-  private val getStatedMovieUseCase: GetMovieStateUseCase,
-  private val getStatedTvUseCase: GetTvStateUseCase,
+  private val postActionUseCase: PostActionUseCase,
+  private val checkAndAddToWatchlistUseCase: CheckAndAddToWatchlistUseCase,
 ) : ViewModel() {
 
   private val _snackBarAlready = MutableLiveData<Event<String>>()
@@ -39,7 +37,6 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
 
-  // region NETWORK
   fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
     getFavoriteMovieUseCase.getFavoriteMovies(sesId).cachedIn(viewModelScope)
 
@@ -47,13 +44,11 @@ class FavoriteViewModel @Inject constructor(
     getFavoriteTvUseCase.getFavoriteTv(sesId).cachedIn(viewModelScope)
 
   fun postFavorite(
-    sesId: String,
-    userId: Int,
     data: FavoriteModel,
     title: String,
   ) {
     launchAndHandleOutcome(
-      flow = postMethodUseCase.postFavorite(sesId, data, userId),
+      flow = postActionUseCase.postFavoriteWithAuth(data),
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
       },
@@ -64,13 +59,11 @@ class FavoriteViewModel @Inject constructor(
   }
 
   fun postWatchlist(
-    sesId: String,
-    userId: Int,
     data: WatchlistModel,
     title: String,
   ) {
     launchAndHandleOutcome(
-      flow = postMethodUseCase.postWatchlist(sesId, data, userId),
+      flow = postActionUseCase.postWatchlistWithAuth(data),
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
       },
@@ -80,54 +73,47 @@ class FavoriteViewModel @Inject constructor(
     )
   }
 
-  fun checkMovieStatedThenPostWatchlist(
-    user: UserModel,
-    id: Int,
-    title: String,
-  ) {
+  fun addMovieToWatchlist(id: Int, title: String) {
     launchAndHandleOutcome(
-      flow = getStatedMovieUseCase.getMovieState(user.token, id),
-      onSuccess = { state ->
-        if (state.watchlist) {
-          _snackBarAlready.value = Event(title)
-        } else {
-          postWatchlist(
-            user.token,
-            user.userId,
-            WatchlistModel(MOVIE_MEDIA_TYPE, id, true),
-            title
-          )
+      flow = checkAndAddToWatchlistUseCase.addMovieToWatchlist(id),
+      onSuccess = { result ->
+        when (result) {
+          WatchlistActionResult.Added -> {
+            _snackBarAdded.value = Event(
+              SnackBarUserLoginData(true, title, null, WatchlistModel(MOVIE_MEDIA_TYPE, id, true))
+            )
+          }
+
+          WatchlistActionResult.AlreadyInWatchlist -> {
+            _snackBarAlready.value = Event(title)
+          }
         }
       },
-      onError = { message ->
-        _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
-      }
+      onError = { onError(it) }
     )
   }
 
-  fun checkTvStatedThenPostWatchlist(
-    user: UserModel,
-    id: Int,
-    title: String,
-  ) {
+  fun addTvToWatchlist(id: Int, title: String) {
     launchAndHandleOutcome(
-      flow = getStatedTvUseCase.getTvState(user.token, id),
-      onSuccess = { state ->
-        if (state.watchlist) {
-          _snackBarAlready.value = Event(title)
-        } else {
-          postWatchlist(
-            user.token,
-            user.userId,
-            WatchlistModel(TV_MEDIA_TYPE, id, true),
-            title
-          )
+      flow = checkAndAddToWatchlistUseCase.addTvToWatchlist(id),
+      onSuccess = { result ->
+        when (result) {
+          WatchlistActionResult.Added -> {
+            _snackBarAdded.value = Event(
+              SnackBarUserLoginData(true, title, null, WatchlistModel(TV_MEDIA_TYPE, id, true))
+            )
+          }
+
+          WatchlistActionResult.AlreadyInWatchlist -> {
+            _snackBarAlready.value = Event(title)
+          }
         }
       },
-      onError = { message ->
-        _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
-      }
+      onError = { onError(it) }
     )
   }
-  // endregion NETWORK
+
+  private fun onError(message: String) {
+    _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
+  }
 }

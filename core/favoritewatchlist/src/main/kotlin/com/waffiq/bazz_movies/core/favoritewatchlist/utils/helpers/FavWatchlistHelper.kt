@@ -134,5 +134,4 @@ object FavWatchlistHelper {
       }
     }
   }
-
 }

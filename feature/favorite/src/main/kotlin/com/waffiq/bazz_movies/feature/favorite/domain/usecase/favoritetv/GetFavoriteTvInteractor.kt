@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.domain.usecase
+package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -6,9 +6,9 @@ import com.waffiq.bazz_movies.feature.favorite.domain.repository.IFavoriteReposi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetFavoriteMovieInteractor @Inject constructor(
+class GetFavoriteTvInteractor @Inject constructor(
   private val favoriteRepository: IFavoriteRepository
-) : GetFavoriteMovieUseCase {
-  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaItem>> =
-    favoriteRepository.getFavoriteMovies(sessionId)
+) : GetFavoriteTvUseCase {
+  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaItem>> =
+    favoriteRepository.getFavoriteTv(sessionId)
 }

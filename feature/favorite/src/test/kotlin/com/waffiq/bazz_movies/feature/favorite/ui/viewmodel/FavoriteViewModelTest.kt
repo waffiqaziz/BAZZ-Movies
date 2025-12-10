@@ -5,22 +5,18 @@ import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.TV_ID
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeMovieMediaItemPagingData
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvMediaItemPagingData
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.movieStateInWatchlist
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.movieStateNotWatchlist
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeError
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.tvStateInWatchlist
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.tvStateNotWatchlist
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlowCustomDispatcher
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlowEvent
@@ -52,9 +48,8 @@ class FavoriteViewModelTest : BehaviorSpec({
 
   val getFavoriteMovieUseCase: GetFavoriteMovieUseCase = mockk()
   val getFavoriteTvUseCase: GetFavoriteTvUseCase = mockk()
-  val postMethodUseCase: PostMethodUseCase = mockk()
-  val getStatedMovieUseCase: GetMovieStateUseCase = mockk()
-  val getStatedTvUseCase: GetTvStateUseCase = mockk()
+  val postActionUseCase: PostActionUseCase = mockk()
+  val checkAndAddToWatchlistUseCase: CheckAndAddToWatchlistUseCase = mockk()
 
   lateinit var viewModel: FavoriteViewModel
 
@@ -63,9 +58,8 @@ class FavoriteViewModelTest : BehaviorSpec({
     viewModel = FavoriteViewModel(
       getFavoriteMovieUseCase,
       getFavoriteTvUseCase,
-      postMethodUseCase,
-      getStatedMovieUseCase,
-      getStatedTvUseCase
+      postActionUseCase,
+      checkAndAddToWatchlistUseCase
     )
   }
 
@@ -107,38 +101,40 @@ class FavoriteViewModelTest : BehaviorSpec({
     val title = "Breaking Bad"
 
     fun checkStateTv() {
-      viewModel.checkTvStatedThenPostWatchlist(user, TV_ID, title)
+      viewModel.addTvToWatchlist(TV_ID, title)
     }
 
     fun verifyGetStatedTVCalled() {
-      coVerify { getStatedTvUseCase.getTvState(user.token, TV_ID) }
+      coVerify { checkAndAddToWatchlistUseCase.addTvToWatchlist(TV_ID) }
     }
 
     When("the TV show is not in watchlist") {
-      coEvery { getStatedTvUseCase.getTvState(user.token, TV_ID) } returns
-        flowOf(outcomeSuccess(tvStateNotWatchlist))
+      coEvery { checkAndAddToWatchlistUseCase.addTvToWatchlist(TV_ID) } returns
+        flowOf(outcomeSuccess(WatchlistActionResult.Added))
 
-      coEvery { postMethodUseCase.postWatchlist(user.token, any(), user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
         flowOf(outcomeSuccess(response))
 
-      Then("it should call postWatchlist and emit success") {
+      Then("it should call postWatchlistWithAuth and emit success") {
         testViewModelFlowEvent(
           runBlock = { checkStateTv() },
           liveData = viewModel.snackBarAdded,
           expected = Event(
-            SnackBarUserLoginData(true, title, null, WatchlistModel("tv", TV_ID, true))
+            SnackBarUserLoginData(
+              isSuccess = true,
+              title = title,
+              favoriteModel = null,
+              watchlistModel = WatchlistModel("tv", TV_ID, true)
+            )
           ),
-          verifyBlock = {
-            verifyGetStatedTVCalled()
-            coVerify { postMethodUseCase.postWatchlist(user.token, any(), user.userId) }
-          }
+          verifyBlock = { verifyGetStatedTVCalled() }
         )
       }
     }
 
     When("the TV show is already in watchlist") {
-      coEvery { getStatedTvUseCase.getTvState(user.token, TV_ID) } returns
-        flowOf(outcomeSuccess(tvStateInWatchlist))
+      coEvery { checkAndAddToWatchlistUseCase.addTvToWatchlist(TV_ID) } returns
+        flowOf(outcomeSuccess(WatchlistActionResult.AlreadyInWatchlist))
 
       Then("it should emit snackBarAlready with title") {
         testViewModelFlowEvent(
@@ -151,7 +147,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("the response is unsuccessful") {
-      coEvery { getStatedTvUseCase.getTvState(user.token, TV_ID) } returns
+      coEvery { checkAndAddToWatchlistUseCase.addTvToWatchlist(TV_ID) } returns
         flowOf(outcomeError)
 
       Then("it should show snackBar error message") {
@@ -165,7 +161,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("the response is loading") {
-      coEvery { getStatedTvUseCase.getTvState(user.token, TV_ID) } returns
+      coEvery { checkAndAddToWatchlistUseCase.addTvToWatchlist(TV_ID) } returns
         flowOf(outcomeLoading)
 
       Then("do nothing") {
@@ -183,15 +179,15 @@ class FavoriteViewModelTest : BehaviorSpec({
     val favoriteModel = FavoriteModel("movie", 999, true)
 
     fun runPostFavorite() {
-      viewModel.postFavorite(user.token, user.userId, favoriteModel, title)
+      viewModel.postFavorite(favoriteModel, title)
     }
 
     fun verifyPostFavoriteCalled() {
-      coVerify { postMethodUseCase.postFavorite(user.token, favoriteModel, user.userId) }
+      coVerify { postActionUseCase.postFavoriteWithAuth(favoriteModel) }
     }
 
     When("post favorite is successful") {
-      coEvery { postMethodUseCase.postFavorite(user.token, favoriteModel, user.userId) } returns
+      coEvery { postActionUseCase.postFavoriteWithAuth(favoriteModel) } returns
         flowOf(outcomeSuccess(response))
 
       Then("it should emit success snackbar") {
@@ -205,7 +201,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("post favorite is unsuccessful") {
-      coEvery { postMethodUseCase.postFavorite(user.token, favoriteModel, user.userId) } returns
+      coEvery { postActionUseCase.postFavoriteWithAuth(favoriteModel) } returns
         flowOf(outcomeError)
 
       Then("it should emit error snackbar") {
@@ -219,7 +215,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("post favorite is loading") {
-      coEvery { postMethodUseCase.postFavorite(user.token, favoriteModel, user.userId) } returns
+      coEvery { postActionUseCase.postFavoriteWithAuth(favoriteModel) } returns
         flowOf(outcomeLoading)
 
       Then("it should emit nothing") {
@@ -237,15 +233,15 @@ class FavoriteViewModelTest : BehaviorSpec({
     val watchlistModel = WatchlistModel("movie", 333, true)
 
     fun runPostWatchlist() {
-      viewModel.postWatchlist(user.token, user.userId, watchlistModel, title)
+      viewModel.postWatchlist(watchlistModel, title)
     }
 
     fun verifyPostWatchlistCalled() {
-      coVerify { postMethodUseCase.postWatchlist(user.token, watchlistModel, user.userId) }
+      coVerify { postActionUseCase.postWatchlistWithAuth(watchlistModel) }
     }
 
     When("post watchlist is successful") {
-      coEvery { postMethodUseCase.postWatchlist(user.token, watchlistModel, user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(watchlistModel) } returns
         flowOf(outcomeSuccess(response))
 
       Then("it should emit success snackbar") {
@@ -259,7 +255,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("post watchlist is unsuccessful") {
-      coEvery { postMethodUseCase.postWatchlist(user.token, watchlistModel, user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(watchlistModel) } returns
         flowOf(outcomeError)
 
       Then("it should emit error snackbar") {
@@ -273,7 +269,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("post watchlist is loading") {
-      coEvery { postMethodUseCase.postWatchlist(user.token, watchlistModel, user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(watchlistModel) } returns
         flowOf(outcomeLoading)
 
       Then("it should emit nothing") {
@@ -291,21 +287,21 @@ class FavoriteViewModelTest : BehaviorSpec({
     val title = "Inception"
 
     fun checkStateMovie() {
-      viewModel.checkMovieStatedThenPostWatchlist(user, movieId, title)
+      viewModel.addMovieToWatchlist(movieId, title)
     }
 
     fun verifyGetStatedMovieCalled() {
-      coVerify { getStatedMovieUseCase.getMovieState(user.token, movieId) }
+      coVerify { checkAndAddToWatchlistUseCase.addMovieToWatchlist(movieId) }
     }
 
     When("the movie is not in watchlist and response successful") {
-      coEvery { getStatedMovieUseCase.getMovieState(user.token, movieId) } returns
-        flowOf(outcomeSuccess(movieStateNotWatchlist))
+      coEvery { checkAndAddToWatchlistUseCase.addMovieToWatchlist(movieId) } returns
+        flowOf(outcomeSuccess(WatchlistActionResult.Added))
 
-      coEvery { postMethodUseCase.postWatchlist(user.token, any(), user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
         flowOf(outcomeSuccess(response))
 
-      Then("it should call postWatchlist and emit success") {
+      Then("it should call postWatchlistWithAuth and emit success") {
         testViewModelFlowEvent(
           runBlock = { checkStateMovie() },
           liveData = viewModel.snackBarAdded,
@@ -323,10 +319,10 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("the movie is in watchlist and response successful") {
-      coEvery { getStatedMovieUseCase.getMovieState(user.token, movieId) } returns
-        flowOf(outcomeSuccess(movieStateInWatchlist))
+      coEvery { checkAndAddToWatchlistUseCase.addMovieToWatchlist(movieId) } returns
+        flowOf(outcomeSuccess(WatchlistActionResult.AlreadyInWatchlist))
 
-      coEvery { postMethodUseCase.postWatchlist(user.token, any(), user.userId) } returns
+      coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
         flowOf(outcomeSuccess(response))
 
       Then("it should show snackBarAlready with title") {
@@ -340,7 +336,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("the response is unsuccessful") {
-      coEvery { getStatedMovieUseCase.getMovieState(user.token, movieId) } returns
+      coEvery { checkAndAddToWatchlistUseCase.addMovieToWatchlist(movieId) } returns
         flowOf(outcomeError)
 
       Then("it should show snackBar error message") {
@@ -354,7 +350,7 @@ class FavoriteViewModelTest : BehaviorSpec({
     }
 
     When("the response is loading") {
-      coEvery { getStatedMovieUseCase.getMovieState(user.token, movieId) } returns
+      coEvery { checkAndAddToWatchlistUseCase.addMovieToWatchlist(movieId) } returns
         flowOf(outcomeLoading)
 
       Then("do nothing") {

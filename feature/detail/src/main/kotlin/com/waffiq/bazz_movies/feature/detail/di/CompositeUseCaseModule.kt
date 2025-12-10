@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDa
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserInteractor
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -40,6 +40,6 @@ interface CompositeUseCaseModule {
   @Binds
   @ViewModelScoped
   fun bindPostMethodWithUserUseCaseSingleton(
-    postMethodWithUserInteractor: PostMethodWithUserInteractor,
-  ): PostMethodWithUserUseCase
+    postMethodWithUserInteractor: PostRateInteractor,
+  ): PostRateUseCase
 }

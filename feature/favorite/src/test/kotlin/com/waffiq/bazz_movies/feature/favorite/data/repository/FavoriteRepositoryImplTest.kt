@@ -30,10 +30,9 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
   Given("FavoriteRepositoryImpl") {
 
     When("getFavoriteMovies is called") {
+      every { dataSource.getFavoriteMovies(SESSION_ID) } returns
+        flowOf(fakeMovieResponsePagingData)
       Then("it should return mapped MediaItem list") {
-        every { dataSource.getFavoriteMovies(SESSION_ID) } returns
-          flowOf(fakeMovieResponsePagingData)
-
         testPagingFlow(repository.getFavoriteMovies(SESSION_ID)) {
           it[0].title shouldBe "Inception"
           it[1].title shouldBe "The Dark Knight"
@@ -42,10 +41,9 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteTv is called") {
+      every { dataSource.getFavoriteTv(SESSION_ID) } returns
+        flowOf(fakeTvResponsePagingData)
       Then("it should return mapped MediaItem list") {
-        every { dataSource.getFavoriteTv(SESSION_ID) } returns
-          flowOf(fakeTvResponsePagingData)
-
         testPagingFlow(repository.getFavoriteTv(SESSION_ID)) {
           it[0].title shouldBe "Breaking Bad"
           it[1].title shouldBe "Game of Thrones"
@@ -54,10 +52,9 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteMovies is called with empty data") {
+      every { dataSource.getFavoriteMovies(SESSION_ID) } returns
+        flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
-        every { dataSource.getFavoriteMovies(SESSION_ID) } returns
-          flowOf(PagingData.empty())
-
         testPagingFlow(repository.getFavoriteMovies(SESSION_ID)) {
           it shouldBe emptyList()
         }
@@ -65,10 +62,9 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteTv is called with empty data") {
+      every { dataSource.getFavoriteTv(SESSION_ID) } returns
+        flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
-        every { dataSource.getFavoriteTv(SESSION_ID) } returns
-          flowOf(PagingData.empty())
-
         testPagingFlow(repository.getFavoriteTv(SESSION_ID)) {
           it shouldBe emptyList()
         }

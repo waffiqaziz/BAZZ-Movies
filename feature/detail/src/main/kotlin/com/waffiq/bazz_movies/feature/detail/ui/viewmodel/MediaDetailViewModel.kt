@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
@@ -28,7 +29,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
@@ -48,7 +49,8 @@ class MediaDetailViewModel @Inject constructor(
   private val getMovieDetailUseCase: GetMovieDetailUseCase,
   private val getTvDetailUseCase: GetTvDetailUseCase,
   private val localDatabaseUseCase: LocalDatabaseUseCase,
-  private val postMethodWithUserUseCase: PostMethodWithUserUseCase,
+  private val postRateUseCase: PostRateUseCase,
+  private val postActionUseCase: PostActionUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
   private val getMediaStateUseCase: GetMediaStateWithUserUseCase,
   private val getMovieDetailWithUserRegionUseCase: GetMovieDataWithUserRegionUseCase,
@@ -401,7 +403,7 @@ class MediaDetailViewModel @Inject constructor(
       // function reference = (FavoriteModel) -> Flow<Outcome<...>>
       // same as { item -> postMethodWithUserUseCase.postFavorite(item) }
       // only works if the function signatures match exactly.
-      postAction = postMethodWithUserUseCase::postFavorite,
+      postAction = postActionUseCase::postFavoriteWithAuth,
 
       updateState = { value: Boolean -> _isFavorite.value = value }
     )
@@ -412,14 +414,14 @@ class MediaDetailViewModel @Inject constructor(
       data = data,
       isFavorite = false,
       isChecked = data.watchlist,
-      postAction = postMethodWithUserUseCase::postWatchlist,
+      postAction = postActionUseCase::postWatchlistWithAuth,
       updateState = { value: Boolean -> _isWatchlist.value = value }
     )
   }
 
   fun postMovieRate(rating: Float, movieId: Int) {
     executeUseCase(
-      flowProvider = { postMethodWithUserUseCase.postMovieRate(rating, movieId) },
+      flowProvider = { postRateUseCase.postMovieRate(rating, movieId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },
@@ -428,7 +430,7 @@ class MediaDetailViewModel @Inject constructor(
 
   fun postTvRate(rating: Float, tvId: Int) {
     executeUseCase(
-      flowProvider = { postMethodWithUserUseCase.postTvRate(rating, tvId) },
+      flowProvider = { postRateUseCase.postTvRate(rating, tvId) },
       onSuccess = { _rateState.value = Event(true) },
       onFinallySuccess = { _loadingState.value = false },
       onLoading = { _loadingState.value = true },

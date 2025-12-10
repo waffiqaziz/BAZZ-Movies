@@ -1,13 +1,17 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
@@ -19,12 +23,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 
 @AndroidEntryPoint
-class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragment<MediaItem>() {
+class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
 
   private var _binding: FragmentFavoriteChildBinding? = null
   override val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var adapterPaging: FavoritePagingAdapter
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  val mediaType: String by lazy {
+    requireArguments().getString(ARG_MEDIA_TYPE) ?: MOVIE_MEDIA_TYPE
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -36,6 +45,8 @@ class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragmen
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    Log.d("FavoriteChild", "Fragment created with mediaType: $mediaType")
+    Log.d("FavoriteChild", "Arguments: ${arguments?.getString(ARG_MEDIA_TYPE)}")
     adapterPaging = FavoritePagingAdapter(navigator, mediaType)
     super.onViewCreated(view, savedInstanceState)
   }
@@ -58,10 +69,18 @@ class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragmen
   }
 
   override fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
-    favoriteViewModel.favoriteMovies(token)
+    if (mediaType == MOVIE_MEDIA_TYPE) {
+      favoriteViewModel.favoriteMovies(token)
+    } else {
+      favoriteViewModel.favoriteTvSeries(token)
+    }
 
   override fun getDBFavoriteData(): LiveData<List<Favorite>> =
-    sharedDBViewModel.favoriteMoviesFromDB
+    if (mediaType == MOVIE_MEDIA_TYPE) {
+      sharedDBViewModel.favoriteMoviesFromDB
+    } else {
+      sharedDBViewModel.favoriteTvFromDB
+    }
 
   override fun createFavoriteModel(mediaId: Int): FavoriteModel =
     FavoriteModel(
@@ -71,8 +90,10 @@ class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragmen
     )
 
   override fun postToAddWatchlist(title: String, mediaId: Int) {
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      favoriteViewModel.checkMovieStatedThenPostWatchlist(user, mediaId, title)
+    if (mediaType == MOVIE_MEDIA_TYPE) {
+      favoriteViewModel.addMovieToWatchlist(mediaId, title)
+    } else {
+      favoriteViewModel.addTvToWatchlist(mediaId, title)
     }
   }
 
@@ -82,5 +103,13 @@ class FavoriteChildFragment(private val mediaType: String) : BaseFavoriteFragmen
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  companion object {
+    private const val ARG_MEDIA_TYPE = "media_type"
+
+    fun newInstance(mediaType: String) = FavoriteChildFragment().apply {
+      arguments = bundleOf(ARG_MEDIA_TYPE to mediaType)
+    }
   }
 }
