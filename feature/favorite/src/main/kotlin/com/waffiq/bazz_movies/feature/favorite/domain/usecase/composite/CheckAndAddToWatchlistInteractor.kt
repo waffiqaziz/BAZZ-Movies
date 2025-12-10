@@ -12,8 +12,12 @@ import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUse
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class CheckAndAddToWatchlistInteractor @Inject constructor(
@@ -42,32 +46,33 @@ class CheckAndAddToWatchlistInteractor @Inject constructor(
   private fun addToWatchlist(
     mediaId: Int,
     mediaType: String,
-    getStateFlow: (String) -> Flow<Outcome<MediaState>>
-  ): Flow<Outcome<WatchlistActionResult>> = flow {
-    emit(Outcome.Loading)
-    val token = userPrefUseCase.getUserToken().first()
-
-    getStateFlow(token).collect { outcome ->
-      when (outcome) {
-        is Outcome.Success -> {
-          if (outcome.data.watchlist) {
-            emit(Outcome.Success(WatchlistActionResult.AlreadyInWatchlist))
-          } else {
-            postActionUseCase.postWatchlistWithAuth(
-              WatchlistModel(mediaType, mediaId, true)
-            ).collect { postOutcome ->
-              emit(mapPostOutcome(postOutcome))
+    getStateFlow: (String) -> Flow<Outcome<MediaState>>,
+  ): Flow<Outcome<WatchlistActionResult>> {
+    return userPrefUseCase.getUserToken()
+      .filterNotNull()
+      .take(1)
+      .flatMapConcat { token -> getStateFlow(token) }
+      .flatMapConcat { stateOutcome ->
+        when (stateOutcome) {
+          is Outcome.Success -> {
+            if (stateOutcome.data.watchlist) {
+              flowOf(Outcome.Success(WatchlistActionResult.AlreadyInWatchlist))
+            } else {
+              postActionUseCase.postWatchlistWithAuth(
+                WatchlistModel(mediaType, mediaId, true)
+              ).map(::mapPostOutcome)
             }
           }
+
+          is Outcome.Error -> flowOf(Outcome.Error(stateOutcome.message))
+          is Outcome.Loading -> flowOf(Outcome.Loading)
         }
-        is Outcome.Error -> emit(Outcome.Error(outcome.message))
-        is Outcome.Loading -> emit(Outcome.Loading)
       }
-    }
+      .onStart { emit(Outcome.Loading) }
   }
 
   private fun mapPostOutcome(
-    postOutcome: Outcome<PostFavoriteWatchlist>
+    postOutcome: Outcome<PostFavoriteWatchlist>,
   ): Outcome<WatchlistActionResult> {
     return when (postOutcome) {
       is Outcome.Success -> Outcome.Success(WatchlistActionResult.Added)
