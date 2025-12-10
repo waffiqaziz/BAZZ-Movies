@@ -35,20 +35,19 @@ object MediaHelper {
 
     // Process each job title and create pairs of (displayName, joinedNames)
     return jobToNamesMap.mapNotNull { (jobTitle, displayName) ->
-      crewByJob[jobTitle] // Get crew members for this job title
-        ?.takeIf { it.isNotEmpty() } // Only proceed if we have crew members
-        ?.let { members ->
-          // Create pair: display name -> comma-separated crew names
-          displayName to members.joinToString { it.name.orEmpty() }
-        }
+      val members = crewByJob[jobTitle].orEmpty().filter { !it.name.isNullOrEmpty() }
+      if (members.isNotEmpty()) displayName to members.joinToString { it.name!! } else null
     }.unzip() // Split pairs into two separate lists: [displayNames], [joinedNames]
   }
 
   fun Video.toLink(): String {
-    return this.results
-      .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) }
-      .map { it.key }.firstOrNull()?.trim()
-      ?: this.results.map { it.key }.firstOrNull()?.trim().orEmpty()
+    val preferred = results
+      .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) } // get official and trailer
+      .map { it.key } // get the key value (youtube id video)
+      .firstOrNull()
+      ?.trim()
+
+    return preferred ?: results.map { it.key }.firstOrNull()?.trim().orEmpty() // if null use valid link
   }
 
   fun getTransformTMDBScore(tmdbScore: Double?): String? =
