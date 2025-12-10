@@ -73,6 +73,7 @@ espresso = "3.7.0"
 coreTesting = "2.2.0"
 jacoco = "0.8.14"
 junitVersion = "4.13.2"
+junitVintage = "6.0.1"
 json = "20250517"
 kotest = "6.0.7"
 kotlinxKover = "0.9.3"
@@ -169,6 +170,7 @@ androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 
 # Junit Testing Libraries
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+junit-vintage = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junitVintage" }
 
 # Json Libraries
 json = { module = "org.json:json", version.ref = "json" }
