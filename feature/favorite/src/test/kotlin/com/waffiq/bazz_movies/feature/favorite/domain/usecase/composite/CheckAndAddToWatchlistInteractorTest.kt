@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUs
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -26,10 +27,11 @@ import kotlinx.coroutines.test.setMain
 
 class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
 
-  val getMovieStateUseCase: GetMovieStateUseCase = mockk(relaxed = true )
-  val getTvStateUseCase: GetTvStateUseCase = mockk(relaxed = true )
-  val postActionUseCase: PostActionUseCase = mockk(relaxed = true )
-  val userPrefUseCase: UserPrefUseCase = mockk(relaxed = true )
+  val getMovieStateUseCase: GetMovieStateUseCase = mockk(relaxed = true)
+  val getTvStateUseCase: GetTvStateUseCase = mockk(relaxed = true)
+  val postActionUseCase: PostActionUseCase = mockk(relaxed = true)
+  val userPrefUseCase: UserPrefUseCase = mockk(relaxed = true)
+
   lateinit var checkAndAddToWatchlistInteractor: CheckAndAddToWatchlistInteractor
 
   val movieId = 1234
@@ -47,8 +49,14 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
     )
     coEvery { userPrefUseCase.getUserToken() } returns flowOf(token)
   }
-  afterTest{
 
+  afterTest {
+    clearMocks(
+      getMovieStateUseCase,
+      getTvStateUseCase,
+      postActionUseCase,
+      userPrefUseCase
+    )
   }
 
   Given("a user with valid token") {
@@ -111,7 +119,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           }
 
           coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) } // this cause error
         }
       }
 
@@ -128,7 +136,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           }
 
           coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) } // this error its called
         }
       }
 
