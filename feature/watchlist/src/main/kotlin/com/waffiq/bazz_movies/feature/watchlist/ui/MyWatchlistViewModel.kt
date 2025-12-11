@@ -11,9 +11,9 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
@@ -22,7 +22,6 @@ import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistMovie
 import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,44 +46,38 @@ class MyWatchlistViewModel @Inject constructor(
   fun watchlistTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
     getWatchlistTvUseCase.getWatchlistTv(sesId).cachedIn(viewModelScope)
 
-  fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
-    viewModelScope.launch {
-      postMethodUseCase.postFavorite(sesId, data, userId).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(true, title, data, null))
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
-
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-        }
-      }
-    }
+  fun postFavorite(
+    sesId: String,
+    userId: Int,
+    data: FavoriteModel,
+    title: String,
+  ) {
+    launchAndHandleOutcome(
+      flow = postMethodUseCase.postFavorite(sesId, data, userId),
+      onSuccess = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
+      },
+      onError = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(false, it, null, null))
+      },
+    )
   }
 
-  fun postWatchlist(sesId: String, userId: Int, data: WatchlistModel, title: String) {
-    viewModelScope.launch {
-      postMethodUseCase.postWatchlist(sesId, data, userId).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(true, title, null, data))
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
-
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-        }
-      }
-    }
+  fun postWatchlist(
+    sesId: String,
+    userId: Int,
+    data: WatchlistModel,
+    title: String,
+  ) {
+    launchAndHandleOutcome(
+      flow = postMethodUseCase.postWatchlist(sesId, data, userId),
+      onSuccess = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
+      },
+      onError = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(false, it, null, null))
+      },
+    )
   }
 
   fun checkTvStatedThenPostFavorite(
@@ -92,32 +85,24 @@ class MyWatchlistViewModel @Inject constructor(
     id: Int,
     title: String,
   ) {
-    viewModelScope.launch {
-      getStatedTvUseCase.getTvState(user.token, id).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (outcome.data.favorite) {
-              _snackBarAlready.value = Event(title)
-            } else {
-              postFavorite(
-                user.token,
-                user.userId,
-                FavoriteModel(TV_MEDIA_TYPE, id, true),
-                title
-              )
-            }
-          }
-
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+    launchAndHandleOutcome(
+      flow = getStatedTvUseCase.getTvState(user.token, id),
+      onSuccess = {
+        if (it.favorite) {
+          _snackBarAlready.value = Event(title)
+        } else {
+          postFavorite(
+            user.token,
+            user.userId,
+            FavoriteModel(TV_MEDIA_TYPE, id, true),
+            title
+          )
         }
-      }
-    }
+      },
+      onError = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(false, it, null, null))
+      },
+    )
   }
 
   fun checkMovieStatedThenPostFavorite(
@@ -125,32 +110,24 @@ class MyWatchlistViewModel @Inject constructor(
     id: Int,
     title: String,
   ) {
-    viewModelScope.launch {
-      getStatedMovieUseCase.getMovieState(user.token, id).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (outcome.data.favorite) {
-              _snackBarAlready.value = Event(title)
-            } else {
-              postFavorite(
-                user.token,
-                user.userId,
-                FavoriteModel(MOVIE_MEDIA_TYPE, id, true),
-                title
-              )
-            }
-          }
-
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+    launchAndHandleOutcome(
+      flow = getStatedMovieUseCase.getMovieState(user.token, id),
+      onSuccess = {
+        if (it.favorite) {
+          _snackBarAlready.value = Event(title)
+        } else {
+          postFavorite(
+            user.token,
+            user.userId,
+            FavoriteModel(MOVIE_MEDIA_TYPE, id, true),
+            title
+          )
         }
-      }
-    }
+      },
+      onError = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(false, it, null, null))
+      },
+    )
   }
   // endregion NETWORK
 }

@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -26,7 +27,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostMethodWithUserUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
@@ -54,7 +55,8 @@ abstract class BaseMediaDetailViewModelTest {
   protected val getMovieDetailUseCase: GetMovieDetailUseCase = mockk()
   protected val getTvDetailUseCase: GetTvDetailUseCase = mockk()
   protected val localDatabaseUseCase: LocalDatabaseUseCase = mockk()
-  protected val postMethodWithUserUseCase: PostMethodWithUserUseCase = mockk()
+  protected val postRateUseCase: PostRateUseCase = mockk()
+  protected val postActionUseCase: PostActionUseCase = mockk()
   protected val getOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
   protected val getMediaStateWithUserUseCase: GetMediaStateWithUserUseCase = mockk()
   protected val getMovieDataWithUserPrefUseCase: GetMovieDataWithUserRegionUseCase = mockk()
@@ -120,7 +122,8 @@ abstract class BaseMediaDetailViewModelTest {
       getMovieDetailUseCase,
       getTvDetailUseCase,
       localDatabaseUseCase,
-      postMethodWithUserUseCase,
+      postRateUseCase,
+      postActionUseCase,
       getOMDbDetailUseCase,
       getMediaStateWithUserUseCase,
       getMovieDataWithUserPrefUseCase,

@@ -20,7 +20,6 @@ import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.CustomSnapHelper
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.feature.home.databinding.NoFoundLayoutBinding
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +38,6 @@ object HomeFragmentHelper {
     view: NoFoundLayoutBinding,
   ) {
     this.lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
       adapter.loadStateFlow.debounce(DEBOUNCE_SHORT)
         .distinctUntilChanged().collectLatest { loadState ->
           if (
@@ -92,7 +90,6 @@ object HomeFragmentHelper {
     }
   }
 
-  @OptIn(FlowPreview::class)
   fun LifecycleOwner.observeLoadState(
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,

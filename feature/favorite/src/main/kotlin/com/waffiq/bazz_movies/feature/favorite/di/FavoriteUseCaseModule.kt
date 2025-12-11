@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.feature.favorite.di
 
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieInteractor
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvInteractor
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieInteractor
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvInteractor
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

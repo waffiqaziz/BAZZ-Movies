@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.domain.usecase
+package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem

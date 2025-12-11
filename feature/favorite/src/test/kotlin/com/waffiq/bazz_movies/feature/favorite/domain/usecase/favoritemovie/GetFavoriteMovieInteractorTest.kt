@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.domain.usecase
+package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie
 
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteInteractorTest
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID

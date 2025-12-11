@@ -4,15 +4,17 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -63,7 +65,6 @@ object FavWatchlistHelper {
     onError: (Event<String>?) -> Unit, // A callback for when there’s an error
   ) {
     lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
       loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {
@@ -97,6 +98,36 @@ object FavWatchlistHelper {
             errorView.isVisible = false
             emptyView.isVisible = false
           }
+        }
+      }
+    }
+  }
+
+  /**
+   * Collects an [Outcome] flow in `viewModelScope` and triggers callbacks based on
+   * the emission state.
+   *
+   * - `onSuccess` is invoked when the flow emits [Outcome.Success].
+   * - `onError` is invoked when an [Outcome.Error] occurs.
+   * - `onLoading` is optionally invoked while processing is in progress.
+   *
+   * @param flow the stream of [Outcome] values to collect.
+   * @param onSuccess callback for successful results.
+   * @param onError callback for error messages.
+   * @param onLoading optional callback for loading state.
+   */
+  fun <T> ViewModel.launchAndHandleOutcome(
+    flow: Flow<Outcome<T>>,
+    onSuccess: (T) -> Unit,
+    onError: (String) -> Unit,
+    onLoading: (() -> Unit)? = null
+  ) {
+    viewModelScope.launch {
+      flow.collect { outcome ->
+        when (outcome) {
+          is Outcome.Success -> onSuccess(outcome.data)
+          is Outcome.Error -> onError(outcome.message)
+          is Outcome.Loading -> onLoading?.invoke()
         }
       }
     }

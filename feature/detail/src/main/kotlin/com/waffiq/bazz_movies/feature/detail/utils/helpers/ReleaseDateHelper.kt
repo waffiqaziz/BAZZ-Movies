@@ -45,7 +45,6 @@ object ReleaseDateHelper {
         regionRelease = userRegionAndDate.first,
         releaseDate = dateFormatterISO8601(userRegionAndDate.second)
       )
-      println("STEP 1")
     }
 
     // Step 2: fallback - use production country and its release date
@@ -63,7 +62,6 @@ object ReleaseDateHelper {
       ) {
         releaseDateRegion = productionCountryRegionAndDate
       }
-      println("STEP 2")
     }
 
     // Step 3: final Fallback - use any valid region and release date.
@@ -73,7 +71,6 @@ object ReleaseDateHelper {
         regionRelease = fallback.first,
         releaseDate = dateFormatterISO8601(fallback.second)
       )
-      println("STEP 3")
     }
 
     return releaseDateRegion

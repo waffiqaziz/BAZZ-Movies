@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.android
-
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.glide)
@@ -14,6 +12,7 @@ dependencies {
   api(project(":core:domain"))
   api(project(":core:mappers"))
   api(project(":core:network"))
+  api(project(":core:user"))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.common)

@@ -24,7 +24,7 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
 
   @Test
   fun postMovieRate_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { postMethodWithUserUseCase.postMovieRate(rate, movieId) } returns
+    coEvery { postRateUseCase.postMovieRate(rate, movieId) } returns
       flowSuccessWithLoading(mockPost)
 
     testViewModelFlowEvent(
@@ -33,14 +33,14 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(true),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postMovieRate(rate, movieId) }
+        coVerify { postRateUseCase.postMovieRate(rate, movieId) }
       },
     )
   }
 
   @Test
   fun postMovieRate_whenUnsuccessful_emitsError() = runTest {
-    coEvery { postMethodWithUserUseCase.postMovieRate(rate, movieId) } returns
+    coEvery { postRateUseCase.postMovieRate(rate, movieId) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -49,14 +49,14 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectError = errorMessage,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postMovieRate(rate, movieId) }
+        coVerify { postRateUseCase.postMovieRate(rate, movieId) }
       }
     )
   }
 
   @Test
   fun postMovieRate_whenLoading_doesNothing() = runTest {
-    coEvery { postMethodWithUserUseCase.postMovieRate(rate, movieId) } returns
+    coEvery { postRateUseCase.postMovieRate(rate, movieId) } returns
       loadingFlow
 
     testViewModelFlowEvent(
@@ -64,14 +64,14 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.rateState,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postMovieRate(rate, movieId) }
+        coVerify { postRateUseCase.postMovieRate(rate, movieId) }
       }
     )
   }
 
   @Test
   fun postTvRate_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { postMethodWithUserUseCase.postTvRate(rate, tvId) } returns
+    coEvery { postRateUseCase.postTvRate(rate, tvId) } returns
       flowSuccessWithLoading(mockPost)
 
     testViewModelFlowEvent(
@@ -80,14 +80,14 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(true),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postTvRate(rate, tvId) }
+        coVerify { postRateUseCase.postTvRate(rate, tvId) }
       },
     )
   }
 
   @Test
   fun postTvRate_whenUnsuccessful_emitsError() = runTest {
-    coEvery { postMethodWithUserUseCase.postTvRate(rate, tvId) } returns
+    coEvery { postRateUseCase.postTvRate(rate, tvId) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -96,14 +96,14 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectError = errorMessage,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postTvRate(rate, tvId) }
+        coVerify { postRateUseCase.postTvRate(rate, tvId) }
       }
     )
   }
 
   @Test
   fun postTvRate_whenLoading_doesNothing() = runTest {
-    coEvery { postMethodWithUserUseCase.postTvRate(rate, tvId) } returns
+    coEvery { postRateUseCase.postTvRate(rate, tvId) } returns
       loadingFlow
 
     testViewModelFlowEvent(
@@ -111,7 +111,7 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.rateState,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postMethodWithUserUseCase.postTvRate(rate, tvId) }
+        coVerify { postRateUseCase.postTvRate(rate, tvId) }
       }
     )
   }

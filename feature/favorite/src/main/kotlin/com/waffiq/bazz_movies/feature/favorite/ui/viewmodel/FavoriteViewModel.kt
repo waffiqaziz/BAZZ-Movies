@@ -6,31 +6,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.waffiq.bazz_movies.core.common.utils.Constants
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteMovieUseCase
-import com.waffiq.bazz_movies.feature.favorite.domain.usecase.GetFavoriteTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
+import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
   private val getFavoriteMovieUseCase: GetFavoriteMovieUseCase,
   private val getFavoriteTvUseCase: GetFavoriteTvUseCase,
-  private val postMethodUseCase: PostMethodUseCase,
-  private val getStatedMovieUseCase: GetMovieStateUseCase,
-  private val getStatedTvUseCase: GetTvStateUseCase,
+  private val postActionUseCase: PostActionUseCase,
+  private val checkAndAddToWatchlistUseCase: CheckAndAddToWatchlistUseCase,
 ) : ViewModel() {
 
   private val _snackBarAlready = MutableLiveData<Event<String>>()
@@ -39,111 +37,73 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
   val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
 
-  // region NETWORK
   fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
     getFavoriteMovieUseCase.getFavoriteMovies(sesId).cachedIn(viewModelScope)
 
   fun favoriteTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
     getFavoriteTvUseCase.getFavoriteTv(sesId).cachedIn(viewModelScope)
 
-  fun postFavorite(sesId: String, userId: Int, data: FavoriteModel, title: String) {
-    viewModelScope.launch {
-      postMethodUseCase.postFavorite(sesId, data, userId).collect { outcome ->
-        val event = when (outcome) {
-          is Outcome.Success ->
-            Event(SnackBarUserLoginData(true, title, data, null))
-
-          is Outcome.Error ->
-            Event(SnackBarUserLoginData(false, outcome.message, null, null))
-
-          is Outcome.Loading -> return@collect
-        }
-        _snackBarAdded.value = event
-      }
-    }
+  fun postFavorite(data: FavoriteModel, title: String) {
+    launchAndHandleOutcome(
+      flow = postActionUseCase.postFavoriteWithAuth(data),
+      onSuccess = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
+      },
+      onError = { onError(it) }
+    )
   }
 
-  fun postWatchlist(sesId: String, userId: Int, data: WatchlistModel, title: String) {
-    viewModelScope.launch {
-      postMethodUseCase.postWatchlist(sesId, data, userId).collect { outcome ->
-        val event = when (outcome) {
-          is Outcome.Success ->
-            Event(SnackBarUserLoginData(true, title, null, data))
-
-          is Outcome.Error ->
-            Event(SnackBarUserLoginData(false, outcome.message, null, null))
-
-          is Outcome.Loading -> return@collect
-        }
-        _snackBarAdded.value = event
-      }
-    }
+  fun postWatchlist(data: WatchlistModel, title: String) {
+    launchAndHandleOutcome(
+      flow = postActionUseCase.postWatchlistWithAuth(data),
+      onSuccess = {
+        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
+      },
+      onError = { onError(it) }
+    )
   }
 
-  fun checkMovieStatedThenPostWatchlist(
-    user: UserModel,
-    id: Int,
-    title: String,
-  ) {
-    viewModelScope.launch {
-      getStatedMovieUseCase.getMovieState(user.token, id).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (outcome.data.watchlist) {
-              _snackBarAlready.value = Event(title)
-            } else {
-              postWatchlist(
-                user.token,
-                user.userId,
-                WatchlistModel(Constants.MOVIE_MEDIA_TYPE, id, true),
-                title
-              )
-            }
+  fun addMovieToWatchlist(id: Int, title: String) {
+    launchAndHandleOutcome(
+      flow = checkAndAddToWatchlistUseCase.addMovieToWatchlist(id),
+      onSuccess = { result ->
+        when (result) {
+          WatchlistActionResult.Added -> {
+            _snackBarAdded.value = Event(
+              SnackBarUserLoginData(true, title, null, WatchlistModel(MOVIE_MEDIA_TYPE, id, true))
+            )
           }
 
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+          WatchlistActionResult.AlreadyInWatchlist -> already(title)
         }
-      }
-    }
+      },
+      onError = { onError(it) }
+    )
   }
 
-  fun checkTvStatedThenPostWatchlist(
-    user: UserModel,
-    id: Int,
-    title: String,
-  ) {
-    viewModelScope.launch {
-      getStatedTvUseCase.getTvState(user.token, id).collect { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            if (outcome.data.watchlist) {
-              _snackBarAlready.value = Event(title)
-            } else {
-              postWatchlist(
-                user.token,
-                user.userId,
-                WatchlistModel(Constants.TV_MEDIA_TYPE, id, true),
-                title
-              )
-            }
+  fun addTvToWatchlist(id: Int, title: String) {
+    launchAndHandleOutcome(
+      flow = checkAndAddToWatchlistUseCase.addTvToWatchlist(id),
+      onSuccess = { result ->
+        when (result) {
+          WatchlistActionResult.Added -> {
+            _snackBarAdded.value = Event(
+              SnackBarUserLoginData(true, title, null, WatchlistModel(TV_MEDIA_TYPE, id, true))
+            )
           }
 
-          is Outcome.Loading -> {
-            /* do nothing */
-          }
-
-          is Outcome.Error ->
-            _snackBarAdded.value =
-              Event(SnackBarUserLoginData(false, outcome.message, null, null))
+          WatchlistActionResult.AlreadyInWatchlist -> already(title)
         }
-      }
-    }
+      },
+      onError = { onError(it) }
+    )
   }
-  // endregion NETWORK
+
+  private fun already(title: String) {
+    _snackBarAlready.value = Event(title)
+  }
+
+  private fun onError(message: String) {
+    _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
+  }
 }

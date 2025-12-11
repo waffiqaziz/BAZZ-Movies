@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.common.Constants.tabMoviesTvHeadingArray
-import com.waffiq.bazz_movies.core.uihelper.utils.GenericViewPagerAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteBinding
+import com.waffiq.bazz_movies.feature.favorite.ui.FavoriteViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,14 +45,7 @@ class FavoriteFragment : Fragment() {
     tabLayout = binding.tabs
     viewpager.isUserInputEnabled = false // disable swiping between tabs
 
-    val adapter = GenericViewPagerAdapter(
-      childFragmentManager,
-      lifecycle,
-      listOf(
-        FavoriteChildFragment(MOVIE_MEDIA_TYPE),
-        FavoriteChildFragment(TV_MEDIA_TYPE)
-      )
-    )
+    val adapter = FavoriteViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
 
     tabLayoutMediator = TabLayoutMediator(tabLayout, viewpager) { tab, position ->

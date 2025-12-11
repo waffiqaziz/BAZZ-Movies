@@ -295,14 +295,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * @param mediaId The ID of the media item to be removed from favorites.
    */
   private fun postToRemoveFavTMDB(title: String, mediaId: Int) {
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      favoriteViewModel.postFavorite(
-        user.token,
-        user.userId,
-        createFavoriteModel(mediaId).copy(favorite = false),
-        title
-      )
-    }
+    favoriteViewModel.postFavorite(createFavoriteModel(mediaId).copy(favorite = false), title)
   }
 
   /**
@@ -332,24 +325,10 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       ).setAction(getString(undo)) {
         isUndo = true
         if (fav != null) {
-          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            favoriteViewModel.postFavorite(
-              user.token,
-              user.userId,
-              fav.copy(favorite = true),
-              title
-            )
-          }
+          favoriteViewModel.postFavorite(fav.copy(favorite = true), title)
           isWantToDelete = !isWantToDelete
         } else if (wtc != null) {
-          userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-            favoriteViewModel.postWatchlist(
-              user.token,
-              user.userId,
-              wtc.copy(watchlist = false),
-              title
-            )
-          }
+          favoriteViewModel.postWatchlist(wtc.copy(watchlist = false), title)
         }
       }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
         .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
