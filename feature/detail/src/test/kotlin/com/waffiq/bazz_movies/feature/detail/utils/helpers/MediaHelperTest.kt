@@ -8,7 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class MediaDetailTest {
+class MediaHelperTest {
 
   @Test
   fun convertRuntime_withValidMinutes_returnsCorrectFormat() {
