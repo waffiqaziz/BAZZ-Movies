@@ -15,7 +15,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -66,7 +65,6 @@ object FavWatchlistHelper {
     onError: (Event<String>?) -> Unit, // A callback for when there’s an error
   ) {
     lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
       loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->
         when {
           loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading -> {

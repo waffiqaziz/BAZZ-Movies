@@ -38,7 +38,6 @@ object HomeFragmentHelper {
     view: NoFoundLayoutBinding,
   ) {
     this.lifecycleScope.launch {
-      @OptIn(FlowPreview::class)
       adapter.loadStateFlow.debounce(DEBOUNCE_SHORT)
         .distinctUntilChanged().collectLatest { loadState ->
           if (
@@ -91,7 +90,6 @@ object HomeFragmentHelper {
     }
   }
 
-  @OptIn(FlowPreview::class)
   fun LifecycleOwner.observeLoadState(
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,
