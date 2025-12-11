@@ -42,6 +42,57 @@ class MediaDetailTest {
   }
 
   @Test
+  fun detailCrew_withNullCrewName_filtersOut() {
+    val crew = listOf(
+      MediaCrewItem(job = "Director", name = null),
+      MediaCrewItem(job = "Writer", name = "Jane Smith")
+    )
+    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+
+    assertEquals(listOf("Writer"), displayNames) // exclude null job
+    assertEquals(listOf("Jane Smith"), joinedNames) // exclude null name
+  }
+
+  @Test
+  fun detailCrew_withEmptyStringName_filtersOut() {
+    val crew = listOf(
+      MediaCrewItem(job = "Writer", name = "Jane Smith"),
+      MediaCrewItem(job = "Writer", name = ""),
+      MediaCrewItem(job = "Writer", name = "Bob Jones")
+    )
+    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+
+    assertEquals(listOf("Writer"), displayNames)
+    assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames)
+  }
+
+  @Test
+  fun detailCrew_withAllNullOrEmptyNames_filtersOutJob() {
+    val crew = listOf(
+      MediaCrewItem(job = "Director", name = null),
+      MediaCrewItem(job = "Director", name = ""),
+      MediaCrewItem(job = "Writer", name = "Jane Smith")
+    )
+    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+
+    assertEquals(listOf("Writer"), displayNames)
+    assertEquals(listOf("Jane Smith"), joinedNames)
+  }
+
+  @Test
+  fun detailCrew_withMultipleNamesIncludingNull_joinsCorrectly() {
+    val crew = listOf(
+      MediaCrewItem(job = "Writer", name = "Jane Smith"),
+      MediaCrewItem(job = "Writer", name = null),
+      MediaCrewItem(job = "Writer", name = "Bob Jones")
+    )
+    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+
+    assertEquals(listOf("Writer"), displayNames)
+    assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames) //
+  }
+
+  @Test
   fun detailCrew_withEmptyCrewList_returnsEmptyLists() {
     val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(emptyList())
 
@@ -88,11 +139,38 @@ class MediaDetailTest {
   }
 
   @Test
+  fun toLink_withOfficialButNotTrailer_returnsFallbackKey() {
+    val video = Video(
+      results = listOf(
+        VideoItem(official = true, type = "Teaser", name = "Teaser", key = "teaser_key"),
+        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key")
+      )
+    )
+    val result = video.toLink()
+
+    assertEquals("teaser_key", result)
+  }
+
+  @Test
   fun toLink_withEmptyResults_returnsEmptyString() {
     val video = Video(results = emptyList())
     val result = video.toLink()
 
     assertEquals("", result)
+  }
+
+  @Test
+  fun toLink_withNoOfficialTrailer_usesFallback() {
+    val video = Video(
+      results = listOf(
+        VideoItem(name = "1", official = false, type = "Trailer", key = "unofficial_trailer"),
+        VideoItem(name = "2", official = true, type = "Teaser", key = "official_teaser"),
+        VideoItem(name = "3", official = false, type = "Clip", key = "clip_key")
+      )
+    )
+    val result = video.toLink()
+
+    assertEquals("unofficial_trailer", result)
   }
 
   @Test
