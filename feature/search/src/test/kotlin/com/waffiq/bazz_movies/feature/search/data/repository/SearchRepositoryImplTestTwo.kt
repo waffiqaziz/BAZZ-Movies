@@ -1,12 +1,10 @@
 package com.waffiq.bazz_movies.feature.search.data.repository
 
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
+import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -55,23 +53,7 @@ class SearchRepositoryImplTestTwo {
     every { mockMovieDataSource.search(query) } returns flowOf(mockPagingData)
     val resultPagingData = searchRepository.search(query).first()
 
-    // Then
     // Use AsyncPagingDataDiffer to extract the actual items
-    val differ = AsyncPagingDataDiffer(
-      diffCallback = object : DiffUtil.ItemCallback<MultiSearchItem>() {
-        override fun areItemsTheSame(oldItem: MultiSearchItem, newItem: MultiSearchItem): Boolean =
-          oldItem.id == newItem.id
-
-        override fun areContentsTheSame(
-          oldItem: MultiSearchItem,
-          newItem: MultiSearchItem,
-        ): Boolean =
-          oldItem == newItem
-      },
-      updateCallback = NoopListUpdateCallback(),
-      workerDispatcher = Dispatchers.Main
-    )
-
     differ.submitData(resultPagingData)
     testDispatcher.scheduler.advanceUntilIdle() // Wait for async operations
 
@@ -84,24 +66,5 @@ class SearchRepositoryImplTestTwo {
     // Verify method was called
     verify(exactly = 1) { mockMovieDataSource.search(query) }
     confirmVerified(mockMovieDataSource)
-  }
-
-  // No-op implementation of ListUpdateCallback for testing
-  private class NoopListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {
-      /* no used */
-    }
-
-    override fun onRemoved(position: Int, count: Int) {
-      /* no used */
-    }
-
-    override fun onMoved(fromPosition: Int, toPosition: Int) {
-      /* no used */
-    }
-
-    override fun onChanged(position: Int, count: Int, payload: Any?) {
-      /* no used */
-    }
   }
 }

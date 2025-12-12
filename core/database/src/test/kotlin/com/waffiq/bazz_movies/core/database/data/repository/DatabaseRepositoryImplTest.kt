@@ -1,10 +1,13 @@
 package com.waffiq.bazz_movies.core.database.data.repository
 
 import app.cash.turbine.test
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.datasource.LocalDataSource
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovie
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteTvEntity
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistMovieEntity
+import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTvEntity
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
@@ -49,23 +52,23 @@ class DatabaseRepositoryImplTest {
   private fun assertMovieEquals(result: List<Favorite>) {
     assertEquals(1, result.size)
     assertEquals(101, result[0].mediaId)
-    assertEquals("movie", result[0].mediaType)
+    assertEquals(MOVIE_MEDIA_TYPE, result[0].mediaType)
     assertEquals("Movie1", result[0].title)
   }
 
   @Test
   fun watchlistTvFromDB_whenSuccessful_returnTransformedDataCorrectly() = runTest {
-    val favoriteEntities = listOf(favoriteTvEntity)
+    val watchlistEntities = listOf(watchlistTvEntity)
 
-    every { localDataSource.getWatchlistTv } returns flowOf(favoriteEntities)
+    every { localDataSource.getWatchlistTv } returns flowOf(watchlistEntities)
 
     repository = DatabaseRepositoryImpl(localDataSource)
 
     repository.watchlistTvFromDB.test {
       val result = awaitItem()
       assertTvEquals(result)
-      assertEquals(false, result[0].isFavorite)
-      assertEquals(true, result[0].isWatchlist)
+      assertTrue(result[0].isFavorite)
+      assertTrue(result[0].isWatchlist)
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -106,17 +109,17 @@ class DatabaseRepositoryImplTest {
 
   @Test
   fun watchlistMovieFromDB_whenSuccessful_returnTransformedDataCorrectly() = runTest {
-    val favoriteEntities = listOf(favoriteMovieEntity)
+    val watchlistEntities = listOf(watchlistMovieEntity)
 
-    every { localDataSource.getWatchlistMovies } returns flowOf(favoriteEntities)
+    every { localDataSource.getWatchlistMovies } returns flowOf(watchlistEntities)
 
     repository = DatabaseRepositoryImpl(localDataSource)
 
     repository.watchlistMovieFromDB.test {
       val result = awaitItem()
       assertMovieEquals(result)
-      assertEquals(false, result[0].isFavorite)
-      assertEquals(true, result[0].isWatchlist)
+      assertTrue(result[0].isFavorite)
+      assertTrue(result[0].isWatchlist)
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -133,13 +136,13 @@ class DatabaseRepositoryImplTest {
 
   @Test
   fun deleteFromDB_whenSuccessful_returnSuccessResult() = runTest {
-    coEvery { localDataSource.deleteItemFromDB(101, "movie") } returns DbResult.Success(1)
+    coEvery { localDataSource.deleteItemFromDB(101, MOVIE_MEDIA_TYPE) } returns DbResult.Success(1)
 
     val result = repository.deleteFromDB(favoriteMovie)
 
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
-    coVerify { localDataSource.deleteItemFromDB(101, "movie") }
+    coVerify { localDataSource.deleteItemFromDB(101, MOVIE_MEDIA_TYPE) }
   }
 
   @Test
@@ -155,30 +158,30 @@ class DatabaseRepositoryImplTest {
 
   @Test
   fun isFavoriteDB_whenSuccessful_returnSuccessResult() = runTest {
-    coEvery { localDataSource.isFavorite(101, "movie") } returns DbResult.Success(true)
+    coEvery { localDataSource.isFavorite(101, MOVIE_MEDIA_TYPE) } returns DbResult.Success(true)
 
-    val result = repository.isFavoriteDB(101, "movie")
+    val result = repository.isFavoriteDB(101, MOVIE_MEDIA_TYPE)
 
     assertTrue(result is DbResult.Success)
     assertEquals(true, (result as DbResult.Success).data)
-    coVerify { localDataSource.isFavorite(101, "movie") }
+    coVerify { localDataSource.isFavorite(101, MOVIE_MEDIA_TYPE) }
   }
 
   @Test
   fun isWatchlistDB_whenSuccessful_returnSuccessResult() = runTest {
-    coEvery { localDataSource.isWatchlist(101, "movie") } returns DbResult.Success(true)
+    coEvery { localDataSource.isWatchlist(101, MOVIE_MEDIA_TYPE) } returns DbResult.Success(true)
 
-    val result = repository.isWatchlistDB(101, "movie")
+    val result = repository.isWatchlistDB(101, MOVIE_MEDIA_TYPE)
 
     assertTrue(result is DbResult.Success)
     assertEquals(true, (result as DbResult.Success).data)
-    coVerify { localDataSource.isWatchlist(101, "movie") }
+    coVerify { localDataSource.isWatchlist(101, MOVIE_MEDIA_TYPE) }
   }
 
   @Test
   fun updateFavoriteItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(isFavorite = false, isWatchlist = true, id = 101, mediaType = "movie")
+      localDataSource.update(isFavorite = false, isWatchlist = true, id = 101, mediaType = MOVIE_MEDIA_TYPE)
     } returns DbResult.Success(1)
 
     val result = repository.updateFavoriteItemDB(
@@ -193,7 +196,7 @@ class DatabaseRepositoryImplTest {
         isFavorite = false,
         isWatchlist = true,
         id = 101,
-        mediaType = "movie"
+        mediaType = MOVIE_MEDIA_TYPE
       )
     }
   }
@@ -201,7 +204,7 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateFavoriteItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = MOVIE_MEDIA_TYPE)
     } returns DbResult.Success(1)
 
     val result = repository.updateFavoriteItemDB(
@@ -216,7 +219,7 @@ class DatabaseRepositoryImplTest {
         isFavorite = true,
         isWatchlist = true,
         id = 101,
-        mediaType = "movie"
+        mediaType = MOVIE_MEDIA_TYPE
       )
     }
   }
@@ -224,7 +227,7 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateWatchlistItemDB_whenSuccessful_handlesDeleteCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = MOVIE_MEDIA_TYPE)
     } returns DbResult.Success(1)
 
     val result = repository.updateWatchlistItemDB(isDelete = true, fav = favoriteMovie)
@@ -236,7 +239,7 @@ class DatabaseRepositoryImplTest {
         isFavorite = true,
         isWatchlist = false,
         id = 101,
-        mediaType = "movie"
+        mediaType = MOVIE_MEDIA_TYPE
       )
     }
   }
@@ -244,7 +247,7 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateWatchlistItemDB_whenSuccessful_handlesAddCaseCorrectly() = runTest {
     coEvery {
-      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = "movie")
+      localDataSource.update(isFavorite = true, isWatchlist = true, id = 101, mediaType = MOVIE_MEDIA_TYPE)
     } returns DbResult.Success(1)
 
     val result = repository.updateWatchlistItemDB(isDelete = false, fav = favoriteMovie)
@@ -256,7 +259,7 @@ class DatabaseRepositoryImplTest {
         isFavorite = true,
         isWatchlist = true,
         id = 101,
-        mediaType = "movie"
+        mediaType = MOVIE_MEDIA_TYPE
       )
     }
   }

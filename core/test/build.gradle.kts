@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.api
+
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.shared.test)
@@ -11,6 +13,7 @@ dependencies {
 
   implementation(libs.androidx.appcompat.resources)
   implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.paging.runtime)
   implementation(libs.androidx.recyclerview)
   implementation(libs.junit)
   implementation(libs.kotlinx.coroutines.test)

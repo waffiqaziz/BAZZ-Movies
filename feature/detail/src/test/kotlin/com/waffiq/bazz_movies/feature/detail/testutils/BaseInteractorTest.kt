@@ -8,12 +8,12 @@ import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieState
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.differ
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -33,6 +33,8 @@ import org.junit.Rule
  * Base class for interactor tests, providing common setup and utility methods.
  */
 abstract class BaseInteractorTest {
+
+  private val differ = differ<MediaItem>()
 
   protected val mockRepository: IDetailRepository = mockk()
 

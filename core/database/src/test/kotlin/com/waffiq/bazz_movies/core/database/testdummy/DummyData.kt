@@ -18,9 +18,11 @@ object DummyData {
     releaseDate = "2023-01-03",
     popularity = 9.0,
     rating = 4.8f,
-    isFavorite = false,
-    isWatchlist = true
+    isFavorite = true,
+    isWatchlist = false
   )
+  val watchlistTvEntity = favoriteTvEntity.copy(isWatchlist = true)
+
   val favoriteMovieEntity = FavoriteEntity(
     id = 1,
     mediaId = 101,
@@ -33,12 +35,13 @@ object DummyData {
     releaseDate = "2023-01-01",
     popularity = 8.5,
     rating = 4.5f,
-    isFavorite = false,
-    isWatchlist = true
+    isFavorite = true,
+    isWatchlist = false
   )
+  val watchlistMovieEntity = favoriteMovieEntity.copy(isWatchlist = true)
 
   val favoriteMovie = Favorite(
-    id = 0,
+    id = 234,
     mediaId = 101,
     mediaType = MOVIE_MEDIA_TYPE,
     genre = "Action",

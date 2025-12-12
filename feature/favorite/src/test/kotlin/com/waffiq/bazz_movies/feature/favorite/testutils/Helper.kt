@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.DiffUtil
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
-import kotlinx.coroutines.Dispatchers
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -35,9 +32,9 @@ object Helper {
    */
   suspend fun <T : Any> testPagingFlow(
     flow: Flow<PagingData<T>>,
-    expectedAssertions: (List<T>) -> Unit
+    differ: AsyncPagingDataDiffer<T> = differ(),
+    expectedAssertions: (List<T>) -> Unit,
   ) {
-    val differ = differ<T>()
 
     flow.test {
       val actualPagingData = awaitItem()
@@ -61,19 +58,9 @@ object Helper {
    */
   suspend fun testPagingFlowCustomDispatcher(
     flow: Flow<PagingData<MediaItem>>,
-    expectedAssertions: (List<MediaItem>) -> Unit
+    differ: AsyncPagingDataDiffer<MediaItem> = differ(),
+    expectedAssertions: (List<MediaItem>) -> Unit,
   ) {
-    val differ = AsyncPagingDataDiffer(
-      diffCallback = object : DiffUtil.ItemCallback<MediaItem>() {
-        override fun areItemsTheSame(oldItem: MediaItem, newItem: MediaItem) =
-          oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: MediaItem, newItem: MediaItem) =
-          oldItem == newItem
-      },
-      updateCallback = TestListCallback(),
-      workerDispatcher = Dispatchers.Main // use main dispatcher to handle viewModelScope Coroutines
-    )
 
     flow.test {
       val actualPagingData = awaitItem()
@@ -87,19 +74,6 @@ object Helper {
       job.cancel()
       cancelAndIgnoreRemainingEvents()
     }
-  }
-
-  /**
-   * Create an AsyncPagingDataDiffer for testing purposes.
-   *
-   * @return An instance of AsyncPagingDataDiffer with a test diff callback and list callback.
-   */
-  fun <T : Any> differ(): AsyncPagingDataDiffer<T> {
-    return AsyncPagingDataDiffer(
-      diffCallback = TestDiffCallback(),
-      updateCallback = TestListCallback(),
-      workerDispatcher = Dispatchers.Main
-    )
   }
 
   /**

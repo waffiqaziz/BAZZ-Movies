@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.core.network.testutils
 
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.paging.PagingSource.LoadResult
 import app.cash.turbine.test
@@ -10,15 +9,13 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -45,20 +42,12 @@ object TestHelper {
   /**
    * Differ used for testing [PagingData] of [MediaResponseItem].
    */
-  val differ = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<MediaResponseItem>(),
-    updateCallback = TestListCallback(),
-    workerDispatcher = Dispatchers.Main
-  )
+  val differ = differ<MediaResponseItem>()
 
   /**
    * Differ used for testing [PagingData] of [MultiSearchResponseItem].
    */
-  val differSearch = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<MultiSearchResponseItem>(),
-    updateCallback = TestListCallback(),
-    workerDispatcher = Dispatchers.Main
-  )
+  val differSearch = differ<MultiSearchResponseItem>()
 
   /**
    * Verifies a successful flow response from a data source.
