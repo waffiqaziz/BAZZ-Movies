@@ -86,7 +86,7 @@ jobs:
       # -------------------------------
       - name: Upload Gradle problem reports
         if: ${{ always() && (hashFiles('build/reports/configuration-cache/**') != '' || hashFiles('build/reports/problems/**') != '') }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: gradle-problems-report
           path: |
