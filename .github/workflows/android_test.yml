@@ -106,7 +106,7 @@ jobs:
       # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -117,7 +117,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Restore build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             **/build/
@@ -133,7 +133,7 @@ jobs:
 
       # Cache unit test results for the coverage job
       - name: Cache unit test results
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: always() # Save cache even if tests fail
         with:
           path: |
@@ -196,7 +196,7 @@ jobs:
       # skip cache operations for Renovate PRs
       - name: Cache Gradle dependencies
         if: github.actor != 'renovate[bot]'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -207,7 +207,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Restore build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             **/build/
@@ -218,7 +218,7 @@ jobs:
             build-cache-${{ runner.os }}-
 
       - name: AVD cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: avd-cache
         with:
           path: |
@@ -259,7 +259,7 @@ jobs:
 
       # Cache instrumentation test results for the coverage job
       - name: Cache instrumentation test results
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: always() # Save cache even if tests fail
         with:
           path: |
@@ -320,7 +320,7 @@ jobs:
       # Restore cached unit test results
       - name: Restore unit test results
         id: cache_restore_unit
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/unit_test_code_coverage/
@@ -332,7 +332,7 @@ jobs:
       # Restore cached instrumentation test results
       - name: Restore instrumentation test results
         id: cache_restore_instrumentation
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ${{ github.workspace }}/**/build/outputs/androidTest-results/
