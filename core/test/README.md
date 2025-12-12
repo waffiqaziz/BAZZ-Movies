@@ -27,6 +27,12 @@ configurations for unit and instrumentation tests across multiple modules.
 - **[Paging Test Helpers](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingDataHelperTest.kt)**
   - `TestListCallback` – A no-op `ListUpdateCallback` for RecyclerView updates.
   - `TestDiffCallback<T>` – A generic `DiffUtil.ItemCallback` for paging data tests.
+  - `differ()` – Creates a ready-to-use `AsyncPagingDataDiffer` for testing `PagingData`
+
+- **[Repository Test Helpers](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/RepositoryTestHelper.kt)**
+  - `testSuccessfulCall()` – Verifies success flow: loading → success + mapped data.
+  - `testUnsuccessfulCall()` – Verifies error flow and message propagation.
+  - `testLoadingState()` – Verifies repository emits `Outcome.Loading`.
 
 ## Integration
 
