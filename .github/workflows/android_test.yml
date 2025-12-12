@@ -280,7 +280,7 @@ jobs:
 
   test_coverage:
     name: Test Coverage Report
-    needs: [unit_test, instrumentation_test]
+    needs: [ unit_test, instrumentation_test ]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true
@@ -404,6 +404,101 @@ jobs:
             echo "coverage_exists=false" >> $GITHUB_OUTPUT
             echo "❌ Coverage report not found"
           fi
+
+      - name: Cache JaCoCo CLI
+        uses: actions/cache@v5
+        id: jacoco-cache
+        with:
+          path: ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
+          key: jacoco-cli-0.8.14
+
+      - name: Download JaCoCo CLI (if not cached)
+        if: steps.jacoco-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Downloading JaCoCo CLI..."
+          mkdir -p ~/.jacoco
+          wget -O ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar \
+            https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.14/org.jacoco.cli-0.8.14-nodeps.jar
+
+
+      - name: Prepare coverage for Qodana
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        run: |
+          mkdir -p .qodana/code-coverage
+
+          # Verify JaCoCo CLI exists
+          JACOCO_JAR=~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
+          if [ ! -f "$JACOCO_JAR" ]; then
+            echo "❌ JaCoCo CLI not found!"
+            exit 1
+          fi
+          echo "✅ Using JaCoCo CLI from: $JACOCO_JAR"
+
+          echo "=== Finding coverage data ==="
+          find . -name "*.exec" -type f
+
+          # Merge all exec files (properly handle file paths)
+          exec_files=$(find . -name "*.exec" -type f)
+          if [ -z "$exec_files" ]; then
+            echo "❌ No .exec files found!"
+            exit 1
+          fi
+
+          java -jar "$JACOCO_JAR" merge $exec_files --destfile merged.exec
+
+          echo "=== Generating combined report ==="
+          # Collect all class directories
+          classfiles_args=""
+          while IFS= read -r dir; do
+            classfiles_args="$classfiles_args --classfiles $dir"
+          done < <(find . -path "*/build/tmp/kotlin-classes/debug" -o -path "*/build/tmp/kotlin-classes/debugAndroidTest" -type d)
+
+          # Collect all source directories
+          sourcefiles_args=""
+          while IFS= read -r dir; do
+            sourcefiles_args="$sourcefiles_args --sourcefiles $dir"
+          done < <(find . -path "*/src/main/java" -o -path "*/src/main/kotlin" -type d)
+
+          # Generate the report
+          java -jar "$JACOCO_JAR" report merged.exec \
+            $classfiles_args \
+            $sourcefiles_args \
+            --xml .qodana/code-coverage/result.xml
+
+          echo "=== Verifying Qodana Coverage Report ==="
+          if [ -f .qodana/code-coverage/result.xml ]; then
+            echo "✅ Coverage report ready for Qodana"
+            ls -lh .qodana/code-coverage/result.xml
+            echo "Report size: $(wc -l < .qodana/code-coverage/result.xml) lines"
+          else
+            echo "❌ Failed to prepare coverage report for Qodana"
+          fi
+    
+      - name: Archive coverage data for Qodana
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: qodana-coverage-data
+          path: .qodana/code-coverage/
+
+      - name: Cache Qodana
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.qodana/cache
+            ~/.qodana/plugins
+          key: qodana-cache-${{ runner.os }}-${{ hashFiles('**/build.gradle.kts') }}
+          restore-keys: |
+            qodana-cache-${{ runner.os }}-
+
+      - name: Qodana Scan
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: JetBrains/qodana-action@99ec27a55aaaf5ba2fd7e5816e66231caed7a72a
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        with:
+          args: "-i,.qodana/code-coverage/,--linter,jetbrains/qodana-jvm:latest"
+          pr-mode: false
 
       # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
       # v5.4.0
@@ -664,10 +759,10 @@ jobs:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
 
-      # https://github.com/qltysh/qlty-action/commit/b9133a486505563742d768da29f7951271678c87
-      # v1.1.1
+      # https://github.com/qltysh/qlty-action/commit/a19242102d17e497f437d7466aa01b528537e899
+      # v2.2.0
       - name: Upload coverage reports to Qlty
-        uses: qltysh/qlty-action/coverage@325e718842513d9e19baf91280cab9bc6db6e17b
+        uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
