@@ -1,14 +1,11 @@
 package com.waffiq.bazz_movies.feature.search.testutils
 
-import androidx.paging.AsyncPagingDataDiffer
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
-import kotlinx.coroutines.Dispatchers
 
 object SearchTestVariables {
 
@@ -33,9 +30,5 @@ object SearchTestVariables {
     totalPages = 1,
     totalResults = 2
   )
-  val differ = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<MultiSearchItem>(),
-    updateCallback = TestListCallback(),
-    workerDispatcher = Dispatchers.Main
-  )
+  val differ = differ<MultiSearchItem>()
 }

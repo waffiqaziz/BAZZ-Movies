@@ -5,9 +5,9 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import com.waffiq.bazz_movies.feature.detail.data.repository.DetailRepositoryImpl
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.differ
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +24,7 @@ abstract class BaseDetailRepositoryImplTest {
   protected lateinit var repository: DetailRepositoryImpl
   protected val movieDataSource: MovieDataSource = mockk()
   protected val id = 1
+  private val differ = differ<MediaItem>()
 
   @get:Rule
   val mainDispatcherRule = UnconfinedDispatcherRule()

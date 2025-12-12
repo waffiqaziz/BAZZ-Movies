@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
@@ -18,6 +17,7 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
+import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
@@ -37,7 +37,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -204,18 +203,9 @@ abstract class BaseMediaDetailViewModelTest {
   protected fun <T : Any> testPagingLiveData(
     liveData: LiveData<PagingData<T>>,
     runBlock: () -> Unit,
-    diffCallback: DiffUtil.ItemCallback<T> = object : DiffUtil.ItemCallback<T>() {
-      override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem == newItem
-      override fun areContentsTheSame(oldItem: T, newItem: T) = oldItem == newItem
-    },
+    differ: AsyncPagingDataDiffer<T> = differ(),
     itemAssertions: (List<T>) -> Unit = { /* do nothing */ },
   ) = runTest {
-    val differ = AsyncPagingDataDiffer(
-      diffCallback = diffCallback,
-      updateCallback = TestListCallback(),
-      mainDispatcher = Dispatchers.Main,
-      workerDispatcher = Dispatchers.Main
-    )
 
     runBlock()
 

@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
-import androidx.paging.AsyncPagingDataDiffer
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -22,8 +21,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.D
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.LastEpisodeToAirResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.NetworksItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.SeasonsItemResponse
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestDiffCallback
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.TestListCallback
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -54,7 +51,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAg
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
-import kotlinx.coroutines.Dispatchers
 
 // Used as data dumb testing
 object HelperTest {
@@ -417,12 +413,6 @@ object HelperTest {
     imdbVotes = "120,000",
     boxOffice = "$100,000,000",
     website = "https://example.com"
-  )
-
-  val differ = AsyncPagingDataDiffer(
-    diffCallback = TestDiffCallback<MediaItem>(),
-    updateCallback = TestListCallback(),
-    workerDispatcher = Dispatchers.Main
   )
 
   val dataMediaItem = MediaItem(
