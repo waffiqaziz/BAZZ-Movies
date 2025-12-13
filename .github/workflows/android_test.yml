@@ -405,69 +405,88 @@ jobs:
             echo "❌ Coverage report not found"
           fi
 
-      - name: Cache JaCoCo CLI
-        uses: actions/cache@v4
-        id: jacoco-cache
-        with:
-          path: ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
-          key: jacoco-cli-0.8.14
+#      - name: Cache JaCoCo CLI
+#        uses: actions/cache@v4
+#        id: jacoco-cache
+#        with:
+#          path: ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
+#          key: jacoco-cli-0.8.14
+#
+#      - name: Download JaCoCo CLI (if not cached)
+#        if: steps.jacoco-cache.outputs.cache-hit != 'true'
+#        run: |
+#          echo "Downloading JaCoCo CLI..."
+#          mkdir -p ~/.jacoco
+#          wget -O ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar \
+#            https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.14/org.jacoco.cli-0.8.14-nodeps.jar
+#
+#      - name: Prepare merged coverage report
+#        if: steps.check_coverage.outputs.coverage_exists == 'true'
+#        run: |
+#          JACOCO_JAR=~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
+#
+#          echo "=== Finding coverage data ==="
+#          find . -name "*.exec" -type f
+#
+#          # Merge all exec files
+#          exec_files=$(find . -name "*.exec" -type f)
+#          if [ -z "$exec_files" ]; then
+#            echo "❌ No .exec files found!"
+#            exit 1
+#          fi
+#
+#          java -jar "$JACOCO_JAR" merge $exec_files --destfile merged.exec
+#
+#          echo "=== Generating merged report for SonarCloud ==="
+#          # Collect all class directories
+#          classfiles_args=""
+#          while IFS= read -r dir; do
+#            classfiles_args="$classfiles_args --classfiles $dir"
+#          done < <(find . -path "*/build/tmp/kotlin-classes/debug" -o -path "*/build/tmp/kotlin-classes/debugAndroidTest" -type d)
+#
+#          # Collect all source directories
+#          sourcefiles_args=""
+#          while IFS= read -r dir; do
+#            sourcefiles_args="$sourcefiles_args --sourcefiles $dir"
+#          done < <(find . -path "*/src/main/java" -o -path "*/src/main/kotlin" -type d)
+#
+#          # Generate single merged report for SonarCloud
+#          mkdir -p build/reports/jacoco/merged
+#          java -jar "$JACOCO_JAR" report merged.exec \
+#            $classfiles_args \
+#            $sourcefiles_args \
+#            --xml build/reports/jacoco/merged/jacoco-merged.xml
+#
+#          echo "=== Verifying Merged Coverage Report ==="
+#          if [ -f build/reports/jacoco/merged/jacoco-merged.xml ]; then
+#            echo "✅ Merged coverage report ready"
+#            ls -lh build/reports/jacoco/merged/jacoco-merged.xml
+#            echo "Report size: $(wc -l < build/reports/jacoco/merged/jacoco-merged.xml) lines"
+#          else
+#            echo "❌ Failed to generate merged coverage report"
+#          fi
+#
+#      # https://github.com/SonarSource/sonarqube-scan-action/commit/a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
+#      # v7.0.0
+#      - name: SonarCloud Scan
+#        uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          args: >
+#            -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
+#            -Dsonar.organization=waffiqaziz
+#            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/merged/jacoco-merged.xml
+#            -Dsonar.java.binaries=**/build/intermediates/javac/debug/classes,**/build/tmp/kotlin-classes/debug
+#            -Dsonar.sources=.
+#            -Dsonar.exclusions=**/build/**,**/*.gradle*,**/test/**,**/androidTest/**
 
-      - name: Download JaCoCo CLI (if not cached)
-        if: steps.jacoco-cache.outputs.cache-hit != 'true'
+      - name: List all coverage reports
         run: |
-          echo "Downloading JaCoCo CLI..."
-          mkdir -p ~/.jacoco
-          wget -O ~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar \
-            https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.14/org.jacoco.cli-0.8.14-nodeps.jar
+          echo "=== All JaCoCo XML reports ==="
+          find . -name "createDebugCombinedCoverageReport.xml" -type f
 
-      - name: Prepare merged coverage report
-        if: steps.check_coverage.outputs.coverage_exists == 'true'
-        run: |
-          JACOCO_JAR=~/.jacoco/org.jacoco.cli-0.8.14-nodeps.jar
-          
-          echo "=== Finding coverage data ==="
-          find . -name "*.exec" -type f
-          
-          # Merge all exec files
-          exec_files=$(find . -name "*.exec" -type f)
-          if [ -z "$exec_files" ]; then
-            echo "❌ No .exec files found!"
-            exit 1
-          fi
-          
-          java -jar "$JACOCO_JAR" merge $exec_files --destfile merged.exec
-          
-          echo "=== Generating merged report for SonarCloud ==="
-          # Collect all class directories
-          classfiles_args=""
-          while IFS= read -r dir; do
-            classfiles_args="$classfiles_args --classfiles $dir"
-          done < <(find . -path "*/build/tmp/kotlin-classes/debug" -o -path "*/build/tmp/kotlin-classes/debugAndroidTest" -type d)
-          
-          # Collect all source directories
-          sourcefiles_args=""
-          while IFS= read -r dir; do
-            sourcefiles_args="$sourcefiles_args --sourcefiles $dir"
-          done < <(find . -path "*/src/main/java" -o -path "*/src/main/kotlin" -type d)
-          
-          # Generate single merged report for SonarCloud
-          mkdir -p build/reports/jacoco/merged
-          java -jar "$JACOCO_JAR" report merged.exec \
-            $classfiles_args \
-            $sourcefiles_args \
-            --xml build/reports/jacoco/merged/jacoco-merged.xml
-          
-          echo "=== Verifying Merged Coverage Report ==="
-          if [ -f build/reports/jacoco/merged/jacoco-merged.xml ]; then
-            echo "✅ Merged coverage report ready"
-            ls -lh build/reports/jacoco/merged/jacoco-merged.xml
-            echo "Report size: $(wc -l < build/reports/jacoco/merged/jacoco-merged.xml) lines"
-          else
-            echo "❌ Failed to generate merged coverage report"
-          fi
-
-      # https://github.com/SonarSource/sonarqube-scan-action/commit/a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
-      # v7.0.0
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
         env:
@@ -477,7 +496,7 @@ jobs:
           args: >
             -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
             -Dsonar.organization=waffiqaziz
-            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/merged/jacoco-merged.xml
+            -Dsonar.coverage.jacoco.xmlReportPaths=**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
             -Dsonar.java.binaries=**/build/intermediates/javac/debug/classes,**/build/tmp/kotlin-classes/debug
             -Dsonar.sources=.
             -Dsonar.exclusions=**/build/**,**/*.gradle*,**/test/**,**/androidTest/**
