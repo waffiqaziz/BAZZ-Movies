@@ -285,6 +285,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Run Setup
         uses: ./.github/actions/setup-gradle
@@ -458,6 +460,9 @@ jobs:
           find . -name "connectedDebugAndroidTest.exec" -type f || echo "No instrumentation test .exec files found"
           find . -path "*/build/test-results/connectedDebugAndroidTest" -type d || echo "No instrumentation test results found"
 
+      - name: Compile debug sources (for Sonar binaries)
+        run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --stacktrace
+
       - name: Generate JaCoCo Combined Coverage Report
         run: |
           echo "Generating combined coverage report..."
@@ -479,8 +484,51 @@ jobs:
             echo "❌ Coverage report not found"
           fi
 
-      # https://github.com/codecov/codecov-action/commit/fb8b3582c8e4def4969c97caa2f19720cb33a72f
-      # v7.0.0
+      - name: Build coverage paths for SonarCloud
+        id: coverage_paths
+        run: |
+          PATHS=$(find . -name "createDebugCombinedCoverageReport.xml" -type f | sed 's|^\./||' | tr '\n' ',' | sed 's/,$//')
+          echo "paths=$PATHS" >> $GITHUB_OUTPUT
+          echo "Resolved paths: $PATHS"
+
+      - name: Debug binaries for Sonar
+        run: |
+          echo "=== Kotlin class binaries ==="
+          find . -path "*/build/tmp/kotlin-classes/debug" -type d | head -10
+      
+          echo "=== Java class binaries ==="
+          find . -path "*/build/intermediates/javac/debug/classes" -type d | head -10
+      
+          echo "=== Sample counter data from one XML ==="
+          find . -name "createDebugCombinedCoverageReport.xml" -type f | head -1 | xargs grep "<counter" | head -5
+      
+          echo "=== Check if XML references source files ==="
+          find . -name "createDebugCombinedCoverageReport.xml" -type f | head -1 | xargs grep "<sourcefile" | head -5
+
+      - name: Inspect coverage XML content
+        run: |
+          FILE=$(find . -name "createDebugCombinedCoverageReport.xml" -type f | grep "core/data" | head -1)
+          echo "Inspecting: $FILE"
+          # Show counter lines - MISSED and COVERED should be non-zero
+          grep "<counter" "$FILE" | head -20
+          # Show how many source files are referenced
+          grep -c "<sourcefile" "$FILE" || echo "0 source files"
+
+      # https://github.com/SonarSource/sonarqube-scan-action/releases/tag/v8.2.0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
+            -Dsonar.organization=waffiqaziz
+            -Dsonar.coverage.jacoco.xmlReportPaths=${{ steps.coverage_paths.outputs.paths }}
+            -Dsonar.kotlin.binaries=**/build/tmp/kotlin-classes/debug
+            -Dsonar.java.binaries=**/build/intermediates/javac/debug/classes
+            -Dsonar.sourceEncoding=UTF-8
+
       # Upload the same combined report with different flags for each module
       - name: Upload coverage with app flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
