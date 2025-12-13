@@ -496,10 +496,10 @@ jobs:
           args: >
             -Dsonar.projectKey=waffiqaziz_BAZZ-Movies
             -Dsonar.organization=waffiqaziz
-            -Dsonar.coverage.jacoco.xmlReportPaths=**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-            -Dsonar.java.binaries=**/build/intermediates/javac/debug/classes,**/build/tmp/kotlin-classes/debug
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/build/**,**/*.gradle*,**/test/**,**/androidTest/**
+            -Dsonar.coverage.jacoco.xmlReportPaths=**/createDebugCombinedCoverageReport.xml
+            -Dsonar.kotlin.binaries=**/build/tmp/kotlin-classes/debug
+            -Dsonar.java.binaries=**/build/intermediates/javac/debug/classes
+            -Dsonar.sourceEncoding=UTF-8
 
       # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
       # v5.4.0
