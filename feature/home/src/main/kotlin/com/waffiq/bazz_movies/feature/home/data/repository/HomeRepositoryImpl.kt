@@ -52,7 +52,7 @@ class HomeRepositoryImpl @Inject constructor(
 
   override fun getAiringTodayTv(region: String): Flow<PagingData<MediaItem>> {
     val date = getDateToday()
-    return movieDataSource.getAiringTodayTv(region, date, date)
+    return movieDataSource.getAiringTv(region, date, date)
       .map { pagingData ->
         pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
       }
@@ -64,7 +64,7 @@ class HomeRepositoryImpl @Inject constructor(
     }
 
   override fun getAiringThisWeekTv(region: String): Flow<PagingData<MediaItem>> =
-    movieDataSource.getAiringThisWeekTv(region, getDateTwoWeeksFromToday(), getDateToday())
+    movieDataSource.getAiringTv(region, getDateTwoWeeksFromToday(), getDateToday())
       .map { pagingData ->
         pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
       }

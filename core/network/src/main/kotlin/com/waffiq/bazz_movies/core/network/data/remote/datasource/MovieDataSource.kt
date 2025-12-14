@@ -101,22 +101,13 @@ class MovieDataSource @Inject constructor(
       tmdbApiService.getPopularTv(page, region, twoWeeksFromToday).results
     }.flow.flowOn(ioDispatcher)
 
-  override fun getAiringThisWeekTv(
+  override fun getAiringTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
   ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
-    }.flow.flowOn(ioDispatcher)
-
-  override fun getAiringTodayTv(
-    region: String,
-    airDateLte: String,
-    airDateGte: String,
-  ): Flow<PagingData<MediaResponseItem>> =
-    createPager { page ->
-      tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
+      tmdbApiService.getAiringTv(region, airDateLte, airDateGte, page).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaResponseItem>> =
