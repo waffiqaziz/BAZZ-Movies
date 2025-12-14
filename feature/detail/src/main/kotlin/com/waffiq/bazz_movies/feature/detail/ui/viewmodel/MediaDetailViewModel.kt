@@ -283,113 +283,69 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   private fun insertToDB(fav: Favorite) {
-    viewModelScope.launch {
-      when (val result = localDatabaseUseCase.insertToDB(fav)) {
-        is DbResult.Error -> _errorState.emit(result.errorMessage)
-        is DbResult.Success -> {
-          if (fav.isFavorite) {
-            _isFavorite.value = true
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = false,
-                isFavorite = true,
-              )
-            )
-          } else {
-            _isWatchlist.value = true
-            _postModelState.value = Event(
-              PostModelState(
-                isSuccess = true,
-                isDelete = false,
-                isFavorite = false,
-              )
-            )
-          }
+    executeDbAction(
+      action = { localDatabaseUseCase.insertToDB(fav) },
+      onSuccess = {
+        if (fav.isFavorite) {
+          _isFavorite.value = true
+          emitPostState(isDelete = false, isFavorite = true)
+        } else {
+          _isWatchlist.value = true
+          emitPostState(isDelete = false, isFavorite = false)
         }
       }
-    }
+    )
   }
 
-  private fun updateToFavoriteDB(fav: Favorite) = viewModelScope.launch {
-    when (val result = localDatabaseUseCase.updateFavoriteItemDB(false, fav)) {
-      is DbResult.Error -> _errorState.emit(result.errorMessage)
-      is DbResult.Success -> {
+  private fun updateToFavoriteDB(fav: Favorite) {
+    executeDbAction(
+      action = { localDatabaseUseCase.updateFavoriteItemDB(false, fav) },
+      onSuccess = {
         _isFavorite.value = true
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = false,
-            isFavorite = true
-          )
-        )
+        emitPostState(isDelete = false, isFavorite = true)
       }
-    }
+    )
   }
 
-  private fun updateToRemoveFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
-    when (val result = localDatabaseUseCase.updateFavoriteItemDB(true, fav)) {
-      is DbResult.Error -> _errorState.emit(result.errorMessage)
-      is DbResult.Success -> {
+  private fun updateToRemoveFromFavoriteDB(fav: Favorite) {
+    executeDbAction(
+      action = { localDatabaseUseCase.updateFavoriteItemDB(true, fav) },
+      onSuccess = {
         _isFavorite.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = true,
-            isFavorite = true,
-          )
-        )
+        emitPostState(isDelete = true, isFavorite = true)
       }
-    }
+    )
   }
 
-  private fun updateToWatchlistDB(fav: Favorite) = viewModelScope.launch {
-    when (val result = localDatabaseUseCase.updateWatchlistItemDB(false, fav)) {
-      is DbResult.Error -> _errorState.emit(result.errorMessage)
-      is DbResult.Success -> {
+  private fun updateToWatchlistDB(fav: Favorite) {
+    executeDbAction(
+      action = { localDatabaseUseCase.updateWatchlistItemDB(false, fav) },
+      onSuccess = {
         _isWatchlist.value = true
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = false,
-            isFavorite = false
-          )
-        )
+        emitPostState(isDelete = false, isFavorite = false)
       }
-    }
+    )
   }
 
-  private fun updateToRemoveFromWatchlistDB(fav: Favorite) = viewModelScope.launch {
-    when (val result = localDatabaseUseCase.updateWatchlistItemDB(true, fav)) {
-      is DbResult.Error -> _errorState.emit(result.errorMessage)
-      is DbResult.Success -> {
+  private fun updateToRemoveFromWatchlistDB(fav: Favorite) {
+    executeDbAction(
+      action = { localDatabaseUseCase.updateWatchlistItemDB(true, fav) },
+      onSuccess = {
         _isWatchlist.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = true,
-            isFavorite = false
-          )
-        )
+        emitPostState(isDelete = true, isFavorite = false)
       }
-    }
+    )
   }
 
-  private fun delFromFavoriteDB(fav: Favorite) = viewModelScope.launch {
-    when (val result = localDatabaseUseCase.deleteFromDB(fav)) {
-      is DbResult.Error -> _errorState.emit(result.errorMessage)
-      is DbResult.Success -> {
+  private fun delFromFavoriteDB(fav: Favorite) {
+    executeDbAction(
+      action = { localDatabaseUseCase.deleteFromDB(fav) },
+      onSuccess = {
         _isFavorite.value = false
         _isWatchlist.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = true,
-            isFavorite = fav.isFavorite
-          )
-        )
+        emitPostState(isDelete = true, isFavorite = fav.isFavorite)
       }
-    }
+    )
   }
   // endregion DB FUNCTION
 
@@ -439,6 +395,38 @@ class MediaDetailViewModel @Inject constructor(
   // endregion POST FAVORITE, WATCHLIST, RATE
 
   /**
+   * Helper to emit [PostModelState]
+   */
+  private fun emitPostState(
+    isSuccess: Boolean = true,
+    isDelete: Boolean,
+    isFavorite: Boolean,
+  ) {
+    _postModelState.value = Event(
+      PostModelState(
+        isSuccess = isSuccess,
+        isDelete = isDelete,
+        isFavorite = isFavorite
+      )
+    )
+  }
+
+  /**
+   * Helper to database action
+   */
+  private fun executeDbAction(
+    action: suspend () -> DbResult<Int>,
+    onSuccess: () -> Unit,
+  ) {
+    viewModelScope.launch {
+      when (val result = action()) {
+        is DbResult.Error -> _errorState.emit(result.errorMessage)
+        is DbResult.Success -> onSuccess()
+      }
+    }
+  }
+
+  /**
    * Helper to handle fetch from API
    */
   fun <T> executeUseCase(
@@ -481,15 +469,7 @@ class MediaDetailViewModel @Inject constructor(
   ) {
     executeUseCase(
       flowProvider = { postAction(data) },
-      onSuccess = {
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = true,
-            isDelete = !isChecked,
-            isFavorite = isFavorite,
-          )
-        )
-      },
+      onSuccess = { emitPostState(true, !isChecked, isFavorite) },
       onFinallySuccess = {
         if (data.mediaType == MOVIE_MEDIA_TYPE) {
           getMovieState(data.mediaId)
@@ -502,13 +482,7 @@ class MediaDetailViewModel @Inject constructor(
       onLoading = { _loadingState.value = true },
       onFinallyError = {
         _loadingState.value = false
-        _postModelState.value = Event(
-          PostModelState(
-            isSuccess = false,
-            isDelete = !isChecked,
-            isFavorite = isFavorite,
-          )
-        )
+        emitPostState(false, !isChecked, isFavorite)
       }
     )
   }
