@@ -1,13 +1,12 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import com.waffiq.bazz_movies.core.common.utils.Event
+import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import io.mockk.coEvery
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -17,6 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class MoreLocalViewModelTest {
 
@@ -42,48 +42,29 @@ class MoreLocalViewModelTest {
 
   @Test
   fun deleteAllPosts_whenSuccessful_emitsSuccessResult() = runTest {
-    // Arrange
-    val expectedResult = DbResult.Success(1)
-    coEvery { localDatabaseUseCase.deleteAll() } returns expectedResult
+    coEvery { localDatabaseUseCase.deleteAll() } returns DbResult.Success(1)
 
-    val observer = mockk<Observer<Event<DbResult<Int>>>>(relaxed = true)
-    viewModel.dbResult.observeForever(observer)
-
-    // Act
     viewModel.deleteAll()
-    testDispatcher.scheduler.advanceUntilIdle() // Ensures coroutines complete
-
-    // Assert
-    verify {
-      observer.onChanged(
-        match {
-          it.getContentIfNotHandled() == expectedResult
-        }
-      )
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      assertEquals(UIState.Loading, awaitItem())
+      assertEquals(UIState.Success, awaitItem())
+      cancelAndIgnoreRemainingEvents()
     }
-
-    // Cleanup
-    viewModel.dbResult.removeObserver(observer)
   }
 
   @Test
   fun deleteAllPosts_whenUnsuccessful_errorResult() = runTest {
-    val expectedError = DbResult.Error("Delete failed")
+    val errorMessage = "Delete failed"
+    val expectedError = DbResult.Error(errorMessage)
     coEvery { localDatabaseUseCase.deleteAll() } returns expectedError
 
-    val observer = mockk<Observer<Event<DbResult<Int>>>>(relaxed = true)
-    viewModel.dbResult.observeForever(observer)
     viewModel.deleteAll()
-    testDispatcher.scheduler.advanceUntilIdle()
-
-    verify {
-      observer.onChanged(
-        match {
-          it.getContentIfNotHandled() == expectedError
-        }
-      )
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      assertEquals(UIState.Loading, awaitItem())
+      assertEquals(UIState.Error(errorMessage), awaitItem())
+      cancelAndIgnoreRemainingEvents()
     }
-
-    viewModel.dbResult.removeObserver(observer)
   }
 }

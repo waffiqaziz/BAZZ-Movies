@@ -1,27 +1,34 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoreLocalViewModel @Inject constructor(
-  private val localDatabaseUseCase: LocalDatabaseUseCase
+  private val localDatabaseUseCase: LocalDatabaseUseCase,
 ) : ViewModel() {
 
-  private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()
-  val dbResult: LiveData<Event<DbResult<Int>>> get() = _dbResult
+  private val _state = MutableStateFlow<UIState>(UIState.Idle)
+  val state: StateFlow<UIState> get() = _state
 
   fun deleteAll() {
     viewModelScope.launch {
-      _dbResult.postValue(Event(localDatabaseUseCase.deleteAll()))
+      _state.value = UIState.Loading
+      delay(timeMillis = 450)
+
+      when (val result = localDatabaseUseCase.deleteAll()) {
+        is DbResult.Success -> _state.value = UIState.Success
+        is DbResult.Error -> _state.value = UIState.Error(result.errorMessage)
+      }
     }
   }
 }

@@ -2,11 +2,9 @@ package com.waffiq.bazz_movies.feature.more.testutils
 
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
@@ -18,14 +16,13 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
   override lateinit var moreFragment: MoreFragment
 
   override val mockRegionPref = MutableLiveData<String>()
-  override val mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
-  override val mockSignOutState = MutableSharedFlow<Outcome<Post>>()
+  override val mockUIState = MutableStateFlow<UIState>(UIState.Idle)
   override val mockCountryCode = MutableLiveData<String>()
   override val mockUserModel = MutableLiveData<UserModel>()
 
@@ -42,13 +39,13 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
     mockMoreLocalViewModel: MoreLocalViewModel,
     mockUserViewModel: MoreUserViewModel,
     mockRegionViewModel: RegionViewModel,
-    mockUserPrefViewModel: UserPreferenceViewModel
+    mockUserPrefViewModel: UserPreferenceViewModel,
   ) {
     mockUserModel.postValue(userModel)
 
-    every { mockMoreLocalViewModel.dbResult } returns mockDbResult
+    every { mockMoreLocalViewModel.state } returns mockUIState
     every { mockMoreLocalViewModel.deleteAll() } just Runs
-    every { mockUserViewModel.signOutState } returns mockSignOutState
+    every { mockUserViewModel.state } returns mockUIState
     every { mockUserViewModel.deleteSession(any()) } just Runs
     every { mockUserViewModel.removeState() } just Runs
     every { mockRegionViewModel.countryCode } returns mockCountryCode

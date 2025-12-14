@@ -17,7 +17,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.core.common.utils.Constants.GRAVATAR_LINK
@@ -25,8 +24,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TERMS_CONDITIONS_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_AVATAR
-import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.all_data_deleted
@@ -38,9 +35,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_m
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
+import com.waffiq.bazz_movies.core.uihelper.state.isLoading
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
@@ -49,8 +47,6 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -97,48 +93,35 @@ class MoreFragment : Fragment() {
   private fun signOutStateObserver(isLogin: Boolean) {
     if (isLogin) {
       viewLifecycleOwner.lifecycleScope.launch {
-        moreUserViewModel.signOutState.debounce(DEBOUNCE_VERY_LONG).collectLatest { outcome ->
-          when (outcome) {
-            is Outcome.Success -> {
-              progressIsVisible(false)
+        moreUserViewModel.state.collect {
+          progressIsVisible(it.isLoading)
+
+          when (it) {
+            is UIState.Success -> {
               requireContext().toastShort(getString(sign_out_success))
-              removePrefUserData() // remove preference user data
+              openLoginActivity()
             }
 
-            is Outcome.Loading -> {
-              /* do nothing */
-            }
-
-            is Outcome.Error -> {
-              fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-              btnSignOutIsEnable(true)
-              progressIsVisible(false)
-              mSnackbar = snackbar.showSnackbarWarning(Event(outcome.message))
-            }
-
-            else -> {
-              /* do nothing */
-            }
+            is UIState.Error -> errorSignOut(it.message)
+            is UIState.Loading -> Unit
+            is UIState.Idle -> Unit
           }
         }
       }
     } else {
-      moreLocalViewModel.dbResult.observe(viewLifecycleOwner) { eventResult ->
-        eventResult.getContentIfNotHandled().let {
-          when (it) {
-            is DbResult.Success -> {
-              progressIsVisible(false)
+      viewLifecycleOwner.lifecycleScope.launch {
+        moreLocalViewModel.state.collect { state ->
+          progressIsVisible(state.isLoading)
+
+          when (state) {
+            is UIState.Success -> {
               requireContext().toastShort(getString(all_data_deleted))
+              openLoginActivity()
             }
 
-            is DbResult.Error -> {
-              progressIsVisible(false)
-              mSnackbar = snackbar.showSnackbarWarning(Event(it.errorMessage))
-            }
-
-            else -> {
-              /* do nothing */
-            }
+            is UIState.Error -> errorSignOut(state.message)
+            is UIState.Idle -> Unit
+            is UIState.Loading -> Unit
           }
         }
       }
@@ -190,7 +173,6 @@ class MoreFragment : Fragment() {
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
-        progressIsVisible(true)
         moreUserViewModel.deleteSession(sessionId) // revoke session for login user
         dialog.dismiss()
       }
@@ -220,7 +202,6 @@ class MoreFragment : Fragment() {
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         moreLocalViewModel.deleteAll() // delete all user data (watchlistPostModel and favoritePostModel)
         dialog.dismiss()
-        removePrefUserData() // remove preference user data
       }
     }
 
@@ -232,7 +213,13 @@ class MoreFragment : Fragment() {
     }
   }
 
-  private fun removePrefUserData() {
+  private fun errorSignOut(message: String) {
+    btnSignOutIsEnable(true)
+    fadeOut(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+    mSnackbar = snackbar.showSnackbarWarning(message)
+  }
+
+  private fun openLoginActivity() {
     userPreferenceViewModel.removeUserDataPref()
     navigator.openLoginActivity(requireContext())
     activity?.finishAfterTransition()
