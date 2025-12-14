@@ -78,7 +78,6 @@ object Helper {
         Thread.sleep(DELAY_TIME)
       }
     }
-
     onView(matcher).check(matches(isDisplayed()))
   }
 }

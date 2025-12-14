@@ -52,7 +52,6 @@ class MovieDataSource @Inject constructor(
       pagingSourceFactory = { GenericPagingSource(apiCall) }
     )
 
-
   // region PAGING FUNCTION
   override fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->

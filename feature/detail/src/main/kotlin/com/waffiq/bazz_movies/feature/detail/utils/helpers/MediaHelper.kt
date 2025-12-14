@@ -36,7 +36,7 @@ object MediaHelper {
     // Process each job title and create pairs of (displayName, joinedNames)
     return jobToNamesMap.mapNotNull { (jobTitle, displayName) ->
       val members = crewByJob[jobTitle].orEmpty().filter { !it.name.isNullOrEmpty() }
-      if (members.isNotEmpty()) displayName to members.joinToString { it.name!! } else null
+      if (members.isNotEmpty()) displayName to members.joinToString { it.name.toString() } else null
     }.unzip() // Split pairs into two separate lists: [displayNames], [joinedNames]
   }
 
