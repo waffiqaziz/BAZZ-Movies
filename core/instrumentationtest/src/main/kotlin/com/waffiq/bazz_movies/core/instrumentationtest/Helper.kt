@@ -37,15 +37,13 @@ object Helper {
     }
   }
 
-  fun waitFor(millis: Long = 1000): ViewAction {
-    return object : ViewAction {
+  fun waitFor(millis: Long = 1000): ViewAction =
+    object : ViewAction {
       override fun getConstraints(): Matcher<View> = isRoot()
       override fun getDescription(): String = "Wait for $millis milliseconds"
-      override fun perform(uiController: UiController, view: View) {
+      override fun perform(uiController: UiController, view: View) =
         uiController.loopMainThreadForAtLeast(millis)
-      }
     }
-  }
 
   fun waitUntil(
     matcher: Matcher<View>,

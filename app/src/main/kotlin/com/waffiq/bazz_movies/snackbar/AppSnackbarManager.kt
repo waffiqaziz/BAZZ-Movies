@@ -28,17 +28,15 @@ class AppSnackbarManager @Inject constructor(
 
   private val activity: AppCompatActivity by lazy { context as AppCompatActivity }
 
-  override fun showSnackbarWarning(message: String): Snackbar? {
-    return createAndShowSnackbar { rootView, bottomNav ->
+  override fun showSnackbarWarning(message: String): Snackbar? =
+    createAndShowSnackbar { rootView, bottomNav ->
       snackBarWarning(rootView, bottomNav, message)
     }
-  }
 
-  override fun showSnackbarWarning(eventMessage: Event<String>): Snackbar? {
-    return createAndShowSnackbar { rootView, bottomNav ->
+  override fun showSnackbarWarning(eventMessage: Event<String>): Snackbar? =
+    createAndShowSnackbar { rootView, bottomNav ->
       snackBarWarning(rootView, bottomNav, eventMessage)
     }
-  }
 
   /**
    * Common method to handle snackbar creation with proper error handling and validation.
@@ -47,7 +45,7 @@ class AppSnackbarManager @Inject constructor(
    * @return The created and shown Snackbar, or null if creation failed
    */
   private inline fun createAndShowSnackbar(
-    snackbarFactory: (rootView: View, bottomNav: View?) -> Snackbar?
+    snackbarFactory: (rootView: View, bottomNav: View?) -> Snackbar?,
   ): Snackbar? {
     return try {
       val rootView = activity.findViewById<View>(android.R.id.content)

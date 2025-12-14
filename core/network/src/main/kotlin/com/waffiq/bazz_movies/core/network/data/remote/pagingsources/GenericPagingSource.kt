@@ -8,7 +8,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class GenericPagingSource(
-  private val apiCall: suspend (Int) -> List<MediaResponseItem>
+  private val apiCall: suspend (Int) -> List<MediaResponseItem>,
 ) : PagingSource<Int, MediaResponseItem>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaResponseItem> {
@@ -28,10 +28,9 @@ class GenericPagingSource(
     }
   }
 
-  override fun getRefreshKey(state: PagingState<Int, MediaResponseItem>): Int? {
-    return state.anchorPosition?.let { anchorPosition ->
+  override fun getRefreshKey(state: PagingState<Int, MediaResponseItem>): Int? =
+    state.anchorPosition?.let { anchorPosition ->
       val anchorPage = state.closestPageToPosition(anchorPosition)
       anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
     }
-  }
 }

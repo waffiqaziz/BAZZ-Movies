@@ -378,7 +378,7 @@ class LoginActivityTest {
         description.appendText("Password is hidden")
       }
 
-      // returns true if password is hidden
+      // check if password is hidden
       override fun matchesSafely(editText: EditText): Boolean =
         editText.transformationMethod is PasswordTransformationMethod
     }

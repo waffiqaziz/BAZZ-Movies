@@ -128,8 +128,8 @@ class LoginActivityTest {
     onView(isRoot()).perform(waitFor())
   }
 
-  private fun withErrorText(expectedError: String): Matcher<View> {
-    return object : BoundedMatcher<View, EditText>(EditText::class.java) {
+  private fun withErrorText(expectedError: String): Matcher<View> =
+    object : BoundedMatcher<View, EditText>(EditText::class.java) {
       override fun describeTo(description: Description) {
         description.appendText("with error text: $expectedError")
       }
@@ -137,25 +137,24 @@ class LoginActivityTest {
       override fun matchesSafely(editText: EditText): Boolean =
         editText.error?.toString() == expectedError
     }
-  }
 
-  private fun isPasswordHidden(): Matcher<View> {
-    return object : BoundedMatcher<View, EditText>(EditText::class.java) {
+  private fun isPasswordHidden(): Matcher<View> =
+    object : BoundedMatcher<View, EditText>(EditText::class.java) {
       override fun describeTo(description: Description) {
         description.appendText("Password is hidden")
       }
 
-      // returns true if password is hidden
+      // check if password is hidden
       override fun matchesSafely(editText: EditText): Boolean =
         editText.transformationMethod is PasswordTransformationMethod
     }
-  }
 
-  private fun waitFor(delay: Long = 1000L): ViewAction = object : ViewAction {
-    override fun getConstraints(): Matcher<View> = isRoot()
-    override fun getDescription(): String = "Wait for $delay milliseconds."
-    override fun perform(uiController: UiController, view: View) {
-      uiController.loopMainThreadForAtLeast(delay)
+  private fun waitFor(delay: Long = 1000L): ViewAction =
+    object : ViewAction {
+      override fun getConstraints(): Matcher<View> = isRoot()
+      override fun getDescription(): String = "Wait for $delay milliseconds."
+      override fun perform(uiController: UiController, view: View) {
+        uiController.loopMainThreadForAtLeast(delay)
+      }
     }
-  }
 }

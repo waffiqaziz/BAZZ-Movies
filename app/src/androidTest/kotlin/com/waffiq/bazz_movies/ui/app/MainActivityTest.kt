@@ -136,8 +136,8 @@ class MainActivityTest {
     Thread.sleep(DELAY_TIME)
   }
 
-  private fun selectMenuItem(menuItemId: Int): ViewAction {
-    return object : ViewAction {
+  private fun selectMenuItem(menuItemId: Int): ViewAction =
+    object : ViewAction {
       override fun getConstraints(): Matcher<View> =
         isAssignableFrom(BottomNavigationView::class.java)
 
@@ -149,7 +149,6 @@ class MainActivityTest {
         bottomNavigationView.selectedItemId = menuItemId
       }
     }
-  }
 
   companion object {
     const val DELAY_TIME = 300L
