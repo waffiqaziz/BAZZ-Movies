@@ -10,7 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
@@ -107,7 +107,7 @@ class MediaDetailActivityTest :
   fun imdbId_withValidValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(imdbId = "tt1234567"))
-      waitFor(500)
+      shortDelay()
     }
   }
 
@@ -115,7 +115,7 @@ class MediaDetailActivityTest :
   fun imdbId_withNullValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(imdbId = null))
-      waitFor(500)
+      shortDelay()
     }
   }
 
@@ -123,7 +123,7 @@ class MediaDetailActivityTest :
   fun imdbId_withEmptyValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(imdbId = ""))
-      waitFor(500)
+      shortDelay()
     }
   }
 
@@ -131,7 +131,7 @@ class MediaDetailActivityTest :
   fun imdbId_withBlankValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(imdbId = " "))
-      waitFor(500)
+      shortDelay()
     }
   }
 

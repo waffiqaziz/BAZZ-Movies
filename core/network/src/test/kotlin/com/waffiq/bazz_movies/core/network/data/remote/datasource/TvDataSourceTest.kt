@@ -91,15 +91,15 @@ class TvDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getAiringThisWeekTv_pagingSource_returnsExpectedData() = runTest {
+  fun getAiringTv_pagingSource_returnsExpectedData() = runTest {
     val airDate = "2023-11-14"
     val airDateEnd = "2023-11-06"
     val pagingSource = GenericPagingSource {
-      tmdbApiService.getTvAiring("id", airDate, airDateEnd, 1).results
+      tmdbApiService.getAiringTv("id", airDate, airDateEnd, 1).results
     }
     testPagingSource(
       mockResults = defaultMediaResponse(listOf(tvShowDump1, tvShowDump2, tvShowDump3)),
-      mockApiCall = { tmdbApiService.getTvAiring("id", airDate, airDateEnd, 1) },
+      mockApiCall = { tmdbApiService.getAiringTv("id", airDate, airDateEnd, 1) },
       loader = { pagingSource.toLoadResult() }
     ) { page ->
       assertEquals(null, page.prevKey)
@@ -108,40 +108,13 @@ class TvDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getAiringThisWeekTv_pagingFlow_returnsExpectedData() = runTest {
-    val airDate = "2023-11-14"
-    val airDateEnd = "2023-11-06"
-    val expected = listOf(tvShowDump1, tvShowDump2, tvShowDump3)
-    coEvery { tmdbApiService.getTvAiring("id", airDate, airDateEnd, 1) } returns
-      defaultMediaResponse(expected)
-    movieDataSource.getAiringThisWeekTv("id", airDate, airDateEnd).testPagingFlow(this, expected)
-    coVerify { tmdbApiService.getTvAiring("id", airDate, airDateEnd, 1) }
-  }
-
-  @Test
-  fun getAiringTodayTv_pagingSource_returnsExpectedData() = runTest {
-    val airDate = "2023-11-14"
-    val pagingSource = GenericPagingSource {
-      tmdbApiService.getTvAiring("id", airDate, airDate, 1).results
-    }
-    testPagingSource(
-      mockResults = defaultMediaResponse(listOf(tvShowDump1, tvShowDump3)),
-      mockApiCall = { tmdbApiService.getTvAiring("id", airDate, airDate, 1) },
-      loader = { pagingSource.toLoadResult() }
-    ) { page ->
-      assertEquals(null, page.prevKey)
-      assertEquals(2, page.nextKey)
-    }
-  }
-
-  @Test
-  fun getAiringTodayTv_pagingFlow_returnsExpectedData() = runTest {
+  fun getAiringTv_pagingFlow_returnsExpectedData() = runTest {
     val airDate = "2023-11-14"
     val expected = listOf(tvShowDump1, tvShowDump3)
-    coEvery { tmdbApiService.getTvAiring("id", airDate, airDate, 1) } returns
+    coEvery { tmdbApiService.getAiringTv("id", airDate, airDate, 1) } returns
       defaultMediaResponse(expected)
-    movieDataSource.getAiringTodayTv("id", airDate, airDate).testPagingFlow(this, expected)
-    coVerify { tmdbApiService.getTvAiring("id", airDate, airDate, 1) }
+    movieDataSource.getAiringTv("id", airDate, airDate).testPagingFlow(this, expected)
+    coVerify { tmdbApiService.getAiringTv("id", airDate, airDate, 1) }
   }
 
   @Test

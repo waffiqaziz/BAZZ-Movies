@@ -7,7 +7,6 @@ import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasChildCount
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
@@ -15,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.favorite.R.id.tabs
 import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager
@@ -95,7 +94,7 @@ class FavoriteFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFragme
 
   @Test
   fun tabLayoutMediator_whenClickSpecificTabs_shouldBeAttachedOnViewCreated() {
-    onView(isRoot()).perform(waitFor(300))
+    shortDelay()
     onView(withText(tv_series)).perform(click())
     onView(withId(view_pager)).check { view, _ ->
       val viewPager = view as ViewPager2

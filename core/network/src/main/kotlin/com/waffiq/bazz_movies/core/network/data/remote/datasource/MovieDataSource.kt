@@ -46,127 +46,100 @@ class MovieDataSource @Inject constructor(
   @VisibleForTesting
   internal fun createPager(
     apiCall: suspend (Int) -> List<MediaResponseItem>,
-  ): Pager<Int, MediaResponseItem> {
-    return Pager(
+  ): Pager<Int, MediaResponseItem> =
+    Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = { GenericPagingSource(apiCall) }
     )
-  }
 
   // region PAGING FUNCTION
-  override fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getTopRatedMovies(page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getTrendingThisWeek(region: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getTrendingThisWeek(region: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getTrendingThisWeek(region, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getTrendingToday(region: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getTrendingToday(region: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getTrendingToday(region, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getPopularMovies(): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getPopularMovies(): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getPopularMovies(page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getFavoriteMovies(sessionId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getFavoriteTv(sessionId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getWatchlistTv(sessionId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getWatchlistMovies(sessionId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
   override fun getPopularTv(
     region: String,
     twoWeeksFromToday: String,
-  ): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  ): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getPopularTv(page, region, twoWeeksFromToday).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getAiringThisWeekTv(
+  override fun getAiringTv(
     region: String,
     airDateLte: String,
     airDateGte: String,
-  ): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
-      tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
+  ): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      tmdbApiService.getAiringTv(region, airDateLte, airDateGte, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getAiringTodayTv(
-    region: String,
-    airDateLte: String,
-    airDateGte: String,
-  ): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
-      tmdbApiService.getTvAiring(region, airDateLte, airDateGte, page).results
-    }.flow.flowOn(ioDispatcher)
-  }
-
-  override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getMovieRecommendations(movieId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getTvRecommendations(tvId, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getUpcomingMovies(region: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getUpcomingMovies(region: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getUpcomingMovies(region, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getPlayingNowMovies(region: String): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getPlayingNowMovies(region: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getNowPlayingMovies(region, page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>> {
-    return createPager { page ->
+  override fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
       tmdbApiService.getTopRatedTv(page).results
     }.flow.flowOn(ioDispatcher)
-  }
 
-  override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> {
-    return Pager(
+  override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> =
+    Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
       pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
     ).flow.flowOn(ioDispatcher)
-  }
   // endregion PAGING FUNCTION
 
   // region DETAIL
@@ -194,10 +167,11 @@ class MovieDataSource @Inject constructor(
       ioDispatcher = ioDispatcher
     )
 
-  override fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.getTvVideo(tvId) },
-    ioDispatcher = ioDispatcher
-  )
+  override fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.getTvVideo(tvId) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>> =
     executeApiCall(
@@ -205,10 +179,11 @@ class MovieDataSource @Inject constructor(
       ioDispatcher = ioDispatcher
     )
 
-  override fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.getTvDetail(id) },
-    ioDispatcher = ioDispatcher
-  )
+  override fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.getTvDetail(id) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>> =
     executeApiCall(
@@ -219,26 +194,29 @@ class MovieDataSource @Inject constructor(
   override fun getMovieState(
     sessionId: String,
     id: Int,
-  ): Flow<NetworkResult<MediaStateResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.getMovieState(id, sessionId) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<MediaStateResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.getMovieState(id, sessionId) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun getTvState(
     sessionId: String,
     id: Int,
-  ): Flow<NetworkResult<MediaStateResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.getTvState(id, sessionId) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<MediaStateResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.getTvState(id, sessionId) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun getWatchProviders(
     params: String,
     id: Int,
-  ): Flow<NetworkResult<WatchProvidersResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.getWatchProviders(params, id) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<WatchProvidersResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.getWatchProviders(params, id) },
+      ioDispatcher = ioDispatcher
+    )
   // endregion DETAIL
 
   // region PERSON
@@ -270,37 +248,41 @@ class MovieDataSource @Inject constructor(
     sessionId: String,
     fav: FavoritePostModel,
     userId: Int,
-  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.postFavoriteTMDB(userId, sessionId, fav) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.postFavoriteTMDB(userId, sessionId, fav) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun postWatchlist(
     sessionId: String,
     wtc: WatchlistPostModel,
     userId: Int,
-  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun postTvRate(
     sessionId: String,
     rating: Float,
     tvId: Int,
-  ): Flow<NetworkResult<PostResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<PostResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      ioDispatcher = ioDispatcher
+    )
 
   override fun postMovieRate(
     sessionId: String,
     rating: Float,
     movieId: Int,
-  ): Flow<NetworkResult<PostResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<PostResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      ioDispatcher = ioDispatcher
+    )
   // endregion PERSON
 
   companion object {
