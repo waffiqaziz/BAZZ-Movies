@@ -5,7 +5,6 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +12,6 @@ import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -30,6 +28,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.isPasswordHidden
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.withErrorText
 import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.withDrawable
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
@@ -149,8 +149,7 @@ class LoginActivityTest {
 
   @Test
   fun login_withOnlyUsername_showsPasswordError() {
-    onView(withId(ed_username)).perform(typeText(validUsername))
-    closeSoftKeyboard()
+    typeUserName(validUsername)
     onView(withId(btn_login)).perform(click())
 
     onView(withId(ed_username)).check(matches(withoutError()))
@@ -159,8 +158,7 @@ class LoginActivityTest {
 
   @Test
   fun login_withOnlyPassword_showsUsernameError() {
-    onView(withId(ed_pass)).perform(typeText(validPassword))
-    closeSoftKeyboard()
+    typePassword(validPassword)
     onView(withId(btn_login)).perform(click())
 
     onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
@@ -169,10 +167,8 @@ class LoginActivityTest {
 
   @Test
   fun login_withBlankSpaces_showsErrorMessages() {
-    onView(withId(ed_username)).perform(typeText("   "))
-    closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(typeText("   "))
-    closeSoftKeyboard()
+    typeUserName("   ")
+    typePassword("   ")
     onView(withId(btn_login)).perform(click())
 
     onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
@@ -181,7 +177,7 @@ class LoginActivityTest {
 
   @Test
   fun passwordButtonToggle_whenClicked_showsPassword() {
-    onView(withId(ed_pass)).perform(typeText(validPassword))
+    typePassword(validPassword)
 
     // unmask the edit text
     onView(withId(btn_eye)).perform(click())
@@ -214,7 +210,7 @@ class LoginActivityTest {
     onView(withId(ed_username)).check(matches(withErrorText("Please enter a username")))
 
     // type to remove error
-    onView(withId(ed_username)).perform(typeText(validUsername))
+    typeUserName(validUsername)
     onView(withId(ed_username)).check(matches(withoutError()))
   }
 
@@ -223,17 +219,15 @@ class LoginActivityTest {
     onView(withId(btn_login)).perform(click())
     onView(withId(ed_pass)).check(matches(withErrorText("Please enter a password")))
 
-    onView(withId(ed_pass)).perform(typeText(validPassword))
+    typePassword(validPassword)
     onView(withId(ed_pass)).check(matches(withoutError()))
   }
 
   @Test
   fun login_withInvalidCredential_returnToLoginActivity() {
     // enter invalid credentials
-    onView(withId(ed_username)).perform(typeText("random"))
-    closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(ViewActions.replaceText("random"))
-    closeSoftKeyboard()
+    typeUserName("random")
+    typePassword("random")
 
     onView(withId(btn_login)).perform(click())
     onView(withId(activity_login)).check(matches(isDisplayed()))
@@ -310,7 +304,7 @@ class LoginActivityTest {
 
   @Test
   fun loginScreen_whenConfigurationChange_maintainsTheState() {
-    typeValidLogin()
+    typeValidCredentials()
 
     // simulate configuration change (rotation)
     activityRule.scenario.onActivity { activity ->
@@ -326,41 +320,37 @@ class LoginActivityTest {
     onView(withId(ed_pass)).check(matches(withText(validPassword)))
   }
 
-  private fun typeValidLogin() {
-    onView(withId(ed_username)).perform(typeText(validUsername))
+  private fun typeUserName(userName: String) {
+    onView(withId(ed_username)).perform(typeText(userName))
     closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(typeText(validPassword))
+  }
+
+  private fun typePassword(pass: String) {
+    onView(withId(ed_pass)).perform(typeText(pass))
     closeSoftKeyboard()
+  }
+
+  private fun typeValidCredentials() {
+    typeUserName(validUsername)
+    typePassword(validPassword)
   }
 
   private fun performValidLogin() {
-    typeValidLogin()
+    typeValidCredentials()
     onView(withId(btn_login)).perform(click())
   }
 
-  private fun withErrorText(expectedError: String): Matcher<View> {
-    return object : BoundedMatcher<View, EditText>(EditText::class.java) {
-      override fun describeTo(description: Description) {
-        description.appendText("with error text: $expectedError")
-      }
-
-      override fun matchesSafely(editText: EditText): Boolean =
-        editText.error?.toString() == expectedError
-    }
-  }
-
-  private fun withoutError(): Matcher<View> {
-    return object : BoundedMatcher<View, EditText>(EditText::class.java) {
+  private fun withoutError(): Matcher<View> =
+    object : BoundedMatcher<View, EditText>(EditText::class.java) {
       override fun describeTo(description: Description) {
         description.appendText("without error text")
       }
 
       override fun matchesSafely(editText: EditText): Boolean = editText.error == null
     }
-  }
 
-  private fun clickAtPosition(position: Int): ViewAction {
-    return object : ViewAction {
+  private fun clickAtPosition(position: Int): ViewAction =
+    object : ViewAction {
       override fun getConstraints(): Matcher<View> = isAssignableFrom(EditText::class.java)
 
       override fun getDescription(): String = "Click at position $position"
@@ -370,17 +360,4 @@ class LoginActivityTest {
         editText.setSelection(position)
       }
     }
-  }
-
-  private fun isPasswordHidden(): Matcher<View> {
-    return object : BoundedMatcher<View, EditText>(EditText::class.java) {
-      override fun describeTo(description: Description) {
-        description.appendText("Password is hidden")
-      }
-
-      // check if password is hidden
-      override fun matchesSafely(editText: EditText): Boolean =
-        editText.transformationMethod is PasswordTransformationMethod
-    }
-  }
 }

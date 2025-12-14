@@ -26,6 +26,7 @@ import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -106,7 +107,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
 
   override fun launchFragment() {
     favoriteFragment = launchFragmentInHiltContainer<FavoriteFragment>()
-    onView(isRoot()).perform(waitFor(300))
+    shortDelay()
   }
 
   override fun performSwipeActions() {
@@ -126,7 +127,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
 
   override fun performUndoAction() {
     onView(withText(undo)).check(matches(isDisplayed())).perform(click())
-    onView(isRoot()).perform(waitFor())
+    shortDelay()
     onIdle()
   }
 
