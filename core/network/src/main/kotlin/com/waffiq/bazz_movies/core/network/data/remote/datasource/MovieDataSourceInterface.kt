@@ -34,13 +34,7 @@ interface MovieDataSourceInterface {
   fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>>
   fun getPopularTv(region: String, twoWeeksFromToday: String): Flow<PagingData<MediaResponseItem>>
 
-  fun getAiringThisWeekTv(
-    region: String,
-    airDateLte: String,
-    airDateGte: String,
-  ): Flow<PagingData<MediaResponseItem>>
-
-  fun getAiringTodayTv(
+  fun getAiringTv(
     region: String,
     airDateLte: String,
     airDateGte: String,

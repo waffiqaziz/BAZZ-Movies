@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.TV_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.userModel
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -35,7 +34,7 @@ class PostMethodWithUserInteractorTest : BaseInteractorTest() {
   @Before
   override fun baseSetUp() {
     super.baseSetUp()
-    every { mockUserPrefUseCase.getUser() } returns flowOf(userModel)
+    every { mockUserPrefUseCase.getUserToken() } returns flowOf(SESSION_ID)
   }
 
   @Test

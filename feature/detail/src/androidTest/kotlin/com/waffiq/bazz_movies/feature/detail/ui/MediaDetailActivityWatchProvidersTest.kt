@@ -13,7 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_justwatch
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_ads
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_buy
@@ -102,7 +102,7 @@ class MediaDetailActivityWatchProvidersTest :
   fun expandWatchProvider_doubleClickOnToggleButton_closesWatchProvider() {
     context.launchMediaDetailActivity {
       performClickWatchProvidersButton()
-      waitFor(500)
+      shortDelay()
       performClickWatchProvidersButton()
 
       // check that all watch provider layouts are not displayed
@@ -187,7 +187,7 @@ class MediaDetailActivityWatchProvidersTest :
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         watchProvidersUiState.postValue(WatchProvidersUiState.Loading)
       }
-      waitFor(500)
+      shortDelay()
       onView(withId(progress_bar)).check(matches(isDisplayed()))
       onView(withId(tv_watch_providers_message)).check(matches(not(isDisplayed())))
     }

@@ -55,12 +55,11 @@ object GenreHelper {
    * @param listGenreIds A list of genre IDs to be transformed.
    * @return A string of genre names separated by commas.
    */
-  fun transformListGenreIdsToJoinName(listGenreIds: List<Int>): String {
-    return listGenreIds
+  fun transformListGenreIdsToJoinName(listGenreIds: List<Int>): String =
+    listGenreIds
       .map { getGenreName(it) }
       .filter { it.isNotEmpty() }
       .joinToString(", ")
-  }
 
   // a map that associates genre names with their respective genre IDs for movies and TV shows.
   private val genreCodeMap = mapOf(

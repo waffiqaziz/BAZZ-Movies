@@ -18,8 +18,4 @@ object Helper {
       }
     }
   }
-
-  // created helper instance each test class
-  fun favoriteHelperFactory(): FavoriteFragmentTestHelper =
-    DefaultFavoriteFragmentTestHelper()
 }

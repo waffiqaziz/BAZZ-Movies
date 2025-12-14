@@ -39,11 +39,10 @@ object PagingDataHelperTest {
    *
    * @return An instance of AsyncPagingDataDiffer with a test diff callback and list callback.
    */
-  fun <T : Any> differ(): AsyncPagingDataDiffer<T> {
-    return AsyncPagingDataDiffer(
+  fun <T : Any> differ(): AsyncPagingDataDiffer<T> =
+    AsyncPagingDataDiffer(
       diffCallback = TestDiffCallback(),
       updateCallback = TestListCallback(),
       workerDispatcher = Dispatchers.Main
     )
-  }
 }

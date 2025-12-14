@@ -20,11 +20,10 @@ class DatastoreModule {
 
   @Provides
   @Singleton
-  fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
+  fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
+    PreferenceDataStoreFactory.create(
       produceFile = { context.preferencesDataStoreFile(DATASTORE_NAME) }
     )
-  }
 
   @Provides
   @Singleton

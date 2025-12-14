@@ -13,10 +13,10 @@ import org.junit.runners.model.Statement
 // Updated rule for new coroutine testing API
 class MainCoroutineRule(
   val dispatcher: TestDispatcher = StandardTestDispatcher(),
-  val scope: TestScope = TestScope(dispatcher)
+  val scope: TestScope = TestScope(dispatcher),
 ) : TestRule {
-  override fun apply(base: Statement, description: Description?): Statement {
-    return object : Statement() {
+  override fun apply(base: Statement, description: Description?): Statement =
+    object : Statement() {
       override fun evaluate() {
         Dispatchers.setMain(dispatcher)
         try {
@@ -26,5 +26,4 @@ class MainCoroutineRule(
         }
       }
     }
-  }
 }

@@ -10,7 +10,7 @@ import java.io.IOException
 
 class SearchPagingSource(
   private val apiService: TMDBApiService,
-  private val query: String
+  private val query: String,
 ) : PagingSource<Int, MultiSearchResponseItem>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MultiSearchResponseItem> {
@@ -34,10 +34,9 @@ class SearchPagingSource(
     }
   }
 
-  override fun getRefreshKey(state: PagingState<Int, MultiSearchResponseItem>): Int? {
-    return state.anchorPosition?.let { anchorPosition ->
+  override fun getRefreshKey(state: PagingState<Int, MultiSearchResponseItem>): Int? =
+    state.anchorPosition?.let { anchorPosition ->
       val anchorPage = state.closestPageToPosition(anchorPosition)
       anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
     }
-  }
 }

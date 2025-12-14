@@ -113,7 +113,7 @@ interface TMDBApiService {
       "&with_watch_monetization_types=flatrate|free" +
       "&with_release_type=2|3"
   )
-  suspend fun getTvAiring(
+  suspend fun getAiringTv(
     @Query("watch_region") region: String,
     @Query("air_date.lte") airDateLte: String,
     @Query("air_date.gte") airDateGte: String,
