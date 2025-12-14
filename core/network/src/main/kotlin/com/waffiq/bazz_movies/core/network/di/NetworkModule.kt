@@ -29,33 +29,31 @@ import java.util.concurrent.TimeUnit
 class NetworkModule {
 
   @Provides
-  fun provideLoggingInterceptor(debugConfig: IDebugConfig): HttpLoggingInterceptor {
-    return HttpLoggingInterceptor().apply {
+  fun provideLoggingInterceptor(debugConfig: IDebugConfig): HttpLoggingInterceptor =
+    HttpLoggingInterceptor().apply {
       level = if (debugConfig.isDebug()) {
         HttpLoggingInterceptor.Level.BODY
       } else {
         HttpLoggingInterceptor.Level.NONE
       }
     }
-  }
 
   @Provides
-  fun provideMoshi(): Moshi {
-    return Moshi.Builder()
+  fun provideMoshi(): Moshi =
+    Moshi.Builder()
       .add(RatedResponseAdapter())
       .add(KotlinJsonAdapterFactory())
       .build()
-  }
 
   @Provides
-  fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-    return OkHttpClient.Builder()
+  fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    OkHttpClient.Builder()
       .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
       .readTimeout(TIME_OUT, TimeUnit.SECONDS)
       .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
       .addInterceptor(loggingInterceptor)
       .build()
-  }
+
 
   @Provides
   fun provideCountryIPApiService(client: OkHttpClient): CountryIPApiService {
