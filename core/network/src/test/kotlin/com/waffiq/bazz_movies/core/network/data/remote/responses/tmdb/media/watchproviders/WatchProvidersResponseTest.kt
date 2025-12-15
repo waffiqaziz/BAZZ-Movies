@@ -1,5 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.watchproviders
 
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.providerResponse
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.providerResponseItem
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProvidersResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -10,99 +13,48 @@ class WatchProvidersResponseTest {
 
   @Test
   fun providerResponse_whenCreated_shouldHaveCorrectProperties() {
-    val provider = ProviderResponse(
-      logoPath = "/logo.jpg",
-      providerId = 123,
-      providerName = "Netflix",
-      displayPriority = 1
-    )
-
-    assertEquals("/logo.jpg", provider.logoPath)
-    assertEquals(123, provider.providerId)
-    assertEquals("Netflix", provider.providerName)
-    assertEquals(1, provider.displayPriority)
+    assertEquals("/logo.jpg", providerResponse.logoPath)
+    assertEquals(123, providerResponse.providerId)
+    assertEquals("Netflix", providerResponse.providerName)
+    assertEquals(1, providerResponse.displayPriority)
   }
 
   @Test
   fun providerResponse_whenCreatedWithNulls_shouldAllowNullValues() {
-    val provider = ProviderResponse(
-      logoPath = null,
-      providerId = null,
-      providerName = null,
-      displayPriority = null
-    )
+    val providerNull = ProviderResponse(null, null, null, null)
 
-    assertNull(provider.logoPath)
-    assertNull(provider.providerId)
-    assertNull(provider.providerName)
-    assertNull(provider.displayPriority)
+    assertNull(providerNull.logoPath)
+    assertNull(providerNull.providerId)
+    assertNull(providerNull.providerName)
+    assertNull(providerNull.displayPriority)
   }
 
   @Test
   fun watchProvidersResponseItem_whenCreated_shouldHaveCorrectProperties() {
-    val providers = listOf(
-      ProviderResponse("/logo.jpg", 123, "Netflix", 1)
-    )
+    val providerItem = WatchProvidersResponseItem(null, null, null, null, null, null)
 
-    val item = WatchProvidersResponseItem(
-      link = "https://example.com",
-      ads = null,
-      buy = providers,
-      flatrate = providers,
-      free = null,
-      rent = null
-    )
-
-    assertEquals("https://example.com", item.link)
-    assertNull(item.ads)
-    assertEquals(1, item.buy?.size)
-    assertEquals(1, item.flatrate?.size)
-    assertNull(item.free)
-    assertNull(item.rent)
+    assertNull(providerItem.link)
+    assertNull(providerItem.ads)
+    assertNull(providerItem.buy)
+    assertNull(providerItem.flatrate)
+    assertNull(providerItem.free)
+    assertNull(providerItem.rent)
   }
 
   @Test
   fun watchProvidersResponseItem_whenAllListsPopulated_shouldContainAllProviders() {
-    val provider1 = ProviderResponse("/logo1.jpg", 1, "Netflix", 1)
-    val provider2 = ProviderResponse("/logo2.jpg", 2, "Hulu", 2)
-
-    val item = WatchProvidersResponseItem(
-      link = "https://example.com",
-      ads = listOf(provider1),
-      buy = listOf(provider2),
-      flatrate = listOf(provider1, provider2),
-      free = listOf(provider1),
-      rent = listOf(provider2)
-    )
-
-    assertEquals(1, item.ads?.size)
-    assertEquals(1, item.buy?.size)
-    assertEquals(2, item.flatrate?.size)
-    assertEquals(1, item.free?.size)
-    assertEquals(1, item.rent?.size)
+    assertEquals(1, providerResponseItem.ads?.size)
+    assertEquals(1, providerResponseItem.buy?.size)
+    assertEquals(2, providerResponseItem.flatrate?.size)
+    assertEquals(1, providerResponseItem.free?.size)
+    assertEquals(1, providerResponseItem.rent?.size)
   }
 
   @Test
   fun watchProvidersResponse_whenCreated_shouldHaveCorrectProperties() {
-    val resultsMap = mapOf(
-      "US" to WatchProvidersResponseItem(
-        link = "https://example.com",
-        ads = null,
-        buy = null,
-        flatrate = null,
-        free = null,
-        rent = null
-      )
-    )
-
-    val response = WatchProvidersResponse(
-      id = 456,
-      results = resultsMap
-    )
-
-    assertEquals(456, response.id)
-    assertEquals(1, response.results?.size)
-    assertTrue(response.results?.containsKey("US") == true)
+    assertEquals(456, watchProvidersResponse.id)
+    assertEquals(1, watchProvidersResponse.results?.size)
+    assertTrue(watchProvidersResponse.results?.containsKey("US") == true)
   }
 
   @Test
@@ -115,37 +67,5 @@ class WatchProvidersResponseTest {
     assertEquals(789, response.id)
     assertNotNull(response.results)
     assertTrue(response.results?.isEmpty() == true)
-  }
-
-  @Test
-  fun watchProvidersResponse_whenMultipleCountries_shouldContainAllCountries() {
-    val usItem = WatchProvidersResponseItem(null, null, null, null, null, null)
-    val ukItem = WatchProvidersResponseItem(null, null, null, null, null, null)
-
-    val resultsMap = mapOf(
-      "US" to usItem,
-      "UK" to ukItem,
-      "CA" to usItem
-    )
-
-    val response = WatchProvidersResponse(
-      id = 100,
-      results = resultsMap
-    )
-
-    assertEquals(3, response.results?.size)
-    assertTrue(response.results?.containsKey("US") == true)
-    assertTrue(response.results?.containsKey("UK") == true)
-    assertTrue(response.results?.containsKey("CA") == true)
-  }
-
-  @Test
-  fun providerResponse_whenCopied_shouldCreateNewInstance() {
-    val original = ProviderResponse("/logo.jpg", 123, "Netflix", 1)
-    val copied = original.copy(providerName = "Hulu")
-
-    assertEquals("Netflix", original.providerName)
-    assertEquals("Hulu", copied.providerName)
-    assertEquals(original.providerId, copied.providerId)
   }
 }

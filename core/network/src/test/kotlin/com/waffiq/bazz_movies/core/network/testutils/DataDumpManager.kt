@@ -1310,4 +1310,29 @@ object DataDumpManager {
     ratedResponse = ratedResponse,
     watchlist = true
   )
+
+  val providerResponse = ProviderResponse(
+    logoPath = "/logo.jpg",
+    providerId = 123,
+    providerName = "Netflix",
+    displayPriority = 1
+  )
+
+  val providerResponseItem = WatchProvidersResponseItem(
+    link = "https://example.com",
+    ads = listOf(providerResponse),
+    buy = listOf(providerResponse),
+    flatrate = listOf(providerResponse, providerResponse),
+    free = listOf(providerResponse),
+    rent = listOf(providerResponse)
+  )
+
+  val watchProvidersResultsMap = mapOf(
+    "US" to providerResponseItem
+  )
+
+  val watchProvidersResponse = WatchProvidersResponse(
+    id = 456,
+    results = watchProvidersResultsMap
+  )
 }
