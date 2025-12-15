@@ -1301,4 +1301,13 @@ object DataDumpManager {
     country = "ID",
     ip = "103.187.242.255"
   )
+
+  val ratedResponse = RatedResponse.Value(5.0)
+
+  val mediaStateResponse = MediaStateResponse(
+    id = 453,
+    favorite = true,
+    ratedResponse = ratedResponse,
+    watchlist = true
+  )
 }

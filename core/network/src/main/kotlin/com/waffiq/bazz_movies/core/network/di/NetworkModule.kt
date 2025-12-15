@@ -54,7 +54,6 @@ class NetworkModule {
       .addInterceptor(loggingInterceptor)
       .build()
 
-
   @Provides
   fun provideCountryIPApiService(client: OkHttpClient): CountryIPApiService {
     val retrofit = Retrofit.Builder()
