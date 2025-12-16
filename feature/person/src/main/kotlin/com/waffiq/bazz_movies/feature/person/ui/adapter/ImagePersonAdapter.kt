@@ -50,7 +50,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
       onItemClick.invoke(
         position,
         listCast.map { profilesItem ->
-          TMDB_IMG_LINK_POSTER_W1280 + profilesItem.filePath.toString()
+          TMDB_IMG_LINK_POSTER_W1280 + profilesItem.filePath.orEmpty()
         }
       )
     }
