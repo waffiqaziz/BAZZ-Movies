@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
@@ -78,7 +78,7 @@ class FeaturedFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentFeaturedBinding.inflate(inflater, container, false)
     return binding.root
@@ -114,7 +114,7 @@ class FeaturedFragment : Fragment() {
 
   private fun showMainPicture() {
     Glide.with(requireContext())
-      .load(TMDB_IMG_LINK_BACKDROP_W780 + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
+      .load(TMDB_IMG_LINK_BACKDROP_ORIGINAL + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(ic_bazz_placeholder_search)
       .transition(withCrossFade())
       .error(ic_broken_image)
