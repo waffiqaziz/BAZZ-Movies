@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_backdrops
@@ -151,7 +151,7 @@ class DetailUIManager(
         ic_backdrop_error_filled
 
       !dataExtra.backdropPath.isNullOrEmpty() ->
-        TMDB_IMG_LINK_BACKDROP_W780 + dataExtra.backdropPath
+        TMDB_IMG_LINK_BACKDROP_ORIGINAL + dataExtra.backdropPath
 
       !dataExtra.posterPath.isNullOrEmpty() ->
         TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
