@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W1280
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
@@ -67,7 +67,7 @@ class ImagePersonAdapterTest {
     val (clickedPosition, clickedList) = clickedItems[0]
     assertEquals(0, clickedPosition)
     assertEquals(
-      testProfiles.map { TMDB_IMG_LINK_POSTER_W500 + it.filePath },
+      testProfiles.map { TMDB_IMG_LINK_POSTER_W1280 + it.filePath },
       clickedList
     )
 
