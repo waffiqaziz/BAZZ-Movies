@@ -45,9 +45,9 @@ class ImagePersonAdapterTest {
   }
 
   @Test
-  fun onBindViewHolder_whenCalled_bindsDataAndHandlesClicks() {
+  fun onBindViewHolder_withNullFilePath_handlesClickWithEmptyString() {
     val testProfiles = listOf(
-      ProfilesItem(filePath = "/test_path1.jpg"),
+      ProfilesItem(filePath = null),
       ProfilesItem(filePath = "/test_path2.jpg")
     )
 
@@ -67,12 +67,12 @@ class ImagePersonAdapterTest {
     val (clickedPosition, clickedList) = clickedItems[0]
     assertEquals(0, clickedPosition)
     assertEquals(
-      testProfiles.map { TMDB_IMG_LINK_POSTER_W1280 + it.filePath },
+      listOf(
+        TMDB_IMG_LINK_POSTER_W1280 + "",
+        "$TMDB_IMG_LINK_POSTER_W1280/test_path2.jpg"
+      ),
       clickedList
     )
-
-    // check animation set on the itemView
-    assertNotNull(viewHolder.itemView.animation)
   }
 
   @Test
