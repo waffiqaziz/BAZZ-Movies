@@ -27,7 +27,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.IMDB_PERSON_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.INSTAGRAM_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TIKTOK_PERSON_LINK
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W780
 import com.waffiq.bazz_movies.core.common.utils.Constants.WIKIDATA_PERSON_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.X_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_CHANNEL_LINK
@@ -153,7 +153,7 @@ class PersonActivity : AppCompatActivity() {
     binding.collapse.title = dataExtra.name ?: dataExtra.originalName ?: getString(not_available)
     val imageToLoad = if (!dataExtra.profilePath.isNullOrEmpty()) {
       binding.ivPicture.contentDescription = "with_profile"
-      TMDB_IMG_LINK_POSTER_W500 + dataExtra.profilePath
+      TMDB_IMG_LINK_POSTER_W780 + dataExtra.profilePath
     } else {
       binding.ivPicture.contentDescription = "no_profile"
       ic_no_profile
