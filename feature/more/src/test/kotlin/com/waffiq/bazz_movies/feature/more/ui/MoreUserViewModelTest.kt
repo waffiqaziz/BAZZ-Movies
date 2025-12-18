@@ -53,7 +53,7 @@ class MoreUserViewModelTest {
     viewModel.deleteSession(sessionId)
     viewModel.state.test {
       assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Success, awaitItem())
+      assertEquals(UIState.Success(Unit), awaitItem())
       cancelAndIgnoreRemainingEvents()
     }
   }

@@ -16,8 +16,8 @@ class MoreUserViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase,
 ) : ViewModel() {
 
-  private val _state = MutableStateFlow<UIState>(UIState.Idle)
-  val state: StateFlow<UIState> get() = _state
+  private val _state = MutableStateFlow<UIState<Unit>>(UIState.Idle)
+  val state: StateFlow<UIState<Unit>> get() = _state
 
   fun deleteSession(sessionId: String) {
     viewModelScope.launch {
@@ -25,7 +25,7 @@ class MoreUserViewModel @Inject constructor(
         when (it) {
           is Outcome.Loading -> _state.value = UIState.Loading
           is Outcome.Error -> _state.value = UIState.Error(it.message)
-          is Outcome.Success<*> -> _state.value = UIState.Success
+          is Outcome.Success<*> -> _state.value = UIState.Success(Unit)
         }
       }
     }

@@ -48,7 +48,7 @@ class MoreLocalViewModelTest {
     viewModel.state.test {
       assertEquals(UIState.Idle, awaitItem())
       assertEquals(UIState.Loading, awaitItem())
-      assertEquals(UIState.Success, awaitItem())
+      assertEquals(UIState.Success(Unit), awaitItem())
       cancelAndIgnoreRemainingEvents()
     }
   }

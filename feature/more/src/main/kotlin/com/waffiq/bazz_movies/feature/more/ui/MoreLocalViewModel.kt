@@ -17,8 +17,8 @@ class MoreLocalViewModel @Inject constructor(
   private val localDatabaseUseCase: LocalDatabaseUseCase,
 ) : ViewModel() {
 
-  private val _state = MutableStateFlow<UIState>(UIState.Idle)
-  val state: StateFlow<UIState> get() = _state
+  private val _state = MutableStateFlow<UIState<Unit>>(UIState.Idle)
+  val state: StateFlow<UIState<Unit>> get() = _state
 
   fun deleteAll() {
     viewModelScope.launch {
@@ -26,7 +26,7 @@ class MoreLocalViewModel @Inject constructor(
       delay(timeMillis = 450)
 
       when (val result = localDatabaseUseCase.deleteAll()) {
-        is DbResult.Success -> _state.value = UIState.Success
+        is DbResult.Success -> _state.value = UIState.Success(Unit)
         is DbResult.Error -> _state.value = UIState.Error(result.errorMessage)
       }
     }

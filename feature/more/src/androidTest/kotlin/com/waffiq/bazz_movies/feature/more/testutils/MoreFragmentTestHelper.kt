@@ -20,7 +20,7 @@ interface MoreFragmentTestHelper {
   var moreFragment: MoreFragment
 
   val mockRegionPref: MutableLiveData<String>
-  val mockUIState: MutableStateFlow<UIState>
+  val mockUIState: MutableStateFlow<UIState<Unit>>
   val mockCountryCode: MutableLiveData<String>
   val mockUserModel: MutableLiveData<UserModel>
 

@@ -182,7 +182,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     mockUIState.emit(UIState.Error("Test error"))
     advanceUntilIdle()
 
-    mockUIState.emit(UIState.Success)
+    mockUIState.emit(UIState.Success(Unit))
     advanceUntilIdle()
   }
 
@@ -236,7 +236,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() = runTest {
     setupGuestUser()
     performSignOutAction()
-    mockUIState.emit(UIState.Success)
+    mockUIState.emit(UIState.Success(Unit))
 
     // manual checking
   }
@@ -343,6 +343,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     onView(withText("Indonesia"))
       .inRoot(isDialog())
       .perform(click())
+    shortDelay()
 
     verify { mockUserPrefViewModel.saveRegionPref(any()) }
   }

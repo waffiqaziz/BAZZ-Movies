@@ -22,7 +22,7 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
   override lateinit var moreFragment: MoreFragment
 
   override val mockRegionPref = MutableLiveData<String>()
-  override val mockUIState = MutableStateFlow<UIState>(UIState.Idle)
+  override val mockUIState = MutableStateFlow<UIState<Unit>>(UIState.Idle)
   override val mockCountryCode = MutableLiveData<String>()
   override val mockUserModel = MutableLiveData<UserModel>()
 
