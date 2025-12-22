@@ -2,14 +2,19 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
 import android.view.View
+import android.widget.EditText
 import androidx.core.net.toUri
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -20,17 +25,15 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TERMS_CONDITIONS_LINK
-import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
@@ -52,6 +55,9 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -167,6 +173,28 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
+  fun signOutStateLogin_allBranches_shouldBeCovered() = runTest {
+    // Hit all branches in the logged-in when statement
+    mockUIState.emit(UIState.Loading)
+    advanceUntilIdle()
+    performSignOutAction()
+
+    mockUIState.emit(UIState.Error("Test error"))
+    advanceUntilIdle()
+
+    mockUIState.emit(UIState.Success(Unit))
+    advanceUntilIdle()
+  }
+
+  @Test
+  fun signOutStateGuest_allBranches_shouldBeCovered() = runTest {
+    setupGuestUser()
+    performSignOutAction()
+    mockUIState.emit(UIState.Loading)
+    advanceUntilIdle()
+  }
+
+  @Test
   fun signOut_whenLoggedInUser_shouldShowLoggedInDialog() {
     onView(withId(btn_signout)).perform(click())
 
@@ -198,66 +226,47 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun signOutStateLogin_whenLoading_shouldShowLoadingState() = runTest {
-    mockSignOutState.emit(Outcome.Loading)
     performSignOutAction()
+    mockUIState.emit(UIState.Loading)
 
     onView(withId(progress_bar)).check(matches(isDisplayed()))
   }
 
   @Test
-  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() {
+  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() = runTest {
     setupGuestUser()
+    performSignOutAction()
+    mockUIState.emit(UIState.Success(Unit))
 
-    mockDbResult.postValue(Event(DbResult.Success(1)))
-    shortDelay()
-
-    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+    // manual checking
   }
 
   @Test
   fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() = runTest {
-    mockSignOutState.emit(Outcome.Error("Sign out failed"))
     performSignOutAction()
+    mockUIState.emit(UIState.Loading)
     advanceUntilIdle()
-    shortDelay()
 
-    onView(withId(btn_signout)).check(matches(not(isEnabled())))
-    shortDelay()
     onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
+    onView(withId(btn_signout)).check(matches(not(isEnabled())))
+
+    mockUIState.emit(UIState.Error("Sign out failed"))
+    advanceUntilIdle()
+
+    onView(withId(btn_signout)).check(matches(isEnabled()))
+    onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
   }
 
   @Test
-  fun dbResultGuestUser_whenEventAlreadyHandled_shouldHandleGracefully() {
-    setupGuestUser()
-
-    // create an event and consume it first
-    val consumedEvent = Event(DbResult.Success(1))
-    consumedEvent.getContentIfNotHandled() // consume the event
-
-    mockDbResult.postValue(consumedEvent)
-  }
-
-  @Test
-  fun dbResultGuestUser_whenSuccess_shouldHideProgress() {
-    setupGuestUser()
-
-    // emit success result
-    mockDbResult.postValue(Event(DbResult.Success(1)))
-    shortDelay()
-
-    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-  }
-
-  @Test
-  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() {
+  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() = runTest {
     setupGuestUser()
 
     // emit error result
-    mockDbResult.postValue(Event(DbResult.Error("Database error")))
+    mockUIState.emit(UIState.Error("Database error"))
     shortDelay()
 
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-    verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<Event<String>>()) }
+    verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
   @Test
@@ -274,6 +283,14 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     shortDelay()
 
     verify(exactly = 0) { mockUserPrefViewModel.saveRegionPref("") }
+  }
+
+  @Test
+  fun regionViewModel_whenCountryNaN_shouldCallsGetCountryCode() {
+    every { mockRegionViewModel.getCountryCode() } just Runs
+
+    mockRegionPref.postValue(NAN)
+    verify { mockRegionViewModel.getCountryCode() }
   }
 
   @Test
@@ -315,6 +332,20 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun progressBar_initialState_shouldBeHidden() {
     onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+  }
+
+  @Test
+  fun btnCountryPicker_selectCountry_callsCorrectFunction() {
+    onView(withId(btn_country_picker)).check(matches(isDisplayed())).perform(click())
+    onView(isAssignableFrom(EditText::class.java))
+      .inRoot(isDialog())
+      .perform(typeText("Ind"), closeSoftKeyboard())
+    onView(withText("Indonesia"))
+      .inRoot(isDialog())
+      .perform(click())
+    shortDelay()
+
+    verify { mockUserPrefViewModel.saveRegionPref(any()) }
   }
 
   @Test

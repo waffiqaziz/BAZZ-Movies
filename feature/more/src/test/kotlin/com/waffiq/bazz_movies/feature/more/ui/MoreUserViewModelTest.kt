@@ -1,21 +1,21 @@
 package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -40,44 +40,57 @@ class MoreUserViewModelTest {
     viewModel = MoreUserViewModel(authTMDbAccountUseCase)
   }
 
-  @Test
-  fun deleteSession_whenSuccessful_emitsNetworkResultSuccess() = testScope.runTest {
-    val expectedResult = Outcome.Success(Post(success = true))
-    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
-      emit(expectedResult)
-    }
-
-    val results = mutableListOf<Outcome<Post>?>()
-    val job = launch { viewModel.signOutState.toList(results) }
-    viewModel.deleteSession(sessionId)
-    advanceUntilIdle()
-
-    assertEquals(listOf(null, expectedResult), results)
-    job.cancel()
+  @After
+  fun tearDown() {
+    Dispatchers.resetMain()
   }
 
   @Test
-  fun deleteSession_whenUnsuccessful_emitsNetworkResultError() = testScope.runTest {
-    val expectedError = Outcome.Error("Error deleting session")
-    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flow {
-      emit(expectedError)
-    }
+  fun deleteSession_whenSuccessful_returnsSuccess() = testScope.runTest {
+    val expectedResult = Outcome.Success(Post(success = true))
+    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedResult)
 
-    val results = mutableListOf<Outcome<Post>?>()
-    val job = launch { viewModel.signOutState.toList(results) }
     viewModel.deleteSession(sessionId)
-    advanceUntilIdle()
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      assertEquals(UIState.Success(Unit), awaitItem())
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
 
-    assertEquals(listOf(null, expectedError), results)
-    job.cancel()
+  @Test
+  fun deleteSession_whenUnsuccessful_returnsError() = testScope.runTest {
+    val errorMessage = "Error deleting session"
+    val expectedError = Outcome.Error(errorMessage)
+    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedError)
+
+    viewModel.deleteSession(sessionId)
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      assertEquals(UIState.Error(errorMessage), awaitItem())
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
+
+  @Test
+  fun deleteSession_whenLoading_returnsLoading() = testScope.runTest {
+    val expectedLoading = Outcome.Loading
+    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedLoading)
+
+    viewModel.deleteSession(sessionId)
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      assertEquals(UIState.Loading, awaitItem())
+      cancelAndIgnoreRemainingEvents()
+    }
   }
 
   @Test
   fun removeState_whenCalled_updatesSignOutStateToLoading() = testScope.runTest {
     viewModel.removeState()
-    advanceUntilIdle()
-
-    val result = viewModel.signOutState.first() // `first()` collects the first emitted value
-    assertEquals(Outcome.Loading, result)
+    viewModel.state.test {
+      assertEquals(UIState.Idle, awaitItem())
+      cancelAndIgnoreRemainingEvents()
+    }
   }
 }

@@ -17,6 +17,7 @@ dependencies {
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
+  testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.datastore.preferences)
   androidTestImplementation(libs.androidx.espresso.core)
