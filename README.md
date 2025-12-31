@@ -140,7 +140,7 @@ Please read this [page](CONTRIBUTING.md).
 This application is released under the [Apache Version 2.0 License](LICENSE).
 
 ```txt
-Copyright (C) 2024-2025 Waffiq Aziz
+Copyright (C) 2024-2026 Waffiq Aziz
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
