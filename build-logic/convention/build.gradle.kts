@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   `kotlin-dsl`
@@ -14,14 +13,14 @@ java {
   targetCompatibility = JavaVersion.VERSION_21
 }
 
-tasks.withType<KotlinCompile> {
+kotlin {
   compilerOptions {
     jvmTarget.set(JvmTarget.JVM_21)
   }
 }
 
 dependencies {
-  compileOnly(libs.android.gradlePlugin)
+  compileOnly(libs.android.gradleApiPlugin)
   compileOnly(libs.android.tools.common)
   compileOnly(libs.detekt.gradlePlugin)
   compileOnly(libs.firebase.crashlytics.gradlePlugin)
@@ -73,7 +72,7 @@ gradlePlugin {
       id = libs.plugins.bazzmovies.hilt.test.get().pluginId
       implementationClass = "HiltTestConventionPlugin"
     }
-    register("ksp") {
+    register("glide") {
       id = libs.plugins.bazzmovies.glide.get().pluginId
       implementationClass = "GlideConventionPlugin"
     }

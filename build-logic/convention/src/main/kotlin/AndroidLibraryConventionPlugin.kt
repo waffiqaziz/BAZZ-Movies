@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureKotlinAndroid
 import com.waffiq.bazz_movies.configureMockitoAgent
@@ -21,10 +21,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         configureKotlinAndroid(this)
         configureCommonAndroidSettings(this)
         configureMockitoAgent()
-        defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
         defaultConfig.consumerProguardFiles("consumer-rules.pro")
+        testOptions.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
         // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // testOptions.animationsDisabled = true
         // The resource prefix is derived from the module name,
         // so resources inside ":core:module1" must be prefixed with "core_module1_"
         resourcePrefix =
