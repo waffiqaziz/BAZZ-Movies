@@ -1,5 +1,5 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.waffiq.bazz_movies.configureJacoco
 import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
@@ -11,7 +11,7 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply(plugin = "jacoco")
-      val androidExtension = extensions.getByType<BaseAppModuleExtension>()
+      val androidExtension = extensions.getByType<ApplicationExtension>()
 
       androidExtension.buildTypes.configureEach {
         enableAndroidTestCoverage = true
