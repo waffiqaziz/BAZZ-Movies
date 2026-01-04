@@ -93,14 +93,20 @@
       groupName: 'testing libraries',
       matchPackageNames: [
         '/junit/',
-        '/mockito/',
-        '/mockk/',
-        '/robolectric/',
         '/androidx.test/',
         '/androidx.arch.core:core-testing/',
         '/com.google.truth/',
       ],
       commitMessagePrefix: 'chore(deps):',
+    },
+    {
+      groupName: 'mocking libraries',
+      matchPackageNames: [
+        '/mockito/',
+        '/mockk/',
+      ],
+      separateMajorMinor: true,
+      commitMessagePrefix: 'chore(deps-mock):',
     },
     {
       groupName: 'hilt dependency injection',
