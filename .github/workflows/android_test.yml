@@ -405,12 +405,12 @@ jobs:
             echo "❌ Coverage report not found"
           fi
 
-      # https://github.com/codecov/codecov-action/commit/0565863a31f2c772f9f0395002a31e3f06189574
-      # v5.4.0
+      # https://github.com/codecov/codecov-action/commit/671740ac38dd9b0130fbe1cec585b89eea48d3de
+      # v5.5.2
       # Upload the same combined report with different flags for each module
       - name: Upload coverage with app flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: app
@@ -420,7 +420,7 @@ jobs:
 
       - name: Upload coverage with core-common flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-common
@@ -430,7 +430,7 @@ jobs:
 
       - name: Upload coverage with core-coroutines flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-coroutines
@@ -440,7 +440,7 @@ jobs:
 
       - name: Upload coverage with core-data flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-data
@@ -450,7 +450,7 @@ jobs:
 
       - name: Upload coverage with core-database flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-database
@@ -460,7 +460,7 @@ jobs:
 
       - name: Upload coverage with core-domain flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-domain
@@ -470,7 +470,7 @@ jobs:
 
       - name: Upload coverage with core-favoritewatchlist flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-favoritewatchlist
@@ -480,7 +480,7 @@ jobs:
 
       - name: Upload coverage with core-instrumentationtest flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-instrumentationtest
@@ -490,7 +490,7 @@ jobs:
 
       - name: Upload coverage with core-mappers flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-mappers
@@ -500,7 +500,7 @@ jobs:
 
       - name: Upload coverage with core-movie flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-movie
@@ -510,7 +510,7 @@ jobs:
 
       - name: Upload coverage with core-network flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-network
@@ -520,7 +520,7 @@ jobs:
 
       - name: Upload coverage with core-test flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-test
@@ -530,7 +530,7 @@ jobs:
 
       - name: Upload coverage with core-uihelper flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-uihelper
@@ -540,7 +540,7 @@ jobs:
 
       - name: Upload coverage with core-utils flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-utils
@@ -550,7 +550,7 @@ jobs:
 
       - name: Upload coverage with core-user flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: core-user
@@ -560,7 +560,7 @@ jobs:
 
       - name: Upload coverage with feature-about flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-about
@@ -570,7 +570,7 @@ jobs:
 
       - name: Upload coverage with feature-detail flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-detail
@@ -580,7 +580,7 @@ jobs:
 
       - name: Upload coverage with feature-favorite flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-favorite
@@ -590,7 +590,7 @@ jobs:
 
       - name: Upload coverage with feature-home flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-home
@@ -600,7 +600,7 @@ jobs:
 
       - name: Upload coverage with feature-login flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-login
@@ -610,7 +610,7 @@ jobs:
 
       - name: Upload coverage with feature-more flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-more
@@ -620,7 +620,7 @@ jobs:
 
       - name: Upload coverage with feature-person flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-person
@@ -630,7 +630,7 @@ jobs:
 
       - name: Upload coverage with feature-search flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-search
@@ -640,7 +640,7 @@ jobs:
 
       - name: Upload coverage with feature-watchlist flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           flags: feature-watchlist
@@ -650,7 +650,7 @@ jobs:
 
       - name: Upload patch coverage reports to Codecov
         if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@78f372e97e6e2f82dc51b004c5fb646501ee30ae
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -687,12 +687,11 @@ jobs:
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
 
-      # https://github.com/codecov/test-results-action/commit/f2dba722c67b86c6caa034178c6e4d35335f6706
-      # v1.1.0
       - name: Upload Test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
+          report_type: test_results
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload Test Reports (if needed)
