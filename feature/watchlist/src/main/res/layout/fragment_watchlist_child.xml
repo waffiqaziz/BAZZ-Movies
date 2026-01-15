@@ -4,8 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".ui.MyWatchlistTvSeriesFragment">
+  android:layout_height="match_parent">
 
   <!-- Main list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,7 +13,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_watchlist_tv"
+      android:id="@+id/rv_watchlist"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipToPadding="false"
@@ -53,5 +52,14 @@
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
+
+  <!-- for testing only -->
+  <View
+    android:id="@+id/snackbar_anchor_test"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:paddingBottom="75dp"
+    android:layout_gravity="bottom"
+    android:visibility="invisible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

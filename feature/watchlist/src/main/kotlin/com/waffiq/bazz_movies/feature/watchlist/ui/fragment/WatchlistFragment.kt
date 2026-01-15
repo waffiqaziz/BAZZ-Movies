@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.watchlist.ui
+package com.waffiq.bazz_movies.feature.watchlist.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,14 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.common.Constants.tabMoviesTvHeadingArray
-import com.waffiq.bazz_movies.core.uihelper.utils.GenericViewPagerAdapter
-import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentMyWatchlistBinding
+import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistBinding
+import com.waffiq.bazz_movies.feature.watchlist.ui.WatchlistViewPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyWatchlistFragment : Fragment() {
+class WatchlistFragment : Fragment() {
 
-  private var _binding: FragmentMyWatchlistBinding? = null
+  private var _binding: FragmentWatchlistBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private lateinit var viewpager: ViewPager2
@@ -27,9 +27,9 @@ class MyWatchlistFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
-    _binding = FragmentMyWatchlistBinding.inflate(inflater, container, false)
+    _binding = FragmentWatchlistBinding.inflate(inflater, container, false)
     return binding.root
   }
 
@@ -43,11 +43,7 @@ class MyWatchlistFragment : Fragment() {
     tabLayout = binding.tabs
     viewpager.isUserInputEnabled = false // disable swiping between tabs
 
-    val adapter = GenericViewPagerAdapter(
-      childFragmentManager,
-      lifecycle,
-      listOf(MyWatchlistMoviesFragment(), MyWatchlistTvSeriesFragment())
-    )
+    val adapter = WatchlistViewPagerAdapter(childFragmentManager, lifecycle)
     viewpager.adapter = adapter
 
     tabLayoutMediator = TabLayoutMediator(tabLayout, viewpager) { tab, position ->

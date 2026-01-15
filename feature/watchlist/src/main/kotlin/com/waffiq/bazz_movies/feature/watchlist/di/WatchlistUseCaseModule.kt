@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.feature.watchlist.di
 
-import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistMovieInteractor
-import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistMovieUseCase
-import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistTvInteractor
-import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.GetWatchlistTvUseCase
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlistmovie.GetWatchlistMovieInteractor
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlistmovie.GetWatchlistMovieUseCase
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlisttv.GetWatchlistTvInteractor
+import com.waffiq.bazz_movies.feature.watchlist.domain.usecase.watchlisttv.GetWatchlistTvUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
