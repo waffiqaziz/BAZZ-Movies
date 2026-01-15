@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.more.testutils
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
@@ -40,6 +41,7 @@ interface MoreFragmentTestHelper {
   fun setUp() {
     Intents.init()
     moreFragment = launchFragmentInHiltContainer<MoreFragment>()
+    shortDelay()
   }
 
   @After

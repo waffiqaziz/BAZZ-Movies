@@ -6,6 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.action.ViewActions.swipeDown
+import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -25,6 +26,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.metascore_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.id.rotten_tomatoes_viewGroup
+import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
 import com.waffiq.bazz_movies.feature.detail.R.id.tmdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
@@ -201,13 +203,16 @@ class MediaDetailActivityInteractionTest :
       setupLoginUser()
 
       // submit rating without selecting any rating
+      onView(withId(score_scrollview)).perform(swipeLeft())
       onView(withId(your_score_viewGroup)).perform(click())
       onView(withText(submit)).perform(click())
 
       // press cancel button
+      onView(withId(score_scrollview)).perform(swipeLeft())
       onView(withId(your_score_viewGroup)).perform(click())
       onView(withText(cancel)).perform(click())
 
+      onView(withId(score_scrollview)).perform(swipeLeft())
       onView(withId(your_score_viewGroup)).perform(click())
       onView(withId(rating_bar_action)).perform(SetRatingAction(3.5f))
       onView(withText(submit)).perform(click())
@@ -366,6 +371,7 @@ class MediaDetailActivityInteractionTest :
   }
 
   private fun submitRating() {
+    onView(withId(score_scrollview)).perform(swipeLeft())
     onView(withId(your_score_viewGroup)).perform(click())
     onView(withId(rating_bar_action)).perform(SetRatingAction(5f))
     onView(withText(submit)).perform(click())
