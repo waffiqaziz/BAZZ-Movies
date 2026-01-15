@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.favorite.ui.fragment
+package com.waffiq.bazz_movies.feature.watchlist.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -17,10 +17,10 @@ import com.waffiq.bazz_movies.core.common.utils.Constants
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_dark
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_dark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_trash
-import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
-import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
+import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
+import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
@@ -38,8 +38,8 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils
 import com.waffiq.bazz_movies.core.utils.FlowUtils
 import com.waffiq.bazz_movies.core.utils.GeneralHelper
-import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
-import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
+import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
+import com.waffiq.bazz_movies.feature.watchlist.ui.viewmodel.WatchlistViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -53,7 +53,7 @@ import javax.inject.Inject
  * @param T The type of data, which [MediaItem].
  */
 @Suppress("TooManyFunctions")
-abstract class BaseFavoriteFragment<T : Any> : Fragment() {
+abstract class BaseWatchlistFragment<T : Any> : Fragment() {
 
   @Inject
   lateinit var navigator: INavigator
@@ -66,7 +66,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   protected var mSnackbar: Snackbar? = null
 
   // ViewModels
-  protected val favoriteViewModel: FavoriteViewModel by viewModels()
+  protected val watchlistViewModel: WatchlistViewModel by viewModels()
   protected val sharedDBViewModel: SharedDBViewModel by viewModels()
   protected val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
   protected val baseViewModel: BaseViewModel by viewModels({ requireParentFragment() })
@@ -78,18 +78,18 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   protected var isWantToDelete = false
   protected var isUndo = false
 
-  protected abstract val binding: FragmentFavoriteChildBinding
+  protected abstract val binding: FragmentWatchlistChildBinding
 
   // Methods to be implemented by subclasses
   protected abstract fun getPagingAdapter(): PagingDataAdapter<T, *>
-  protected abstract fun getFavoriteData(token: String): Flow<PagingData<T>>
+  protected abstract fun getWatchlistData(token: String): Flow<PagingData<T>>
   protected abstract fun setupPagingAdapterWithFooter()
   protected abstract fun notifyPagingAdapterChanged(position: Int)
   protected abstract fun refreshPagingAdapter()
 
-  protected abstract fun getDBFavoriteData(): LiveData<List<Favorite>>
-  protected abstract fun createFavoriteModel(mediaId: Int): FavoriteModel
-  protected abstract fun postToAddWatchlist(title: String, mediaId: Int)
+  protected abstract fun getDBWatchlistData(): LiveData<List<Favorite>>
+  protected abstract fun createWatchlistModel(mediaId: Int): WatchlistModel
+  protected abstract fun postToAddFavorite(title: String, mediaId: Int)
   protected abstract fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,9 +128,9 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * Setup the RecyclerView with a vertical linear layout manager and default item animator.
    */
   private fun setupRecyclerView() {
-    binding.rvFavorite.layoutManager =
+    binding.rvWatchlist.layoutManager =
       GeneralHelper.initLinearLayoutManagerVertical(requireContext())
-    binding.rvFavorite.itemAnimator = DefaultItemAnimator()
+    binding.rvWatchlist.itemAnimator = DefaultItemAnimator()
   }
 
   /**
@@ -146,15 +146,15 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       },
       context = requireContext(),
       deleteIconResId = ic_trash,
-      actionIconResId = ic_bookmark_dark,
+      actionIconResId = ic_hearth_dark,
     )
 
     val itemTouchHelper = ItemTouchHelper(swipeCallback)
-    itemTouchHelper.attachToRecyclerView(binding.rvFavorite)
+    itemTouchHelper.attachToRecyclerView(binding.rvWatchlist)
   }
 
   /**
-   * Handle left swipe action on a RecyclerView item to add to watchlist
+   * Handle left swipe action on a RecyclerView item to add to favorite
    *
    * @param login Boolean indicating if the user is logged in.
    * @param viewHolder The ViewHolder of the swiped item.
@@ -165,7 +165,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
       isWantToDelete = false
-      postToAddWatchlist(DetailDataUtils.titleHandler(itemData), itemData.id)
+      postToAddFavorite(DetailDataUtils.titleHandler(itemData), itemData.id)
       notifyPagingAdapterChanged(position)
     } else {
       val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
@@ -187,7 +187,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
       isWantToDelete = true
-      postRemoveFavorite(DetailDataUtils.titleHandler(itemData), itemData.id)
+      postRemoveWatchlist(DetailDataUtils.titleHandler(itemData), itemData.id)
       notifyPagingAdapterChanged(position)
     } else {
       val fav = (viewHolder as FavoriteAdapterDB.ViewHolder).data
@@ -233,7 +233,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       getPagingAdapter().refresh()
     }
 
-    FlowUtils.collectAndSubmitData(this, { getFavoriteData(userToken) }, getPagingAdapter())
+    FlowUtils.collectAndSubmitData(this, { getWatchlistData(userToken) }, getPagingAdapter())
   }
 
   /**
@@ -242,7 +242,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * Also manages the paging adapter's load state and error handling.
    */
   private fun handleSnackbarLoginUser() {
-    favoriteViewModel.snackBarAlready.observe(viewLifecycleOwner) {
+    watchlistViewModel.snackBarAlready.observe(viewLifecycleOwner) {
       mSnackbar = SnackbarAlreadyUtils.snackBarAlready(
         requireContext(),
         requireActivity().findViewById(snackbarAnchor),
@@ -252,7 +252,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       )
     }
 
-    favoriteViewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
+    watchlistViewModel.snackBarAdded.observe(viewLifecycleOwner) { event ->
       event.getContentIfNotHandled()?.let {
         if (!isUndo) {
           if (it.isSuccess && isWantToDelete) {
@@ -273,7 +273,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     viewLifecycleOwner.handlePagingLoadState(
       adapterPaging = getPagingAdapter(),
       loadStateFlow = getPagingAdapter().loadStateFlow,
-      recyclerView = binding.rvFavorite,
+      recyclerView = binding.rvWatchlist,
       progressBar = binding.progressBar,
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.root,
@@ -291,11 +291,11 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   /**
    * Post a request to remove a favorite item from TMDB.
    *
-   * @param title The title of the media item to be removed from favorites.
-   * @param mediaId The ID of the media item to be removed from favorites.
+   * @param title The title of the media item to be removed from watchlist.
+   * @param mediaId The ID of the media item to be removed from watchlist.
    */
-  private fun postRemoveFavorite(title: String, mediaId: Int) {
-    favoriteViewModel.postFavorite(createFavoriteModel(mediaId).copy(favorite = false), title)
+  private fun postRemoveWatchlist(title: String, mediaId: Int) {
+    watchlistViewModel.postWatchlist(createWatchlistModel(mediaId).copy(watchlist = false), title)
   }
 
   /**
@@ -311,24 +311,24 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     fav: FavoriteModel?,
     wtc: WatchlistModel?,
   ) {
-    val delete = isWantToDelete && fav != null
-    val addToWatchlist = !isWantToDelete && wtc != null
+    val delete = isWantToDelete && wtc != null
+    val addToWatchlist = !isWantToDelete && fav != null
     if (delete || addToWatchlist) {
       mSnackbar = Snackbar.make(
         requireActivity().findViewById(snackbarAnchor),
         HtmlCompat.fromHtml(
           "<b>$title</b> " +
-            if (delete) getString(removed_from_favorite) else getString(added_to_watchlist),
+            if (delete) getString(removed_from_watchlist) else getString(added_to_favorite),
           HtmlCompat.FROM_HTML_MODE_LEGACY
         ),
         Snackbar.LENGTH_LONG
       ).setAction(getString(undo)) {
         isUndo = true
-        if (fav != null) {
-          favoriteViewModel.postFavorite(fav.copy(favorite = true), title)
+        if (wtc != null) {
+          watchlistViewModel.postWatchlist(wtc.copy(watchlist = true), title)
           isWantToDelete = !isWantToDelete
-        } else if (wtc != null) {
-          favoriteViewModel.postWatchlist(wtc.copy(watchlist = false), title)
+        } else if (fav != null) {
+          watchlistViewModel.postFavorite(fav.copy(favorite = false), title)
         }
       }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
         .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
@@ -344,30 +344,30 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * Perform swipe action for guest users to add/remove items from favorites or watchlist.
    * Updates the local database and shows an undo Snackbar.
    *
-   * @param isWantToDelete Boolean indicating if the action is to delete (true) or add to watchlist (false).
-   * @param fav The [Favorite] item being acted upon.
+   * @param isWantToDelete Boolean indicating if the action is to delete (true) or add to favorite (false).
+   * @param wtc The [Favorite] item being acted upon.
    * @param pos The position of the item in the adapter.
    */
-  private fun performSwipeGuestUser(isWantToDelete: Boolean, fav: Favorite, pos: Int) {
+  private fun performSwipeGuestUser(isWantToDelete: Boolean, wtc: Favorite, pos: Int) {
     if (isWantToDelete) {
-      if (fav.isWatchlist) {
-        sharedDBViewModel.updateToRemoveFromFavoriteDB(fav)
+      if (wtc.isFavorite) {
+        sharedDBViewModel.updateToRemoveFromWatchlistDB(wtc)
       } else {
-        sharedDBViewModel.delFromFavoriteDB(fav)
+        sharedDBViewModel.delFromFavoriteDB(wtc)
       }
-      showSnackBarUndoGuest(fav.title, pos)
+      showSnackBarUndoGuest(wtc.title, pos)
     } else {
-      if (fav.isWatchlist) {
+      if (wtc.isFavorite) {
         mSnackbar = SnackbarAlreadyUtils.snackBarAlready(
           requireContext(),
           requireActivity().findViewById(snackbarAnchor),
           requireActivity().findViewById(snackbarAnchor),
-          Event(fav.title),
+          Event(wtc.title),
           false
         )
       } else {
-        sharedDBViewModel.updateToWatchlistDB(fav)
-        showSnackBarUndoGuest(fav.title, pos)
+        sharedDBViewModel.updateToFavoriteDB(wtc)
+        showSnackBarUndoGuest(wtc.title, pos)
       }
     }
   }
@@ -377,14 +377,14 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
    * Observes local database changes and updates the RecyclerView accordingly.
    */
   private fun setDataGuestUserProgressBarEmptyView() {
-    binding.rvFavorite.adapter = adapterDB
-    getDBFavoriteData().observe(viewLifecycleOwner) {
+    binding.rvWatchlist.adapter = adapterDB
+    getDBWatchlistData().observe(viewLifecycleOwner) {
       adapterDB.setFavorite(it)
       if (it.isNotEmpty()) {
-        binding.rvFavorite.visibility = View.VISIBLE
+        binding.rvWatchlist.visibility = View.VISIBLE
         binding.illustrationNoDataView.root.visibility = View.GONE
       } else {
-        binding.rvFavorite.visibility = View.GONE
+        binding.rvWatchlist.visibility = View.GONE
         binding.illustrationNoDataView.root.visibility = View.VISIBLE
       }
       binding.progressBar.visibility = View.GONE
@@ -403,21 +403,21 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       requireActivity().findViewById(snackbarAnchor),
       HtmlCompat.fromHtml(
         "<b>$title</b> " +
-          if (isWantToDelete) getString(removed_from_favorite) else getString(added_to_watchlist),
+          if (isWantToDelete) getString(removed_from_watchlist) else getString(added_to_favorite),
         HtmlCompat.FROM_HTML_MODE_LEGACY
       ),
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
-      sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { fav ->
+      sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { wtc ->
         if (isWantToDelete) {
-          if (fav.isWatchlist) {
-            sharedDBViewModel.updateToFavoriteDB(fav)
+          if (wtc.isFavorite) {
+            sharedDBViewModel.updateToWatchlistDB(wtc)
           } else {
-            sharedDBViewModel.insertToDB(fav.copy(isFavorite = true))
+            sharedDBViewModel.insertToDB(wtc.copy(isWatchlist = true))
           }
-          binding.rvFavorite.scrollToPosition(pos)
+          binding.rvWatchlist.scrollToPosition(pos)
         } else {
-          sharedDBViewModel.updateToRemoveFromWatchlistDB(fav)
+          sharedDBViewModel.updateToRemoveFromFavoriteDB(wtc)
         }
       }
     }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
