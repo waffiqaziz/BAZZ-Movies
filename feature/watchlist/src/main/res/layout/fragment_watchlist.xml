@@ -8,7 +8,6 @@
   android:orientation="vertical"
   tools:context=".ui.fragment.WatchlistFragment">
 
-  <!-- Toolbar -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
@@ -46,7 +45,6 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <!-- ViewPager2 -->
   <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/view_pager"
     android:layout_width="match_parent"

@@ -115,6 +115,7 @@
         <!--        UPPER SECTION       -->
         <!-- ========================== -->
         <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/constraint_layout_upper"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:paddingBottom="@dimen/default_margin_parent_20"
@@ -196,24 +197,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_picture_backdrop"
             app:shapeAppearanceOverlay="@style/roundedCornersPoster"
-            tools:layout_width="120dp"
             tools:src="@drawable/ic_bazz_placeholder_poster" />
 
           <!-- Title -->
           <TextView
             android:id="@+id/tv_title"
             style="@style/TextHeader1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="4"
-            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/iv_poster"
             tools:text="The Silence" />
 
@@ -295,17 +293,15 @@
           <TextView
             android:id="@+id/tv_genre"
             style="@style/TextBody"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:layout_marginBottom="@dimen/margin_detail_info"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/not_available"
-            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@+id/tv_duration"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
             tools:text="Action, Drama, &amp; Family" />
 

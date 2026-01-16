@@ -22,8 +22,8 @@
   <string name="title_home">Home</string>
   <string name="title_search">Search</string>
   <string name="title_more">More</string>
-  <string name="title_my_favorite">My Favorite</string>
-  <string name="title_my_watchlist">My Watchlist</string>
+  <string name="title_favorite">Favorite</string>
+  <string name="title_watchlist">Watchlist</string>
 
   <string name="tab_layout_explanation">change to featured, movie, or tv-series</string>
 
@@ -38,7 +38,7 @@
   <string name="tv_series">TV Series</string>
   <string name="trending">Trending</string>
   <string name="today">Today</string>
-  <string name="this_week">This Week</string>
+  <string name="this_week">Week</string>
   <string name="featured">Featured</string>
   <string name="upcoming_movies">Upcoming Movies</string>
   <string name="popular">Popular</string>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Default screen margins, per the Android Design guidelines. -->
   <dimen name="tab_layout_height">44dp</dimen>
   <dimen name="margin_between_item">12dp</dimen>
@@ -7,4 +7,9 @@
   <dimen name="margin_to_centered">90dp</dimen>
   <dimen name="margin_reduce_20">-20dp</dimen>
   <dimen name="button_radius">8dp</dimen>
+  <dimen name="bottom_nav_min_height">100dp</dimen>
+
+  <!-- disable bottom navigation shifting -->
+  <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+  <dimen name="design_bottom_navigation_height" tools:override="true">45dp</dimen>
 </resources>

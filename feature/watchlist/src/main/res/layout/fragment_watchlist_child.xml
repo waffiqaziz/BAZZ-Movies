@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <!-- Main list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
@@ -18,13 +17,13 @@
       android:layout_height="wrap_content"
       android:clipToPadding="false"
       android:paddingTop="10dp"
-      android:paddingBottom="?attr/actionBarSize"
+      android:paddingBottom="@dimen/bottom_nav_min_height"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
       tools:listitem="@layout/item_result" />
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-  <!-- Illustration for error state (e.g., network error) -->
+  <!-- Illustration for error state -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"

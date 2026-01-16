@@ -2,12 +2,11 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
 import android.content.Context
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
+import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 
 object SnackbarAlreadyUtils {
   /**
@@ -30,15 +29,9 @@ object SnackbarAlreadyUtils {
   ): Snackbar? {
     val result = eventMessage.getContentIfNotHandled() ?: return null
     val message = if (isFavorite) {
-      HtmlCompat.fromHtml(
-        "<b>$result</b> " + ContextCompat.getString(context, already_favorite),
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      )
+      buildActionMessage(result, context.getString(already_favorite))
     } else {
-      HtmlCompat.fromHtml(
-        "<b>$result</b> " + ContextCompat.getString(context, already_watchlist),
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      )
+      buildActionMessage(result, context.getString(already_watchlist))
     }
     val mSnackbar = Snackbar.make(
       view,

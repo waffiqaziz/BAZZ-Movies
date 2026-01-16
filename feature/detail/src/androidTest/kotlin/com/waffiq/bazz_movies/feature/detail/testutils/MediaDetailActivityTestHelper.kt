@@ -144,10 +144,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   override fun Context.launchMediaDetailActivity(
     block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   ) {
-    this.launchMediaDetailActivity(testMediaItem) {
-      it.onActivity { /* do nothing */ }
-      block(it)
-    }
+    this.launchMediaDetailActivity(testMediaItem) { block(it) }
   }
 
   override fun Context.launchMediaDetailActivity(
@@ -159,6 +156,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     }
 
     ActivityScenario.launch<MediaDetailActivity>(intent).use { scenario ->
+      scenario.onActivity { /* do nothing */ }
       block(scenario)
     }
   }

@@ -18,8 +18,8 @@ import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_home
 import com.waffiq.bazz_movies.R.id.navigation_more
-import com.waffiq.bazz_movies.R.id.navigation_my_favorite
-import com.waffiq.bazz_movies.R.id.navigation_my_watchlist
+import com.waffiq.bazz_movies.R.id.navigation_favorite
+import com.waffiq.bazz_movies.R.id.navigation_watchlist
 import com.waffiq.bazz_movies.R.id.navigation_search
 import com.waffiq.bazz_movies.feature.favorite.R.id.fragment_favorite
 import com.waffiq.bazz_movies.feature.home.R.id.fragment_featured
@@ -102,8 +102,8 @@ class MainActivityTest {
 
       assertNotNull(menu.findItem(navigation_home))
       assertNotNull(menu.findItem(navigation_search))
-      assertNotNull(menu.findItem(navigation_my_favorite))
-      assertNotNull(menu.findItem(navigation_my_watchlist))
+      assertNotNull(menu.findItem(navigation_favorite))
+      assertNotNull(menu.findItem(navigation_watchlist))
       assertNotNull(menu.findItem(navigation_more))
     }
   }
@@ -121,12 +121,12 @@ class MainActivityTest {
     Thread.sleep(DELAY_TIME)
 
     // My Favorite navigation
-    onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_my_favorite))
+    onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_favorite))
     onView(withId(fragment_favorite)).check(matches(isDisplayed()))
     Thread.sleep(DELAY_TIME)
 
     // My Watchlist navigation
-    onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_my_watchlist))
+    onView(withId(bottom_navigation)).perform(selectMenuItem(navigation_watchlist))
     onView(withId(fragment_watchlist)).check(matches(isDisplayed()))
     Thread.sleep(DELAY_TIME)
 

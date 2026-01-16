@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
@@ -24,14 +23,7 @@ object SnackBarManager {
    * @param text The HTML-formatted text to be shown in the toast message.
    */
   fun Context.toastShort(text: String) {
-    Toast.makeText(
-      applicationContext,
-      HtmlCompat.fromHtml(
-        text,
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      ),
-      Toast.LENGTH_SHORT
-    ).show()
+    Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
   }
 
   /**

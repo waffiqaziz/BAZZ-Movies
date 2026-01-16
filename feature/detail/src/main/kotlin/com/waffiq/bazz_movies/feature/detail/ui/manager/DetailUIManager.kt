@@ -1,11 +1,16 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.ActivityNotFoundException
+import android.content.res.Resources
 import android.util.Log
+import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
@@ -37,6 +42,11 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_genre
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_mediaType
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_title
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
@@ -198,6 +208,15 @@ class DetailUIManager(
       )
       tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
         ?: activity.getString(no_overview)
+
+      setupDynamicLayout(
+        rootLayout = binding.constraintLayoutUpper,
+        poster = binding.ivPoster,
+        title = binding.tvTitle,
+        mediaType = binding.tvMediaType,
+        genre = binding.tvGenre,
+        duration = binding.tvDuration
+      )
     }
   }
 
@@ -364,7 +383,7 @@ class DetailUIManager(
     toast?.cancel()
     toast = Toast.makeText(
       activity.applicationContext,
-      HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY),
+      text,
       Toast.LENGTH_SHORT
     )
     toast?.show()
@@ -383,6 +402,178 @@ class DetailUIManager(
   fun dismissSnackbar() {
     mSnackbar?.dismiss()
   }
+
+  @Suppress("LongMethod")
+  fun setupDynamicLayout(
+    rootLayout: ConstraintLayout,
+    poster: View,
+    title: TextView,
+    mediaType: TextView,
+    genre: TextView,
+    duration: TextView,
+  ) {
+    // Wait for layout to be measured
+    title.viewTreeObserver.addOnGlobalLayoutListener(object :
+      ViewTreeObserver.OnGlobalLayoutListener {
+      override fun onGlobalLayout() {
+        title.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+        val posterBottom = poster.bottom
+        val posterTop = poster.top
+
+        // Calculate metadata total height
+        val metadataHeight = mediaType.height + genre.height + duration.height +
+          (8.dpToPx() * 2) // margins between items
+
+        // Calculate if title + metadata would overflow
+        val titleHeight = title.height
+        val totalHeight =
+          titleHeight + metadataHeight + 8.dpToPx() // 8dp gap between title and metadata
+        val availableHeight = posterBottom - posterTop
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(rootLayout)
+
+        // Title is too long - move metadata BELOW the poster
+        if (totalHeight > availableHeight) {
+          // Clear all constraints for title
+          constraintSet.clear(tv_title, ConstraintSet.TOP)
+          constraintSet.clear(tv_title, ConstraintSet.BOTTOM)
+
+          // Align title bottom to poster bottom
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.BOTTOM,
+            iv_poster,
+            ConstraintSet.BOTTOM,
+            0
+          )
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.START,
+            iv_poster,
+            ConstraintSet.END,
+            16.dpToPx()
+          )
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.END,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.END,
+            20.dpToPx()
+          )
+
+          // Move metadata BELOW poster - clear ALL bottom constraints
+          constraintSet.clear(tv_mediaType, ConstraintSet.BOTTOM)
+          constraintSet.connect(
+            tv_mediaType,
+            ConstraintSet.TOP,
+            iv_poster,
+            ConstraintSet.BOTTOM,
+            16.dpToPx()
+          )
+          constraintSet.connect(
+            tv_mediaType,
+            ConstraintSet.START,
+            iv_poster,
+            ConstraintSet.START,
+            0
+          )
+
+          // Clear genre bottom constraint to poster
+          constraintSet.clear(tv_genre, ConstraintSet.BOTTOM)
+          constraintSet.connect(
+            tv_genre,
+            ConstraintSet.TOP,
+            tv_mediaType,
+            ConstraintSet.BOTTOM,
+            8.dpToPx()
+          )
+
+          // Clear duration bottom constraint to poster
+          constraintSet.clear(tv_duration, ConstraintSet.BOTTOM)
+          constraintSet.connect(
+            tv_duration,
+            ConstraintSet.TOP,
+            tv_genre,
+            ConstraintSet.BOTTOM,
+            8.dpToPx()
+          )
+        } else {
+          // Title fits - keep metadata beside the poster at bottom
+
+          // Clear all constraints for title
+          constraintSet.clear(tv_title, ConstraintSet.TOP)
+          constraintSet.clear(tv_title, ConstraintSet.BOTTOM)
+
+          // Align title bottom to tv_mediaType top (title sits above metadata)
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.BOTTOM,
+            tv_mediaType,
+            ConstraintSet.TOP,
+            8.dpToPx()
+          )
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.START,
+            iv_poster,
+            ConstraintSet.END,
+            16.dpToPx()
+          )
+          constraintSet.connect(
+            tv_title,
+            ConstraintSet.END,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.END,
+            20.dpToPx()
+          )
+
+          // Keep metadata beside poster at bottom - restore constraints
+          constraintSet.clear(tv_mediaType, ConstraintSet.TOP)
+          constraintSet.connect(
+            tv_mediaType,
+            ConstraintSet.BOTTOM,
+            tv_genre,
+            ConstraintSet.TOP,
+            8.dpToPx()
+          )
+          constraintSet.connect(
+            tv_mediaType,
+            ConstraintSet.START,
+            tv_title,
+            ConstraintSet.START,
+            0
+          )
+
+          // Restore genre constraint to duration
+          constraintSet.clear(tv_genre, ConstraintSet.TOP)
+          constraintSet.connect(
+            tv_genre,
+            ConstraintSet.BOTTOM,
+            tv_duration,
+            ConstraintSet.TOP,
+            8.dpToPx()
+          )
+
+          // Restore duration constraint to poster
+          constraintSet.clear(tv_duration, ConstraintSet.TOP)
+          constraintSet.connect(
+            tv_duration,
+            ConstraintSet.BOTTOM,
+            iv_poster,
+            ConstraintSet.BOTTOM,
+            8.dpToPx()
+          )
+        }
+
+        constraintSet.applyTo(rootLayout)
+      }
+    })
+  }
+
+  // Convert dp to pixel
+  fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
   /**
    * Clears all transient UI state (snackbars, toasts).

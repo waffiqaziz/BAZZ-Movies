@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="?attr/actionBarSize">
+        android:paddingBottom="@dimen/bottom_nav_min_height">
 
         <!-- Fixed backdrop -->
         <ImageView
@@ -39,6 +39,7 @@
           tools:src="@color/red_matte" />
 
         <HorizontalScrollView
+          android:id="@+id/filterScroll"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="-20dp">
@@ -60,28 +61,38 @@
               android:layout_marginEnd="10dp"
               android:text="@string/trending" />
 
-            <!-- Trending button -->
-            <RadioGroup
-              android:id="@+id/toggle"
-              android:layout_width="200dp"
-              android:layout_height="30dp"
-              android:layout_gravity="center_vertical"
-              android:background="@drawable/bg_switch_outline_button"
-              android:checkedButton="@+id/rb_this_week"
-              android:orientation="horizontal">
+            <!-- Trending filter button -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+              android:id="@+id/buttonGroup"
+              style="@style/FilterButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:selectionRequired="true"
+              app:singleSelection="true">
 
-              <RadioButton
-                android:id="@+id/rb_today"
-                style="@style/MySwitchRadioButton"
-                android:layout_marginStart="1dp"
-                android:text="@string/today" />
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_today"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:fontFamily="@font/nunito_sans_bold"
+                android:selectAllOnFocus="true"
+                android:text="@string/today"
+                app:backgroundTint="@color/toggle_button_bg" />
 
-              <RadioButton
-                android:id="@+id/rb_this_week"
-                style="@style/MySwitchRadioButton"
-                android:layout_marginEnd="1dp"
-                android:text="@string/this_week" />
-            </RadioGroup>
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_week"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:checked="true"
+                android:fontFamily="@font/nunito_sans_bold"
+                android:text="@string/this_week"
+                app:backgroundTint="@color/toggle_button_bg" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
           </LinearLayout>
         </HorizontalScrollView>
 
@@ -179,7 +190,7 @@
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/margin_to_centered"
     android:visibility="gone"
-    tools:visibility="visible" />
+    tools:visibility="invisible" />
 
   <!-- Background overlay on start -->
   <View
