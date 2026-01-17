@@ -64,33 +64,18 @@
             <!-- Trending filter button -->
             <com.google.android.material.button.MaterialButtonToggleGroup
               android:id="@+id/buttonGroup"
-              style="@style/FilterButtonStyle"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              app:selectionRequired="true"
-              app:singleSelection="true">
+              style="@style/FilterButtonGroupStyle">
 
               <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_today"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:selectAllOnFocus="true"
-                android:text="@string/today"
-                app:backgroundTint="@color/toggle_button_bg" />
+                style="@style/FilterToggleOverlay"
+                android:text="@string/today" />
 
               <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_week"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
+                style="@style/FilterToggleOverlay"
                 android:checked="true"
-                android:fontFamily="@font/nunito_sans_bold"
-                android:text="@string/this_week"
-                app:backgroundTint="@color/toggle_button_bg" />
+                android:text="@string/this_week" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
           </LinearLayout>
@@ -103,18 +88,12 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
+          style="@style/HomeRecyclerView"
           android:id="@+id/rv_trending"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:clipToPadding="false"
           android:contentDescription="@string/trending"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_poster" />
 
         <!-- Upcoming-->
         <TextView
@@ -134,17 +113,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_upcoming"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:clipToPadding="false"
+          style="@style/HomeRecyclerView"
           android:contentDescription="@string/upcoming_movies"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_poster" />
 
         <!-- Playing now -->
         <TextView
@@ -164,24 +137,17 @@
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_playing_now"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:clipToPadding="false"
+          style="@style/HomeRecyclerView"
           android:contentDescription="@string/playing_now_on_theater"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_poster"/>
       </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"

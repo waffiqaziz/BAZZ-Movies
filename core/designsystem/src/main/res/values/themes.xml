@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3Expressive.DayNight.NoActionBar">
     <!-- Primary brand color -->
     <item name="colorPrimary">@color/gray_1000</item>
@@ -33,11 +33,23 @@
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>
 
-  <style name="FilterButtonStyle" parent="Widget.Material3.MaterialButtonGroup.Connected">
+  <style name="FilterToggleOverlay" parent="Widget.Material3Expressive.Button.OutlinedButton">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:textColor">@color/radio_button_state</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:checkable">true</item>
+    <item name="backgroundTint">@color/toggle_button_bg</item>
+  </style>
+
+  <style name="FilterButtonGroupStyle" parent="Widget.Material3.MaterialButtonGroup.Connected">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:insetTop">0dp</item>
     <item name="android:insetBottom">0dp</item>
+    <item name="selectionRequired">true</item>
+    <item name="singleSelection">true</item>
   </style>
 
   <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
@@ -51,11 +63,21 @@
     <item name="android:background">?attr/colorPrimary</item>
   </style>
 
-  <style name="CustomBottomNavigationTextAppearance" >
+  <style name="CustomBottomNavigationTextAppearance">
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
-    <item name="android:lineHeight">13sp</item>
+    <item name="android:lineHeight" tools:targetApi="28">13sp</item>
     <item name="android:maxLines">1</item>
+  </style>
+
+  <style name="HomeRecyclerView">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:clipToPadding">false</item>
+    <item name="android:nestedScrollingEnabled">false</item>
+    <item name="android:paddingStart">@dimen/default_margin_parent_20</item>
+    <item name="android:layout_marginTop">@dimen/margin_recycler_view</item>
+    <item name="android:orientation">horizontal</item>
   </style>
 
   <style name="MyDimStyle">

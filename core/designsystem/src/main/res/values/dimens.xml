@@ -4,6 +4,7 @@
   <dimen name="margin_between_item">12dp</dimen>
   <dimen name="default_margin_parent_20">20dp</dimen>
   <dimen name="margin_detail_info">4dp</dimen>
+  <dimen name="margin_recycler_view">12dp</dimen>
   <dimen name="margin_to_centered">90dp</dimen>
   <dimen name="margin_reduce_20">-20dp</dimen>
   <dimen name="button_radius">8dp</dimen>
