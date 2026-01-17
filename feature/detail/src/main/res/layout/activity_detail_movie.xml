@@ -309,13 +309,16 @@
           <TextView
             android:id="@+id/tv_duration"
             style="@style/TextBody"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
+            android:gravity="start"
             android:maxLines="2"
             android:text="@string/not_available"
             app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_genre"
             tools:text="1H 22m" />
 

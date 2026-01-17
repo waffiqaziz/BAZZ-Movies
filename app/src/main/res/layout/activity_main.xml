@@ -28,6 +28,7 @@
     app:itemIconTint="@color/bottom_nav_color"
     app:itemPaddingBottom="4dp"
     app:itemPaddingTop="4dp"
+    app:labelMaxLines="1"
     app:itemRippleColor="@color/gray_600_alpha"
     app:itemTextColor="@color/bottom_nav_color"
     app:labelVisibilityMode="labeled"
