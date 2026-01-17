@@ -11,23 +11,13 @@ object SpannableUtils {
     title: String,
     text: String,
   ): SpannableString {
-    val text = "$title $text"
-    return text.bold(title)
-  }
-
-  fun String.bold(target: String): SpannableString {
-    val spannable = SpannableString(this)
-    val start = indexOf(target)
-
-    if (start >= 0) {
-      spannable.setSpan(
+    return SpannableString("$title $text").apply {
+      setSpan(
         StyleSpan(Typeface.BOLD),
-        start,
-        start + target.length,
+        0,
+        title.length,
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
       )
     }
-
-    return spannable
   }
 }

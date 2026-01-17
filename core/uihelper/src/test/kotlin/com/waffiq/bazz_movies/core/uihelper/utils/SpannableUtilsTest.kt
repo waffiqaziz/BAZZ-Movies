@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.graphics.Typeface
 import android.text.style.StyleSpan
+import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -12,66 +12,45 @@ import org.robolectric.RobolectricTestRunner
 class SpannableUtilsTest {
 
   @Test
-  fun buildActionMessage_titleProvided_boldsTitle() {
-    val title = "Avatar"
-    val actionText = "has been added to favorite"
+  fun buildActionMessage_withTitleAndText_returnsBoldTitle() {
+    val result = buildActionMessage("Error:", "Something went wrong")
 
-    val result = SpannableUtils.buildActionMessage(title, actionText)
-
-    assertEquals(
-      "Avatar has been added to favorite",
-      result.toString()
-    )
-
-    val spans = result.getSpans(
-      0,
-      result.length,
-      StyleSpan::class.java
-    )
-
+    assertEquals("Error: Something went wrong", result.toString())
+    val spans = result.getSpans(0, result.length, StyleSpan::class.java)
     assertEquals(1, spans.size)
     assertEquals(Typeface.BOLD, spans[0].style)
   }
 
   @Test
-  fun buildActionMessage_emptyTitle_noBoldApplied() {
-    val title = ""
-    val actionText = "has been added to favorite"
+  fun buildActionMessage_withTitleAndText_boldSpanCoversOnlyTitle() {
+    val title = "Warning:"
+    val result = buildActionMessage(title, "Check your input")
 
-    val result = SpannableUtils.buildActionMessage(title, actionText)
+    val spans = result.getSpans(0, result.length, StyleSpan::class.java)
+    val spanStart = result.getSpanStart(spans[0])
+    val spanEnd = result.getSpanEnd(spans[0])
 
-    assertEquals(result.toString(), " has been added to favorite")
+    assertEquals(0, spanStart)
+    assertEquals(title.length, spanEnd)
   }
 
   @Test
-  fun bold_targetExists_appliesBoldSpan() {
-    val text = "Avatar has been added to favorite"
-    val target = "Avatar"
+  fun buildActionMessage_withEmptyTitle_returnsTextOnly() {
+    val result = buildActionMessage("", "Just text")
 
-    val result = SpannableUtils.run { text.bold(target) }
-
-    val spans = result.getSpans(
-      0,
-      result.length,
-      StyleSpan::class.java
-    )
-
+    assertEquals(" Just text", result.toString())
+    val spans = result.getSpans(0, result.length, StyleSpan::class.java)
     assertEquals(1, spans.size)
-    assertEquals(Typeface.BOLD, spans[0].style)
+    assertEquals(0, result.getSpanEnd(spans[0]))
   }
 
   @Test
-  fun bold_targetNotFound_doesNotApplySpan() {
-    val text = "has been added to favorite"
+  fun buildActionMessage_withEmptyText_returnsTitleOnly() {
+    val result = buildActionMessage("Title", "")
 
-    val result = SpannableUtils.run { text.bold("Avatar") }
-
-    val spans = result.getSpans(
-      0,
-      result.length,
-      StyleSpan::class.java
-    )
-
-    assertTrue(spans.isEmpty())
+    assertEquals("Title ", result.toString())
+    val spans = result.getSpans(0, result.length, StyleSpan::class.java)
+    assertEquals(1, spans.size)
+    assertEquals(5, result.getSpanEnd(spans[0]))
   }
 }
