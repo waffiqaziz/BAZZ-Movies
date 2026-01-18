@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -162,12 +161,7 @@ class MoreFragment : Fragment() {
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_logged_user))
-      setNegativeButton(
-        HtmlCompat.fromHtml(
-          "<b>${resources.getString(no)}</b>",
-          HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
-      ) { dialog, _ ->
+      setNegativeButton(resources.getString(no)) { dialog, _ ->
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
@@ -190,12 +184,7 @@ class MoreFragment : Fragment() {
     mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
       setTitle(resources.getString(warning))
       setMessage(resources.getString(warning_signOut_guest_mode))
-      setNegativeButton(
-        HtmlCompat.fromHtml(
-          "<b>${resources.getString(no)}</b>",
-          HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
-      ) { dialog, _ ->
+      setNegativeButton(resources.getString(no)) { dialog, _ ->
         dialog.dismiss()
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->

@@ -57,7 +57,7 @@ room = "2.8.4"
 paging = "3.3.6"
 
 # UI components
-material = "1.13.0"
+material = "1.14.0-alpha08"
 
 # Networking
 retrofit = "3.0.0"

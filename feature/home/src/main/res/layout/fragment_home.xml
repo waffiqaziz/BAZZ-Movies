@@ -25,6 +25,7 @@
       android:background="?attr/colorPrimary"
       android:contentDescription="@string/tab_layout_explanation"
       app:tabIndicatorColor="?attr/colorAccent"
+      app:tabMode="auto"
       app:tabRippleColor="?attr/colorSurface"
       app:tabSelectedTextColor="?attr/colorAccent"
       app:tabTextAppearance="@style/TextTabLayoutStyle"

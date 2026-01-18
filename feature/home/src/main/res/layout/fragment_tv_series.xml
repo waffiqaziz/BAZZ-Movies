@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="?attr/actionBarSize">
+        android:paddingBottom="@dimen/bottom_nav_min_height">
 
         <!-- Popular -->
         <TextView
@@ -45,17 +45,11 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
+          style="@style/HomeRecyclerView"
           android:id="@+id/rv_popular"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="12dp"
-          android:clipToPadding="false"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_wide"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_wide" />
 
         <!-- Airing today -->
         <TextView
@@ -74,17 +68,11 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
+          style="@style/HomeRecyclerView"
           android:id="@+id/rv_airing_today"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:clipToPadding="false"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_poster" />
 
         <!-- Air this week -->
         <TextView
@@ -103,17 +91,11 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
+          style="@style/HomeRecyclerView"
           android:id="@+id/rv_airing_this_week"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="12dp"
-          android:clipToPadding="false"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
           tools:layout_height="330dp"
           tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal"
           tools:spanCount="2" />
 
         <!-- Top rated -->
@@ -127,23 +109,16 @@
           android:text="@string/top_rated" />
 
         <androidx.recyclerview.widget.RecyclerView
+          style="@style/HomeRecyclerView"
           android:id="@+id/rv_top_rated"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="12dp"
-          android:clipToPadding="false"
-          android:nestedScrollingEnabled="false"
-          android:paddingStart="@dimen/default_margin_parent_20"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"
-          tools:orientation="horizontal" />
+          tools:listitem="@layout/item_poster" />
 
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"

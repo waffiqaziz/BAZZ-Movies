@@ -5,7 +5,8 @@
   android:layout_height="match_parent"
   android:layout_marginTop="@dimen/margin_reduce_20"
   android:gravity="center"
-  android:orientation="vertical">
+  android:orientation="vertical"
+  android:paddingHorizontal="@dimen/default_margin_parent_20">
 
   <ImageView
     android:id="@+id/iv_illustration_no_data"

@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -16,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
+import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bookmark_dark
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_trash
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
@@ -34,6 +33,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlrea
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SwipeCallbackHelper
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
+import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils
 import com.waffiq.bazz_movies.core.utils.FlowUtils
@@ -316,11 +316,11 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
     if (delete || addToWatchlist) {
       mSnackbar = Snackbar.make(
         requireActivity().findViewById(snackbarAnchor),
-        HtmlCompat.fromHtml(
-          "<b>$title</b> " +
-            if (delete) getString(removed_from_favorite) else getString(added_to_watchlist),
-          HtmlCompat.FROM_HTML_MODE_LEGACY
-        ),
+        if (delete) {
+          buildActionMessage(title, getString(removed_from_favorite))
+        } else {
+          buildActionMessage(title, getString(added_to_watchlist))
+        },
         Snackbar.LENGTH_LONG
       ).setAction(getString(undo)) {
         isUndo = true
@@ -331,7 +331,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
           favoriteViewModel.postWatchlist(wtc.copy(watchlist = false), title)
         }
       }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
-        .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
+        .setActionTextColor(ContextCompat.getColor(requireContext(), yellow_700))
       mSnackbar?.show()
     }
   }
@@ -401,11 +401,11 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
   private fun showSnackBarUndoGuest(title: String, pos: Int) {
     mSnackbar = Snackbar.make(
       requireActivity().findViewById(snackbarAnchor),
-      HtmlCompat.fromHtml(
-        "<b>$title</b> " +
-          if (isWantToDelete) getString(removed_from_favorite) else getString(added_to_watchlist),
-        HtmlCompat.FROM_HTML_MODE_LEGACY
-      ),
+      if (isWantToDelete) {
+        buildActionMessage(title, getString(removed_from_favorite))
+      } else {
+        buildActionMessage(title, getString(added_to_watchlist))
+      },
       Snackbar.LENGTH_LONG
     ).setAction(getString(undo)) {
       sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { fav ->
@@ -421,7 +421,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
         }
       }
     }.setAnchorView(requireActivity().findViewById(snackbarAnchor))
-      .setActionTextColor(ContextCompat.getColor(requireContext(), yellow))
+      .setActionTextColor(ContextCompat.getColor(requireContext(), yellow_700))
     mSnackbar?.show()
   }
 

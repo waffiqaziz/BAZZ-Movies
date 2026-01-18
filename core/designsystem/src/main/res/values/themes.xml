@@ -1,6 +1,5 @@
-<resources>
-  <!-- Base application theme -->
-  <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3.DayNight.NoActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3Expressive.DayNight.NoActionBar">
     <!-- Primary brand color -->
     <item name="colorPrimary">@color/gray_1000</item>
     <item name="colorPrimaryVariant">@color/gray_900</item>
@@ -19,9 +18,6 @@
     <!-- Search View -->
     <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
 
-    <!-- Bottom Sheet -->
-    <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
   </style>
 
@@ -30,7 +26,6 @@
     <item name="android:windowExitAnimation">@android:anim/fade_out</item>
   </style>
 
-  <!-- Splash Screen for RoutingActivity on Manifests -->
   <style name="SplashScreenTheme" parent="Theme.SplashScreen">
     <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
     <item name="windowSplashScreenBackground">@color/gray_1000</item>
@@ -38,40 +33,56 @@
     <item name="postSplashScreenTheme">@style/Base.Theme.BAZZ_movies</item>
   </style>
 
-  <style name="AppBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog" />
-
-  <style name="MyFAB" parent="Widget.MaterialComponents.FloatingActionButton">
-    <item name="android:layout_gravity">end|bottom</item>
-    <item name="android:backgroundTint">@color/yellow</item>
+  <style name="FilterToggleOverlay" parent="Widget.Material3Expressive.Button.OutlinedButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-  </style>
-
-  <style name="MySwitchRadioButton">
-    <item name="android:background">@drawable/bg_switch_selector</item>
+    <item name="android:minHeight">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:paddingHorizontal">4dp</item>
+    <item name="android:paddingVertical">4dp</item>
     <item name="android:textColor">@color/radio_button_state</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_height">match_parent</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:button">@null</item>
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_marginTop">1dp</item>
-    <item name="android:layout_marginBottom">1dp</item>
-    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:checkable">true</item>
+    <item name="backgroundTint">@color/toggle_button_bg</item>
   </style>
 
-  <style name="MyBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+  <style name="FilterButtonGroupStyle" parent="Widget.Material3.MaterialButtonGroup.Connected">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="selectionRequired">true</item>
+    <item name="singleSelection">true</item>
+  </style>
+
+  <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:color">@color/gray_900</item>
+  </style>
+
+  <style name="MyBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
     <item name="itemTextAppearanceActive">@style/CustomBottomNavigationTextAppearance</item>
     <item name="itemTextAppearanceInactive">@style/CustomBottomNavigationTextAppearance</item>
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">48dp</item>
-    <item name="android:layout_gravity">bottom</item>
+    <item name="itemActiveIndicatorStyle">@style/Theme.BottomNavigationView.ActiveIndicator</item>
     <item name="android:background">?attr/colorPrimary</item>
   </style>
 
-  <style name="CustomBottomNavigationTextAppearance" parent="TextAppearance.AppCompat">
+  <style name="CustomBottomNavigationTextAppearance">
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
-    <item name="android:textSize">12sp</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
+    <item name="android:lineHeight" tools:targetApi="28">13sp</item>
+    <item name="android:maxLines">1</item>
+  </style>
+
+  <style name="HomeRecyclerView">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:clipToPadding">false</item>
+    <item name="android:nestedScrollingEnabled">false</item>
+    <item name="android:paddingStart">@dimen/default_margin_parent_20</item>
+    <item name="android:layout_marginTop">@dimen/margin_recycler_view</item>
+    <item name="android:orientation">horizontal</item>
   </style>
 
   <style name="MyDimStyle">
@@ -147,38 +158,33 @@
     <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
   </style>
 
-  <!-- Style for SearchView -->
-  <style name="MySearchViewTheme" parent="Widget.AppCompat.SearchView">
-    <!-- Gets rid of the search icon -->
+  <style name="MySearchViewTheme" parent="Widget.Material3.SearchView">
     <item name="searchIcon">@drawable/ic_search</item>
-    <!-- Gets rid of the "underline" in the text -->
     <item name="queryBackground">@color/white</item>
-    <!-- Gets rid of the search icon when the SearchView is expanded -->
     <item name="searchHintIcon">@color/yellow</item>
   </style>
 
-  <!-- Style for tab layout -->
   <style name="TextTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
-    <item name="android:textSize">15sp</item>
+    <item name="android:textSize">14sp</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
   <style name="TextHeader1">
-    <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineMedium</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineSmall</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
   <style name="TextHeader2">
-    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelLarge</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
 
   <style name="TextHeader3">
-    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleSmall</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>
@@ -274,7 +280,6 @@
     <item name="android:visibility">gone</item>
   </style>
 
-  <!-- Style button on more page -->
   <style name="ButtonMoreStyle">
     <item name="android:paddingStart">20dp</item>
     <item name="android:layout_height">wrap_content</item>
@@ -287,7 +292,6 @@
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <!-- Style for button signOut on more page -->
   <style name="ButtonSignOut" parent="Widget.MaterialComponents.Button">
     <item name="strokeColor">@color/gray_400</item>
     <item name="textAllCaps">false</item>
@@ -303,7 +307,6 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
   </style>
 
-  <!-- Style for image view on favorite/watchlist page user login -->
   <style name="roundedCornersImageView" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/button_radius</item>

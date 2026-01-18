@@ -2,10 +2,8 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
 import android.app.LocaleManager
 import android.content.Context
-import android.text.SpannableString
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
@@ -97,12 +95,6 @@ class SnackbarAlreadyUtilsTest {
     mockkStatic(ContextCompat::class)
     every { ContextCompat.getString(context, any<Int>()) } returns "is already in your favorites"
 
-    // mock HtmlCompat
-    mockkStatic(HtmlCompat::class)
-    every {
-      HtmlCompat.fromHtml(any<String>(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-    } returns SpannableString("Test")
-
     // mock Snackbar
     mockkStatic(Snackbar::class)
     every {
@@ -137,12 +129,6 @@ class SnackbarAlreadyUtilsTest {
     // directly mock the ContextCompat.getString call
     mockkStatic(ContextCompat::class)
     every { ContextCompat.getString(context, any<Int>()) } returns "is already in your watchlist"
-
-    // mock HtmlCompat
-    mockkStatic(HtmlCompat::class)
-    every {
-      HtmlCompat.fromHtml(any<String>(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-    } returns SpannableString("Test")
 
     // mock Snackbar
     mockkStatic(Snackbar::class)

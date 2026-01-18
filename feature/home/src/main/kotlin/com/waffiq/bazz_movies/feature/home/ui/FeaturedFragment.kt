@@ -215,12 +215,16 @@ class FeaturedFragment : Fragment() {
 
   private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
     collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
-    binding.rbToday.setOnClickListener {
+    binding.btnToday.setOnClickListener {
+      binding.btnToday.isChecked = true
+      binding.btnWeek.isChecked = false
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
         collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
     }
-    binding.rbThisWeek.setOnClickListener {
+    binding.btnWeek.setOnClickListener {
+      binding.btnToday.isChecked = false
+      binding.btnWeek.isChecked = true
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
         collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
@@ -232,7 +236,7 @@ class FeaturedFragment : Fragment() {
     binding.apply {
       imgMainFeatured.isVisible = isVisible
       tvTrending.isVisible = isVisible
-      toggle.isVisible = isVisible
+      buttonGroup.isVisible = isVisible
       rvTrending.isVisible = isVisible
       tvUpcomingMovie.isVisible = isVisible
       rvUpcoming.isVisible = isVisible
