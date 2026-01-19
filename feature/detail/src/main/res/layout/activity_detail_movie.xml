@@ -32,15 +32,13 @@
         <!-- Back button -->
         <ImageButton
           android:id="@+id/btn_back"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="@dimen/button_size"
+          android:layout_height="@dimen/button_size"
           android:layout_alignParentStart="true"
           android:layout_alignParentTop="true"
           android:background="@drawable/bg_back_button_alpha_08"
           android:contentDescription="@string/back"
           android:foreground="?actionBarItemBackground"
-          android:minWidth="48dp"
-          android:minHeight="48dp"
           android:src="@drawable/ic_left_icon" />
 
         <!-- Favorite watchlist button -->
@@ -56,24 +54,22 @@
 
           <ImageButton
             android:id="@+id/btn_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginEnd="-2dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/add_to_favorite"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
             android:src="@drawable/ic_hearth"
             app:layout_constraintEnd_toStartOf="@+id/btn_watchlist"
             app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
           <ImageButton
             android:id="@+id/btn_watchlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="-2dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/add_to_watchlist"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
             android:src="@drawable/ic_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btn_back" />
