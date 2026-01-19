@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="24"
+  android:viewportHeight="24">
+  <path
+    android:fillColor="?attr/colorAccent"
+    android:pathData="M1,2.5C1,1.9,1.4,1.5,2,1.5H10.5C11.1,1.5,11.5,1.9,11.5,2.5V10.5C11.5,11.1,11.1,11.5,10.5,11.5H2C1.4,11.5,1,11.1,1,10.5ZM3,3.5V9.5H9.5V3.5Z"
+    tools:fillColor="@color/yellow" />
+  <path
+    android:fillColor="?attr/colorAccent"
+    android:pathData="M1,13.5C1,12.9,1.4,12.5,2,12.5H10.5C11.1,12.5,11.5,12.9,11.5,13.5V21.5C11.5,22.1,11.1,22.5,10.5,22.5H2C1.4,22.5,1,22.1,1,21.5ZM3,14.5V20.5H9.5V14.5Z"
+    tools:fillColor="@color/yellow" />
+  <path
+    android:fillColor="?attr/colorAccent"
+    android:pathData="M12.5,2.5C12.5,1.9,12.9,1.5,13.5,1.5H22C22.6,1.5,23,1.9,23,2.5V10.5C23,11.1,22.6,11.5,22,11.5H13.5C12.9,11.5,12.5,11.1,12.5,10.5ZM14.5,3.5V9.5H21V3.5Z"
+    tools:fillColor="@color/yellow" />
+  <path
+    android:fillColor="?attr/colorAccent"
+    android:pathData="M12.5,13.5C12.5,12.9,12.9,12.5,13.5,12.5H22C22.6,12.5,23,12.9,23,13.5V21.5C23,22.1,22.6,22.5,22,22.5H13.5C12.9,22.5,12.5,22.1,12.5,21.5ZM14.5,14.5V20.5H21V14.5Z"
+    tools:fillColor="@color/yellow" />
+</vector>
