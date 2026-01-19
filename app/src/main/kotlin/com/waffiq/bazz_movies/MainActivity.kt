@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     ) ?: return
 
     iconView.apply {
-      cameraDistance = resources.displayMetrics.density
+      cameraDistance = resources.displayMetrics.density * CAMERA_DISTANCE
       pivotX = width / 2f
       pivotY = height / 2f
     }
@@ -110,5 +110,6 @@ class MainActivity : AppCompatActivity() {
 
   companion object{
     const val REDUCE_MARGIN = 64
+    const val CAMERA_DISTANCE = 8000f
   }
 }
