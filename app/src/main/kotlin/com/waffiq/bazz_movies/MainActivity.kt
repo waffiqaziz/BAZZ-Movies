@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
       v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
         topMargin = insets.top
         leftMargin = insets.left
-        bottomMargin = insets.bottom - 64
+        bottomMargin = insets.bottom - REDUCE_MARGIN
         rightMargin = insets.right
       }
       WindowInsetsCompat.CONSUMED
@@ -81,31 +81,23 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun animateSearchIcon(item: MenuItem) {
-    val menuView = binding.bottomNavigation.getChildAt(0) as ViewGroup
-    val itemView = menuView.findViewById<View>(item.itemId)
+    val menuView = binding.bottomNavigation.getChildAt(0) as? ViewGroup
+    val itemView = menuView?.findViewById<View>(item.itemId) ?: return
 
-    val iconView = findImageView(itemView) ?: return
-    iconView.cameraDistance = iconView.resources.displayMetrics.density * 8000f
-    iconView.pivotX = iconView.width / 2f
-    iconView.pivotY = iconView.height / 2f
+    val iconView = itemView.findViewById<ImageView>(
+      com.google.android.material.R.id.navigation_bar_item_icon_view
+    ) ?: return
 
-    AnimatorInflater.loadAnimator(
-      iconView.context,
-      R.animator.search_rotate_pop
-    ).apply {
+    iconView.apply {
+      cameraDistance = resources.displayMetrics.density
+      pivotX = width / 2f
+      pivotY = height / 2f
+    }
+
+    AnimatorInflater.loadAnimator(iconView.context, R.animator.search_rotate_pop).apply {
       setTarget(iconView)
       start()
     }
-  }
-
-  private fun findImageView(view: View): ImageView? {
-    if (view is ImageView) return view
-    if (view is ViewGroup) {
-      for (i in 0 until view.childCount) {
-        findImageView(view.getChildAt(i))?.let { return it }
-      }
-    }
-    return null
   }
 
   override fun onDestroy() {
@@ -114,5 +106,9 @@ class MainActivity : AppCompatActivity() {
     supportFragmentManager.fragments.forEach { fragment ->
       supportFragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss()
     }
+  }
+
+  companion object{
+    const val REDUCE_MARGIN = 64
   }
 }
