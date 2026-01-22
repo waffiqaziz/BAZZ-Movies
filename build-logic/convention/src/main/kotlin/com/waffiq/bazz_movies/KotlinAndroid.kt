@@ -6,31 +6,35 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
-
 /**
  * Configure base Kotlin with Android options
  */
 internal fun Project.configureKotlinAndroid(
-  commonExtension: CommonExtension<*, *, *, *, *, *>,
+  commonExtension: CommonExtension,
 ) {
   commonExtension.apply {
     compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
 
-    defaultConfig {
+    defaultConfig.apply {
       minSdk = libs.findVersion("minSdk").get().toString().toInt()
     }
 
-    compileOptions {
+    compileOptions.apply {
       sourceCompatibility = JavaVersion.VERSION_21
       targetCompatibility = JavaVersion.VERSION_21
+      isCoreLibraryDesugaringEnabled = true
     }
   }
   configureKotlin<KotlinAndroidProjectExtension>()
+  dependencies {
+    "coreLibraryDesugaring"(libs.findLibrary("desugar.jdk.libs").get())
+  }
 }
 
 /**

@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.api
-
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
   alias(libs.plugins.bazzmovies.shared.test)

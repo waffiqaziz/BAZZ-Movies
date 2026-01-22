@@ -14,7 +14,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply(plugin = "com.android.application")
-      apply(plugin = "org.jetbrains.kotlin.android")
       apply(plugin = "com.dropbox.dependency-guard")
       apply(plugin = "bazzmovies.detekt")
 
@@ -25,11 +24,12 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         buildFeatures {
           viewBinding = true
           buildConfig = true
+          resValues = true
         }
+        ndkVersion = libs.findVersion("ndkVersion").get().toString()
         defaultConfig {
           applicationId = "com.bazz.bazz_movies"
           namespace = "com.waffiq.bazz_movies"
-          ndkVersion = libs.findVersion("ndkVersion").get().toString()
           targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
           versionCode = libs.findVersion("versionCode").get().toString().toInt()
           versionName = libs.findVersion("versionName").get().toString()
