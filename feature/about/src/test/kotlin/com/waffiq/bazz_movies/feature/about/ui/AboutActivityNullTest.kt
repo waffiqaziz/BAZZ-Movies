@@ -7,13 +7,13 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import org.junit.After
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import kotlin.test.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
 class AboutActivityNullTest {
