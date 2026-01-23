@@ -71,8 +71,8 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.not
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -441,7 +441,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       putExtra(PersonActivity.EXTRA_PERSON, testMediaCastItem)
     }
 
-    ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
+    ActivityScenario.launch<PersonActivity>(intent).use { _ ->
       onView(withId(iv_picture)).check(matches(isDisplayed()))
     }
   }
