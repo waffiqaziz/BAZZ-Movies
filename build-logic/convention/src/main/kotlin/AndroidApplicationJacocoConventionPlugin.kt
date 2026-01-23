@@ -6,11 +6,12 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.testing.jacoco.plugins.JacocoPlugin
 
 class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
-      apply(plugin = "jacoco")
+      apply<JacocoPlugin>()
       val androidExtension = extensions.getByType<ApplicationExtension>()
 
       androidExtension.buildTypes.configureEach {
@@ -22,8 +23,10 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
       androidExtension.testCoverage {
         jacocoVersion = libs.findVersion("jacoco").get().toString()
       }
-
-      configureJacoco(extensions.getByType<ApplicationAndroidComponentsExtension>())
+      configureJacoco(
+        commonExtension = extensions.getByType<ApplicationExtension>(),
+        androidComponentsExtension = extensions.getByType<ApplicationAndroidComponentsExtension>(),
+      )
     }
   }
 }

@@ -22,7 +22,7 @@ import com.waffiq.bazz_movies.feature.about.R.id.tv_about_text
 import com.waffiq.bazz_movies.feature.about.R.id.tv_tmdb_attribute
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
-import kotlin.test.Test
+import org.junit.Test
 
 @LargeTest
 class AboutActivityTest {

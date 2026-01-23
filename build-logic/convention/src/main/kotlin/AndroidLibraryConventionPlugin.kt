@@ -14,7 +14,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply(plugin = "com.android.library")
-      apply(plugin = "org.jetbrains.kotlin.android")
       apply(plugin = "bazzmovies.detekt")
 
       extensions.configure<LibraryExtension> {
@@ -32,6 +31,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
       }
 
       dependencies {
+        add("testImplementation", libs.findLibrary("junit").get())
+        add("testImplementation", libs.findLibrary("kotlin.test.junit").get())
         add("testImplementation", kotlin("test"))
       }
     }

@@ -9,7 +9,7 @@ android {
   namespace = "com.waffiq.bazz_movies.core.database"
 
   sourceSets {
-    getByName("test").assets.srcDir("$projectDir/schemas")
+    getByName("test").assets.directories.add("$projectDir/schemas")
   }
 }
 

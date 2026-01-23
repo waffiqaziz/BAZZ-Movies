@@ -18,7 +18,7 @@
     android:supportsRtl="false"
     android:theme="@style/Base.Theme.BAZZ_movies"
     android:usesCleartextTraffic="false"
-    tools:targetApi="35">
+    tools:targetApi="36">
 
     <activity
       android:name=".feature.about.ui.AboutActivity"

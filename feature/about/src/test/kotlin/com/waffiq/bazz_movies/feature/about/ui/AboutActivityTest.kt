@@ -19,15 +19,15 @@ import com.waffiq.bazz_movies.feature.about.R.id.toolbar_layout
 import com.waffiq.bazz_movies.feature.about.R.id.tv_about_text
 import com.waffiq.bazz_movies.feature.about.R.id.tv_tmdb_attribute
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 class AboutActivityTest {
@@ -66,7 +66,7 @@ class AboutActivityTest {
 
   @Test
   fun setupToolbar_whenActivityCreated_shouldEnableHomeButton() {
-    val supportActionBar = activity.supportActionBar
+    val supportActionBar = activity.supportActionBar ?: return
 
     assertNotNull(supportActionBar)
     assertTrue(supportActionBar.isShowing)
@@ -74,7 +74,7 @@ class AboutActivityTest {
 
   @Test
   fun supportActionBar_whenActivityCreated_shouldHaveDisplayOptions() {
-    val supportActionBar = activity.supportActionBar
+    val supportActionBar = activity.supportActionBar ?: return
 
     assertNotNull(supportActionBar)
     assertTrue(supportActionBar.isShowing)

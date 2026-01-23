@@ -10,11 +10,11 @@ versionCode = "29"
 versionName = "1.2.7-dev"
 
 # Plugin Versions
-agp = "8.13.2"
+agp = "9.0.0"
 androidTools = "32.0.0"
 kotlin = "2.2.21"
 ksp = "2.3.4"
-hilt = "2.58"
+hilt = "2.59"
 
 # Google Services
 gms = "4.4.4"
@@ -113,6 +113,8 @@ androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", vers
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycle" }
 androidx-lifecycle-livedata-core = { group = "androidx.lifecycle", name = "lifecycle-livedata-core", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 
 # Navigation
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
