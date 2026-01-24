@@ -28,6 +28,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
@@ -55,6 +56,7 @@ class MediaDetailViewModel @Inject constructor(
   private val getMediaStateUseCase: GetMediaStateWithUserUseCase,
   private val getMovieDetailWithUserRegionUseCase: GetMovieDataWithUserRegionUseCase,
   private val getTvDetailWithUserRegionUseCase: GetTvDataWithUserRegionUseCase,
+  private val getTvAllScoreUseCase: GetTvAllScoreUseCase,
 ) : ViewModel() {
 
   // region OBSERVABLES
@@ -201,6 +203,13 @@ class MediaDetailViewModel @Inject constructor(
         getTvDetailWithUserRegionUseCase.getTvWatchProvidersWithUserRegion(tvId)
       )
     }
+  }
+
+  fun getTvAllScore(tvId: Int) {
+    executeUseCase(
+      flowProvider = { getTvAllScoreUseCase.getTvAllScore(tvId) },
+      onSuccess = { _omdbResult.value = it }
+    )
   }
   // endregion TV-SERIES
 

@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
 import io.mockk.coEvery
@@ -45,6 +46,7 @@ abstract class BaseInteractorTest {
   protected val mockGetTvStateUseCase: GetTvStateUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
   protected val mockPostMethodUseCase: PostMethodUseCase = mockk()
+  protected val mockGetOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()

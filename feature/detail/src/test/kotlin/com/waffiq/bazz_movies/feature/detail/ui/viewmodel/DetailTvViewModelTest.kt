@@ -239,4 +239,17 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
       }
     )
   }
+
+  @Test
+  fun getTvAllScore_whenSuccessful_emitsSuccess() {
+    coEvery { getTvAllScoreUseCase.getTvAllScore(tvId) } returns
+      successFlow(mockOmdb)
+
+    testViewModelFlow(
+      runBlock = { viewModel.getTvAllScore(tvId) },
+      liveData = viewModel.omdbResult,
+      expectedSuccess = mockOmdb,
+      verifyBlock = { coVerify { getTvAllScoreUseCase.getTvAllScore(tvId) } }
+    )
+  }
 }

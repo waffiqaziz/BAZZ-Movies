@@ -4,6 +4,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaSt
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreInteractor
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionInteractor
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateInteractor
@@ -42,4 +44,10 @@ interface CompositeUseCaseModule {
   fun bindPostMethodWithUserUseCaseSingleton(
     postMethodWithUserInteractor: PostRateInteractor,
   ): PostRateUseCase
+
+  @Binds
+  @ViewModelScoped
+  fun bindGetTvAllScoreUseCaseSingleton(
+    getTvAllScoreInteractor: GetTvAllScoreInteractor,
+  ): GetTvAllScoreUseCase
 }
