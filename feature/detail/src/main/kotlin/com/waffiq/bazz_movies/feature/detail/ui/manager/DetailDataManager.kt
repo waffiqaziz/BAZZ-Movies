@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
-import androidx.lifecycle.LifecycleOwner
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -15,12 +14,10 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
  *
  * @param detailViewModel The ViewModel that provides methods for retrieving movie/TV details.
  * @param dataExtra The [MediaItem] representing the movie or TV show being viewed.
- * @param lifecycleOwner The lifecycle owner used to observe LiveData from ViewModels.
  */
 class DetailDataManager(
   private val detailViewModel: MediaDetailViewModel,
   private var dataExtra: MediaItem,
-  private val lifecycleOwner: LifecycleOwner,
 ) {
 
   /**
@@ -75,9 +72,7 @@ class DetailDataManager(
    */
   private fun loadTvData() {
     detailViewModel.getTvExternalIds(dataExtra.id)
-    detailViewModel.tvExternalID.observe(lifecycleOwner) {
-      if (it.imdbId != null) detailViewModel.getOMDbDetails(it.imdbId)
-    }
+    detailViewModel.getTvAllScore(dataExtra.id)
     detailViewModel.getTvCredits(dataExtra.id)
     detailViewModel.getTvTrailerLink(dataExtra.id)
     detailViewModel.getTvDetail(dataExtra.id)

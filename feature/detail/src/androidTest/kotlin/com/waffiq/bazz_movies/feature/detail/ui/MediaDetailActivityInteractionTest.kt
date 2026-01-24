@@ -9,6 +9,7 @@ import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -17,6 +18,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
+import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
+import com.waffiq.bazz_movies.core.designsystem.R.string.not_available_full
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
@@ -138,20 +141,23 @@ class MediaDetailActivityInteractionTest :
       detailMedia.postValue(testMediaDetail.copy(tmdbScore = null))
 
       onView(withId(imdb_viewGroup)).check(matches(isDisplayed())).perform(click())
-      onView(isRoot()).perform(pressBack())
-      onView(withId(tmdb_viewGroup)).check(matches(isDisplayed())).perform(click())
+      dialogNotRatedShowIsShowing()
       onView(isRoot()).perform(pressBack())
       onView(withId(rotten_tomatoes_viewGroup)).check(matches(isDisplayed())).perform(click())
+      dialogNotRatedShowIsShowing()
       onView(isRoot()).perform(pressBack())
       onView(withId(metascore_viewGroup)).check(matches(isDisplayed())).perform(click())
+      dialogNotRatedShowIsShowing()
+      onView(isRoot()).perform(pressBack())
+      performTMDBScoreClick()
+      dialogNotRatedShowIsShowing()
+      onView(isRoot()).perform(pressBack())
     }
   }
 
   @Test
   fun buttonRatting_clickedAndRatingAvailable_doNothing() {
-    context.launchMediaDetailActivity {
-      onView(withId(tmdb_viewGroup)).check(matches(isDisplayed())).perform(click())
-    }
+    context.launchMediaDetailActivity { performTMDBScoreClick() }
   }
 
   @Test
@@ -190,30 +196,19 @@ class MediaDetailActivityInteractionTest :
   }
 
   @Test
-  fun ratingUser_whenAvailable_showsCorrectly() {
-    context.launchMediaDetailActivity {
-      setupLoginUser()
-      onView(withId(your_score_viewGroup)).check(matches(isDisplayed()))
-    }
-  }
-
-  @Test
   fun ratingUser_whenClicked_showsDialogRating() {
     context.launchMediaDetailActivity {
       setupLoginUser()
 
       // submit rating without selecting any rating
-      onView(withId(score_scrollview)).perform(swipeLeft())
-      onView(withId(your_score_viewGroup)).perform(click())
+      performScoreClick()
       onView(withText(submit)).perform(click())
 
       // press cancel button
-      onView(withId(score_scrollview)).perform(swipeLeft())
-      onView(withId(your_score_viewGroup)).perform(click())
+      performScoreClick()
       onView(withText(cancel)).perform(click())
 
-      onView(withId(score_scrollview)).perform(swipeLeft())
-      onView(withId(your_score_viewGroup)).perform(click())
+      performScoreClick()
       onView(withId(rating_bar_action)).perform(SetRatingAction(3.5f))
       onView(withText(submit)).perform(click())
     }
@@ -370,9 +365,23 @@ class MediaDetailActivityInteractionTest :
     onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
   }
 
-  private fun submitRating() {
+  private fun performScoreClick() {
     onView(withId(score_scrollview)).perform(swipeLeft())
     onView(withId(your_score_viewGroup)).perform(click())
+  }
+
+  private fun performTMDBScoreClick() {
+    onView(withId(score_scrollview)).perform(swipeLeft())
+    onView(withId(tmdb_viewGroup)).check(matches(isDisplayed())).perform(click())
+  }
+
+  private fun dialogNotRatedShowIsShowing() {
+    onView(withText(not_available_full)).inRoot(isDialog()).check(matches(isDisplayed()))
+    onView(withText(cant_provide_a_score)).inRoot(isDialog()).check(matches(isDisplayed()))
+  }
+
+  private fun submitRating() {
+    performScoreClick()
     onView(withId(rating_bar_action)).perform(SetRatingAction(5f))
     onView(withText(submit)).perform(click())
   }

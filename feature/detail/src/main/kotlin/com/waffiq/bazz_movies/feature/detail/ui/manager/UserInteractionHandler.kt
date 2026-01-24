@@ -7,10 +7,10 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_filled
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_outlined
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_selected
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_filled
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_outlined
 import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist

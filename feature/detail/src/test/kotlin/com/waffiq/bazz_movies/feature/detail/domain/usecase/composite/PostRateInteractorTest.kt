@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertIs
 
-class PostMethodWithUserInteractorTest : BaseInteractorTest() {
+class PostRateInteractorTest : BaseInteractorTest() {
 
   private val rate = 9.0f
   private lateinit var interactor: PostRateInteractor

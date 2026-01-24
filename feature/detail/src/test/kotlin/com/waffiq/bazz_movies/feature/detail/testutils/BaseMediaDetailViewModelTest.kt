@@ -26,6 +26,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
@@ -61,12 +62,11 @@ abstract class BaseMediaDetailViewModelTest {
   protected val getMovieDataWithUserPrefUseCase: GetMovieDataWithUserRegionUseCase = mockk()
   protected val getTvDataWithUserPrefUseCase: GetTvDataWithUserRegionUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
+  protected val getTvAllScoreUseCase: GetTvAllScoreUseCase = mockk()
 
   protected val imdbId = IMDB_ID
-  protected val sessionId = "session ID"
   protected val movieId = 123
   protected val tvId = 456
-  protected val usRegion = USER_REGION
   protected val errorMessage = ERROR_MESSAGE
 
   protected val mockLinkVideo = String()
@@ -127,6 +127,7 @@ abstract class BaseMediaDetailViewModelTest {
       getMediaStateWithUserUseCase,
       getMovieDataWithUserPrefUseCase,
       getTvDataWithUserPrefUseCase,
+      getTvAllScoreUseCase,
     )
   }
 

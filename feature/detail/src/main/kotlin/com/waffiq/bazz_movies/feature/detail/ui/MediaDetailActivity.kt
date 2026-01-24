@@ -96,8 +96,7 @@ class MediaDetailActivity : AppCompatActivity() {
 
     dataManager = DetailDataManager(
       detailViewModel = detailViewModel,
-      dataExtra = dataExtra,
-      lifecycleOwner = this
+      dataExtra = dataExtra
     )
 
     userInteractionHandler = UserInteractionHandler(
