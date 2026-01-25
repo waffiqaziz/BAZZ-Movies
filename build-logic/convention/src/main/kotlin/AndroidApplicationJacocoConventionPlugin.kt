@@ -12,15 +12,8 @@ class AndroidApplicationJacocoConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply<JacocoPlugin>()
-      val androidExtension = extensions.getByType<ApplicationExtension>()
-
-      androidExtension.buildTypes.configureEach {
-        enableAndroidTestCoverage = true
-        enableUnitTestCoverage = true
-      }
-
       // Set the JaCoCo version to match the one used by the Android Gradle Plugin
-      androidExtension.testCoverage {
+      extensions.getByType<ApplicationExtension>().testCoverage {
         jacocoVersion = libs.findVersion("jacoco").get().toString()
       }
       configureJacoco(
