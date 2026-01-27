@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  companion object{
-    const val REDUCE_MARGIN = 64
+  companion object {
+    const val REDUCE_MARGIN = 46
     const val CAMERA_DISTANCE = 8000f
   }
 }
