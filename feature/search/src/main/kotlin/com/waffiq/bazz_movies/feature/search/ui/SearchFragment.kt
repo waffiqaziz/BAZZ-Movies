@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -140,16 +142,21 @@ class SearchFragment : Fragment() {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
           menuInflater.inflate(search_menu, menu)
           val searchView = menu.findItem(action_search).actionView as SearchView
-          searchView.maxWidth = Int.MAX_VALUE
+          val searchEditText = searchView.findViewById<EditText>(search_src_text)
 
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            searchView.findViewById<EditText>(search_src_text)
-              .textCursorDrawable?.setTint(ContextCompat.getColor(requireContext(), yellow))
+            searchEditText.textCursorDrawable?.setTint(
+              ContextCompat.getColor(requireContext(), yellow)
+            )
           }
+          searchView.maxWidth = Int.MAX_VALUE
           searchView.findViewById<ImageView>(search_close_btn)
             .setImageResource(ic_cross)
           searchView.findViewById<ImageView>(search_button)
             .setImageResource(ic_search)
+          searchEditText.setTextColor(Color.WHITE)
+          searchEditText.setHintTextColor(0x80FFFFFF.toInt())
+          searchEditText.textSize = 12f
 
           searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
             if (it) {
@@ -184,7 +191,10 @@ class SearchFragment : Fragment() {
 
           // Restore query if available
           searchViewModel.query.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
+            if (!it.isNullOrEmpty()) {
+              searchView.setQuery(it, false)
+//              searchView.isIconified = false
+            }
           }
         }
 
