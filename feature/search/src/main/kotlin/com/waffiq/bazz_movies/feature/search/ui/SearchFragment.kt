@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.search.ui
 
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +54,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
@@ -156,7 +156,7 @@ class SearchFragment : Fragment() {
             .setImageResource(ic_search)
           searchEditText.setTextColor(Color.WHITE)
           searchEditText.setHintTextColor(0x80FFFFFF.toInt())
-          searchEditText.textSize = 12f
+          searchEditText.textSize = SEARCH_TEXT_SIZE
 
           searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
             if (it) {
@@ -191,10 +191,7 @@ class SearchFragment : Fragment() {
 
           // Restore query if available
           searchViewModel.query.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
-              searchView.setQuery(it, false)
-//              searchView.isIconified = false
-            }
+            if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
           }
         }
 
@@ -337,5 +334,9 @@ class SearchFragment : Fragment() {
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter
+  }
+
+  companion object {
+    const val SEARCH_TEXT_SIZE = 12f
   }
 }
