@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Toolbar scroll flag `scroll | snap | enterAlways` -->
+<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/toolbar"
   android:layout_width="match_parent"
-  android:layout_height="?attr/actionBarSize"
+  android:layout_height="wrap_content"
   android:background="?attr/colorPrimary"
-  android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+  android:minHeight="0dp"
+  android:paddingVertical="0dp"
   app:layout_scrollFlags="scroll|snap|enterAlways">
 
   <include layout="@layout/custom_toolbar_item" />
