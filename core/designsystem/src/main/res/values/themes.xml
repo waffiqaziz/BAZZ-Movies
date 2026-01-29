@@ -107,7 +107,7 @@
     <item name="android:visibility">visible</item>
   </style>
 
-  <style name="MyLoginButtonPortrait" parent="Widget.MaterialComponents.Button">
+  <style name="MyLoginButtonPortrait" parent="Widget.Material3.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginBottom">8dp</item>
@@ -115,10 +115,11 @@
     <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
     <item name="android:textAllCaps">false</item>
     <item name="android:textColor">@color/gray_900</item>
-    <item name="android:backgroundTint">@color/yellow</item>
+    <item name="backgroundColor">@color/yellow</item>
+    <item name="backgroundTint">@color/yellow</item>
   </style>
 
-  <style name="MyTransparentButton" parent="Widget.MaterialComponents.Button.TextButton">
+  <style name="MyTransparentButton" parent="Widget.Material3.Button.TextButton">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
@@ -166,11 +167,10 @@
     <item name="searchHintIcon">@color/yellow</item>
   </style>
 
-  <style name="TextTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
-    <item name="android:textSize">14sp</item>
-    <item name="android:textStyle">normal</item>
+  <style name="TextTabLayoutStyle" parent="Widget.Material3.TabLayout">
+    <item name="android:textSize">12sp</item>
     <item name="textAllCaps">false</item>
-    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="fontFamily">@font/nunito_sans_semi_bold</item>
   </style>
 
   <style name="TextHeader1">
@@ -180,7 +180,7 @@
   </style>
 
   <style name="TextHeader2">
-    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelLarge</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.TitleMedium</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="fontFamily">@font/nunito_sans_bold</item>
   </style>

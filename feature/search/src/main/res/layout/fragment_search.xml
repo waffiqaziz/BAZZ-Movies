@@ -20,8 +20,7 @@
       android:layout_height="wrap_content"
       android:clipToPadding="false"
       android:contentDescription="@string/search_results"
-      android:paddingTop="@dimen/bottom_nav_min_height"
-      android:paddingBottom="50dp"
+      android:paddingVertical="50dp"
       android:visibility="visible"
       tools:listitem="@layout/item_result"
       tools:visibility="visible" />

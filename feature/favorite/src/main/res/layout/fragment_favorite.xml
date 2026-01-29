@@ -5,7 +5,6 @@
   android:id="@+id/fragment_favorite"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context=".ui.fragment.FavoriteFragment">
 
   <com.google.android.material.appbar.AppBarLayout
@@ -13,7 +12,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/custom_toolbar_scroll_snap_enteralways" />
+    <include
+      android:id="@+id/layout_toolbar"
+      layout="@layout/custom_toolbar_scroll_snap_enteralways" />
 
     <com.google.android.material.tabs.TabLayout
       android:id="@+id/tabs"

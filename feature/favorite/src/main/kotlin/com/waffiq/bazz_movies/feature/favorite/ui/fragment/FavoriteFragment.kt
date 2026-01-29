@@ -31,12 +31,15 @@ class FavoriteFragment : Fragment() {
     savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-    (activity as AppCompatActivity).supportActionBar?.show()
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    (activity as? AppCompatActivity)?.let {
+      it.setSupportActionBar(binding.layoutToolbar.toolbar)
+      it.supportActionBar?.title = null
+    }
     setupTabLayoutViewPager()
   }
 
