@@ -4,8 +4,8 @@ import android.R.anim.fade_in
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -17,21 +17,7 @@ import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class CastAdapter(private val navigator: INavigator) :
-  RecyclerView.Adapter<CastAdapter.ViewHolder>() {
-
-  private val listCast = ArrayList<MediaCastItem>()
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun getListCast(): List<MediaCastItem> = listCast
-
-  fun setCast(itemCast: List<MediaCastItem>) {
-    val diffCallback = DiffCallback(this.listCast, itemCast)
-    val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-    this.listCast.clear()
-    this.listCast.addAll(itemCast)
-    diffResult.dispatchUpdatesTo(this)
-  }
+  ListAdapter<MediaCastItem, CastAdapter.ViewHolder>(CastDiffCallback()) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemCastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,13 +25,11 @@ class CastAdapter(private val navigator: INavigator) :
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.bind(listCast[position])
+    holder.bind(getItem(position))
     holder.itemView.startAnimation(
       AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
     )
   }
-
-  override fun getItemCount(): Int = listCast.size
 
   inner class ViewHolder(private var binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -69,29 +53,21 @@ class CastAdapter(private val navigator: INavigator) :
       binding.tvCastName.text = cast.name ?: cast.originalName
       binding.tvCastCharacter.text = cast.character?.takeIf { it.isNotBlank() } ?: "TBA"
 
-      // image OnClickListener
       binding.container.setOnClickListener {
         navigator.openPersonDetails(itemView.context, cast)
       }
     }
   }
 
-  class DiffCallback(
-    private val oldList: List<MediaCastItem>,
-    private val newList: List<MediaCastItem>
-  ) : DiffUtil.Callback() {
+  class CastDiffCallback : DiffUtil.ItemCallback<MediaCastItem>() {
+    override fun areItemsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean {
+      return oldItem.id == newItem.id
+    }
 
-    override fun getOldListSize() = oldList.size
-
-    override fun getNewListSize() = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-      oldList[oldItemPosition].id == newList[newItemPosition].id
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-      val oldEmployee = oldList[oldItemPosition]
-      val newEmployee = newList[newItemPosition]
-      return oldEmployee.id == newEmployee.id
+    override fun areContentsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean {
+      return oldItem.id == newItem.id &&
+        oldItem.name == newItem.name &&
+        oldItem.character == newItem.character
     }
   }
 }

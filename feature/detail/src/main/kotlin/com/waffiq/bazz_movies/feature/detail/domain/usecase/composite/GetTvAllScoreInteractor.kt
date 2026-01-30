@@ -15,14 +15,14 @@ import javax.inject.Inject
 class GetTvAllScoreInteractor @Inject constructor(
   private val getTvDetailUseCase: GetTvDetailUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
-): GetTvAllScoreUseCase {
+) : GetTvAllScoreUseCase {
 
   override fun getTvAllScore(tvId: Int): Flow<Outcome<OMDbDetails>> =
     getTvDetailUseCase.getTvExternalIds(tvId)
       .filterIsInstance<Outcome.Success<TvExternalIds>>() // Only passes or take Success
       .take(1)
       .flatMapConcat { outcome ->
-        when(outcome) {
+        when (outcome) {
           is Outcome.Success -> {
             val imdbId = outcome.data.imdbId
             if (imdbId.isNullOrEmpty()) {

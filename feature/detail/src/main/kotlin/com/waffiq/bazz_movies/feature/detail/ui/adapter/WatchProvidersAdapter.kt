@@ -25,7 +25,7 @@ class WatchProvidersAdapter(
   fun getListProvider(): List<Provider> = providerList
 
   fun setProviders(newList: List<Provider>) {
-    val diffCallback = DiffCallback(this.providerList, newList)
+    val diffCallback = DiffCallback(ArrayList(providerList), newList)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
     this.providerList.clear()

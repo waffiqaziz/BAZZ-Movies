@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
-import android.content.Context
 import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -12,11 +11,11 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNotNull
-import junit.framework.TestCase.assertSame
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.Shadows.shadowOf
@@ -42,17 +41,18 @@ class CastAdapterTest : BaseAdapterTest() {
       MediaCastItem(id = 3, name = "No Cast")
     )
 
-    adapter.setCast(oldList)
-    assertEquals(1, adapter.itemCount)
+    adapter.submitList(oldList) {
+      assertEquals(1, adapter.itemCount)
 
-    adapter.setCast(newList)
-    assertEquals(2, adapter.itemCount)
-    assertEquals(newList, adapter.getListCast())
+      adapter.submitList(newList) {
+        assertEquals(2, adapter.itemCount)
+        assertEquals(newList, adapter.currentList)
+      }
+    }
   }
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
-    val context = ApplicationProvider.getApplicationContext<Context>()
     val inflater = LayoutInflater.from(context)
     val binding = ItemCastBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
@@ -65,23 +65,24 @@ class CastAdapterTest : BaseAdapterTest() {
     val characterCases = listOf(
       MediaCastItem(character = "Bjorn") to "Bjorn",
       MediaCastItem(character = null) to "TBA",
-      MediaCastItem(character = " ") to "TBA"
+      MediaCastItem(character = "") to "TBA"
     )
 
     // test name/originalName
     for ((castItem, expectedText) in testCases) {
-      adapter.setCast(listOf(castItem))
-      adapter.onBindViewHolder(viewHolder, 0)
+      adapter.submitList(listOf(castItem)) {
+        adapter.onBindViewHolder(viewHolder, 0)
+        assertEquals(expectedText, binding.tvCastName.text.toString())
+      }
 
-      assertEquals(expectedText, binding.tvCastName.text.toString())
     }
 
     // test character fallback
     for ((castItem, expectedCharacter) in characterCases) {
-      adapter.setCast(listOf(castItem))
-      adapter.onBindViewHolder(viewHolder, 0)
-
-      assertEquals(expectedCharacter, binding.tvCastCharacter.text.toString())
+      adapter.submitList(listOf(castItem)) {
+        adapter.onBindViewHolder(viewHolder, 0)
+        assertEquals(expectedCharacter, binding.tvCastCharacter.text.toString())
+      }
     }
   }
 
@@ -105,15 +106,15 @@ class CastAdapterTest : BaseAdapterTest() {
 
     val testCases = listOf(
       MediaCastItem(id = 1, name = "name1", profilePath = "valid_image.jpg") to "name1",
-      MediaCastItem(id = 2, name = "name2", profilePath = "") to "name2",
-      MediaCastItem(id = 3, name = "name3", profilePath = null) to "name3"
+      MediaCastItem(id = 2, originalName = "name2", character = "", profilePath = "") to null,
+      MediaCastItem(id = 3, name = "name3", character = "Char", profilePath = null) to "name3"
     )
 
-    testCases.forEach { (castItem, castId) ->
-      viewHolder.bind(castItem)
+    testCases.forEach { (data, expected) ->
+      viewHolder.bind(data)
 
       // expect the content description has correct name
-      assertEquals(castId, binding.imgCastPhoto.contentDescription)
+      assertEquals(expected, binding.imgCastPhoto.contentDescription)
     }
   }
 
@@ -138,7 +139,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val binding = ItemCastBinding.inflate(inflater, FrameLayout(inflater.context), false)
     val viewHolder = adapter.ViewHolder(binding)
 
-    adapter.setCast(listOf(castItem))
+    adapter.submitList(listOf(castItem))
     adapter.onBindViewHolder(viewHolder, 0)
 
     // use slot to capture MediaCastItem
@@ -158,21 +159,38 @@ class CastAdapterTest : BaseAdapterTest() {
   }
 
   @Test
-  fun areContentsTheSame_whenFilePathIsSame_returnsTrue() {
+  fun areContentsTheSame_whenContentIsSame_returnsTrue() {
     val oldItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn")
-    val newItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn") // same content
+    val newItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn")
 
-    val diffCallback = CastAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
-    assertTrue(diffCallback.areContentsTheSame(0, 0))
+    val diffCallback = CastAdapter.CastDiffCallback()
+    assertTrue(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
-  fun areContentsTheSame_whenDifferentFilePath_returnsFalse() {
+  fun areContentsTheSame_whenOnlyCharacterDifferent_returnsFalse() {
     val oldItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn")
-    val newItem =
-      MediaCastItem(id = 2, name = "Test Name2", character = "Ragnar") // different content
+    val newItem = MediaCastItem(id = 1, name = "Test Name", character = "Ragnar")
 
-    val diffCallback = CastAdapter.DiffCallback(listOf(oldItem), listOf(newItem))
-    assertFalse(diffCallback.areContentsTheSame(0, 0))
+    val diffCallback = CastAdapter.CastDiffCallback()
+    assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
+  }
+
+  @Test
+  fun areContentsTheSame_whenOnlyNameDifferent_returnsFalse() {
+    val oldItem = MediaCastItem(id = 1, name = "Test Name", character = "Bjorn")
+    val newItem = MediaCastItem(id = 1, name = "Different Name", character = "Bjorn")
+
+    val diffCallback = CastAdapter.CastDiffCallback()
+    assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
+  }
+
+  @Test
+  fun areContentsTheSame_whenValueDifferent_returnsFalse() {
+    val oldItem = MediaCastItem(id = 2, name = "Test Name2", character = "Bjorn")
+    val newItem = MediaCastItem(id = 1, name = "Test Name", character = "Ragnar")
+
+    val diffCallback = CastAdapter.CastDiffCallback()
+    assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
   }
 }

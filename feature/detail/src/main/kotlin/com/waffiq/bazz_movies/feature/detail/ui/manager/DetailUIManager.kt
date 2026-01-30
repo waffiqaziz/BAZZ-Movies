@@ -273,7 +273,7 @@ class DetailUIManager(
    */
   fun updateCreditsUI(credits: MediaCredits) {
     createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
-    adapterCast.setCast(credits.cast)
+    adapterCast.submitList(credits.cast)
 
     val hasCast = adapterCast.itemCount > 0
     binding.rvCast.isVisible = hasCast
