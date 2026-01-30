@@ -14,14 +14,10 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
-import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_age_rating
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_genre
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_mediaType
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_tmdb
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_title
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_year_released
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
@@ -42,7 +38,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import kotlin.math.abs
 
 /**
  * Instrumented test for [MediaDetailActivity] that checks the visibility of UI elements
@@ -140,9 +135,10 @@ class MediaDetailActivityTest :
   fun mediaDetailValue_withMixedValue_showsViewsCorrectly() {
     // genre null
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(genre = null))
-      onView(withId(tv_genre)).check(matches(withText(context.getString(not_available))))
-        .check(matches(isDisplayed()))
+      detailMedia.postValue(testMediaDetail.copy(genreId = emptyList()))
+    }
+    context.launchMediaDetailActivity {
+      detailMedia.postValue(testMediaDetail.copy(genreId = null))
     }
 
     // movie duration null
@@ -212,83 +208,5 @@ class MediaDetailActivityTest :
       )
       onView(withId(rv_cast)).check(matches(not(isDisplayed())))
     }
-  }
-
-  @Test
-  fun mediaItem_withShortTitle_shouldKeepMetadataNextToPoster() {
-    val shortTitle = "Short"
-
-    context.launchMediaDetailActivity(
-      data = testMediaItem.copy(name = shortTitle)
-    ) {
-      val posterBottom = getViewBottomPosition(iv_poster)
-      val mediaTypeTop = getViewTopPosition(tv_mediaType)
-
-      // MediaType should still be beside/aligned with poster
-      assert(mediaTypeTop < posterBottom) {
-        "MediaType should be beside poster for short titles"
-      }
-    }
-  }
-
-  @Test
-  fun mediaItem_withLongTitle_shouldMoveMetadataUnderPoster() {
-    val longTitle =
-      "This title should be long enough to trigger the metadata of media item under the media poster"
-
-    context.launchMediaDetailActivity(
-      data = testMediaItem.copy(name = longTitle)
-    ) {
-      onView(withId(tv_title)).check(matches(isDisplayed()))
-
-      // verify title displays the long text
-      onView(withId(tv_title)).check(matches(withText(longTitle)))
-
-      // Verify tv_mediaType is positioned BELOW the poster
-      val posterBottom = getViewBottomPosition(iv_poster)
-      val mediaTypeTop = getViewTopPosition(tv_mediaType)
-      assert(mediaTypeTop > posterBottom) {
-        "MediaType should be below poster. MediaType top: $mediaTypeTop, Poster bottom: $posterBottom"
-      }
-
-      // verify the constraint chain: mediaType -> genre -> duration
-      val mediaTypeBottom = getViewBottomPosition(tv_mediaType)
-      val genreTop = getViewTopPosition(tv_genre)
-      assert(genreTop > mediaTypeBottom) {
-        "Genre should be below mediaType"
-      }
-
-      val genreBottom = getViewBottomPosition(tv_genre)
-      val durationTop = getViewTopPosition(tv_duration)
-      assert(durationTop > genreBottom) {
-        "Duration should be below genre"
-      }
-
-      // verify title is aligned to poster bottom
-      val titleBottom = getViewBottomPosition(tv_title)
-      assert(abs(titleBottom - posterBottom) < 5) { // 5px tolerance
-        "Title bottom should align with poster bottom"
-      }
-    }
-  }
-
-  private fun getViewTopPosition(viewId: Int): Int {
-    var top = 0
-    onView(withId(viewId)).check { view, _ ->
-      val location = IntArray(2)
-      view.getLocationOnScreen(location)
-      top = location[1]
-    }
-    return top
-  }
-
-  private fun getViewBottomPosition(viewId: Int): Int {
-    var bottom = 0
-    onView(withId(viewId)).check { view, _ ->
-      val location = IntArray(2)
-      view.getLocationOnScreen(location)
-      bottom = location[1] + view.height
-    }
-    return bottom
   }
 }

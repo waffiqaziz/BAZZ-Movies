@@ -58,6 +58,7 @@ paging = "3.4.0"
 
 # UI components
 material = "1.14.0-alpha09"
+flexbox = "3.0.0"
 
 # Networking
 retrofit = "3.0.0"
@@ -136,6 +137,7 @@ androidx-room-paging = { group = "androidx.room", name = "room-paging", version.
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # UI components
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Networking

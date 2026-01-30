@@ -251,7 +251,7 @@
           app:ellipsizeTextColor="@color/yellow"
           app:expandType="layout"
           app:isExpanded="false"
-          app:readLessText="@string/less_more"
+          app:readLessText="@string/read_less"
           app:readMoreText="@string/read_more"
           app:textMode="line"
           android:text="\n\n\n\n"
