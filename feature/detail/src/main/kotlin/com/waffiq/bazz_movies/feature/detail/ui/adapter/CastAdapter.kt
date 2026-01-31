@@ -60,9 +60,8 @@ class CastAdapter(private val navigator: INavigator) :
   }
 
   class CastDiffCallback : DiffUtil.ItemCallback<MediaCastItem>() {
-    override fun areItemsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean {
-      return oldItem.id == newItem.id
-    }
+    override fun areItemsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean =
+      oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean {
       return oldItem.id == newItem.id &&
