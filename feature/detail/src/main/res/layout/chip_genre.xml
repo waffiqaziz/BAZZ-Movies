@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginEnd="@dimen/margin_between_item">
+
+  <com.google.android.material.chip.Chip
+    android:id="@+id/chip"
+    app:chipStrokeColor="@color/gray_800"
+    android:textColor="@color/gray_600"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/ChipTextAppearance"
+    android:backgroundTint="@color/cardview_shadow_end_color"
+    app:ensureMinTouchTargetSize="true"
+    tools:text="Action" />
+
+</FrameLayout>

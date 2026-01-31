@@ -198,18 +198,24 @@
   </style>
 
   <style name="TextCast">
-    <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
     <item name="android:maxLines">1</item>
     <item name="android:layout_gravity">center</item>
     <item name="android:gravity">center</item>
     <item name="android:ellipsize">end</item>
-    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="android:textColor">@color/gray_200</item>
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="TextMetadata">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
+    <item name="android:textColor">@color/gray_200</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
   <style name="TextBody">
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyMedium</item>
-    <item name="android:textColor">@color/gray_100</item>
+    <item name="android:textColor">@color/gray_200</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
@@ -217,7 +223,7 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
-    <item name="android:textColor">@color/gray_100</item>
+    <item name="android:textColor">@color/gray_200</item>
     <item name="fontFamily">@font/nunito_sans_regular</item>
     <item name="android:layout_gravity">center</item>
     <item name="android:text">@string/not_available</item>
@@ -331,5 +337,9 @@
     <item name="android:textColorSecondaryInverse">@color/gray_900</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
     <item name="android:backgroundTint">@color/white</item>
+  </style>
+
+  <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
   </style>
 </resources>

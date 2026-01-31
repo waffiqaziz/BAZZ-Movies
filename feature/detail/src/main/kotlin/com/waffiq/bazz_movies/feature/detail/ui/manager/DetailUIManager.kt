@@ -1,16 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.ActivityNotFoundException
-import android.content.res.Resources
 import android.util.Log
-import android.view.View
-import android.view.ViewTreeObserver
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
@@ -21,6 +15,10 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
@@ -34,7 +32,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_p
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.R.string.status_
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
@@ -42,17 +39,13 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_genre
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_mediaType
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_title
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
@@ -84,6 +77,7 @@ class DetailUIManager(
 ) {
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterRecommendation: RecommendationAdapter
+  private lateinit var adapterGenre: GenreAdapter
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
@@ -97,7 +91,7 @@ class DetailUIManager(
   }
 
   /**
-   * Sets up horizontal snap scrolling for RecyclerViews list of cast and recommendation.
+   * Sets up horizontal snap scrolling for RecyclerViews list of genre, cast, and recommendation.
    */
   private fun setupRecyclerViews() {
     setupRecyclerViewsWithSnap(
@@ -106,14 +100,25 @@ class DetailUIManager(
         binding.rvRecommendation,
       )
     )
+    binding.rvGenre.layoutManager = FlexboxLayoutManager(binding.rvGenre.context).apply {
+      flexDirection = FlexDirection.ROW
+      flexWrap = FlexWrap.WRAP
+      justifyContent = JustifyContent.FLEX_START
+    }
   }
 
   /**
    * Initializes adapters for cast and recommendation lists, and sets them to their RecyclerViews.
    */
   private fun initializeAdapters() {
+    adapterGenre = GenreAdapter()
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
+
+    binding.rvGenre.apply {
+      itemAnimator = DefaultItemAnimator()
+      adapter = adapterGenre
+    }
 
     binding.rvCast.apply {
       itemAnimator = DefaultItemAnimator()
@@ -208,15 +213,6 @@ class DetailUIManager(
       )
       tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
         ?: activity.getString(no_overview)
-
-      setupDynamicLayout(
-        rootLayout = binding.constraintLayoutUpper,
-        poster = binding.ivPoster,
-        title = binding.tvTitle,
-        mediaType = binding.tvMediaType,
-        genre = binding.tvGenre,
-        duration = binding.tvDuration
-      )
     }
   }
 
@@ -225,7 +221,7 @@ class DetailUIManager(
    */
   fun updateDetailUI(details: MediaDetail, mediaType: String) {
     binding.apply {
-      tvGenre.text = details.genre ?: activity.getString(not_available)
+      if (details.genreId != null) adapterGenre.setGenre(details.genreId)
       tvScoreTmdb.text = details.tmdbScore ?: activity.getString(not_available)
 
       // set duration for movie and status for tv-series
@@ -235,7 +231,7 @@ class DetailUIManager(
           if (details.duration.isNullOrEmpty()) {
             activity.getString(not_available)
           } else {
-            activity.getString(status_, details.duration)
+            details.duration
           }
         }
       }
@@ -252,11 +248,7 @@ class DetailUIManager(
   private fun updateAgeRating(ageRating: String?) {
     val hasAgeRating = !ageRating.isNullOrEmpty()
     binding.tvAgeRating.isVisible = hasAgeRating
-    binding.divider2.isVisible = hasAgeRating
-
-    if (hasAgeRating) {
-      binding.tvAgeRating.text = ageRating
-    }
+    if (hasAgeRating) binding.tvAgeRating.text = ageRating
   }
 
   /**
@@ -273,10 +265,7 @@ class DetailUIManager(
     // release date
     val hasReleaseDate = releaseDateRegion.releaseDate.isNotEmpty()
     binding.tvYearReleased.isVisible = hasReleaseDate
-    binding.divider1.isVisible = hasReleaseDate
-    if (hasReleaseDate) {
-      binding.tvYearReleased.text = releaseDateRegion.releaseDate
-    }
+    if (hasReleaseDate) binding.tvYearReleased.text = releaseDateRegion.releaseDate
   }
 
   /**
@@ -284,7 +273,7 @@ class DetailUIManager(
    */
   fun updateCreditsUI(credits: MediaCredits) {
     createTable(activity, extractCrewDisplayNames(credits.crew), binding.table)
-    adapterCast.setCast(credits.cast)
+    adapterCast.submitList(credits.cast)
 
     val hasCast = adapterCast.itemCount > 0
     binding.rvCast.isVisible = hasCast
@@ -402,178 +391,6 @@ class DetailUIManager(
   fun dismissSnackbar() {
     mSnackbar?.dismiss()
   }
-
-  @Suppress("LongMethod")
-  fun setupDynamicLayout(
-    rootLayout: ConstraintLayout,
-    poster: View,
-    title: TextView,
-    mediaType: TextView,
-    genre: TextView,
-    duration: TextView,
-  ) {
-    // Wait for layout to be measured
-    title.viewTreeObserver.addOnGlobalLayoutListener(object :
-      ViewTreeObserver.OnGlobalLayoutListener {
-      override fun onGlobalLayout() {
-        title.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-        val posterBottom = poster.bottom
-        val posterTop = poster.top
-
-        // Calculate metadata total height
-        val metadataHeight = mediaType.height + genre.height + duration.height +
-          (8.dpToPx() * 2) // margins between items
-
-        // Calculate if title + metadata would overflow
-        val titleHeight = title.height
-        val totalHeight =
-          titleHeight + metadataHeight + 8.dpToPx() // 8dp gap between title and metadata
-        val availableHeight = posterBottom - posterTop
-
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(rootLayout)
-
-        // Title is too long - move metadata BELOW the poster
-        if (totalHeight > availableHeight) {
-          // Clear all constraints for title
-          constraintSet.clear(tv_title, ConstraintSet.TOP)
-          constraintSet.clear(tv_title, ConstraintSet.BOTTOM)
-
-          // Align title bottom to poster bottom
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.BOTTOM,
-            iv_poster,
-            ConstraintSet.BOTTOM,
-            0
-          )
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.START,
-            iv_poster,
-            ConstraintSet.END,
-            16.dpToPx()
-          )
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END,
-            20.dpToPx()
-          )
-
-          // Move metadata BELOW poster - clear ALL bottom constraints
-          constraintSet.clear(tv_mediaType, ConstraintSet.BOTTOM)
-          constraintSet.connect(
-            tv_mediaType,
-            ConstraintSet.TOP,
-            iv_poster,
-            ConstraintSet.BOTTOM,
-            16.dpToPx()
-          )
-          constraintSet.connect(
-            tv_mediaType,
-            ConstraintSet.START,
-            iv_poster,
-            ConstraintSet.START,
-            0
-          )
-
-          // Clear genre bottom constraint to poster
-          constraintSet.clear(tv_genre, ConstraintSet.BOTTOM)
-          constraintSet.connect(
-            tv_genre,
-            ConstraintSet.TOP,
-            tv_mediaType,
-            ConstraintSet.BOTTOM,
-            8.dpToPx()
-          )
-
-          // Clear duration bottom constraint to poster
-          constraintSet.clear(tv_duration, ConstraintSet.BOTTOM)
-          constraintSet.connect(
-            tv_duration,
-            ConstraintSet.TOP,
-            tv_genre,
-            ConstraintSet.BOTTOM,
-            8.dpToPx()
-          )
-        } else {
-          // Title fits - keep metadata beside the poster at bottom
-
-          // Clear all constraints for title
-          constraintSet.clear(tv_title, ConstraintSet.TOP)
-          constraintSet.clear(tv_title, ConstraintSet.BOTTOM)
-
-          // Align title bottom to tv_mediaType top (title sits above metadata)
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.BOTTOM,
-            tv_mediaType,
-            ConstraintSet.TOP,
-            8.dpToPx()
-          )
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.START,
-            iv_poster,
-            ConstraintSet.END,
-            16.dpToPx()
-          )
-          constraintSet.connect(
-            tv_title,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END,
-            20.dpToPx()
-          )
-
-          // Keep metadata beside poster at bottom - restore constraints
-          constraintSet.clear(tv_mediaType, ConstraintSet.TOP)
-          constraintSet.connect(
-            tv_mediaType,
-            ConstraintSet.BOTTOM,
-            tv_genre,
-            ConstraintSet.TOP,
-            8.dpToPx()
-          )
-          constraintSet.connect(
-            tv_mediaType,
-            ConstraintSet.START,
-            tv_title,
-            ConstraintSet.START,
-            0
-          )
-
-          // Restore genre constraint to duration
-          constraintSet.clear(tv_genre, ConstraintSet.TOP)
-          constraintSet.connect(
-            tv_genre,
-            ConstraintSet.BOTTOM,
-            tv_duration,
-            ConstraintSet.TOP,
-            8.dpToPx()
-          )
-
-          // Restore duration constraint to poster
-          constraintSet.clear(tv_duration, ConstraintSet.TOP)
-          constraintSet.connect(
-            tv_duration,
-            ConstraintSet.BOTTOM,
-            iv_poster,
-            ConstraintSet.BOTTOM,
-            8.dpToPx()
-          )
-        }
-
-        constraintSet.applyTo(rootLayout)
-      }
-    })
-  }
-
-  // Convert dp to pixel
-  fun Int.dpToPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
   /**
    * Clears all transient UI state (snackbars, toasts).

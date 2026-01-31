@@ -17,6 +17,7 @@ dependencies {
   implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.paging.runtime)
   implementation(libs.expandable.textview)
+  implementation(libs.flexbox)
 
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)

@@ -128,7 +128,6 @@
   <string name="tmdb">TMDB</string>
   <string name="r_tomatoes">R. Tomatoes</string>
   <string name="tmdb_full">The Movie Database</string>
-  <string name="status_">Status : %1$s</string>
 
   <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>
@@ -160,7 +159,7 @@
   <string name="years_old">years old</string>
   <string name="photos">Photos</string>
   <string name="read_more">Read More</string>
-  <string name="less_more">Less More</string>
+  <string name="read_less">Read Less</string>
   <string name="playing_as">Playing as</string>
   <string name="no_biography">No biography</string>
   <string name="actress_photo">actress photo</string>

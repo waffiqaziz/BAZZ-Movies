@@ -116,7 +116,6 @@
           android:id="@+id/constraint_layout_upper"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingBottom="@dimen/default_margin_parent_20"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
@@ -148,6 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/nunito_sans_italic"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/default_margin_parent_20"
             android:text="@string/backdrop_not_found"
             android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
             android:textColor="@color/gray_300"
@@ -205,123 +206,112 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
             android:ellipsize="end"
-            android:maxLines="4"
-            app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
+            android:maxLines="2"
+            app:layout_constraintBottom_toTopOf="@+id/tv_year_released"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_poster"
             tools:text="The Silence" />
 
-          <!-- TV/Movie -->
-          <TextView
-            android:id="@+id/tv_mediaType"
-            style="@style/TextBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_detail_info"
-            app:layout_constraintBottom_toTopOf="@+id/tv_genre"
-            app:layout_constraintStart_toStartOf="@+id/tv_title"
-            tools:text="MOVIE" />
-
           <!-- Release date -->
           <TextView
             android:id="@+id/tv_year_released"
-            style="@style/TextBody"
+            style="@style/TextMetadata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-            app:layout_constraintStart_toEndOf="@+id/divider1"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
             tools:text="Jul 24, 2020" />
 
           <!-- Region -->
           <TextView
             android:id="@+id/tv_region_release"
-            style="@style/TextBody"
+            style="@style/TextMetadata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_detail_info"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_year_released"
             app:layout_constraintStart_toEndOf="@+id/tv_year_released"
+            app:layout_constraintTop_toTopOf="@+id/tv_year_released"
             tools:text="(US)" />
-
-          <TextView
-            android:id="@+id/divider1"
-            style="@style/TextBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_detail_info"
-            android:importantForAccessibility="no"
-            android:text="@string/_divider"
-            android:textColor="@color/gray_400"
-            app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
-            app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
-
-          <TextView
-            android:id="@+id/divider2"
-            style="@style/TextBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_detail_info"
-            android:importantForAccessibility="no"
-            android:text="@string/_divider"
-            android:textColor="@color/gray_400"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
-            app:layout_constraintStart_toEndOf="@+id/tv_region_release" />
 
           <!-- Age rating -->
           <TextView
             android:id="@+id/tv_age_rating"
-            style="@style/TextBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_detail_info"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:background="@drawable/frame"
             android:ellipsize="end"
+            android:fontFamily="@font/nunito_sans_bold"
             android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="@color/gray_200"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_region_release"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/divider2"
+            app:layout_constraintStart_toEndOf="@+id/tv_region_release"
+            app:layout_constraintTop_toTopOf="@+id/tv_region_release"
             tools:text="PG-A" />
 
-          <!-- Genre -->
+          <!-- TV/Movie -->
           <TextView
-            android:id="@+id/tv_genre"
-            style="@style/TextBody"
-            android:layout_width="0dp"
+            android:id="@+id/tv_mediaType"
+            style="@style/TextMetadata"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin_parent_20"
             android:layout_marginBottom="@dimen/margin_detail_info"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/not_available"
-            app:layout_constraintBottom_toTopOf="@+id/tv_duration"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_mediaType"
-            tools:text="Action, Drama, &amp; Family" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="MOVIE" />
+
+          <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="4dp"
+            android:layout_marginStart="@dimen/margin_detail_info"
+            android:importantForAccessibility="no"
+            app:dividerColor="@color/gray_700"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
+            app:layout_constraintStart_toEndOf="@+id/tv_mediaType"
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType" />
 
           <!-- Duration -->
           <TextView
             android:id="@+id/tv_duration"
-            style="@style/TextBody"
+            style="@style/TextMetadata"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_detail_info"
             android:layout_marginEnd="@dimen/default_margin_parent_20"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:gravity="start"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@string/not_available"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_mediaType"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_genre"
+            app:layout_constraintStart_toEndOf="@+id/divider2"
+            app:layout_constraintTop_toTopOf="@+id/tv_mediaType"
             tools:text="1H 22m" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--     End of UPPER SECTION   -->
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_genre"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginVertical="@dimen/margin_between_item"
+          android:clipToPadding="false"
+          android:paddingStart="@dimen/default_margin_parent_20"
+          tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+          tools:listitem="@layout/chip_genre"
+          tools:orientation="horizontal" />
 
         <!-- ========================== -->
         <!--        SCORE SECTION       -->
@@ -336,7 +326,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/default_margin_parent_20">
+            android:paddingStart="@dimen/default_margin_parent_20">
 
             <!-- IMDB -->
             <LinearLayout
@@ -620,7 +610,7 @@
           app:ellipsizeTextColor="@color/yellow"
           app:expandType="layout"
           app:isExpanded="false"
-          app:readLessText="@string/less_more"
+          app:readLessText="@string/read_less"
           app:readMoreText="@string/read_more"
           app:textMode="line"
           tools:text="When the world is under attack from creatures who hunt their human prey by sound, a teenager who lost her hearing at 13, and her family, seek safety in a remote refuge. However, they discover a cult who are eager to exploit her heightened senses." />

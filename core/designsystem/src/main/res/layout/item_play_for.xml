@@ -35,7 +35,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="4dp"
-      android:textColor="@color/white"
       android:theme="@style/TextCast"
       tools:text="Sam Worthington" />
 
@@ -44,7 +43,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:text="@string/as"
-      android:textColor="@color/white"
+      android:textColor="@color/gray_400"
       android:theme="@style/TextCast" />
 
     <!-- Character names -->
@@ -52,7 +51,6 @@
       android:id="@+id/tv_cast_character"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textColor="@color/white"
       android:theme="@style/TextCast"
       tools:text="Jake Sully" />
 
