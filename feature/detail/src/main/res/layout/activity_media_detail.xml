@@ -587,14 +587,23 @@
         <!-- ========================== -->
 
         <!-- Summary -->
-        <TextView
-          android:id="@+id/tv_summary_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
+        <LinearLayout
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
           android:layout_marginTop="16dp"
-          android:text="@string/overview" />
+          android:orientation="horizontal">
+
+          <TextView
+            android:id="@+id/tv_summary_header"
+            style="@style/TextHeader2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/default_margin_parent_20"
+            android:layout_weight="1"
+            android:text="@string/overview" />
+
+        </LinearLayout>
 
         <io.github.glailton.expandabletextview.ExpandableTextView
           android:id="@+id/tv_overview"
@@ -682,11 +691,9 @@
     android:visibility="visible"
     tools:visibility="gone" />
 
-  <ProgressBar
+  <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
     style="@style/MyProgressBar"
-    android:layout_gravity="center"
-    app:indicatorColor="@color/yellow"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

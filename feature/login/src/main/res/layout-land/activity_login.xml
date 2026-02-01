@@ -175,8 +175,7 @@
     android:id="@+id/layout_background"
     layout="@layout/background_alpha" />
 
-  <!-- Progress bar -->
-  <ProgressBar
+  <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
     style="@style/MyProgressBar"
     app:layout_constraintBottom_toBottomOf="parent"

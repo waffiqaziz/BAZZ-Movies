@@ -11,6 +11,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.loadingindicator.LoadingIndicator
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
@@ -36,7 +37,7 @@ class HandlePagingLoadStateTest {
   private lateinit var lifecycleOwner: TestLifecycleOwner
   private lateinit var mockAdapter: PagingDataAdapter<Any, RecyclerView.ViewHolder>
   private lateinit var mockRecyclerView: RecyclerView
-  private lateinit var mockProgressBar: ProgressBar
+  private lateinit var mockProgressBar: LoadingIndicator
   private lateinit var mockErrorView: View
   private lateinit var mockEmptyView: View
   private lateinit var loadStateFlow: MutableStateFlow<CombinedLoadStates>

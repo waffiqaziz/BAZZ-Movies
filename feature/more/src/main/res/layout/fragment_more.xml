@@ -165,7 +165,7 @@
 
       <!-- Term and Condition -->
       <com.google.android.material.button.MaterialButton
-        android:id="@+id/tv_terms_conditon"
+        android:id="@+id/tv_terms_condition"
         style="@style/ButtonMoreStyle"
         android:paddingVertical="12dp"
         android:text="@string/terms_amp_condition"
@@ -181,20 +181,25 @@
         android:text="@string/privacy_amp_policy"
         android:textColor="@color/gray_400"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditon" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_terms_condition" />
 
       <!-- Sign out button -->
       <Button
         android:id="@+id/btn_signout"
-        style="@style/ButtonSignOut"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/sign_out"
+        android:textAllCaps="false"
+        android:textColor="@color/red_matte"
+        android:fontFamily="@font/nunito_sans_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_privacy_policy" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_privacy_policy"
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Small.Square"
+        app:strokeColor="@color/red_matte" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -205,10 +210,9 @@
     android:id="@+id/layout_background"
     layout="@layout/background_alpha" />
 
-  <ProgressBar
+  <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
     style="@style/MyProgressBar"
-    android:layout_gravity="center"
     android:visibility="gone"
     tools:visibility="visible" />
 

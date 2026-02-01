@@ -187,13 +187,13 @@ class PersonActivity : AppCompatActivity() {
       showBirthdate(detailPerson)
 
       if (!detailPerson.homepage.isNullOrEmpty()) {
-        binding.ivLink.isVisible = true
+        binding.btnLink.isVisible = true
         binding.divider1.isVisible = true
-        binding.ivLink.setOnClickListener { _ ->
+        binding.btnLink.setOnClickListener { _ ->
           startActivity(Intent(Intent.ACTION_VIEW, detailPerson.homepage.toUri()))
         }
       } else {
-        binding.ivLink.isGone = true
+        binding.btnLink.isGone = true
         binding.divider1.isGone = true
       }
     }
@@ -205,17 +205,17 @@ class PersonActivity : AppCompatActivity() {
 
       if (hasAnySocialMediaIds(externalID)) {
         binding.viewGroupSocialMedia.isVisible = true
-        setupSocialLink(externalID.instagramId, binding.ivInstagram, INSTAGRAM_LINK)
-        setupSocialLink(externalID.twitterId, binding.ivX, X_LINK)
-        setupSocialLink(externalID.facebookId, binding.ivFacebook, FACEBOOK_LINK)
-        setupSocialLink(externalID.tiktokId, binding.ivTiktok, TIKTOK_PERSON_LINK)
-        setupSocialLink(externalID.youtubeId, binding.ivYoutube, YOUTUBE_CHANNEL_LINK)
+        setupSocialLink(externalID.instagramId, binding.btnInstagram, INSTAGRAM_LINK)
+        setupSocialLink(externalID.twitterId, binding.btnX, X_LINK)
+        setupSocialLink(externalID.facebookId, binding.btnFacebook, FACEBOOK_LINK)
+        setupSocialLink(externalID.tiktokId, binding.btnTiktok, TIKTOK_PERSON_LINK)
+        setupSocialLink(externalID.youtubeId, binding.btnYoutube, YOUTUBE_CHANNEL_LINK)
       } else {
         binding.viewGroupSocialMedia.isVisible = false
       }
 
-      setupSocialLink(externalID.imdbId, binding.ivImdb, IMDB_PERSON_LINK)
-      setupSocialLink(externalID.wikidataId, binding.ivWikidata, WIKIDATA_PERSON_LINK)
+      setupSocialLink(externalID.imdbId, binding.btnImdb, IMDB_PERSON_LINK)
+      setupSocialLink(externalID.wikidataId, binding.btnWikidata, WIKIDATA_PERSON_LINK)
     }
   }
 

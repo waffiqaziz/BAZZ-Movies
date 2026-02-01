@@ -39,7 +39,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
-import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
@@ -70,8 +70,10 @@ import kotlinx.coroutines.launch
  * @param activity The parent activity for accessing lifecycle, resources, and context.
  * @param navigator A navigation interface used for handling item clicks.
  */
+
+@Suppress("TooManyFunctions")
 class DetailUIManager(
-  private val binding: ActivityDetailMovieBinding,
+  private val binding: ActivityMediaDetailBinding,
   private val activity: AppCompatActivity,
   private val navigator: INavigator,
 ) {

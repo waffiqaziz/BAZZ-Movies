@@ -46,7 +46,7 @@ import com.waffiq.bazz_movies.feature.more.R.id.img_avatar
 import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
 import com.waffiq.bazz_movies.feature.more.R.id.tv_privacy_policy
-import com.waffiq.bazz_movies.feature.more.R.id.tv_terms_conditon
+import com.waffiq.bazz_movies.feature.more.R.id.tv_terms_condition
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
 import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
@@ -131,7 +131,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun buttonTermsCondition_whenClicked_shouldOpenTermsConditionsLink() {
-    onView(withId(tv_terms_conditon)).perform(click())
+    onView(withId(tv_terms_condition)).perform(click())
     checkIntentData(TERMS_CONDITIONS_LINK)
   }
 
@@ -357,7 +357,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun allButtons_shouldBeDisplayed() {
     onView(withId(btn_faq)).check(matches(isDisplayed()))
     onView(withId(tv_privacy_policy)).check(matches(isDisplayed()))
-    onView(withId(tv_terms_conditon)).check(matches(isDisplayed()))
+    onView(withId(tv_terms_condition)).check(matches(isDisplayed()))
     onView(withId(btn_suggestion)).check(matches(isDisplayed()))
     onView(withId(btn_about_us)).check(matches(isDisplayed()))
     onView(withId(btn_signout)).check(matches(isDisplayed()))

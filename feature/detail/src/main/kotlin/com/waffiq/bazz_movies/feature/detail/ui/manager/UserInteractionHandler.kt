@@ -25,7 +25,7 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -47,7 +47,7 @@ import kotlin.math.roundToInt
  * @param dataManager Utility class for managing data refresh or reload logic.
  */
 class UserInteractionHandler(
-  private val binding: ActivityDetailMovieBinding,
+  private val binding: ActivityMediaDetailBinding,
   private val activity: AppCompatActivity,
   private val detailViewModel: MediaDetailViewModel,
   private val dataExtra: MediaItem,
@@ -208,35 +208,16 @@ class UserInteractionHandler(
   /** Sets up all UI click listeners related to user interactions. */
   private fun setupClickListeners() {
     binding.apply {
-      btnBack.setOnClickListener {
-        activity.finish()
-      }
-
-      btnFavorite.setOnClickListener {
-        handleFavoriteClick()
-      }
-
-      btnWatchlist.setOnClickListener {
-        handleWatchlistClick()
-      }
-
-      swipeRefresh.setOnRefreshListener {
-        handleSwipeRefresh()
-      }
+      btnBack.setOnClickListener { activity.finish() }
+      btnFavorite.setOnClickListener { handleFavoriteClick() }
+      btnWatchlist.setOnClickListener { handleWatchlistClick() }
+      swipeRefresh.setOnRefreshListener { handleSwipeRefresh() }
 
       // score click listeners
-      imdbViewGroup.setOnClickListener {
-        showDialogIfNotRated(tvScoreImdb.text.toString())
-      }
-      tmdbViewGroup.setOnClickListener {
-        showDialogIfNotRated(tvScoreTmdb.text.toString())
-      }
-      metascoreViewGroup.setOnClickListener {
-        showDialogIfNotRated(tvScoreMetascore.text.toString())
-      }
-      rottenTomatoesViewGroup.setOnClickListener {
-        showDialogIfNotRated(tvScoreRottenTomatoes.text.toString())
-      }
+      imdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreImdb.text.toString()) }
+      tmdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreTmdb.text.toString()) }
+      metascoreViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreMetascore.text.toString()) }
+      rottenTomatoesViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreRottenTomatoes.text.toString()) }
     }
   }
 
