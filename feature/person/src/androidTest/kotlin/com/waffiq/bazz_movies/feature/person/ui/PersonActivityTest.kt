@@ -36,11 +36,11 @@ import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
 import com.waffiq.bazz_movies.feature.person.R.id.btn_back
 import com.waffiq.bazz_movies.feature.person.R.id.collapse
 import com.waffiq.bazz_movies.feature.person.R.id.divider1
-import com.waffiq.bazz_movies.feature.person.R.id.iv_facebook
-import com.waffiq.bazz_movies.feature.person.R.id.iv_instagram
-import com.waffiq.bazz_movies.feature.person.R.id.iv_link
+import com.waffiq.bazz_movies.feature.person.R.id.btn_facebook
+import com.waffiq.bazz_movies.feature.person.R.id.btn_instagram
+import com.waffiq.bazz_movies.feature.person.R.id.btn_link
 import com.waffiq.bazz_movies.feature.person.R.id.iv_picture
-import com.waffiq.bazz_movies.feature.person.R.id.iv_x
+import com.waffiq.bazz_movies.feature.person.R.id.btn_x
 import com.waffiq.bazz_movies.feature.person.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.person.R.id.rv_known_for
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
@@ -303,7 +303,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
       onView(withId(rv_photos)).perform(scrollTo())
       checkHomePageLink(isDisplayed())
-      onView(withId(iv_link)).perform(click())
+      onView(withId(btn_link)).perform(click())
 
       intended(
         allOf(
@@ -343,9 +343,9 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
         externalIdPersonLiveData.postValue(testExternalIds)
       }
       onView(withId(view_group_social_media)).check(matches(isDisplayed()))
-      onView(withId(iv_instagram)).check(matches(isDisplayed()))
-      onView(withId(iv_x)).check(matches(isDisplayed()))
-      onView(withId(iv_facebook)).check(matches(isDisplayed()))
+      onView(withId(btn_instagram)).check(matches(isDisplayed()))
+      onView(withId(btn_x)).check(matches(isDisplayed()))
+      onView(withId(btn_facebook)).check(matches(isDisplayed()))
     }
   }
 
@@ -460,7 +460,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   }
 
   private fun checkHomePageLink(viewMatcher: Matcher<View>) {
-    onView(withId(iv_link)).check(matches(viewMatcher))
+    onView(withId(btn_link)).check(matches(viewMatcher))
     onView(withId(divider1)).check(matches(viewMatcher))
   }
 }

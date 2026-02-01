@@ -11,6 +11,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.loadingindicator.LoadingIndicator
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.Outcome
@@ -59,7 +60,7 @@ object FavWatchlistHelper {
     adapterPaging: PagingDataAdapter<*, *>,
     loadStateFlow: Flow<CombinedLoadStates>,
     recyclerView: RecyclerView,
-    progressBar: ProgressBar,
+    progressBar: LoadingIndicator,
     errorView: View,
     emptyView: View,
     onError: (Event<String>?) -> Unit, // A callback for when there’s an error

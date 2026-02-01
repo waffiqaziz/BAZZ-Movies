@@ -45,10 +45,9 @@
     android:visibility="gone"
     tools:visibility="invisible" />
 
-  <ProgressBar
+  <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
     style="@style/MyProgressBar"
-    android:layout_gravity="center"
     android:layout_marginBottom="@dimen/margin_to_centered"
     tools:visibility="visible" />
 

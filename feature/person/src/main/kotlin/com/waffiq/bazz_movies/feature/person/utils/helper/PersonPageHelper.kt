@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.person.utils.helper
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.widget.ImageView
+import android.widget.Button
 import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -83,16 +83,16 @@ object PersonPageHelper {
 
   fun Context.setupSocialLink(
     socialId: String?,
-    imageView: ImageView,
+    iconButton: Button,
     baseUrl: String,
   ) {
     if (!socialId.isNullOrEmpty()) {
-      imageView.isVisible = true
-      imageView.setOnClickListener {
+      iconButton.isVisible = true
+      iconButton.setOnClickListener {
         startActivity(Intent(Intent.ACTION_VIEW, (baseUrl + socialId).toUri()))
       }
     } else {
-      imageView.isVisible = false
+      iconButton.isVisible = false
     }
   }
 }

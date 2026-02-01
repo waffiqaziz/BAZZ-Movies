@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHe
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
-import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
@@ -32,7 +32,7 @@ class MediaDetailActivity : AppCompatActivity() {
   @Inject
   lateinit var navigator: INavigator
 
-  private lateinit var binding: ActivityDetailMovieBinding
+  private lateinit var binding: ActivityMediaDetailBinding
   private lateinit var dataExtra: MediaItem
 
   private val detailViewModel: MediaDetailViewModel by viewModels()
@@ -66,7 +66,7 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun setupActivity() {
-    binding = ActivityDetailMovieBinding.inflate(layoutInflater)
+    binding = ActivityMediaDetailBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     binding.appBarLayout.handleOverHeightAppBar()

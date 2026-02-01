@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_down
 import com.waffiq.bazz_movies.core.designsystem.R.string.where_to_watch_up
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
-import com.waffiq.bazz_movies.feature.detail.databinding.ActivityDetailMovieBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.WatchProvidersAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 
@@ -35,7 +35,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
  * @param dataExtra The movie or TV show data being displayed.
  */
 class WatchProvidersManager(
-  private val binding: ActivityDetailMovieBinding,
+  private val binding: ActivityMediaDetailBinding,
   private val context: Context,
   private val dataExtra: MediaItem,
 ) {

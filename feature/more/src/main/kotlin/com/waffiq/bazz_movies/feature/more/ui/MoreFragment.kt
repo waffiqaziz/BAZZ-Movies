@@ -134,7 +134,7 @@ class MoreFragment : Fragment() {
     binding.tvPrivacyPolicy.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_LINK.toUri()))
     }
-    binding.tvTermsConditon.setOnClickListener {
+    binding.tvTermsCondition.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, TERMS_CONDITIONS_LINK.toUri()))
     }
     binding.btnSuggestion.setOnClickListener {

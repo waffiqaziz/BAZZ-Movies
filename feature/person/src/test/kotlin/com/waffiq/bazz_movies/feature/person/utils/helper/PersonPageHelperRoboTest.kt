@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.View
-import android.widget.ImageView
+import android.widget.Button
 import androidx.core.view.isVisible
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAgeDeath
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.setupSocialLink
@@ -53,16 +53,16 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_whenSocialIdIsNotNull_showsImageViewAndStartsIntent() {
+  fun setupSocialLink_whenSocialIdIsNotNull_showsIconButtonAndStartsIntent() {
     val activity = Robolectric.buildActivity(Activity::class.java).create().get()
-    val imageView = ImageView(activity)
+    val iconButton = Button(activity)
     val socialId = "12345"
     val baseUrl = "https://social.com/"
 
-    activity.setupSocialLink(socialId, imageView, baseUrl)
-    assertTrue(imageView.isVisible)
+    activity.setupSocialLink(socialId, iconButton, baseUrl)
+    assertTrue(iconButton.isVisible)
 
-    imageView.performClick()
+    iconButton.performClick()
 
     // use Robolectric to capture the started activity
     val shadowActivity = shadowOf(activity)
@@ -75,26 +75,26 @@ class PersonPageHelperRoboTest {
   }
 
   @Test
-  fun setupSocialLink_whenSocialIdIsNull_hidesImageViewAndSkipsClickListener() {
+  fun setupSocialLink_whenSocialIdIsNull_hidesIconButtonAndSkipsClickListener() {
     val context: Context = mockk(relaxed = true)
-    val imageView: ImageView = mockk(relaxed = true)
+    val iconButton: Button = mockk(relaxed = true)
 
     context.setupSocialLink(
       socialId = null,
-      imageView = imageView,
+      iconButton = iconButton,
       baseUrl = "https://social.com/"
     )
-    verify { imageView.visibility = View.GONE } // verify visibility is set to GONE
-    verify(exactly = 0) { imageView.setOnClickListener(any()) } // verify no click listener is set
+    verify { iconButton.visibility = View.GONE } // verify visibility is set to GONE
+    verify(exactly = 0) { iconButton.setOnClickListener(any()) } // verify no click listener is set
   }
 
   @Test
   fun setupSocialLink_whenSocialIdIsEmpty_hidesImageViewAndSkipsClickListener() {
     val context: Context = mockk(relaxed = true)
-    val imageView: ImageView = mockk(relaxed = true)
+    val iconButton: Button = mockk(relaxed = true)
 
-    context.setupSocialLink(socialId = "", imageView = imageView, baseUrl = "https://social.com/")
-    verify { imageView.visibility = View.GONE }
-    verify(exactly = 0) { imageView.setOnClickListener(any()) }
+    context.setupSocialLink(socialId = "", iconButton = iconButton, baseUrl = "https://social.com/")
+    verify { iconButton.visibility = View.GONE }
+    verify(exactly = 0) { iconButton.setOnClickListener(any()) }
   }
 }
