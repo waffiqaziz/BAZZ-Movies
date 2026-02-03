@@ -4,6 +4,8 @@ import android.content.Context
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import java.text.NumberFormat
+import java.util.Locale
 
 object DetailDataUtils {
   /**
@@ -55,4 +57,22 @@ object DetailDataUtils {
     (data.firstAirDate ?: data.releaseDate)
       ?.let { dateFormatterStandard(it) }
       .takeUnless { it.isNullOrBlank() } ?: getString(not_available)
+
+  /**
+   * Formats movie revenue/budget as USD currency.
+   * Returns "-" for null, zero, or negative values (missing/unavailable data).
+   *
+   * @param amount The movie revenue or budget amount
+   * @return Formatted USD string (e.g., "$1,234,567") or "-" for unavailable data
+   */
+  fun toUsd(amount: Number?): String {
+    val longAmount = amount?.toLong() ?: 0L
+
+    return if (longAmount <= 0) {
+      "-"
+    } else {
+      val formatter = NumberFormat.getCurrencyInstance(Locale.US)
+      formatter.format(longAmount)
+    }
+  }
 }

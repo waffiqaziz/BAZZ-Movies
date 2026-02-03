@@ -42,12 +42,18 @@ object MediaHelper {
 
   fun Video.toLink(): String {
     val preferred = results
-      .filter { it.official == true && it.type.equals("Trailer", ignoreCase = true) } // get official and trailer
+      .filter {
+        it.official == true && it.type.equals(
+          "Trailer",
+          ignoreCase = true
+        )
+      } // get official and trailer
       .map { it.key } // get the key value (youtube id video)
       .firstOrNull()
       ?.trim()
 
-    return preferred ?: results.map { it.key }.firstOrNull()?.trim().orEmpty() // if null use valid link
+    return preferred ?: results.map { it.key }.firstOrNull()?.trim()
+      .orEmpty() // if null use valid link
   }
 
   fun getTransformTMDBScore(tmdbScore: Double?): String? =
@@ -55,4 +61,6 @@ object MediaHelper {
 
   fun getTransformDuration(runtime: Int?): String? =
     if (runtime == 0 || runtime == null) null else convertRuntime(runtime)
+
+  fun getScoreFromOMDB(score: String?): Boolean = score != null && score != "N/A"
 }

@@ -8,6 +8,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Ac
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.CreateSessionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
@@ -219,6 +221,16 @@ interface TMDBApiService {
     @Path("params") params: String,
     @Path("id") id: Int,
   ): Response<WatchProvidersResponse>
+
+  @GET("3/movie/{movieId}/keywords")
+  suspend fun getMovieKeywords(
+    @Path("movieId") movieId: String,
+  ): Response<MovieKeywordsResponse>
+
+  @GET("3/tv/{tvId}/keywords")
+  suspend fun getTvKeywords(
+    @Path("tvId") tvId: String,
+  ): Response<TvKeywordsResponse>
   // endregion
 
   // region PERSON

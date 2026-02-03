@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
 import android.view.View
-import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel

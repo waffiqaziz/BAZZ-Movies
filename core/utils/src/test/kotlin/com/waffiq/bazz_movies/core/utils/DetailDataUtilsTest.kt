@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -197,5 +198,22 @@ class DetailDataUtilsTest {
       )
     )
     assertEquals("N/A", result)
+  }
+
+
+  @Test
+  fun toUsd_invalidData_returnsCorrectly() {
+    assertEquals("-", toUsd(null))
+    assertEquals("-", toUsd(0))
+    assertEquals("-", toUsd(0L))
+    assertEquals("-", toUsd(0.0))
+    assertEquals("-", toUsd(-200))
+    assertEquals("-", toUsd(-200.0))
+    assertEquals("-", toUsd(-200L))
+  }
+
+  @Test
+  fun toUsd_validData_returnsCorrectly() {
+    assertEquals("$35,000,000.00", toUsd(35000000))
   }
 }

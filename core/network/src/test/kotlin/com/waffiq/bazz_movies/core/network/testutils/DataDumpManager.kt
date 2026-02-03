@@ -15,6 +15,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.Prod
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCrewResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MediaKeywordsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
@@ -1334,5 +1337,20 @@ object DataDumpManager {
   val watchProvidersResponse = WatchProvidersResponse(
     id = 456,
     results = watchProvidersResultsMap
+  )
+
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
+    id = 4444,
+    name = "family"
+  )
+
+  val movieKeywordsResponse = MovieKeywordsResponse(
+    id = 12345,
+    keywords = listOf(mediaKeywordsResponseItem)
+  )
+
+  val tvKeywordsResponse = TvKeywordsResponse(
+    id = 1222,
+    keywords = listOf(mediaKeywordsResponseItem)
   )
 }

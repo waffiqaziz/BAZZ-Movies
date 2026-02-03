@@ -211,6 +211,7 @@ class UserInteractionHandler(
       btnBack.setOnClickListener { activity.finish() }
       btnFavorite.setOnClickListener { handleFavoriteClick() }
       btnWatchlist.setOnClickListener { handleWatchlistClick() }
+      btnSidebar.setOnClickListener { uiManager.showSideSheet() }
       swipeRefresh.setOnRefreshListener { handleSwipeRefresh() }
 
       // score click listeners

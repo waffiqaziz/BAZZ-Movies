@@ -19,6 +19,8 @@
     <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
 
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+
+    <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>
   </style>
 
   <style name="WindowAnimationStyle">
@@ -109,7 +111,7 @@
     <item name="android:visibility">visible</item>
   </style>
 
-  <style name="MyLoginButtonPortrait" parent="Widget.Material3.Button">
+  <style name="MyLoginButtonPortrait" parent="Widget.Material3Expressive.Button">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginBottom">8dp</item>
@@ -293,6 +295,15 @@
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
+  <style name="ButtonSignOut" parent="Widget.Material3.Button">
+    <item name="strokeColor">@color/gray_400</item>
+    <item name="textAllCaps">false</item>
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="strokeWidth">0.8dp</item>
+    <item name="android:textColor">@color/red_matte</item>
+    <item name="backgroundTint">@android:color/transparent</item>
+  </style>
+
   <style name="customButton">
     <item name="textAllCaps">false</item>
     <item name="android:minHeight">39dp</item>
@@ -325,6 +336,11 @@
 
   <style name="ChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
+  </style>
+
+  <style name="ThemeOverlay.App.SideSheetDialog" parent="ThemeOverlay.Material3.SideSheetDialog">
+    <item name="sideSheetModalStyle">@style/Widget.App.SideSheet.Modal</item>
+    <item name="android:navigationBarColor">@color/gray_1000</item>
   </style>
 
   <style name="MyIconButtonStyle" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">

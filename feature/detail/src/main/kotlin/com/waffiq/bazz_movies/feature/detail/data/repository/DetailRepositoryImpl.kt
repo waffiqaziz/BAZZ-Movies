@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
@@ -17,6 +18,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
@@ -73,4 +75,10 @@ class DetailRepositoryImpl @Inject constructor(
     id: Int,
   ): Flow<Outcome<WatchProviders>> =
     movieDataSource.getWatchProviders(params, id).toOutcome { it.toWatchProviders() }
+
+  override fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>> =
+    movieDataSource.getMovieKeywords(movieId).toOutcome { it.toMediaKeywords() }
+
+  override fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>> =
+    movieDataSource.getTvKeywords(tvId).toOutcome { it.toMediaKeywords() }
 }
