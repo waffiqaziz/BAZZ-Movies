@@ -11,12 +11,14 @@ import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailMovie
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.video
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -34,6 +36,8 @@ class GetMovieDetailInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getMovieDetail_whenSuccessful_emitsSuccess() = runTest {
+    every { mockRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+      flowOf(Outcome.Success(mockMediaKeywords))
     testSuccessScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       mockResponse = detailMovie,
@@ -55,6 +59,8 @@ class GetMovieDetailInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getMovieDetail_whenUnsuccessful_emitsError() = runTest {
+    every { mockRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+      flowOf(Outcome.Error("error"))
     testErrorScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
@@ -63,6 +69,8 @@ class GetMovieDetailInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getMovieDetail_whenLoading_emitsLoading() = runTest {
+    every { mockRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+      flowOf(Outcome.Success(mockMediaKeywords))
     testLoadingScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }

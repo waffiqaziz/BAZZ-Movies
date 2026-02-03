@@ -124,7 +124,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.postModelState } returns postModelState
     every { mockMediaDetailViewModel.linkVideo } returns linkVideo
     every { mockMediaDetailViewModel.detailMedia } returns detailMedia
-    every { mockMediaDetailViewModel.tvExternalID } returns tvExternalID
     every { mockMediaDetailViewModel.recommendation } returns recommendation
     every { mockMediaDetailViewModel.watchProvidersUiState } returns watchProvidersUiState
   }

@@ -24,7 +24,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
@@ -97,9 +96,6 @@ class MediaDetailViewModel @Inject constructor(
   private val _detailMedia = MutableLiveData<MediaDetail>()
   val detailMedia: LiveData<MediaDetail> get() = _detailMedia
 
-  private val _tvExternalID = MutableLiveData<TvExternalIds>()
-  val tvExternalID: LiveData<TvExternalIds> get() = _tvExternalID
-
   private val _recommendation = MutableLiveData<PagingData<MediaItem>>()
   val recommendation: LiveData<PagingData<MediaItem>> get() = _recommendation
 
@@ -158,13 +154,6 @@ class MediaDetailViewModel @Inject constructor(
     executeUseCase(
       flowProvider = { getTvDetailUseCase.getTvTrailerLink(tvId) },
       onSuccess = { _linkVideo.value = it }
-    )
-  }
-
-  fun getTvExternalIds(tvId: Int) {
-    executeUseCase(
-      flowProvider = { getTvDetailUseCase.getTvExternalIds(tvId) },
-      onSuccess = { _tvExternalID.value = it }
     )
   }
 

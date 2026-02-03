@@ -19,6 +19,8 @@
     <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
 
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+
+    <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>
   </style>
 
   <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

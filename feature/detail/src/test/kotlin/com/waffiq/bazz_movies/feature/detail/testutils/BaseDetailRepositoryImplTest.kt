@@ -25,6 +25,7 @@ abstract class BaseDetailRepositoryImplTest {
   protected val movieDataSource: MovieDataSource = mockk()
   protected val id = 1
   private val differ = differ<MediaItem>()
+  protected val idString = "tt12345"
 
   @get:Rule
   val mainDispatcherRule = UnconfinedDispatcherRule()

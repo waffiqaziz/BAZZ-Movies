@@ -8,6 +8,9 @@ import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MediaKeywordsResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.BelongsToCollectionResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.releasedates.ReleaseDatesResponse
@@ -30,9 +33,12 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDates
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItemValue
@@ -485,4 +491,68 @@ object HelperTest {
   )
 
   val tvMediaState = movieMediaState.copy(id = TV_ID)
+
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
+    id = 333,
+    name = "crime"
+  )
+
+  val movieKeywordsResponse = MovieKeywordsResponse(
+    id = 44444,
+    keywords = listOf(mediaKeywordsResponseItem)
+  )
+
+  val tvKeywordsResponse = TvKeywordsResponse(
+    id = 66666,
+    keywords = listOf(mediaKeywordsResponseItem)
+  )
+
+
+  val mockGenres = listOf(
+    GenresItem(id = 1, name = "Action"),
+    GenresItem(id = 2, name = "Comedy")
+  )
+
+  val mockKeywordsItems = listOf(
+    MediaKeywordsItem(id = 10, name = "superhero"),
+    MediaKeywordsItem(id = 20, name = "adventure")
+  )
+
+  val mockMediaKeywords = MediaKeywords(
+    id = 100,
+    keywords = mockKeywordsItems
+  )
+
+  val mockReleaseDateRegion = ReleaseDateRegion(
+    regionRelease = "US",
+    releaseDate = "2023"
+  )
+
+  val mockTvExternalIds = TvExternalIds(
+    imdbId = "tt1234567",
+    id = 999
+  )
+
+  val fullTvDetail = TvDetail(
+    id = 1,
+    originalLanguage = "en",
+    listGenres = mockGenres,
+    voteAverage = 7.5,
+    status = "Returning Series",
+    listOriginCountry = listOf("US"),
+    firstAirDate = "2020-01-01",
+    lastAirDate = "2023-06-01"
+  )
+
+  val fullMovieDetail = MovieDetail(
+    id = 1,
+    originalLanguage = "en",
+    listGenres = mockGenres,
+    voteAverage = 8.0,
+    status = "Released",
+    runtime = 120,
+    imdbId = "tt9999999",
+    budget = 1000000,
+    revenue = 5000000L
+  )
 }

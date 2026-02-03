@@ -4,6 +4,8 @@ import android.content.Context
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import java.text.NumberFormat
+import java.util.Locale
 
 object DetailDataUtils {
   /**
@@ -55,4 +57,15 @@ object DetailDataUtils {
     (data.firstAirDate ?: data.releaseDate)
       ?.let { dateFormatterStandard(it) }
       .takeUnless { it.isNullOrBlank() } ?: getString(not_available)
+
+  fun toUsd(amount: Number?): String {
+    return if (amount == null) {
+      "-"
+    } else if (amount.toLong() == 0L) {
+      "-"
+    } else {
+      val formatter = NumberFormat.getCurrencyInstance(Locale.US)
+      formatter.format(amount)
+    }
+  }
 }

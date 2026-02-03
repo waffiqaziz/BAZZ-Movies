@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
@@ -10,6 +11,7 @@ import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCal
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
@@ -138,6 +140,36 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       dataSourceCall = { movieDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },
       verifyDataSourceCall = { coVerify { movieDataSource.getTvCredits(id) } }
+    )
+  }
+
+  @Test
+  fun getTvKeywords_whenSuccessful_returnsSuccessResult() = runTest {
+    val mockResponse = mockk<TvKeywordsResponse>(relaxed = true)
+    testSuccessfulCall(
+      mockResponse = mockResponse,
+      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      repositoryCall = { repository.getTvKeywords(idString) },
+      expectedData = mockResponse.toMediaKeywords(),
+      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvKeywords(idString) } }
+    )
+  }
+
+  @Test
+  fun getTvKeywords_whenUnsuccessful_returnsErrorResult() = runTest {
+    testUnsuccessfulCall(
+      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      repositoryCall = { repository.getTvKeywords(idString) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getTvKeywords(idString) } }
+    )
+  }
+
+  @Test
+  fun getTvKeywords_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+    testLoadingState(
+      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      repositoryCall = { repository.getTvKeywords(idString) },
+      verifyDataSourceCall = { coVerify { movieDataSource.getTvKeywords(idString) } }
     )
   }
 

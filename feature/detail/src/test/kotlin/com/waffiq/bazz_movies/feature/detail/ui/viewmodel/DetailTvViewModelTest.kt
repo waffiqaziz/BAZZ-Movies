@@ -86,42 +86,6 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   }
 
   @Test
-  fun getTvExternalIds_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { getTvDetailUseCase.getTvExternalIds(tvId) } returns
-      successFlow(mockTvExternalIds)
-
-    testViewModelFlow(
-      runBlock = { viewModel.getTvExternalIds(tvId) },
-      liveData = viewModel.tvExternalID,
-      expectedSuccess = mockTvExternalIds,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvExternalIds(tvId) } },
-    )
-  }
-
-  @Test
-  fun getTvExternalIds_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getTvDetailUseCase.getTvExternalIds(tvId) } returns errorFlow
-
-    testViewModelFlow(
-      runBlock = { viewModel.getTvExternalIds(tvId) },
-      liveData = viewModel.tvExternalID,
-      expectError = errorMessage,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvExternalIds(tvId) } }
-    )
-  }
-
-  @Test
-  fun getTvExternalIds_whenLoading_doesNothing() = runTest {
-    coEvery { getTvDetailUseCase.getTvExternalIds(tvId) } returns loadingFlow
-
-    testViewModelFlow(
-      runBlock = { viewModel.getTvExternalIds(tvId) },
-      liveData = viewModel.tvExternalID,
-      verifyBlock = { coVerify { getTvDetailUseCase.getTvExternalIds(tvId) } }
-    )
-  }
-
-  @Test
   fun getTvCredits_whenSuccessful_emitsSuccess() = runTest {
     coEvery { getTvDetailUseCase.getTvCredits(tvId) } returns
       successFlow(mockMediaCredits)
@@ -140,7 +104,7 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
 
     testViewModelFlow(
       runBlock = { viewModel.getTvCredits(tvId) },
-      liveData = viewModel.tvExternalID,
+      liveData = viewModel.mediaCredits,
       expectError = errorMessage,
       verifyBlock = { coVerify { getTvDetailUseCase.getTvCredits(tvId) } }
     )
@@ -152,7 +116,7 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
 
     testViewModelFlow(
       runBlock = { viewModel.getTvCredits(tvId) },
-      liveData = viewModel.tvExternalID,
+      liveData = viewModel.mediaCredits,
       verifyBlock = { coVerify { getTvDetailUseCase.getTvCredits(tvId) } }
     )
   }

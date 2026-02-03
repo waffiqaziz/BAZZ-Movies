@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.ActivityNotFoundException
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +20,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.sidesheet.SideSheetBehavior
+import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
@@ -39,17 +41,21 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
+import com.waffiq.bazz_movies.feature.detail.databinding.SideSheetContentBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.GenreAdapter
+import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -80,6 +86,10 @@ class DetailUIManager(
   private lateinit var adapterCast: CastAdapter
   private lateinit var adapterRecommendation: RecommendationAdapter
   private lateinit var adapterGenre: GenreAdapter
+  private lateinit var adapterKeywords: KeywordsAdapter
+
+  lateinit var sideSheetDialog: SideSheetDialog
+  lateinit var sideSheetBinding: SideSheetContentBinding
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
@@ -88,6 +98,7 @@ class DetailUIManager(
   var trailerLauncher = DefaultTrailerLauncher()
 
   init {
+    setupSideSheet()
     setupRecyclerViews()
     initializeAdapters()
   }
@@ -151,6 +162,41 @@ class DetailUIManager(
     }
   }
 
+  fun setupSideSheet() {
+    sideSheetDialog = SideSheetDialog(activity)
+    sideSheetBinding = SideSheetContentBinding.inflate(activity.layoutInflater)
+    sideSheetDialog.setContentView(sideSheetBinding.root)
+    sideSheetDialog.setCanceledOnTouchOutside(true)
+    sideSheetDialog.setCancelable(true)
+
+    // setup for keywords
+    adapterKeywords = KeywordsAdapter()
+    sideSheetBinding.rvKeywords.layoutManager =
+      FlexboxLayoutManager(binding.rvGenre.context).apply {
+        flexDirection = FlexDirection.ROW
+        flexWrap = FlexWrap.WRAP
+        justifyContent = JustifyContent.FLEX_START
+      }
+    sideSheetBinding.rvKeywords.apply {
+      itemAnimator = DefaultItemAnimator()
+      adapter = adapterKeywords
+    }
+
+    // draggable animation when press back button
+    sideSheetDialog.setOnKeyListener { _, keyCode, event ->
+      if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+        sideSheetDialog.behavior.state = SideSheetBehavior.STATE_HIDDEN
+        true
+      } else {
+        false
+      }
+    }
+  }
+
+  fun showSideSheet() {
+    sideSheetDialog.show()
+  }
+
   /**
    * Displays general media info like images, title, release year, and overview.
    */
@@ -205,9 +251,9 @@ class DetailUIManager(
    * Populates basic text data such as title, media type, release date, and overview.
    */
   private fun updateBasicInfo(dataExtra: MediaItem) {
+    // metadata
     binding.apply {
-      tvTitle.text =
-        dataExtra.name ?: dataExtra.title ?: dataExtra.originalTitle ?: dataExtra.originalName
+      tvTitle.text = tvTitle.context.titleHandler(dataExtra)
       tvMediaType.text = dataExtra.mediaType.uppercase()
       tvYearReleased.text = dateFormatterStandard(
         dataExtra.releaseDate?.takeIf { it.isNotEmpty() }
@@ -216,26 +262,43 @@ class DetailUIManager(
       tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
         ?: activity.getString(no_overview)
     }
+
+    // side sheet
+    sideSheetBinding.tvTitle.text = sideSheetBinding.tvTitle.context.titleHandler(dataExtra)
   }
 
   /**
-   * Updates the UI with detailed metadata like genre, score, runtime, and status.
+   * Updates the UI with detailed metadata
    */
   fun updateDetailUI(details: MediaDetail, mediaType: String) {
     binding.apply {
       if (details.genreId != null) adapterGenre.setGenre(details.genreId)
-      tvScoreTmdb.text = details.tmdbScore ?: activity.getString(not_available)
+      if (details.tmdbScore == null) {
+        tmdbViewGroup.isVisible = false
+      } else {
+        tvScoreTmdb.text = details.tmdbScore
+        tmdbViewGroup.isVisible = true
+      }
 
       // set duration for movie and status for tv-series
       tvDuration.text = when (mediaType) {
         MOVIE_MEDIA_TYPE -> details.duration ?: activity.getString(not_available)
         else -> {
-          if (details.duration.isNullOrEmpty()) {
+          if (details.status.isNullOrEmpty()) {
             activity.getString(not_available)
           } else {
-            details.duration
+            details.status
           }
         }
+      }
+
+      // side sheet detailed metadata
+      adapterKeywords.submitList(details.keywords)
+      sideSheetBinding.apply {
+        tvBudget.text = details.budget
+        tvRevenue.text = details.revenue
+        tvStatus.text = details.status
+        tvLanguage.text = details.language
       }
     }
 
@@ -260,9 +323,7 @@ class DetailUIManager(
     // region release
     val hasRegionRelease = releaseDateRegion.regionRelease.isNotEmpty()
     binding.tvRegionRelease.isVisible = hasRegionRelease
-    if (hasRegionRelease) {
-      binding.tvRegionRelease.text = releaseDateRegion.regionRelease
-    }
+    if (hasRegionRelease) binding.tvRegionRelease.text = releaseDateRegion.regionRelease
 
     // release date
     val hasReleaseDate = releaseDateRegion.releaseDate.isNotEmpty()
@@ -286,14 +347,16 @@ class DetailUIManager(
    * Updates the external ratings (IMDb, Metascore, Rotten Tomatoes) from OMDb.
    */
   fun updateOMDbScores(omdbDetails: OMDbDetails) {
+    val rottenTomatoes = omdbDetails.ratings?.firstOrNull { it.source == "Rotten Tomatoes" }?.value
+
     binding.apply {
-      tvScoreImdb.text = omdbDetails.imdbRating?.takeIf { it.isNotBlank() }
-        ?: activity.getString(not_available)
-      tvScoreMetascore.text = omdbDetails.metascore?.takeIf { it.isNotBlank() }
-        ?: activity.getString(not_available)
-      tvScoreRottenTomatoes.text = omdbDetails.ratings
-        ?.firstOrNull { it.source == "Rotten Tomatoes" }?.value
-        ?: activity.getString(not_available)
+      imdbViewGroup.isVisible = getScoreFromOMDB(omdbDetails.imdbRating)
+      metascoreViewGroup.isVisible = getScoreFromOMDB(omdbDetails.metascore)
+      rottenTomatoesViewGroup.isVisible = !rottenTomatoes.isNullOrEmpty()
+
+      tvScoreImdb.text = omdbDetails.imdbRating
+      tvScoreMetascore.text = omdbDetails.metascore
+      tvScoreRottenTomatoes.text = rottenTomatoes
     }
   }
 
@@ -339,7 +402,7 @@ class DetailUIManager(
     } else {
       binding.appBarLayout.isVisible = true
       binding.progressBar.isVisible = false
-      fadeOut(binding.backgroundDimMovie, DEBOUNCE_SHORT)
+      fadeOut(binding.backgroundDimMovie, DEBOUNCE_LONG)
     }
   }
 

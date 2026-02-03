@@ -34,7 +34,7 @@ class CastAdapterTest : BaseAdapterTest() {
   }
 
   @Test
-  fun setCast_whenCalled_updatesListAndNotifiesChanges() {
+  fun sesubmitList_whenCalled_updatesListAndNotifiesChanges() {
     val oldList = listOf(MediaCastItem(id = 1, name = "Old Cast"))
     val newList = listOf(
       MediaCastItem(id = 2, name = "New Cast"),

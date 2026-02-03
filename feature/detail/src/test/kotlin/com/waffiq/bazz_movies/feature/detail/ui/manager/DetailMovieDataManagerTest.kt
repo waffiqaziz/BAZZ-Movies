@@ -5,7 +5,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.dataMediaItem
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
@@ -62,8 +61,6 @@ class DetailMovieDataManagerTest {
     val externalTvID = TvExternalIds(imdbId = "tt9999999")
     val tvExternalIdLiveData = MutableLiveData(externalTvID)
 
-    every { detailViewModel.tvExternalID } returns tvExternalIdLiveData
-
     manager = DetailDataManager(
       detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE)
     )
@@ -85,9 +82,7 @@ class DetailMovieDataManagerTest {
   fun loadAllData_withNullImdbId_notCallsOMDbDetails() {
     val regionLiveData = MutableLiveData("US")
     val externalTvID = TvExternalIds(imdbId = null)
-    val tvExternalIdLiveData = MutableLiveData(externalTvID)
-
-    every { detailViewModel.tvExternalID } returns tvExternalIdLiveData
+    MutableLiveData(externalTvID)
 
     manager = DetailDataManager(
       detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
@@ -109,8 +104,6 @@ class DetailMovieDataManagerTest {
   fun loadAllData_withTvExternalIdIsNull_doesNotCallOMDb() {
     val regionLiveData = MutableLiveData("US")
     val tvExternalIdLiveData = MutableLiveData<TvExternalIds>()
-
-    every { detailViewModel.tvExternalID } returns tvExternalIdLiveData
 
     manager = DetailDataManager(
       detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
