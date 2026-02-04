@@ -20,7 +20,7 @@ class KeywordsAdapter :
     holder.bind(getItem(position))
   }
 
-  inner class ViewHolder(private var binding: ChipGenreBinding) : RecyclerView.ViewHolder(binding.root) {
+  class ViewHolder(private var binding: ChipGenreBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(data: MediaKeywordsItem) {
       binding.chip.text = data.name

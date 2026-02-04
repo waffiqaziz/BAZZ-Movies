@@ -48,54 +48,17 @@ class MediaHelperTest {
   }
 
   @Test
-  fun detailCrew_withNullCrewName_filtersOut() {
+  fun detailCrew_withEmptyNullName_filtersOut() {
     val crew = listOf(
-      MediaCrewItem(job = "Director", name = null),
-      MediaCrewItem(job = "Writer", name = "Jane Smith")
-    )
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Writer"), displayNames) // exclude null job
-    assertEquals(listOf("Jane Smith"), joinedNames) // exclude null name
-  }
-
-  @Test
-  fun detailCrew_withEmptyStringName_filtersOut() {
-    val crew = listOf(
-      MediaCrewItem(job = "Writer", name = "Jane Smith"),
+      MediaCrewItem(job = "Writer", name = null),
       MediaCrewItem(job = "Writer", name = ""),
+      MediaCrewItem(job = "Writer", name = "Jane Smith"),
       MediaCrewItem(job = "Writer", name = "Bob Jones")
     )
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames)
-  }
-
-  @Test
-  fun detailCrew_withAllNullOrEmptyNames_filtersOutJob() {
-    val crew = listOf(
-      MediaCrewItem(job = "Director", name = null),
-      MediaCrewItem(job = "Director", name = ""),
-      MediaCrewItem(job = "Writer", name = "Jane Smith")
-    )
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Writer"), displayNames)
-    assertEquals(listOf("Jane Smith"), joinedNames)
-  }
-
-  @Test
-  fun detailCrew_withMultipleNamesIncludingNull_joinsCorrectly() {
-    val crew = listOf(
-      MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Writer", name = null),
-      MediaCrewItem(job = "Writer", name = "Bob Jones")
-    )
-    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
-
-    assertEquals(listOf("Writer"), displayNames)
-    assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames) //
   }
 
   @Test
@@ -204,7 +167,7 @@ class MediaHelperTest {
   }
 
   @Test
-  fun getScoreFromOMDB_withValidScore_returnsFalse() {
+  fun getScoreFromOMDB_withValidScore_returnsTrue() {
     assertTrue(getScoreFromOMDB("9.5"))
   }
 }

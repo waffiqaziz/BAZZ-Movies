@@ -38,10 +38,7 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getTvDetail_whenSuccessful_emitsSuccess() = runTest {
-    every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
-      flowOf(Outcome.Success(mockMediaKeywords))
-    every { mockRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Success(mockTvExternalIds))
+    setupExternalIdAndKeywordsMockData()
     testSuccessScenario(
       mockCall = { mockRepository.getTvDetail(TV_ID) },
       mockResponse = detailTv,
@@ -75,10 +72,7 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getTvDetails_whenLoading_emitsLoading() = runTest {
-    every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
-      flowOf(Outcome.Success(mockMediaKeywords))
-    every { mockRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Success(mockTvExternalIds))
+    setupExternalIdAndKeywordsMockData()
     testLoadingScenario(
       mockCall = { mockRepository.getTvDetail(TV_ID) },
       interactorCall = { interactor.getTvDetail(TV_ID, USER_REGION) }
@@ -212,5 +206,12 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
         assertEquals(8000, pagingList[0].voteCount)
       }
     )
+  }
+
+  private fun setupExternalIdAndKeywordsMockData(){
+    every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
+      flowOf(Outcome.Success(mockMediaKeywords))
+    every { mockRepository.getTvExternalIds(TV_ID) } returns
+      flowOf(Outcome.Success(mockTvExternalIds))
   }
 }

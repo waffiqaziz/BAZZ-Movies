@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
+import android.os.Looper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
@@ -12,6 +13,7 @@ import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.robolectric.Shadows.shadowOf
 
 class KeywordsAdapterTest : BaseAdapterTest() {
 
@@ -44,22 +46,24 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
-    val inflater = LayoutInflater.from(context)
-    val binding = ChipGenreBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
+    val parent = FrameLayout(context)
 
-    val testCases = listOf(
-      MediaKeywordsItem(name = "war") to "war",
-      MediaKeywordsItem(name = "tragedy") to "tragedy",
+    val testData = listOf(
+      MediaKeywordsItem(name = "war"),
+      MediaKeywordsItem(name = "tragedy"),
     )
 
-    // test name
-    for ((name, expectedText) in testCases) {
-      adapter.submitList(listOf(name)) {
-        viewHolder.bind(name)
-        adapter.onBindViewHolder(viewHolder, 0)
-        assertEquals(expectedText, binding.chip.text.toString())
-      }
+    adapter.submitList(testData)
+
+    // Let ListAdapter process the diff
+    shadowOf(Looper.getMainLooper()).idle()
+
+    testData.forEachIndexed { index, item ->
+      val viewHolder = adapter.onCreateViewHolder(parent, 0)
+      adapter.onBindViewHolder(viewHolder, index) // Covers getItem(position)
+
+      val binding = ChipGenreBinding.bind(viewHolder.itemView)
+      assertEquals(item.name, binding.chip.text.toString())
     }
   }
 
