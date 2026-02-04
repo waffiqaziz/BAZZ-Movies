@@ -58,14 +58,21 @@ object DetailDataUtils {
       ?.let { dateFormatterStandard(it) }
       .takeUnless { it.isNullOrBlank() } ?: getString(not_available)
 
+  /**
+   * Formats movie revenue/budget as USD currency.
+   * Returns "-" for null, zero, or negative values (missing/unavailable data).
+   *
+   * @param amount The movie revenue or budget amount
+   * @return Formatted USD string (e.g., "$1,234,567") or "-" for unavailable data
+   */
   fun toUsd(amount: Number?): String {
-    return if (amount == null) {
-      "-"
-    } else if (amount.toLong() == 0L) {
+    val longAmount = amount?.toLong() ?: 0L
+
+    return if (longAmount <= 0) {
       "-"
     } else {
       val formatter = NumberFormat.getCurrencyInstance(Locale.US)
-      formatter.format(amount)
+      formatter.format(longAmount)
     }
   }
 }

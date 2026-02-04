@@ -16,9 +16,9 @@ import org.junit.Test
 
 class MediaDetailKeywordsMapperTest {
 
-  // region === TvDetail.toMediaDetail ===
+  // region TvDetail.toMediaDetail
 
-  // id branches: non-null vs null (elvis ?: 0) ---
+  // id branches: non-null & null
 
   @Test
   fun tvDetail_idNonNull_returnsActualId() {
@@ -182,7 +182,7 @@ class MediaDetailKeywordsMapperTest {
   // endregion
 
   // region MovieDetail.toMediaDetail
-  // id branches: non-null vs null (elvis ?: 0)
+  // id branches: non-null & null
 
   @Test
   fun movieDetail_idNonNull_returnsActualId() {

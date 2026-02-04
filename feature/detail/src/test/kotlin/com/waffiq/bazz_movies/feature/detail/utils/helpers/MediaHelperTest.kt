@@ -3,28 +3,34 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MediaHelperTest {
 
   @Test
   fun convertRuntime_withValidMinutes_returnsCorrectFormat() {
-    val result = MediaHelper.getTransformDuration(125)
+    val result = getTransformDuration(125)
     assertEquals("2h 5m", result)
   }
 
   @Test
   fun convertRuntime_withZeroMinutes_returnsNull() {
-    val result = MediaHelper.getTransformDuration(0)
+    val result = getTransformDuration(0)
     assertNull(result)
   }
 
   @Test
   fun convertRuntime_withNullInput_returnsNull() {
-    val result = MediaHelper.getTransformDuration(null)
+    val result = getTransformDuration(null)
     assertNull(result)
   }
 
@@ -35,7 +41,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Writer", name = "Jane Smith"),
       MediaCrewItem(job = "Producer", name = "Bob Wilson") // Not in jobToNamesMap
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Director", "Writer"), displayNames)
     assertEquals(listOf("John Doe", "Jane Smith"), joinedNames)
@@ -47,7 +53,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Director", name = null),
       MediaCrewItem(job = "Writer", name = "Jane Smith")
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames) // exclude null job
     assertEquals(listOf("Jane Smith"), joinedNames) // exclude null name
@@ -60,7 +66,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Writer", name = ""),
       MediaCrewItem(job = "Writer", name = "Bob Jones")
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames)
@@ -73,7 +79,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Director", name = ""),
       MediaCrewItem(job = "Writer", name = "Jane Smith")
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith"), joinedNames)
@@ -86,7 +92,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Writer", name = null),
       MediaCrewItem(job = "Writer", name = "Bob Jones")
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith, Bob Jones"), joinedNames) //
@@ -94,7 +100,7 @@ class MediaHelperTest {
 
   @Test
   fun detailCrew_withEmptyCrewList_returnsEmptyLists() {
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(emptyList())
+    val (displayNames, joinedNames) = extractCrewDisplayNames(emptyList())
 
     assertEquals(emptyList<String>(), displayNames)
     assertEquals(emptyList<String>(), joinedNames)
@@ -106,7 +112,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Writer", name = "Jane Smith"),
       MediaCrewItem(job = "Writer", name = "John Doe")
     )
-    val (displayNames, joinedNames) = MediaHelper.extractCrewDisplayNames(crew)
+    val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith, John Doe"), joinedNames)
@@ -175,19 +181,30 @@ class MediaHelperTest {
 
   @Test
   fun getTransformTMDBScore_withValidScore_returnsStringScore() {
-    val result = MediaHelper.getTransformTMDBScore(7.5)
+    val result = getTransformTMDBScore(7.5)
     assertEquals("7.5", result)
   }
 
   @Test
   fun getTransformTMDBScore_withZeroScore_returnsNull() {
-    val result = MediaHelper.getTransformTMDBScore(0.0)
+    val result = getTransformTMDBScore(0.0)
     assertNull(result)
   }
 
   @Test
   fun getTransformTMDBScore_withNullScore_returnsNull() {
-    val result = MediaHelper.getTransformTMDBScore(null)
+    val result = getTransformTMDBScore(null)
     assertNull(result)
+  }
+
+  @Test
+  fun getScoreFromOMDB_withInvalidScore_returnsFalse() {
+    assertFalse(getScoreFromOMDB(null))
+    assertFalse(getScoreFromOMDB("N/A"))
+  }
+
+  @Test
+  fun getScoreFromOMDB_withValidScore_returnsFalse() {
+    assertTrue(getScoreFromOMDB("9.5"))
   }
 }

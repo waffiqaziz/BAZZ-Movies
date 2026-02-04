@@ -19,30 +19,26 @@ class GetTvDetailInteractor @Inject constructor(
   private val detailRepository: IDetailRepository,
 ) : GetTvDetailUseCase {
 
-  /** notes: for tv, imdb will null and get later using [getTvExternalIds] **/
-  override fun getTvDetail(
-    tvId: Int,
-    userRegion: String,
-  ): Flow<Outcome<MediaDetail>> =
-    detailRepository.getTvDetail(tvId)
-      .combine(detailRepository.getTvKeywords(tvId.toString())) { detail, keywords ->
-        Pair(detail, keywords)
-      }
-      .combine(detailRepository.getTvExternalIds(tvId)) { pair, externalIds ->
-        val (detail, keywords) = pair
-
-        when (detail) {
-          is Outcome.Success -> Outcome.Success(
-            detail.data.toMediaDetail(
-              userRegion = userRegion,
-              mediaKeywords = (keywords as? Outcome.Success)?.data,
-              externalIds = (externalIds as? Outcome.Success)?.data
-            )
+  override fun getTvDetail(tvId: Int, userRegion: String): Flow<Outcome<MediaDetail>> =
+    combine(
+      detailRepository.getTvDetail(tvId),
+      detailRepository.getTvKeywords(tvId.toString()),
+      detailRepository.getTvExternalIds(tvId)
+    ) { detail, keywords, externalIds ->
+      when (detail) {
+        is Outcome.Success -> Outcome.Success(
+          detail.data.toMediaDetail(
+            userRegion = userRegion,
+            mediaKeywords = (keywords as? Outcome.Success)?.data,
+            externalIds = (externalIds as? Outcome.Success)?.data
           )
-          is Outcome.Error -> Outcome.Error(detail.message)
-          is Outcome.Loading -> Outcome.Loading
-        }
+        )
+
+        is Outcome.Error -> Outcome.Error(detail.message)
+        is Outcome.Loading -> Outcome.Loading
       }
+    }
+
 
   override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     detailRepository.getTvExternalIds(tvId)
