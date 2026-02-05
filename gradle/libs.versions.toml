@@ -14,7 +14,7 @@ agp = "9.0.0"
 androidTools = "32.0.0"
 kotlin = "2.2.21"
 ksp = "2.3.4"
-hilt = "2.59"
+hilt = "2.59.1"
 
 # Google Services
 gms = "4.4.4"
