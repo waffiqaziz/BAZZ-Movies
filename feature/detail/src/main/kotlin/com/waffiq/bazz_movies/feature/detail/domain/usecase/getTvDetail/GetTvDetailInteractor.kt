@@ -3,18 +3,15 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinString
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaDetail
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -22,32 +19,26 @@ class GetTvDetailInteractor @Inject constructor(
   private val detailRepository: IDetailRepository,
 ) : GetTvDetailUseCase {
 
-  /** notes: for tv, imdb will null and get later using [getTvExternalIds] **/
-  override fun getTvDetail(
-    tvId: Int,
-    userRegion: String,
-  ): Flow<Outcome<MediaDetail>> =
-    detailRepository.getTvDetail(tvId).map { outcome ->
-      when (outcome) {
-        is Outcome.Success -> {
-          Outcome.Success(
-            MediaDetail(
-              id = outcome.data.id ?: 0,
-              genre = transformListGenreToJoinString(outcome.data.listGenres), // for view
-              genreId = transformToGenreIDs(outcome.data.listGenres),
-              duration = outcome.data.status, // for tv, duration set as status
-              imdbId = "",
-              ageRating = getAgeRating(outcome.data, userRegion),
-              tmdbScore = getTransformTMDBScore(outcome.data.voteAverage),
-              releaseDateRegion = getReleaseDateRegion(outcome.data)
-            )
+  override fun getTvDetail(tvId: Int, userRegion: String): Flow<Outcome<MediaDetail>> =
+    combine(
+      detailRepository.getTvDetail(tvId),
+      detailRepository.getTvKeywords(tvId.toString()),
+      detailRepository.getTvExternalIds(tvId)
+    ) { detail, keywords, externalIds ->
+      when (detail) {
+        is Outcome.Success -> Outcome.Success(
+          detail.data.toMediaDetail(
+            userRegion = userRegion,
+            mediaKeywords = (keywords as? Outcome.Success)?.data,
+            externalIds = (externalIds as? Outcome.Success)?.data
           )
-        }
+        )
 
-        is Outcome.Error -> Outcome.Error(outcome.message)
+        is Outcome.Error -> Outcome.Error(detail.message)
         is Outcome.Loading -> Outcome.Loading
       }
     }
+
 
   override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     detailRepository.getTvExternalIds(tvId)

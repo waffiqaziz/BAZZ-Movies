@@ -6,6 +6,8 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
@@ -62,6 +64,8 @@ interface MovieDataSourceInterface {
     params: String,
     id: Int,
   ): Flow<NetworkResult<WatchProvidersResponse>>
+  fun getMovieKeywords(movieId: String): Flow<NetworkResult<MovieKeywordsResponse>>
+  fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>>
 
   // PERSON
   fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>>

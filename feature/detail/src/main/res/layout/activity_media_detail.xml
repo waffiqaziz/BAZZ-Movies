@@ -603,6 +603,14 @@
             android:layout_weight="1"
             android:text="@string/overview" />
 
+          <Button
+            android:id="@+id/btn_sidebar"
+            style="@style/MyIconButtonStyle"
+            android:layout_marginEnd="@dimen/default_margin_parent_20"
+            android:contentDescription="@string/more_information"
+            android:theme="@style/MyIconButtonStyle"
+            app:icon="@drawable/ic_sidebar" />
+
         </LinearLayout>
 
         <io.github.glailton.expandabletextview.ExpandableTextView

@@ -107,6 +107,7 @@ object DataDumb {
     imdbId = "tt12345678",
     ageRating = "G",
     tmdbScore = "100",
+    status = "released",
     releaseDateRegion = ReleaseDateRegion(
       regionRelease = "ID",
       releaseDate = "Jul 23, 2025",

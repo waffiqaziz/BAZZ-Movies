@@ -4,22 +4,18 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth_selected
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_watchlist_outlined
-import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available_full
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
-import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
@@ -211,13 +207,8 @@ class UserInteractionHandler(
       btnBack.setOnClickListener { activity.finish() }
       btnFavorite.setOnClickListener { handleFavoriteClick() }
       btnWatchlist.setOnClickListener { handleWatchlistClick() }
+      btnSidebar.setOnClickListener { uiManager.showSideSheet() }
       swipeRefresh.setOnRefreshListener { handleSwipeRefresh() }
-
-      // score click listeners
-      imdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreImdb.text.toString()) }
-      tmdbViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreTmdb.text.toString()) }
-      metascoreViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreMetascore.text.toString()) }
-      rottenTomatoesViewGroup.setOnClickListener { showDialogIfNotRated(tvScoreRottenTomatoes.text.toString()) }
     }
   }
 
@@ -325,21 +316,6 @@ class UserInteractionHandler(
       is Rated.Unrated -> activity.getString(not_available)
       is Rated.Value -> rating.value.toString()
     }
-  }
-
-  /** Shows a "not rated" dialog if the score string has no valid number. */
-  private val showDialogIfNotRated: (String) -> Unit = { scoreText ->
-    if (!scoreText.contains("[0-9]".toRegex())) {
-      showDialogNotRated()
-    }
-  }
-
-  /** Displays a dialog to indicate that rating data is unavailable. */
-  private fun showDialogNotRated() {
-    MaterialAlertDialogBuilder(activity, CustomAlertDialogTheme).apply {
-      setTitle(activity.resources.getString(not_available_full))
-      setMessage(activity.resources.getString(cant_provide_a_score))
-    }.show()
   }
 
   /** Shows the rating dialog for user to submit a rating. */

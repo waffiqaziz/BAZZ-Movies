@@ -141,6 +141,14 @@ class MediaDetailActivityTest :
       detailMedia.postValue(testMediaDetail.copy(genreId = null))
     }
 
+    // status
+    context.launchMediaDetailActivity {
+      detailMedia.postValue(testMediaDetail.copy(status = null))
+    }
+    context.launchMediaDetailActivity {
+      detailMedia.postValue(testMediaDetail.copy(status = ""))
+    }
+
     // movie duration null
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(duration = null))
@@ -148,26 +156,24 @@ class MediaDetailActivityTest :
         .check(matches(isDisplayed()))
     }
 
-    // tv duration null or empty
+    // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
-      detailMedia.postValue(testMediaDetail.copy(duration = null))
+      detailMedia.postValue(testMediaDetail.copy(status = null))
       onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
         .check(matches(isDisplayed()))
 
-      detailMedia.postValue(testMediaDetail.copy(duration = ""))
+      detailMedia.postValue(testMediaDetail.copy(status = ""))
       onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
         .check(matches(isDisplayed()))
     }
 
-    // tmdb score null or empty
+    // tmdb score hidden
     context.launchMediaDetailActivity {
       detailMedia.postValue(testMediaDetail.copy(tmdbScore = null))
-      onView(withId(tv_score_tmdb)).check(matches(withText(context.getString(not_available))))
-        .check(matches(isDisplayed()))
+      onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
 
       detailMedia.postValue(testMediaDetail.copy(tmdbScore = ""))
-      onView(withId(tv_score_tmdb)).check(matches(withText("")))
-        .check(matches(not(isDisplayed())))
+      onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
     }
   }
 
@@ -209,4 +215,6 @@ class MediaDetailActivityTest :
       onView(withId(rv_cast)).check(matches(not(isDisplayed())))
     }
   }
+
+
 }

@@ -91,7 +91,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.getMovieState(any()) } just Runs
     every { mockMediaDetailViewModel.getMovieWatchProviders(any()) } just Runs
     every { mockMediaDetailViewModel.getTvTrailerLink(any()) } just Runs
-    every { mockMediaDetailViewModel.getTvExternalIds(any()) } just Runs
     every { mockMediaDetailViewModel.getTvDetail(any()) } just Runs
     every { mockMediaDetailViewModel.getTvCredits(any()) } just Runs
     every { mockMediaDetailViewModel.getTvRecommendation(any()) } just Runs
@@ -124,7 +123,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.postModelState } returns postModelState
     every { mockMediaDetailViewModel.linkVideo } returns linkVideo
     every { mockMediaDetailViewModel.detailMedia } returns detailMedia
-    every { mockMediaDetailViewModel.tvExternalID } returns tvExternalID
     every { mockMediaDetailViewModel.recommendation } returns recommendation
     every { mockMediaDetailViewModel.watchProvidersUiState } returns watchProvidersUiState
   }

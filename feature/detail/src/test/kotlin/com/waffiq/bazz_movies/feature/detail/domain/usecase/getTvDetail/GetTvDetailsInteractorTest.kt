@@ -12,12 +12,15 @@ import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.TV_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.externalTvID
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockMediaKeywords
+import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockTvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.tvCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.video
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -35,6 +38,7 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getTvDetail_whenSuccessful_emitsSuccess() = runTest {
+    setupExternalIdAndKeywordsMockData()
     testSuccessScenario(
       mockCall = { mockRepository.getTvDetail(TV_ID) },
       mockResponse = detailTv,
@@ -45,8 +49,8 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
       assertEquals(TV_ID, mediaDetail.id)
       assertEquals("Drama", mediaDetail.genre)
       assertEquals(listOf(5), mediaDetail.genreId)
-      assertEquals("Returning Series", mediaDetail.duration)
-      assertEquals("", mediaDetail.imdbId)
+      assertEquals("Returning Series", mediaDetail.status)
+      assertEquals("tt1234567", mediaDetail.imdbId)
       assertEquals("TV-MA", mediaDetail.ageRating)
       assertEquals("8.2", mediaDetail.tmdbScore)
       assertEquals("2023", mediaDetail.releaseDateRegion.releaseDate)
@@ -56,6 +60,10 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getTvDetail_whenUnsuccessful_emitsError() = runTest {
+    every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
+      flowOf(Outcome.Error("error"))
+    every { mockRepository.getTvExternalIds(TV_ID) } returns
+      flowOf(Outcome.Error("error"))
     testErrorScenario(
       mockCall = { mockRepository.getTvDetail(TV_ID) },
       interactorCall = { interactor.getTvDetail(TV_ID, USER_REGION) }
@@ -64,6 +72,7 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   @Test
   fun getTvDetails_whenLoading_emitsLoading() = runTest {
+    setupExternalIdAndKeywordsMockData()
     testLoadingScenario(
       mockCall = { mockRepository.getTvDetail(TV_ID) },
       interactorCall = { interactor.getTvDetail(TV_ID, USER_REGION) }
@@ -197,5 +206,12 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
         assertEquals(8000, pagingList[0].voteCount)
       }
     )
+  }
+
+  private fun setupExternalIdAndKeywordsMockData(){
+    every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
+      flowOf(Outcome.Success(mockMediaKeywords))
+    every { mockRepository.getTvExternalIds(TV_ID) } returns
+      flowOf(Outcome.Success(mockTvExternalIds))
   }
 }
