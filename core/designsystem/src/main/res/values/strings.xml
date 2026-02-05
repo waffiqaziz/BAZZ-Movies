@@ -122,8 +122,6 @@
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
   <string name="not_available">N/A</string>
-  <string name="not_available_full">Not Available</string>
-  <string name="cant_provide_a_score">Sorry we can\’t provide the score or it hasn\’t been rated yet</string>
   <string name="metascore">Metascore</string>
   <string name="imdb">IMDB</string>
   <string name="tmdb">TMDB</string>

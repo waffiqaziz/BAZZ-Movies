@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
+import android.view.KeyEvent
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 
@@ -63,4 +64,7 @@ object MediaHelper {
     if (runtime == 0 || runtime == null) null else convertRuntime(runtime)
 
   fun getScoreFromOMDB(score: String?): Boolean = score != null && score != "N/A"
+
+  fun isBackReleased(keyCode: Int, action: Int): Boolean =
+    keyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_UP
 }

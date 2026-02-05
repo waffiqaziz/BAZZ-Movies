@@ -4,38 +4,28 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
-import com.waffiq.bazz_movies.core.designsystem.R.string.cant_provide_a_score
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available_full
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
-import com.waffiq.bazz_movies.feature.detail.R.id.imdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
-import com.waffiq.bazz_movies.feature.detail.R.id.metascore_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
-import com.waffiq.bazz_movies.feature.detail.R.id.rotten_tomatoes_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
 import com.waffiq.bazz_movies.feature.detail.R.id.tmdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
@@ -131,33 +121,6 @@ class MediaDetailActivityInteractionTest :
       scenario.moveToState(Lifecycle.State.DESTROYED)
       assertTrue(scenario.state == Lifecycle.State.DESTROYED)
     }
-  }
-
-  @Test
-  fun buttonRating_whenClickedWithNoRating_showsDialog() {
-    context.launchMediaDetailActivity(data = testMediaItem.copy(voteAverage = null)) {
-      // set null rating
-      omdbResult.postValue(OMDbDetails())
-      detailMedia.postValue(testMediaDetail.copy(tmdbScore = null))
-
-      onView(withId(imdb_viewGroup)).check(matches(isDisplayed())).perform(click())
-      dialogNotRatedShowIsShowing()
-      onView(isRoot()).perform(pressBack())
-      onView(withId(rotten_tomatoes_viewGroup)).check(matches(isDisplayed())).perform(click())
-      dialogNotRatedShowIsShowing()
-      onView(isRoot()).perform(pressBack())
-      onView(withId(metascore_viewGroup)).check(matches(isDisplayed())).perform(click())
-      dialogNotRatedShowIsShowing()
-      onView(isRoot()).perform(pressBack())
-      performTMDBScoreClick()
-      dialogNotRatedShowIsShowing()
-      onView(isRoot()).perform(pressBack())
-    }
-  }
-
-  @Test
-  fun buttonRatting_clickedAndRatingAvailable_doNothing() {
-    context.launchMediaDetailActivity { performTMDBScoreClick() }
   }
 
   @Test
@@ -368,16 +331,6 @@ class MediaDetailActivityInteractionTest :
   private fun performScoreClick() {
     onView(withId(score_scrollview)).perform(swipeLeft())
     onView(withId(your_score_viewGroup)).perform(click())
-  }
-
-  private fun performTMDBScoreClick() {
-    onView(withId(score_scrollview)).perform(swipeLeft())
-    onView(withId(tmdb_viewGroup)).check(matches(isDisplayed())).perform(click())
-  }
-
-  private fun dialogNotRatedShowIsShowing() {
-    onView(withText(not_available_full)).inRoot(isDialog()).check(matches(isDisplayed()))
-    onView(withText(cant_provide_a_score)).inRoot(isDialog()).check(matches(isDisplayed()))
   }
 
   private fun submitRating() {

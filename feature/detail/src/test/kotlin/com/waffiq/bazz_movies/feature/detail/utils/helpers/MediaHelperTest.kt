@@ -1,5 +1,9 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
+import android.view.KeyEvent.ACTION_DOWN
+import android.view.KeyEvent.KEYCODE_0
+import android.view.KeyEvent.KEYCODE_8
+import android.view.KeyEvent.KEYCODE_BACK
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
@@ -7,6 +11,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCr
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -169,5 +174,16 @@ class MediaHelperTest {
   @Test
   fun getScoreFromOMDB_withValidScore_returnsTrue() {
     assertTrue(getScoreFromOMDB("9.5"))
+  }
+
+  @Test
+  fun isBackReleased_backDown_returnsFalse() {
+    assertFalse(isBackReleased(KEYCODE_BACK, ACTION_DOWN))
+  }
+
+  @Test
+
+  fun isBackReleased_unknownPress_returnsFalse() {
+    assertFalse(isBackReleased(KEYCODE_0, KEYCODE_8))
   }
 }

@@ -56,6 +56,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -184,7 +185,7 @@ class DetailUIManager(
 
     // draggable animation when press back button
     sideSheetDialog.setOnKeyListener { _, keyCode, event ->
-      if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+      if (isBackReleased(keyCode, event.action)) {
         sideSheetDialog.behavior.state = SideSheetBehavior.STATE_HIDDEN
         true
       } else {

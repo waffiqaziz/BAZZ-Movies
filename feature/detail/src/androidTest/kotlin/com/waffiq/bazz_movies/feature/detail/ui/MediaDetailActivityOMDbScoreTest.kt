@@ -23,6 +23,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -73,7 +74,7 @@ class MediaDetailActivityOMDbScoreTest :
   }
 
   @Test
-  fun omdbScoreValue_withEmptyValue_showsOMDbScoreCorrectly() {
+  fun omdbScoreValue_withEmptyValue_hideTheScore() {
     // omdb score empty
     context.launchMediaDetailActivity {
       omdbResult.postValue(
@@ -84,16 +85,16 @@ class MediaDetailActivityOMDbScoreTest :
         )
       )
       onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
     }
   }
 
   @Test
-  fun omdbScoreValue_withNullValue_showsOMDbScoreCorrectly() {
+  fun omdbScoreValue_withNullValue_hideTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         testOMDbDetails.copy(
@@ -103,16 +104,16 @@ class MediaDetailActivityOMDbScoreTest :
         )
       )
       onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
     }
   }
 
   @Test
-  fun omdbScoreValue_withEmptyRatings_showsOMDbScoreCorrectly() {
+  fun omdbScoreValue_withEmptyRatings_hideTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         testOMDbDetails.copy(
@@ -122,11 +123,11 @@ class MediaDetailActivityOMDbScoreTest :
         )
       )
       onView(withId(tv_score_imdb))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_metascore))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
       onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
     }
   }
 
@@ -156,7 +157,22 @@ class MediaDetailActivityOMDbScoreTest :
         )
       )
       onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(withText(context.getString(not_available))))
+        .check(matches(not(isDisplayed())))
+    }
+  }
+
+  @Test
+  fun omdbScoreValue_withRottenTomatoesEmpty_showsOMDbScoreCorrectly() {
+    context.launchMediaDetailActivity {
+      omdbResult.postValue(
+        OMDbDetails(
+          ratings = listOf(
+            RatingsItem(source = "Rotten Tomatoes", value = ""), // null value on rotten tomatoes
+          )
+        )
+      )
+      onView(withId(tv_score_rotten_tomatoes))
+        .check(matches(not(isDisplayed())))
     }
   }
 }
