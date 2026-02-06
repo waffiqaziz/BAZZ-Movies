@@ -1,13 +1,13 @@
 package com.waffiq.bazz_movies.core.network.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteModel
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistModel
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toUpdateFavoriteParams
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toUpdateWatchlistParams
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -16,42 +16,42 @@ import org.junit.Test
 class NetworkMapperTest {
 
   @Test
-  fun toFavoritePostModel_withValidValues_returnsFavoritePostModel() {
-    val favoriteModel = FavoriteModel("movie", 12345, false)
-    val favoritePostModel = favoriteModel.toFavoritePostModel()
+  fun toFavoriteRequest_withValidValues_returnsFavoriteRequest() {
+    val favoriteParams = UpdateFavoriteParams("movie", 12345, false)
+    val favoriteRequest = favoriteParams.toFavoriteRequest()
 
-    assertEquals(12345, favoritePostModel.mediaId)
-    assertEquals("movie", favoritePostModel.mediaType)
-    assertFalse(favoritePostModel.favorite)
+    assertEquals(12345, favoriteRequest.mediaId)
+    assertEquals("movie", favoriteRequest.mediaType)
+    assertFalse(favoriteRequest.favorite)
   }
 
   @Test
-  fun toWatchlistPostModel_withValidValues_returnsWatchListPostModel() {
-    val watchlistModel = WatchlistModel("tv", 67890, true)
-    val watchlistPostModel = watchlistModel.toWatchlistPostModel()
+  fun toWatchlistRequest_withValidValues_returnsWatchListRequest() {
+    val watchlistParams = UpdateWatchlistParams("tv", 67890, true)
+    val watchlistRequest = watchlistParams.toWatchlistRequest()
 
-    assertEquals(67890, watchlistPostModel.mediaId)
-    assertEquals("tv", watchlistPostModel.mediaType)
-    assertTrue(watchlistPostModel.watchlist)
+    assertEquals(67890, watchlistRequest.mediaId)
+    assertEquals("tv", watchlistRequest.mediaType)
+    assertTrue(watchlistRequest.watchlist)
   }
 
   @Test
-  fun toFavoriteModel_withValidValues_returnsFavoriteModel() {
-    val favoritePostModel = FavoritePostModel("movie", 1254543255, true)
-    val favoriteModel = favoritePostModel.toFavoriteModel()
+  fun toFavoriteModel_withValidValues_returnsUpdateFavoriteParams() {
+    val favoriteRequest = FavoriteRequest("movie", 1254543255, true)
+    val favoriteParams = favoriteRequest.toUpdateFavoriteParams()
 
-    assertEquals(1254543255, favoriteModel.mediaId)
-    assertEquals("movie", favoriteModel.mediaType)
-    assertTrue(favoriteModel.favorite)
+    assertEquals(1254543255, favoriteParams.mediaId)
+    assertEquals("movie", favoriteParams.mediaType)
+    assertTrue(favoriteParams.favorite)
   }
 
   @Test
-  fun toWatchlistModel_withValidValues_returnsWatchlistModel() {
-    val watchlistPostModel = WatchlistPostModel("tv", 566536534, true)
-    val watchlistModel = watchlistPostModel.toWatchlistModel()
+  fun toWatchlistModel_withValidValues_returnsUpdateWatchlistParams() {
+    val watchlistRequest = WatchlistRequest("tv", 566536534, true)
+    val watchlistParams = watchlistRequest.toUpdateWatchlistParams()
 
-    assertEquals(566536534, watchlistModel.mediaId)
-    assertEquals("tv", watchlistModel.mediaType)
-    assertTrue(watchlistModel.watchlist)
+    assertEquals(566536534, watchlistParams.mediaId)
+    assertEquals("tv", watchlistParams.mediaType)
+    assertTrue(watchlistParams.watchlist)
   }
 }

@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 
 import android.content.ActivityNotFoundException
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity

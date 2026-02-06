@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding
@@ -79,8 +79,8 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
       sharedDBViewModel.watchlistTvSeriesDB
     }
 
-  override fun createWatchlistModel(mediaId: Int): WatchlistModel =
-    WatchlistModel(
+  override fun createWatchlistModel(mediaId: Int): UpdateWatchlistParams =
+    UpdateWatchlistParams(
       mediaType = mediaType,
       mediaId = mediaId,
       watchlist = false

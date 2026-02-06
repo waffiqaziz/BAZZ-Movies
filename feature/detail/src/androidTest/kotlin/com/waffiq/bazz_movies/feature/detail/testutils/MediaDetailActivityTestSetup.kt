@@ -10,7 +10,7 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
@@ -35,7 +35,7 @@ interface MediaDetailActivityTestSetup {
   val loadingState: MutableLiveData<Boolean>
   val errorState: MutableSharedFlow<String>
   val rateState: MutableLiveData<Event<Boolean>>
-  val postModelState: MutableLiveData<Event<PostModelState>>
+  val postModelState: MutableLiveData<Event<UpdateMediaStateResult>>
   val linkVideo: MutableLiveData<String>
   val detailMedia: MutableLiveData<MediaDetail>
   val tvExternalID: MutableLiveData<TvExternalIds>

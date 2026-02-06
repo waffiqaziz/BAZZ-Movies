@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.user.data.repository
 
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
@@ -184,7 +184,7 @@ class UserRepositoryTest {
 
     // inline test
     userRepository.deleteSession(sessionId).testOutcome(
-      expectedData = deleteSessionResponse.toPost()
+      expectedData = deleteSessionResponse.toPostResult()
     )
   }
 
@@ -210,7 +210,7 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun getDetailUser_whenSuccessful_returnsMappedUserDetail() = runTest {
+  fun getAccountDetails_whenSuccessful_returnsMappedUserDetail() = runTest {
     val accountDetailsResponse = AccountDetailsResponse(
       includeAdult = false,
       iso31661 = "en",
@@ -231,9 +231,9 @@ class UserRepositoryTest {
     val sessionId = "32154325425662"
 
     val flowResult = flowOf(NetworkResult.Success(accountDetailsResponse))
-    coEvery { mockUserDataSource.getUserDetail(sessionId) } returns flowResult
+    coEvery { mockUserDataSource.getAccountDetails(sessionId) } returns flowResult
 
-    val result = userRepository.getUserDetail(sessionId).first()
+    val result = userRepository.getAccountDetails(sessionId).first()
 
     assertTrue(result is Outcome.Success)
     result as Outcome.Success
@@ -245,10 +245,10 @@ class UserRepositoryTest {
     assertEquals("347589074283054", result.data.avatarItem?.avatarTMDb?.avatarPath)
     assertEquals("325987423659432", result.data.avatarItem?.gravatar?.hash)
     assertFalse(result.data.includeAdult == true)
-    coVerify { mockUserDataSource.getUserDetail(sessionId) }
+    coVerify { mockUserDataSource.getAccountDetails(sessionId) }
 
     // inline test
-    userRepository.getUserDetail(sessionId).testOutcome(
+    userRepository.getAccountDetails(sessionId).testOutcome(
       expectedData = accountDetailsResponse.toAccountDetails()
     )
   }

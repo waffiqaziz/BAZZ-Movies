@@ -20,8 +20,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
@@ -111,7 +111,7 @@ class MovieChildFragmentTest :
   @Test
   fun loggedUser_swipeLeft_showAddedSnackbar() {
     val data = snackBarLoginData.copy(
-      watchlistModel = WatchlistModel(
+      watchlistModel = UpdateWatchlistParams(
         mediaType = "movie",
         mediaId = 1234,
         watchlist = true
@@ -135,7 +135,7 @@ class MovieChildFragmentTest :
   fun loggedUser_swipeRight_showDeletedSnackbar() {
     val data = snackBarLoginData.copy(
 
-      favoriteModel = FavoriteModel(
+      favoriteModel = UpdateFavoriteParams(
         mediaType = "movie",
         mediaId = 12345,
         favorite = false
@@ -161,7 +161,7 @@ class MovieChildFragmentTest :
     val failedDate = snackBarLoginData.copy(
       title = "Test Error",
       isSuccess = false,
-      favoriteModel = FavoriteModel(
+      favoriteModel = UpdateFavoriteParams(
         mediaType = "movie",
         mediaId = 12345,
         favorite = false

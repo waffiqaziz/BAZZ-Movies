@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.PostResult
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ class PostMethodInteractorTest {
       statusCode = 201,
       statusMessage = "Success"
     )
-    val favoritePostModel = FavoriteModel(
+    val favoriteParams = UpdateFavoriteParams(
       mediaType = "movie",
       mediaId = 99999,
       favorite = false
@@ -40,12 +40,12 @@ class PostMethodInteractorTest {
     coEvery {
       mockRepository.postFavorite(
         "sessionId",
-        favoritePostModel,
+        favoriteParams,
         12345678
       )
     } returns flowOf(Outcome.Success(postFavoriteWatchlist))
 
-    postMethodInteractor.postFavorite("sessionId", favoritePostModel, 12345678).test {
+    postMethodInteractor.postFavorite("sessionId", favoriteParams, 12345678).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success
@@ -61,7 +61,7 @@ class PostMethodInteractorTest {
       statusCode = 201,
       statusMessage = "Success Add Watchlist"
     )
-    val watchlistPostModel = WatchlistModel(
+    val watchlistPostModel = UpdateWatchlistParams(
       mediaType = "tv",
       mediaId = 4444,
       watchlist = true
@@ -87,7 +87,7 @@ class PostMethodInteractorTest {
 
   @Test
   fun postMovieRate_whenSuccessful_returnsCorrectResponse() = runTest {
-    val postRate = Post(
+    val postResult = PostResult(
       success = true,
       statusCode = 201,
       statusMessage = "Success Rating Movie"
@@ -95,7 +95,7 @@ class PostMethodInteractorTest {
 
     coEvery {
       mockRepository.postMovieRate("sessionId", 9.0f, 7777)
-    } returns flowOf(Outcome.Success(postRate))
+    } returns flowOf(Outcome.Success(postResult))
 
     postMethodInteractor.postMovieRate("sessionId", 9.0f, 7777).test {
       val result = awaitItem()
@@ -110,7 +110,7 @@ class PostMethodInteractorTest {
 
   @Test
   fun postTvRate_whenSuccessful_returnsCorrectResponse() = runTest {
-    val postRate = Post(
+    val postResult = PostResult(
       success = true,
       statusCode = 201,
       statusMessage = "Success Rating Tv"
@@ -118,7 +118,7 @@ class PostMethodInteractorTest {
 
     coEvery {
       mockRepository.postTvRate("sessionId", 9.0f, 7777)
-    } returns flowOf(Outcome.Success(postRate))
+    } returns flowOf(Outcome.Success(postResult))
 
     postMethodInteractor.postTvRate("sessionId", 9.0f, 7777).test {
       val result = awaitItem()

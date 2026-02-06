@@ -27,12 +27,12 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
@@ -456,28 +456,28 @@ object HelperTest {
   )
 
   val postModelAddFavoriteStateSuccess =
-    PostModelState(
+    UpdateMediaStateResult(
       isSuccess = true,
       isDelete = false,
       isFavorite = true
     )
 
   val postModelDeleteFavoriteStateSuccess =
-    PostModelState(
+    UpdateMediaStateResult(
       isSuccess = true,
       isDelete = true,
       isFavorite = true
     )
 
   val postModelAddWatchlistStateSuccess =
-    PostModelState(
+    UpdateMediaStateResult(
       isSuccess = true,
       isDelete = false,
       isFavorite = false
     )
 
   val postModelDeleteWatchlistStateSuccess =
-    PostModelState(
+    UpdateMediaStateResult(
       isSuccess = true,
       isDelete = true,
       isFavorite = false

@@ -7,7 +7,6 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_metascore
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
@@ -74,7 +73,7 @@ class MediaDetailActivityOMDbScoreTest :
   }
 
   @Test
-  fun omdbScoreValue_withEmptyValue_hideTheScore() {
+  fun omdbScoreValue_withEmptyValue_hidesTheScore() {
     // omdb score empty
     context.launchMediaDetailActivity {
       omdbResult.postValue(
@@ -84,17 +83,12 @@ class MediaDetailActivityOMDbScoreTest :
           ratings = null
         )
       )
-      onView(withId(tv_score_imdb))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_metascore))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(not(isDisplayed())))
+      scoreViewIsHidden()
     }
   }
 
   @Test
-  fun omdbScoreValue_withNullValue_hideTheScore() {
+  fun omdbScoreValue_withNullValue_hidesTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         testOMDbDetails.copy(
@@ -103,17 +97,12 @@ class MediaDetailActivityOMDbScoreTest :
           ratings = null
         )
       )
-      onView(withId(tv_score_imdb))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_metascore))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(not(isDisplayed())))
+      scoreViewIsHidden()
     }
   }
 
   @Test
-  fun omdbScoreValue_withEmptyRatings_hideTheScore() {
+  fun omdbScoreValue_withEmptyRatings_hidesTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         testOMDbDetails.copy(
@@ -122,12 +111,7 @@ class MediaDetailActivityOMDbScoreTest :
           ratings = emptyList()
         )
       )
-      onView(withId(tv_score_imdb))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_metascore))
-        .check(matches(not(isDisplayed())))
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(not(isDisplayed())))
+      scoreViewIsHidden()
     }
   }
 
@@ -147,32 +131,43 @@ class MediaDetailActivityOMDbScoreTest :
   }
 
   @Test
-  fun omdbScoreValue_withRottenTomatoesNullValue_showsOMDbScoreCorrectly() {
+  fun omdbScoreValue_withRottenTomatoesNull_hidesTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         OMDbDetails(
           ratings = listOf(
-            RatingsItem(source = "Rotten Tomatoes", value = null), // null value on rotten tomatoes
+            RatingsItem(source = "Rotten Tomatoes", value = null),
           )
         )
       )
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(not(isDisplayed())))
+      rottenTomatoesIsHidden()
     }
   }
 
   @Test
-  fun omdbScoreValue_withRottenTomatoesEmpty_showsOMDbScoreCorrectly() {
+  fun omdbScoreValue_withRottenTomatoesEmpty_hidesTheScore() {
     context.launchMediaDetailActivity {
       omdbResult.postValue(
         OMDbDetails(
           ratings = listOf(
-            RatingsItem(source = "Rotten Tomatoes", value = ""), // null value on rotten tomatoes
+            RatingsItem(source = "Rotten Tomatoes", value = ""),
           )
         )
       )
-      onView(withId(tv_score_rotten_tomatoes))
-        .check(matches(not(isDisplayed())))
+      rottenTomatoesIsHidden()
     }
+  }
+
+  private fun scoreViewIsHidden() {
+    onView(withId(tv_score_imdb))
+      .check(matches(not(isDisplayed())))
+    onView(withId(tv_score_metascore))
+      .check(matches(not(isDisplayed())))
+    rottenTomatoesIsHidden()
+  }
+
+  private fun rottenTomatoesIsHidden() {
+    onView(withId(tv_score_rotten_tomatoes))
+      .check(matches(not(isDisplayed())))
   }
 }

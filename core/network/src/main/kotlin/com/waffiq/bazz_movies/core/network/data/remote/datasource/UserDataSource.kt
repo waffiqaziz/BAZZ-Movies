@@ -29,7 +29,7 @@ class UserDataSource @Inject constructor(
 
   override fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.delSession(sessionId) },
+      apiCall = { tmdbApiService.deleteSession(sessionId) },
       ioDispatcher = ioDispatcher
     )
 
@@ -39,7 +39,7 @@ class UserDataSource @Inject constructor(
       ioDispatcher = ioDispatcher
     )
 
-  override fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
+  override fun getAccountDetails(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getAccountDetails(sessionId) },
       ioDispatcher = ioDispatcher

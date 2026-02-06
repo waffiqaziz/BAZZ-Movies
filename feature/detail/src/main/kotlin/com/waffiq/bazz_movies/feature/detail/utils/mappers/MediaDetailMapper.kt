@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCastItem
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaCreditsMapper.toMediaCrewItem
 

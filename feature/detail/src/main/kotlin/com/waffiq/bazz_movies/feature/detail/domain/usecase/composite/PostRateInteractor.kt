@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ class PostRateInteractor @Inject constructor(
   override fun postMovieRate(
     rating: Float,
     movieId: Int,
-  ): Flow<Outcome<Post>> =
+  ): Flow<Outcome<PostResult>> =
     userPrefUseCase.getUserToken()
       .take(1)
       .flatMapConcat { token ->
@@ -31,7 +31,7 @@ class PostRateInteractor @Inject constructor(
   override fun postTvRate(
     rating: Float,
     tvId: Int,
-  ): Flow<Outcome<Post>> =
+  ): Flow<Outcome<PostResult>> =
     userPrefUseCase.getUserToken()
       .take(1)
       .flatMapConcat { token ->

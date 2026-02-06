@@ -5,8 +5,8 @@ import android.view.KeyEvent.KEYCODE_0
 import android.view.KeyEvent.KEYCODE_8
 import android.view.KeyEvent.KEYCODE_BACK
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration

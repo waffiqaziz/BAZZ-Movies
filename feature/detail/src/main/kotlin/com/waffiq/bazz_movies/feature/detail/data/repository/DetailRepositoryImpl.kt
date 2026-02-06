@@ -8,12 +8,12 @@ import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits

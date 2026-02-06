@@ -5,24 +5,24 @@ import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
-class PostTest {
+class PostResultTest {
 
   @Test
-  fun post_withValidValue_returnsCorrectData() {
-    val post = Post(
+  fun postResult_withValidValue_returnsCorrectData() {
+    val postResult = PostResult(
       success = true,
       statusCode = 200,
       statusMessage = "OK"
     )
 
-    assertTrue(post.success == true)
-    assertEquals(200, post.statusCode)
-    assertEquals("OK", post.statusMessage)
+    assertTrue(postResult.success == true)
+    assertEquals(200, postResult.statusCode)
+    assertEquals("OK", postResult.statusMessage)
   }
 
   @Test
-  fun post_withNullValue_returnsCorrectData() {
-    val post = Post()
+  fun postResult_withNullValue_returnsCorrectData() {
+    val post = PostResult()
 
     assertNull(post.success)
     assertNull(post.statusCode)

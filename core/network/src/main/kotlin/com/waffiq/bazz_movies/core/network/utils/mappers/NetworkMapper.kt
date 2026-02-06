@@ -1,31 +1,31 @@
 package com.waffiq.bazz_movies.core.network.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 
 object NetworkMapper {
 
-  fun FavoriteModel.toFavoritePostModel() = FavoritePostModel(
+  fun UpdateFavoriteParams.toFavoriteRequest() = FavoriteRequest(
     mediaType = mediaType,
     mediaId = mediaId,
     favorite = favorite,
   )
 
-  fun WatchlistModel.toWatchlistPostModel() = WatchlistPostModel(
+  fun UpdateWatchlistParams.toWatchlistRequest() = WatchlistRequest(
     mediaType = mediaType,
     mediaId = mediaId,
     watchlist = watchlist,
   )
 
-  fun FavoritePostModel.toFavoriteModel() = FavoriteModel(
+  fun FavoriteRequest.toUpdateFavoriteParams() = UpdateFavoriteParams(
     mediaType = mediaType,
     mediaId = mediaId,
     favorite = favorite,
   )
 
-  fun WatchlistPostModel.toWatchlistModel() = WatchlistModel(
+  fun WatchlistRequest.toUpdateWatchlistParams() = UpdateWatchlistParams(
     mediaType = mediaType,
     mediaId = mediaId,
     watchlist = watchlist,

@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.retrofit.services
 
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -235,22 +235,22 @@ interface TMDBApiService {
 
   // region PERSON
   @GET("3/person/{personId}?language=en-US")
-  suspend fun getDetailPerson(
+  suspend fun getPersonDetails(
     @Path("personId") personId: Int,
   ): Response<DetailPersonResponse>
 
   @GET("3/person/{personId}/images?language=en-US")
-  suspend fun getImagePerson(
+  suspend fun getPersonImages(
     @Path("personId") personId: Int,
   ): Response<ImagePersonResponse>
 
   @GET("3/person/{personId}/external_ids")
-  suspend fun getExternalIdPerson(
+  suspend fun getPersonExternalIds(
     @Path("personId") personId: Int,
   ): Response<ExternalIDPersonResponse>
 
   @GET("3/person/{personId}/combined_credits?language=en-US")
-  suspend fun getPersonCombinedCredits(
+  suspend fun getPersonCredits(
     @Path("personId") personId: Int,
   ): Response<CombinedCreditResponse>
   // endregion
@@ -261,7 +261,7 @@ interface TMDBApiService {
   suspend fun postFavoriteTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: FavoritePostModel,
+    @Body data: FavoriteRequest,
   ): Response<PostFavoriteWatchlistResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -269,7 +269,7 @@ interface TMDBApiService {
   suspend fun postWatchlistTMDB(
     @Path("accountId") accountId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: WatchlistPostModel,
+    @Body data: WatchlistRequest,
   ): Response<PostFavoriteWatchlistResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -277,7 +277,7 @@ interface TMDBApiService {
   suspend fun postMovieRate(
     @Path("movieId") movieId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: RatePostModel,
+    @Body data: RatingRequest,
   ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
@@ -285,12 +285,12 @@ interface TMDBApiService {
   suspend fun postTvRate(
     @Path("tvId") tvId: Int,
     @Query("session_id") sessionId: String,
-    @Body data: RatePostModel,
+    @Body data: RatingRequest,
   ): Response<PostResponse>
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @DELETE("3/authentication/session")
-  suspend fun delSession(
+  suspend fun deleteSession(
     @Query("session_id") sessionId: String,
   ): Response<PostResponse>
   // endregion

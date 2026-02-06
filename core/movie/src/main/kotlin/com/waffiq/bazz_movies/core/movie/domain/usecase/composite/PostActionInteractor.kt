@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
@@ -16,7 +16,7 @@ class PostActionInteractor @Inject constructor(
 ) : PostActionUseCase {
 
   override fun postWatchlistWithAuth(
-    wtc: WatchlistModel,
+    wtc: UpdateWatchlistParams,
   ): Flow<Outcome<PostFavoriteWatchlist>> = flow {
     userRepository.getUserPref().collect { userPref ->
       moviesRepository.postWatchlist(
@@ -30,7 +30,7 @@ class PostActionInteractor @Inject constructor(
   }
 
   override fun postFavoriteWithAuth(
-    fav: FavoriteModel,
+    fav: UpdateFavoriteParams,
   ): Flow<Outcome<PostFavoriteWatchlist>> = flow {
     userRepository.getUserPref().collect { userPref ->
       moviesRepository.postFavorite(

@@ -236,7 +236,7 @@ class GetDetailPersonInteractorTest {
     val flow = flowOf(Outcome.Success(combinedCreditPerson))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow
 
-    // Test the interactor's getPersonKnownFor method
+    // Test the interactor's getPersonCredits method
     getDetailPersonInteractor.getKnownForPerson(personId).test {
       // Assert the first emission is success with sorted data
       val emission = awaitItem() // NetworkResult<List<CastItem>>

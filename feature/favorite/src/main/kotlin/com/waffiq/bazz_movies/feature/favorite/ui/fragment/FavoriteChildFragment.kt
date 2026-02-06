@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
@@ -79,8 +79,8 @@ class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
       sharedDBViewModel.favoriteTvFromDB
     }
 
-  override fun createFavoriteModel(mediaId: Int): FavoriteModel =
-    FavoriteModel(
+  override fun createFavoriteModel(mediaId: Int): UpdateFavoriteParams =
+    UpdateFavoriteParams(
       mediaType = mediaType,
       mediaId = mediaId,
       favorite = false

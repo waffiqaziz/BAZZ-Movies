@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.postResponseSuccessDump
@@ -28,8 +28,8 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   private val tvId = 45678
   private val movieId = 121212
   private val rating = 9f
-  private val fav = FavoritePostModel("tv", 35462654, false)
-  private val wtc = WatchlistPostModel("movie", 345345, false)
+  private val fav = FavoriteRequest("tv", 35462654, false)
+  private val wtc = WatchlistRequest("movie", 345345, false)
   private val notAuthorizedErrorResponse: Response<PostResponse> = Response.error(
     401,
     """{"status_code": 401, "status_message": "Not Authorized"}"""
@@ -189,7 +189,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRateSuccess_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       mockApiResponse = Response.success(ratePostResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
       expectedData = ratePostResponseSuccessDump,
@@ -199,7 +199,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenErrorOccurs_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       errorResponse = notAuthorizedErrorResponse,
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
       expectedErrorMessage = "Not Authorized"
@@ -210,7 +210,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -218,7 +218,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -226,7 +226,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -234,7 +234,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -242,7 +242,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -250,7 +250,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postTvRate_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
-      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postTvRate(sessionId, rating, tvId) },
     )
   }
@@ -259,7 +259,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRateSuccess_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       mockApiResponse = Response.success(ratePostResponseSuccessDump),
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
       expectedData = ratePostResponseSuccessDump,
@@ -269,7 +269,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenErrorOccurs_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       errorResponse = notAuthorizedErrorResponse,
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
       expectedErrorMessage = "Not Authorized"
@@ -280,7 +280,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
@@ -288,7 +288,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
@@ -296,7 +296,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
@@ -304,7 +304,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
@@ -312,7 +312,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
@@ -320,7 +320,7 @@ class PostDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
-      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiEndpoint = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       dataSourceEndpointCall = { movieDataSource.postMovieRate(sessionId, rating, movieId) },
     )
   }
