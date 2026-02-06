@@ -4,11 +4,11 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
-class UpdateWatchlistParamsTest {
+class WatchlistParamsTest {
 
   @Test
-  fun updateWatchlistParams_withValidValue_returnsCorrectData() {
-    val watchlistParams = UpdateWatchlistParams(
+  fun watchlistParams_withValidValue_returnsCorrectData() {
+    val watchlistParams = WatchlistParams(
       mediaType = "movie",
       mediaId = 123,
       watchlist = true

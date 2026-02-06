@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.PostResult
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ class PostMethodInteractorTest {
       statusCode = 201,
       statusMessage = "Success"
     )
-    val favoriteParams = UpdateFavoriteParams(
+    val favoriteParams = FavoriteParams(
       mediaType = "movie",
       mediaId = 99999,
       favorite = false
@@ -61,7 +61,7 @@ class PostMethodInteractorTest {
       statusCode = 201,
       statusMessage = "Success Add Watchlist"
     )
-    val watchlistPostModel = UpdateWatchlistParams(
+    val watchlistPostModel = WatchlistParams(
       mediaType = "tv",
       mediaId = 4444,
       watchlist = true

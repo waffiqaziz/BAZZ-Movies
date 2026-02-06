@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
@@ -12,8 +12,8 @@ class SnackBarUserLoginDataTest {
 
   @Test
   fun snackBarUserLoginData_withCorrectValues_createsTheInstance() {
-    val favorite = UpdateFavoriteParams(mediaType = "movie", mediaId = 123, favorite = true)
-    val watchlist = UpdateWatchlistParams(mediaType = "tv", mediaId = 456, watchlist = true)
+    val favorite = FavoriteParams(mediaType = "movie", mediaId = 123, favorite = true)
+    val watchlist = WatchlistParams(mediaType = "tv", mediaId = 456, watchlist = true)
 
     val data = SnackBarUserLoginData(
       isSuccess = true,
@@ -30,8 +30,8 @@ class SnackBarUserLoginDataTest {
 
   @Test
   fun snackBarUserLoginData_whenContentsAreEqual_instancesAreEqual() {
-    val favorite = UpdateFavoriteParams("movie", 123, true)
-    val watchlist = UpdateWatchlistParams("tv", 456, true)
+    val favorite = FavoriteParams("movie", 123, true)
+    val watchlist = WatchlistParams("tv", 456, true)
 
     val data1 = SnackBarUserLoginData(true, "Success", favorite, watchlist)
     val data2 = SnackBarUserLoginData(true, "Success", favorite, watchlist)
@@ -42,7 +42,7 @@ class SnackBarUserLoginDataTest {
 
   @Test
   fun snackBarUserLoginData_whenCopyFunctionCalled_updatesSpecificFields() {
-    val favorite = UpdateFavoriteParams("movie", 123, true)
+    val favorite = FavoriteParams("movie", 123, true)
     val original = SnackBarUserLoginData(true, "Success", favorite, null)
 
     val updated = original.copy(title = "Updated Title", isSuccess = false)

@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
@@ -29,24 +29,24 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
     every { mockUserPrefUseCase.getUserToken() } returns flowOf(SESSION_ID)
   }
 
-  private val postFavoriteMovieData = UpdateFavoriteParams(
+  private val postFavoriteMovieData = FavoriteParams(
     mediaType = MOVIE_MEDIA_TYPE,
     mediaId = movieId,
     favorite = true
   )
   private val postFavoriteDeleteData = postFavoriteMovieData.copy(favorite = false)
-  private val postWatchlistMovieData = UpdateWatchlistParams(
+  private val postWatchlistMovieData = WatchlistParams(
     mediaType = MOVIE_MEDIA_TYPE,
     mediaId = movieId,
     watchlist = true
   )
   private val postWatchlistDeleteData = postWatchlistMovieData.copy(watchlist = false)
-  private val postFavoriteTvData = UpdateFavoriteParams(
+  private val postFavoriteTvData = FavoriteParams(
     mediaType = TV_MEDIA_TYPE,
     mediaId = tvId,
     favorite = true
   )
-  private val postWatchlistTvData = UpdateWatchlistParams(
+  private val postWatchlistTvData = WatchlistParams(
     mediaType = TV_MEDIA_TYPE,
     mediaId = tvId,
     watchlist = true

@@ -2,9 +2,9 @@ package com.waffiq.bazz_movies.feature.watchlist.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
@@ -59,7 +59,7 @@ class CheckAndAddToFavoriteInteractor @Inject constructor(
               flowOf(Outcome.Success(FavoriteActionResult.AlreadyInFavorite))
             } else {
               postActionUseCase.postFavoriteWithAuth(
-                UpdateFavoriteParams(mediaType, mediaId, true)
+                FavoriteParams(mediaType, mediaId, true)
               ).map(::mapPostOutcome)
             }
           }

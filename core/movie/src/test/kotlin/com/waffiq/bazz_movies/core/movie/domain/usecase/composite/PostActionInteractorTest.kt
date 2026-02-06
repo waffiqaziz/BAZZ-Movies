@@ -2,10 +2,10 @@ package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
@@ -48,7 +48,7 @@ class PostActionInteractorTest {
 
   @Test
   fun postFavorite_whenSuccessful_emitsSuccess() = runTest {
-    val data = UpdateFavoriteParams(
+    val data = FavoriteParams(
       mediaType = MOVIE_MEDIA_TYPE,
       mediaId = 1234,
       favorite = true
@@ -71,7 +71,7 @@ class PostActionInteractorTest {
 
   @Test
   fun postWatchlist_whenSuccessful_emitsSuccess() = runTest {
-    val data = UpdateWatchlistParams(
+    val data = WatchlistParams(
       mediaType = MOVIE_MEDIA_TYPE,
       mediaId = 23456,
       watchlist = true

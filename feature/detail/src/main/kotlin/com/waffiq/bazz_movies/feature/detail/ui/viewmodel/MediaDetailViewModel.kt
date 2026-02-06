@@ -13,12 +13,12 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
@@ -348,7 +348,7 @@ class MediaDetailViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(data: UpdateFavoriteParams) {
+  fun postFavorite(data: FavoriteParams) {
     postItem(
       data = data,
       isFavorite = true,
@@ -363,7 +363,7 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun postWatchlist(data: UpdateWatchlistParams) {
+  fun postWatchlist(data: WatchlistParams) {
     postItem(
       data = data,
       isFavorite = false,

@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.data.repository
 
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.PostResult
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
@@ -40,7 +40,7 @@ class MoviesRepositoryImpl @Inject constructor(
   // region POST FAVORITE AND WATCHLIST
   override fun postFavorite(
     sessionId: String,
-    fav: UpdateFavoriteParams,
+    fav: FavoriteParams,
     userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     movieDataSource.postFavorite(sessionId, fav.toFavoriteRequest(), userId)
@@ -48,7 +48,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
   override fun postWatchlist(
     sessionId: String,
-    wtc: UpdateWatchlistParams,
+    wtc: WatchlistParams,
     userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     movieDataSource.postWatchlist(sessionId, wtc.toWatchlistRequest(), userId)

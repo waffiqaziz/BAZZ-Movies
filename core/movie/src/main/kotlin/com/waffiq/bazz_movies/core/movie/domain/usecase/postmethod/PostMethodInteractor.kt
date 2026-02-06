@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod
 
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.PostResult
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,14 +14,14 @@ class PostMethodInteractor @Inject constructor(
 ) : PostMethodUseCase {
   override fun postFavorite(
     sessionId: String,
-    fav: UpdateFavoriteParams,
+    fav: FavoriteParams,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postFavorite(sessionId, fav, userId)
 
   override fun postWatchlist(
     sessionId: String,
-    wtc: UpdateWatchlistParams,
+    wtc: WatchlistParams,
     userId: Int
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postWatchlist(sessionId, wtc, userId)

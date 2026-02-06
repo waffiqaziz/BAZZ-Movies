@@ -16,11 +16,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favor
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
@@ -291,7 +291,7 @@ class UserInteractionHandler(
   private fun postDataToTMDB(isModeFavorite: Boolean, state: Boolean) {
     if (isModeFavorite) {
       favorite = !state
-      val fav = UpdateFavoriteParams(
+      val fav = FavoriteParams(
         dataExtra.mediaType,
         dataExtra.id,
         !state
@@ -299,7 +299,7 @@ class UserInteractionHandler(
       detailViewModel.postFavorite(fav)
     } else {
       watchlist = !state
-      val wtc = UpdateWatchlistParams(
+      val wtc = WatchlistParams(
         dataExtra.mediaType,
         dataExtra.id,
         !state

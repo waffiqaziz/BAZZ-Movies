@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.movie.data.repository
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
@@ -92,7 +92,7 @@ class MovieRepositoryTest {
       statusCode = 201,
       statusMessage = "Success"
     )
-    val favoritePostModel = UpdateFavoriteParams(
+    val favoritePostModel = FavoriteParams(
       mediaType = "movie",
       mediaId = 99999,
       favorite = false
@@ -122,7 +122,7 @@ class MovieRepositoryTest {
       statusCode = 201,
       statusMessage = "Successs Addd Watchlist"
     )
-    val watchlistPostModel = UpdateWatchlistParams(
+    val watchlistPostModel = WatchlistParams(
       mediaType = "tv",
       mediaId = 4444,
       watchlist = true

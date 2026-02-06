@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
@@ -124,7 +124,7 @@ class FavoriteViewModelTest : BehaviorSpec({
               isSuccess = true,
               title = title,
               favoriteModel = null,
-              watchlistModel = UpdateWatchlistParams("tv", TV_ID, true)
+              watchlistModel = WatchlistParams("tv", TV_ID, true)
             )
           ),
           verifyBlock = { verifyGetStatedTVCalled() }
@@ -176,7 +176,7 @@ class FavoriteViewModelTest : BehaviorSpec({
 
   Given("posting favorite") {
     val title = "Avatar"
-    val favoriteModel = UpdateFavoriteParams("movie", 999, true)
+    val favoriteModel = FavoriteParams("movie", 999, true)
 
     fun runPostFavorite() {
       viewModel.postFavorite(favoriteModel, title)
@@ -230,7 +230,7 @@ class FavoriteViewModelTest : BehaviorSpec({
 
   Given("posting watchlist") {
     val title = "The Matrix"
-    val watchlistModel = UpdateWatchlistParams("movie", 333, true)
+    val watchlistModel = WatchlistParams("movie", 333, true)
 
     fun runPostWatchlist() {
       viewModel.postWatchlist(watchlistModel, title)
@@ -310,7 +310,7 @@ class FavoriteViewModelTest : BehaviorSpec({
               isSuccess = true,
               title = title,
               favoriteModel = null,
-              watchlistModel = UpdateWatchlistParams("movie", movieId, true)
+              watchlistModel = WatchlistParams("movie", movieId, true)
             )
           ),
           verifyBlock = { verifyGetStatedMovieCalled() }

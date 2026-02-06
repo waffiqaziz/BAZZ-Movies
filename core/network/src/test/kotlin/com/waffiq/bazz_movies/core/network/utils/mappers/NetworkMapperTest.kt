@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.network.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.UpdateFavoriteParams
-import com.waffiq.bazz_movies.core.domain.UpdateWatchlistParams
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
@@ -17,7 +17,7 @@ class NetworkMapperTest {
 
   @Test
   fun toFavoriteRequest_withValidValues_returnsFavoriteRequest() {
-    val favoriteParams = UpdateFavoriteParams("movie", 12345, false)
+    val favoriteParams = FavoriteParams("movie", 12345, false)
     val favoriteRequest = favoriteParams.toFavoriteRequest()
 
     assertEquals(12345, favoriteRequest.mediaId)
@@ -27,7 +27,7 @@ class NetworkMapperTest {
 
   @Test
   fun toWatchlistRequest_withValidValues_returnsWatchListRequest() {
-    val watchlistParams = UpdateWatchlistParams("tv", 67890, true)
+    val watchlistParams = WatchlistParams("tv", 67890, true)
     val watchlistRequest = watchlistParams.toWatchlistRequest()
 
     assertEquals(67890, watchlistRequest.mediaId)
