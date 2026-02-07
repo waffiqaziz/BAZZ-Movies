@@ -87,7 +87,7 @@ class AuthenticationViewModel @Inject constructor(
         when (outcome) {
           is Outcome.Success -> {
             if (outcome.data.success) {
-              getUserDetail(outcome.data.sessionId)
+              getAccountDetails(outcome.data.sessionId)
             } else {
               _loginState.value = false
             }
@@ -104,9 +104,9 @@ class AuthenticationViewModel @Inject constructor(
     }
   }
 
-  private fun getUserDetail(sessionId: String) {
+  private fun getAccountDetails(sessionId: String) {
     viewModelScope.launch {
-      authTMDbAccountUseCase.getUserDetail(sessionId).collect { outcome ->
+      authTMDbAccountUseCase.getAccountDetails(sessionId).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             _userModel.value = UserModel(

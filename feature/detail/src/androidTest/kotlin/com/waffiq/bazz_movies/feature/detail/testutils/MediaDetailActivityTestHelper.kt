@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
@@ -52,7 +52,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   override val loadingState = MutableLiveData<Boolean>()
   override val errorState = MutableSharedFlow<String>(replay = 1)
   override val rateState = MutableLiveData<Event<Boolean>>()
-  override val postModelState = MutableLiveData<Event<PostModelState>>()
+  override val postModelState = MutableLiveData<Event<UpdateMediaStateResult>>()
   override val linkVideo = MutableLiveData<String>()
   override val detailMedia = MutableLiveData<MediaDetail>()
   override val tvExternalID = MutableLiveData<TvExternalIds>()
@@ -120,7 +120,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     every { mockMediaDetailViewModel.loadingState } returns loadingState
     every { mockMediaDetailViewModel.errorState } returns errorState
     every { mockMediaDetailViewModel.rateState } returns rateState
-    every { mockMediaDetailViewModel.postModelState } returns postModelState
+    every { mockMediaDetailViewModel.mediaStateResult } returns postModelState
     every { mockMediaDetailViewModel.linkVideo } returns linkVideo
     every { mockMediaDetailViewModel.detailMedia } returns detailMedia
     every { mockMediaDetailViewModel.recommendation } returns recommendation

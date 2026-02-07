@@ -22,10 +22,9 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
-import com.waffiq.bazz_movies.feature.detail.R.id.tmdb_viewGroup
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
@@ -258,37 +257,37 @@ class MediaDetailActivityInteractionTest :
       // post to watchlist success
       performClickButtonWatchlist()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = true, isFavorite = false, isDelete = false))
+        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false))
       )
 
       // delete from watchlist success
       performClickButtonWatchlist()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = true, isFavorite = false, isDelete = true))
+        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true))
       )
 
       // post to watchlist failed
       performClickButtonWatchlist()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = false, isFavorite = false, isDelete = false))
+        Event(UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false))
       )
 
       // post to favorite success
       performClickButtonFavorite()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = false))
+        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false))
       )
 
       // delete from favorite success
       performClickButtonFavorite()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = true))
+        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true))
       )
 
       // post to favorite failed
       performClickButtonFavorite()
       postModelState.postValue(
-        Event(PostModelState(isSuccess = false, isFavorite = true, isDelete = false))
+        Event(UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false))
       )
     }
   }
@@ -297,7 +296,8 @@ class MediaDetailActivityInteractionTest :
   fun observeFavoriteWatchlistPost_whenEventAlreadyHandled_shouldNotProcessAgain() {
     context.launchMediaDetailActivity {
       // same event
-      val event = Event(PostModelState(isSuccess = true, isFavorite = true, isDelete = false))
+      val event =
+        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false))
 
       setupLoginUser()
       itemState.postValue(testMediaState.copy(favorite = false, watchlist = false))

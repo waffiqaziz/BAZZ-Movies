@@ -39,7 +39,6 @@ class GetTvDetailInteractor @Inject constructor(
       }
     }
 
-
   override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
     detailRepository.getTvExternalIds(tvId)
 

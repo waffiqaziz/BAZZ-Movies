@@ -21,14 +21,14 @@ class PersonRepositoryImpl @Inject constructor(
   private val movieDataSource: MovieDataSource,
 ) : IPersonRepository {
   override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
-    movieDataSource.getPersonDetail(id).toOutcome { it.toDetailPerson() }
+    movieDataSource.getPersonDetails(id).toOutcome { it.toDetailPerson() }
 
   override fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
-    movieDataSource.getPersonKnownFor(id).toOutcome { it.toCombinedCredit() }
+    movieDataSource.getPersonCredits(id).toOutcome { it.toCombinedCredit() }
 
   override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
-    movieDataSource.getPersonImage(id).toOutcome { it.toImagePerson() }
+    movieDataSource.getPersonImages(id).toOutcome { it.toImagePerson() }
 
   override fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
-    movieDataSource.getPersonExternalID(id).toOutcome { it.toExternalIDPerson() }
+    movieDataSource.getPersonExternalIds(id).toOutcome { it.toExternalIDPerson() }
 }

@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
@@ -18,7 +18,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   private val rate = 9.0f
   private lateinit var interactor: PostRateInteractor
 
-  val post = Post(
+  val post = PostResult(
     success = true,
     statusCode = 201,
     statusMessage = "Success"
@@ -44,7 +44,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
       mockResponse = post,
       interactorCall = { interactor.postMovieRate(rate, MOVIE_ID) }
     ) { emission ->
-      val result = assertIs<Post>(emission.data)
+      val result = assertIs<PostResult>(emission.data)
       assertEquals(201, result.statusCode)
     }
   }
@@ -72,7 +72,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
       mockResponse = post,
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     ) { emission ->
-      val result = assertIs<Post>(emission.data)
+      val result = assertIs<PostResult>(emission.data)
       assertEquals(201, result.statusCode)
     }
   }

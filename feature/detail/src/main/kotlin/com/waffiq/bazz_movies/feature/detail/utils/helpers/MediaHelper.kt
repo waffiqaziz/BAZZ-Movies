@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import android.view.KeyEvent
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 
 /**
  * Used for detail fragment

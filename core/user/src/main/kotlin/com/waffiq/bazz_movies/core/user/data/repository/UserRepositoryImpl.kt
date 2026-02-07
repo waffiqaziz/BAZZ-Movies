@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.user.data.repository
 
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.mappers.PostMapper.toPost
+import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
@@ -43,11 +43,11 @@ class UserRepositoryImpl @Inject constructor(
   override fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
     userDataSource.createSessionLogin(requestToken).toOutcome { it.toCreateSession() }
 
-  override fun deleteSession(sessionId: String): Flow<Outcome<Post>> =
-    userDataSource.deleteSession(sessionId).toOutcome { it.toPost() }
+  override fun deleteSession(sessionId: String): Flow<Outcome<PostResult>> =
+    userDataSource.deleteSession(sessionId).toOutcome { it.toPostResult() }
 
-  override fun getUserDetail(sessionId: String): Flow<Outcome<AccountDetails>> =
-    userDataSource.getUserDetail(sessionId).toOutcome { it.toAccountDetails() }
+  override fun getAccountDetails(sessionId: String): Flow<Outcome<AccountDetails>> =
+    userDataSource.getAccountDetails(sessionId).toOutcome { it.toAccountDetails() }
   // endregion AUTH
 
   // region PREF

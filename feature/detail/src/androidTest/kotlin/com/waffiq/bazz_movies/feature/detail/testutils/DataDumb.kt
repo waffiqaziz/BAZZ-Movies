@@ -9,7 +9,7 @@ import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
@@ -93,7 +93,7 @@ object DataDumb {
     rated = "67",
   )
 
-  val testPostModelState = PostModelState(
+  val testPostModelState = UpdateMediaStateResult(
     isSuccess = true,
     isDelete = false,
     isFavorite = true

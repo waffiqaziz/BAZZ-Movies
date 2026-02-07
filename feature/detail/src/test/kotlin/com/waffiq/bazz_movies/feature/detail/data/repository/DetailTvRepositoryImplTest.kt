@@ -23,7 +23,7 @@ import org.junit.Test
 class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
   @Test
-  fun getDetailTv_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getTvDetail_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<DetailTvResponse>(relaxed = true)
 
     testSuccessfulCall(
@@ -36,7 +36,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getDetailTv_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getTvDetail_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
@@ -45,7 +45,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getDetailTv_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getTvDetail_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
@@ -54,7 +54,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getExternalTvId_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getTvExternalIds_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<ExternalIdResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -66,7 +66,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getExternalTvId_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getTvExternalIds_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getTvExternalIds(id) },
       repositoryCall = { repository.getTvExternalIds(id) },
@@ -75,7 +75,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getExternalTvId_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getTvExternalIds_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getTvExternalIds(id) },
       repositoryCall = { repository.getTvExternalIds(id) },
@@ -84,7 +84,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkTv_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getTvTrailerLink_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<VideoResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -96,7 +96,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkTv_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getTvTrailerLink_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getTvVideo(id) },
       repositoryCall = { repository.getTvTrailerLink(id) },
@@ -105,7 +105,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkTv_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getTvTrailerLink_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getTvVideo(id) },
       repositoryCall = { repository.getTvTrailerLink(id) },
@@ -114,7 +114,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditTv_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getTvCredits_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<MediaCreditsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -126,7 +126,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditTv_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getTvCredits_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },
@@ -135,7 +135,7 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditTv_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getTvCredits_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },

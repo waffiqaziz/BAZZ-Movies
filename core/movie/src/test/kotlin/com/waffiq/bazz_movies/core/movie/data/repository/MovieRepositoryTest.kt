@@ -1,17 +1,17 @@
 package com.waffiq.bazz_movies.core.movie.data.repository
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostFavoriteWatchlistResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoritePostModel
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistPostModel
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
+import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
@@ -92,7 +92,7 @@ class MovieRepositoryTest {
       statusCode = 201,
       statusMessage = "Success"
     )
-    val favoritePostModel = FavoriteModel(
+    val favoritePostModel = FavoriteParams(
       mediaType = "movie",
       mediaId = 99999,
       favorite = false
@@ -101,7 +101,7 @@ class MovieRepositoryTest {
     coEvery {
       mockMovieDataSource.postFavorite(
         "sessionId",
-        favoritePostModel.toFavoritePostModel(),
+        favoritePostModel.toFavoriteRequest(),
         12345678
       )
     } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponse))
@@ -122,7 +122,7 @@ class MovieRepositoryTest {
       statusCode = 201,
       statusMessage = "Successs Addd Watchlist"
     )
-    val watchlistPostModel = WatchlistModel(
+    val watchlistPostModel = WatchlistParams(
       mediaType = "tv",
       mediaId = 4444,
       watchlist = true
@@ -131,7 +131,7 @@ class MovieRepositoryTest {
     coEvery {
       mockMovieDataSource.postWatchlist(
         "sessionId",
-        watchlistPostModel.toWatchlistPostModel(),
+        watchlistPostModel.toWatchlistRequest(),
         666666
       )
     } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponse))

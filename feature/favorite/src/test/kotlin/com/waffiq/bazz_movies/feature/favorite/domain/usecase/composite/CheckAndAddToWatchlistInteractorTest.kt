@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
@@ -93,7 +93,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
 
           coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
           coVerify {
-            postActionUseCase.postWatchlistWithAuth(WatchlistModel(MOVIE_MEDIA_TYPE, movieId, true))
+            postActionUseCase.postWatchlistWithAuth(WatchlistParams(MOVIE_MEDIA_TYPE, movieId, true))
           }
         }
       }
@@ -287,7 +287,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
 
           coVerify { getTvStateUseCase.getTvState(any(), any()) }
           coVerify {
-            postActionUseCase.postWatchlistWithAuth(WatchlistModel(TV_MEDIA_TYPE, tvId, true))
+            postActionUseCase.postWatchlistWithAuth(WatchlistParams(TV_MEDIA_TYPE, tvId, true))
           }
         }
       }

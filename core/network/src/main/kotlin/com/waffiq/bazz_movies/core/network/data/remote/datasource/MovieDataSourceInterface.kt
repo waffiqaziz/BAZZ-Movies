@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
@@ -68,21 +68,21 @@ interface MovieDataSourceInterface {
   fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>>
 
   // PERSON
-  fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>>
-  fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>>
-  fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
-  fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
+  fun getPersonDetails(id: Int): Flow<NetworkResult<DetailPersonResponse>>
+  fun getPersonImages(id: Int): Flow<NetworkResult<ImagePersonResponse>>
+  fun getPersonCredits(id: Int): Flow<NetworkResult<CombinedCreditResponse>>
+  fun getPersonExternalIds(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>>
 
   // POST
   fun postFavorite(
     sessionId: String,
-    fav: FavoritePostModel,
+    fav: FavoriteRequest,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 
   fun postWatchlist(
     sessionId: String,
-    wtc: WatchlistPostModel,
+    wtc: WatchlistRequest,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>>
 

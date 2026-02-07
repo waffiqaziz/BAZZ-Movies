@@ -12,7 +12,7 @@ package com.waffiq.bazz_movies.feature.detail.domain.model
  * This class is used to track the state of the user's actions on a specific post, such as adding/removing it from
  * their watchlist or marking/unmarking it as a favorite.
  */
-data class PostModelState(
+data class UpdateMediaStateResult(
   val isSuccess: Boolean,
   val isDelete: Boolean,
   val isFavorite: Boolean

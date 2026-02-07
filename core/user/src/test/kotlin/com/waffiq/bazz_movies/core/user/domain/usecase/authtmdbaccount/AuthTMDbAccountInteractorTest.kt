@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarItem
@@ -119,7 +119,7 @@ class AuthTMDbAccountInteractorTest {
 
   @Test
   fun deleteSession_whenSuccessfull_returnsSuccessResult() = runTest {
-    val response = Post(success = true, statusCode = 200, statusMessage = "Delete session success")
+    val response = PostResult(success = true, statusCode = 200, statusMessage = "Delete session success")
     val flow = flowOf(Outcome.Success(response))
     whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
 
@@ -181,7 +181,7 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun getUserDetails_whenSuccessful_returnsUserDataCorrectly() = runTest {
+  fun getAccountDetails_whenSuccessful_returnsUserDataCorrectly() = runTest {
     val response = AccountDetails(
       includeAdult = false,
       iso31661 = "en",
@@ -200,9 +200,9 @@ class AuthTMDbAccountInteractorTest {
     )
 
     val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.getUserDetail(sessionId)).thenReturn(flow)
+    whenever(mockRepository.getAccountDetails(sessionId)).thenReturn(flow)
 
-    authTMDbAccountInteractor.getUserDetail(sessionId).test {
+    authTMDbAccountInteractor.getAccountDetails(sessionId).test {
       val emission = awaitItem()
       assertTrue(emission is Outcome.Success)
       emission as Outcome.Success
@@ -219,11 +219,11 @@ class AuthTMDbAccountInteractorTest {
   }
 
   @Test
-  fun getUserDetails_whenFailedOccur_returnsErrorMessage() = runTest {
+  fun getAccountDetails_whenFailedOccur_returnsErrorMessage() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.getUserDetail(sessionId)).thenReturn(flow)
+    whenever(mockRepository.getAccountDetails(sessionId)).thenReturn(flow)
 
-    authTMDbAccountInteractor.getUserDetail(sessionId).test {
+    authTMDbAccountInteractor.getAccountDetails(sessionId).test {
       val emission = awaitItem()
       assertTrue(emission is Outcome.Error)
       emission as Outcome.Error

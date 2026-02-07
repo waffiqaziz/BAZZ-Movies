@@ -118,7 +118,7 @@ class TvDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getTvRecommendation_pagingSource_returnsExpectedData() = runTest {
+  fun getTvRecommendations_pagingSource_returnsExpectedData() = runTest {
     val pagingSource = GenericPagingSource {
       tmdbApiService.getTvRecommendations(98765, 1).results
     }
@@ -133,7 +133,7 @@ class TvDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getTvRecommendation_pagingFlow_returnsExpectedData() = runTest {
+  fun getTvRecommendations_pagingFlow_returnsExpectedData() = runTest {
     val expected = listOf(tvShowDump1)
     coEvery { tmdbApiService.getTvRecommendations(98765, 1) } returns
       defaultMediaResponse(expected)

@@ -1,10 +1,10 @@
 package com.waffiq.bazz_movies.core.domain
 
 /**
- * Used for TMDB POST method to watchlist
+ * Used for TMDB POST method to favorite
  */
-data class WatchlistModel(
+data class FavoriteParams(
   override val mediaType: String,
   override val mediaId: Int,
-  val watchlist: Boolean,
+  val favorite: Boolean,
 ) : MediaData

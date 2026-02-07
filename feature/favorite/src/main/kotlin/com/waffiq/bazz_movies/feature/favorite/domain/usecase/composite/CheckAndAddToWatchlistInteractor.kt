@@ -4,7 +4,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
@@ -59,7 +59,7 @@ class CheckAndAddToWatchlistInteractor @Inject constructor(
               flowOf(Outcome.Success(WatchlistActionResult.AlreadyInWatchlist))
             } else {
               postActionUseCase.postWatchlistWithAuth(
-                WatchlistModel(mediaType, mediaId, true)
+                WatchlistParams(mediaType, mediaId, true)
               ).map(::mapPostOutcome)
             }
           }

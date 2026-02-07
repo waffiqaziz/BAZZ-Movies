@@ -4,12 +4,12 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import kotlinx.coroutines.flow.Flow
 

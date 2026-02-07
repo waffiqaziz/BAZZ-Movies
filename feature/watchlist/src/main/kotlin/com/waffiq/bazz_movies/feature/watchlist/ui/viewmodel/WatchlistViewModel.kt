@@ -9,9 +9,9 @@ import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.launchAndHandleOutcome
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
@@ -44,7 +44,7 @@ class WatchlistViewModel @Inject constructor(
   fun watchlistTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
     getWatchlistTvUseCase.getWatchlistTv(sesId).cachedIn(viewModelScope)
 
-  fun postFavorite(data: FavoriteModel, title: String) {
+  fun postFavorite(data: FavoriteParams, title: String) {
     launchAndHandleOutcome(
       flow = postActionUseCase.postFavoriteWithAuth(data),
       onSuccess = {
@@ -54,7 +54,7 @@ class WatchlistViewModel @Inject constructor(
     )
   }
 
-  fun postWatchlist(data: WatchlistModel, title: String) {
+  fun postWatchlist(data: WatchlistParams, title: String) {
     launchAndHandleOutcome(
       flow = postActionUseCase.postWatchlistWithAuth(data),
       onSuccess = {
@@ -71,7 +71,7 @@ class WatchlistViewModel @Inject constructor(
         when (result) {
           FavoriteActionResult.Added -> {
             _snackBarAdded.value = Event(
-              SnackBarUserLoginData(true, title, FavoriteModel(MOVIE_MEDIA_TYPE, id, true), null)
+              SnackBarUserLoginData(true, title, FavoriteParams(MOVIE_MEDIA_TYPE, id, true), null)
             )
           }
 
@@ -89,7 +89,7 @@ class WatchlistViewModel @Inject constructor(
         when (result) {
           FavoriteActionResult.Added -> {
             _snackBarAdded.value = Event(
-              SnackBarUserLoginData(true, title, FavoriteModel(TV_MEDIA_TYPE, id, true), null)
+              SnackBarUserLoginData(true, title, FavoriteParams(TV_MEDIA_TYPE, id, true), null)
             )
           }
 

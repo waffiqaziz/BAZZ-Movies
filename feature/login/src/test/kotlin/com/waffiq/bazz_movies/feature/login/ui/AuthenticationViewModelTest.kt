@@ -93,7 +93,7 @@ class AuthenticationViewModelTest {
 
   private fun mockSuccessfulUserDetail() {
     coEvery {
-      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(AccountDetails(id = 1, username = TEST_USER))
     )
@@ -109,7 +109,7 @@ class AuthenticationViewModelTest {
       authTMDbAccountUseCase.createToken()
       authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
       authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
-      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     }
   }
 
@@ -272,13 +272,13 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_whenSuccessful_setsLoginStateTrue() = runTest {
+  fun getAccountDetails_whenSuccessful_setsLoginStateTrue() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
@@ -303,13 +303,13 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_whenResponseSuccessButAvatarNull_returnsUserData() = runTest {
+  fun getAccountDetails_whenResponseSuccessButAvatarNull_returnsUserData() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
@@ -336,13 +336,13 @@ class AuthenticationViewModelTest {
   }
 
   @Test
-  fun getUserDetail_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
+  fun getAccountDetails_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
     mockSuccessfulTokenCreation()
     mockSuccessfulLogin()
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getUserDetail(TEST_SESSION)
+      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Can't get user details"))

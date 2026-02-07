@@ -22,7 +22,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   private val expectedErrorMessageDump = "The API is undergoing maintenance. Try again later."
 
   @Test
-  fun getCreditMovies_whenSuccessful_returnsExpectedResponse() = runTest {
+  fun getMovieCredits_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       mockApiResponse = Response.success(mediaCreditsResponseDump1),
@@ -32,7 +32,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
+  fun getMovieCredits_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       errorResponse = apiMaintenanceErrorResponse,
@@ -43,7 +43,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
 
   // region getMovieCredits EDGE CASE
   @Test
-  fun getCreditMovies_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
+  fun getMovieCredits_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -51,7 +51,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
+  fun getMovieCredits_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -59,7 +59,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenTimeoutOccurs_returnsErrorResponse() = runTest {
+  fun getMovieCredits_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -67,7 +67,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieCredits_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -75,7 +75,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieCredits_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -83,7 +83,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getCreditMovies_whenExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieCredits_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieCredits(11111) },
       dataSourceEndpointCall = { movieDataSource.getMovieCredits(11111) },
@@ -92,7 +92,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   // endregion getMovieCredits EDGE CASE
 
   @Test
-  fun getVideoMovies_whenSuccessful_returnsExpectedResponse() = runTest {
+  fun getMovieVideo_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       mockApiResponse = Response.success(videoMovieResponseDump),
@@ -102,7 +102,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
+  fun getMovieVideo_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       errorResponse = apiMaintenanceErrorResponse,
@@ -113,7 +113,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
 
   // region getMovieVideo EDGE CASE
   @Test
-  fun getVideoMovies_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
+  fun getMovieVideo_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -121,7 +121,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
+  fun getMovieVideo_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -129,7 +129,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenTimeoutOccurs_returnsErrorResponse() = runTest {
+  fun getMovieVideo_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -137,7 +137,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieVideo_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -145,7 +145,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieVideo_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -153,7 +153,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getVideoMovies_whenExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieVideo_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieVideo(44444) },
       dataSourceEndpointCall = { movieDataSource.getMovieVideo(44444) },
@@ -162,7 +162,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   // endregion getMovieVideo EDGE CASE
 
   @Test
-  fun getDetailMovie_whenSuccessful_returnsExpectedResponse() = runTest {
+  fun getMovieDetail_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       mockApiResponse = Response.success(detailMovieResponseDump),
@@ -172,7 +172,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
+  fun getMovieDetail_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       errorResponse = apiMaintenanceErrorResponse,
@@ -183,7 +183,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
 
   // region getMovieDetail EDGE CASE
   @Test
-  fun getDetailMovie_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
+  fun getMovieDetail_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -191,7 +191,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
+  fun getMovieDetail_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -199,7 +199,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenTimeoutOccurs_returnsErrorResponse() = runTest {
+  fun getMovieDetail_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -207,7 +207,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieDetail_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -215,7 +215,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieDetail_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -223,7 +223,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getDetailMovie_whenExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieDetail_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieDetail(333333) },
       dataSourceEndpointCall = { movieDataSource.getMovieDetail(333333) },
@@ -232,7 +232,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   // endregion getMovieDetail EDGE CASE
 
   @Test
-  fun getStatedMovie_whenSuccessful_returnsExpectedResponse() = runTest {
+  fun getMovieState_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       mockApiResponse = Response.success(statedResponseDump1),
@@ -242,7 +242,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
+  fun getMovieState_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       errorResponse = apiMaintenanceErrorResponse,
@@ -253,7 +253,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
 
   // region getMovieState EDGE CASE
   @Test
-  fun getStatedMovie_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
+  fun getMovieState_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
@@ -261,7 +261,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
+  fun getMovieState_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
@@ -269,7 +269,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenTimeoutOccurs_returnsErrorResponse() = runTest {
+  fun getMovieState_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
@@ -277,7 +277,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieState_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
@@ -285,7 +285,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieState_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },
@@ -293,7 +293,7 @@ class MovieDetailDataSourceTest : BaseMediaDataSourceTest() {
   }
 
   @Test
-  fun getStatedMovie_whenExceptionOccurs_returnsErrorResponse() = runTest {
+  fun getMovieState_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
       apiEndpoint = { tmdbApiService.getMovieState(12345, "session_id") },
       dataSourceEndpointCall = { movieDataSource.getMovieState("session_id", 12345) },

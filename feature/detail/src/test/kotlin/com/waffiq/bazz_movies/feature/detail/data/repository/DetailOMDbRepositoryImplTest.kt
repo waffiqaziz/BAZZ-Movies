@@ -16,7 +16,7 @@ class DetailOMDbRepositoryImplTest : BaseDetailRepositoryImplTest() {
   private val imdb = "IMDB ID"
 
   @Test
-  fun getDetailOMDb_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getOMDbDetails_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<OMDbDetailsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -28,7 +28,7 @@ class DetailOMDbRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getDetailOMDb_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getOMDbDetails_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getOMDbDetails(imdb) },
       repositoryCall = { repository.getOMDbDetails(imdb) },
@@ -37,7 +37,7 @@ class DetailOMDbRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getDetailOMDb_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getOMDbDetails_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getOMDbDetails(imdb) },
       repositoryCall = { repository.getOMDbDetails(imdb) },

@@ -30,7 +30,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddFavoriteStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) }
@@ -55,7 +55,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) }
@@ -75,7 +75,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddFavoriteStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.insertToDB(any<Favorite>()) }
@@ -95,7 +95,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = { coVerify { localDatabaseUseCase.insertToDB(any<Favorite>()) } }
     )
@@ -114,7 +114,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelDeleteFavoriteStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) }
@@ -139,7 +139,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) }
@@ -159,7 +159,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelDeleteFavoriteStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.deleteFromDB(any<Favorite>()) }
@@ -179,7 +179,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = { coVerify { localDatabaseUseCase.deleteFromDB(any<Favorite>()) } }
     )
@@ -200,7 +200,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddWatchlistStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) }
@@ -225,7 +225,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) }
@@ -246,7 +246,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddWatchlistStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.insertToDB(any<Favorite>()) }
@@ -266,7 +266,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.insertToDB(any<Favorite>()) }
@@ -287,7 +287,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelDeleteWatchlistStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) }
@@ -312,7 +312,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) }
@@ -333,7 +333,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelDeleteWatchlistStateSuccess),
       verifyBlock = {
         coVerify { localDatabaseUseCase.deleteFromDB(any<Favorite>()) }
@@ -353,7 +353,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.postModelState,
+      liveData = viewModel.mediaStateResult,
       expectError = errorMessage,
       verifyBlock = {
         coVerify { localDatabaseUseCase.deleteFromDB(any<Favorite>()) }

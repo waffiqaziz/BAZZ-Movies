@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.core.network.data.remote.models
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class RatePostModelTest {
+class RatingRequestTest {
 
   @Test
   fun userModel_withValidValues_setsPropertiesCorrectly() {
-    val ratePostModel = RatePostModel(value = 10.0f)
-    assertEquals(10.0f, ratePostModel.value)
+    val ratingRequest = RatingRequest(value = 10.0f)
+    assertEquals(10.0f, ratingRequest.value)
   }
 }

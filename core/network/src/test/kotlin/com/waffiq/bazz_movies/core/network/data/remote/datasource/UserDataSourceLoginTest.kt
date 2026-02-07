@@ -91,7 +91,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenSuccessful_returnsExpectedResponse() = runTest {
     testSuccessResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       mockApiResponse = Response.success(postResponseDump),
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
       expectedData = postResponseDump,
@@ -101,7 +101,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() = runTest {
     testErrorResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       errorResponse = apiInvalidFormatErrorResponse,
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
       expectedErrorMessage = errorInvalidFormatMessage
@@ -112,7 +112,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
     testError404Response(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }
@@ -120,7 +120,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
     testUnknownHostExceptionResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }
@@ -128,7 +128,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenTimeoutOccurs_returnsErrorResponse() = runTest {
     testSocketTimeoutExceptionResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }
@@ -136,7 +136,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
     testHttpExceptionResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }
@@ -144,7 +144,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
     testIOExceptionResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }
@@ -152,7 +152,7 @@ class UserDataSourceLoginTest : BaseUserDataSourceTest() {
   @Test
   fun deleteSession_whenExceptionOccurs_returnsErrorResponse() = runTest {
     testGeneralExceptionResponse(
-      apiEndpoint = { tmdbApiService.delSession("session_id") },
+      apiEndpoint = { tmdbApiService.deleteSession("session_id") },
       dataSourceEndpointCall = { userDataSource.deleteSession("session_id") },
     )
   }

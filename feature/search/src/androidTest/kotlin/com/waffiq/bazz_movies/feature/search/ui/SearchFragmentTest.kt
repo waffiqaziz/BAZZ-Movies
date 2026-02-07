@@ -46,6 +46,8 @@ import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.core.IsNot.not
@@ -280,8 +282,9 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
   }
 
   @Test
-  fun openSearchView_expandsSearchView() {
+  fun openSearchView_expandsSearchView() = runTest {
     searchFragment.openSearchView()
+    advanceUntilIdle()
     verify { mockSearchViewModel.setExpandSearchView(true) }
   }
 

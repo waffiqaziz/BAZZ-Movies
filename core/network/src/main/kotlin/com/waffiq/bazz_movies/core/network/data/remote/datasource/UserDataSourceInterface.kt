@@ -12,7 +12,7 @@ interface UserDataSourceInterface {
   fun createToken(): Flow<NetworkResult<AuthenticationResponse>>
   fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>>
   fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>>
-  fun getUserDetail(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
+  fun getAccountDetails(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>>
   fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>>
   fun login(
     username: String,

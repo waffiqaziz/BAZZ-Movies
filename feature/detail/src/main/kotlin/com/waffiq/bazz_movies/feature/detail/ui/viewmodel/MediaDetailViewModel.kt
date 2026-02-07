@@ -13,16 +13,16 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.PostModelState
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
@@ -87,8 +87,8 @@ class MediaDetailViewModel @Inject constructor(
   private val _rateState = MutableLiveData<Event<Boolean>>()
   val rateState: LiveData<Event<Boolean>> get() = _rateState
 
-  private val _postModelState = MutableLiveData<Event<PostModelState>>()
-  val postModelState: LiveData<Event<PostModelState>> get() = _postModelState
+  private val _mediaStateResult = MutableLiveData<Event<UpdateMediaStateResult>>()
+  val mediaStateResult: LiveData<Event<UpdateMediaStateResult>> get() = _mediaStateResult
 
   private val _linkVideo = MutableLiveData<String>()
   val linkVideo: LiveData<String> = _linkVideo
@@ -348,7 +348,7 @@ class MediaDetailViewModel @Inject constructor(
   // endregion DB FUNCTION
 
   // region POST FAVORITE, WATCHLIST, RATE
-  fun postFavorite(data: FavoriteModel) {
+  fun postFavorite(data: FavoriteParams) {
     postItem(
       data = data,
       isFavorite = true,
@@ -363,7 +363,7 @@ class MediaDetailViewModel @Inject constructor(
     )
   }
 
-  fun postWatchlist(data: WatchlistModel) {
+  fun postWatchlist(data: WatchlistParams) {
     postItem(
       data = data,
       isFavorite = false,
@@ -393,15 +393,15 @@ class MediaDetailViewModel @Inject constructor(
   // endregion POST FAVORITE, WATCHLIST, RATE
 
   /**
-   * Helper to emit [PostModelState]
+   * Helper to emit [UpdateMediaStateResult]
    */
   private fun emitPostState(
     isSuccess: Boolean = true,
     isDelete: Boolean,
     isFavorite: Boolean,
   ) {
-    _postModelState.value = Event(
-      PostModelState(
+    _mediaStateResult.value = Event(
+      UpdateMediaStateResult(
         isSuccess = isSuccess,
         isDelete = isDelete,
         isFavorite = isFavorite

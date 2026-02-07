@@ -5,9 +5,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
-import com.waffiq.bazz_movies.core.network.data.remote.models.FavoritePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.RatePostModel
-import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistPostModel
+import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
+import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
@@ -234,33 +234,33 @@ class MovieDataSource @Inject constructor(
   // endregion DETAIL
 
   // region PERSON
-  override fun getPersonDetail(id: Int): Flow<NetworkResult<DetailPersonResponse>> =
+  override fun getPersonDetails(id: Int): Flow<NetworkResult<DetailPersonResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.getDetailPerson(id) },
+      apiCall = { tmdbApiService.getPersonDetails(id) },
       ioDispatcher = ioDispatcher
     )
 
-  override fun getPersonImage(id: Int): Flow<NetworkResult<ImagePersonResponse>> =
+  override fun getPersonImages(id: Int): Flow<NetworkResult<ImagePersonResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.getImagePerson(id) },
+      apiCall = { tmdbApiService.getPersonImages(id) },
       ioDispatcher = ioDispatcher
     )
 
-  override fun getPersonKnownFor(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
+  override fun getPersonCredits(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.getPersonCombinedCredits(id) },
+      apiCall = { tmdbApiService.getPersonCredits(id) },
       ioDispatcher = ioDispatcher
     )
 
-  override fun getPersonExternalID(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
+  override fun getPersonExternalIds(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.getExternalIdPerson(id) },
+      apiCall = { tmdbApiService.getPersonExternalIds(id) },
       ioDispatcher = ioDispatcher
     )
 
   override fun postFavorite(
     sessionId: String,
-    fav: FavoritePostModel,
+    fav: FavoriteRequest,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     executeApiCall(
@@ -270,7 +270,7 @@ class MovieDataSource @Inject constructor(
 
   override fun postWatchlist(
     sessionId: String,
-    wtc: WatchlistPostModel,
+    wtc: WatchlistRequest,
     userId: Int,
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     executeApiCall(
@@ -284,7 +284,7 @@ class MovieDataSource @Inject constructor(
     tvId: Int,
   ): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.postTvRate(tvId, sessionId, RatePostModel(rating)) },
+      apiCall = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
       ioDispatcher = ioDispatcher
     )
 
@@ -294,7 +294,7 @@ class MovieDataSource @Inject constructor(
     movieId: Int,
   ): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
-      apiCall = { tmdbApiService.postMovieRate(movieId, sessionId, RatePostModel(rating)) },
+      apiCall = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
       ioDispatcher = ioDispatcher
     )
   // endregion PERSON

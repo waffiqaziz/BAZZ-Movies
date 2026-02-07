@@ -22,9 +22,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.FavoriteModel
+import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.WatchlistModel
+import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
@@ -88,7 +88,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
   protected abstract fun refreshPagingAdapter()
 
   protected abstract fun getDBWatchlistData(): LiveData<List<Favorite>>
-  protected abstract fun createWatchlistModel(mediaId: Int): WatchlistModel
+  protected abstract fun createWatchlistModel(mediaId: Int): WatchlistParams
   protected abstract fun postToAddFavorite(title: String, mediaId: Int)
   protected abstract fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem
 
@@ -303,13 +303,13 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
    * Provides an option to undo the action via the Snackbar.
    *
    * @param title title of the media item involved in the action.
-   * @param fav [FavoriteModel]  representing the favorite item.
-   * @param wtc [WatchlistModel]  representing the watchlist item.
+   * @param fav [FavoriteParams]  representing the favorite item.
+   * @param wtc [WatchlistParams]  representing the watchlist item.
    */
   protected fun showSnackBarUserLogin(
     title: String,
-    fav: FavoriteModel?,
-    wtc: WatchlistModel?,
+    fav: FavoriteParams?,
+    wtc: WatchlistParams?,
   ) {
     val delete = isWantToDelete && wtc != null
     val addToWatchlist = !isWantToDelete && fav != null

@@ -51,7 +51,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkMovie_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getMovieTrailerLink_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<VideoResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -63,7 +63,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkMovie_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getMovieTrailerLink_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getMovieVideo(id) },
       repositoryCall = { repository.getMovieTrailerLink(id) },
@@ -72,7 +72,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getTrailerLinkMovie_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getMovieTrailerLink_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getMovieVideo(id) },
       repositoryCall = { repository.getMovieTrailerLink(id) },
@@ -81,7 +81,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditMovies_whenSuccessful_returnsSuccessResult() = runTest {
+  fun getMovieCredits_whenSuccessful_returnsSuccessResult() = runTest {
     val mockResponse = mockk<MediaCreditsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
@@ -93,7 +93,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditMovies_whenUnsuccessful_returnsErrorResult() = runTest {
+  fun getMovieCredits_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
       dataSourceCall = { movieDataSource.getMovieCredits(id) },
       repositoryCall = { repository.getMovieCredits(id) },
@@ -102,7 +102,7 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
   }
 
   @Test
-  fun getCreditMovies_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
+  fun getMovieCredits_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
       dataSourceCall = { movieDataSource.getMovieCredits(id) },
       repositoryCall = { repository.getMovieCredits(id) },

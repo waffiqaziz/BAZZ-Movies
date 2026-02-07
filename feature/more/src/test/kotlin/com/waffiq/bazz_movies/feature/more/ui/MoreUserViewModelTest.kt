@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Post
+import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery
@@ -47,7 +47,7 @@ class MoreUserViewModelTest {
 
   @Test
   fun deleteSession_whenSuccessful_returnsSuccess() = testScope.runTest {
-    val expectedResult = Outcome.Success(Post(success = true))
+    val expectedResult = Outcome.Success(PostResult(success = true))
     coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedResult)
 
     viewModel.deleteSession(sessionId)
