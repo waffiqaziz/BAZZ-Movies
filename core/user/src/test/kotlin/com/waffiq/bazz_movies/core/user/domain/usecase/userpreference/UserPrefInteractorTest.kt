@@ -46,7 +46,7 @@ class UserPrefInteractorTest {
       region = "UK",
       token = "token123",
       isLogin = true,
-      gravatarHast = "hash123",
+      gravatarHash = "hash123",
       tmdbAvatar = "https://example.com/avatar2.jpg"
     )
     val flow = flowOf(userModel)
@@ -61,7 +61,7 @@ class UserPrefInteractorTest {
       assertEquals("UK", emission.region)
       assertEquals("token123", emission.token)
       assertTrue("alice123", emission.isLogin)
-      assertEquals("hash123", emission.gravatarHast)
+      assertEquals("hash123", emission.gravatarHash)
       assertEquals("https://example.com/avatar2.jpg", emission.tmdbAvatar)
 
       // assert no further emissions
@@ -117,7 +117,7 @@ class UserPrefInteractorTest {
       region = "UK",
       token = "token123",
       isLogin = true,
-      gravatarHast = "hash123",
+      gravatarHash = "hash123",
       tmdbAvatar = "https://example.com/avatar2.jpg"
     )
     coEvery { mockRepository.saveUserPref(userModel) } just Runs

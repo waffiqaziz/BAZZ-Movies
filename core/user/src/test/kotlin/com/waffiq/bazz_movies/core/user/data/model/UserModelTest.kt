@@ -20,11 +20,11 @@ class UserModelTest {
       region = "US",
       token = "anotherToken",
       isLogin = false,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
 
-    assertNull(user.gravatarHast)
+    assertNull(user.gravatarHash)
     assertNull(user.tmdbAvatar)
     assertFalse(user.isLogin)
     assertEquals(2, user.userId)
@@ -43,7 +43,7 @@ class UserModelTest {
       region = "UK",
       token = "token123",
       isLogin = true,
-      gravatarHast = "hash123",
+      gravatarHash = "hash123",
       tmdbAvatar = "https://example.com/avatar2.jpg"
     )
 
@@ -55,7 +55,7 @@ class UserModelTest {
       region = "UK",
       token = "token123",
       isLogin = true,
-      gravatarHast = "hash123",
+      gravatarHash = "hash123",
       tmdbAvatar = "https://example.com/avatar2.jpg"
     )
 
@@ -73,7 +73,7 @@ class UserModelTest {
       region = "CA",
       token = "copyToken",
       isLogin = false,
-      gravatarHast = "copyHash",
+      gravatarHash = "copyHash",
       tmdbAvatar = "https://example.com/avatar3.jpg"
     )
 
@@ -96,7 +96,7 @@ class UserModelTest {
       region = "IN",
       token = "securityToken",
       isLogin = true,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
 
@@ -116,7 +116,7 @@ class UserModelTest {
       region = "",
       token = "",
       isLogin = false,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
 
@@ -139,7 +139,7 @@ class UserModelTest {
       region = "MaxRegion",
       token = "maxToken",
       isLogin = true,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
 
@@ -156,7 +156,7 @@ class UserModelTest {
       region = "US-West!$",
       token = "tok#en$123",
       isLogin = true,
-      gravatarHast = "!hash*special",
+      gravatarHash = "!hash*special",
       tmdbAvatar = "https://example.com/@vatar?special=chars"
     )
 
@@ -165,7 +165,7 @@ class UserModelTest {
     assertEquals("password!@#", specialCharUser.password)
     assertEquals("US-West!$", specialCharUser.region)
     assertEquals("tok#en$123", specialCharUser.token)
-    assertEquals("!hash*special", specialCharUser.gravatarHast)
+    assertEquals("!hash*special", specialCharUser.gravatarHash)
     assertEquals("https://example.com/@vatar?special=chars", specialCharUser.tmdbAvatar)
   }
 
@@ -179,7 +179,7 @@ class UserModelTest {
       region = "   ",
       token = "   ",
       isLogin = false,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
 

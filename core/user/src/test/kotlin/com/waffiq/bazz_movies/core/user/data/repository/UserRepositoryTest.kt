@@ -52,7 +52,7 @@ class UserRepositoryTest {
     region = "US",
     token = "sampleToken",
     isLogin = true,
-    gravatarHast = "hash123",
+    gravatarHash = "hash123",
     tmdbAvatar = "avatar.jpg"
   )
   private val userModelPref = UserModelPref(
@@ -63,7 +63,7 @@ class UserRepositoryTest {
     region = "US",
     token = "sampleToken",
     isLogin = true,
-    gravatarHast = "hash123",
+    gravatarHash = "hash123",
     tmdbAvatar = "avatar.jpg"
   )
 

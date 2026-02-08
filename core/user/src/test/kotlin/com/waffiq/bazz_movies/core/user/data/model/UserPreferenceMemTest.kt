@@ -36,7 +36,7 @@ class UserPreferenceMemTest {
       region = "US",
       token = "sampleToken",
       isLogin = true,
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
     userPreference.saveUser(severalData)
@@ -49,7 +49,7 @@ class UserPreferenceMemTest {
     assertEquals("US", savedUser.region)
     assertEquals("sampleToken", savedUser.token)
     assertTrue(savedUser.isLogin)
-    assertEquals("", savedUser.gravatarHast)
+    assertEquals("", savedUser.gravatarHash)
     assertEquals("", savedUser.tmdbAvatar)
   }
 
@@ -65,7 +65,7 @@ class UserPreferenceMemTest {
     assertEquals("US", savedUser.region)
     assertEquals("sampleToken", savedUser.token)
     assertTrue(savedUser.isLogin)
-    assertEquals("hash123", savedUser.gravatarHast)
+    assertEquals("hash123", savedUser.gravatarHash)
     assertEquals("avatar.jpg", savedUser.tmdbAvatar)
   }
 
@@ -100,7 +100,7 @@ class UserPreferenceMemTest {
     assertEquals("", clearedUser.region)
     assertEquals("", clearedUser.token)
     assertFalse(clearedUser.isLogin)
-    assertEquals("", clearedUser.gravatarHast)
+    assertEquals("", clearedUser.gravatarHash)
     assertEquals("", clearedUser.tmdbAvatar)
   }
 }

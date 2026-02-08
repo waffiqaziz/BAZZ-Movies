@@ -29,7 +29,7 @@ object AccountMapper {
       region = region,
       token = token,
       isLogin = isLogin,
-      gravatarHast = gravatarHast,
+      gravatarHash = gravatarHash,
       tmdbAvatar = tmdbAvatar,
     )
 
@@ -42,7 +42,7 @@ object AccountMapper {
       region = region,
       token = token,
       isLogin = isLogin,
-      gravatarHast = gravatarHast,
+      gravatarHash = gravatarHash,
       tmdbAvatar = tmdbAvatar,
     )
 

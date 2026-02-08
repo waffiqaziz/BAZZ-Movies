@@ -24,7 +24,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
       it[REGION_KEY] = user.region
       it[TOKEN_KEY] = user.token
       it[STATE_KEY] = user.isLogin
-      it[GRAVATAR_KEY] = user.gravatarHast.orEmpty()
+      it[GRAVATAR_KEY] = user.gravatarHash.orEmpty()
       it[TMDB_AVATAR_KEY] = user.tmdbAvatar.orEmpty()
     }
   }

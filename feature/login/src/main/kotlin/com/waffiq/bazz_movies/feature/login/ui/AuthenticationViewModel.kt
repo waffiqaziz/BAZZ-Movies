@@ -124,7 +124,7 @@ class AuthenticationViewModel @Inject constructor(
               region = NAN,
               token = sessionId,
               isLogin = true,
-              gravatarHast = outcome.data.avatarItem?.gravatar?.hash,
+              gravatarHash = outcome.data.avatarItem?.gravatar?.hash,
               tmdbAvatar = outcome.data.avatarItem?.avatarTMDb?.avatarPath,
             )
             _loginState.value = true

@@ -30,7 +30,7 @@ class UserPreferenceViewModelTest {
     region = "US",
     token = "anotherToken",
     isLogin = false,
-    gravatarHast = null,
+    gravatarHash = null,
     tmdbAvatar = null
   )
 

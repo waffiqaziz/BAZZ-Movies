@@ -226,8 +226,8 @@ class MoreFragment : Fragment() {
     binding.apply {
       tvFullName.text = user.name
       tvUsername.text = user.username
-      val link = if (!user.gravatarHast.isNullOrEmpty()) {
-        "$GRAVATAR_LINK${user.gravatarHast}" + ".jpg?s=200"
+      val link = if (!user.gravatarHash.isNullOrEmpty()) {
+        "$GRAVATAR_LINK${user.gravatarHash}" + ".jpg?s=200"
       } else if (!user.tmdbAvatar.isNullOrEmpty()) {
         "$TMDB_IMG_LINK_AVATAR${user.tmdbAvatar}" + ".png"
       } else {

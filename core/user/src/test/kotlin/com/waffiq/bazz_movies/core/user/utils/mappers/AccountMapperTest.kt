@@ -43,7 +43,7 @@ class AccountMapperTest {
       region = "region",
       token = "token",
       isLogin = false,
-      gravatarHast = "gravatar_hast",
+      gravatarHash = "gravatar_hast",
       tmdbAvatar = "tmdb_avatar",
     )
 
@@ -55,7 +55,7 @@ class AccountMapperTest {
     assertEquals("region", userModel.region)
     assertEquals("token", userModel.token)
     assertFalse(userModel.isLogin)
-    assertEquals("gravatar_hast", userModel.gravatarHast)
+    assertEquals("gravatar_hast", userModel.gravatarHash)
     assertEquals("tmdb_avatar", userModel.tmdbAvatar)
   }
 
@@ -69,7 +69,7 @@ class AccountMapperTest {
       region = "region_model",
       token = "token_model",
       isLogin = true,
-      gravatarHast = "gravatar_hast_model",
+      gravatarHash = "gravatar_hast_model",
       tmdbAvatar = "tmdb_avatar_model",
     )
 
@@ -81,7 +81,7 @@ class AccountMapperTest {
     assertEquals("region_model", userModelPref.region)
     assertEquals("token_model", userModelPref.token)
     assertTrue(userModelPref.isLogin)
-    assertEquals("gravatar_hast_model", userModelPref.gravatarHast)
+    assertEquals("gravatar_hast_model", userModelPref.gravatarHash)
     assertEquals("tmdb_avatar_model", userModelPref.tmdbAvatar)
   }
 

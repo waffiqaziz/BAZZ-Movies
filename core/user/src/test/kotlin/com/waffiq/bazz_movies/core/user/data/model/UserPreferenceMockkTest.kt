@@ -62,7 +62,7 @@ class UserPreferenceMockkTest {
     assertEquals("US", user.region)
     assertEquals("sampleToken", user.token)
     assertTrue(user.isLogin)
-    assertEquals("hash123", user.gravatarHast)
+    assertEquals("hash123", user.gravatarHash)
     assertEquals("avatar.jpg", user.tmdbAvatar)
 
     // inline test

@@ -296,7 +296,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun setData_whenUserHasGravatarHash_shouldDisplayAvatar() {
     val userWithGravatar = userModel.copy(
-      gravatarHast = "testHash123",
+      gravatarHash = "testHash123",
       tmdbAvatar = null
     )
     checkAvatarIsVisible(userWithGravatar, isDisplayed())
@@ -305,7 +305,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun setData_whenUserHasTmdbAvatarButNoGravatar_shouldDisplayAvatar() {
     val userWithTmdb = userModel.copy(
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = "tmdbAvatar123"
     )
     checkAvatarIsVisible(userWithTmdb, isDisplayed())
@@ -314,7 +314,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun setData_whenUserHasNoAvatars_shouldUseDefaultAvatar() {
     val userWithoutAvatars = userModel.copy(
-      gravatarHast = null,
+      gravatarHash = null,
       tmdbAvatar = null
     )
     checkAvatarIsVisible(userWithoutAvatars, isDisplayed())
@@ -323,7 +323,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun setData_whenUserHasEmptyAvatars_shouldUseDefaultAvatar() {
     val userWithEmptyAvatars = userModel.copy(
-      gravatarHast = "",
+      gravatarHash = "",
       tmdbAvatar = ""
     )
     checkAvatarIsVisible(userWithEmptyAvatars, isDisplayed())

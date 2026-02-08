@@ -27,7 +27,7 @@ object DataDumb {
     region = "id",
     token = "NAN",
     isLogin = true,
-    gravatarHast = "",
+    gravatarHash = "",
     tmdbAvatar = ""
   )
 

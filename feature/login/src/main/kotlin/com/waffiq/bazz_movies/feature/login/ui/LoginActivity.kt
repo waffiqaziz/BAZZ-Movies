@@ -175,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
           region = NAN,
           token = NAN,
           isLogin = true,
-          gravatarHast = null,
+          gravatarHash = null,
           tmdbAvatar = null,
         ),
       )
