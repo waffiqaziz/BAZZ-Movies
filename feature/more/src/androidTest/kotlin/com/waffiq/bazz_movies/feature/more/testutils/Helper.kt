@@ -11,7 +11,7 @@ object Helper {
     region = "id",
     token = "Test Token",
     isLogin = true,
-    gravatarHast = "Gravatar Hast",
+    gravatarHash = "Gravatar Hast",
     tmdbAvatar = "TMDB Avatar"
   )
 }

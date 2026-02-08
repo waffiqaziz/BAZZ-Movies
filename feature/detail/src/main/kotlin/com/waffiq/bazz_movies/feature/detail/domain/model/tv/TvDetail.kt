@@ -38,5 +38,5 @@ data class TvDetail(
   val inProduction: Boolean? = null,
   val lastAirDate: String? = null,
   val homepage: String? = null,
-  val status: String? = null
+  val status: String? = null,
 )

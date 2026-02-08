@@ -22,9 +22,8 @@ import javax.inject.Singleton
  * @property context The application context used to find views and display Snackbar.
  */
 @Singleton
-class AppSnackbarManager @Inject constructor(
-  @ActivityContext private val context: Context,
-) : ISnackbar {
+class AppSnackbarManager @Inject constructor(@ActivityContext private val context: Context) :
+  ISnackbar {
 
   private val activity: AppCompatActivity by lazy { context as AppCompatActivity }
 
@@ -44,6 +43,7 @@ class AppSnackbarManager @Inject constructor(
    * @param snackbarFactory Function that creates the snackbar given rootView and bottomNav
    * @return The created and shown Snackbar, or null if creation failed
    */
+  @Suppress("TooGenericExceptionCaught")
   private inline fun createAndShowSnackbar(
     snackbarFactory: (rootView: View, bottomNav: View?) -> Snackbar?,
   ): Snackbar? {

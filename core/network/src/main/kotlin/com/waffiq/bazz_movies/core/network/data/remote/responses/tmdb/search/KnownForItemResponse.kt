@@ -61,5 +61,5 @@ data class KnownForItemResponse(
   val originalName: String? = null,
 
   @Json(name = "name")
-  val name: String? = null
+  val name: String? = null,
 )

@@ -13,5 +13,5 @@ data class ContentRatingsItemResponse(
   val iso31661: String? = null,
 
   @Json(name = "rating")
-  val rating: String? = null
+  val rating: String? = null,
 )

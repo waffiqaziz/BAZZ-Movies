@@ -44,7 +44,7 @@ class KnownForAdapter(private val navigator: INavigator) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 
@@ -63,7 +63,7 @@ class KnownForAdapter(private val navigator: INavigator) :
             TMDB_IMG_LINK_POSTER_W185 + cast.posterPath
           } else {
             ic_poster_error
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
@@ -99,10 +99,8 @@ class KnownForAdapter(private val navigator: INavigator) :
     }
   }
 
-  class DiffCallback(
-    private val oldList: List<CastItem>,
-    private val newList: List<CastItem>
-  ) : DiffUtil.Callback() {
+  class DiffCallback(private val oldList: List<CastItem>, private val newList: List<CastItem>) :
+    DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size
 

@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieViewModel @Inject constructor(
-  private val getListMoviesUseCase: GetListMoviesUseCase
-) : ViewModel() {
+class MovieViewModel @Inject constructor(private val getListMoviesUseCase: GetListMoviesUseCase) :
+  ViewModel() {
   fun getTopRatedMovies(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getTopRatedMovies().cachedIn(viewModelScope)
 

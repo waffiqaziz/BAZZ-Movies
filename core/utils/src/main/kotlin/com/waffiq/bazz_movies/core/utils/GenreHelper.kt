@@ -41,7 +41,7 @@ object GenreHelper {
     10765 to "Sci-Fi & Fantasy",
     10766 to "Soap",
     10767 to "Talk",
-    10768 to "War & Politics"
+    10768 to "War & Politics",
   )
 
   // Private function to retrieve the genre name for a given genre ID.
@@ -92,7 +92,7 @@ object GenreHelper {
     "Sci-Fi & Fantasy" to 10765,
     "Soap" to 10766,
     "Talk" to 10767,
-    "War & Politics" to 10768
+    "War & Politics" to 10768,
   )
 
   // Private function to retrieve the genre ID for a given genre name.
@@ -103,15 +103,17 @@ object GenreHelper {
    * Transforms a list of genre names into a string of genre IDs.
    * The genre IDs are joined by a pipe ("|") for use in queries (OR condition).
    *
-   * A comma (",") is treated as an AND operator, and pipes ("|") represent OR in the context of genre queries.
+   * A comma (",") is treated as an AND operator, and pipes ("|") represent OR in the context of
+   * genre queries.
    *
    * @param listGenre A list of genre names to be transformed into genre IDs.
-   * @return A string of genre IDs joined by a pipe ("|"), or an empty string if no valid genre codes are found.
+   * @return A string of genre IDs joined by a pipe ("|"), or an empty string if no valid genre
+   *         codes are found.
    */
   fun transformToGenreCode(listGenre: List<String>): String {
     var temp = ""
 
-    /**
+    /*
      *  "," Comma's are treated like an AND and query while "|" Pipe's are an OR.
      *  https://www.themoviedb.org/talk/635968b34a4bf6007c5997f3
      *

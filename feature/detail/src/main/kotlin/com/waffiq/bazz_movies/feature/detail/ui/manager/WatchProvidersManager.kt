@@ -63,7 +63,7 @@ class WatchProvidersManager(
         binding.rvFree,
         binding.rvRent,
         binding.rvStreaming,
-      )
+      ),
     )
 
     val clickListener = { openTMDBWatchPage() }
@@ -124,8 +124,8 @@ class WatchProvidersManager(
     context.startActivity(
       Intent(
         Intent.ACTION_VIEW,
-        "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri()
-      )
+        "$TMDB_LINK_MAIN/${dataExtra.mediaType}/${dataExtra.id}/watch".toUri(),
+      ),
     )
   }
 

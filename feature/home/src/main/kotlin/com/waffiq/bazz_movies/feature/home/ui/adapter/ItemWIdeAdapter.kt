@@ -35,7 +35,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
       )
     }
   }
@@ -68,7 +68,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
             TMDB_IMG_LINK_BACKDROP_W780 + data.backdropPath
           } else {
             ic_backdrop_error_filled
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_search)
         .transform(CenterCrop())
@@ -90,7 +90,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
         screenWidth - TypedValue.applyDimension(
           TypedValue.COMPLEX_UNIT_DIP,
           PADDING_DP,
-          displayMetrics
+          displayMetrics,
         ).toInt()
         ).coerceAtMost(maxWidth)
 

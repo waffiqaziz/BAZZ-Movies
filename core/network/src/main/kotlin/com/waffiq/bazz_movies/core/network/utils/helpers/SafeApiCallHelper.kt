@@ -27,25 +27,25 @@ object SafeApiCallHelper {
    * This helper function ensures that common network-related exceptions (such as timeouts,
    * host resolution failures, etc.) are caught and handled gracefully.
    *
-   * @param apiCall A suspend function representing the network request (e.g., a Retrofit call).
-   *                This function should return a [Response] object or null if no response is received.
+   * @param apiCall A suspend function representing the network request for Retrofit call.
+   *                This function returns a [Response] object or null if no response is received.
    *
    * @return A [NetworkResult] wrapping the outcome of the network request:
    * - [NetworkResult.Success] if the API call is successful and the response body is not null.
-   * - [NetworkResult.Error] if the API call fails due to an exception or null/unsuccessful response.
+   * - [NetworkResult.Error] if the API call fails due to exception/null/unsuccessful response.
    *
    * Exception Handling:
-   * - [UnknownHostException]: Indicates a failure to resolve the server's hostname, likely due to network issues.
-   * - [SocketTimeoutException]: Indicates the request timed out, suggesting a retry might be needed.
+   * - [UnknownHostException]: Failure to resolve the server host, likely due to network issues.
+   * - [SocketTimeoutException]: Request timed out, suggesting a retry might be needed.
    * - [HttpException]: Indicates a non-2xx HTTP response, captured as a general HTTP error.
    * - [IOException]: Captures broader network-related issues, such as disconnections.
-   * - [Exception]: Catches any unexpected errors, preventing crashes and returning an "Unknown error" message.
+   * - [Exception]: Catches any unexpected errors, preventing crashes
    */
   suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> =
     performApiCall(apiCall)
 
-  private fun <T> processApiResponse(response: Response<T>): NetworkResult<T> {
-    return when {
+  private fun <T> processApiResponse(response: Response<T>): NetworkResult<T> =
+    when {
       response.isSuccessful -> {
         val responseBody = response.body()
         if (responseBody != null) {
@@ -59,7 +59,6 @@ object SafeApiCallHelper {
         handleErrorBody(response)
       }
     }
-  }
 
   private fun <T> handleErrorBody(response: Response<T>): NetworkResult.Error {
     val errorBody = response.errorBody()?.string()
@@ -70,8 +69,8 @@ object SafeApiCallHelper {
     }
   }
 
-  private fun parseErrorBody(errorBody: String): NetworkResult.Error {
-    return try {
+  private fun parseErrorBody(errorBody: String): NetworkResult.Error =
+    try {
       val errorMessage =
         JSONObject(errorBody).optString("status_message", "Error details not available")
       NetworkResult.Error(errorMessage)
@@ -79,10 +78,10 @@ object SafeApiCallHelper {
       Log.e(TAG, "An error occurred:  ${e.message}")
       NetworkResult.Error("Malformed error response from the server")
     }
-  }
 
-  private suspend fun <T> performApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> {
-    return try {
+  @Suppress("TooGenericExceptionCaught")
+  private suspend fun <T> performApiCall(apiCall: suspend () -> Response<T>?): NetworkResult<T> =
+    try {
       val response: Response<T>? = apiCall()
       if (response != null) {
         processApiResponse(response)
@@ -91,7 +90,9 @@ object SafeApiCallHelper {
       }
     } catch (e: UnknownHostException) {
       Log.e(TAG, "An error occurred: ${e.message}", e)
-      NetworkResult.Error("Unable to resolve server hostname. Please check your internet connection.")
+      NetworkResult.Error(
+        "Unable to resolve server hostname. Please check your internet connection.",
+      )
     } catch (e: SocketTimeoutException) {
       Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("Connection timed out. Please try again.")
@@ -105,7 +106,6 @@ object SafeApiCallHelper {
       Log.e(TAG, "An error occurred: ${e.message}", e)
       NetworkResult.Error("An unknown error occurred")
     }
-  }
 
   /**
    * Executes an API call within a [Flow], emitting [NetworkResult] states.
@@ -121,8 +121,9 @@ object SafeApiCallHelper {
   fun <T> executeApiCall(
     apiCall: suspend () -> Response<T>,
     ioDispatcher: CoroutineDispatcher,
-  ): Flow<NetworkResult<T>> = flow {
-    emit(NetworkResult.Loading) // emit loading on initial
-    emit(safeApiCall { apiCall() }) // then emit the actual response
-  }.flowOn(ioDispatcher)
+  ): Flow<NetworkResult<T>> =
+    flow {
+      emit(NetworkResult.Loading) // emit loading on initial
+      emit(safeApiCall { apiCall() }) // then emit the actual response
+    }.flowOn(ioDispatcher)
 }

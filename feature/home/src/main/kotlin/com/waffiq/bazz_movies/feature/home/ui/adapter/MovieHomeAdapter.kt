@@ -31,7 +31,7 @@ class MovieHomeAdapter(private val navigator: INavigator) :
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
       )
     }
   }
@@ -49,7 +49,7 @@ class MovieHomeAdapter(private val navigator: INavigator) :
             TMDB_IMG_LINK_POSTER_W185 + movie.posterPath
           } else {
             ic_poster_error
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())

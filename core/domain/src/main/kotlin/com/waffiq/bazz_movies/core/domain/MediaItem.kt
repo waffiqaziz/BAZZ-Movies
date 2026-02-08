@@ -23,5 +23,5 @@ data class MediaItem(
   val video: Boolean = false,
   val title: String? = null,
   val releaseDate: String? = null,
-  val originCountry: List<String>? = null
+  val originCountry: List<String>? = null,
 ) : Parcelable

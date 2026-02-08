@@ -19,11 +19,11 @@ class UserModelTest {
     region = "US",
     token = "abcd1234token",
     isLogin = true,
-    gravatarHast = "123abcHash",
+    gravatarHash = "123abcHash",
     tmdbAvatar = "/avatar.jpg"
   )
 
-  private val userModelGravatarHashNull = userModelValid.copy(gravatarHast = null)
+  private val userModelGravatarHashNull = userModelValid.copy(gravatarHash = null)
 
   @Test
   fun userModel_withValidValue_returnsCorrectData() {
@@ -34,7 +34,7 @@ class UserModelTest {
     assertEquals("US", userModelValid.region)
     assertEquals("abcd1234token", userModelValid.token)
     assertTrue(userModelValid.isLogin)
-    assertEquals("123abcHash", userModelValid.gravatarHast)
+    assertEquals("123abcHash", userModelValid.gravatarHash)
     assertEquals("/avatar.jpg", userModelValid.tmdbAvatar)
   }
 

@@ -10,5 +10,5 @@ data class CountryIPResponse(
   val country: String? = null,
 
   @Json(name = "ip")
-  val ip: String? = null
+  val ip: String? = null,
 )

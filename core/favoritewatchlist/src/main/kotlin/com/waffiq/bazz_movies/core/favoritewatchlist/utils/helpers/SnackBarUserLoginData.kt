@@ -22,8 +22,15 @@ import com.waffiq.bazz_movies.core.domain.WatchlistParams
  *                       is involved.
  */
 data class SnackBarUserLoginData(
-  val isSuccess: Boolean, // indicates whether the login was successful or not
-  val title: String, // the title/message to be shown in the Snackbar, could be an error or success message
-  val favoriteModel: FavoriteParams?, // optional data related to the user's favorites, may be null if not relevant
-  val watchlistModel: WatchlistParams? // optional data related to the user's watchlist, may be null if not relevant
+  // indicates whether the login was successful or not
+  val isSuccess: Boolean,
+
+  // the title/message to be shown in the Snackbar, could be an error or success message
+  val title: String,
+
+  // optional data related to the user's favorites, may be null if not relevant
+  val favoriteModel: FavoriteParams?,
+
+  // optional data related to the user's watchlist, may be null if not relevant
+  val watchlistModel: WatchlistParams?,
 )

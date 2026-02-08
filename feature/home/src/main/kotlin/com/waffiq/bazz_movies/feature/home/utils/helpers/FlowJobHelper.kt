@@ -14,12 +14,11 @@ object FlowJobHelper {
   fun <T : Any> collectAndSubmitDataJob(
     fragment: Fragment,
     flowProvider: () -> Flow<PagingData<T>>,
-    adapter: PagingDataAdapter<T, *>
-  ): Job {
-    return fragment.viewLifecycleOwner.lifecycleScope.launch {
+    adapter: PagingDataAdapter<T, *>,
+  ): Job =
+    fragment.viewLifecycleOwner.lifecycleScope.launch {
       flowProvider().collectLatest { pagingData ->
         adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
       }
     }
-  }
 }

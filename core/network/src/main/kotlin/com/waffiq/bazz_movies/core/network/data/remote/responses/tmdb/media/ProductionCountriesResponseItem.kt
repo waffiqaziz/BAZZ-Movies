@@ -19,5 +19,5 @@ data class ProductionCountriesResponseItem(
   val iso6391: String? = null,
 
   @Json(name = "certification")
-  val certification: String? = null
+  val certification: String? = null,
 )

@@ -25,5 +25,5 @@ data class AccountDetailsResponse(
   val iso6391: String? = null,
 
   @Json(name = "username")
-  val username: String? = null
+  val username: String? = null,
 )

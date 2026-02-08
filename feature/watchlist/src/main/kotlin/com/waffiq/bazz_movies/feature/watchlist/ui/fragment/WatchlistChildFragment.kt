@@ -52,7 +52,7 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
 
   override fun setupPagingAdapterWithFooter() {
     binding.rvWatchlist.adapter = adapterPaging.withLoadStateFooter(
-      footer = LoadingStateAdapter { adapterPaging.retry() }
+      footer = LoadingStateAdapter { adapterPaging.retry() },
     )
   }
 
@@ -83,7 +83,7 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
     WatchlistParams(
       mediaType = mediaType,
       mediaId = mediaId,
-      watchlist = false
+      watchlist = false,
     )
 
   override fun postToAddFavorite(title: String, mediaId: Int) {
@@ -105,8 +105,9 @@ class WatchlistChildFragment : BaseWatchlistFragment<MediaItem>() {
   companion object {
     private const val ARG_MEDIA_TYPE = "media_type"
 
-    fun newInstance(mediaType: String) = WatchlistChildFragment().apply {
-      arguments = bundleOf(ARG_MEDIA_TYPE to mediaType)
-    }
+    fun newInstance(mediaType: String) =
+      WatchlistChildFragment().apply {
+        arguments = bundleOf(ARG_MEDIA_TYPE to mediaType)
+      }
   }
 }

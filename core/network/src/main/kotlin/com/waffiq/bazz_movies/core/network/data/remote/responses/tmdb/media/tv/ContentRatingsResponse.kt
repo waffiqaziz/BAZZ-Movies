@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class ContentRatingsResponse(
 
   @Json(name = "results")
-  val contentRatingsItemResponse: List<ContentRatingsItemResponse?>? = null
+  val contentRatingsItemResponse: List<ContentRatingsItemResponse?>? = null,
 )

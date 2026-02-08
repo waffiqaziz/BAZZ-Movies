@@ -7,26 +7,24 @@ import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_I
 import retrofit2.HttpException
 import java.io.IOException
 
-class GenericPagingSource(
-  private val apiCall: suspend (Int) -> List<MediaResponseItem>,
-) : PagingSource<Int, MediaResponseItem>() {
+class GenericPagingSource(private val apiCall: suspend (Int) -> List<MediaResponseItem>) :
+  PagingSource<Int, MediaResponseItem>() {
 
-  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaResponseItem> {
-    return try {
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaResponseItem> =
+    try {
       val position = params.key ?: INITIAL_PAGE_INDEX
       val responseData = apiCall(position) // Call the passed API function
 
       LoadResult.Page(
         data = responseData,
         prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
-        nextKey = if (responseData.isEmpty()) null else position + 1
+        nextKey = if (responseData.isEmpty()) null else position + 1,
       )
     } catch (exception: IOException) {
       LoadResult.Error(exception)
     } catch (exception: HttpException) {
       LoadResult.Error(exception)
     }
-  }
 
   override fun getRefreshKey(state: PagingState<Int, MediaResponseItem>): Int? =
     state.anchorPosition?.let { anchorPosition ->

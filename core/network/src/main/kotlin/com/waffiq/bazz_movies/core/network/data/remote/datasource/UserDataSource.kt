@@ -22,40 +22,43 @@ class UserDataSource @Inject constructor(
   @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserDataSourceInterface {
 
-  override fun createToken(): Flow<NetworkResult<AuthenticationResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.createToken() },
-    ioDispatcher = ioDispatcher
-  )
+  override fun createToken(): Flow<NetworkResult<AuthenticationResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.createToken() },
+      ioDispatcher = ioDispatcher,
+    )
 
   override fun deleteSession(sessionId: String): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.deleteSession(sessionId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun createSessionLogin(sessionId: String): Flow<NetworkResult<CreateSessionResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.createSessionLogin(sessionId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getAccountDetails(sessionId: String): Flow<NetworkResult<AccountDetailsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getAccountDetails(sessionId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
-  override fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> = executeApiCall(
-    apiCall = { countryIPApiService.getIP() },
-    ioDispatcher = ioDispatcher
-  )
+  override fun getCountryCode(): Flow<NetworkResult<CountryIPResponse>> =
+    executeApiCall(
+      apiCall = { countryIPApiService.getIP() },
+      ioDispatcher = ioDispatcher,
+    )
 
   override fun login(
     username: String,
     pass: String,
     sessionId: String,
-  ): Flow<NetworkResult<AuthenticationResponse>> = executeApiCall(
-    apiCall = { tmdbApiService.login(username, pass, sessionId) },
-    ioDispatcher = ioDispatcher
-  )
+  ): Flow<NetworkResult<AuthenticationResponse>> =
+    executeApiCall(
+      apiCall = { tmdbApiService.login(username, pass, sessionId) },
+      ioDispatcher = ioDispatcher,
+    )
 }

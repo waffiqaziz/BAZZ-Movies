@@ -31,7 +31,7 @@ class TvAdapter(private val navigator: INavigator) :
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
       )
     }
   }
@@ -49,7 +49,7 @@ class TvAdapter(private val navigator: INavigator) :
             TMDB_IMG_LINK_POSTER_W185 + tv.posterPath
           } else {
             ic_broken_image
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())

@@ -17,13 +17,9 @@ interface HomeUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  fun bindListMoviesUseCase(
-    getListMoviesInteractor: GetListMoviesInteractor
-  ): GetListMoviesUseCase
+  fun bindListMoviesUseCase(getListMoviesInteractor: GetListMoviesInteractor): GetListMoviesUseCase
 
   @Binds
   @ViewModelScoped
-  fun bindListTvUseCase(
-    getListTvInteractor: GetListTvInteractor
-  ): GetListTvUseCase
+  fun bindListTvUseCase(getListTvInteractor: GetListTvInteractor): GetListTvUseCase
 }

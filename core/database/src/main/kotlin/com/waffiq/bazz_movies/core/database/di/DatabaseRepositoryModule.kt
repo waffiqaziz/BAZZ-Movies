@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface DatabaseRepositoryModule {
 
   @Binds
-  fun bindDatabaseRepository(
-    databaseRepository: DatabaseRepositoryImpl,
-  ): IDatabaseRepository
+  fun bindDatabaseRepository(databaseRepository: DatabaseRepositoryImpl): IDatabaseRepository
 }

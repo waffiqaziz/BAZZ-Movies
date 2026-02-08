@@ -16,5 +16,5 @@ data class MediaResponse(
   val results: List<MediaResponseItem>,
 
   @Json(name = "total_results")
-  val totalResults: Int
+  val totalResults: Int,
 )

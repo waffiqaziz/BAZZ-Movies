@@ -16,14 +16,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-  private val multiSearchUseCase: MultiSearchUseCase
-) : ViewModel() {
+class SearchViewModel @Inject constructor(private val multiSearchUseCase: MultiSearchUseCase) :
+  ViewModel() {
   private val _searchResults = MutableStateFlow<PagingData<MultiSearchItem>>(
-    PagingData.Companion.empty()
+    PagingData.Companion.empty(),
   )
   val searchResults: Flow<PagingData<MultiSearchItem>> = _searchResults.cachedIn(
-    viewModelScope
+    viewModelScope,
   )
 
   private val _query = MutableLiveData<String>()

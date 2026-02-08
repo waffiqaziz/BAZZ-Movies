@@ -12,10 +12,7 @@ object AgeRatingHelper {
   private const val FLAG_ANY_COUNTRY = "any country"
 
   // region CALCULATE AGE RATING MOVIE
-  fun getAgeRating(
-    data: MovieDetail?,
-    userRegion: String,
-  ): String {
+  fun getAgeRating(data: MovieDetail?, userRegion: String): String {
     // if age rating based on user region return empty, get age rating from any region
     return getTransformAgeRatingMovie(data, userRegion).takeIf { it.isNotEmpty() }
       ?: getTransformAgeRatingMovie(data, FLAG_ANY_COUNTRY)
@@ -23,7 +20,10 @@ object AgeRatingHelper {
 
   private fun getTransformAgeRatingMovie(data: MovieDetail?, region: String): String {
     // return early if data is null
-    if (data == null || data.releaseDates == null || data.releaseDates.listReleaseDatesItem == null) {
+    if (data == null ||
+      data.releaseDates == null ||
+      data.releaseDates.listReleaseDatesItem == null
+    ) {
       return ""
     }
 
@@ -46,10 +46,7 @@ object AgeRatingHelper {
   // endregion CALCULATE AGE RATING MOVIE
 
   // region CALCULATE AGE RATING TV
-  fun getAgeRating(
-    data: TvDetail?,
-    userRegion: String,
-  ): String {
+  fun getAgeRating(data: TvDetail?, userRegion: String): String {
     // if age rating based on user region return empty, get age rating from any region
     return getTransformAgeRatingTv(data, userRegion).takeIf { it.isNotEmpty() }
       ?: getTransformAgeRatingTv(data, "false")

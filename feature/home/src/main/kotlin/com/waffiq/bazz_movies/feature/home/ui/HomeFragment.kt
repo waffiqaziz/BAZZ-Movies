@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.home.ui
 
 import android.os.Bundle
@@ -28,7 +30,7 @@ class HomeFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
     return binding.root
@@ -51,7 +53,7 @@ class HomeFragment : Fragment() {
     val adapter = GenericViewPagerAdapter(
       childFragmentManager,
       lifecycle,
-      listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment())
+      listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment()),
     )
     viewpager?.adapter = adapter
 

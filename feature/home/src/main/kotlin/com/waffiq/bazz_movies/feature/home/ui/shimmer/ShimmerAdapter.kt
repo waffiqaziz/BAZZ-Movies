@@ -13,15 +13,13 @@ class ShimmerAdapter(private val itemCount: Int = SHIMMER_DATA) :
     val view = ShimmerItemPosterBinding.inflate(
       LayoutInflater.from(parent.context),
       parent,
-      false
+      false,
     )
     return ShimmerViewHolder(view.root)
   }
 
   override fun onBindViewHolder(holder: ShimmerViewHolder, position: Int) {
-    /**
-     * not used as this adapter only shows as placeholder
-     */
+    /* not used as this adapter only shows as placeholder */
   }
 
   override fun getItemCount(): Int = itemCount

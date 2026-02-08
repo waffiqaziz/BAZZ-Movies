@@ -7,17 +7,13 @@ import android.text.style.StyleSpan
 
 object SpannableUtils {
 
-  fun buildActionMessage(
-    title: String,
-    text: String,
-  ): SpannableString {
-    return SpannableString("$title $text").apply {
+  fun buildActionMessage(title: String, text: String): SpannableString =
+    SpannableString("$title $text").apply {
       setSpan(
         StyleSpan(Typeface.BOLD),
         0,
         title.length,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
       )
     }
-  }
 }

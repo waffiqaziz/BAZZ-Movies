@@ -10,33 +10,31 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostMethodInteractor @Inject constructor(
-  private val postMethodRepository: IMoviesRepository
+  private val postMethodRepository: IMoviesRepository,
 ) : PostMethodUseCase {
   override fun postFavorite(
     sessionId: String,
     fav: FavoriteParams,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postFavorite(sessionId, fav, userId)
 
   override fun postWatchlist(
     sessionId: String,
     wtc: WatchlistParams,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>> =
     postMethodRepository.postWatchlist(sessionId, wtc, userId)
 
   override fun postMovieRate(
     sessionId: String,
     rating: Float,
-    movieId: Int
-  ): Flow<Outcome<PostResult>> =
-    postMethodRepository.postMovieRate(sessionId, rating, movieId)
+    movieId: Int,
+  ): Flow<Outcome<PostResult>> = postMethodRepository.postMovieRate(sessionId, rating, movieId)
 
   override fun postTvRate(
     sessionId: String,
     rating: Float,
-    tvId: Int
-  ): Flow<Outcome<PostResult>> =
-    postMethodRepository.postTvRate(sessionId, rating, tvId)
+    tvId: Int,
+  ): Flow<Outcome<PostResult>> = postMethodRepository.postTvRate(sessionId, rating, tvId)
 }

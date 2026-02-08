@@ -26,6 +26,7 @@ class GetDetailPersonInteractor @Inject constructor(
         }
 
         is Outcome.Error -> Outcome.Error(outcome.message)
+
         is Outcome.Loading -> Outcome.Loading
       }
     }

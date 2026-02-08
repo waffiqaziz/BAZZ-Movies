@@ -111,7 +111,7 @@ class DetailUIManager(
       listOf(
         binding.rvCast,
         binding.rvRecommendation,
-      )
+      ),
     )
     binding.rvGenre.layoutManager = FlexboxLayoutManager(binding.rvGenre.context).apply {
       flexDirection = FlexDirection.ROW
@@ -141,7 +141,7 @@ class DetailUIManager(
     binding.rvRecommendation.apply {
       itemAnimator = DefaultItemAnimator()
       adapter = adapterRecommendation.withLoadStateFooter(
-        footer = LoadingStateAdapter { adapterRecommendation.retry() }
+        footer = LoadingStateAdapter { adapterRecommendation.retry() },
       )
     }
 
@@ -257,7 +257,7 @@ class DetailUIManager(
       tvMediaType.text = dataExtra.mediaType.uppercase()
       tvYearReleased.text = dateFormatterStandard(
         dataExtra.releaseDate?.takeIf { it.isNotEmpty() }
-          ?: dataExtra.firstAirDate?.takeIf { it.isNotEmpty() }.orEmpty()
+          ?: dataExtra.firstAirDate?.takeIf { it.isNotEmpty() }.orEmpty(),
       )
       tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
         ?: activity.getString(no_overview)
@@ -283,6 +283,7 @@ class DetailUIManager(
       // set duration for movie and status for tv-series
       tvDuration.text = when (mediaType) {
         MOVIE_MEDIA_TYPE -> details.duration ?: activity.getString(not_available)
+
         else -> {
           if (details.status.isNullOrEmpty()) {
             activity.getString(not_available)
@@ -438,7 +439,7 @@ class DetailUIManager(
     toast = Toast.makeText(
       activity.applicationContext,
       text,
-      Toast.LENGTH_SHORT
+      Toast.LENGTH_SHORT,
     )
     toast?.show()
   }

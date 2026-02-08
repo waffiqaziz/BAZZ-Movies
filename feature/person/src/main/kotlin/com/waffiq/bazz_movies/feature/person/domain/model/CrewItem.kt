@@ -18,5 +18,5 @@ data class CrewItem(
   val adult: Boolean? = null,
   val department: String? = null,
   val job: String? = null,
-  val voteCount: Int? = null
+  val voteCount: Int? = null,
 )

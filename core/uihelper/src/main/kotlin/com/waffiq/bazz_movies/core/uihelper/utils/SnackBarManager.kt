@@ -54,6 +54,7 @@ object SnackBarManager {
    * @param anchorView The optional [View] to anchor the Snackbar to (like a guide or button).
    * @return The displayed [Snackbar], or null if the message is invalid.
    */
+  @Suppress("TooGenericExceptionCaught")
   fun snackBarWarning(
     view: View,
     anchorView: View? = null,

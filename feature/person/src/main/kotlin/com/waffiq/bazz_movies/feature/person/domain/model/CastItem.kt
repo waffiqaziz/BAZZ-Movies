@@ -25,5 +25,5 @@ data class CastItem(
   val video: Boolean = false,
   val title: String? = null,
   val releaseDate: String? = null,
-  val order: Int = 0
+  val order: Int = 0,
 )

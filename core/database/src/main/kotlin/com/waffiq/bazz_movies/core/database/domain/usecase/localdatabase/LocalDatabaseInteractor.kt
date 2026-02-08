@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LocalDatabaseInteractor @Inject constructor(
-  private val localDatabaseRepository: IDatabaseRepository
+  private val localDatabaseRepository: IDatabaseRepository,
 ) : LocalDatabaseUseCase {
 
   override val favoriteMoviesFromDB: Flow<List<Favorite>> =
@@ -28,8 +28,7 @@ class LocalDatabaseInteractor @Inject constructor(
   override suspend fun deleteFromDB(fav: Favorite): DbResult<Int> =
     localDatabaseRepository.deleteFromDB(fav)
 
-  override suspend fun deleteAll(): DbResult<Int> =
-    localDatabaseRepository.deleteAll()
+  override suspend fun deleteAll(): DbResult<Int> = localDatabaseRepository.deleteAll()
 
   override suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean> =
     localDatabaseRepository.isFavoriteDB(id, mediaType)

@@ -15,7 +15,5 @@ fun interface PostActionUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  fun bindPostActionUseCase(
-    postActionInteractor: PostActionInteractor
-  ): PostActionUseCase
+  fun bindPostActionUseCase(postActionInteractor: PostActionInteractor): PostActionUseCase
 }

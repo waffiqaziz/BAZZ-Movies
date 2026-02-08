@@ -24,5 +24,5 @@ data class MultiSearchItem(
   val voteCount: Double = 0.0,
   val firstAirDate: String? = null,
   val listOriginCountry: List<String?>? = null,
-  val originalName: String? = null
+  val originalName: String? = null,
 )

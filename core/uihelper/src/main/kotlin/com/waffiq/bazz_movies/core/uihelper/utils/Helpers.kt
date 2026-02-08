@@ -15,9 +15,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import kotlin.collections.forEach
 
 /**
- * A utility object that provides various helper functions for UI customization and behavior in an
- * Android app. These helpers include [justifyTextView], [animFadeOutLong], [setupRecyclerViewsWithSnap],
- * and [setupRecyclerViewsWithSnapGridLayout].
+ * A utility object that provides various helper functions for UI customization and behavior
  */
 object Helpers {
 
@@ -54,18 +52,21 @@ object Helpers {
    * This enables smooth snapping of items when the user scrolls the RecyclerView.
    *
    * @param recyclerViews A list of [RecyclerView]s to apply the snap behavior.
-   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the RecyclerView.
+   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the
+   *                      RecyclerView.
    */
   fun setupRecyclerViewsWithSnap(
     recyclerViews: List<RecyclerView>,
-    layoutManager: LinearLayoutManager? = null
+    layoutManager: LinearLayoutManager? = null,
   ) {
     recyclerViews.forEach { recyclerView ->
 
       // Safely attach SnapHelper
       if (recyclerView.onFlingListener == null) {
         recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(
-          recyclerView.context, LinearLayoutManager.HORIZONTAL, false
+          recyclerView.context,
+          LinearLayoutManager.HORIZONTAL,
+          false,
         )
         CustomSnapHelper().attachToRecyclerView(recyclerView)
       }
@@ -78,12 +79,13 @@ object Helpers {
    *
    * @param n The number of columns in the grid layout (default is 2).
    * @param recyclerViews A list of [RecyclerView]s to apply the snap behavior.
-   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the RecyclerView.
+   * @param layoutManager An optional [LinearLayoutManager] for configuring the layout of the
+   *        RecyclerView.
    */
   fun setupRecyclerViewsWithSnapGridLayout(
     n: Int = 2,
     recyclerViews: List<RecyclerView>,
-    layoutManager: LinearLayoutManager? = null
+    layoutManager: LinearLayoutManager? = null,
   ) {
     recyclerViews.forEach { recyclerView ->
 
@@ -94,7 +96,7 @@ object Helpers {
             recyclerView.context,
             n,
             GridLayoutManager.HORIZONTAL,
-            false
+            false,
           )
         CustomSnapHelper().attachToRecyclerView(recyclerView)
       }

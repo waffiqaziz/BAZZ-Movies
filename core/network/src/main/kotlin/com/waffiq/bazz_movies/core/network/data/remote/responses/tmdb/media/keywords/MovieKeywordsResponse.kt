@@ -8,5 +8,5 @@ data class MovieKeywordsResponse(
   val keywords: List<MediaKeywordsResponseItem?>? = null,
 
   @Json(name = "id")
-  val id: Int? = null
+  val id: Int? = null,
 )

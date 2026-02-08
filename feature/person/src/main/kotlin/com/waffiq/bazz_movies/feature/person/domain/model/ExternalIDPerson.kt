@@ -11,5 +11,5 @@ data class ExternalIDPerson(
   val youtubeId: String? = null,
   val tvrageId: String? = null,
   val facebookId: String? = null,
-  val instagramId: String? = null
+  val instagramId: String? = null,
 )

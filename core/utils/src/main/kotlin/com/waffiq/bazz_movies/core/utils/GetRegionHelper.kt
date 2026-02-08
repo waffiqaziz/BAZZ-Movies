@@ -9,19 +9,21 @@ import androidx.annotation.VisibleForTesting
 import java.util.Locale
 
 /**
- * Helper object to determine the user's region using SIM card information or default phone settings.
+ * Helper object get the user's region using SIM card information or default phone settings.
  */
 object GetRegionHelper {
 
   /**
    * Retrieves the region based on the device's network and SIM card status.
    *
-   * This function determines the network location using the SIM state. It returns the SIM's country code
-   * if the SIM is present and ready. If the SIM is absent, it defaults to the device's current time zone.
-   * In all other cases, it returns an empty string if a valid network region cannot be determined.
+   * This function determines the network location using the SIM state. It returns based in order:
+   * - SIM's country code if the SIM is present and ready
+   * - Defaults to the device's current time zone
+   * - Fallback to empty string if a valid network region cannot be determined.
    *
    * @param context The application context used to access system services.
-   * @return A string representing the network's region code or an empty string if it cannot be determined.
+   * @return A string representing the network's region code or an empty string if it cannot be
+   *         determined.
    */
   private fun getNetworkLocation(context: Context): String {
     val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -44,8 +46,9 @@ object GetRegionHelper {
   /**
    * Retrieves the most accurate available location for the user.
    *
-   * This function tries to determine the user's location using network data first. If no network location
-   * can be derived, it falls back to the primary device locale to obtain the user's country setting.
+   * This function tries to determine the user's location using network data first.
+   * If no network location can be derived, it falls back to the primary device locale
+   * to obtain the user's country setting.
    *
    * @param context The application context used to access locale configurations.
    * @return A string representing the user's region in lowercase.

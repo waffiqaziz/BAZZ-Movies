@@ -9,8 +9,8 @@ import java.util.Locale
 
 object Helper {
 
-  fun getDateTwoWeeksFromToday(pattern: String = "yyyy-MM-dd"): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+  fun getDateTwoWeeksFromToday(pattern: String = "yyyy-MM-dd"): String =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       // For API level 26 and above
       LocalDate.now().plusWeeks(2).format(DateTimeFormatter.ofPattern(pattern))
     } else {
@@ -22,23 +22,20 @@ object Helper {
       val formatter = SimpleDateFormat(pattern, Locale.getDefault())
       formatter.format(calendar.time)
     }
-  }
 
-  fun getDateToday(pattern: String = "yyyy-MM-dd"): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+  fun getDateToday(pattern: String = "yyyy-MM-dd"): String =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       LocalDate.now().format(DateTimeFormatter.ofPattern(pattern))
     } else {
       val formatter = SimpleDateFormat(pattern, Locale.getDefault())
       formatter.format(Calendar.getInstance().time)
     }
-  }
 
-  fun getCountryDisplayName(region: String): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+  fun getCountryDisplayName(region: String): String =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
       Locale.of("", region).displayCountry
     } else {
       @Suppress("DEPRECATION")
       Locale("", region).displayCountry
     }
-  }
 }

@@ -5,5 +5,5 @@ data class ProductionCountriesItem(
   val name: String? = null,
   val type: Int? = null,
   val iso6391: String? = null,
-  val certification: String? = null
+  val certification: String? = null,
 )

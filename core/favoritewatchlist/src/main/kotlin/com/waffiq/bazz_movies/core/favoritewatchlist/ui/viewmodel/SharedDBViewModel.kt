@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedDBViewModel @Inject constructor(
-  private val localDatabaseUseCase: LocalDatabaseUseCase
+  private val localDatabaseUseCase: LocalDatabaseUseCase,
 ) : ViewModel() {
 
   private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()

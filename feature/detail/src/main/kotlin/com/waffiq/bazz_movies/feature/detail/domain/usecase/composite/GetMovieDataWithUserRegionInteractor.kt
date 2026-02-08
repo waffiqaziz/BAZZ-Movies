@@ -22,7 +22,9 @@ class GetMovieDataWithUserRegionInteractor @Inject constructor(
         getMovieDetailUseCase.getMovieDetail(movieId, userRegion)
       }
 
-  override fun getMovieWatchProvidersWithUserRegion(movieId: Int): Flow<Outcome<WatchProvidersItem>> =
+  override fun getMovieWatchProvidersWithUserRegion(
+    movieId: Int,
+  ): Flow<Outcome<WatchProvidersItem>> =
     userPrefUseCase.getUserRegionPref()
       .take(1)
       .flatMapConcat { userRegion ->

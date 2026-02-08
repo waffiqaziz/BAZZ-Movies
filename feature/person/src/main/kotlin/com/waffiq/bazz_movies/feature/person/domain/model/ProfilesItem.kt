@@ -7,5 +7,5 @@ data class ProfilesItem(
   val width: Int? = null,
   val iso6391: Any? = null,
   val voteCount: Int? = null,
-  val height: Int? = null
+  val height: Int? = null,
 )

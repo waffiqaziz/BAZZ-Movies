@@ -16,5 +16,5 @@ data class ProductionCompaniesResponseItem(
   val id: Int? = null,
 
   @Json(name = "origin_country")
-  val originCountry: String? = null
+  val originCountry: String? = null,
 )

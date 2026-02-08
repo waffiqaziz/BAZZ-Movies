@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class GravatarResponse(
 
   @Json(name = "hash")
-  val hash: String? = null
+  val hash: String? = null,
 )

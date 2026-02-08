@@ -7,17 +7,17 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.Rate
 
 object MediaStateMapper {
 
-  fun MediaStateResponse.toMediaState() = MediaState(
-    id = id,
-    favorite = favorite,
-    rated = ratedResponse.toRated(),
-    watchlist = watchlist
-  )
+  fun MediaStateResponse.toMediaState() =
+    MediaState(
+      id = id,
+      favorite = favorite,
+      rated = ratedResponse.toRated(),
+      watchlist = watchlist,
+    )
 
-  fun RatedResponse.toRated(): Rated {
-    return when (this) {
+  fun RatedResponse.toRated(): Rated =
+    when (this) {
       is RatedResponse.Value -> Rated.Value(this.value)
       is RatedResponse.Unrated -> Rated.Unrated
     }
-  }
 }

@@ -19,5 +19,5 @@ data class KnownForItem(
   val firstAirDate: String? = null,
   val originCountry: List<String?>? = null,
   val originalName: String? = null,
-  val name: String? = null
+  val name: String? = null,
 )

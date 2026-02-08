@@ -11,8 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
  * [launchFragmentInHiltContainer], and is required for proper Hilt injection during UI tests.
  *
  * ## Usage
- * To use this activity in any module’s instrumented tests (e.g., `:feature:search`),
- * it must be declared in the `AndroidManifest.xml` under the `androidTest` source set of that module:
+ * To use this activity in any module’s instrumented tests (e.g., `:feature:search`), it must be
+ * declared in the `AndroidManifest.xml` under the `androidTest` source set of that module:
  *
  * ```xml
  * <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -26,8 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
  * </manifest>
  * ```
  *
- * This approach allows you to reuse `HiltTestActivity` across modules without introducing
- * circular dependencies with the `:app` module.
+ * This approach allows to reuse `HiltTestActivity` across modules without introducing circular
+ * dependencies with the `:app` module.
  *
  * @see launchFragmentInHiltContainer
  */

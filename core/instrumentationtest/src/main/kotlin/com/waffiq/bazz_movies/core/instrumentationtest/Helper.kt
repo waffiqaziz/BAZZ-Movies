@@ -25,7 +25,8 @@ object Helper {
    * Used to verifying that the activity finishes properly, especially after calling `finish()`
    * or testing navigation behavior that should close the screen.
    *
-   * Continuously polls the activity's lifecycle state until it becomes `DESTROYED` or the timeout is reached.
+   * Continuously polls the activity's lifecycle state until it becomes `DESTROYED`
+   * or the timeout is reached.
    * If the timeout passes without reaching the state, throws an [AssertionError].
    *
    * @param timeoutMillis Maximum time to wait before failing, in milliseconds (default is 500ms).
@@ -49,10 +50,7 @@ object Helper {
         uiController.loopMainThreadForAtLeast(millis)
     }
 
-  fun waitUntil(
-    matcher: Matcher<View>,
-    timeout: Long = 5000,
-  ): ViewAssertion {
+  fun waitUntil(matcher: Matcher<View>, timeout: Long = 5000): ViewAssertion {
     return ViewAssertion { view, _ ->
       val endTime = System.currentTimeMillis() + timeout
       do {

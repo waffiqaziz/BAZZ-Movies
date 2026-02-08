@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 
 /**
- * A utility object that provides general helper functions for commonly used UI components and behaviors.
- * Currently, it includes a function to initialize a vertical LinearLayoutManager.
+ * A utility object that provides general helper functions for commonly used UI components and
+ * behaviors.
  */
 object GeneralHelper {
 

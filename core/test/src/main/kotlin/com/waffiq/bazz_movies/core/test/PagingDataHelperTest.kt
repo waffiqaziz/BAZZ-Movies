@@ -8,7 +8,11 @@ import kotlinx.coroutines.Dispatchers
 
 object PagingDataHelperTest {
   class TestListCallback : ListUpdateCallback {
-    override fun onChanged(position: Int, count: Int, payload: Any?) {
+    override fun onChanged(
+      position: Int,
+      count: Int,
+      payload: Any?,
+    ) {
       /* unused */
     }
 
@@ -26,8 +30,7 @@ object PagingDataHelperTest {
   }
 
   class TestDiffCallback<T> : DiffUtil.ItemCallback<T>() {
-    override fun areItemsTheSame(oldItem: T & Any, newItem: T & Any): Boolean =
-      oldItem == newItem
+    override fun areItemsTheSame(oldItem: T & Any, newItem: T & Any): Boolean = oldItem == newItem
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: T & Any, newItem: T & Any): Boolean =
@@ -43,6 +46,6 @@ object PagingDataHelperTest {
     AsyncPagingDataDiffer(
       diffCallback = TestDiffCallback(),
       updateCallback = TestListCallback(),
-      workerDispatcher = Dispatchers.Main
+      workerDispatcher = Dispatchers.Main,
     )
 }

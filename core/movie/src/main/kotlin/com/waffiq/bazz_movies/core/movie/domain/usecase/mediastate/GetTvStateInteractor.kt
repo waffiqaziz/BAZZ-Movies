@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTvStateInteractor @Inject constructor(
-  private val getStateTvRepository: IMoviesRepository
+  private val getStateTvRepository: IMoviesRepository,
 ) : GetTvStateUseCase {
 
   override fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =

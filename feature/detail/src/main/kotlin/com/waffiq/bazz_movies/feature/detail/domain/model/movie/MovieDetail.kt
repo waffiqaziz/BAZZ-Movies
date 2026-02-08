@@ -33,5 +33,5 @@ data class MovieDetail(
   val tagline: String? = null,
   val adult: Boolean? = null,
   val homepage: String? = null,
-  val status: String? = null
+  val status: String? = null,
 )

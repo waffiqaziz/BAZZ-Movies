@@ -5,8 +5,9 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostF
 
 object Mapper {
 
-  fun PostFavoriteWatchlistResponse.toPostFavoriteWatchlist() = PostFavoriteWatchlist(
-    statusCode = statusCode,
-    statusMessage = statusMessage
-  )
+  fun PostFavoriteWatchlistResponse.toPostFavoriteWatchlist() =
+    PostFavoriteWatchlist(
+      statusCode = statusCode,
+      statusMessage = statusMessage,
+    )
 }

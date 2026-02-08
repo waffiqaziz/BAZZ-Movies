@@ -13,5 +13,5 @@ data class CombinedCreditResponse(
   val id: Int? = null,
 
   @Json(name = "crew")
-  val crew: List<CrewItemResponse>? = null
+  val crew: List<CrewItemResponse>? = null,
 )

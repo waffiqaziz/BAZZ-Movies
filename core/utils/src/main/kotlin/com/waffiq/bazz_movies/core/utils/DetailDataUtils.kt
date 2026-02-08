@@ -9,7 +9,7 @@ import java.util.Locale
 
 object DetailDataUtils {
   /**
-   * Returns the title for a given `MediaItem`. The function checks the following properties in order:
+   * Returns the title from `MediaItem`. The function checks the following properties in order:
    * - `name`
    * - `title`
    * - `originalTitle`
@@ -26,11 +26,11 @@ object DetailDataUtils {
       item.name,
       item.title,
       item.originalTitle,
-      item.originalName
+      item.originalName,
     ).firstNotNullOfOrNull { it } ?: getString(not_available)
 
   /**
-   * Returns the title for a given `MediaItem`. The function checks the following properties in order:
+   * Returns the title from `MediaItem`. The function checks the following properties in order:
    * - `name`
    * - `title`
    * - `originalTitle`

@@ -25,13 +25,9 @@ interface DetailUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  fun bindDetailTvUseCase(
-    getDetailTvInteractor: GetTvDetailInteractor,
-  ): GetTvDetailUseCase
+  fun bindDetailTvUseCase(getDetailTvInteractor: GetTvDetailInteractor): GetTvDetailUseCase
 
   @Binds
   @ViewModelScoped
-  fun bindDetailOMDbUseCase(
-    getDetailOMDbInteractor: GetOMDbDetailInteractor,
-  ): GetOMDbDetailUseCase
+  fun bindDetailOMDbUseCase(getDetailOMDbInteractor: GetOMDbDetailInteractor): GetOMDbDetailUseCase
 }

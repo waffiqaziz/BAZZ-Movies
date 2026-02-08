@@ -8,7 +8,5 @@ import retrofit2.http.Query
 fun interface OMDbApiService {
 
   @GET("?r=json")
-  suspend fun getOMDbDetails(
-    @Query("i") i: String
-  ): Response<OMDbDetailsResponse>
+  suspend fun getOMDbDetails(@Query("i") i: String): Response<OMDbDetailsResponse>
 }

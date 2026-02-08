@@ -4,5 +4,5 @@ data class Provider(
   val logoPath: String?,
   val providerId: Int?,
   val providerName: String?,
-  val displayPriority: Int?
+  val displayPriority: Int?,
 )

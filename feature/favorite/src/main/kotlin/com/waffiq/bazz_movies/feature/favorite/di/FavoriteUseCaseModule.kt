@@ -25,7 +25,5 @@ interface FavoriteUseCaseModule {
   // region TV
   @Binds
   @ViewModelScoped
-  fun bindFavoriteTvUseCase(
-    getFavoriteTvInteractor: GetFavoriteTvInteractor,
-  ): GetFavoriteTvUseCase
+  fun bindFavoriteTvUseCase(getFavoriteTvInteractor: GetFavoriteTvInteractor): GetFavoriteTvUseCase
 }

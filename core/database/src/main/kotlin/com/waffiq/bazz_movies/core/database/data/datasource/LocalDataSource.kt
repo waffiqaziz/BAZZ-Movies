@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class LocalDataSource @Inject constructor(
   private val favoriteDao: FavoriteDao,
-  @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+  @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : LocalDataSourceInterface {
 
   override val getFavoriteMovies: Flow<List<FavoriteEntity>> =
@@ -34,8 +34,7 @@ class LocalDataSource @Inject constructor(
   override suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): DbResult<Int> =
     executeDbOperation { favoriteDao.deleteItem(mediaId, mediaType) }
 
-  override suspend fun deleteAll(): DbResult<Int> =
-    executeDbOperation { favoriteDao.deleteALl() }
+  override suspend fun deleteAll(): DbResult<Int> = executeDbOperation { favoriteDao.deleteALl() }
 
   override suspend fun isFavorite(id: Int, mediaType: String): DbResult<Boolean> =
     executeDbOperation { favoriteDao.isFavorite(id, mediaType) }
@@ -47,7 +46,7 @@ class LocalDataSource @Inject constructor(
     isFavorite: Boolean,
     isWatchlist: Boolean,
     id: Int,
-    mediaType: String
+    mediaType: String,
   ): DbResult<Int> =
     executeDbOperation { favoriteDao.update(isFavorite, isWatchlist, id, mediaType) }
 }

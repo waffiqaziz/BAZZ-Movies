@@ -53,7 +53,7 @@ class RoutingActivityTest {
         region = "JP",
         token = "token_testing",
         isLogin = true,
-        gravatarHast = null,
+        gravatarHash = null,
         tmdbAvatar = null
       )
     )
@@ -81,7 +81,7 @@ class RoutingActivityTest {
         region = "not_logged",
         token = "not_logged",
         isLogin = false,
-        gravatarHast = null,
+        gravatarHash = null,
         tmdbAvatar = null
       )
     )

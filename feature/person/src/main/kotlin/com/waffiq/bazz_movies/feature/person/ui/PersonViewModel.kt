@@ -45,7 +45,7 @@ class PersonViewModel @Inject constructor(
       flowProvider = { getDetailPersonUseCase.getDetailPerson(id) },
       onSuccess = { _detailPerson.value = it },
       onFinallySuccess = { _loadingState.value = false },
-      onLoading = { _loadingState.value = true }
+      onLoading = { _loadingState.value = true },
     )
   }
 
@@ -59,7 +59,7 @@ class PersonViewModel @Inject constructor(
   fun getImagePerson(id: Int) {
     executeUseCase(
       flowProvider = { getDetailPersonUseCase.getImagePerson(id) },
-      onSuccess = { _imagePerson.value = it.profiles.orEmpty() }
+      onSuccess = { _imagePerson.value = it.profiles.orEmpty() },
     )
   }
 
@@ -86,6 +86,7 @@ class PersonViewModel @Inject constructor(
           }
 
           is Outcome.Loading -> onLoading()
+
           is Outcome.Error -> {
             _loadingState.value = false
             _errorState.value = Event(outcome.message)

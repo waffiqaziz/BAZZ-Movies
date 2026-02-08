@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetWatchlistTvInteractor @Inject constructor(
-  private val watchlistRepository: IWatchlistRepository
+  private val watchlistRepository: IWatchlistRepository,
 ) : GetWatchlistTvUseCase {
   override fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaItem>> =
     watchlistRepository.getWatchlistTv(sessionId)

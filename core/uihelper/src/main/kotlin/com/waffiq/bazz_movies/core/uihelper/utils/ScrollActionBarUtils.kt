@@ -23,8 +23,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollAct
 object ScrollActionBarUtils {
 
   /**
-   * Sets up a scroll listener to change the background color of the AppBarLayout and the status bar color
-   * based on the scroll position of the [NestedScrollView].
+   * Sets up a scroll listener to change the background color of the AppBarLayout and the
+   * status bar color based on the scroll position of the [NestedScrollView].
    * This creates a smooth color transition effect when the user scrolls the content.
    *
    * @param window The [Window] where the status bar color will be modified.
@@ -34,7 +34,7 @@ object ScrollActionBarUtils {
   fun Context.scrollActionBarBehavior(
     window: Window,
     appBarLayout: AppBarLayout,
-    nestedScrollView: NestedScrollView
+    nestedScrollView: NestedScrollView,
   ) {
     val fromColor = ContextCompat.getColor(this, android.R.color.transparent)
     val toColor = ContextCompat.getColor(this, gray_1000)
@@ -58,7 +58,7 @@ object ScrollActionBarUtils {
 
         // change status bar color
         setStatusBarColorWithAnimation(window, interpolatedColor)
-      }
+      },
     )
   }
 
@@ -68,10 +68,7 @@ object ScrollActionBarUtils {
    * @param window The [Window] whose status bar color will be animated.
    * @param interpolatedColor The color changes
    */
-  private fun Context.setStatusBarColorWithAnimation(
-    window: Window,
-    interpolatedColor: Int
-  ) {
+  private fun Context.setStatusBarColorWithAnimation(window: Window, interpolatedColor: Int) {
     // set status bar color based on API level
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
       // For Android 14 and below
@@ -87,7 +84,7 @@ object ScrollActionBarUtils {
         setBackgroundColor(interpolatedColor)
         layoutParams = ViewGroup.LayoutParams(
           ViewGroup.LayoutParams.MATCH_PARENT,
-          window.getStatusBarHeight()
+          window.getStatusBarHeight(),
         )
       }
 

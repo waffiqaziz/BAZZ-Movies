@@ -27,7 +27,7 @@ class CastAdapter(private val navigator: INavigator) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(getItem(position))
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 
@@ -43,7 +43,7 @@ class CastAdapter(private val navigator: INavigator) :
             TMDB_IMG_LINK_BACKDROP_W300 + cast.profilePath
           } else {
             ic_no_profile_rounded
-          }
+          },
         )
         .placeholder(ic_no_profile_rounded)
         .transition(withCrossFade())
@@ -63,10 +63,9 @@ class CastAdapter(private val navigator: INavigator) :
     override fun areItemsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean =
       oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean {
-      return oldItem.id == newItem.id &&
+    override fun areContentsTheSame(oldItem: MediaCastItem, newItem: MediaCastItem): Boolean =
+      oldItem.id == newItem.id &&
         oldItem.name == newItem.name &&
         oldItem.character == newItem.character
-    }
   }
 }

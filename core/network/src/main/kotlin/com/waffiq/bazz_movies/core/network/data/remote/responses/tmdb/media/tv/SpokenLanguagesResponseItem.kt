@@ -13,5 +13,5 @@ data class SpokenLanguagesResponseItem(
   val iso6391: String? = null,
 
   @Json(name = "english_name")
-  val englishName: String? = null
+  val englishName: String? = null,
 )

@@ -26,18 +26,18 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
   fragmentArgs: Bundle? = null,
   @StyleRes themeResId: Int = Base_Theme_BAZZ_movies,
   fragmentFactory: FragmentFactory? = null,
-  crossinline action: T.() -> Unit = {}
+  crossinline action: T.() -> Unit = {},
 ): T {
   lateinit var fragmentInstance: T
 
   val startActivityIntent = Intent.makeMainActivity(
     ComponentName(
       ApplicationProvider.getApplicationContext(),
-      HiltTestActivity::class.java
-    )
+      HiltTestActivity::class.java,
+    ),
   ).putExtra(
     "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
-    themeResId
+    themeResId,
   )
 
   ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
@@ -47,7 +47,7 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
 
     val fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
       requireNotNull(T::class.java.classLoader),
-      T::class.java.name
+      T::class.java.name,
     ).apply {
       arguments = fragmentArgs
     }

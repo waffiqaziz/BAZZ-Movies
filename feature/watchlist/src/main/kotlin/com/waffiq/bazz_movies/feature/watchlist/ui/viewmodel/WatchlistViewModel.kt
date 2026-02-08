@@ -50,7 +50,7 @@ class WatchlistViewModel @Inject constructor(
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
       },
-      onError = { onError(it) }
+      onError = { onError(it) },
     )
   }
 
@@ -60,7 +60,7 @@ class WatchlistViewModel @Inject constructor(
       onSuccess = {
         _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
       },
-      onError = { onError(it) }
+      onError = { onError(it) },
     )
   }
 
@@ -71,14 +71,14 @@ class WatchlistViewModel @Inject constructor(
         when (result) {
           FavoriteActionResult.Added -> {
             _snackBarAdded.value = Event(
-              SnackBarUserLoginData(true, title, FavoriteParams(MOVIE_MEDIA_TYPE, id, true), null)
+              SnackBarUserLoginData(true, title, FavoriteParams(MOVIE_MEDIA_TYPE, id, true), null),
             )
           }
 
           FavoriteActionResult.AlreadyInFavorite -> already(title)
         }
       },
-      onError = { onError(it) }
+      onError = { onError(it) },
     )
   }
 
@@ -89,14 +89,14 @@ class WatchlistViewModel @Inject constructor(
         when (result) {
           FavoriteActionResult.Added -> {
             _snackBarAdded.value = Event(
-              SnackBarUserLoginData(true, title, FavoriteParams(TV_MEDIA_TYPE, id, true), null)
+              SnackBarUserLoginData(true, title, FavoriteParams(TV_MEDIA_TYPE, id, true), null),
             )
           }
 
           FavoriteActionResult.AlreadyInFavorite -> already(title)
         }
       },
-      onError = { onError(it) }
+      onError = { onError(it) },
     )
   }
   // endregion NETWORK

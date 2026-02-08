@@ -48,6 +48,7 @@ class AuthenticationViewModel @Inject constructor(
           }
 
           is Outcome.Loading -> _loadingState.value = true
+
           is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
@@ -59,7 +60,11 @@ class AuthenticationViewModel @Inject constructor(
   }
 
   // 2. authorize the request token
-  private fun login(username: String, password: String, requestToken: String) {
+  private fun login(
+    username: String,
+    password: String,
+    requestToken: String,
+  ) {
     viewModelScope.launch {
       authTMDbAccountUseCase.login(username, password, requestToken).collect { outcome ->
         when (outcome) {
@@ -70,6 +75,7 @@ class AuthenticationViewModel @Inject constructor(
           }
 
           is Outcome.Loading -> _loadingState.postValue(true)
+
           is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
@@ -94,6 +100,7 @@ class AuthenticationViewModel @Inject constructor(
           }
 
           is Outcome.Loading -> _loadingState.value = true
+
           is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false
@@ -117,14 +124,15 @@ class AuthenticationViewModel @Inject constructor(
               region = NAN,
               token = sessionId,
               isLogin = true,
-              gravatarHast = outcome.data.avatarItem?.gravatar?.hash,
-              tmdbAvatar = outcome.data.avatarItem?.avatarTMDb?.avatarPath
+              gravatarHash = outcome.data.avatarItem?.gravatar?.hash,
+              tmdbAvatar = outcome.data.avatarItem?.avatarTMDb?.avatarPath,
             )
             _loginState.value = true
             _loadingState.value = false
           }
 
           is Outcome.Loading -> _loadingState.value = true
+
           is Outcome.Error -> {
             _loginState.value = false
             _loadingState.value = false

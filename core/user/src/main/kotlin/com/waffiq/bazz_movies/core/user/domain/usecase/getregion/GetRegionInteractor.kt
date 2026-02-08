@@ -6,9 +6,8 @@ import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetRegionInteractor @Inject constructor(
-  private val getRegionRepository: IUserRepository
-) : GetRegionUseCase {
-  override fun getCountryCode(): Flow<Outcome<CountryIP>> =
-    getRegionRepository.getCountryCode()
+class GetRegionInteractor @Inject constructor(private val getRegionRepository: IUserRepository) :
+  GetRegionUseCase {
+
+  override fun getCountryCode(): Flow<Outcome<CountryIP>> = getRegionRepository.getCountryCode()
 }

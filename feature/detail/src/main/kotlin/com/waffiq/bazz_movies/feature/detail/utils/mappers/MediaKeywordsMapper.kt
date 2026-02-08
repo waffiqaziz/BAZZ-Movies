@@ -21,57 +21,61 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.get
 
 object MediaKeywordsMapper {
 
-  fun TvKeywordsResponse.toMediaKeywords(): MediaKeywords = MediaKeywords(
-    id = id,
-    keywords = keywords?.map { it?.toMediaKeywordsItem() }
-  )
+  fun TvKeywordsResponse.toMediaKeywords(): MediaKeywords =
+    MediaKeywords(
+      id = id,
+      keywords = keywords?.map { it?.toMediaKeywordsItem() },
+    )
 
-  fun MovieKeywordsResponse.toMediaKeywords(): MediaKeywords = MediaKeywords(
-    id = id,
-    keywords = keywords?.map { it?.toMediaKeywordsItem() }
-  )
+  fun MovieKeywordsResponse.toMediaKeywords(): MediaKeywords =
+    MediaKeywords(
+      id = id,
+      keywords = keywords?.map { it?.toMediaKeywordsItem() },
+    )
 
   private fun MediaKeywordsResponseItem.toMediaKeywordsItem(): MediaKeywordsItem =
     MediaKeywordsItem(
       id = id,
-      name = name
+      name = name,
     )
 
   fun TvDetail.toMediaDetail(
     userRegion: String,
     mediaKeywords: MediaKeywords?,
     externalIds: TvExternalIds?,
-  ): MediaDetail = MediaDetail(
-    id = id ?: 0,
-    genre = transformListGenreToJoinString(listGenres),
-    genreId = transformToGenreIDs(listGenres),
-    imdbId = externalIds?.imdbId.orEmpty(),
-    ageRating = getAgeRating(this, userRegion),
-    tmdbScore = getTransformTMDBScore(voteAverage),
-    releaseDateRegion = getReleaseDateRegion(this),
-    status = status,
-    budget = "-",
-    revenue = "-",
-    language = getLanguageName(originalLanguage),
-    keywords = mediaKeywords?.keywords
-  )
+  ): MediaDetail =
+    MediaDetail(
+      id = id ?: 0,
+      genre = transformListGenreToJoinString(listGenres),
+      genreId = transformToGenreIDs(listGenres),
+      imdbId = externalIds?.imdbId.orEmpty(),
+      ageRating = getAgeRating(this, userRegion),
+      tmdbScore = getTransformTMDBScore(voteAverage),
+      releaseDateRegion = getReleaseDateRegion(this),
+      status = status,
+      budget = "-",
+      revenue = "-",
+      language = getLanguageName(originalLanguage),
+      keywords = mediaKeywords?.keywords,
+    )
 
   fun MovieDetail.toMediaDetail(
     releaseDateRegion: ReleaseDateRegion,
     mediaKeywords: MediaKeywords?,
-  ): MediaDetail = MediaDetail(
-    id = id ?: 0,
-    genre = transformListGenreToJoinString(listGenres), // for view
-    genreId = transformToGenreIDs(listGenres),
-    duration = getTransformDuration(runtime),
-    imdbId = imdbId,
-    ageRating = getAgeRating(this, releaseDateRegion.regionRelease),
-    tmdbScore = getTransformTMDBScore(voteAverage),
-    releaseDateRegion = releaseDateRegion,
-    status = status,
-    budget = toUsd(budget),
-    revenue = toUsd(revenue),
-    language = getLanguageName(originalLanguage),
-    keywords = mediaKeywords?.keywords
-  )
+  ): MediaDetail =
+    MediaDetail(
+      id = id ?: 0,
+      genre = transformListGenreToJoinString(listGenres), // for view
+      genreId = transformToGenreIDs(listGenres),
+      duration = getTransformDuration(runtime),
+      imdbId = imdbId,
+      ageRating = getAgeRating(this, releaseDateRegion.regionRelease),
+      tmdbScore = getTransformTMDBScore(voteAverage),
+      releaseDateRegion = releaseDateRegion,
+      status = status,
+      budget = toUsd(budget),
+      revenue = toUsd(revenue),
+      language = getLanguageName(originalLanguage),
+      keywords = mediaKeywords?.keywords,
+    )
 }

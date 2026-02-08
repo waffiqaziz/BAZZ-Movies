@@ -8,6 +8,6 @@ data class UserModelPref(
   val region: String,
   val token: String,
   val isLogin: Boolean,
-  val gravatarHast: String?,
-  val tmdbAvatar: String?
+  val gravatarHash: String?,
+  val tmdbAvatar: String?,
 )

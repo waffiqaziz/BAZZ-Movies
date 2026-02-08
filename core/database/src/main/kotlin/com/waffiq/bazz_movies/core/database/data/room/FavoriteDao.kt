@@ -23,10 +23,28 @@ interface FavoriteDao {
   @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
   fun getWatchlistTv(): Flow<List<FavoriteEntity>>
 
-  @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE mediaId = :id and is_favorited = 1 and mediaType = :mediaType)")
+  @Query(
+    """
+        SELECT EXISTS(
+        SELECT *
+        FROM $TABLE_NAME
+        WHERE mediaId = :id
+        AND is_favorited = 1
+        AND mediaType = :mediaType)
+    """,
+  )
   suspend fun isFavorite(id: Int, mediaType: String): Boolean
 
-  @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE mediaId = :id and is_watchlist = 1 and mediaType = :mediaType)")
+  @Query(
+    """
+        SELECT EXISTS(
+        SELECT *
+        FROM $TABLE_NAME
+        WHERE mediaId = :id
+        AND is_watchlist = 1
+        AND mediaType = :mediaType)
+    """,
+  )
   suspend fun isWatchlist(id: Int, mediaType: String): Boolean
 
   @Query("DELETE FROM $TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
@@ -41,11 +59,16 @@ interface FavoriteDao {
 
   @Query(
     """
-        UPDATE $TABLE_NAME 
-        SET is_favorited = :isFavorite, is_watchlist = :isWatchlist 
+        UPDATE $TABLE_NAME
+        SET is_favorited = :isFavorite, is_watchlist = :isWatchlist
         WHERE mediaType = :mediaType
         AND mediaId = :id
-    """
+    """,
   )
-  suspend fun update(isFavorite: Boolean, isWatchlist: Boolean, id: Int, mediaType: String): Int
+  suspend fun update(
+    isFavorite: Boolean,
+    isWatchlist: Boolean,
+    id: Int,
+    mediaType: String,
+  ): Int
 }

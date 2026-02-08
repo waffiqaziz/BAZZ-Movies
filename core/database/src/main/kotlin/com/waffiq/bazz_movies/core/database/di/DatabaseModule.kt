@@ -25,18 +25,19 @@ class DatabaseModule {
     Room.databaseBuilder(
       context,
       FavoriteDatabase::class.java,
-      "$TABLE_NAME.db"
+      "$TABLE_NAME.db",
     ).addMigrations(getMigrationOneToTwo())
       .build()
 
   // Define the migration from version 1 to version 2
   // update app version from v1.0.7 to v1.0.8 and newer
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun getMigrationOneToTwo(): Migration = object : Migration(1, 2) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-      // Step 1: Create a new table with the correct schema
-      db.execSQL(
-        """
+  fun getMigrationOneToTwo(): Migration =
+    object : Migration(1, 2) {
+      override fun migrate(db: SupportSQLiteDatabase) {
+        // Step 1: Create a new table with the correct schema
+        db.execSQL(
+          """
             CREATE TABLE favorite_new (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 mediaId INTEGER NOT NULL,
@@ -52,12 +53,12 @@ class DatabaseModule {
                 is_favorited INTEGER NOT NULL,
                 is_watchlist INTEGER NOT NULL
             )
-        """.trimIndent()
-      )
+          """.trimIndent(),
+        )
 
-      // Step 2: Copy data from the old table to the new table
-      db.execSQL(
-        """
+        // Step 2: Copy data from the old table to the new table
+        db.execSQL(
+          """
             INSERT INTO favorite_new (id, mediaId, mediaType, genre, backDrop, poster, overview, title, releaseDate, popularity, rating, is_favorited, is_watchlist)
             SELECT id, 
                    mediaId, 
@@ -73,16 +74,16 @@ class DatabaseModule {
                    COALESCE(is_favorited, 0) AS is_favorited, 
                    COALESCE(is_watchlist, 0) AS is_watchlist
             FROM $TABLE_NAME
-        """.trimIndent()
-      )
+          """.trimIndent(),
+        )
 
-      // Step 3: Drop the old table
-      db.execSQL("DROP TABLE $TABLE_NAME")
+        // Step 3: Drop the old table
+        db.execSQL("DROP TABLE $TABLE_NAME")
 
-      // Step 4: Rename the new table to the original table name
-      db.execSQL("ALTER TABLE favorite_new RENAME TO $TABLE_NAME")
+        // Step 4: Rename the new table to the original table name
+        db.execSQL("ALTER TABLE favorite_new RENAME TO $TABLE_NAME")
+      }
     }
-  }
 
   @Provides
   fun provideFavoriteDao(database: FavoriteDatabase): FavoriteDao = database.favoriteDao()

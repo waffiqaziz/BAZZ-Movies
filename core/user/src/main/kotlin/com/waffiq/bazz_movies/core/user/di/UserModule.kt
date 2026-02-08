@@ -17,13 +17,9 @@ interface UserModule {
 
   @Binds
   @ViewModelScoped
-  fun bindUserPrefUseCase(
-    userPrefInteractor: UserPrefInteractor,
-  ): UserPrefUseCase
+  fun bindUserPrefUseCase(userPrefInteractor: UserPrefInteractor): UserPrefUseCase
 
   @Binds
   @ViewModelScoped
-  fun bindGetRegionUseCase(
-    getRegionInteractor: GetRegionInteractor,
-  ): GetRegionUseCase
+  fun bindGetRegionUseCase(getRegionInteractor: GetRegionInteractor): GetRegionUseCase
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetFavoriteTvInteractor @Inject constructor(
-  private val favoriteRepository: IFavoriteRepository
+  private val favoriteRepository: IFavoriteRepository,
 ) : GetFavoriteTvUseCase {
   override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaItem>> =
     favoriteRepository.getFavoriteTv(sessionId)

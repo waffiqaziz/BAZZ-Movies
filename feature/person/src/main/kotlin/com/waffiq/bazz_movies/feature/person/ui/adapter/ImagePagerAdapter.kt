@@ -24,7 +24,7 @@ class ImagePagerAdapter(private val images: List<String>) :
     val imageUrl = images[position]
     holder.bind(imageUrl)
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 

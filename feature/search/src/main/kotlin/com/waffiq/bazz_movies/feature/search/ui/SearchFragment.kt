@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.search.ui
 
 import android.content.res.Configuration
@@ -117,7 +119,7 @@ class SearchFragment : Fragment() {
     // set up fragment result listener
     requireActivity().supportFragmentManager.setFragmentResultListener(
       "open_search_view",
-      viewLifecycleOwner
+      viewLifecycleOwner,
     ) { _, _ ->
       openSearchView()
     }
@@ -146,7 +148,7 @@ class SearchFragment : Fragment() {
 
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             searchEditText.textCursorDrawable?.setTint(
-              ContextCompat.getColor(requireContext(), yellow)
+              ContextCompat.getColor(requireContext(), yellow),
             )
           }
           searchView.maxWidth = Int.MAX_VALUE
@@ -195,15 +197,14 @@ class SearchFragment : Fragment() {
           }
         }
 
-        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-          return when (menuItem.itemId) {
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+          when (menuItem.itemId) {
             action_search -> true
             else -> false
           }
-        }
       },
       viewLifecycleOwner,
-      Lifecycle.State.RESUMED
+      Lifecycle.State.RESUMED,
     )
   }
 

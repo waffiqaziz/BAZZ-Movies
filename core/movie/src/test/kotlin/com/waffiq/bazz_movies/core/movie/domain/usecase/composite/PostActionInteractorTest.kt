@@ -40,7 +40,7 @@ class PostActionInteractorTest {
           region = "id",
           token = "token",
           isLogin = true,
-          gravatarHast = "hash",
+          gravatarHash = "hash",
           tmdbAvatar = "tmdb"
         )
       )

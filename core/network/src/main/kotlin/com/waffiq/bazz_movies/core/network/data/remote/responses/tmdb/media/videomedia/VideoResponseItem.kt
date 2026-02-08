@@ -34,5 +34,5 @@ data class VideoResponseItem(
   val iso6391: String? = null,
 
   @Json(name = "key")
-  val key: String? = null
+  val key: String? = null,
 )

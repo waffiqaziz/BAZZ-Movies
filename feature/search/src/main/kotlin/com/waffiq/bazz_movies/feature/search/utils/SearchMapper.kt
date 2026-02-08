@@ -7,30 +7,31 @@ import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 
 object SearchMapper {
-  fun MultiSearchResponseItem.toMultiSearchItem() = MultiSearchItem(
-    mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
-    listKnownFor = listKnownFor?.map { it.toKnownForItem() },
-    knownForDepartment = knownForDepartment,
-    popularity = popularity ?: 0.0,
-    name = name,
-    profilePath = profilePath,
-    id = id ?: 0,
-    adult = adult == true,
-    overview = overview,
-    originalLanguage = originalLanguage,
-    originalTitle = originalTitle,
-    video = video == true,
-    title = title,
-    listGenreIds = listGenreIds,
-    posterPath = posterPath,
-    backdropPath = backdropPath,
-    releaseDate = releaseDate,
-    voteAverage = voteAverage ?: 0.0,
-    voteCount = voteCount ?: 0.0,
-    firstAirDate = firstAirDate,
-    listOriginCountry = listOriginCountry,
-    originalName = originalName
-  )
+  fun MultiSearchResponseItem.toMultiSearchItem() =
+    MultiSearchItem(
+      mediaType = mediaType ?: MOVIE_MEDIA_TYPE,
+      listKnownFor = listKnownFor?.map { it.toKnownForItem() },
+      knownForDepartment = knownForDepartment,
+      popularity = popularity ?: 0.0,
+      name = name,
+      profilePath = profilePath,
+      id = id ?: 0,
+      adult = adult == true,
+      overview = overview,
+      originalLanguage = originalLanguage,
+      originalTitle = originalTitle,
+      video = video == true,
+      title = title,
+      listGenreIds = listGenreIds,
+      posterPath = posterPath,
+      backdropPath = backdropPath,
+      releaseDate = releaseDate,
+      voteAverage = voteAverage ?: 0.0,
+      voteCount = voteCount ?: 0.0,
+      firstAirDate = firstAirDate,
+      listOriginCountry = listOriginCountry,
+      originalName = originalName,
+    )
 
   private fun KnownForItemResponse.toKnownForItem() =
     KnownForItem(
@@ -52,6 +53,6 @@ object SearchMapper {
       firstAirDate = firstAirDate,
       originCountry = originCountry,
       originalName = originalName,
-      name = name
+      name = name,
     )
 }

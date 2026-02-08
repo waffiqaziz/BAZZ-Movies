@@ -45,7 +45,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listItemDB[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 
@@ -68,7 +68,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
             TMDB_IMG_LINK_POSTER_W185 + fav.poster
           } else {
             ic_backdrop_error
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_search)
         .transition(withCrossFade())
@@ -88,7 +88,7 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
         title = fav.title,
         originalTitle = fav.title,
         mediaType = fav.mediaType,
-        id = fav.mediaId
+        id = fav.mediaId,
       )
 
       binding.containerResult.setOnClickListener {
@@ -97,10 +97,8 @@ class FavoriteAdapterDB(private val navigator: INavigator) :
     }
   }
 
-  class DiffCallback(
-    private val oldList: List<Favorite>,
-    private val newList: List<Favorite>
-  ) : DiffUtil.Callback() {
+  class DiffCallback(private val oldList: List<Favorite>, private val newList: List<Favorite>) :
+    DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size
 

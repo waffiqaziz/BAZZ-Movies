@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(
         binding.layoutBackground.bgAlpha,
-        ANIM_DURATION
+        ANIM_DURATION,
       )
       binding.btnLogin.isEnabled = true
       binding.tvGuest.isEnabled = true
@@ -175,20 +175,19 @@ class LoginActivity : AppCompatActivity() {
           region = NAN,
           token = NAN,
           isLogin = true,
-          gravatarHast = null,
-          tmdbAvatar = null
-        )
+          gravatarHash = null,
+          tmdbAvatar = null,
+        ),
       )
       goToMainActivity(isGuest = true)
     }
   }
 
-  private fun formNotEmpty(): Boolean {
-    return binding.edUsername.text.isNotEmpty() &&
+  private fun formNotEmpty(): Boolean =
+    binding.edUsername.text.isNotEmpty() &&
       binding.edUsername.text.isNotBlank() &&
       binding.edPass.text.isNotEmpty() &&
       binding.edPass.text.isNotBlank()
-  }
 
   private fun goToMainActivity(isGuest: Boolean) {
     navigator.openMainActivity(this)
@@ -199,8 +198,8 @@ class LoginActivity : AppCompatActivity() {
           login_as_guest_successful
         } else {
           login_as_user_successful
-        }
-      )
+        },
+      ),
     )
     finishAffinity()
   }
@@ -210,15 +209,15 @@ class LoginActivity : AppCompatActivity() {
       binding.progressBar.isVisible = it
     }
 
-    /**
-     *  login steps
+    /*
+     * login steps
      * 1. Create a new request token
      * 2. Get the user to authorize the request token
      * 3. Create a new session id with the authorized request token
      */
     authenticationViewModel.userLogin(
       binding.edUsername.text.toString(),
-      binding.edPass.text.toString()
+      binding.edPass.text.toString(),
     )
   }
 
@@ -226,18 +225,16 @@ class LoginActivity : AppCompatActivity() {
     val spannableStringBuilder = SpannableStringBuilder(text)
     val typeface = ResourcesCompat.getFont(
       this,
-      nunito_sans_regular
+      nunito_sans_regular,
     )
     val customTypefaceSpan = typeface?.let {
-      CustomTypefaceSpan(
-        it
-      )
+      CustomTypefaceSpan(it)
     }
     spannableStringBuilder.setSpan(
       customTypefaceSpan,
       0,
       text.length,
-      SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+      SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE,
     )
     return spannableStringBuilder
   }

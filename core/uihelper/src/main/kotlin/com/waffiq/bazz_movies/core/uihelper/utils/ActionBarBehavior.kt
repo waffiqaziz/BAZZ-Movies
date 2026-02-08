@@ -7,11 +7,11 @@ import androidx.core.view.updateLayoutParams
 import com.google.android.material.appbar.AppBarLayout
 
 /**
- * A utility object that provides functions for modifying the appearance and behavior of the status bar
- * and handling app bar layout in an Android application.
+ * A utility object that provides functions for modifying the appearance and behavior status bar
+ * and handling appbar layout.
  *
  * This object includes:
- * - [handleOverHeightAppBar], to adjust the app bar layout to handle system insets, ensuring proper
+ * - [handleOverHeightAppBar], to adjust the appbar layout to handle system insets, ensuring proper
  *   display on different device configurations.
  */
 object ActionBarBehavior {

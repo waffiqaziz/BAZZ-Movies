@@ -39,8 +39,8 @@ object FavWatchlistHelper {
 
   /**
    * Handles the paging load state for a PagingDataAdapter.
-   * Based on the load state, it shows or hides the progress bar, recycler view, error view, and empty view.
-   * The function listens to changes in the load state and updates the UI accordingly.
+   * Shows or hides the progress bar, recycler view, error view, and empty view.
+   * The function listens to changes in the load state and updates the UI.
    *
    * - If the data is loading, it shows the progress bar and the recycler view.
    * - If an error occurs during loading, it hides the progress bar and shows the error view.
@@ -53,7 +53,7 @@ object FavWatchlistHelper {
    * @param progressBar The `ProgressBar` that shows when data is loading.
    * @param errorView The view that shows when an error occurs.
    * @param emptyView The view that shows when no data is available.
-   * @param onError A callback function to handle errors, passing the error message inside an `Event`.
+   * @param onError Handle an errors, passing the error message inside an `Event`.
    */
   fun LifecycleOwner.handlePagingLoadState(
     adapterPaging: PagingDataAdapter<*, *>,
@@ -120,7 +120,7 @@ object FavWatchlistHelper {
     flow: Flow<Outcome<T>>,
     onSuccess: (T) -> Unit,
     onError: (String) -> Unit,
-    onLoading: (() -> Unit)? = null
+    onLoading: (() -> Unit)? = null,
   ) {
     viewModelScope.launch {
       flow.collect { outcome ->

@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface FavoriteRepositoryModule {
 
   @Binds
-  fun bindFavoriteRepository(
-    favoriteRepository: FavoriteRepositoryImpl,
-  ): IFavoriteRepository
+  fun bindFavoriteRepository(favoriteRepository: FavoriteRepositoryImpl): IFavoriteRepository
 }

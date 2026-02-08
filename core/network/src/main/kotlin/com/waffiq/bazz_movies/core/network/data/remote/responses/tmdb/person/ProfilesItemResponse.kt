@@ -25,5 +25,5 @@ data class ProfilesItemResponse(
   val voteCount: Int? = null,
 
   @Json(name = "height")
-  val height: Int? = null
+  val height: Int? = null,
 )

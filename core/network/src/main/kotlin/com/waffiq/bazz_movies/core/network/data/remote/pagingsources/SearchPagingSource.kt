@@ -8,13 +8,11 @@ import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_I
 import retrofit2.HttpException
 import java.io.IOException
 
-class SearchPagingSource(
-  private val apiService: TMDBApiService,
-  private val query: String,
-) : PagingSource<Int, MultiSearchResponseItem>() {
+class SearchPagingSource(private val apiService: TMDBApiService, private val query: String) :
+  PagingSource<Int, MultiSearchResponseItem>() {
 
-  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MultiSearchResponseItem> {
-    return try {
+  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MultiSearchResponseItem> =
+    try {
       val position = params.key ?: INITIAL_PAGE_INDEX
       val responseData = apiService.search(query, position).results
 
@@ -22,7 +20,7 @@ class SearchPagingSource(
         LoadResult.Page(
           data = responseData,
           prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
-          nextKey = if (responseData.isEmpty()) null else position + 1
+          nextKey = if (responseData.isEmpty()) null else position + 1,
         )
       } else {
         LoadResult.Error(Exception("Response data is null"))
@@ -32,7 +30,6 @@ class SearchPagingSource(
     } catch (exception: HttpException) {
       LoadResult.Error(exception)
     }
-  }
 
   override fun getRefreshKey(state: PagingState<Int, MultiSearchResponseItem>): Int? =
     state.anchorPosition?.let { anchorPosition ->

@@ -15,7 +15,5 @@ fun interface SearchUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  fun bindMultiSearchUseCase(
-    multiSearchInteractor: MultiSearchInteractor,
-  ): MultiSearchUseCase
+  fun bindMultiSearchUseCase(multiSearchInteractor: MultiSearchInteractor): MultiSearchUseCase
 }

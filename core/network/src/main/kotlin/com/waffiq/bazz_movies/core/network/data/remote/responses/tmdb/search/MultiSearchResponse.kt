@@ -16,5 +16,5 @@ data class MultiSearchResponse(
   val results: List<MultiSearchResponseItem>? = null,
 
   @Json(name = "total_results")
-  val totalResults: Int? = null
+  val totalResults: Int? = null,
 )

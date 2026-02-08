@@ -12,9 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource
-) : IWatchlistRepository {
+class WatchlistRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  IWatchlistRepository {
 
   override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaItem>> =
     movieDataSource.getWatchlistMovies(sessionId).map { pagingData ->

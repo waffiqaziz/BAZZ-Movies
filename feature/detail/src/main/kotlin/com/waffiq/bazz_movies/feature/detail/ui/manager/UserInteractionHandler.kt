@@ -54,7 +54,7 @@ class UserInteractionHandler(
   private var watchlist = false
   private var userState: UserAuthState = UserAuthState.NotInitialized
 
-  /** Initializes the UserInteractionHandler with necessary setup.
+  /* Initializes the UserInteractionHandler with necessary setup.
    * This includes setting up tags for buttons, user state, click listeners,
    * and observing favorite/watchlist post results.
    *
@@ -128,13 +128,13 @@ class UserInteractionHandler(
           button = binding.btnFavorite,
           isActivated = it.favorite,
           iconActive = ic_hearth_selected,
-          iconInactive = ic_hearth
+          iconInactive = ic_hearth,
         )
         changeBtnAction(
           button = binding.btnWatchlist,
           isActivated = it.watchlist,
           iconActive = ic_watchlist_filled,
-          iconInactive = ic_watchlist_outlined
+          iconInactive = ic_watchlist_outlined,
         )
       }
     }
@@ -151,7 +151,7 @@ class UserInteractionHandler(
         button = binding.btnFavorite,
         isActivated = isFav,
         iconActive = ic_hearth_selected,
-        iconInactive = ic_hearth
+        iconInactive = ic_hearth,
       )
       favorite = isFav
     }
@@ -162,7 +162,7 @@ class UserInteractionHandler(
         button = binding.btnWatchlist,
         isActivated = isWatch,
         iconActive = ic_watchlist_filled,
-        iconInactive = ic_watchlist_outlined
+        iconInactive = ic_watchlist_outlined,
       )
       watchlist = isWatch
     }
@@ -294,7 +294,7 @@ class UserInteractionHandler(
       val fav = FavoriteParams(
         dataExtra.mediaType,
         dataExtra.id,
-        !state
+        !state,
       )
       detailViewModel.postFavorite(fav)
     } else {
@@ -302,7 +302,7 @@ class UserInteractionHandler(
       val wtc = WatchlistParams(
         dataExtra.mediaType,
         dataExtra.id,
-        !state
+        !state,
       )
       detailViewModel.postWatchlist(wtc)
     }

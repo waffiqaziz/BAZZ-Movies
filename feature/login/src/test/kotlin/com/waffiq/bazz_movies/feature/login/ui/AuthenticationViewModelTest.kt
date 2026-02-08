@@ -330,7 +330,7 @@ class AuthenticationViewModelTest {
     assertThat(loadingStates).containsExactly(false)
     assertEquals(0, userModels[0]?.userId)
     assertNull(userModels[0]?.tmdbAvatar)
-    assertNull(userModels[0]?.gravatarHast)
+    assertNull(userModels[0]?.gravatarHash)
 
     verifyFullLoginSequence()
   }

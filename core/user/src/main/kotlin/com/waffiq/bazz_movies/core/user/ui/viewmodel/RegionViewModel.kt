@@ -17,9 +17,8 @@ import javax.inject.Inject
  * and country is used to get country code from country.is, network operation
  */
 @HiltViewModel
-class RegionViewModel @Inject constructor(
-  private val getRegionUseCase: GetRegionUseCase,
-) : ViewModel() {
+class RegionViewModel @Inject constructor(private val getRegionUseCase: GetRegionUseCase) :
+  ViewModel() {
   private val _countryCode = MutableLiveData<String>()
   val countryCode: LiveData<String> = _countryCode
 

@@ -9,5 +9,5 @@ data class CreateSessionResponse(
   val success: Boolean,
 
   @Json(name = "session_id")
-  val sessionId: String
+  val sessionId: String,
 )

@@ -13,5 +13,5 @@ data class LastEpisodeToAir(
   val runtime: Int? = null,
   val id: Int? = null,
   val stillPath: String? = null,
-  val voteCount: Int? = null
+  val voteCount: Int? = null,
 )
