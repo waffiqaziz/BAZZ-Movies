@@ -1,4 +1,4 @@
-@file:Suppress("BackingPropertyNaming")@file:Suppress("BackingPropertyNaming")
+@file:Suppress("BackingPropertyNaming")
 
 package com.waffiq.bazz_movies.feature.search.ui
 
