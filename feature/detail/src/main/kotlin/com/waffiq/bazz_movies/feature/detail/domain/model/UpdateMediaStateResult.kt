@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
 /**
+
  * A model class representing the state of operations related to the watchlist and favorite
  * features on the detail page.
  *
