@@ -17,9 +17,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PersonRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource,
-) : IPersonRepository {
+class PersonRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  IPersonRepository {
   override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
     movieDataSource.getPersonDetails(id).toOutcome { it.toDetailPerson() }
 

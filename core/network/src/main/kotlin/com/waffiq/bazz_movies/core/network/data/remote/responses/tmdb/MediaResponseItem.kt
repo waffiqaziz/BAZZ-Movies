@@ -61,5 +61,5 @@ data class MediaResponseItem(
   val releaseDate: String? = null,
 
   @Json(name = "origin_country")
-  val originCountry: List<String>? = null
+  val originCountry: List<String>? = null,
 )

@@ -5,5 +5,5 @@ import com.waffiq.bazz_movies.core.domain.MediaCastItem
 data class MediaCredits(
   val cast: List<MediaCastItem>,
   val id: Int? = null,
-  val crew: List<MediaCrewItem>
+  val crew: List<MediaCrewItem>,
 )

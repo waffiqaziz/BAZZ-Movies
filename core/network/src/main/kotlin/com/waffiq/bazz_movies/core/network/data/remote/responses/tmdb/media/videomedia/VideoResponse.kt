@@ -10,5 +10,5 @@ data class VideoResponse(
   val id: Int? = null,
 
   @Json(name = "results")
-  val results: List<VideoResponseItem>
+  val results: List<VideoResponseItem>,
 )

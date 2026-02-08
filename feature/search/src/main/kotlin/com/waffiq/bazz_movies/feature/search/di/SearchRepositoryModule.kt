@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface SearchRepositoryModule {
 
   @Binds
-  fun bindDetailRepository(
-    searchRepositoryImpl: SearchRepositoryImpl,
-  ): ISearchRepository
+  fun bindDetailRepository(searchRepositoryImpl: SearchRepositoryImpl): ISearchRepository
 }

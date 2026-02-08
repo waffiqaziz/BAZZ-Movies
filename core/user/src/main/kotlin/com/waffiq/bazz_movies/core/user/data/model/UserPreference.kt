@@ -40,7 +40,7 @@ class UserPreference @Inject constructor(private val dataStore: DataStore<Prefer
         it[TOKEN_KEY].orEmpty(),
         it[STATE_KEY] == true,
         it[GRAVATAR_KEY].orEmpty(),
-        it[TMDB_AVATAR_KEY].orEmpty()
+        it[TMDB_AVATAR_KEY].orEmpty(),
       )
     }
 

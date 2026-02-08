@@ -9,5 +9,5 @@ data class TvExternalIds(
   val twitterId: String? = null,
   val tvrageId: Int? = null,
   val facebookId: String? = null,
-  val instagramId: String? = null
+  val instagramId: String? = null,
 )

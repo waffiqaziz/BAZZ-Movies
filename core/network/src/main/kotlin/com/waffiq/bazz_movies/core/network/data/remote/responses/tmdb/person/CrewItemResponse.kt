@@ -58,5 +58,5 @@ data class CrewItemResponse(
   val job: String? = null,
 
   @Json(name = "vote_count")
-  val voteCount: Int? = null
+  val voteCount: Int? = null,
 )

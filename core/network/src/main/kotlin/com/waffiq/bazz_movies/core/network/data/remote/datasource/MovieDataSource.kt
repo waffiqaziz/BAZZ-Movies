@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@Suppress("TooManyFunctions")
 @Singleton
 class MovieDataSource @Inject constructor(
   private val tmdbApiService: TMDBApiService,
@@ -51,7 +52,7 @@ class MovieDataSource @Inject constructor(
   ): Pager<Int, MediaResponseItem> =
     Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
-      pagingSourceFactory = { GenericPagingSource(apiCall) }
+      pagingSourceFactory = { GenericPagingSource(apiCall) },
     )
 
   // region PAGING FUNCTION
@@ -140,7 +141,7 @@ class MovieDataSource @Inject constructor(
   override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> =
     Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),
-      pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) }
+      pagingSourceFactory = { SearchPagingSource(tmdbApiService, query) },
     ).flow.flowOn(ioDispatcher)
   // endregion PAGING FUNCTION
 
@@ -148,67 +149,61 @@ class MovieDataSource @Inject constructor(
   override fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getMovieCredits(movieId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getTvCredits(tvId: Int): Flow<NetworkResult<MediaCreditsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvCredits(tvId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>> =
     executeApiCall(
       apiCall = { omDbApiService.getOMDbDetails(imdbId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getMovieVideo(movieId: Int): Flow<NetworkResult<VideoResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getMovieVideo(movieId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getTvVideo(tvId: Int): Flow<NetworkResult<VideoResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvVideo(tvId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getMovieDetail(id: Int): Flow<NetworkResult<DetailMovieResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getMovieDetail(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getTvDetail(id: Int): Flow<NetworkResult<DetailTvResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvDetail(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvExternalIds(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
-  override fun getMovieState(
-    sessionId: String,
-    id: Int,
-  ): Flow<NetworkResult<MediaStateResponse>> =
+  override fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getMovieState(id, sessionId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
-  override fun getTvState(
-    sessionId: String,
-    id: Int,
-  ): Flow<NetworkResult<MediaStateResponse>> =
+  override fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvState(id, sessionId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getWatchProviders(
@@ -217,19 +212,19 @@ class MovieDataSource @Inject constructor(
   ): Flow<NetworkResult<WatchProvidersResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getWatchProviders(params, id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getMovieKeywords(movieId: String): Flow<NetworkResult<MovieKeywordsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getMovieKeywords(movieId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getTvKeywords(tvId) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
   // endregion DETAIL
 
@@ -237,25 +232,25 @@ class MovieDataSource @Inject constructor(
   override fun getPersonDetails(id: Int): Flow<NetworkResult<DetailPersonResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getPersonDetails(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getPersonImages(id: Int): Flow<NetworkResult<ImagePersonResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getPersonImages(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getPersonCredits(id: Int): Flow<NetworkResult<CombinedCreditResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getPersonCredits(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun getPersonExternalIds(id: Int): Flow<NetworkResult<ExternalIDPersonResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.getPersonExternalIds(id) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun postFavorite(
@@ -265,7 +260,7 @@ class MovieDataSource @Inject constructor(
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun postWatchlist(
@@ -275,7 +270,7 @@ class MovieDataSource @Inject constructor(
   ): Flow<NetworkResult<PostFavoriteWatchlistResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.postWatchlistTMDB(userId, sessionId, wtc) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun postTvRate(
@@ -285,7 +280,7 @@ class MovieDataSource @Inject constructor(
   ): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.postTvRate(tvId, sessionId, RatingRequest(rating)) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
 
   override fun postMovieRate(
@@ -295,7 +290,7 @@ class MovieDataSource @Inject constructor(
   ): Flow<NetworkResult<PostResponse>> =
     executeApiCall(
       apiCall = { tmdbApiService.postMovieRate(movieId, sessionId, RatingRequest(rating)) },
-      ioDispatcher = ioDispatcher
+      ioDispatcher = ioDispatcher,
     )
   // endregion PERSON
 

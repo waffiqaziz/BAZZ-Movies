@@ -11,15 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserPreferenceViewModel @Inject constructor(
-  private val userPrefUseCase: UserPrefUseCase,
-) : ViewModel() {
+class UserPreferenceViewModel @Inject constructor(private val userPrefUseCase: UserPrefUseCase) :
+  ViewModel() {
 
-  fun getUserPref(): LiveData<UserModel> =
-    userPrefUseCase.getUser().asLiveData()
+  fun getUserPref(): LiveData<UserModel> = userPrefUseCase.getUser().asLiveData()
 
-  fun getUserRegionPref(): LiveData<String> =
-    userPrefUseCase.getUserRegionPref().asLiveData()
+  fun getUserRegionPref(): LiveData<String> = userPrefUseCase.getUserRegionPref().asLiveData()
 
   fun saveUserPref(userModel: UserModel) {
     viewModelScope.launch { userPrefUseCase.saveUserPref(userModel) }

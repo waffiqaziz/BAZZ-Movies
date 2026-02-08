@@ -12,10 +12,7 @@ interface GetMovieDetailUseCase {
   fun getMovieDetail(movieId: Int, userRegion: String): Flow<Outcome<MediaDetail>>
   fun getMovieVideoLinks(movieId: Int): Flow<Outcome<String>>
   fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
-  fun getMovieWatchProviders(
-    countryCode: String,
-    movieId: Int,
-  ): Flow<Outcome<WatchProvidersItem>>
+  fun getMovieWatchProviders(countryCode: String, movieId: Int): Flow<Outcome<WatchProvidersItem>>
 
   fun getMovieRecommendationPagingData(movieId: Int): Flow<PagingData<MediaItem>>
 }

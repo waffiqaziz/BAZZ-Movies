@@ -25,13 +25,12 @@ interface LocalDataSourceInterface {
     isFavorite: Boolean,
     isWatchlist: Boolean,
     id: Int,
-    mediaType: String
+    mediaType: String,
   ): DbResult<Int>
 
-  suspend fun <T> executeDbOperation(
-    operation: suspend () -> T
-  ): DbResult<T> {
-    return try {
+  @Suppress("TooGenericExceptionCaught")
+  suspend fun <T> executeDbOperation(operation: suspend () -> T): DbResult<T> =
+    try {
       // Directly execute the Room operation
       DbResult.Success(operation())
     } catch (e: SQLiteConstraintException) {
@@ -50,5 +49,4 @@ interface LocalDataSourceInterface {
       Log.e("DatabaseError", "Unknown error: ${e.message}")
       DbResult.Error("Unknown error")
     }
-  }
 }

@@ -15,18 +15,15 @@ import com.waffiq.bazz_movies.feature.watchlist.ui.fragment.WatchlistChildFragme
  * @param fragmentManager manager used to handle fragment transactions.
  * @param lifecycle lifecycle tied to the pager's hosting component.
  */
-class WatchlistViewPagerAdapter(
-  fragmentManager: FragmentManager,
-  lifecycle: Lifecycle,
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+class WatchlistViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+  FragmentStateAdapter(fragmentManager, lifecycle) {
 
   override fun getItemCount(): Int = 2
 
-  override fun createFragment(position: Int): Fragment {
-    return when (position) {
+  override fun createFragment(position: Int): Fragment =
+    when (position) {
       0 -> WatchlistChildFragment.newInstance(MOVIE_MEDIA_TYPE)
       1 -> WatchlistChildFragment.newInstance(TV_MEDIA_TYPE)
       else -> error("Invalid position: $position")
     }
-  }
 }

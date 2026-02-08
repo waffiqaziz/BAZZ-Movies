@@ -7,11 +7,7 @@ import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import kotlinx.coroutines.flow.Flow
 
 interface PostActionUseCase {
-  fun postWatchlistWithAuth(
-    wtc: WatchlistParams,
-  ): Flow<Outcome<PostFavoriteWatchlist>>
+  fun postWatchlistWithAuth(wtc: WatchlistParams): Flow<Outcome<PostFavoriteWatchlist>>
 
-  fun postFavoriteWithAuth(
-    fav: FavoriteParams
-  ): Flow<Outcome<PostFavoriteWatchlist>>
+  fun postFavoriteWithAuth(fav: FavoriteParams): Flow<Outcome<PostFavoriteWatchlist>>
 }

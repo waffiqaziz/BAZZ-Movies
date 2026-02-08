@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface WatchlistRepositoryModule {
 
   @Binds
-  fun bindWatchlistRepository(
-    watchlistRepository: WatchlistRepositoryImpl,
-  ): IWatchlistRepository
+  fun bindWatchlistRepository(watchlistRepository: WatchlistRepositoryImpl): IWatchlistRepository
 }

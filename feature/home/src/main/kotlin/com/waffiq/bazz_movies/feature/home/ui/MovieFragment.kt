@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.home.ui
 
 import android.os.Bundle
@@ -158,7 +160,7 @@ class MovieFragment : Fragment() {
           showView(topRatedAdapter.itemCount > 0)
           mSnackbar = snackbar.showSnackbarWarning(error)
         }
-      }
+      },
     )
 
     // Observe ViewModel data and submit to adapters
@@ -172,13 +174,13 @@ class MovieFragment : Fragment() {
       nowPlayingAdapter,
       binding.rvNowPlaying,
       getString(no_movies_currently_playing, getCountryDisplayName(region)),
-      binding.layoutNoPlaying
+      binding.layoutNoPlaying,
     )
     viewLifecycleOwner.handleLoadState(
       upComingAdapter,
       binding.rvUpcoming,
       getString(no_upcoming_movies, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming
+      binding.layoutNoUpcoming,
     )
   }
 
@@ -189,7 +191,7 @@ class MovieFragment : Fragment() {
       popularAdapter,
       nowPlayingAdapter,
       upComingAdapter,
-      topRatedAdapter
+      topRatedAdapter,
     )
 
     // Set up retry button
@@ -198,7 +200,7 @@ class MovieFragment : Fragment() {
       popularAdapter,
       nowPlayingAdapter,
       upComingAdapter,
-      topRatedAdapter
+      topRatedAdapter,
     )
   }
 

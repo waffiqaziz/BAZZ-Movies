@@ -11,5 +11,5 @@ data class MediaCrewItem(
   val id: Int? = null,
   val adult: Boolean? = null,
   val department: String? = null,
-  val job: String? = null
+  val job: String? = null,
 )

@@ -16,8 +16,7 @@ class AuthTMDbAccountInteractor @Inject constructor(
     username: String,
     pass: String,
     sessionId: String,
-  ): Flow<Outcome<Authentication>> =
-    authTMDbAccountRepository.login(username, pass, sessionId)
+  ): Flow<Outcome<Authentication>> = authTMDbAccountRepository.login(username, pass, sessionId)
 
   override fun createToken(): Flow<Outcome<Authentication>> =
     authTMDbAccountRepository.createToken()

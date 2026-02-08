@@ -23,8 +23,13 @@ object PagingLoadStateHelper {
   fun pagingErrorHandling(error: Throwable): String =
     when (error) {
       is SocketTimeoutException -> "Connection timed out. Please try again."
-      is UnknownHostException -> "Unable to resolve server hostname. Please check your internet connection."
+
+      is UnknownHostException -> {
+        "Unable to resolve server hostname. Please check your internet connection."
+      }
+
       is IOException -> "Please check your network connection"
+
       else -> "Something went wrong"
     }
 

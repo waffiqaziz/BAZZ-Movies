@@ -42,7 +42,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(listCast[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
 
     // on click listener to open image inside dialog
@@ -51,7 +51,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
         position,
         listCast.map { profilesItem ->
           TMDB_IMG_LINK_POSTER_W1280 + profilesItem.filePath.orEmpty()
-        }
+        },
       )
     }
   }
@@ -73,7 +73,7 @@ class ImagePersonAdapter(private val onItemClick: (Int, List<String>) -> Unit) :
             TMDB_IMG_LINK_POSTER_W185 + cast.filePath
           } else {
             ic_poster_error
-          }
+          },
         )
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())

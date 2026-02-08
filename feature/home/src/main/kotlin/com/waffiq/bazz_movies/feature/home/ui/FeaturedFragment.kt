@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.home.ui
 
 import android.os.Bundle
@@ -88,7 +90,7 @@ class FeaturedFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
 
     setupRecyclerViewsWithSnap(
-      listOf(binding.rvUpcoming, binding.rvPlayingNow, binding.rvTrending)
+      listOf(binding.rvUpcoming, binding.rvPlayingNow, binding.rvTrending),
     )
 
     showShimmer()
@@ -167,7 +169,7 @@ class FeaturedFragment : Fragment() {
           showView(adapterTrending.itemCount > 0)
           mSnackbar = snackbar.showSnackbarWarning(error)
         }
-      }
+      },
     )
 
     // Observe ViewModel data and submit to adapters
@@ -180,19 +182,19 @@ class FeaturedFragment : Fragment() {
       adapterPlayingNow,
       binding.rvPlayingNow,
       getString(no_movies_currently_playing, getCountryDisplayName(region)),
-      binding.layoutNoPlaying
+      binding.layoutNoPlaying,
     )
     viewLifecycleOwner.handleLoadState(
       adapterUpcoming,
       binding.rvUpcoming,
       getString(no_upcoming_movies, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming
+      binding.layoutNoUpcoming,
     )
     viewLifecycleOwner.handleLoadState(
       adapterTrending,
       binding.rvTrending,
       getString(no_trending, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming
+      binding.layoutNoUpcoming,
     )
 
     // Set up swipe-to-refresh
@@ -200,7 +202,7 @@ class FeaturedFragment : Fragment() {
       binding.swipeRefresh,
       adapterTrending,
       adapterPlayingNow,
-      adapterUpcoming
+      adapterUpcoming,
     )
     binding.illustrationError
 
@@ -209,7 +211,7 @@ class FeaturedFragment : Fragment() {
       binding.illustrationError,
       adapterTrending,
       adapterPlayingNow,
-      adapterUpcoming
+      adapterUpcoming,
     )
   }
 

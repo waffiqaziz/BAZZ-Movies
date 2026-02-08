@@ -15,26 +15,26 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetTvDetailInteractor @Inject constructor(
-  private val detailRepository: IDetailRepository,
-) : GetTvDetailUseCase {
+class GetTvDetailInteractor @Inject constructor(private val detailRepository: IDetailRepository) :
+  GetTvDetailUseCase {
 
   override fun getTvDetail(tvId: Int, userRegion: String): Flow<Outcome<MediaDetail>> =
     combine(
       detailRepository.getTvDetail(tvId),
       detailRepository.getTvKeywords(tvId.toString()),
-      detailRepository.getTvExternalIds(tvId)
+      detailRepository.getTvExternalIds(tvId),
     ) { detail, keywords, externalIds ->
       when (detail) {
         is Outcome.Success -> Outcome.Success(
           detail.data.toMediaDetail(
             userRegion = userRegion,
             mediaKeywords = (keywords as? Outcome.Success)?.data,
-            externalIds = (externalIds as? Outcome.Success)?.data
-          )
+            externalIds = (externalIds as? Outcome.Success)?.data,
+          ),
         )
 
         is Outcome.Error -> Outcome.Error(detail.message)
+
         is Outcome.Loading -> Outcome.Loading
       }
     }
@@ -70,6 +70,7 @@ class GetTvDetailInteractor @Inject constructor(
         }
 
         is Outcome.Error -> Outcome.Error(outcome.message)
+
         is Outcome.Loading -> Outcome.Loading
       }
     }

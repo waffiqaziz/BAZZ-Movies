@@ -12,15 +12,13 @@ import kotlinx.coroutines.launch
 
 /**
  * Utility object providing a function to collect and submit paging data to a PagingDataAdapter.
- * This function is designed to be used within a Fragment to easily handle the collection of paging data
- * and update the adapter with the latest data.
  */
 object FlowUtils {
 
   /**
    * Collects paging data from a provided Flow and submits it to a PagingDataAdapter.
-   * This function automatically handles lifecycle states, ensuring that data is collected and submitted
-   * when the Fragment's view lifecycle is in the CREATED state.
+   * This function automatically handles lifecycle states, ensuring that data is collected and
+   * submitted when the Fragment's view lifecycle is in the CREATED state.
    *
    * @param fragment The Fragment that will collect the data and update the UI.
    * @param flowProvider A lambda that provides the Flow of PagingData to be collected.
@@ -29,7 +27,7 @@ object FlowUtils {
   fun <T : Any> collectAndSubmitData(
     fragment: Fragment,
     flowProvider: () -> Flow<PagingData<T>>,
-    adapter: PagingDataAdapter<T, *>
+    adapter: PagingDataAdapter<T, *>,
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
       fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {

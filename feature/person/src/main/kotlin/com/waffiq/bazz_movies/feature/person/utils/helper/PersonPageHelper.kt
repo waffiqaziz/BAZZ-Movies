@@ -54,13 +54,12 @@ object PersonPageHelper {
     }
   }
 
-  fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean {
-    return !externalID.instagramId.isNullOrEmpty() ||
+  fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean =
+    !externalID.instagramId.isNullOrEmpty() ||
       !externalID.twitterId.isNullOrEmpty() ||
       !externalID.facebookId.isNullOrEmpty() ||
       !externalID.tiktokId.isNullOrEmpty() ||
       !externalID.youtubeId.isNullOrEmpty()
-  }
 
   fun formatBirthInfo(birthday: String?, placeOfBirth: String?): String {
     var birthText = birthday?.let { dateFormatterStandard(it) }
@@ -72,14 +71,13 @@ object PersonPageHelper {
     }
   }
 
-  fun Context.formatDeathInfo(birthday: String?, deathday: String?): String {
-    return if (deathday == null || birthday == null) {
+  fun Context.formatDeathInfo(birthday: String?, deathday: String?): String =
+    if (deathday == null || birthday == null) {
       getString(no_data)
     } else {
       val ageAtDeath = getAgeDeath(birthday, deathday).toString()
       "${dateFormatterStandard(deathday)} ($ageAtDeath ${getString(years_old)})"
     }
-  }
 
   fun Context.setupSocialLink(
     socialId: String?,

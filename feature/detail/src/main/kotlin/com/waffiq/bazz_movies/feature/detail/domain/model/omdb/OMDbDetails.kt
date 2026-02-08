@@ -25,5 +25,5 @@ data class OMDbDetails(
   val poster: String? = null,
   val country: String? = null,
   val genre: String? = null,
-  val writer: String? = null
+  val writer: String? = null,
 )

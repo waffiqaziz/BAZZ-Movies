@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
+      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
     )
 
     super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
       val insets = windowInsets.getInsets(
         WindowInsetsCompat.Type.systemBars()
-          or WindowInsetsCompat.Type.displayCutout()
+          or WindowInsetsCompat.Type.displayCutout(),
       )
       v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
         topMargin = insets.top
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     val itemView = menuView?.findViewById<View>(item.itemId) ?: return
 
     val iconView = itemView.findViewById<ImageView>(
-      com.google.android.material.R.id.navigation_bar_item_icon_view
+      com.google.android.material.R.id.navigation_bar_item_icon_view,
     ) ?: return
 
     iconView.apply {

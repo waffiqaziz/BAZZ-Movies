@@ -87,5 +87,5 @@ data class DetailMovieResponse(
   val homepage: String? = null,
 
   @Json(name = "status")
-  val status: String? = null
+  val status: String? = null,
 )

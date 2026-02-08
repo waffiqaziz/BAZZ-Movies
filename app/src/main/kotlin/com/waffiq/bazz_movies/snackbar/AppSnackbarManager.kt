@@ -22,9 +22,8 @@ import javax.inject.Singleton
  * @property context The application context used to find views and display Snackbar.
  */
 @Singleton
-class AppSnackbarManager @Inject constructor(
-  @ActivityContext private val context: Context,
-) : ISnackbar {
+class AppSnackbarManager @Inject constructor(@ActivityContext private val context: Context) :
+  ISnackbar {
 
   private val activity: AppCompatActivity by lazy { context as AppCompatActivity }
 

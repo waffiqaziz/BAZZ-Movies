@@ -13,7 +13,7 @@ object SearchHelper {
     this.apply {
       layoutManager = initLinearLayoutManagerVertical(context)
       adapter = pagingAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter { pagingAdapter.retry() }
+        footer = LoadingStateAdapter { pagingAdapter.retry() },
       )
     }
   }

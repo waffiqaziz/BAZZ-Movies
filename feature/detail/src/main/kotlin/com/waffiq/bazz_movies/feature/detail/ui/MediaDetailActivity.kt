@@ -50,7 +50,7 @@ class MediaDetailActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
+      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
     )
     super.onCreate(savedInstanceState)
     setupActivity()
@@ -85,18 +85,18 @@ class MediaDetailActivity : AppCompatActivity() {
     uiManager = DetailUIManager(
       binding = binding,
       activity = this,
-      navigator = navigator
+      navigator = navigator,
     )
 
     watchProvidersManager = WatchProvidersManager(
       binding = binding,
       context = this,
-      dataExtra = dataExtra
+      dataExtra = dataExtra,
     )
 
     dataManager = DetailDataManager(
       detailViewModel = detailViewModel,
-      dataExtra = dataExtra
+      dataExtra = dataExtra,
     )
 
     userInteractionHandler = UserInteractionHandler(
@@ -105,7 +105,7 @@ class MediaDetailActivity : AppCompatActivity() {
       detailViewModel = detailViewModel,
       dataExtra = dataExtra,
       uiManager = uiManager,
-      dataManager = dataManager
+      dataManager = dataManager,
     )
 
     // observe user login state
@@ -151,7 +151,7 @@ class MediaDetailActivity : AppCompatActivity() {
 
     watchProvidersManager.observeWatchProviders(
       detailViewModel.watchProvidersUiState,
-      this
+      this,
     )
   }
 

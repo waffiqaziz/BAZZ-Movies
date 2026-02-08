@@ -80,7 +80,7 @@ class MediaDetailViewModel @Inject constructor(
   private val _errorState = MutableSharedFlow<String>(
     replay = 0,
     extraBufferCapacity = 1,
-    onBufferOverflow = BufferOverflow.DROP_OLDEST
+    onBufferOverflow = BufferOverflow.DROP_OLDEST,
   )
   val errorState: SharedFlow<String> get() = _errorState
 
@@ -107,21 +107,21 @@ class MediaDetailViewModel @Inject constructor(
   fun getMovieVideoLink(movieId: Int) {
     executeUseCase(
       flowProvider = { getMovieDetailUseCase.getMovieVideoLinks(movieId) },
-      onSuccess = { _linkVideo.value = it }
+      onSuccess = { _linkVideo.value = it },
     )
   }
 
   fun getMovieDetail(movieId: Int) {
     executeUseCase(
       flowProvider = { getMovieDetailWithUserRegionUseCase.getMovieDetailWithUserRegion(movieId) },
-      onSuccess = { _detailMedia.value = it }
+      onSuccess = { _detailMedia.value = it },
     )
   }
 
   fun getMovieCredits(movieId: Int) {
     executeUseCase(
       flowProvider = { getMovieDetailUseCase.getMovieCredits(movieId) },
-      onSuccess = { _mediaCredits.value = it }
+      onSuccess = { _mediaCredits.value = it },
     )
   }
 
@@ -136,14 +136,14 @@ class MediaDetailViewModel @Inject constructor(
   fun getMovieState(id: Int) {
     executeUseCase(
       flowProvider = { getMediaStateUseCase.getMovieStateWithUser(id) },
-      onSuccess = { _itemState.value = it }
+      onSuccess = { _itemState.value = it },
     )
   }
 
   fun getMovieWatchProviders(movieId: Int) {
     viewModelScope.launch {
       collectWatchProviders(
-        getMovieDetailWithUserRegionUseCase.getMovieWatchProvidersWithUserRegion(movieId)
+        getMovieDetailWithUserRegionUseCase.getMovieWatchProvidersWithUserRegion(movieId),
       )
     }
   }
@@ -153,21 +153,21 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvTrailerLink(tvId: Int) {
     executeUseCase(
       flowProvider = { getTvDetailUseCase.getTvTrailerLink(tvId) },
-      onSuccess = { _linkVideo.value = it }
+      onSuccess = { _linkVideo.value = it },
     )
   }
 
   fun getTvDetail(tvId: Int) {
     executeUseCase(
       flowProvider = { getTvDetailWithUserRegionUseCase.getTvDetailWithUserRegion(tvId) },
-      onSuccess = { _detailMedia.value = it }
+      onSuccess = { _detailMedia.value = it },
     )
   }
 
   fun getTvCredits(tvId: Int) {
     executeUseCase(
       flowProvider = { getTvDetailUseCase.getTvCredits(tvId) },
-      onSuccess = { _mediaCredits.value = it }
+      onSuccess = { _mediaCredits.value = it },
     )
   }
 
@@ -182,14 +182,14 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvState(id: Int) {
     executeUseCase(
       flowProvider = { getMediaStateUseCase.getTvStateWithUser(id) },
-      onSuccess = { _itemState.value = it }
+      onSuccess = { _itemState.value = it },
     )
   }
 
   fun getTvWatchProviders(tvId: Int) {
     viewModelScope.launch {
       collectWatchProviders(
-        getTvDetailWithUserRegionUseCase.getTvWatchProvidersWithUserRegion(tvId)
+        getTvDetailWithUserRegionUseCase.getTvWatchProvidersWithUserRegion(tvId),
       )
     }
   }
@@ -197,7 +197,7 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvAllScore(tvId: Int) {
     executeUseCase(
       flowProvider = { getTvAllScoreUseCase.getTvAllScore(tvId) },
-      onSuccess = { _omdbResult.value = it }
+      onSuccess = { _omdbResult.value = it },
     )
   }
   // endregion TV-SERIES
@@ -215,6 +215,7 @@ class MediaDetailViewModel @Inject constructor(
           )
 
           is Outcome.Loading -> WatchProvidersUiState.Loading
+
           is Outcome.Error -> WatchProvidersUiState.Error(outcome.message)
         }
       }
@@ -230,7 +231,11 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   // region DB FUNCTION
-  fun handleBtnFavorite(favorite: Boolean, watchlist: Boolean, data: MediaItem) {
+  fun handleBtnFavorite(
+    favorite: Boolean,
+    watchlist: Boolean,
+    data: MediaItem,
+  ) {
     when {
       // If in the watchlist but not a favorite, update to set as favorite.
       !favorite && watchlist -> updateToFavoriteDB(favTrueWatchlistTrue(data))
@@ -246,7 +251,11 @@ class MediaDetailViewModel @Inject constructor(
     }
   }
 
-  fun handleBtnWatchlist(favorite: Boolean, watchlist: Boolean, data: MediaItem) {
+  fun handleBtnWatchlist(
+    favorite: Boolean,
+    watchlist: Boolean,
+    data: MediaItem,
+  ) {
     when {
       // If marked as a favorite but not in the watchlist, update to set as watchlist.
       favorite && !watchlist -> updateToWatchlistDB(favTrueWatchlistTrue(data))
@@ -291,7 +300,7 @@ class MediaDetailViewModel @Inject constructor(
           _isWatchlist.value = true
           emitPostState(isDelete = false, isFavorite = false)
         }
-      }
+      },
     )
   }
 
@@ -301,7 +310,7 @@ class MediaDetailViewModel @Inject constructor(
       onSuccess = {
         _isFavorite.value = true
         emitPostState(isDelete = false, isFavorite = true)
-      }
+      },
     )
   }
 
@@ -311,7 +320,7 @@ class MediaDetailViewModel @Inject constructor(
       onSuccess = {
         _isFavorite.value = false
         emitPostState(isDelete = true, isFavorite = true)
-      }
+      },
     )
   }
 
@@ -321,7 +330,7 @@ class MediaDetailViewModel @Inject constructor(
       onSuccess = {
         _isWatchlist.value = true
         emitPostState(isDelete = false, isFavorite = false)
-      }
+      },
     )
   }
 
@@ -331,7 +340,7 @@ class MediaDetailViewModel @Inject constructor(
       onSuccess = {
         _isWatchlist.value = false
         emitPostState(isDelete = true, isFavorite = false)
-      }
+      },
     )
   }
 
@@ -342,7 +351,7 @@ class MediaDetailViewModel @Inject constructor(
         _isFavorite.value = false
         _isWatchlist.value = false
         emitPostState(isDelete = true, isFavorite = fav.isFavorite)
-      }
+      },
     )
   }
   // endregion DB FUNCTION
@@ -359,7 +368,7 @@ class MediaDetailViewModel @Inject constructor(
       // only works if the function signatures match exactly.
       postAction = postActionUseCase::postFavoriteWithAuth,
 
-      updateState = { value: Boolean -> _isFavorite.value = value }
+      updateState = { value: Boolean -> _isFavorite.value = value },
     )
   }
 
@@ -369,7 +378,7 @@ class MediaDetailViewModel @Inject constructor(
       isFavorite = false,
       isChecked = data.watchlist,
       postAction = postActionUseCase::postWatchlistWithAuth,
-      updateState = { value: Boolean -> _isWatchlist.value = value }
+      updateState = { value: Boolean -> _isWatchlist.value = value },
     )
   }
 
@@ -404,18 +413,15 @@ class MediaDetailViewModel @Inject constructor(
       UpdateMediaStateResult(
         isSuccess = isSuccess,
         isDelete = isDelete,
-        isFavorite = isFavorite
-      )
+        isFavorite = isFavorite,
+      ),
     )
   }
 
   /**
    * Helper to database action
    */
-  private fun executeDbAction(
-    action: suspend () -> DbResult<Int>,
-    onSuccess: () -> Unit,
-  ) {
+  private fun executeDbAction(action: suspend () -> DbResult<Int>, onSuccess: () -> Unit) {
     viewModelScope.launch {
       when (val result = action()) {
         is DbResult.Error -> _errorState.emit(result.errorMessage)
@@ -481,7 +487,7 @@ class MediaDetailViewModel @Inject constructor(
       onFinallyError = {
         _loadingState.value = false
         emitPostState(false, !isChecked, isFavorite)
-      }
+      },
     )
   }
 }

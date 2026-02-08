@@ -16,12 +16,12 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemLoadingBinding
  * This adapter uses the `LoadStateAdapter` to manage the states of loading, error, and retry.
  * It is used in scenarios where pagination or network loading is involved.
  */
-class LoadingStateAdapter(
-  private val retry: () -> Unit,
-) : LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
+class LoadingStateAdapter(private val retry: () -> Unit) :
+  LoadStateAdapter<LoadingStateAdapter.LoadingStateViewHolder>() {
 
   /**
-   * Creates a new [LoadingStateViewHolder] that binds a layout for displaying loading or error states.
+   * Creates a new [LoadingStateViewHolder] that binds a layout for
+   * displaying loading or error states.
    *
    * @param parent The parent [ViewGroup] that holds the view.
    * @param loadState The current state of the loading operation.
@@ -33,10 +33,12 @@ class LoadingStateAdapter(
   }
 
   /**
-   * Binds the given [loadState] to the [LoadingStateViewHolder], updating the view based on the loading state.
+   * Binds the given [loadState] to the [LoadingStateViewHolder],
+   * update view based on the loading state.
    *
    * @param holder The [LoadingStateViewHolder] that holds the views.
-   * @param loadState The current state of the loading operation, such as loading, error, or success.
+   * @param loadState The current state of the loading operation,
+   *                  such as loading, error, or success.
    */
   override fun onBindViewHolder(holder: LoadingStateViewHolder, loadState: LoadState) {
     holder.bind(loadState)
@@ -58,7 +60,8 @@ class LoadingStateAdapter(
      * Binds the current [loadState] to the views in the layout.
      * If an error state is encountered, it displays the error message and shows the retry button.
      *
-     * @param loadState The current state of the loading process, which could be loading, error, or success.
+     * @param loadState The current state of the loading process,
+     *                  which could be loading, error, or success.
      */
     fun bind(loadState: LoadState) {
       if (loadState is LoadState.Error) {

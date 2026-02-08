@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface DetailRepositoryModule {
 
   @Binds
-  fun bindDetailRepository(
-    detailRepositoryImpl: DetailRepositoryImpl,
-  ): IDetailRepository
+  fun bindDetailRepository(detailRepositoryImpl: DetailRepositoryImpl): IDetailRepository
 }

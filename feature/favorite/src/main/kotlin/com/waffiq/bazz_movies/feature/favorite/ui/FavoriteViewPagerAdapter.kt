@@ -15,18 +15,15 @@ import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteChildFragment
  * @param fragmentManager manager used to handle fragment transactions.
  * @param lifecycle lifecycle tied to the pager's hosting component.
  */
-class FavoriteViewPagerAdapter(
-  fragmentManager: FragmentManager,
-  lifecycle: Lifecycle
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+class FavoriteViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+  FragmentStateAdapter(fragmentManager, lifecycle) {
 
   override fun getItemCount(): Int = 2
 
-  override fun createFragment(position: Int): Fragment {
-    return when (position) {
+  override fun createFragment(position: Int): Fragment =
+    when (position) {
       0 -> FavoriteChildFragment.newInstance(MOVIE_MEDIA_TYPE)
       1 -> FavoriteChildFragment.newInstance(TV_MEDIA_TYPE)
       else -> error("Invalid position: $position")
     }
-  }
 }

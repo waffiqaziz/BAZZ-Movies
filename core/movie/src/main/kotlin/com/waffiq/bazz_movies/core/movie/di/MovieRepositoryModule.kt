@@ -13,7 +13,5 @@ import dagger.hilt.components.SingletonComponent
 fun interface MovieRepositoryModule {
 
   @Binds
-  fun bindMovieRepository(
-    moviesRepository: MoviesRepositoryImpl
-  ): IMoviesRepository
+  fun bindMovieRepository(moviesRepository: MoviesRepositoryImpl): IMoviesRepository
 }

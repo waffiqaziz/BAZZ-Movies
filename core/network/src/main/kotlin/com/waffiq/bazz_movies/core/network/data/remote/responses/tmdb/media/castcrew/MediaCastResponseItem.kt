@@ -40,5 +40,5 @@ data class MediaCastResponseItem(
   val adult: Boolean? = null,
 
   @Json(name = "order")
-  val order: Int? = null
+  val order: Int? = null,
 )

@@ -24,10 +24,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class FavoritePagingAdapter(
-  private val navigator: INavigator,
-  private val mediaType: String,
-) :
+class FavoritePagingAdapter(private val navigator: INavigator, private val mediaType: String) :
   PagingDataAdapter<MediaItem, FavoritePagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,7 +37,7 @@ class FavoritePagingAdapter(
     if (data != null) {
       holder.bind(data)
       holder.itemView.startAnimation(
-        AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
       )
     }
   }
@@ -61,10 +58,7 @@ class FavoritePagingAdapter(
     }
   }
 
-  private fun Context.setTitleYearGenreRating(
-    binding: ItemMulmedBinding,
-    mediaItem: MediaItem,
-  ) {
+  private fun Context.setTitleYearGenreRating(binding: ItemMulmedBinding, mediaItem: MediaItem) {
     binding.tvTitle.text = titleHandler(mediaItem)
     binding.tvYearReleased.text = releaseDateHandler(mediaItem)
     binding.tvGenre.text = mediaItem.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
@@ -82,7 +76,7 @@ class FavoritePagingAdapter(
           TMDB_IMG_LINK_POSTER_W185 + data.posterPath
         } else {
           ic_poster_error
-        }
+        },
       )
       .placeholder(ic_bazz_placeholder_poster)
       .transform(CenterCrop())

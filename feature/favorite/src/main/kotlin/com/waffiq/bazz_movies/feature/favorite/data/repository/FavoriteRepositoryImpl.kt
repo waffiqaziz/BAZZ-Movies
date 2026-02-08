@@ -12,9 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FavoriteRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource
-) : IFavoriteRepository {
+class FavoriteRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  IFavoriteRepository {
 
   override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaItem>> =
     movieDataSource.getFavoriteMovies(sessionId).map { pagingData ->

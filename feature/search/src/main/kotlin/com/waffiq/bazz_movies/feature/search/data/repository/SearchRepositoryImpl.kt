@@ -12,9 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource
-) : ISearchRepository {
+class SearchRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  ISearchRepository {
 
   override fun search(query: String): Flow<PagingData<MultiSearchItem>> =
     movieDataSource.search(query).map { pagingData ->

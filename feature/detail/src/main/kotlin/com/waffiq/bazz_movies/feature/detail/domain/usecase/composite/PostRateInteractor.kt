@@ -14,31 +14,25 @@ class PostRateInteractor @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase,
 ) : PostRateUseCase {
 
-  override fun postMovieRate(
-    rating: Float,
-    movieId: Int,
-  ): Flow<Outcome<PostResult>> =
+  override fun postMovieRate(rating: Float, movieId: Int): Flow<Outcome<PostResult>> =
     userPrefUseCase.getUserToken()
       .take(1)
       .flatMapConcat { token ->
         postMethodUseCase.postMovieRate(
           sessionId = token,
           rating = rating,
-          movieId = movieId
+          movieId = movieId,
         )
       }
 
-  override fun postTvRate(
-    rating: Float,
-    tvId: Int,
-  ): Flow<Outcome<PostResult>> =
+  override fun postTvRate(rating: Float, tvId: Int): Flow<Outcome<PostResult>> =
     userPrefUseCase.getUserToken()
       .take(1)
       .flatMapConcat { token ->
         postMethodUseCase.postTvRate(
           sessionId = token,
           rating = rating,
-          tvId = tvId
+          tvId = tvId,
         )
       }
 }

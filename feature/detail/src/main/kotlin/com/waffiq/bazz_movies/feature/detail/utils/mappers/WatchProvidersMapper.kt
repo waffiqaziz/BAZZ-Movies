@@ -9,12 +9,13 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchPr
 
 object WatchProvidersMapper {
 
-  fun WatchProvidersResponse.toWatchProviders(): WatchProviders = WatchProviders(
-    id = id,
-    results = results?.mapValues { (_, countryData) ->
-      countryData.toWatchProviders()
-    }
-  )
+  fun WatchProvidersResponse.toWatchProviders(): WatchProviders =
+    WatchProviders(
+      id = id,
+      results = results?.mapValues { (_, countryData) ->
+        countryData.toWatchProviders()
+      },
+    )
 
   private fun WatchProvidersResponseItem.toWatchProviders(): WatchProvidersItem =
     WatchProvidersItem(
@@ -26,10 +27,11 @@ object WatchProvidersMapper {
       rent = rent?.map { it.toProvider() },
     )
 
-  private fun ProviderResponse.toProvider(): Provider = Provider(
-    logoPath = logoPath,
-    providerId = providerId,
-    providerName = providerName,
-    displayPriority = displayPriority
-  )
+  private fun ProviderResponse.toProvider(): Provider =
+    Provider(
+      logoPath = logoPath,
+      providerId = providerId,
+      providerName = providerName,
+      displayPriority = displayPriority,
+    )
 }

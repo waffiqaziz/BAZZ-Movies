@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.home.ui
 
 import android.os.Bundle
@@ -72,7 +74,7 @@ class TvSeriesFragment : Fragment() {
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentTvSeriesBinding.inflate(inflater, container, false)
     return binding.root
@@ -108,12 +110,12 @@ class TvSeriesFragment : Fragment() {
       if (rvPopular.adapter != popularAdapter) rvPopular.setupLoadState(popularAdapter)
       if (rvAiringToday.adapter != airingTodayAdapter) {
         rvAiringToday.setupLoadState(
-          airingTodayAdapter
+          airingTodayAdapter,
         )
       }
       if (rvAiringThisWeek.adapter != airingThisWeekAdapter) {
         rvAiringThisWeek.setupLoadState(
-          airingThisWeekAdapter
+          airingThisWeekAdapter,
         )
       }
       if (rvTopRated.adapter != topRatedAdapter) rvTopRated.setupLoadState(topRatedAdapter)
@@ -143,7 +145,7 @@ class TvSeriesFragment : Fragment() {
           showView(topRatedAdapter.itemCount > 0)
           mSnackbar = snackbar.showSnackbarWarning(error)
         }
-      }
+      },
     )
 
     // Observe ViewModel data and submit to adapters
@@ -152,7 +154,7 @@ class TvSeriesFragment : Fragment() {
     collectAndSubmitData(
       this,
       { tvSeriesViewModel.getAiringThisWeekTv(region) },
-      airingThisWeekAdapter
+      airingThisWeekAdapter,
     )
     collectAndSubmitData(this, { tvSeriesViewModel.getTopRatedTv() }, topRatedAdapter)
 
@@ -161,19 +163,19 @@ class TvSeriesFragment : Fragment() {
       popularAdapter,
       binding.rvPopular,
       getString(no_popular_series, getCountryDisplayName(region)),
-      binding.layoutNoPopular
+      binding.layoutNoPopular,
     )
     viewLifecycleOwner.handleLoadState(
       airingTodayAdapter,
       binding.rvAiringToday,
       getString(no_series_airing_today, getCountryDisplayName(region)),
-      binding.layoutNoAiringToday
+      binding.layoutNoAiringToday,
     )
     viewLifecycleOwner.handleLoadState(
       airingThisWeekAdapter,
       binding.rvAiringThisWeek,
       getString(no_series_airing_this_week, getCountryDisplayName(region)),
-      binding.layoutNoAiringThisWeek
+      binding.layoutNoAiringThisWeek,
     )
   }
 
@@ -193,7 +195,7 @@ class TvSeriesFragment : Fragment() {
       popularAdapter,
       topRatedAdapter,
       airingTodayAdapter,
-      airingThisWeekAdapter
+      airingThisWeekAdapter,
     )
 
     // Set up retry button
@@ -202,7 +204,7 @@ class TvSeriesFragment : Fragment() {
       popularAdapter,
       topRatedAdapter,
       airingTodayAdapter,
-      airingThisWeekAdapter
+      airingThisWeekAdapter,
     )
   }
 

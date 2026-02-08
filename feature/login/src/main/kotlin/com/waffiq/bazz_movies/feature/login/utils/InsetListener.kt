@@ -10,15 +10,13 @@ import com.waffiq.bazz_movies.feature.login.ui.LoginActivity.Companion.PADDING_R
 
 /**
  * Utility object for handling window inset behavior, particularly to adjust padding
- * based on navigation mode (gesture vs button) in landscape orientation.
+ * based on navigation mode (gesture or button) in landscape orientation.
  */
 object InsetListener {
 
-  /**
+  /*
    * Sets a window insets listener on [view] if in landscape mode, adjusting right padding
-   * based on navigation mode (gesture or 3-button). Returns the listener if applied, or `null` otherwise.
-   *
-   * @return The applied [OnApplyWindowInsetsListener], or `null` if not in landscape.
+   * based on navigation mode (gesture or 3-button).
    */
   fun Activity.applyWindowInsets(view: View): OnApplyWindowInsetsListener? {
     val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

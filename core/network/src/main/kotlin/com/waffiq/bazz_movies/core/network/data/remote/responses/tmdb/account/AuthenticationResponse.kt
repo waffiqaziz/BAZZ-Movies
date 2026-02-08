@@ -13,5 +13,5 @@ data class AuthenticationResponse(
   val expireAt: String? = null,
 
   @Json(name = "request_token")
-  val requestToken: String? = null
+  val requestToken: String? = null,
 )

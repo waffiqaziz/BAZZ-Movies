@@ -27,28 +27,26 @@ class CheckAndAddToFavoriteInteractor @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase,
 ) : CheckAndAddToFavoriteUseCase {
 
-  override fun addMovieToFavorite(movieId: Int): Flow<Outcome<FavoriteActionResult>> {
-    return addToFavorite(
+  override fun addMovieToFavorite(movieId: Int): Flow<Outcome<FavoriteActionResult>> =
+    addToFavorite(
       mediaId = movieId,
       mediaType = MOVIE_MEDIA_TYPE,
-      getStateFlow = { token -> getMovieStateUseCase.getMovieState(token, movieId) }
+      getStateFlow = { token -> getMovieStateUseCase.getMovieState(token, movieId) },
     )
-  }
 
-  override fun addTvToFavorite(tvId: Int): Flow<Outcome<FavoriteActionResult>> {
-    return addToFavorite(
+  override fun addTvToFavorite(tvId: Int): Flow<Outcome<FavoriteActionResult>> =
+    addToFavorite(
       mediaId = tvId,
       mediaType = TV_MEDIA_TYPE,
-      getStateFlow = { token -> getTvStateUseCase.getTvState(token, tvId) }
+      getStateFlow = { token -> getTvStateUseCase.getTvState(token, tvId) },
     )
-  }
 
   private fun addToFavorite(
     mediaId: Int,
     mediaType: String,
     getStateFlow: (String) -> Flow<Outcome<MediaState>>,
-  ): Flow<Outcome<FavoriteActionResult>> {
-    return userPrefUseCase.getUserToken()
+  ): Flow<Outcome<FavoriteActionResult>> =
+    userPrefUseCase.getUserToken()
       .filterNotNull()
       .take(1)
       .flatMapConcat { token -> getStateFlow(token) }
@@ -59,25 +57,24 @@ class CheckAndAddToFavoriteInteractor @Inject constructor(
               flowOf(Outcome.Success(FavoriteActionResult.AlreadyInFavorite))
             } else {
               postActionUseCase.postFavoriteWithAuth(
-                FavoriteParams(mediaType, mediaId, true)
+                FavoriteParams(mediaType, mediaId, true),
               ).map(::mapPostOutcome)
             }
           }
 
           is Outcome.Error -> flowOf(Outcome.Error(stateOutcome.message))
+
           is Outcome.Loading -> flowOf(Outcome.Loading)
         }
       }
       .onStart { emit(Outcome.Loading) }
-  }
 
   private fun mapPostOutcome(
     postOutcome: Outcome<PostFavoriteWatchlist>,
-  ): Outcome<FavoriteActionResult> {
-    return when (postOutcome) {
+  ): Outcome<FavoriteActionResult> =
+    when (postOutcome) {
       is Outcome.Success -> Outcome.Success(FavoriteActionResult.Added)
       is Outcome.Error -> Outcome.Error(postOutcome.message)
       is Outcome.Loading -> Outcome.Loading
     }
-  }
 }

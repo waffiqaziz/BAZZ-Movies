@@ -15,5 +15,5 @@ data class ProviderResponse(
   val providerName: String?,
 
   @Json(name = "display_priority")
-  val displayPriority: Int?
+  val displayPriority: Int?,
 )

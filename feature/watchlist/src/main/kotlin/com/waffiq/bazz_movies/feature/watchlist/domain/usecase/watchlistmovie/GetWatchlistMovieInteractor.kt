@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetWatchlistMovieInteractor @Inject constructor(
-  private val watchlistRepository: IWatchlistRepository
+  private val watchlistRepository: IWatchlistRepository,
 ) : GetWatchlistMovieUseCase {
   override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaItem>> =
     watchlistRepository.getWatchlistMovies(sessionId)

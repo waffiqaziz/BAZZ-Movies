@@ -10,5 +10,5 @@ data class AvatarItemResponse(
   val avatarTMDbResponse: AvatarTMDbResponse? = null,
 
   @Json(name = "gravatar")
-  val gravatarResponse: GravatarResponse? = null
+  val gravatarResponse: GravatarResponse? = null,
 )

@@ -12,9 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DatabaseRepositoryImpl @Inject constructor(
-  private val localDataSource: LocalDataSource
-) : IDatabaseRepository {
+class DatabaseRepositoryImpl @Inject constructor(private val localDataSource: LocalDataSource) :
+  IDatabaseRepository {
   // region DATABASE
   override val favoriteMoviesFromDB: Flow<List<Favorite>> =
     localDataSource.getFavoriteMovies.map { list ->
@@ -42,32 +41,22 @@ class DatabaseRepositoryImpl @Inject constructor(
   override suspend fun deleteFromDB(fav: Favorite): DbResult<Int> =
     localDataSource.deleteItemFromDB(fav.mediaId, fav.mediaType)
 
-  override suspend fun deleteAll(): DbResult<Int> =
-    localDataSource.deleteAll()
+  override suspend fun deleteAll(): DbResult<Int> = localDataSource.deleteAll()
 
-  override suspend fun isFavoriteDB(
-    id: Int,
-    mediaType: String
-  ): DbResult<Boolean> =
+  override suspend fun isFavoriteDB(id: Int, mediaType: String): DbResult<Boolean> =
     localDataSource.isFavorite(id, mediaType)
 
-  override suspend fun isWatchlistDB(
-    id: Int,
-    mediaType: String
-  ): DbResult<Boolean> =
+  override suspend fun isWatchlistDB(id: Int, mediaType: String): DbResult<Boolean> =
     localDataSource.isWatchlist(id, mediaType)
 
-  override suspend fun updateFavoriteItemDB(
-    isDelete: Boolean,
-    fav: Favorite
-  ): DbResult<Int> =
+  override suspend fun updateFavoriteItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
     if (isDelete) {
       // update set is_favorite = false (item on favorite to delete)
       localDataSource.update(
         isFavorite = false,
         isWatchlist = fav.isWatchlist,
         id = fav.mediaId,
-        mediaType = fav.mediaType
+        mediaType = fav.mediaType,
       )
     } else {
       // update set is_favorite = true (add favorite item already on watchlist)
@@ -75,27 +64,24 @@ class DatabaseRepositoryImpl @Inject constructor(
         isFavorite = true,
         isWatchlist = fav.isWatchlist,
         id = fav.mediaId,
-        mediaType = fav.mediaType
+        mediaType = fav.mediaType,
       )
     }
 
-  override suspend fun updateWatchlistItemDB(
-    isDelete: Boolean,
-    fav: Favorite
-  ): DbResult<Int> =
+  override suspend fun updateWatchlistItemDB(isDelete: Boolean, fav: Favorite): DbResult<Int> =
     if (isDelete) { // update set is_watchlist = false (item on watchlist to delete)
       localDataSource.update(
         isFavorite = fav.isFavorite,
         isWatchlist = false,
         id = fav.mediaId,
-        mediaType = fav.mediaType
+        mediaType = fav.mediaType,
       )
     } else { // update set is_watchlist = true (add watchlist item already on favorite)
       localDataSource.update(
         isFavorite = fav.isFavorite,
         isWatchlist = true,
         id = fav.mediaId,
-        mediaType = fav.mediaType
+        mediaType = fav.mediaType,
       )
     }
 // endregion DATABASE

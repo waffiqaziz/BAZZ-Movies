@@ -31,5 +31,5 @@ data class ExternalIdResponse(
   val facebookId: String? = null,
 
   @Json(name = "instagram_id")
-  val instagramId: String? = null
+  val instagramId: String? = null,
 )

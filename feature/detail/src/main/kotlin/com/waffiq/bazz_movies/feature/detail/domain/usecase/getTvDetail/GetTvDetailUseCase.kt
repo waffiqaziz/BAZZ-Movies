@@ -14,10 +14,7 @@ interface GetTvDetailUseCase {
   fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
   fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>>
-  fun getTvWatchProviders(
-    countryCode: String,
-    tvId: Int,
-  ): Flow<Outcome<WatchProvidersItem>>
+  fun getTvWatchProviders(countryCode: String, tvId: Int): Flow<Outcome<WatchProvidersItem>>
 
   fun getTvRecommendationPagingData(tvId: Int): Flow<PagingData<MediaItem>>
 }

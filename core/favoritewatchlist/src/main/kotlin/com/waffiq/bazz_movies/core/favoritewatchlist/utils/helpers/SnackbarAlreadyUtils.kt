@@ -36,7 +36,7 @@ object SnackbarAlreadyUtils {
     val mSnackbar = Snackbar.make(
       view,
       message,
-      Snackbar.LENGTH_SHORT
+      Snackbar.LENGTH_SHORT,
     ).setAnchorView(viewGuide)
     mSnackbar.show()
     return mSnackbar

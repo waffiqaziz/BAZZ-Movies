@@ -90,7 +90,9 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
   protected abstract fun getDBWatchlistData(): LiveData<List<Favorite>>
   protected abstract fun createWatchlistModel(mediaId: Int): WatchlistParams
   protected abstract fun postToAddFavorite(title: String, mediaId: Int)
-  protected abstract fun extractDataFromPagingViewHolder(viewHolder: RecyclerView.ViewHolder): MediaItem
+  protected abstract fun extractDataFromPagingViewHolder(
+    viewHolder: RecyclerView.ViewHolder,
+  ): MediaItem
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -160,7 +162,11 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
    * @param viewHolder The ViewHolder of the swiped item.
    * @param position The position of the swiped item in the adapter.
    */
-  private fun handleSwipeLeft(login: Boolean, viewHolder: RecyclerView.ViewHolder, position: Int) {
+  private fun handleSwipeLeft(
+    login: Boolean,
+    viewHolder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     isUndo = false
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
@@ -182,7 +188,11 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
    * @param viewHolder The ViewHolder of the swiped item.
    * @param position The position of the swiped item in the adapter.
    */
-  private fun handleSwipeRight(login: Boolean, viewHolder: RecyclerView.ViewHolder, position: Int) {
+  private fun handleSwipeRight(
+    login: Boolean,
+    viewHolder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     isUndo = false
     if (login) {
       val itemData = extractDataFromPagingViewHolder(viewHolder)
@@ -220,7 +230,8 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
 
   /**
    * Set up data for logged-in users with progress bar and empty view handling.
-   * Initializes snackbar handling, paging adapter with footer, and collects and submits data to the adapter.
+   * Initializes snackbar handling, paging adapter with footer, and collects and submits data to
+   * the adapter.
    *
    * @param userToken The token of the logged-in user.
    */
@@ -248,7 +259,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
         requireActivity().findViewById(snackbarAnchor),
         requireActivity().findViewById(snackbarAnchor),
         it,
-        false
+        false,
       )
     }
 
@@ -284,7 +295,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
             baseViewModel.markSnackbarShown()
           }
         }
-      }
+      },
     )
   }
 
@@ -321,7 +332,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
         } else {
           buildActionMessage(title, getString(added_to_favorite))
         },
-        Snackbar.LENGTH_LONG
+        Snackbar.LENGTH_LONG,
       ).setAction(getString(undo)) {
         isUndo = true
         if (wtc != null) {
@@ -344,11 +355,15 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
    * Perform swipe action for guest users to add/remove items from favorites or watchlist.
    * Updates the local database and shows an undo Snackbar.
    *
-   * @param isWantToDelete Boolean indicating if the action is to delete (true) or add to favorite (false).
+   * @param isWantToDelete indicating if the action is delete (true) or add to favorite (false).
    * @param wtc The [Favorite] item being acted upon.
    * @param pos The position of the item in the adapter.
    */
-  private fun performSwipeGuestUser(isWantToDelete: Boolean, wtc: Favorite, pos: Int) {
+  private fun performSwipeGuestUser(
+    isWantToDelete: Boolean,
+    wtc: Favorite,
+    pos: Int,
+  ) {
     if (isWantToDelete) {
       if (wtc.isFavorite) {
         sharedDBViewModel.updateToRemoveFromWatchlistDB(wtc)
@@ -363,7 +378,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
           requireActivity().findViewById(snackbarAnchor),
           requireActivity().findViewById(snackbarAnchor),
           Event(wtc.title),
-          false
+          false,
         )
       } else {
         sharedDBViewModel.updateToFavoriteDB(wtc)
@@ -406,7 +421,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
       } else {
         buildActionMessage(title, getString(added_to_favorite))
       },
-      Snackbar.LENGTH_LONG
+      Snackbar.LENGTH_LONG,
     ).setAction(getString(undo)) {
       sharedDBViewModel.undoDB.value?.getContentIfNotHandled()?.let { wtc ->
         if (isWantToDelete) {
@@ -434,6 +449,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
       eventResult.getContentIfNotHandled().let {
         when (it) {
           is DbResult.Error -> requireContext().toastShort(it.errorMessage)
+
           else -> {
             /* do nothing */
           }

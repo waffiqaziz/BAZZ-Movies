@@ -70,5 +70,5 @@ data class MultiSearchResponseItem(
   val listOriginCountry: List<String?>? = null,
 
   @Json(name = "original_name")
-  val originalName: String? = null
+  val originalName: String? = null,
 )

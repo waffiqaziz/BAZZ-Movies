@@ -37,5 +37,5 @@ data class MediaCrewResponseItem(
   val department: String? = null,
 
   @Json(name = "job")
-  val job: String? = null
+  val job: String? = null,
 )

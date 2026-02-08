@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.favorite.ui.fragment
 
 import android.os.Bundle

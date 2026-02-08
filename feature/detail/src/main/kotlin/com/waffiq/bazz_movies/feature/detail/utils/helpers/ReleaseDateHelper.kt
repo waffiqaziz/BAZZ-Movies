@@ -12,21 +12,19 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
  *
  * The `ReleaseDateHelper` provides a mechanism to find a movie's release date and region based
  * on a prioritized search strategy. This includes checking for a user's  region, falling  back
- * to production countries, and using any valid release data available. It handles various scenarios
- * to ensure that an appropriate release date and region are returned.
+ * to production countries, and using any valid release data available. It handles various
+ * scenarios to ensure that an appropriate release date and region are returned.
  */
 object ReleaseDateHelper {
 
   private const val YEAR_LENGTH = 4
 
   /**
-   * For Movie
-   *
-   * Determines and returns the most relevant release date and its associated region for a given movie.
+   * Get release date and its associated region from a movie.
    *
    * The function employs a multi-step search strategy to locate a release date:
    * 1. Checks if there is a release date corresponding to the specified user region.
-   * 2. If no matching region is found, it falls back to using the production country's release date.
+   * 2. If no matching region is found, falls back to using the production country's release date.
    * 3. If the above options are unavailable, it searches for any valid release date in any region.
    *
    * @param data A `DetailMovie` object containing details about the movie, including its release
@@ -43,7 +41,7 @@ object ReleaseDateHelper {
     if (userRegionAndDate != null) {
       releaseDateRegion = ReleaseDateRegion(
         regionRelease = userRegionAndDate.first,
-        releaseDate = dateFormatterISO8601(userRegionAndDate.second)
+        releaseDate = dateFormatterISO8601(userRegionAndDate.second),
       )
     }
 
@@ -55,7 +53,7 @@ object ReleaseDateHelper {
         regionRelease = data?.listProductionCountriesItem?.firstOrNull {
           !it?.iso31661.isNullOrEmpty()
         }?.iso31661.orEmpty(),
-        releaseDate = dateFormatterStandard(data?.releaseDate)
+        releaseDate = dateFormatterStandard(data?.releaseDate),
       )
       if (productionCountryRegionAndDate.releaseDate.isNotEmpty() &&
         productionCountryRegionAndDate.regionRelease.isNotEmpty()
@@ -69,7 +67,7 @@ object ReleaseDateHelper {
       val fallback = getAnyValidRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem)
       releaseDateRegion = ReleaseDateRegion(
         regionRelease = fallback.first,
-        releaseDate = dateFormatterISO8601(fallback.second)
+        releaseDate = dateFormatterISO8601(fallback.second),
       )
     }
 
@@ -86,15 +84,14 @@ object ReleaseDateHelper {
   private fun getMatchingRegionAndReleaseDateMovie(
     data: List<ReleaseDatesItem?>?,
     region: String,
-  ): Pair<String, String>? {
-    return data?.firstOrNull { isValidRegionAndReleaseDate(it, region) }
+  ): Pair<String, String>? =
+    data?.firstOrNull { isValidRegionAndReleaseDate(it, region) }
       ?.let {
         Pair(
           it.iso31661.orEmpty(),
-          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty()
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty(),
         )
       }
-  }
 
   /**
    * Finds any valid release date and associated region when no specific match is found.
@@ -103,32 +100,34 @@ object ReleaseDateHelper {
    * @return A pair containing the region code and the release date, or a pair of empty strings if
    *        no valid data is found.
    */
-  private fun getAnyValidRegionAndReleaseDateMovie(data: List<ReleaseDatesItem?>?): Pair<String, String> {
-    return data?.firstOrNull { isValidRegionAndReleaseDate(it) }
+  private fun getAnyValidRegionAndReleaseDateMovie(
+    data: List<ReleaseDatesItem?>?,
+  ): Pair<String, String> =
+    data?.firstOrNull { isValidRegionAndReleaseDate(it) }
       ?.let {
         Pair(
           it.iso31661.orEmpty(),
-          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty()
+          it.listReleaseDatesItemValue?.firstOrNull()?.releaseDate.orEmpty(),
         )
       }
       ?: Pair("", "")
-  }
 
   /**
-   * Checks if a release date is valid for the specified region (or any region if `region` is `null`).
+   * Checks if a release date is valid for the specified region
+   * (or any region if `region` is `null`).
    *
    * @param item A `ReleaseDatesItem` representing a region and associated release dates.
    * @param region (Optional) A string representing the desired region code to match.
-   * @return A boolean indicating whether the release date is valid and matches the specified region (if provided).
+   * @return A boolean indicating whether the release date is valid and matches the specified
+   *         region (if provided).
    */
   private fun isValidRegionAndReleaseDate(
     item: ReleaseDatesItem?,
     region: String? = null,
-  ): Boolean {
-    return item?.iso31661 != null &&
+  ): Boolean =
+    item?.iso31661 != null &&
       (region == null || item.iso31661 == region) &&
       item.listReleaseDatesItemValue?.any { !it.releaseDate.isNullOrEmpty() } == true
-  }
 
   /**
    * For TV-Series
@@ -140,12 +139,11 @@ object ReleaseDateHelper {
    *        dates and original country.
    * @return A `ReleaseDateRegion` object that contains the release date and original country.
    */
-  fun getReleaseDateRegion(data: TvDetail): ReleaseDateRegion {
-    return ReleaseDateRegion(
+  fun getReleaseDateRegion(data: TvDetail): ReleaseDateRegion =
+    ReleaseDateRegion(
       "(${getOriginalCountryTv(data)})",
-      getYearRangeTv(data)
+      getYearRangeTv(data),
     )
-  }
 
   /**
    * Finds tv-series release date

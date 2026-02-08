@@ -43,7 +43,7 @@ class SearchAdapter(private val navigator: INavigator) :
     }
 
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 
@@ -56,7 +56,7 @@ class SearchAdapter(private val navigator: INavigator) :
           id = data.id,
           profilePath = data.profilePath,
           name = data.name,
-          originalName = data.originalName
+          originalName = data.originalName,
         )
         navigator.openPersonDetails(itemView.context, person)
       }
@@ -77,7 +77,7 @@ class SearchAdapter(private val navigator: INavigator) :
           originalName = data.originalName,
           mediaType = data.mediaType,
           listGenreIds = data.listGenreIds,
-          id = data.id
+          id = data.id,
         )
         navigator.openDetails(itemView.context, mediaItem)
       }
@@ -93,7 +93,7 @@ class SearchAdapter(private val navigator: INavigator) :
           TMDB_IMG_LINK_POSTER_W185 + data.profilePath
         } else {
           ic_backdrop_error
-        }
+        },
       )
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error)
@@ -106,7 +106,11 @@ class SearchAdapter(private val navigator: INavigator) :
     binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
   }
 
-  private fun showMediaData(binding: ItemResultBinding, data: MultiSearchItem, view: View) {
+  private fun showMediaData(
+    binding: ItemResultBinding,
+    data: MultiSearchItem,
+    view: View,
+  ) {
     setImageMedia(binding, data)
     binding.tvYearReleased.text = when {
       !data.releaseDate.isNullOrEmpty() && !data.releaseDate.isBlank() -> data.releaseDate
@@ -118,7 +122,11 @@ class SearchAdapter(private val navigator: INavigator) :
     showGenreMovie(binding, data, view)
   }
 
-  private fun showGenreMovie(binding: ItemResultBinding, data: MultiSearchItem, view: View) {
+  private fun showGenreMovie(
+    binding: ItemResultBinding,
+    data: MultiSearchItem,
+    view: View,
+  ) {
     binding.tvGenre.text =
       if (data.listGenreIds?.isEmpty() == true) {
         view.context.getString(not_available)
@@ -136,7 +144,7 @@ class SearchAdapter(private val navigator: INavigator) :
           !data.backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
           !data.posterPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
           else -> ic_backdrop_error
-        }
+        },
       )
       .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)

@@ -85,7 +85,7 @@ object HomeFragmentHelper {
       adapter = pagingDataAdapter.withLoadStateFooter(
         footer = LoadingStateAdapter {
           pagingDataAdapter.retry()
-        }
+        },
       )
     }
   }
@@ -127,7 +127,9 @@ object HomeFragmentHelper {
     // Safely attach SnapHelper
     if (recyclerView.onFlingListener == null) {
       recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(
-        recyclerView.context, LinearLayoutManager.HORIZONTAL, false
+        recyclerView.context,
+        LinearLayoutManager.HORIZONTAL,
+        false,
       )
       CustomSnapHelper(offsetPx = -15).attachToRecyclerView(recyclerView)
     }

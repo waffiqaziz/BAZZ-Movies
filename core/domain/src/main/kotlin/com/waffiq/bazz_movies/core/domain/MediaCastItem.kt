@@ -16,5 +16,5 @@ data class MediaCastItem(
   val profilePath: String? = null,
   val id: Int? = null,
   val adult: Boolean? = null,
-  val order: Int? = null
+  val order: Int? = null,
 ) : Parcelable

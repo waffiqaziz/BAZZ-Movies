@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 @androidx.room.Database(
   entities = [FavoriteEntity::class],
   version = 2,
-  exportSchema = true
+  exportSchema = true,
 )
 abstract class FavoriteDatabase : RoomDatabase() {
   abstract fun favoriteDao(): FavoriteDao

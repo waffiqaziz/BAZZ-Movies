@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class TvSeriesViewModel @Inject constructor(
-  private val getListTvUseCase: GetListTvUseCase
-) : ViewModel() {
+class TvSeriesViewModel @Inject constructor(private val getListTvUseCase: GetListTvUseCase) :
+  ViewModel() {
   fun getPopularTv(region: String): Flow<PagingData<MediaItem>> =
     getListTvUseCase.getPopularTv(region).cachedIn(viewModelScope)
 

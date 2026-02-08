@@ -13,5 +13,5 @@ data class UserModel(
   val token: String,
   val isLogin: Boolean,
   val gravatarHast: String?,
-  val tmdbAvatar: String?
+  val tmdbAvatar: String?,
 ) : Parcelable

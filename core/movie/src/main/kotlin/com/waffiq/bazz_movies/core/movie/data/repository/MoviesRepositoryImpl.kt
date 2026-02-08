@@ -19,21 +19,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MoviesRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource,
-) : IMoviesRepository {
+class MoviesRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  IMoviesRepository {
 
-  override fun getMovieState(
-    sessionId: String,
-    movieId: Int,
-  ): Flow<Outcome<MediaState>> =
+  override fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>> =
     movieDataSource.getMovieState(sessionId, movieId)
       .toOutcome { it.toMediaState() }
 
-  override fun getTvState(
-    sessionId: String,
-    tvId: Int,
-  ): Flow<Outcome<MediaState>> =
+  override fun getTvState(sessionId: String, tvId: Int): Flow<Outcome<MediaState>> =
     movieDataSource.getTvState(sessionId, tvId)
       .toOutcome { it.toMediaState() }
 

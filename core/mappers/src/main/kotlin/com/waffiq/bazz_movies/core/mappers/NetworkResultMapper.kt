@@ -15,7 +15,7 @@ object NetworkResultMapper {
    * - Converts [NetworkResult.Loading] to [Outcome.Loading].
    *
    * @param mapper A function to transform the success data.
-   * @return A [Flow] emitting [Outcome] states corresponding to the original [NetworkResult] states.
+   * @return A [Flow] emitting [Outcome] states corresponding to [NetworkResult] states.
    */
   fun <T, R> Flow<NetworkResult<T>>.toOutcome(mapper: (T) -> R): Flow<Outcome<R>> =
     map { networkResult ->

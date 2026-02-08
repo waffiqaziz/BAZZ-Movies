@@ -8,13 +8,17 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
-import com.waffiq.bazz_movies.core.designsystem.R.color.gray_100
+import com.waffiq.bazz_movies.core.designsystem.R.color.gray_200
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 
 /**
  * Used to create a table view to display movie or TV crew details.
  */
 object CreateTableViewHelper {
+
+  const val PADDING_HORIZONTAL = 7
+  const val PADDING_VERTICAL = 24
+
   fun createTable(
     context: Context,
     pair: Pair<List<String>, List<String>>,
@@ -26,7 +30,7 @@ object CreateTableViewHelper {
     val tableLayout = TableLayout(context)
     tableLayout.layoutParams = TableLayout.LayoutParams(
       TableLayout.LayoutParams.MATCH_PARENT,
-      TableLayout.LayoutParams.WRAP_CONTENT
+      TableLayout.LayoutParams.WRAP_CONTENT,
     )
 
     // Create rows
@@ -34,7 +38,7 @@ object CreateTableViewHelper {
       val tableRow = TableRow(context)
       tableRow.layoutParams = TableRow.LayoutParams(
         TableRow.LayoutParams.MATCH_PARENT,
-        TableRow.LayoutParams.WRAP_CONTENT
+        TableRow.LayoutParams.WRAP_CONTENT,
       )
 
       val cell1 = createTableCell(context, job[i])
@@ -54,13 +58,12 @@ object CreateTableViewHelper {
     textView.text = text
     textView.layoutParams = TableRow.LayoutParams(
       TableRow.LayoutParams.WRAP_CONTENT,
-      TableRow.LayoutParams.WRAP_CONTENT
+      TableRow.LayoutParams.WRAP_CONTENT,
     )
     textView.typeface = ResourcesCompat.getFont(context, nunito_sans_regular)
     textView.gravity = Gravity.START
-    textView.textSize = 14F
-    textView.setPadding(0, 7, 24, 7)
-    textView.setTextColor(ActivityCompat.getColor(context, gray_100))
+    textView.setPadding(0, PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL)
+    textView.setTextColor(ActivityCompat.getColor(context, gray_200))
     return textView
   }
 }

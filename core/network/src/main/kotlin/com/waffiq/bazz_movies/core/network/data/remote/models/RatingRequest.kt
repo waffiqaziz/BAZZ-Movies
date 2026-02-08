@@ -4,6 +4,4 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = false)
-data class RatingRequest(
-  @Json(name = "value") val value: Float,
-)
+data class RatingRequest(@Json(name = "value") val value: Float)

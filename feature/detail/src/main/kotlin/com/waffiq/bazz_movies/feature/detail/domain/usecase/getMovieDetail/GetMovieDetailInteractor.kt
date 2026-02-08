@@ -19,10 +19,7 @@ class GetMovieDetailInteractor @Inject constructor(
   private val detailRepository: IDetailRepository,
 ) : GetMovieDetailUseCase {
 
-  override fun getMovieDetail(
-    movieId: Int,
-    userRegion: String,
-  ): Flow<Outcome<MediaDetail>> =
+  override fun getMovieDetail(movieId: Int, userRegion: String): Flow<Outcome<MediaDetail>> =
     detailRepository.getMovieDetail(movieId)
       .combine(detailRepository.getMovieKeywords(movieId.toString())) { detail, keywords ->
         when (detail) {
@@ -31,11 +28,12 @@ class GetMovieDetailInteractor @Inject constructor(
               detail.data.toMediaDetail(
                 releaseDateRegion = getReleaseDateRegion(detail.data, userRegion),
                 mediaKeywords = (keywords as? Outcome.Success)?.data,
-              )
+              ),
             )
           }
 
           is Outcome.Error -> Outcome.Error(detail.message)
+
           is Outcome.Loading -> Outcome.Loading
         }
       }
@@ -68,6 +66,7 @@ class GetMovieDetailInteractor @Inject constructor(
         }
 
         is Outcome.Error -> Outcome.Error(outcome.message)
+
         is Outcome.Loading -> Outcome.Loading
       }
     }

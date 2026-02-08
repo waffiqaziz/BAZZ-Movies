@@ -32,6 +32,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+@Suppress("TooManyFunctions")
 interface TMDBApiService {
 
   // region AUTHENTICATION
@@ -72,9 +73,7 @@ interface TMDBApiService {
 
   // region MOVIE
   @GET("3/movie/popular?language=en-US")
-  suspend fun getPopularMovies(
-    @Query("page") page: Int,
-  ): MediaResponse
+  suspend fun getPopularMovies(@Query("page") page: Int): MediaResponse
 
   @GET("3/movie/upcoming?language=en-US&with_release_type=2|3")
   suspend fun getUpcomingMovies(
@@ -89,9 +88,7 @@ interface TMDBApiService {
   ): MediaResponse
 
   @GET("3/movie/top_rated?language=en-US")
-  suspend fun getTopRatedMovies(
-    @Query("page") page: Int,
-  ): MediaResponse
+  suspend fun getTopRatedMovies(@Query("page") page: Int): MediaResponse
   // endregion
 
   // region TV
@@ -100,7 +97,7 @@ interface TMDBApiService {
       "&sort_by=popularity.desc" +
       "&with_runtime.gte=0" +
       "&with_runtime.lte=400" +
-      "&with_watch_monetization_types=flatrate|free"
+      "&with_watch_monetization_types=flatrate|free",
   )
   suspend fun getPopularTv(
     @Query("page") page: Int,
@@ -113,7 +110,7 @@ interface TMDBApiService {
       "&with_runtime.gte=0" +
       "&with_runtime.lte=400" +
       "&with_watch_monetization_types=flatrate|free" +
-      "&with_release_type=2|3"
+      "&with_release_type=2|3",
   )
   suspend fun getAiringTv(
     @Query("watch_region") region: String,
@@ -123,9 +120,7 @@ interface TMDBApiService {
   ): MediaResponse
 
   @GET("3/tv/top_rated?language=en-US")
-  suspend fun getTopRatedTv(
-    @Query("page") page: Int,
-  ): MediaResponse
+  suspend fun getTopRatedTv(@Query("page") page: Int): MediaResponse
   // endregion TV
 
   // region RECOMMENDATION
@@ -182,39 +177,25 @@ interface TMDBApiService {
   ): Response<MediaStateResponse>
 
   @GET("3/movie/{movieId}/credits?language=en-US")
-  suspend fun getMovieCredits(
-    @Path("movieId") movieId: Int,
-  ): Response<MediaCreditsResponse>
+  suspend fun getMovieCredits(@Path("movieId") movieId: Int): Response<MediaCreditsResponse>
 
   @GET("3/tv/{tvId}/credits?language=en-US")
-  suspend fun getTvCredits(
-    @Path("tvId") tvId: Int,
-  ): Response<MediaCreditsResponse>
+  suspend fun getTvCredits(@Path("tvId") tvId: Int): Response<MediaCreditsResponse>
 
   @GET("3/movie/{movieId}?language=en-US&append_to_response=release_dates")
-  suspend fun getMovieDetail(
-    @Path("movieId") movieId: Int,
-  ): Response<DetailMovieResponse>
+  suspend fun getMovieDetail(@Path("movieId") movieId: Int): Response<DetailMovieResponse>
 
   @GET("3/tv/{tvId}?language=en-US&append_to_response=content_ratings")
-  suspend fun getTvDetail(
-    @Path("tvId") tvId: Int,
-  ): Response<DetailTvResponse>
+  suspend fun getTvDetail(@Path("tvId") tvId: Int): Response<DetailTvResponse>
 
   @GET("3/movie/{id}/videos?language=en-US")
-  suspend fun getMovieVideo(
-    @Path("id") id: Int,
-  ): Response<VideoResponse>
+  suspend fun getMovieVideo(@Path("id") id: Int): Response<VideoResponse>
 
   @GET("3/tv/{id}/videos?language=en-US")
-  suspend fun getTvVideo(
-    @Path("id") id: Int,
-  ): Response<VideoResponse>
+  suspend fun getTvVideo(@Path("id") id: Int): Response<VideoResponse>
 
   @GET("3/tv/{tvId}/external_ids?language=en-US")
-  suspend fun getTvExternalIds(
-    @Path("tvId") tvId: Int,
-  ): Response<ExternalIdResponse>
+  suspend fun getTvExternalIds(@Path("tvId") tvId: Int): Response<ExternalIdResponse>
 
   @GET("3/{params}/{id}/watch/providers")
   suspend fun getWatchProviders(
@@ -223,26 +204,18 @@ interface TMDBApiService {
   ): Response<WatchProvidersResponse>
 
   @GET("3/movie/{movieId}/keywords")
-  suspend fun getMovieKeywords(
-    @Path("movieId") movieId: String,
-  ): Response<MovieKeywordsResponse>
+  suspend fun getMovieKeywords(@Path("movieId") movieId: String): Response<MovieKeywordsResponse>
 
   @GET("3/tv/{tvId}/keywords")
-  suspend fun getTvKeywords(
-    @Path("tvId") tvId: String,
-  ): Response<TvKeywordsResponse>
+  suspend fun getTvKeywords(@Path("tvId") tvId: String): Response<TvKeywordsResponse>
   // endregion
 
   // region PERSON
   @GET("3/person/{personId}?language=en-US")
-  suspend fun getPersonDetails(
-    @Path("personId") personId: Int,
-  ): Response<DetailPersonResponse>
+  suspend fun getPersonDetails(@Path("personId") personId: Int): Response<DetailPersonResponse>
 
   @GET("3/person/{personId}/images?language=en-US")
-  suspend fun getPersonImages(
-    @Path("personId") personId: Int,
-  ): Response<ImagePersonResponse>
+  suspend fun getPersonImages(@Path("personId") personId: Int): Response<ImagePersonResponse>
 
   @GET("3/person/{personId}/external_ids")
   suspend fun getPersonExternalIds(
@@ -250,9 +223,7 @@ interface TMDBApiService {
   ): Response<ExternalIDPersonResponse>
 
   @GET("3/person/{personId}/combined_credits?language=en-US")
-  suspend fun getPersonCredits(
-    @Path("personId") personId: Int,
-  ): Response<CombinedCreditResponse>
+  suspend fun getPersonCredits(@Path("personId") personId: Int): Response<CombinedCreditResponse>
   // endregion
 
   // region POST FAVORITE & WATCHLIST
@@ -290,14 +261,9 @@ interface TMDBApiService {
 
   @Headers("Content-Type: application/json;charset=utf-8")
   @DELETE("3/authentication/session")
-  suspend fun deleteSession(
-    @Query("session_id") sessionId: String,
-  ): Response<PostResponse>
+  suspend fun deleteSession(@Query("session_id") sessionId: String): Response<PostResponse>
   // endregion
 
   @GET("3/search/multi?include_adult=false")
-  suspend fun search(
-    @Query("query") query: String,
-    @Query("page") page: Int,
-  ): MultiSearchResponse
+  suspend fun search(@Query("query") query: String, @Query("page") page: Int): MultiSearchResponse
 }

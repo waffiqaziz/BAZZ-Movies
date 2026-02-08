@@ -1,3 +1,5 @@
+@file:Suppress("BackingPropertyNaming")
+
 package com.waffiq.bazz_movies.feature.more.ui
 
 import android.content.Intent
@@ -102,7 +104,9 @@ class MoreFragment : Fragment() {
             }
 
             is UIState.Error -> errorSignOut(it.message)
+
             is UIState.Loading -> Unit
+
             is UIState.Idle -> Unit
           }
         }
@@ -119,7 +123,9 @@ class MoreFragment : Fragment() {
             }
 
             is UIState.Error -> errorSignOut(state.message)
+
             is UIState.Idle -> Unit
+
             is UIState.Loading -> Unit
           }
         }
@@ -153,7 +159,9 @@ class MoreFragment : Fragment() {
     }
     binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
     binding.btnCountryPicker.onCountrySelectedListener = {
-      userPreferenceViewModel.saveRegionPref(binding.btnCountryPicker.selectedCountryCode.isoCode)
+      userPreferenceViewModel.saveRegionPref(
+        binding.btnCountryPicker.selectedCountryCode.isoCode,
+      )
     }
   }
 
@@ -189,7 +197,7 @@ class MoreFragment : Fragment() {
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-        moreLocalViewModel.deleteAll() // delete all user data (watchlistPostModel and favoritePostModel)
+        moreLocalViewModel.deleteAll()
         dialog.dismiss()
       }
     }
@@ -236,7 +244,9 @@ class MoreFragment : Fragment() {
     }
 
     // check if user already have countryCode
-    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userCountry ->
+    userPreferenceViewModel.getUserRegionPref().observe(
+      viewLifecycleOwner,
+    ) { userCountry ->
 
       if (userCountry == NAN) { // if country not yet initialize, set country
         regionViewModel.getCountryCode()

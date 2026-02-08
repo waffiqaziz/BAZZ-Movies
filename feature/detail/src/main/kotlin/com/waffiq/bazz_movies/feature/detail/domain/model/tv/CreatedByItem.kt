@@ -5,5 +5,5 @@ data class CreatedByItem(
   val creditId: String? = null,
   val name: String? = null,
   val profilePath: String? = null,
-  val id: Int? = null
+  val id: Int? = null,
 )

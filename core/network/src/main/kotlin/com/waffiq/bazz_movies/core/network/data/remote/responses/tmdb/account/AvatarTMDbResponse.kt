@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class AvatarTMDbResponse(
 
   @Json(name = "avatar_path")
-  val avatarPath: String? = null
+  val avatarPath: String? = null,
 )

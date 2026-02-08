@@ -15,31 +15,29 @@ class PostActionInteractor @Inject constructor(
   private val userRepository: IUserRepository,
 ) : PostActionUseCase {
 
-  override fun postWatchlistWithAuth(
-    wtc: WatchlistParams,
-  ): Flow<Outcome<PostFavoriteWatchlist>> = flow {
-    userRepository.getUserPref().collect { userPref ->
-      moviesRepository.postWatchlist(
-        sessionId = userPref.token,
-        wtc = wtc,
-        userId = userPref.userId
-      ).collect { outcome ->
-        emit(outcome)
+  override fun postWatchlistWithAuth(wtc: WatchlistParams): Flow<Outcome<PostFavoriteWatchlist>> =
+    flow {
+      userRepository.getUserPref().collect { userPref ->
+        moviesRepository.postWatchlist(
+          sessionId = userPref.token,
+          wtc = wtc,
+          userId = userPref.userId,
+        ).collect { outcome ->
+          emit(outcome)
+        }
       }
     }
-  }
 
-  override fun postFavoriteWithAuth(
-    fav: FavoriteParams,
-  ): Flow<Outcome<PostFavoriteWatchlist>> = flow {
-    userRepository.getUserPref().collect { userPref ->
-      moviesRepository.postFavorite(
-        sessionId = userPref.token,
-        fav = fav,
-        userId = userPref.userId
-      ).collect { outcome ->
-        emit(outcome)
+  override fun postFavoriteWithAuth(fav: FavoriteParams): Flow<Outcome<PostFavoriteWatchlist>> =
+    flow {
+      userRepository.getUserPref().collect { userPref ->
+        moviesRepository.postFavorite(
+          sessionId = userPref.token,
+          fav = fav,
+          userId = userPref.userId,
+        ).collect { outcome ->
+          emit(outcome)
+        }
       }
     }
-  }
 }

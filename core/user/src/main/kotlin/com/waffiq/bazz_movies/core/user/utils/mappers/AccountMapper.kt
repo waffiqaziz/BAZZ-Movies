@@ -20,69 +20,78 @@ import com.waffiq.bazz_movies.core.user.domain.model.account.Gravatar
 
 object AccountMapper {
 
-  fun UserModelPref.toUserModel() = UserModel(
-    userId = userId,
-    name = name,
-    username = username,
-    password = password,
-    region = region,
-    token = token,
-    isLogin = isLogin,
-    gravatarHast = gravatarHast,
-    tmdbAvatar = tmdbAvatar,
-  )
+  fun UserModelPref.toUserModel() =
+    UserModel(
+      userId = userId,
+      name = name,
+      username = username,
+      password = password,
+      region = region,
+      token = token,
+      isLogin = isLogin,
+      gravatarHast = gravatarHast,
+      tmdbAvatar = tmdbAvatar,
+    )
 
-  fun UserModel.toUserModelPref() = UserModelPref(
-    userId = userId,
-    name = name,
-    username = username,
-    password = password,
-    region = region,
-    token = token,
-    isLogin = isLogin,
-    gravatarHast = gravatarHast,
-    tmdbAvatar = tmdbAvatar,
-  )
+  fun UserModel.toUserModelPref() =
+    UserModelPref(
+      userId = userId,
+      name = name,
+      username = username,
+      password = password,
+      region = region,
+      token = token,
+      isLogin = isLogin,
+      gravatarHast = gravatarHast,
+      tmdbAvatar = tmdbAvatar,
+    )
 
-  fun AuthenticationResponse.toAuthentication() = Authentication(
-    success = success,
-    expireAt = expireAt,
-    requestToken = requestToken
-  )
+  fun AuthenticationResponse.toAuthentication() =
+    Authentication(
+      success = success,
+      expireAt = expireAt,
+      requestToken = requestToken,
+    )
 
-  fun CreateSessionResponse.toCreateSession() = CreateSession(
-    success = success,
-    sessionId = sessionId
-  )
+  fun CreateSessionResponse.toCreateSession() =
+    CreateSession(
+      success = success,
+      sessionId = sessionId,
+    )
 
-  fun AccountDetailsResponse.toAccountDetails() = AccountDetails(
-    includeAdult = includeAdult,
-    iso31661 = iso31661,
-    name = name,
-    avatarItem = avatarItemResponse?.toAvatarItem(),
-    id = id,
-    iso6391 = iso6391,
-    username = username
-  )
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun AvatarItemResponse.toAvatarItem() = AvatarItem(
-    avatarTMDb = avatarTMDbResponse?.toAvatarTMDb(),
-    gravatar = gravatarResponse?.toGravatar()
-  )
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun AvatarTMDbResponse.toAvatarTMDb() = AvatarTMDb(
-    avatarPath = avatarPath
-  )
+  fun AccountDetailsResponse.toAccountDetails() =
+    AccountDetails(
+      includeAdult = includeAdult,
+      iso31661 = iso31661,
+      name = name,
+      avatarItem = avatarItemResponse?.toAvatarItem(),
+      id = id,
+      iso6391 = iso6391,
+      username = username,
+    )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun GravatarResponse.toGravatar() = Gravatar(
-    hash = hash
-  )
+  fun AvatarItemResponse.toAvatarItem() =
+    AvatarItem(
+      avatarTMDb = avatarTMDbResponse?.toAvatarTMDb(),
+      gravatar = gravatarResponse?.toGravatar(),
+    )
 
-  fun CountryIPResponse.toCountryIP() = CountryIP(
-    country = country,
-    ip = ip
-  )
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun AvatarTMDbResponse.toAvatarTMDb() =
+    AvatarTMDb(
+      avatarPath = avatarPath,
+    )
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun GravatarResponse.toGravatar() =
+    Gravatar(
+      hash = hash,
+    )
+
+  fun CountryIPResponse.toCountryIP() =
+    CountryIP(
+      country = country,
+      ip = ip,
+    )
 }

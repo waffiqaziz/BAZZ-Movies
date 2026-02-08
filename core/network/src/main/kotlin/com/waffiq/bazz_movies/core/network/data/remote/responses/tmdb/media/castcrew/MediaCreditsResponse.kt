@@ -13,5 +13,5 @@ data class MediaCreditsResponse(
   val id: Int? = null,
 
   @Json(name = "crew")
-  val crew: List<MediaCrewResponseItem>
+  val crew: List<MediaCrewResponseItem>,
 )

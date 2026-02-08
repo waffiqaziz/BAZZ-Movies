@@ -7,36 +7,38 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 
 object OMDbMapper {
 
-  fun OMDbDetailsResponse.toOMDbDetails() = OMDbDetails(
-    metascore = metascore,
-    boxOffice = boxOffice,
-    website = website,
-    imdbRating = imdbRating,
-    imdbVotes = imdbVotes,
-    ratings = ratings?.map { it.toRatingsItem() },
-    runtime = runtime,
-    language = language,
-    rated = rated,
-    production = production,
-    released = released,
-    imdbID = imdbID,
-    plot = plot,
-    director = director,
-    title = title,
-    actors = actors,
-    response = response,
-    type = type,
-    awards = awards,
-    dVD = dVD,
-    year = year,
-    poster = poster,
-    country = country,
-    genre = genre,
-    writer = writer
-  )
+  fun OMDbDetailsResponse.toOMDbDetails() =
+    OMDbDetails(
+      metascore = metascore,
+      boxOffice = boxOffice,
+      website = website,
+      imdbRating = imdbRating,
+      imdbVotes = imdbVotes,
+      ratings = ratings?.map { it.toRatingsItem() },
+      runtime = runtime,
+      language = language,
+      rated = rated,
+      production = production,
+      released = released,
+      imdbID = imdbID,
+      plot = plot,
+      director = director,
+      title = title,
+      actors = actors,
+      response = response,
+      type = type,
+      awards = awards,
+      dVD = dVD,
+      year = year,
+      poster = poster,
+      country = country,
+      genre = genre,
+      writer = writer,
+    )
 
-  private fun RatingsItemResponse.toRatingsItem() = RatingsItem(
-    value = value,
-    source = source
-  )
+  private fun RatingsItemResponse.toRatingsItem() =
+    RatingsItem(
+      value = value,
+      source = source,
+    )
 }

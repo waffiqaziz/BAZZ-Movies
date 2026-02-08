@@ -73,5 +73,5 @@ data class CastItemResponse(
   val releaseDate: String? = null,
 
   @Json(name = "order")
-  val order: Int? = null
+  val order: Int? = null,
 )

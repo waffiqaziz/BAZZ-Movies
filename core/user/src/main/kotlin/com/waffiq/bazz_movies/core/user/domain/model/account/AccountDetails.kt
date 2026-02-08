@@ -7,5 +7,5 @@ data class AccountDetails(
   val avatarItem: AvatarItem? = null,
   val id: Int? = null,
   val iso6391: String? = null,
-  val username: String? = null
+  val username: String? = null,
 )

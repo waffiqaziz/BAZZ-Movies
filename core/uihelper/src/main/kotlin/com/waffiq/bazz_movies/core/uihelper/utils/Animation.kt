@@ -8,11 +8,9 @@ import androidx.core.view.isVisible
 /**
  * Utility object providing simple animations for fading in and fading out views.
  *
- * This object contains functions that animate the alpha (opacity) of a view, making it fade in or out.
- * These animations are typically used for transitions, such as showing or hiding views smoothly.
+ * These animations used for transitions, such as showing or hiding views smoothly.
  * - [fadeOut] method will animate the view's alpha to 0.
- * - [fadeInAlpha50] method animates the
- * view's alpha to 50% opacity.
+ * - [fadeInAlpha50] method animates the view's alpha to 50% opacity.
  */
 object Animation {
 

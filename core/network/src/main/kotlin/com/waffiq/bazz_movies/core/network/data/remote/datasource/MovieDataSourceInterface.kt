@@ -24,6 +24,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.Medi
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 interface MovieDataSourceInterface {
   // PAGING
   fun getTopRatedMovies(): Flow<PagingData<MediaResponseItem>>
@@ -60,10 +61,7 @@ interface MovieDataSourceInterface {
   fun getTvExternalIds(id: Int): Flow<NetworkResult<ExternalIdResponse>>
   fun getMovieState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
   fun getTvState(sessionId: String, id: Int): Flow<NetworkResult<MediaStateResponse>>
-  fun getWatchProviders(
-    params: String,
-    id: Int,
-  ): Flow<NetworkResult<WatchProvidersResponse>>
+  fun getWatchProviders(params: String, id: Int): Flow<NetworkResult<WatchProvidersResponse>>
   fun getMovieKeywords(movieId: String): Flow<NetworkResult<MovieKeywordsResponse>>
   fun getTvKeywords(tvId: String): Flow<NetworkResult<TvKeywordsResponse>>
 

@@ -18,25 +18,25 @@ interface IMoviesRepository {
   fun postFavorite(
     sessionId: String,
     fav: FavoriteParams,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
   fun postWatchlist(
     sessionId: String,
     wtc: WatchlistParams,
-    userId: Int
+    userId: Int,
   ): Flow<Outcome<PostFavoriteWatchlist>>
 
   fun postMovieRate(
     sessionId: String,
     rating: Float,
-    movieId: Int
+    movieId: Int,
   ): Flow<Outcome<PostResult>>
 
   fun postTvRate(
     sessionId: String,
     rating: Float,
-    tvId: Int
+    tvId: Int,
   ): Flow<Outcome<PostResult>>
   // endregion POST FAVORITE AND WATCHLIST
 }

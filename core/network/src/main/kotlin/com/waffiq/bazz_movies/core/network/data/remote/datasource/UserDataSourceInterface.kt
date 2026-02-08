@@ -17,6 +17,6 @@ interface UserDataSourceInterface {
   fun login(
     username: String,
     pass: String,
-    sessionId: String
+    sessionId: String,
   ): Flow<NetworkResult<AuthenticationResponse>>
 }

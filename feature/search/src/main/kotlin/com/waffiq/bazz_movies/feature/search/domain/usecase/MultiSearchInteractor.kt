@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class MultiSearchInteractor @Inject constructor(
-  private val searchRepository: ISearchRepository
-) : MultiSearchUseCase {
+class MultiSearchInteractor @Inject constructor(private val searchRepository: ISearchRepository) :
+  MultiSearchUseCase {
   override fun search(query: String): Flow<PagingData<MultiSearchItem>> =
     searchRepository.search(query)
       .map { pagingData ->

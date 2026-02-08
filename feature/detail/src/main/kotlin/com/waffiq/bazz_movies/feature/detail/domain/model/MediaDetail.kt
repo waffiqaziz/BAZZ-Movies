@@ -16,5 +16,5 @@ data class MediaDetail(
   val budget: String? = null,
   val revenue: String? = null,
   val language: String? = null,
-  val keywords: List<MediaKeywordsItem?>? = null
+  val keywords: List<MediaKeywordsItem?>? = null,
 )

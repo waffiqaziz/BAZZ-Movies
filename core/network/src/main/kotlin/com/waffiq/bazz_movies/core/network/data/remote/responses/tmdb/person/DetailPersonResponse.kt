@@ -46,5 +46,5 @@ data class DetailPersonResponse(
   val adult: Boolean? = null,
 
   @Json(name = "homepage")
-  val homepage: String? = null
+  val homepage: String? = null,
 )

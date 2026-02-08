@@ -18,10 +18,10 @@ object DateFormatter {
    * This method ensures that the date is strictly parsed and handled accurately.
    *
    * @param date The date string in "yyyy-MM-dd" format to be parsed.
-   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
+   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input
+   *         is invalid.
    */
-  fun dateFormatterStandard(date: String?): String =
-    formatDate(date, "yyyy-MM-dd")
+  fun dateFormatterStandard(date: String?): String = formatDate(date, "yyyy-MM-dd")
 
   /**
    * Converts an ISO 8601 formatted date string (e.g., "2025-01-06T15:30:00.000+0000")
@@ -29,7 +29,8 @@ object DateFormatter {
    * This method adjusts for the "Z" (UTC) and ensures the date is parsed and formatted correctly.
    *
    * @param date The ISO 8601 date string to be parsed.
-   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input is invalid.
+   * @return The formatted date string in "MMM dd, yyyy" format, or an empty string if the input
+   *         is invalid.
    */
   fun dateFormatterISO8601(date: String?): String {
     val adjustedDate = date?.replace("Z", "+0000")

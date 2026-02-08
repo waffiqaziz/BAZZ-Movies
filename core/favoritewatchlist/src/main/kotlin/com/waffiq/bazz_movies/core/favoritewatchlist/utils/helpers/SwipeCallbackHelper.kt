@@ -15,22 +15,17 @@ import kotlin.math.abs
 
 /**
  * A helper class that handles swipe actions on the favorite and watchlist fragments.
- * This class extends [ItemTouchHelper.Callback] to manage swipe gestures (left and right) on items
- * within a RecyclerView.
+ * This class extends [ItemTouchHelper.Callback] to manage swipe gestures (left and right)
  *
- * @property onSwipeLeft A callback function triggered when an item is swiped left. It takes two parameters:
- *  - The [RecyclerView.ViewHolder] being swiped.
- *  - The position of the item in the adapter.
+ * @property onSwipeLeft A callback function when an item is swiped left.
  * @property onSwipeRight A callback function triggered when an item is swiped right.
- *                        It also takes the same parameters as [onSwipeLeft].
  * @property context The context used for accessing resources and drawing UI elements.
- * @property deleteIconResId The resource ID for the icon displayed during a right swipe (delete action).
- * @property actionIconResId The resource ID for the icon displayed during a left swipe
- *                           (custom action, such as adding/removing from watchlist).
+ * @property deleteIconResId The resource ID for the icon for delete action
+ * @property actionIconResId The resource ID for the icon adding to favorite/watchlist.
  *
  * This class overrides methods from [ItemTouchHelper.Callback] to:
  *  - Set swipe directions (left/right) in [getMovementFlags].
- *  - Handle the swipe action in [onSwiped], invoking the appropriate callback based on swipe direction.
+ *  - Handle the swipe action in [onSwiped], invoking callback based on swipe direction.
  *  - Draw custom background, color transition, and icons during the swipe in [onChildDraw].
  *  - Customize swipe behavior, such as setting a threshold in [getSwipeThreshold].
  */
@@ -99,7 +94,7 @@ class SwipeCallbackHelper(
         itemView.left + (itemHeight - intrinsicHeight) / BOUND_SIZE,
         itemView.top + (itemHeight - intrinsicHeight) / 2,
         itemView.left + (itemHeight - intrinsicHeight) / BOUND_SIZE + intrinsicWidth,
-        itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight
+        itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight,
       )
       deleteIcon.draw(c)
     } else if (dX < 0) { // swipe left
@@ -118,7 +113,7 @@ class SwipeCallbackHelper(
         itemView.right - (itemHeight - intrinsicHeight) / BOUND_SIZE - intrinsicWidth,
         itemView.top + (itemHeight - intrinsicHeight) / 2,
         itemView.right - (itemHeight - intrinsicHeight) / BOUND_SIZE,
-        itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight
+        itemView.top + (itemHeight - intrinsicHeight) / 2 + intrinsicHeight,
       )
       actionIcon.draw(c)
     }

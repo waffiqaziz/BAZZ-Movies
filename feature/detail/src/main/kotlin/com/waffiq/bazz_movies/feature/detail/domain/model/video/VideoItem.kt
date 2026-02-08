@@ -10,5 +10,5 @@ data class VideoItem(
   val publishedAt: String? = null,
   val type: String? = null,
   val iso6391: String? = null,
-  val key: String? = null
+  val key: String? = null,
 )

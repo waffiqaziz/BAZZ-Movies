@@ -79,7 +79,7 @@ data class OMDbDetailsResponse(
   val genre: String? = null,
 
   @Json(name = "Writer")
-  val writer: String? = null
+  val writer: String? = null,
 )
 
 @JsonClass(generateAdapter = false)
@@ -89,5 +89,5 @@ data class RatingsItemResponse(
   val value: String? = null,
 
   @Json(name = "Source")
-  val source: String? = null
+  val source: String? = null,
 )

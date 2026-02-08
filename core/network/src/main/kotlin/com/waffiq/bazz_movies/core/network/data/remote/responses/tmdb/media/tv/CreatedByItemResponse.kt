@@ -19,5 +19,5 @@ data class CreatedByItemResponse(
   val profilePath: String? = null,
 
   @Json(name = "id")
-  val id: Int? = null
+  val id: Int? = null,
 )

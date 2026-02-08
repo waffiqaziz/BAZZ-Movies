@@ -20,14 +20,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class GenericViewPagerAdapter(
   fragmentManager: FragmentManager,
   lifecycle: Lifecycle,
-  private val fragments: List<Fragment>
+  private val fragments: List<Fragment>,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-  override fun getItemCount(): Int =
-    fragments.size
+  override fun getItemCount(): Int = fragments.size
 
-  override fun createFragment(position: Int): Fragment =
-    fragments[position]
+  override fun createFragment(position: Int): Fragment = fragments[position]
 
   override fun getItemId(position: Int): Long =
     fragments[position].javaClass.simpleName.hashCode().toLong()

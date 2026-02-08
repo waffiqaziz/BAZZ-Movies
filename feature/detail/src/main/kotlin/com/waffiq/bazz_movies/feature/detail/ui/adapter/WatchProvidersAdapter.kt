@@ -14,9 +14,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemWatchProviderBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.Provider
 
-class WatchProvidersAdapter(
-  private val onItemClick: () -> Unit,
-) :
+class WatchProvidersAdapter(private val onItemClick: () -> Unit) :
   RecyclerView.Adapter<WatchProvidersAdapter.ViewHolder>() {
 
   private val providerList = ArrayList<Provider>()
@@ -42,7 +40,7 @@ class WatchProvidersAdapter(
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     holder.bind(providerList[position])
     holder.itemView.startAnimation(
-      AnimationUtils.loadAnimation(holder.itemView.context, fade_in)
+      AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
     )
   }
 
@@ -61,7 +59,7 @@ class WatchProvidersAdapter(
             TMDB_IMG_LINK_ORIGINAL + provider.logoPath
           } else {
             ic_broken_image
-          }
+          },
         )
         .placeholder(ic_broken_image)
         .transition(withCrossFade())
@@ -70,10 +68,8 @@ class WatchProvidersAdapter(
     }
   }
 
-  class DiffCallback(
-    private val oldList: List<Provider>,
-    private val newList: List<Provider>,
-  ) : DiffUtil.Callback() {
+  class DiffCallback(private val oldList: List<Provider>, private val newList: List<Provider>) :
+    DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
     override fun getNewListSize() = newList.size
 

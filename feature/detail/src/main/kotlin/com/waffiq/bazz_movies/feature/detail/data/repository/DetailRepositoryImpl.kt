@@ -28,9 +28,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class DetailRepositoryImpl @Inject constructor(
-  private val movieDataSource: MovieDataSource,
-) : IDetailRepository {
+class DetailRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
+  IDetailRepository {
 
   override fun getOMDbDetails(imdbId: String): Flow<Outcome<OMDbDetails>> =
     movieDataSource.getOMDbDetails(imdbId).toOutcome { it.toOMDbDetails() }
@@ -56,24 +55,17 @@ class DetailRepositoryImpl @Inject constructor(
   override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     movieDataSource.getTvCredits(tvId).toOutcome { it.toMediaCredits() }
 
-  override fun getMovieRecommendationPagingData(
-    movieId: Int,
-  ): Flow<PagingData<MediaItem>> =
+  override fun getMovieRecommendationPagingData(movieId: Int): Flow<PagingData<MediaItem>> =
     movieDataSource.getMovieRecommendation(movieId).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 
-  override fun getTvRecommendationPagingData(
-    tvId: Int,
-  ): Flow<PagingData<MediaItem>> =
+  override fun getTvRecommendationPagingData(tvId: Int): Flow<PagingData<MediaItem>> =
     movieDataSource.getTvRecommendation(tvId).map { pagingData ->
       pagingData.map { it.toMediaItem() }
     }
 
-  override fun getWatchProviders(
-    params: String,
-    id: Int,
-  ): Flow<Outcome<WatchProviders>> =
+  override fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>> =
     movieDataSource.getWatchProviders(params, id).toOutcome { it.toWatchProviders() }
 
   override fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>> =

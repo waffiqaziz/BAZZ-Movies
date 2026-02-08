@@ -7,5 +7,5 @@ data class SeasonsItem(
   val name: String? = null,
   val seasonNumber: Int? = null,
   val id: Int? = null,
-  val posterPath: String? = null
+  val posterPath: String? = null,
 )

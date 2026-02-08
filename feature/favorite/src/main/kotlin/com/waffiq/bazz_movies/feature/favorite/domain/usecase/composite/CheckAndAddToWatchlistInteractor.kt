@@ -27,28 +27,26 @@ class CheckAndAddToWatchlistInteractor @Inject constructor(
   private val userPrefUseCase: UserPrefUseCase,
 ) : CheckAndAddToWatchlistUseCase {
 
-  override fun addMovieToWatchlist(movieId: Int): Flow<Outcome<WatchlistActionResult>> {
-    return addToWatchlist(
+  override fun addMovieToWatchlist(movieId: Int): Flow<Outcome<WatchlistActionResult>> =
+    addToWatchlist(
       mediaId = movieId,
       mediaType = MOVIE_MEDIA_TYPE,
-      getStateFlow = { token -> getMovieStateUseCase.getMovieState(token, movieId) }
+      getStateFlow = { token -> getMovieStateUseCase.getMovieState(token, movieId) },
     )
-  }
 
-  override fun addTvToWatchlist(tvId: Int): Flow<Outcome<WatchlistActionResult>> {
-    return addToWatchlist(
+  override fun addTvToWatchlist(tvId: Int): Flow<Outcome<WatchlistActionResult>> =
+    addToWatchlist(
       mediaId = tvId,
       mediaType = TV_MEDIA_TYPE,
-      getStateFlow = { token -> getTvStateUseCase.getTvState(token, tvId) }
+      getStateFlow = { token -> getTvStateUseCase.getTvState(token, tvId) },
     )
-  }
 
   private fun addToWatchlist(
     mediaId: Int,
     mediaType: String,
     getStateFlow: (String) -> Flow<Outcome<MediaState>>,
-  ): Flow<Outcome<WatchlistActionResult>> {
-    return userPrefUseCase.getUserToken()
+  ): Flow<Outcome<WatchlistActionResult>> =
+    userPrefUseCase.getUserToken()
       .filterNotNull()
       .take(1)
       .flatMapConcat { token -> getStateFlow(token) }
@@ -59,25 +57,24 @@ class CheckAndAddToWatchlistInteractor @Inject constructor(
               flowOf(Outcome.Success(WatchlistActionResult.AlreadyInWatchlist))
             } else {
               postActionUseCase.postWatchlistWithAuth(
-                WatchlistParams(mediaType, mediaId, true)
+                WatchlistParams(mediaType, mediaId, true),
               ).map(::mapPostOutcome)
             }
           }
 
           is Outcome.Error -> flowOf(Outcome.Error(stateOutcome.message))
+
           is Outcome.Loading -> flowOf(Outcome.Loading)
         }
       }
       .onStart { emit(Outcome.Loading) }
-  }
 
   private fun mapPostOutcome(
     postOutcome: Outcome<PostFavoriteWatchlist>,
-  ): Outcome<WatchlistActionResult> {
-    return when (postOutcome) {
+  ): Outcome<WatchlistActionResult> =
+    when (postOutcome) {
       is Outcome.Success -> Outcome.Success(WatchlistActionResult.Added)
       is Outcome.Error -> Outcome.Error(postOutcome.message)
       is Outcome.Loading -> Outcome.Loading
     }
-  }
 }

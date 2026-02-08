@@ -27,7 +27,7 @@ object MediaHelper {
       "Writer" to "Writer",
       "Author" to "Author",
       "Screenplay" to "Screenplay",
-      "Novel" to "Novel"
+      "Novel" to "Novel",
     )
 
     // Group crew members by their job title for efficient lookup
@@ -46,7 +46,7 @@ object MediaHelper {
       .filter {
         it.official == true && it.type.equals(
           "Trailer",
-          ignoreCase = true
+          ignoreCase = true,
         )
       } // get official and trailer
       .map { it.key } // get the key value (youtube id video)
@@ -57,8 +57,7 @@ object MediaHelper {
       .orEmpty() // if null use valid link
   }
 
-  fun getTransformTMDBScore(tmdbScore: Double?): String? =
-    tmdbScore?.takeIf { it > 0 }?.toString()
+  fun getTransformTMDBScore(tmdbScore: Double?): String? = tmdbScore?.takeIf { it > 0 }?.toString()
 
   fun getTransformDuration(runtime: Int?): String? =
     if (runtime == 0 || runtime == null) null else convertRuntime(runtime)

@@ -79,7 +79,7 @@ class PersonActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
+      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
     )
 
     super.onCreate(savedInstanceState)
@@ -225,7 +225,7 @@ class PersonActivity : AppCompatActivity() {
       window?.setDimAmount(DIALOG_ALPHA) // set transparent percent
       window?.setLayout(
         WindowManager.LayoutParams.MATCH_PARENT,
-        WindowManager.LayoutParams.WRAP_CONTENT
+        WindowManager.LayoutParams.WRAP_CONTENT,
       )
       window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable()) // set background transparent
 

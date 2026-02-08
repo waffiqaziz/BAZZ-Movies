@@ -23,7 +23,5 @@ interface StatedUseCaseModule {
 
   @Binds
   @ViewModelScoped
-  fun bindStatedTvUseCase(
-    getStatedTvInteractor: GetTvStateInteractor,
-  ): GetTvStateUseCase
+  fun bindStatedTvUseCase(getStatedTvInteractor: GetTvStateInteractor): GetTvStateUseCase
 }

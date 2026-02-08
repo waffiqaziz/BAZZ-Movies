@@ -10,24 +10,22 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoin
 object DatabaseMapper {
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun MediaItem.toFavorite(
-    isFavorite: Boolean,
-    isWatchlist: Boolean,
-  ) = Favorite(
-    id = 0,
-    mediaId = id,
-    mediaType = mediaType,
-    title = name ?: originalName ?: title ?: originalTitle ?: NOT_AVAILABLE,
-    releaseDate = releaseDate ?: firstAirDate ?: NOT_AVAILABLE,
-    rating = voteAverage ?: 0.0f,
-    backDrop = backdropPath ?: NOT_AVAILABLE,
-    poster = posterPath ?: NOT_AVAILABLE,
-    genre = transformListGenreIdsToJoinName(listGenreIds.orEmpty()),
-    popularity = popularity ?: 0.0,
-    overview = overview ?: NOT_AVAILABLE,
-    isFavorite = isFavorite,
-    isWatchlist = isWatchlist
-  )
+  fun MediaItem.toFavorite(isFavorite: Boolean, isWatchlist: Boolean) =
+    Favorite(
+      id = 0,
+      mediaId = id,
+      mediaType = mediaType,
+      title = name ?: originalName ?: title ?: originalTitle ?: NOT_AVAILABLE,
+      releaseDate = releaseDate ?: firstAirDate ?: NOT_AVAILABLE,
+      rating = voteAverage ?: 0.0f,
+      backDrop = backdropPath ?: NOT_AVAILABLE,
+      poster = posterPath ?: NOT_AVAILABLE,
+      genre = transformListGenreIdsToJoinName(listGenreIds.orEmpty()),
+      popularity = popularity ?: 0.0,
+      overview = overview ?: NOT_AVAILABLE,
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist,
+    )
 
   fun favTrueWatchlistTrue(data: MediaItem): Favorite =
     data.toFavorite(isFavorite = true, isWatchlist = true)
@@ -38,35 +36,37 @@ object DatabaseMapper {
   fun favFalseWatchlistTrue(data: MediaItem): Favorite =
     data.toFavorite(isFavorite = false, isWatchlist = true)
 
-  fun FavoriteEntity.toFavorite() = Favorite(
-    id = id,
-    mediaId = mediaId,
-    mediaType = mediaType,
-    genre = genre,
-    backDrop = backDrop,
-    poster = poster,
-    overview = overview,
-    title = title,
-    releaseDate = releaseDate,
-    popularity = popularity,
-    rating = rating,
-    isFavorite = isFavorite,
-    isWatchlist = isWatchlist,
-  )
+  fun FavoriteEntity.toFavorite() =
+    Favorite(
+      id = id,
+      mediaId = mediaId,
+      mediaType = mediaType,
+      genre = genre,
+      backDrop = backDrop,
+      poster = poster,
+      overview = overview,
+      title = title,
+      releaseDate = releaseDate,
+      popularity = popularity,
+      rating = rating,
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist,
+    )
 
-  fun Favorite.toFavoriteEntity() = FavoriteEntity(
-    id = id,
-    mediaId = mediaId,
-    mediaType = mediaType,
-    genre = genre,
-    backDrop = backDrop,
-    poster = poster,
-    overview = overview,
-    title = title,
-    releaseDate = releaseDate,
-    popularity = popularity,
-    rating = rating,
-    isFavorite = isFavorite,
-    isWatchlist = isWatchlist,
-  )
+  fun Favorite.toFavoriteEntity() =
+    FavoriteEntity(
+      id = id,
+      mediaId = mediaId,
+      mediaType = mediaType,
+      genre = genre,
+      backDrop = backDrop,
+      poster = poster,
+      overview = overview,
+      title = title,
+      releaseDate = releaseDate,
+      popularity = popularity,
+      rating = rating,
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist,
+    )
 }

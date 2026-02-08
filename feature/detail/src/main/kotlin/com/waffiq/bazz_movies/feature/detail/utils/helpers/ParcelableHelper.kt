@@ -7,12 +7,11 @@ import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity.Companion.EX
 
 object ParcelableHelper {
 
-  fun extractMediaItemFromIntent(intent: Intent): MediaItem? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+  fun extractMediaItemFromIntent(intent: Intent): MediaItem? =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
       intent.getParcelableExtra(EXTRA_MOVIE, MediaItem::class.java)
     } else {
       @Suppress("DEPRECATION")
       intent.getParcelableExtra(EXTRA_MOVIE)
     }
-  }
 }
