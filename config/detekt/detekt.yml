@@ -18,13 +18,13 @@ ktlint:
     indentSize: 2
     maxLineLength: 100
   FunctionSignature:
-    forceMultilineWhenParameterCountGreaterOrEqualThan: 4
+    forceMultilineWhenParameterCountGreaterOrEqualThan: 3
     functionBodyExpressionWrapping: multiline
     maxLineLength: 100
     manuallyConfigured: true
     indentSize: 2
   ClassSignature:
-    forceMultilineWhenParameterCountGreaterOrEqualThan: 4
+    forceMultilineWhenParameterCountGreaterOrEqualThan: 3
     functionBodyExpressionWrapping: default
     maxLineLength: 100
     indentSize: 2
