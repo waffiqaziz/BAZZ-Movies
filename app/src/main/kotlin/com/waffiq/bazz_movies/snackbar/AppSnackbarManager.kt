@@ -43,6 +43,7 @@ class AppSnackbarManager @Inject constructor(@ActivityContext private val contex
    * @param snackbarFactory Function that creates the snackbar given rootView and bottomNav
    * @return The created and shown Snackbar, or null if creation failed
    */
+  @Suppress("TooGenericExceptionCaught")
   private inline fun createAndShowSnackbar(
     snackbarFactory: (rootView: View, bottomNav: View?) -> Snackbar?,
   ): Snackbar? {
