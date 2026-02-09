@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemFavoriteBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -34,10 +34,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 
 @RunWith(RobolectricTestRunner::class)
-class FavoriteAdapterDBTest {
+class WatchlistAdapterDBTest {
   private lateinit var context: Context
   private lateinit var navigator: INavigator
-  private lateinit var adapter: FavoriteAdapterDB
+  private lateinit var adapter: WatchlistAdapterDB
   private lateinit var onDelete: (Favorite, Int) -> Unit
   private lateinit var onAddToWatchlist: (Favorite, Int) -> Unit
 
@@ -64,24 +64,24 @@ class FavoriteAdapterDBTest {
     navigator = mockk(relaxed = true)
     onDelete = mockk(relaxed = true)
     onAddToWatchlist = mockk(relaxed = true)
-    adapter = FavoriteAdapterDB(navigator, onDelete, onAddToWatchlist)
+    adapter = WatchlistAdapterDB(navigator, onDelete, onAddToWatchlist)
     context = ApplicationProvider.getApplicationContext<Context>().apply {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
   }
 
   @Test
-  fun setFavorite_whenCalledTwice_updatesListAndItemCount() {
+  fun setWatchlist_whenCalledTwice_updatesListAndItemCount() {
     val oldList = listOf(favorite)
     val newList = listOf(
       favorite.copy(id = 2, mediaId = 2, title = indonesianMovie2),
       favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3")
     )
 
-    adapter.setFavorite(oldList)
+    adapter.setWatchlist(oldList)
     assertEquals(1, adapter.itemCount)
 
-    adapter.setFavorite(newList)
+    adapter.setWatchlist(newList)
     assertEquals(2, adapter.itemCount)
     assertEquals(newList, adapter.getListItemDB())
   }
@@ -90,18 +90,18 @@ class FavoriteAdapterDBTest {
   fun onBindViewHolder_whenCalled_bindsCorrectDataForAllCases() {
     val context = ApplicationProvider.getApplicationContext<Context>()
     val inflater = LayoutInflater.from(context)
-    val binding = ItemFavoriteBinding.inflate(inflater, null, false)
+    val binding = ItemWatchlistBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
 
     // test case 1: valid data
-    adapter.setFavorite(listOf(favorite))
+    adapter.setWatchlist(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals(indonesianMovie, binding.tvTitle.text.toString())
     assertEquals("Action", binding.tvGenre.text.toString())
     assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
 
     // test case 2: released date empty
-    adapter.setFavorite(listOf(favorite.copy(releaseDate = "")))
+    adapter.setWatchlist(listOf(favorite.copy(releaseDate = "")))
     adapter.onBindViewHolder(viewHolder, 0)
     assertEquals("N/A", binding.tvYearReleased.text.toString())
   }
@@ -119,7 +119,7 @@ class FavoriteAdapterDBTest {
 
   @Test
   fun viewHolder_whenAccessedBeforeBind_throwsUntilBound() {
-    val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(context))
+    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
     val exception = assertThrows(UninitializedPropertyAccessException::class.java) {
@@ -156,7 +156,7 @@ class FavoriteAdapterDBTest {
 
   @Test
   fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
-    val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(context))
+    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
     val testCases = listOf(
@@ -180,10 +180,10 @@ class FavoriteAdapterDBTest {
   @Test
   fun onBindViewHolder_whenClicked_callsNavigator() {
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
-    val binding = ItemFavoriteBinding.inflate(inflater, FrameLayout(inflater.context), false)
+    val binding = ItemWatchlistBinding.inflate(inflater, FrameLayout(inflater.context), false)
     val viewHolder = adapter.ViewHolder(binding)
 
-    adapter.setFavorite(listOf(favorite))
+    adapter.setWatchlist(listOf(favorite))
     adapter.onBindViewHolder(viewHolder, 0)
 
     val resultSlot = slot<MediaItem>()
@@ -213,7 +213,7 @@ class FavoriteAdapterDBTest {
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(context)
 
-    adapter.setFavorite(listOf(favorite))
+    adapter.setWatchlist(listOf(favorite))
 
     // measure the RecyclerView
     recyclerView.measure(
@@ -223,7 +223,7 @@ class FavoriteAdapterDBTest {
     recyclerView.layout(0, 0, 1080, 1920)
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoriteAdapterDB.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistAdapterDB.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -244,7 +244,7 @@ class FavoriteAdapterDBTest {
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(context)
 
-    adapter.setFavorite(listOf(favorite))
+    adapter.setWatchlist(listOf(favorite))
 
     // measure the RecyclerView
     recyclerView.measure(
@@ -254,7 +254,7 @@ class FavoriteAdapterDBTest {
     recyclerView.layout(0, 0, 1080, 1920)
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoriteAdapterDB.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistAdapterDB.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -275,7 +275,7 @@ class FavoriteAdapterDBTest {
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(context)
 
-    adapter.setFavorite(listOf(favorite))
+    adapter.setWatchlist(listOf(favorite))
 
     // measure the RecyclerView
     recyclerView.measure(
@@ -285,7 +285,7 @@ class FavoriteAdapterDBTest {
     recyclerView.layout(0, 0, 1080, 1920)
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoriteAdapterDB.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistAdapterDB.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -310,7 +310,7 @@ class FavoriteAdapterDBTest {
     val oldItem = favorite
     val newItem = favorite // same content
 
-    val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = WatchlistAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertTrue(diffCallback.areContentsTheSame(0, 0))
   }
@@ -334,7 +334,7 @@ class FavoriteAdapterDBTest {
       isWatchlist = false
     ) // different content
 
-    val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
+    val diffCallback = WatchlistAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
 
     assertFalse(diffCallback.areContentsTheSame(0, 0))
   }
@@ -351,7 +351,7 @@ class FavoriteAdapterDBTest {
     )
 
     testCases.forEach { (oldItem, newItem) ->
-      val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
+      val diffCallback = WatchlistAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
       assertFalse(diffCallback.areContentsTheSame(0, 0))
     }
   }
@@ -368,17 +368,17 @@ class FavoriteAdapterDBTest {
     )
 
     testCases.forEach { (oldItem, newItem) ->
-      val diffCallback = FavoriteAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
+      val diffCallback = WatchlistAdapterDB.DiffCallback(listOf(oldItem), listOf(newItem))
       assertFalse(diffCallback.areItemsTheSame(0, 0))
     }
 
-    val diffCallbackSame = FavoriteAdapterDB.DiffCallback(listOf(favorite), listOf(favorite))
+    val diffCallbackSame = WatchlistAdapterDB.DiffCallback(listOf(favorite), listOf(favorite))
     assertTrue(diffCallbackSame.areItemsTheSame(0, 0))
   }
 
   @Test
   fun viewHolder_whenUnbound_throwsThenInitializes() {
-    val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(context))
+    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(context))
     val viewHolder = adapter.ViewHolder(binding)
 
     // uninitialized access should throw exception

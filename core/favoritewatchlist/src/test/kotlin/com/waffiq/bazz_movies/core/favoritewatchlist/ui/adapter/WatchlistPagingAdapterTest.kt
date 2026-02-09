@@ -15,7 +15,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingFavoriteBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_NAME
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_TITLE
@@ -41,13 +41,13 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 
 @RunWith(RobolectricTestRunner::class)
-class FavoritePagingAdapterTest {
+class WatchlistPagingAdapterTest {
   private lateinit var context: Context
   private lateinit var navigator: INavigator
-  private lateinit var adapter: FavoritePagingAdapter
+  private lateinit var adapter: WatchlistPagingAdapter
   private lateinit var inflater: LayoutInflater
-  private lateinit var binding: ItemPagingFavoriteBinding
-  private lateinit var viewHolder: FavoritePagingAdapter.ViewHolder
+  private lateinit var binding: ItemPagingWatchlistBinding
+  private lateinit var viewHolder: WatchlistPagingAdapter.ViewHolder
   private lateinit var onDelete: (MediaItem, Int) -> Unit
   private lateinit var onAddToWatchlist: (MediaItem, Int) -> Unit
 
@@ -73,7 +73,7 @@ class FavoritePagingAdapterTest {
     navigator = mockk(relaxed = true)
     onDelete = mockk(relaxed = true)
     onAddToWatchlist = mockk(relaxed = true)
-    adapter = FavoritePagingAdapter(
+    adapter = WatchlistPagingAdapter(
       navigator,
       MOVIE_MEDIA_TYPE,
       onDelete,
@@ -83,7 +83,7 @@ class FavoritePagingAdapterTest {
       setTheme(Base_Theme_BAZZ_movies) // set the theme
     }
     inflater = LayoutInflater.from(context)
-    binding = ItemPagingFavoriteBinding.inflate(inflater, null, false)
+    binding = ItemPagingWatchlistBinding.inflate(inflater, null, false)
     viewHolder = adapter.ViewHolder(binding)
   }
 
@@ -243,7 +243,7 @@ class FavoritePagingAdapterTest {
     shadowOf(Looper.getMainLooper()).idle()
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoritePagingAdapter.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistPagingAdapter.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -276,7 +276,7 @@ class FavoritePagingAdapterTest {
     shadowOf(Looper.getMainLooper()).idle()
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoritePagingAdapter.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistPagingAdapter.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -309,7 +309,7 @@ class FavoritePagingAdapterTest {
     shadowOf(Looper.getMainLooper()).idle()
 
     val viewHolder =
-      recyclerView.findViewHolderForAdapterPosition(0) as? FavoritePagingAdapter.ViewHolder
+      recyclerView.findViewHolderForAdapterPosition(0) as? WatchlistPagingAdapter.ViewHolder
     assertNotNull(viewHolder)
 
     assertNotNull(viewHolder!!.swipeCallback)
@@ -334,7 +334,7 @@ class FavoritePagingAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem = MediaItem(id = 1, mediaType = "movie")
 
-    assertTrue(FavoritePagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
+    assertTrue(WatchlistPagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem))
   }
 
   @Test
@@ -342,7 +342,7 @@ class FavoritePagingAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
-    assertFalse(FavoritePagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
+    assertFalse(WatchlistPagingAdapter.DIFF_CALLBACK.areItemsTheSame(oldItem, newItem1))
   }
 
   @Test
@@ -350,7 +350,7 @@ class FavoritePagingAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie", title = "Movie 1")
     val newItem = MediaItem(id = 1, mediaType = "movie", title = "Different Title")
 
-    assertTrue(FavoritePagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
+    assertTrue(WatchlistPagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
   @Test
@@ -358,6 +358,6 @@ class FavoritePagingAdapterTest {
     val oldItem = MediaItem(id = 1, mediaType = "movie")
     val newItem1 = MediaItem(id = 2, mediaType = "movie") // different ID
 
-    assertFalse(FavoritePagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
+    assertFalse(WatchlistPagingAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem1))
   }
 }

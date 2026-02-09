@@ -17,7 +17,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingFavoriteBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
@@ -26,16 +26,16 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class FavoritePagingAdapter(
+class WatchlistPagingAdapter(
   private val navigator: INavigator,
   private val mediaType: String,
   private val onDelete: (MediaItem, Int) -> Unit,
   private val onAddToWatchlist: (MediaItem, Int) -> Unit,
-) : PagingDataAdapter<MediaItem, FavoritePagingAdapter.ViewHolder>(DIFF_CALLBACK) {
+) : PagingDataAdapter<MediaItem, WatchlistPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
-      ItemPagingFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+      ItemPagingWatchlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -49,7 +49,7 @@ class FavoritePagingAdapter(
     }
   }
 
-  inner class ViewHolder(private var binding: ItemPagingFavoriteBinding) :
+  inner class ViewHolder(private var binding: ItemPagingWatchlistBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     lateinit var data: MediaItem
@@ -82,7 +82,7 @@ class FavoritePagingAdapter(
   }
 
   private fun Context.setTitleYearGenreRating(
-    binding: ItemPagingFavoriteBinding,
+    binding: ItemPagingWatchlistBinding,
     mediaItem: MediaItem,
   ) {
     binding.tvTitle.text = titleHandler(mediaItem)
@@ -94,7 +94,7 @@ class FavoritePagingAdapter(
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun setImagePoster(binding: ItemPagingFavoriteBinding, data: MediaItem) {
+  fun setImagePoster(binding: ItemPagingWatchlistBinding, data: MediaItem) {
     binding.ivPicture.contentDescription = titleHandler(data)
     Glide.with(binding.ivPicture)
       .load(

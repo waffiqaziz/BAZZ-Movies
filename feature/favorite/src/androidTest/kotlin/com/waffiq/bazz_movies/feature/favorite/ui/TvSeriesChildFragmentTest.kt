@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
+import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test
 import com.waffiq.bazz_movies.feature.favorite.testutils.DefaultFavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.testutils.FavoriteFragmentTestHelper
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
@@ -14,10 +15,12 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+
 
 @HiltAndroidTest
 class TvSeriesChildFragmentTest :
@@ -50,6 +53,7 @@ class TvSeriesChildFragmentTest :
   fun setUp() {
     hiltRule.inject()
     setupMocks(mockUserPrefViewModel)
+    every { mockNavigator.snackbarAnchor() } returns snackbar_anchor_test
   }
 
   @Test

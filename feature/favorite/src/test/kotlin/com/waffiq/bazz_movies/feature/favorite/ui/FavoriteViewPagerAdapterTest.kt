@@ -48,14 +48,14 @@ class FavoriteViewPagerAdapterTest {
   fun createFragment_positionZero_returnsMovieFavoriteChildFragment() {
     val fragment = adapter.createFragment(0)
     assertTrue(fragment is FavoriteChildFragment)
-    assertEquals(MOVIE_MEDIA_TYPE, (fragment as FavoriteChildFragment).mediaType)
+    assertEquals(MOVIE_MEDIA_TYPE, (fragment as FavoriteChildFragment).internalMediaType)
   }
 
   @Test
   fun createFragment_positionOne_returnsTvFavoriteChildFragment() {
     val fragment = adapter.createFragment(1)
     assertTrue(fragment is FavoriteChildFragment)
-    assertEquals(TV_MEDIA_TYPE, (fragment as FavoriteChildFragment).mediaType)
+    assertEquals(TV_MEDIA_TYPE, (fragment as FavoriteChildFragment).internalMediaType)
   }
 
   @Test(expected = IllegalStateException::class)

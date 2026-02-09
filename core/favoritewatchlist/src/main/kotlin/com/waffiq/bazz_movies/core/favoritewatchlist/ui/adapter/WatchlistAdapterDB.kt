@@ -15,25 +15,25 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemFavoriteBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class FavoriteAdapterDB(
+class WatchlistAdapterDB(
   private val navigator: INavigator,
   private val onDelete: (Favorite, Int) -> Unit,
   private val onAddToWatchlist: (Favorite, Int) -> Unit,
-) : RecyclerView.Adapter<FavoriteAdapterDB.ViewHolder>() {
+) : RecyclerView.Adapter<WatchlistAdapterDB.ViewHolder>() {
 
   private val listItemDB = ArrayList<Favorite>()
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun getListItemDB(): List<Favorite> = listItemDB
 
-  fun setFavorite(itemFavorite: List<Favorite>) {
+  fun setWatchlist(itemFavorite: List<Favorite>) {
     val diffCallback = DiffCallback(this.listItemDB, itemFavorite)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -43,7 +43,7 @@ class FavoriteAdapterDB(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding = ItemWatchlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -56,7 +56,7 @@ class FavoriteAdapterDB(
 
   override fun getItemCount(): Int = listItemDB.size
 
-  inner class ViewHolder(private var binding: ItemFavoriteBinding) :
+  inner class ViewHolder(private var binding: ItemWatchlistBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     lateinit var data: Favorite
