@@ -29,7 +29,7 @@ detekt = "2.0.0-alpha.2"
 dependencyGuard = "0.5.0"
 
 # AndroidX Libraries
-activityKtx = "1.12.3"
+activityKtx = "1.12.4"
 appcompat = "1.7.1"
 cardview = "1.0.0"
 coreKtx = "1.17.0"
