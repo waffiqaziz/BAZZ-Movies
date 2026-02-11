@@ -54,7 +54,7 @@ datastore = "1.2.0"
 room = "2.8.4"
 
 # Paging3
-paging = "3.4.0"
+paging = "3.4.1"
 
 # UI components
 material = "1.14.0-alpha09"
