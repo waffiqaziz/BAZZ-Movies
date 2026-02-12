@@ -85,14 +85,14 @@
   <!-- SEARCH -->
   <string name="search_results">Search results</string>
   <string name="search_any">Search any Movies</string>
-  <string name="explore_our_libraries">Explore TMDB libraries and start typing \n a movie, series or actor as you like</string>
+  <string name="explore_our_libraries">Explore TMDB libraries and start typing a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
-  <string name="no_result_explanation">We cannot find item you are searching for,\nmaybe a little mistake?</string>
+  <string name="no_result_explanation">We cannot find item you are searching for, maybe a little mistake?</string>
   <string name="search_illustration">search illustration</string>
 
   <string name="no_data_illustration">no data illustration</string>
   <string name="no_data_found">No data found!</string>
-  <string name="no_data_explanation">We cannot find data you are looking for,\nmaybe add favorite or watchlist first</string>
+  <string name="no_data_explanation">We cannot find data you are looking for, maybe add favorite or watchlist first</string>
 
   <!-- DETAIL MOVIE/TV -->
   <string name="yt_not_installed">Youtube App Not Installed</string>
@@ -132,6 +132,9 @@
   <string name="undo">Undo</string>
   <string name="already_watchlist">already in watchlist</string>
   <string name="already_favorite">already in favorite</string>
+
+  <string name="remove_from_favorite">Remove from favorite</string>
+  <string name="remove_from_watchlist">Remove from watchlist</string>
 
   <string name="added_to_favorite">has been added to favorite</string>
   <string name="added_to_watchlist">has been added to watchlist</string>

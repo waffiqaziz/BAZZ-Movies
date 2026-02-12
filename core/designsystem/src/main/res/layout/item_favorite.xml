@@ -6,20 +6,29 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
+  <!-- LEFT RevealableListItem - Swipe RIGHT to reveal (Delete action) -->
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:id="@+id/reveal_layout_start"
+    style="@style/ListItemRevealLayout.Start">
+
+    <Button
+      android:id="@+id/btn_delete"
+      style="@style/ListItemReveal.Button.Start"
+      android:contentDescription="@string/remove_from_favorite" />
+
+  </com.google.android.material.listitem.ListItemRevealLayout>
+
+  <!-- Main content -->
   <com.google.android.material.listitem.ListItemCardView
     android:id="@+id/container_result"
-    style="?attr/listItemCardViewStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/list_item_card_background"
-    app:shapeAppearance="?attr/listItemShapeAppearanceSingle">
+    style="@style/ListItemCardView">
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal">
 
-      <!-- Photo actor/actress or poster movie/tv -->
+      <!-- Poster movie/tv -->
       <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_picture"
         style="@style/Widget.Material3.ShapeableImageView.ListItem.LeadingImage"
@@ -73,4 +82,16 @@
     </LinearLayout>
   </com.google.android.material.listitem.ListItemCardView>
 
+  <!-- RIGHT RevealableListItem - Swipe LEFT to reveal (Add to Watchlist action) -->
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:id="@+id/reveal_layout_end"
+    style="@style/ListItemRevealLayout.End">
+
+    <Button
+      android:id="@+id/btn_watchlist"
+      style="@style/ListItemReveal.Button.End"
+      android:contentDescription="@string/add_to_watchlist"
+      app:icon="@drawable/ic_watchlist_outlined" />
+
+  </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

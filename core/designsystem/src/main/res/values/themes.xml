@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
   <style name="Base.Theme.BAZZ_movies" parent="Theme.Material3Expressive.DayNight.NoActionBar">
     <!-- Primary brand color -->
     <item name="colorPrimary">@color/gray_1000</item>
@@ -344,7 +345,9 @@
   </style>
 
   <style name="MyIconButtonStyle" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
-    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton.Standard</item>
+    <item name="materialIconButtonStyle">
+      @style/Widget.Material3Expressive.Button.IconButton.Standard
+    </item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:insetLeft">0dp</item>
@@ -360,7 +363,62 @@
     <item name="iconPadding">0dp</item>
     <item name="iconSize">32dp</item>
     <item name="iconTint">?attr/colorAccent</item>
-    <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium</item>
+    <item name="materialSizeOverlay">
+      @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
+    </item>
   </style>
 
+  <style name="ShapeAppearance.App.Button.Rounded"  parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">32dp</item>
+  </style>
+
+  <style name="ListItemRevealLayout.Start" parent="Widget.Material3.ListItemRevealLayout">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="primaryActionSwipeMode">direct</item>
+  </style>
+
+  <style name="ListItemRevealLayout.End" parent="Widget.Material3.ListItemRevealLayout">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_gravity">end</item>
+    <item name="primaryActionSwipeMode">direct</item>
+  </style>
+
+  <style name="ListItemReveal.Button.Start" parent="Widget.Material3.Button.IconButton.Filled">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">64dp</item>
+    <item name="android:layout_marginStart">2dp</item>
+    <item name="android:layout_marginEnd">2dp</item>
+    <item name="backgroundTint">?attr/colorErrorContainer</item>
+    <item name="icon">@drawable/ic_trash</item>
+    <item name="iconSize">24dp</item>
+    <item name="iconTint">?attr/colorOnErrorContainer</item>
+    <item name="iconGravity">textStart</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Button.Rounded</item>
+    <item name="primaryActionSwipeMode">direct</item>
+  </style>
+
+  <style name="ListItemReveal.Button.End" parent="Widget.Material3.Button.IconButton.Filled">
+    <item name="android:layout_width">64dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_marginStart">2dp</item>
+    <item name="android:layout_marginEnd">2dp</item>
+    <item name="backgroundTint">@color/yellow</item>
+    <item name="iconSize">24dp</item>
+    <item name="iconTint">@color/gray_900</item>
+    <item name="iconGravity">textStart</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Button.Rounded</item>
+    <item name="primaryActionSwipeMode">direct</item>
+  </style>
+
+  <style name="ListItemCardView" parent="Widget.Material3.ListItemCardView">
+    <item name="listItemCardViewStyle">?attr/listItemCardViewStyle</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="cardBackgroundColor">@color/list_item_card_background</item>
+    <item name="shapeAppearance">?attr/listItemShapeAppearanceSingle</item>
+  </style>
 </resources>

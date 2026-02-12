@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/list_item_layout"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <!-- LEFT RevealableListItem - Swipe RIGHT to reveal (Delete action) -->
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:id="@+id/reveal_layout_start"
+    style="@style/ListItemRevealLayout.Start">
+
+    <Button
+      android:id="@+id/btn_delete"
+      style="@style/ListItemReveal.Button.Start"
+      android:contentDescription="@string/remove_from_watchlist" />
+
+  </com.google.android.material.listitem.ListItemRevealLayout>
+
+  <!-- Main content -->
+  <com.google.android.material.listitem.ListItemCardView
+    android:id="@+id/container_result"
+    style="@style/ListItemCardView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <!-- Background pad -->
+      <View
+        android:id="@+id/bg_item"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@drawable/bg_mulmed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+      <!-- Poster -->
+      <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_picture"
+        android:layout_width="94dp"
+        android:layout_height="144dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/picture"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+        tools:src="@color/yellow" />
+
+      <!-- Title -->
+      <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextHeader3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:maxLines="2"
+        android:textSize="18sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/bg_item"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/iv_picture"
+        app:layout_constraintTop_toTopOf="@+id/bg_item"
+        tools:text="Bleach: Sennen Kessen-hen - Soukoku-tan" />
+
+      <!-- Released year-->
+      <TextView
+        android:id="@+id/tv_year_released"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_genre"
+        app:layout_constraintTop_toBottomOf="@+id/tv_genre"
+        tools:text="2021" />
+
+      <!-- Genre -->
+      <TextView
+        android:id="@+id/tv_genre"
+        style="@style/TextBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@+id/bg_item"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="Action, Superhero, MCU,Sci-fi" />
+
+      <!-- Rating number-->
+      <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:textColor="@color/yellow"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_item"
+        app:layout_constraintStart_toStartOf="@+id/tv_year_released"
+        tools:text="5.0/10" />
+
+      <!-- Rating star -->
+      <RatingBar
+        android:id="@+id/rating_bar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:progressBackgroundTint="@color/yellow"
+        android:progressTint="@color/yellow"
+        android:secondaryProgressTint="@color/yellow"
+        android:stepSize="0.1"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_rating"
+        app:layout_constraintStart_toEndOf="@+id/tv_rating"
+        app:layout_constraintTop_toTopOf="@+id/tv_rating"
+        tools:rating="2.4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.google.android.material.listitem.ListItemCardView>
+
+  <!-- RIGHT RevealableListItem - Swipe LEFT to reveal (Add to Favorite action) -->
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:id="@+id/reveal_layout_end"
+    style="@style/ListItemRevealLayout.End">
+
+    <Button
+      android:id="@+id/btn_watchlist"
+      style="@style/ListItemReveal.Button.End"
+      android:contentDescription="@string/add_to_favorite"
+      app:icon="@drawable/ic_hearth" />
+
+  </com.google.android.material.listitem.ListItemRevealLayout>
+</com.google.android.material.listitem.ListItemLayout>
