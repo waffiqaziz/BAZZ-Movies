@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemCardView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemFavoriteBinding
 import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindImageBackdrop
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindMetadata
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.MediaAdapterDBHelper.bindOpenDetail
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class FavoriteAdapterDB(
@@ -42,22 +46,20 @@ class FavoriteAdapterDB(
 
     fun bind(fav: Favorite) {
       data = fav
-      swipeCallback = MediaAdapterDBHelper.bindMediaItem(
-        fav = fav,
-        ivPicture = binding.ivPicture,
-        tvTitle = binding.tvTitle,
-        tvGenre = binding.tvGenre,
-        tvYearReleased = binding.tvYearReleased,
-        containerResult = binding.containerResult,
-        revealLayoutStart = binding.revealLayoutStart,
-        revealLayoutEnd = binding.revealLayoutEnd,
+
+      bindOpenDetail(binding.containerResult, navigator, data)
+
+      bindMetadata(binding.tvTitle, binding.tvYearReleased, binding.tvGenre, data)
+      bindImageBackdrop(binding.ivPicture, data)
+
+      swipeCallback = createSwipeCallback(
+        startLayout = binding.revealLayoutStart,
+        endLayout = binding.revealLayoutEnd,
         listItemLayout = binding.listItemLayout,
-        navigator = navigator,
-        dataProvider = { data },
-        positionProvider = { bindingAdapterPosition },
-        onDelete = onDelete,
-        onAddToWatchlist = onAddToWatchlist,
+        onDelete = { onDelete(data, bindingAdapterPosition) },
+        onAddToWatchlist = { onAddToWatchlist(data, bindingAdapterPosition) },
       )
+      binding.containerResult.addSwipeCallback(swipeCallback)
     }
   }
 }
