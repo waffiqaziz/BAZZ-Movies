@@ -9,32 +9,19 @@
   <!-- LEFT RevealableListItem - Swipe RIGHT to reveal (Delete action) -->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_start"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    app:primaryActionSwipeMode="direct">
+    style="@style/ListItemRevealLayout.Start">
 
     <Button
       android:id="@+id/btn_delete"
-      style="@style/ItemRevealShape"
-      android:layout_width="64dp"
-      android:layout_height="match_parent"
-      android:layout_marginHorizontal="2dp"
-      android:contentDescription="@string/remove_from_favorite"
-      app:backgroundTint="?attr/colorErrorContainer"
-      app:icon="@drawable/ic_trash"
-      app:iconTint="?attr/colorOnErrorContainer" />
+      style="@style/ListItemReveal.Button.Start"
+      android:contentDescription="@string/remove_from_favorite" />
 
   </com.google.android.material.listitem.ListItemRevealLayout>
 
   <!-- Main content -->
   <com.google.android.material.listitem.ListItemCardView
     android:id="@+id/container_result"
-    style="?attr/listItemCardViewStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/list_item_card_background"
-    app:shapeAppearance="?attr/listItemShapeAppearanceSingle">
+    style="@style/ListItemCardView">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -98,21 +85,13 @@
   <!-- RIGHT RevealableListItem - Swipe LEFT to reveal (Add to Watchlist action) -->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:id="@+id/reveal_layout_end"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="end"
-    app:primaryActionSwipeMode="direct">
+    style="@style/ListItemRevealLayout.End">
 
     <Button
       android:id="@+id/btn_watchlist"
-      style="@style/ItemRevealShape"
-      android:layout_width="64dp"
-      android:layout_height="match_parent"
-      android:layout_marginHorizontal="2dp"
+      style="@style/ListItemReveal.Button.End"
       android:contentDescription="@string/add_to_watchlist"
-      app:backgroundTint="@color/yellow"
-      app:icon="@drawable/ic_watchlist_outlined"
-      app:iconTint="@color/gray_900" />
+      app:icon="@drawable/ic_watchlist_outlined" />
 
   </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

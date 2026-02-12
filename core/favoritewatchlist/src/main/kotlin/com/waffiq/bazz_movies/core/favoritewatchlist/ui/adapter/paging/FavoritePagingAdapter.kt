@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter
+package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging
 
 import android.R.anim.fade_in
 import android.content.Context
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.VisibleForTesting
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -17,25 +16,26 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingWatchlistBinding
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingFavoriteBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class WatchlistPagingAdapter(
+class FavoritePagingAdapter(
   private val navigator: INavigator,
   private val mediaType: String,
   private val onDelete: (MediaItem, Int) -> Unit,
   private val onAddToWatchlist: (MediaItem, Int) -> Unit,
-) : PagingDataAdapter<MediaItem, WatchlistPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
+) : PagingDataAdapter<MediaItem, FavoritePagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding =
-      ItemPagingWatchlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+      ItemPagingFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return ViewHolder(binding)
   }
 
@@ -49,7 +49,7 @@ class WatchlistPagingAdapter(
     }
   }
 
-  inner class ViewHolder(private var binding: ItemPagingWatchlistBinding) :
+  inner class ViewHolder(private var binding: ItemPagingFavoriteBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     lateinit var data: MediaItem
@@ -82,7 +82,7 @@ class WatchlistPagingAdapter(
   }
 
   private fun Context.setTitleYearGenreRating(
-    binding: ItemPagingWatchlistBinding,
+    binding: ItemPagingFavoriteBinding,
     mediaItem: MediaItem,
   ) {
     binding.tvTitle.text = titleHandler(mediaItem)
@@ -94,7 +94,7 @@ class WatchlistPagingAdapter(
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  fun setImagePoster(binding: ItemPagingWatchlistBinding, data: MediaItem) {
+  fun setImagePoster(binding: ItemPagingFavoriteBinding, data: MediaItem) {
     binding.ivPicture.contentDescription = titleHandler(data)
     Glide.with(binding.ivPicture)
       .load(
@@ -109,15 +109,5 @@ class WatchlistPagingAdapter(
       .transition(withCrossFade())
       .error(ic_poster_error)
       .into(binding.ivPicture)
-  }
-
-  companion object {
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MediaItem>() {
-      override fun areItemsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean =
-        oldItem.id == newItem.id
-
-      override fun areContentsTheSame(oldItem: MediaItem, newItem: MediaItem): Boolean =
-        oldItem.id == newItem.id
-    }
   }
 }

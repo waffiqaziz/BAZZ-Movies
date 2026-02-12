@@ -1,0 +1,72 @@
+package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging
+
+import android.R.anim.fade_in
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.annotation.VisibleForTesting
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.listitem.ListItemCardView
+import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingWatchlistBinding
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindPagingItem
+import com.waffiq.bazz_movies.navigation.INavigator
+
+class WatchlistPagingAdapter(
+  private val navigator: INavigator,
+  private val mediaType: String,
+  private val onDelete: (MediaItem, Int) -> Unit,
+  private val onAddToWatchlist: (MediaItem, Int) -> Unit,
+) : PagingDataAdapter<MediaItem, WatchlistPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    val binding =
+      ItemPagingWatchlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    return ViewHolder(binding)
+  }
+
+  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    val data = getItem(position)
+    if (data != null) {
+      holder.bind(data)
+      holder.itemView.startAnimation(
+        AnimationUtils.loadAnimation(holder.itemView.context, fade_in),
+      )
+    }
+  }
+
+  inner class ViewHolder(private var binding: ItemPagingWatchlistBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    lateinit var data: MediaItem
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    lateinit var swipeCallback: ListItemCardView.SwipeCallback
+
+    fun bind(mediaItem: MediaItem) {
+      data = mediaItem
+      swipeCallback = bindPagingItem(
+        mediaItem = mediaItem,
+        ivPicture = binding.ivPicture,
+        tvTitle = binding.tvTitle,
+        tvYearReleased = binding.tvYearReleased,
+        tvGenre = binding.tvGenre,
+        ratingBar = binding.ratingBar,
+        tvRating = binding.tvRating,
+        containerResult = binding.containerResult,
+        revealLayoutStart = binding.revealLayoutStart,
+        revealLayoutEnd = binding.revealLayoutEnd,
+        listItemLayout = binding.listItemLayout,
+        context = itemView.context,
+        navigator = navigator,
+        mediaType = mediaType,
+        dataProvider = { data },
+        positionProvider = { bindingAdapterPosition },
+        onDelete = onDelete,
+        onAddToWatchlist = onAddToWatchlist,
+      )
+    }
+  }
+}

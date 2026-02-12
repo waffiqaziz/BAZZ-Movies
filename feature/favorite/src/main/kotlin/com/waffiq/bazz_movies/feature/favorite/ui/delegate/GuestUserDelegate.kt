@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.FavoriteAdapterDB
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.FavoriteAdapterDB
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
@@ -77,7 +77,7 @@ class GuestUserDelegate(
 
   private fun setupData() {
     getDBFavoriteData().observe(fragment.viewLifecycleOwner) { favorites ->
-      adapter.setFavorite(favorites)
+      adapter.submitList(favorites)
       updateViewVisibility(favorites.isNotEmpty())
     }
   }

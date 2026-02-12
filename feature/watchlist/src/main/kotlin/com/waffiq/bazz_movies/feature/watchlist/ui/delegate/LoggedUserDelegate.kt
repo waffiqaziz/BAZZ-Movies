@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.WatchlistPagingAdapter
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.WatchlistPagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData

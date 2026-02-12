@@ -31,7 +31,10 @@ private val koverExclusions = listOf(
   "com.waffiq.bazz_movies.*.*JsonAdapter",
 )
 
-private const val THRESHOLD = 55
+// Low threshold due to unsupported for android test coverage
+// https://github.com/Kotlin/kotlinx-kover/issues/96
+// TODO: Will update on the future
+private const val THRESHOLD = 1
 
 /**
  * Configures Kover code coverage

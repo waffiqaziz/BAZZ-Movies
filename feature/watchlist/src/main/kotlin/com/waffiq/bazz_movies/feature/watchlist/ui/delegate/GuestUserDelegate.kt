@@ -13,7 +13,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.WatchlistAdapterDB
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.WatchlistAdapterDB
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
@@ -77,7 +77,7 @@ class GuestUserDelegate(
 
   private fun setupData() {
     getDBWatchlistData().observe(fragment.viewLifecycleOwner) { favorites ->
-      adapter.setWatchlist(favorites)
+      adapter.submitList(favorites)
       updateViewVisibility(favorites.isNotEmpty())
     }
   }
@@ -104,7 +104,7 @@ class GuestUserDelegate(
   }
 
   private fun addToFavorite(watchlistItem: Favorite, position: Int) {
-    if (watchlistItem.isWatchlist) {
+    if (watchlistItem.isFavorite) {
       showAlreadySnackbar(Event(watchlistItem.title))
     } else {
       sharedDBViewModel.updateToFavoriteDB(watchlistItem)
@@ -170,7 +170,7 @@ class GuestUserDelegate(
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),
       event,
-      false,
+      true,
     )
   }
 
