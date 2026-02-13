@@ -11,7 +11,7 @@ versionName = "1.2.7-dev"
 
 # Plugin Versions
 agp = "9.0.1"
-androidTools = "32.0.0"
+androidTools = "32.0.1"
 kotlin = "2.2.21"
 ksp = "2.3.4"
 hilt = "2.59.1"
