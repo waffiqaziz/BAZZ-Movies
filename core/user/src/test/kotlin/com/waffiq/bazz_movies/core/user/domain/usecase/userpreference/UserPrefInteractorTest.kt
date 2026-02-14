@@ -100,6 +100,17 @@ class UserPrefInteractorTest {
   }
 
   @Test
+  fun getPermissionAsked_whenSuccessful_emitsUserToken() = runTest {
+    every { mockRepository.getPermissionAsked() } returns flowOf(true)
+    userPrefInteractor.getPermissionAsked().test {
+      val emission = awaitItem()
+      assertTrue(emission)
+      awaitComplete()
+    }
+    verify { mockRepository.getPermissionAsked() }
+  }
+
+  @Test
   fun saveRegionPref_whenCalled_callsSaveRegionPrefFromRepository() = runTest {
     val region = "ID"
     coEvery { mockRepository.saveRegionPref(region) } just Runs
@@ -108,7 +119,7 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun saveUserPref_whenSuccessful_savesUserData() = runTest {
+  fun saveUserPref_whenSuccessful_callsSaveUserPrefFromRepository() = runTest {
     val userModel = UserModel(
       userId = 3,
       name = "Alice",
@@ -123,6 +134,13 @@ class UserPrefInteractorTest {
     coEvery { mockRepository.saveUserPref(userModel) } just Runs
     userPrefInteractor.saveUserPref(userModel)
     coVerify { mockRepository.saveUserPref(userModel) }
+  }
+
+  @Test
+  fun savePermissionAsked_whenSuccessful_callsSavesPermissionAskedFromRepository() = runTest {
+    coEvery { mockRepository.savePermissionAsked() } just Runs
+    userPrefInteractor.savePermissionAsked()
+    coVerify { mockRepository.savePermissionAsked() }
   }
 
   @Test

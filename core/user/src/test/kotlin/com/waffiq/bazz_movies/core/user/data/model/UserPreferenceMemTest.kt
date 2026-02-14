@@ -83,6 +83,16 @@ class UserPreferenceMemTest {
   }
 
   @Test
+  fun savePermissionAsked_whenSuccessful_updatesPermissionAskedCorrectly() = runTest {
+    val isAsked = userPreference.getPermissionAsked().first()
+    assertFalse(isAsked)
+
+    userPreference.savePermissionAsked()
+    val isAsked2 = userPreference.getPermissionAsked().first()
+    assertTrue(isAsked2)
+  }
+
+  @Test
   fun removeUserData_whenSuccessful_clearsAllDataCorrectly() = runTest {
     userPreference.saveUser(userModelPref)
 

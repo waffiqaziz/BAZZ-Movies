@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -37,6 +38,7 @@ class UserPreferenceMockTest {
     `when`(mockPreferences[UserPreference.REGION_KEY]).thenReturn("US")
     `when`(mockPreferences[UserPreference.TOKEN_KEY]).thenReturn("sampleToken")
     `when`(mockPreferences[UserPreference.STATE_KEY]).thenReturn(true)
+    `when`(mockPreferences[UserPreference.NOTIFICATION_PERMISSION_ASKED]).thenReturn(false)
     `when`(mockPreferences[UserPreference.GRAVATAR_KEY]).thenReturn("hash123")
     `when`(mockPreferences[UserPreference.TMDB_AVATAR_KEY]).thenReturn("avatar.jpg")
   }
@@ -81,6 +83,26 @@ class UserPreferenceMockTest {
     userPreference.getToken().test {
       val resultToken = awaitItem()
       assertEquals("sampleToken", resultToken)
+      cancelAndIgnoreRemainingEvents()
+    }
+    verify(mockDataStore, times(3)).data
+  }
+
+  @Test
+  fun getPermissionAsked_whenSuccessful_returnsCorrectToken() = runTest {
+    `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
+
+    val isAsked = userPreference.getPermissionAsked().first()
+    assertFalse(isAsked)
+    verify(mockDataStore, times(1)).data
+
+    val listOfToken = userPreference.getPermissionAsked().toList()
+    assertEquals(listOf(false), listOfToken)
+
+    // inline test
+    userPreference.getPermissionAsked().test {
+      val resultAsked = awaitItem()
+      assertEquals(false, resultAsked)
       cancelAndIgnoreRemainingEvents()
     }
     verify(mockDataStore, times(3)).data

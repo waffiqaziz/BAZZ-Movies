@@ -336,6 +336,24 @@ class UserRepositoryTest {
   }
 
   @Test
+  fun savePermissionAsked_whenCalled_callsSavePermissionAsked() = runTest {
+    coEvery { mockUserPreference.savePermissionAsked() } just Runs
+    userRepository.savePermissionAsked()
+    coVerify { mockUserPreference.savePermissionAsked() }
+  }
+
+  @Test
+  fun getPermissionAsked_whenCalled_emitsBoolean() = runTest {
+    every { mockUserPreference.getPermissionAsked() } returns flowOf(true)
+
+    assertTrue(userRepository.getPermissionAsked().first())
+    verify { mockUserPreference.getPermissionAsked() }
+
+    // inline test
+    userRepository.getPermissionAsked().testResult(expectedData = true)
+  }
+
+  @Test
   fun getCountryCode_whenSuccessful_returnsMappedCountryCode() = runTest {
     val countryIPResponse = CountryIPResponse(
       country = "ID"
