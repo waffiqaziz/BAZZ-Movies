@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemCardView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindPagingItem
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindImagePoster
+import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindMetadata
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class WatchlistPagingAdapter(
@@ -47,26 +49,29 @@ class WatchlistPagingAdapter(
 
     fun bind(mediaItem: MediaItem) {
       data = mediaItem
-      swipeCallback = bindPagingItem(
-        mediaItem = mediaItem,
-        ivPicture = binding.ivPicture,
+
+      binding.containerResult.setOnClickListener {
+        navigator.openDetails(itemView.context, mediaItem.copy(mediaType = mediaType))
+      }
+
+      bindImagePoster(binding.ivPicture, data)
+      itemView.context.bindMetadata(
         tvTitle = binding.tvTitle,
         tvYearReleased = binding.tvYearReleased,
         tvGenre = binding.tvGenre,
         ratingBar = binding.ratingBar,
         tvRating = binding.tvRating,
-        containerResult = binding.containerResult,
-        revealLayoutStart = binding.revealLayoutStart,
-        revealLayoutEnd = binding.revealLayoutEnd,
-        listItemLayout = binding.listItemLayout,
-        context = itemView.context,
-        navigator = navigator,
-        mediaType = mediaType,
-        dataProvider = { data },
-        positionProvider = { bindingAdapterPosition },
-        onDelete = onDelete,
-        onAddToWatchlist = onAddToWatchlist,
+        mediaItem = data,
       )
+
+      swipeCallback = createSwipeCallback(
+        startLayout = binding.revealLayoutStart,
+        endLayout = binding.revealLayoutEnd,
+        listItemLayout = binding.listItemLayout,
+        onDelete = { onDelete(data, bindingAdapterPosition) },
+        onAddToWatchlist = { onAddToWatchlist(data, bindingAdapterPosition) },
+      )
+      binding.containerResult.addSwipeCallback(swipeCallback)
     }
   }
 }

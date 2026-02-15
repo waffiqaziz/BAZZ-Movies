@@ -6,8 +6,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.listitem.ListItemCardView
-import com.google.android.material.listitem.ListItemLayout
-import com.google.android.material.listitem.ListItemRevealLayout
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
@@ -15,29 +13,24 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_s
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.navigation.INavigator
 
 object MediaAdapterDBHelper {
 
-  fun bindMediaItem(
-    fav: Favorite,
-    ivPicture: ShapeableImageView,
+  fun bindMetadata(
     tvTitle: TextView,
-    tvGenre: TextView,
     tvYearReleased: TextView,
-    containerResult: ListItemCardView,
-    revealLayoutStart: ListItemRevealLayout,
-    revealLayoutEnd: ListItemRevealLayout,
-    listItemLayout: ListItemLayout,
-    navigator: INavigator,
-    dataProvider: () -> Favorite,
-    positionProvider: () -> Int,
-    onDelete: (Favorite, Int) -> Unit,
-    onAddToWatchlist: (Favorite, Int) -> Unit,
-  ): ListItemCardView.SwipeCallback {
-    // Image loading
+    tvGenre: TextView,
+    fav: Favorite,
+  ) {
+    tvTitle.text = fav.title
+    tvGenre.text = fav.genre
+    tvYearReleased.text = dateFormatterStandard(fav.releaseDate)
+      .ifEmpty { tvYearReleased.context.getString(not_available) }
+  }
+
+  fun bindImageBackdrop(ivPicture: ShapeableImageView, fav: Favorite) {
     ivPicture.contentDescription = fav.title
     ivPicture.tag = fav.title
 
@@ -55,14 +48,13 @@ object MediaAdapterDBHelper {
       .transition(withCrossFade())
       .error(ic_backdrop_error)
       .into(ivPicture)
+  }
 
-    // Text binding
-    tvTitle.text = fav.title
-    tvGenre.text = fav.genre
-    tvYearReleased.text = dateFormatterStandard(fav.releaseDate)
-      .ifEmpty { containerResult.context.getString(not_available) }
-
-    // Click listener
+  fun bindOpenDetail(
+    containerResult: ListItemCardView,
+    navigator: INavigator,
+    fav: Favorite,
+  ) {
     containerResult.setOnClickListener {
       navigator.openDetails(
         containerResult.context,
@@ -78,20 +70,6 @@ object MediaAdapterDBHelper {
         ),
       )
     }
-
-    // Setup swipe callback
-    val swipeCallback = createSwipeCallback(
-      startLayoutProvider = { revealLayoutStart },
-      endLayoutProvider = { revealLayoutEnd },
-      listItemLayoutProvider = { listItemLayout },
-      dataProvider = dataProvider,
-      positionProvider = positionProvider,
-      onDelete = onDelete,
-      onAddToWatchlist = onAddToWatchlist,
-    )
-    containerResult.addSwipeCallback(swipeCallback)
-
-    return swipeCallback
   }
 
   class FavoriteDiffCallback : DiffUtil.ItemCallback<Favorite>() {

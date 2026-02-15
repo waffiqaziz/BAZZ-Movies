@@ -12,8 +12,8 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterDBTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.indonesianMovie
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.indonesianMovie2
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
 import io.mockk.slot
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
@@ -38,7 +38,7 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
   fun submitList_whenCalledTwice_updatesListAndItemCount() {
     val oldList = listOf(favorite)
     val newList = listOf(
-      favorite.copy(id = 2, mediaId = 2, title = indonesianMovie2),
+      favorite.copy(id = 2, mediaId = 2, title = INA_MOVIE_TITLE2),
       favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3")
     )
 
@@ -66,7 +66,7 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
 
     adapter.onBindViewHolder(viewHolder, 0)
-    assertEquals(indonesianMovie, binding.tvTitle.text.toString())
+    assertEquals(INA_MOVIE_TITLE, binding.tvTitle.text.toString())
     assertEquals("Action", binding.tvGenre.text.toString())
     assertEquals("Apr 04, 1979", binding.tvYearReleased.text.toString())
 
@@ -97,9 +97,9 @@ class WatchlistAdapterDBTest : BaseAdapterDBTest() {
       favorite.copy(
         backDrop = "N/A",
         poster = "N/A",
-        title = indonesianMovie2
-      ) to indonesianMovie2,
-      favorite.copy(backDrop = "N/A") to indonesianMovie
+        title = INA_MOVIE_TITLE2
+      ) to INA_MOVIE_TITLE2,
+      favorite.copy(backDrop = "N/A") to INA_MOVIE_TITLE
     )
 
     testCases.forEach { (favorite, favoriteTitle) ->
