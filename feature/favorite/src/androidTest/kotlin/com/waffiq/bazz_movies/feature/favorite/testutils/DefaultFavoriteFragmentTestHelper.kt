@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
@@ -39,9 +40,16 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.withCustomConstr
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
 import io.mockk.every
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.receiveAsFlow
+import org.junit.Rule
 
 class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
+
+  @get:Rule
+  val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   override lateinit var favoriteFragment: FavoriteFragment
 
@@ -53,14 +61,16 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   override var mockUndoDB = MutableLiveData<Event<Favorite>>()
   override var mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
   override var mockSnackBarAlready = MutableLiveData<Event<String>>()
-  override var mockSnackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
+  override var mockSnackBarChannel: Channel<SnackBarUserLoginData> = Channel()
+  override var mockSnackBarAdded: Flow<SnackBarUserLoginData> =
+    mockSnackBarChannel.receiveAsFlow()
 
   override fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel) {
-    mockUserModel = MutableLiveData<UserModel>()
-    mockFavoriteMoviesFromDB = MutableLiveData<List<Favorite>>()
-    mockFavoriteTvFromDB = MutableLiveData<List<Favorite>>()
-    mockUndoDB = MutableLiveData<Event<Favorite>>()
-    mockDbResult = MutableLiveData<Event<DbResult<Int>>>()
+    mockUserModel = MutableLiveData()
+    mockFavoriteMoviesFromDB = MutableLiveData()
+    mockFavoriteTvFromDB = MutableLiveData()
+    mockUndoDB = MutableLiveData()
+    mockDbResult = MutableLiveData()
 
     every { userPreferenceViewModel.getUserPref() } returns mockUserModel
   }

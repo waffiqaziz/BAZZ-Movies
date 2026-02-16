@@ -15,8 +15,8 @@ import org.junit.Rule
 
 abstract class BaseAdapterPagingTest : BaseAdapterTest<MediaItem, PagingDataAdapter<MediaItem, *>>() {
 
-  protected lateinit var onDelete: (MediaItem, Int) -> Unit
-  protected lateinit var onAddToWatchlist: (MediaItem, Int) -> Unit
+  protected lateinit var onDelete: (MediaItem) -> Unit
+  protected lateinit var onAddToWatchlist: (MediaItem) -> Unit
   protected lateinit var inflater: LayoutInflater
 
   protected val movieData = MediaItem(

@@ -11,6 +11,9 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserL
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 interface FavoriteFragmentTestHelper {
 
@@ -22,7 +25,8 @@ interface FavoriteFragmentTestHelper {
   var mockUndoDB: MutableLiveData<Event<Favorite>>
   var mockDbResult: MutableLiveData<Event<DbResult<Int>>>
   var mockSnackBarAlready: MutableLiveData<Event<String>>
-  var mockSnackBarAdded: MutableLiveData<Event<SnackBarUserLoginData>>
+  var mockSnackBarChannel: Channel<SnackBarUserLoginData>
+  var mockSnackBarAdded: Flow<SnackBarUserLoginData>
 
   fun setupMocks(userPreferenceViewModel: UserPreferenceViewModel)
 
