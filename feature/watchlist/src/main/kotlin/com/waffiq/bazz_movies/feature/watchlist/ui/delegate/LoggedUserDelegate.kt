@@ -2,6 +2,9 @@ package com.waffiq.bazz_movies.feature.watchlist.ui.delegate
 
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
@@ -17,7 +20,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.Watchlist
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
+import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
@@ -27,6 +30,7 @@ import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChi
 import com.waffiq.bazz_movies.feature.watchlist.ui.viewmodel.WatchlistViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 /**
  * Handles watchlist list functionality for logged-in users.
@@ -74,14 +78,14 @@ class LoggedUserDelegate(
     }
 
   private fun setupAdapter() {
-    adapter = WatchlistPagingAdapter(navigator, mediaType, onDelete = { mediaItem, position ->
+    adapter = WatchlistPagingAdapter(navigator, mediaType, onDelete = { mediaItem ->
+      isUndo = false
       isWantToDelete = true
       postRemoveWatchlist(titleHandler(mediaItem), mediaItem.id)
-      adapter.notifyItemChanged(position)
-    }, onAddToWatchlist = { mediaItem, position ->
+    }, onAddToWatchlist = { mediaItem ->
+      isUndo = false
       isWantToDelete = false
       postToAddFavorite(titleHandler(mediaItem), mediaItem.id)
-      adapter.notifyItemChanged(position)
     })
     binding.rvWatchlist.adapter = adapter.withLoadStateFooter(
       footer = LoadingStateAdapter { adapter.retry() },
@@ -124,9 +128,11 @@ class LoggedUserDelegate(
       showAlreadySnackbar(it)
     }
 
-    watchlistViewModel.snackBarAdded.observe(fragment.viewLifecycleOwner) { event ->
-      event.getContentIfNotHandled()?.let { data ->
-        handleSnackbarData(data)
+    fragment.viewLifecycleOwner.lifecycleScope.launch {
+      fragment.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        watchlistViewModel.snackBarAdded.collect { data ->
+          handleSnackbarData(data)
+        }
       }
     }
   }
@@ -187,8 +193,8 @@ class LoggedUserDelegate(
     fav: FavoriteParams?,
     wtc: WatchlistParams?,
   ) {
-    val isDelete = isWantToDelete && fav != null
-    val isAddToWatchlist = !isWantToDelete && wtc != null
+    val isDelete = isWantToDelete && wtc != null
+    val isAddToWatchlist = !isWantToDelete && fav != null
 
     if (!isDelete && !isAddToWatchlist) return
 
@@ -216,14 +222,14 @@ class LoggedUserDelegate(
           }
         }
       }
-      setAnchorView(fragment.requireActivity().findViewById(snackbarAnchor))
+      anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
       setActionTextColor(ContextCompat.getColor(fragment.requireContext(), yellow_700))
       show()
     }
   }
 
   private fun showAlreadySnackbar(event: Event<String>) {
-    currentSnackbar = SnackbarAlreadyUtils.snackBarAlready(
+    currentSnackbar = snackBarAlready(
       fragment.requireContext(),
       fragment.requireActivity().findViewById(snackbarAnchor),
       fragment.requireActivity().findViewById(snackbarAnchor),

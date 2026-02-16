@@ -11,6 +11,7 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
@@ -77,6 +78,51 @@ object Helper {
   }
 
   /**
+   * Helper function to test ViewModel  Flow events.
+   * It runs a block of code, collects the  Flow emissions, and verifies the expected outcome.
+   *
+   * @param runBlock The block of code to execute that triggers the Flow emissions.
+   * @param flow The Flow to collect events from.
+   * @param expected The expected event data to verify against collected data.
+   * @param verifyBlock Additional verification logic after the event is collected.
+   */
+  fun <T : Any> testViewModelFlow(
+    runBlock: () -> Unit,
+    flow: Flow<T>,
+    expected: T? = null,
+    verifyBlock: () -> Unit,
+  ) = runTest {
+    val collectedData = mutableListOf<T>()
+
+    // Launch a coroutine to collect flow emissions
+    val job = launch(UnconfinedTestDispatcher(testScheduler)) {
+      flow.collect { data ->
+        collectedData.add(data)
+      }
+    }
+
+    // trigger the test block
+    runBlock()
+    advanceUntilIdle()
+
+    // cancel the collection job
+    job.cancel()
+
+    checkFlowSuccess(expected, collectedData)
+    verifyBlock()
+  }
+
+  private fun <T> checkFlowSuccess(
+    expectedSuccess: T? = null,
+    collectedData: MutableList<T>,
+  ) {
+    expectedSuccess?.let { expected ->
+      assertFalse(collectedData.isEmpty())
+      assertThat(collectedData).containsExactly(expected)
+    } ?: assertTrue(collectedData.isEmpty())
+  }
+
+  /**
    * Helper function to test ViewModel LiveData events.
    * It runs a block of code, collects the LiveData events, and verifies the expected outcome.
    *
@@ -85,7 +131,7 @@ object Helper {
    * @param expected The expected event data to verify against collected data.
    * @param verifyBlock Additional verification logic after the event is collected.
    */
-  fun <T : Any> testViewModelFlowEvent(
+  fun <T : Any> testViewModelLiveDataEvent(
     runBlock: () -> Unit,
     liveData: LiveData<T>,
     expected: T? = null,
@@ -106,7 +152,7 @@ object Helper {
     verifyBlock()
   }
 
-  fun <T> checkEventSuccess(
+  private fun <T> checkEventSuccess(
     liveData: LiveData<T>,
     expectedSuccess: T? = null,
     collectedData: MutableList<T>,

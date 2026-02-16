@@ -19,8 +19,8 @@ import com.waffiq.bazz_movies.navigation.INavigator
 class WatchlistPagingAdapter(
   private val navigator: INavigator,
   private val mediaType: String,
-  private val onDelete: (MediaItem, Int) -> Unit,
-  private val onAddToWatchlist: (MediaItem, Int) -> Unit,
+  private val onDelete: (MediaItem) -> Unit,
+  private val onAddToWatchlist: (MediaItem) -> Unit,
 ) : PagingDataAdapter<MediaItem, WatchlistPagingAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,12 +64,16 @@ class WatchlistPagingAdapter(
         mediaItem = data,
       )
 
+      if (::swipeCallback.isInitialized) {
+        binding.containerResult.removeSwipeCallback(swipeCallback)
+      }
+
       swipeCallback = createSwipeCallback(
         startLayout = binding.revealLayoutStart,
         endLayout = binding.revealLayoutEnd,
         listItemLayout = binding.listItemLayout,
-        onDelete = { onDelete(data, bindingAdapterPosition) },
-        onAddToWatchlist = { onAddToWatchlist(data, bindingAdapterPosition) },
+        onDelete = { onDelete(data) },
+        onAddToWatchlist = { onAddToWatchlist(data) },
       )
       binding.containerResult.addSwipeCallback(swipeCallback)
     }

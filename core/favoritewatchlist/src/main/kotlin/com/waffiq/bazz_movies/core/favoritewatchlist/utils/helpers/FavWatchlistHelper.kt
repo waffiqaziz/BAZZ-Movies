@@ -118,8 +118,8 @@ object FavWatchlistHelper {
    */
   fun <T> ViewModel.launchAndHandleOutcome(
     flow: Flow<Outcome<T>>,
-    onSuccess: (T) -> Unit,
-    onError: (String) -> Unit,
+    onSuccess: suspend (T) -> Unit,
+    onError: suspend (String) -> Unit,
     onLoading: (() -> Unit)? = null,
   ) {
     viewModelScope.launch {

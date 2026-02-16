@@ -129,7 +129,7 @@ class GuestUserDelegate(
       setAction(fragment.getString(undo)) {
         handleUndo(position)
       }
-      setAnchorView(fragment.requireActivity().findViewById(snackbarAnchor))
+      anchorView = fragment.requireActivity().findViewById(snackbarAnchor)
       setActionTextColor(ContextCompat.getColor(fragment.requireContext(), yellow_700))
       show()
     }
