@@ -27,9 +27,6 @@ object Helper {
 
   /**
    * Test a PagingData flow and assert the expected items.
-   *
-   * @param flow The PagingData flow to test.
-   * @param expectedAssertions A lambda that takes the list of items and performs assertions.
    */
   suspend fun <T : Any> testPagingFlow(
     flow: Flow<PagingData<T>>,
@@ -53,9 +50,6 @@ object Helper {
 
   /**
    * Test a PagingData flow with a custom dispatcher and assert the expected items.
-   *
-   * @param flow The PagingData flow to test.
-   * @param expectedAssertions A lambda that takes the list of items and performs assertions.
    */
   suspend fun testPagingFlowCustomDispatcher(
     flow: Flow<PagingData<MediaItem>>,
@@ -78,13 +72,7 @@ object Helper {
   }
 
   /**
-   * Helper function to test ViewModel  Flow events.
-   * It runs a block of code, collects the  Flow emissions, and verifies the expected outcome.
-   *
-   * @param runBlock The block of code to execute that triggers the Flow emissions.
-   * @param flow The Flow to collect events from.
-   * @param expected The expected event data to verify against collected data.
-   * @param verifyBlock Additional verification logic after the event is collected.
+   * Helper function to test ViewModel Flow events.
    */
   fun <T : Any> testViewModelFlow(
     runBlock: () -> Unit,
@@ -92,24 +80,20 @@ object Helper {
     expected: T? = null,
     verifyBlock: () -> Unit,
   ) = runTest {
-    val collectedData = mutableListOf<T>()
+    flow.test {
+      runBlock()
 
-    // Launch a coroutine to collect flow emissions
-    val job = launch(UnconfinedTestDispatcher(testScheduler)) {
-      flow.collect { data ->
-        collectedData.add(data)
+      if (expected != null) {
+        val item = awaitItem()
+        assertThat(item).isEqualTo(expected)
+      } else {
+        // Expect no emissions
+        expectNoEvents()
       }
+
+      verifyBlock()
+      cancelAndIgnoreRemainingEvents()
     }
-
-    // trigger the test block
-    runBlock()
-    advanceUntilIdle()
-
-    // cancel the collection job
-    job.cancel()
-
-    checkFlowSuccess(expected, collectedData)
-    verifyBlock()
   }
 
   private fun <T> checkFlowSuccess(
@@ -125,11 +109,6 @@ object Helper {
   /**
    * Helper function to test ViewModel LiveData events.
    * It runs a block of code, collects the LiveData events, and verifies the expected outcome.
-   *
-   * @param runBlock The block of code to execute that triggers the LiveData event.
-   * @param liveData The LiveData to observe for events.
-   * @param expected The expected event data to verify against collected data.
-   * @param verifyBlock Additional verification logic after the event is collected.
    */
   fun <T : Any> testViewModelLiveDataEvent(
     runBlock: () -> Unit,

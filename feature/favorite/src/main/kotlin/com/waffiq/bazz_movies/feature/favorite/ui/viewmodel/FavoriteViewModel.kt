@@ -36,7 +36,8 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  private val _snackBarAdded = Channel<SnackBarUserLoginData>()
+  // Make capacity configurable for testing
+  private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
   fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
@@ -49,7 +50,7 @@ class FavoriteViewModel @Inject constructor(
     launchAndHandleOutcome(
       flow = postActionUseCase.postFavoriteWithAuth(data),
       onSuccess = {
-        _snackBarAdded.send(SnackBarUserLoginData(true, title, data, null))
+        trySend(SnackBarUserLoginData(true, title, data, null))
       },
       onError = { onError(it) },
     )
@@ -59,7 +60,7 @@ class FavoriteViewModel @Inject constructor(
     launchAndHandleOutcome(
       flow = postActionUseCase.postWatchlistWithAuth(data),
       onSuccess = {
-        _snackBarAdded.send(SnackBarUserLoginData(true, title, null, data))
+        trySend(SnackBarUserLoginData(true, title, null, data))
       },
       onError = { onError(it) },
     )
@@ -71,7 +72,7 @@ class FavoriteViewModel @Inject constructor(
       onSuccess = { result ->
         when (result) {
           WatchlistActionResult.Added -> {
-            _snackBarAdded.send(
+            trySend(
               SnackBarUserLoginData(true, title, null, WatchlistParams(MOVIE_MEDIA_TYPE, id, true)),
             )
           }
@@ -89,7 +90,7 @@ class FavoriteViewModel @Inject constructor(
       onSuccess = { result ->
         when (result) {
           WatchlistActionResult.Added -> {
-            _snackBarAdded.send(
+            trySend(
               SnackBarUserLoginData(true, title, null, WatchlistParams(TV_MEDIA_TYPE, id, true)),
             )
           }
@@ -105,7 +106,12 @@ class FavoriteViewModel @Inject constructor(
     _snackBarAlready.value = Event(title)
   }
 
-  private suspend fun onError(message: String) {
-    _snackBarAdded.send(SnackBarUserLoginData(false, message, null, null))
+  private fun onError(message: String) {
+    trySend(SnackBarUserLoginData(false, message, null, null))
+  }
+
+  // Use trySend instead of suspend send
+  private fun trySend(data: SnackBarUserLoginData) {
+    _snackBarAdded.trySend(data).getOrThrow()
   }
 }
