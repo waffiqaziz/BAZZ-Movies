@@ -20,7 +20,9 @@ import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAnd
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,8 +36,9 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAlready = MutableLiveData<Event<String>>()
   val snackBarAlready: LiveData<Event<String>> = _snackBarAlready
 
-  private val _snackBarAdded = MutableLiveData<Event<SnackBarUserLoginData>>()
-  val snackBarAdded: LiveData<Event<SnackBarUserLoginData>> = _snackBarAdded
+  // Make capacity configurable for testing
+  private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
+  val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
   fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
     getFavoriteMovieUseCase.getFavoriteMovies(sesId).cachedIn(viewModelScope)
@@ -47,7 +50,7 @@ class FavoriteViewModel @Inject constructor(
     launchAndHandleOutcome(
       flow = postActionUseCase.postFavoriteWithAuth(data),
       onSuccess = {
-        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, data, null))
+        trySend(SnackBarUserLoginData(true, title, data, null))
       },
       onError = { onError(it) },
     )
@@ -57,7 +60,7 @@ class FavoriteViewModel @Inject constructor(
     launchAndHandleOutcome(
       flow = postActionUseCase.postWatchlistWithAuth(data),
       onSuccess = {
-        _snackBarAdded.value = Event(SnackBarUserLoginData(true, title, null, data))
+        trySend(SnackBarUserLoginData(true, title, null, data))
       },
       onError = { onError(it) },
     )
@@ -69,7 +72,7 @@ class FavoriteViewModel @Inject constructor(
       onSuccess = { result ->
         when (result) {
           WatchlistActionResult.Added -> {
-            _snackBarAdded.value = Event(
+            trySend(
               SnackBarUserLoginData(true, title, null, WatchlistParams(MOVIE_MEDIA_TYPE, id, true)),
             )
           }
@@ -87,7 +90,7 @@ class FavoriteViewModel @Inject constructor(
       onSuccess = { result ->
         when (result) {
           WatchlistActionResult.Added -> {
-            _snackBarAdded.value = Event(
+            trySend(
               SnackBarUserLoginData(true, title, null, WatchlistParams(TV_MEDIA_TYPE, id, true)),
             )
           }
@@ -104,6 +107,11 @@ class FavoriteViewModel @Inject constructor(
   }
 
   private fun onError(message: String) {
-    _snackBarAdded.value = Event(SnackBarUserLoginData(false, message, null, null))
+    trySend(SnackBarUserLoginData(false, message, null, null))
+  }
+
+  // Use trySend instead of suspend send
+  private fun trySend(data: SnackBarUserLoginData) {
+    _snackBarAdded.trySend(data).getOrThrow()
   }
 }

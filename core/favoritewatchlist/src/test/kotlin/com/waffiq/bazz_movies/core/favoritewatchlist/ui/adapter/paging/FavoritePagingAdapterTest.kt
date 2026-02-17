@@ -188,7 +188,7 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
       100
     )
 
-    verify { onDelete(movieData, 0) }
+    verify { onDelete(movieData) }
   }
 
   @Test
@@ -206,7 +206,7 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
       100
     )
 
-    verify { onAddToWatchlist(movieData, 0) }
+    verify { onAddToWatchlist(movieData) }
   }
 
   @Test

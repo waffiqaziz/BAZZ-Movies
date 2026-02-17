@@ -39,6 +39,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -109,7 +110,7 @@ class MovieChildFragmentTest :
   }
 
   @Test
-  fun loggedUser_swipeLeft_showAddedSnackbar() {
+  fun loggedUser_swipeLeft_showAddedSnackbar() = runTest {
     val data = snackBarLoginData.copy(
       watchlistModel = WatchlistParams(
         mediaType = "movie",
@@ -123,7 +124,7 @@ class MovieChildFragmentTest :
     // swipe left
     performSwipeAction(0, swipeLeft())
 
-    mockSnackBarAdded.postValue(Event(data))
+    mockSnackBarChannel.send(data)
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
@@ -132,7 +133,7 @@ class MovieChildFragmentTest :
   }
 
   @Test
-  fun loggedUser_swipeRight_showDeletedSnackbar() {
+  fun loggedUser_swipeRight_showDeletedSnackbar() = runTest {
     val data = snackBarLoginData.copy(
 
       favoriteModel = FavoriteParams(
@@ -148,7 +149,7 @@ class MovieChildFragmentTest :
     // swipe right (isWantToDelete = true)
     performSwipeAction(1, swipeRight())
 
-    mockSnackBarAdded.postValue(Event(data))
+    mockSnackBarChannel.send(data)
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
@@ -157,7 +158,7 @@ class MovieChildFragmentTest :
   }
 
   @Test
-  fun loggedUser_swipeFailedResult_showFailedSnackbar() {
+  fun loggedUser_swipeFailedResult_showFailedSnackbar() = runTest {
     val failedDate = snackBarLoginData.copy(
       title = "Test Error",
       isSuccess = false,
@@ -174,13 +175,13 @@ class MovieChildFragmentTest :
     // swipe right (isWantToDelete = true)
     performSwipeAction(1, swipeRight())
 
-    mockSnackBarAdded.postValue(Event(failedDate))
+    mockSnackBarChannel.send(failedDate)
     onView(withId(snackbar_text)).check(matches(withText(failedDate.title)))
     onIdle()
   }
 
   @Test
-  fun loggedUser_swipeActionEmptyResult_doNothing() {
+  fun loggedUser_swipeActionEmptyResult_doNothing() = runTest {
     val emptyData = snackBarLoginData.copy(
       title = "Test Empty Data",
       isSuccess = true,
@@ -189,13 +190,13 @@ class MovieChildFragmentTest :
     )
 
     loggedUser(mockFavoriteViewModel)
-    mockSnackBarAdded.postValue(Event(emptyData))
     launchFragment()
+    mockSnackBarChannel.send(emptyData)
 
     // swipe right (isWantToDelete = true)
     performSwipeAction(1, swipeRight())
 
-    mockSnackBarAdded.postValue(Event(emptyData))
+    mockSnackBarChannel.send(emptyData)
     onIdle()
   }
 

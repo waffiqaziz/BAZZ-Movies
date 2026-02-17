@@ -19,7 +19,8 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlowCustomDispatcher
-import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlowEvent
+import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
+import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
 import com.waffiq.bazz_movies.feature.favorite.testutils.InstantExecutorExtension
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -116,17 +117,16 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeSuccess(response))
 
       Then("it should call postWatchlistWithAuth and emit success") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateTv() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(
+          flow = viewModel.snackBarAdded,
+          expected =
             SnackBarUserLoginData(
               isSuccess = true,
               title = title,
               favoriteModel = null,
               watchlistModel = WatchlistParams("tv", TV_ID, true)
-            )
-          ),
+            ),
           verifyBlock = { verifyGetStatedTVCalled() }
         )
       }
@@ -137,7 +137,7 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeSuccess(WatchlistActionResult.AlreadyInWatchlist))
 
       Then("it should emit snackBarAlready with title") {
-        testViewModelFlowEvent(
+        testViewModelLiveDataEvent(
           runBlock = { checkStateTv() },
           liveData = viewModel.snackBarAlready,
           expected = Event(title),
@@ -151,10 +151,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeError)
 
       Then("it should show snackBar error message") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateTv() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(false, ERROR_MESSAGE, null, null)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
           verifyBlock = { verifyGetStatedTVCalled() }
         )
       }
@@ -165,9 +165,9 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeLoading)
 
       Then("do nothing") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateTv() },
-          liveData = viewModel.snackBarAdded,
+          flow = viewModel.snackBarAdded,
           verifyBlock = { verifyGetStatedTVCalled() }
         )
       }
@@ -191,10 +191,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeSuccess(response))
 
       Then("it should emit success snackbar") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostFavorite() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(true, title, favoriteModel, null)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(true, title, favoriteModel, null),
           verifyBlock = { verifyPostFavoriteCalled() }
         )
       }
@@ -205,10 +205,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeError)
 
       Then("it should emit error snackbar") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostFavorite() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(false, ERROR_MESSAGE, null, null)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
           verifyBlock = { verifyPostFavoriteCalled() }
         )
       }
@@ -219,9 +219,9 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeLoading)
 
       Then("it should emit nothing") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostFavorite() },
-          liveData = viewModel.snackBarAdded,
+          flow = viewModel.snackBarAdded,
           verifyBlock = { verifyPostFavoriteCalled() }
         )
       }
@@ -245,10 +245,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeSuccess(response))
 
       Then("it should emit success snackbar") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostWatchlist() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(true, title, null, watchlistModel)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(true, title, null, watchlistModel),
           verifyBlock = { verifyPostWatchlistCalled() }
         )
       }
@@ -259,10 +259,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeError)
 
       Then("it should emit error snackbar") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostWatchlist() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(false, ERROR_MESSAGE, null, null)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
           verifyBlock = { verifyPostWatchlistCalled() }
         )
       }
@@ -273,9 +273,9 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeLoading)
 
       Then("it should emit nothing") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { runPostWatchlist() },
-          liveData = viewModel.snackBarAdded,
+          flow = viewModel.snackBarAdded,
           verifyBlock = { verifyPostWatchlistCalled() }
         )
       }
@@ -302,17 +302,17 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeSuccess(response))
 
       Then("it should call postWatchlistWithAuth and emit success") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateMovie() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(
+          flow = viewModel.snackBarAdded,
+          expected =
             SnackBarUserLoginData(
               isSuccess = true,
               title = title,
               favoriteModel = null,
               watchlistModel = WatchlistParams("movie", movieId, true)
-            )
-          ),
+
+            ),
           verifyBlock = { verifyGetStatedMovieCalled() }
         )
       }
@@ -325,8 +325,8 @@ class FavoriteViewModelTest : BehaviorSpec({
       coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
         flowOf(outcomeSuccess(response))
 
-      Then("it should show snackBarAlready with title") {
-        testViewModelFlowEvent(
+      Then("it should show snackBarAlready with title").config(coroutineTestScope = true) {
+        testViewModelLiveDataEvent(
           runBlock = { checkStateMovie() },
           liveData = viewModel.snackBarAlready,
           expected = Event(title),
@@ -340,10 +340,10 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeError)
 
       Then("it should show snackBar error message") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateMovie() },
-          liveData = viewModel.snackBarAdded,
-          expected = Event(SnackBarUserLoginData(false, ERROR_MESSAGE, null, null)),
+          flow = viewModel.snackBarAdded,
+          expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
           verifyBlock = { verifyGetStatedMovieCalled() }
         )
       }
@@ -354,9 +354,9 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(outcomeLoading)
 
       Then("do nothing") {
-        testViewModelFlowEvent(
+        testViewModelFlow(
           runBlock = { checkStateMovie() },
-          liveData = viewModel.snackBarAdded,
+          flow = viewModel.snackBarAdded,
           verifyBlock = { verifyGetStatedMovieCalled() }
         )
       }
