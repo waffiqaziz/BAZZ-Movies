@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.12.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.12.0)" variant="all" version="8.12.0">
+<issues format="6" by="lint 9.0.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.0.1)" variant="all" version="9.0.1">
 
     <issue
         id="Overdraw"
@@ -7,7 +7,7 @@
         errorLine1="  android:background=&quot;@color/gray_900&quot;"
         errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/layout/activity_detail_movie.xml"
+            file="src/main/res/layout/activity_media_detail.xml"
             line="8"
             column="3"/>
     </issue>
@@ -19,8 +19,63 @@
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/UserInteractionHandler.kt"
-            line="363"
+            line="341"
             column="15"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Status&quot;, should use `@string` resource"
+        errorLine1="    android:text=&quot;Status&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/side_sheet_content.xml"
+            line="33"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Original Language&quot;, should use `@string` resource"
+        errorLine1="    android:text=&quot;Original Language&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/side_sheet_content.xml"
+            line="48"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Budget&quot;, should use `@string` resource"
+        errorLine1="    android:text=&quot;Budget&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/side_sheet_content.xml"
+            line="63"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Revenue&quot;, should use `@string` resource"
+        errorLine1="    android:text=&quot;Revenue&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/side_sheet_content.xml"
+            line="78"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Keywords&quot;, should use `@string` resource"
+        errorLine1="    android:text=&quot;Keywords&quot; />"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/side_sheet_content.xml"
+            line="93"
+            column="5"/>
     </issue>
 
 </issues>
