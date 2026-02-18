@@ -166,9 +166,9 @@ class SearchFragment : Fragment() {
       val query = textView.text.toString()
       if (query.isNotEmpty() && query != lastQuery) {
         performSearch(query)
-        binding.searchView.hide()
         binding.searchBar.setText(query)
       }
+      binding.searchView.hide()
       false
     }
   }
