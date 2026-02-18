@@ -15,9 +15,6 @@
     <!-- Color for all background -->
     <item name="android:windowBackground">@color/gray_1000</item>
 
-    <!-- Search View -->
-    <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
-
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
 
     <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>

@@ -8,11 +8,15 @@ import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.domain.usecase.MultiSearchUseCase
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.QUERY
 import com.waffiq.bazz_movies.feature.search.testutils.SearchTestVariables.differ
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -57,52 +61,103 @@ class SearchViewModelTest {
   }
 
   @Test
-  fun search_whenSuccessful_updateLiveDataCorrectly() = runTest {
-    val fakePagingData = PagingData.from(
-      listOf(tv, movie)
-    )
-
-    // mock the behavior of multiSearchUseCase.search
-    every { mockMultiSearchUseCase.search(QUERY) } returns flowOf(fakePagingData)
-
-    // assert query before search
-    assertEquals("", searchViewModel.query.value)
-
-    // call the function to be tested
-    searchViewModel.search(QUERY)
-
-    // assert query after search
-    assertEquals(QUERY, searchViewModel.query.value)
+  fun search_fromUseCase_emitsPagingData() = runTest {
+    val pagingData = PagingData.from(listOf(tv, movie))
+    coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow { emit(pagingData) }
 
     searchViewModel.searchResults.test {
-      val emittedPagingData = awaitItem()
-      differ.submitData(emittedPagingData)
+      searchViewModel.search("Transformers")
+
+      val result = awaitItem()
+      differ.submitData(result)
       advanceUntilIdle()
 
-      val pagingList = differ.snapshot().items
-      assertTrue(pagingList.isNotEmpty())
-      assertEquals("Transformers TV-series", pagingList[0].title)
-      assertEquals("tv", pagingList[0].mediaType)
-      assertEquals(12345, pagingList[0].id)
-      assertEquals(2222.0, pagingList[0].voteCount)
-      assertEquals("/backdrop_path0.jpg", pagingList[0].backdropPath)
-
-      assertEquals("Transformers 2", pagingList[1].title)
-      assertEquals("movie", pagingList[1].mediaType)
-      assertEquals(333111, pagingList[1].id)
-      assertEquals(3333.0, pagingList[1].voteCount)
-      assertEquals("/backdrop_path1.jpg", pagingList[1].backdropPath)
+      assertEquals(listOf(tv, movie), differ.snapshot().items)
+      cancelAndIgnoreRemainingEvents()
     }
-
-    verify { mockMultiSearchUseCase.search(QUERY) }
   }
 
   @Test
-  fun setExpandSearchView_whenCalled_updateTheLiveDataValue() {
-    searchViewModel.setExpandSearchView(true)
-    assertEquals(true, searchViewModel.expandSearchView.value)
+  fun searchResults_whenInitialState_shouldBeEmpty() = runTest {
+    searchViewModel.searchResults.test {
+      val initial = awaitItem()
+      differ.submitData(initial)
+      advanceUntilIdle()
 
-    searchViewModel.setExpandSearchView(false)
-    assertEquals(false, searchViewModel.expandSearchView.value)
+      assertEquals(emptyList<MultiSearchItem>(), differ.snapshot().items)
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
+
+  @Test
+  fun search_whenCancelsPreviousSearch_emitsLatestResult() = runTest {
+    val pagingData1 = PagingData.from(listOf(tv))
+    val pagingData2 = PagingData.from(listOf(movie))
+
+    coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow { emit(pagingData1) }
+    coEvery { mockMultiSearchUseCase.search("Transformers 2") } returns flow { emit(pagingData2) }
+
+    searchViewModel.searchResults.test {
+      searchViewModel.search("Transformers")
+      advanceUntilIdle()
+
+      searchViewModel.search("Transformers 2")
+      advanceUntilIdle()
+
+      // Skip to the last emission
+      val result = expectMostRecentItem()
+      differ.submitData(result)
+      advanceUntilIdle()
+
+      assertEquals(listOf(movie), differ.snapshot().items)
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
+
+  @Test
+  fun search_whenEmptyFlow_doesNotUpdateSearchResults() = runTest {
+    coEvery { mockMultiSearchUseCase.search("Transformers") } returns emptyFlow()
+
+    searchViewModel.searchResults.test {
+      searchViewModel.search("Transformers")
+      advanceUntilIdle()
+
+      val result = awaitItem() // should be empty PagingData
+      differ.submitData(result)
+      advanceUntilIdle()
+
+      assertEquals(emptyList<MultiSearchItem>(), differ.snapshot().items)
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
+
+  @Test
+  fun `search cancels previous collection when new search is triggered`() = runTest {
+    val pagingData1 = PagingData.from(listOf(tv))
+    val pagingData2 = PagingData.from(listOf(movie))
+
+    coEvery { mockMultiSearchUseCase.search("Transformers") } returns flow {
+      emit(pagingData1)
+      delay(Long.MAX_VALUE) // keeps collecting so second search cancels it
+    }
+    coEvery { mockMultiSearchUseCase.search("Transformers 2") } returns flow {
+      emit(pagingData2)
+    }
+
+    searchViewModel.searchResults.test {
+      searchViewModel.search("Transformers")
+      advanceUntilIdle()
+
+      // This triggers the cancellation branch of the first collectLatest
+      searchViewModel.search("Transformers 2")
+      advanceUntilIdle()
+
+      val result = expectMostRecentItem()
+      differ.submitData(result)
+      advanceUntilIdle()
+
+      assertEquals(listOf(movie), differ.snapshot().items)
+      cancelAndIgnoreRemainingEvents()
+    }
   }
 }

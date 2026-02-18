@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/fragment_search"
   android:layout_width="match_parent"
@@ -7,56 +8,62 @@
   tools:context=".ui.SearchFragment">
 
   <!-- ========================== -->
-  <!--   SEARCH RESULT SECTION    -->
-  <!-- ========================== -->
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rv_search"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:clipToPadding="false"
-      android:contentDescription="@string/search_results"
-      android:paddingVertical="50dp"
-      android:visibility="visible"
-      tools:listitem="@layout/item_result"
-      tools:visibility="visible" />
-
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-  <!-- End of SEARCH RESULT SECTION -->
-
-  <!-- ========================== -->
   <!--        HEADER SECTION      -->
   <!-- ========================== -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/gray_1000">
 
-    <include
-      android:id="@+id/toolbar_layout"
-      layout="@layout/custom_toolbar_scroll_snap_enteralways" />
+    <com.google.android.material.search.SearchBar
+      android:id="@+id/search_bar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/search_any"
+      app:layout_scrollFlags="scroll|enterAlways|snap"
+      app:navigationIcon="@drawable/ic_search"
+      app:navigationIconTint="@color/yellow"
+      android:theme="@style/ThemeOverlay.App.SearchBar"
+      app:liftOnScroll="false"
+      app:subtitleTextColor="@color/white"
+      app:titleTextColor="@color/white" />
 
   </com.google.android.material.appbar.AppBarLayout>
-  <!-- End of HEADER SECTION -->
+
+  <!-- ========================== -->
+  <!--   SEARCH RESULT SECTION    -->
+  <!-- ========================== -->
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_search"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:contentDescription="@string/search_results"
+      android:visibility="visible"
+      tools:listitem="@layout/item_result"
+      tools:visibility="visible" />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <!-- ========================== -->
   <!-- SEARCH STATE ILLUSTRATIONS -->
   <!-- ========================== -->
-
-  <!-- Illustration for the initial search view -->
   <include
     android:id="@+id/illustration_search_view"
     layout="@layout/illustration_search"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:theme="@style/ThemeOverlay.App.SearchView"
     tools:visibility="invisible" />
 
-  <!-- Illustration for "no results found" state -->
   <include
     android:id="@+id/illustration_search_no_result_view"
     layout="@layout/illustration_search_no_result"
@@ -66,7 +73,6 @@
     android:visibility="gone"
     tools:visibility="visible" />
 
-  <!-- Illustration for error state (e.g., network error) -->
   <include
     android:id="@+id/illustration_error"
     layout="@layout/illustration_error"
@@ -75,6 +81,22 @@
     android:layout_gravity="center"
     android:visibility="gone"
     tools:visibility="visible" />
-  <!-- End of HEADER SECTION -->
+
+  <!-- ========================== -->
+  <!--  MATERIAL SEARCH VIEW      -->
+  <!-- ========================== -->
+  <com.google.android.material.search.SearchView
+    android:id="@+id/search_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/gray_800"
+    android:hint="@string/search_any"
+    android:textColorHint="@color/white"
+    android:theme="@style/ThemeOverlay.App.SearchView"
+    app:layout_anchor="@id/search_bar">
+
+    <!-- TODO: search suggestion/history use RecyclerView -->
+
+  </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

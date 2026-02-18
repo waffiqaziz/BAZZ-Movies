@@ -16,9 +16,6 @@
     <!-- Color for all background -->
     <item name="android:windowBackground">@color/gray_1000</item>
 
-    <!-- Search View -->
-    <item name="drawerArrowStyle">@style/MySearchViewTheme</item>
-
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
 
     <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>
@@ -157,10 +154,25 @@
     <item name="android:backgroundTint">@color/yellow</item>
   </style>
 
-  <style name="MySearchViewTheme" parent="Widget.Material3.SearchView">
-    <item name="searchIcon">@drawable/ic_search</item>
-    <item name="queryBackground">@color/white</item>
-    <item name="searchHintIcon">@color/yellow</item>
+  <style name="ThemeOverlay.App.SearchBar" parent="ThemeOverlay.Material3.Search">
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="colorOnSurfaceVariant">@color/white</item>
+    <item name="colorOnSurface">@color/white</item>
+    <item name="colorSurfaceContainer">@color/gray_950</item>
+  </style>
+
+  <style name="ThemeOverlay.App.SearchView" parent="ThemeOverlay.Material3.Search">
+    <item name="fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="colorOnSurfaceVariant">@color/white</item>
+    <item name="colorSurface">@color/gray_950</item>
+    <item name="colorOnSurface">@color/white</item>
+    <item name="colorSurfaceContainerHigh">@color/gray_950</item>
+    <item name="colorSurfaceContainer">@color/gray_950</item>
+    <item name="android:colorBackground">@color/gray_950</item>
+    <item name="navigationIcon">@drawable/ic_left_icon</item>
+    <item name="closeIcon">@drawable/ic_cross</item>
   </style>
 
   <style name="TextTabLayoutStyle" parent="Widget.Material3.TabLayout">
@@ -368,7 +380,7 @@
     </item>
   </style>
 
-  <style name="ShapeAppearance.App.Button.Rounded"  parent="">
+  <style name="ShapeAppearance.App.Button.Rounded" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">32dp</item>
   </style>
