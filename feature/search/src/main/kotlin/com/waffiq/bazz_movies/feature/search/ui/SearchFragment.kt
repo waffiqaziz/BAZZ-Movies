@@ -2,51 +2,42 @@
 
 package com.waffiq.bazz_movies.feature.search.ui
 
+import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.ImageButton
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.R.id.search_button
-import androidx.appcompat.R.id.search_close_btn
-import androidx.appcompat.R.id.search_src_text
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.R.id.open_search_view_clear_button
+import com.google.android.material.R.id.open_search_view_toolbar
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
-import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorState
-import com.waffiq.bazz_movies.feature.search.R.id.action_search
-import com.waffiq.bazz_movies.feature.search.R.menu.search_menu
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -75,7 +66,6 @@ class SearchFragment : Fragment() {
 
   private var lastQuery: String? = null
   private var mSnackbar: Snackbar? = null
-
   private var lastRefreshErrorMessage: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,15 +80,13 @@ class SearchFragment : Fragment() {
     savedInstanceState: Bundle?,
   ): View {
     _binding = FragmentSearchBinding.inflate(inflater, container, false)
+    binding.searchView.hide()
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    (activity as AppCompatActivity).setSupportActionBar(binding.toolbarLayout.toolbar)
-    (activity as AppCompatActivity).supportActionBar?.title = null
-    binding.appBarLayout.setExpanded(true, true)
-
+    binding.searchView.hide()
     binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
 
     binding.illustrationError.btnTryAgain.setOnClickListener {
@@ -108,15 +96,17 @@ class SearchFragment : Fragment() {
       binding.illustrationError.progressCircular.isVisible = true
       showShimmer()
     }
+
     binding.swipeRefresh.setOnRefreshListener {
       searchAdapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
 
+    setupMaterialSearchView()
     adapterLoadStateListener()
-    setupSearchView()
+    setSearchBarScrollable(false)
 
-    // set up fragment result listener
+    // Set up fragment result listener
     requireActivity().supportFragmentManager.setFragmentResultListener(
       "open_search_view",
       viewLifecycleOwner,
@@ -131,6 +121,21 @@ class SearchFragment : Fragment() {
     binding.rvSearch.adapter = shimmerAdapter
   }
 
+  private fun setSearchBarScrollable(scrollable: Boolean) {
+    val params = binding.searchBar.layoutParams as AppBarLayout.LayoutParams
+    params.scrollFlags = if (scrollable) {
+      AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
+        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+    } else {
+      0 // no scroll flags = AppBar stays pinned
+    }
+    binding.searchBar.layoutParams = params
+    if (!scrollable) {
+      binding.appBarLayout.setExpanded(true, true)
+    }
+  }
+
   private fun showActualData() {
     val currentAdapter = binding.rvSearch.adapter
     if (currentAdapter !is ConcatAdapter || !currentAdapter.adapters.contains(searchAdapter)) {
@@ -138,74 +143,45 @@ class SearchFragment : Fragment() {
     }
   }
 
-  private fun setupSearchView() {
-    requireActivity().addMenuProvider(
-      object : MenuProvider {
-        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-          menuInflater.inflate(search_menu, menu)
-          val searchView = menu.findItem(action_search).actionView as SearchView
-          val searchEditText = searchView.findViewById<EditText>(search_src_text)
-
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            searchEditText.textCursorDrawable?.setTint(
-              ContextCompat.getColor(requireContext(), yellow),
-            )
-          }
-          searchView.maxWidth = Int.MAX_VALUE
-          searchView.findViewById<ImageView>(search_close_btn)
-            .setImageResource(ic_cross)
-          searchView.findViewById<ImageView>(search_button)
-            .setImageResource(ic_search)
-          searchEditText.setTextColor(Color.WHITE)
-          searchEditText.setHintTextColor(0x80FFFFFF.toInt())
-          searchEditText.textSize = SEARCH_TEXT_SIZE
-
-          searchViewModel.expandSearchView.observe(viewLifecycleOwner) {
-            if (it) {
-              searchView.isVisible = true
-              menu.findItem(action_search).expandActionView()
-              searchView.isFocusable = false
-              searchView.isIconified = false
-            }
-          }
-
-          // search queryTextChange Listener
-          searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-              if (query != null && query != lastQuery) {
-                lifecycleScope.launch {
-                  searchAdapter.submitData(PagingData.empty())
-                }
-                searchAdapter.refresh()
-                lastQuery = query
-                searchViewModel.search(query)
-                binding.illustrationSearchView.root.isVisible = false
-                showShimmer()
-              } else {
-                return true
-              }
-              searchView.clearFocus()
-              return false
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean = true
-          })
-
-          // Restore query if available
-          searchViewModel.query.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) searchView.setQuery(it, false)
-          }
-        }
-
-        override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-          when (menuItem.itemId) {
-            action_search -> true
-            else -> false
-          }
-      },
-      viewLifecycleOwner,
-      Lifecycle.State.RESUMED,
+  private fun setupMaterialSearchView() {
+    // Change back button and close button on search view
+    val toolbar = ViewCompat.requireViewById<MaterialToolbar>(
+      binding.searchView,
+      open_search_view_toolbar,
     )
+    toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), ic_cross)
+    toolbar.setNavigationIconTint(ContextCompat.getColor(requireContext(), yellow))
+
+    val clearButton = ViewCompat.requireViewById<ImageButton>(
+      binding.searchView,
+      open_search_view_clear_button,
+    )
+    clearButton.setImageResource(ic_cross)
+    clearButton.imageTintList = ColorStateList.valueOf(
+      ContextCompat.getColor(requireContext(), yellow),
+    )
+
+    // Setup SearchView text change listener
+    binding.searchView.editText.setOnEditorActionListener { textView, _, _ ->
+      val query = textView.text.toString()
+      if (query.isNotEmpty() && query != lastQuery) {
+        performSearch(query)
+        binding.searchBar.setText(query)
+      }
+      binding.searchView.hide()
+      false
+    }
+  }
+
+  private fun performSearch(query: String) {
+    lifecycleScope.launch {
+      searchAdapter.submitData(PagingData.empty())
+    }
+    searchAdapter.refresh()
+    lastQuery = query
+    searchViewModel.search(query)
+    binding.illustrationSearchView.root.isVisible = false
+    showShimmer()
   }
 
   private fun adapterLoadStateListener() {
@@ -247,15 +223,18 @@ class SearchFragment : Fragment() {
     binding.illustrationError.btnTryAgain.isVisible = false
 
     if (loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+      setSearchBarScrollable(false)
       binding.rvSearch.isVisible = false
       binding.illustrationSearchNoResultView.root.isVisible = true
       binding.illustrationSearchView.root.isVisible = false
     } else if (!loadState.append.endOfPaginationReached && searchAdapter.itemCount < 1) {
+      setSearchBarScrollable(false)
       binding.rvSearch.isVisible = false
       binding.illustrationSearchView.root.isVisible = true
       binding.illustrationSearchNoResultView.root.isVisible = false
     } else {
       showActualData()
+      setSearchBarScrollable(true)
       binding.rvSearch.isVisible = true
       binding.illustrationSearchView.root.isVisible = false
       binding.illustrationSearchNoResultView.root.isVisible = false
@@ -278,19 +257,19 @@ class SearchFragment : Fragment() {
     }
   }
 
-  // trigger via bottom navigation
   fun openSearchView() {
-    // if fragment is not in valid state
-    val activity = activity as? AppCompatActivity ?: return
     if (!isAdded || isDetached || view == null) return
 
     @Suppress("TooGenericExceptionCaught")
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.withStarted {
         try {
-          activity.supportActionBar?.show()
-          binding.appBarLayout.setExpanded(true, true)
-          searchViewModel.setExpandSearchView(true)
+          binding.searchView.hide()
+          binding.searchView.show()
+
+          // request focus and show keyboard
+          binding.searchView.requestFocus()
+          WindowCompat.getInsetsController(requireActivity().window, binding.searchView)
         } catch (e: IllegalStateException) {
           Log.w("SearchFragment", "Illegal state while opening search view.", e)
         }
@@ -311,19 +290,26 @@ class SearchFragment : Fragment() {
     mSnackbar = null
   }
 
-  override fun onResume() {
-    super.onResume()
-    searchAdapter.refresh()
-    binding.appBarLayout.setExpanded(true)
-    searchViewModel.setExpandSearchView(false)
+  override fun onViewStateRestored(savedInstanceState: Bundle?) {
+    super.onViewStateRestored(savedInstanceState)
+    binding.searchView.hide()
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
     mSnackbar = null
-    searchViewModel.setExpandSearchView(false) // reset expand search view
     lastQuery = null
     _binding = null
+  }
+
+  override fun onStart() {
+    super.onStart()
+    binding.searchView.hide()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    binding.searchView.hide()
   }
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -335,9 +321,5 @@ class SearchFragment : Fragment() {
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter
-  }
-
-  companion object {
-    const val SEARCH_TEXT_SIZE = 12f
   }
 }

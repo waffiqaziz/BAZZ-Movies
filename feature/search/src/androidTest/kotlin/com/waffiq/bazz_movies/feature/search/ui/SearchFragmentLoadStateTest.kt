@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.search.ui
 
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
@@ -57,10 +56,7 @@ class SearchFragmentLoadStateTest {
   fun setUp() {
     hiltRule.inject()
     every { mockSearchViewModel.searchResults } returns flowOf()
-    every { mockSearchViewModel.query } returns MutableLiveData()
-    every { mockSearchViewModel.expandSearchView } returns MutableLiveData()
     every { mockSearchViewModel.search(any()) } just Runs
-    every { mockSearchViewModel.setExpandSearchView(any()) } just Runs
     every { mockSnackbar.showSnackbarWarning(any<String>()) } returns mockk(relaxed = true)
 
     searchFragment = launchFragmentInHiltContainer<SearchFragment>()
