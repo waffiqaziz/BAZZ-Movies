@@ -31,6 +31,7 @@ import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.R.id.search_bar
+import com.waffiq.bazz_movies.feature.search.R.id.search_view
 import com.waffiq.bazz_movies.feature.search.R.id.swipe_refresh
 import com.waffiq.bazz_movies.feature.search.testutils.DefaultFragmentTestHelper
 import com.waffiq.bazz_movies.feature.search.testutils.Helper.triggerSwipeRefresh
@@ -168,6 +169,8 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
       "open_search_view",
       Bundle()
     )
+    shortDelay()
+    onView(withId(search_view)).check(matches(isDisplayed()))
   }
 
   @Test
