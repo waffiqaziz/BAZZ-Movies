@@ -157,6 +157,7 @@
   <style name="ThemeOverlay.App.SearchBar" parent="ThemeOverlay.Material3.Search">
     <item name="fontFamily">@font/nunito_sans_regular</item>
     <item name="android:fontFamily">@font/nunito_sans_regular</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
     <item name="colorOnSurfaceVariant">@color/white</item>
     <item name="colorOnSurface">@color/white</item>
     <item name="colorSurfaceContainer">@color/gray_950</item>
