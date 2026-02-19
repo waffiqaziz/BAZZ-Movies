@@ -14,6 +14,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -89,19 +90,7 @@ class SearchFragment : Fragment() {
     binding.searchView.hide()
     binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
 
-    binding.illustrationError.btnTryAgain.setOnClickListener {
-      lastRefreshErrorMessage = null
-      searchAdapter.refresh()
-      binding.illustrationError.btnTryAgain.isVisible = false
-      binding.illustrationError.progressCircular.isVisible = true
-      showShimmer()
-    }
-
-    binding.swipeRefresh.setOnRefreshListener {
-      searchAdapter.refresh()
-      binding.swipeRefresh.isRefreshing = false
-    }
-
+    setupAction()
     setupMaterialSearchView()
     adapterLoadStateListener()
     setSearchBarScrollable(false)
@@ -115,6 +104,21 @@ class SearchFragment : Fragment() {
     }
 
     collectAndSubmitData(this, { searchViewModel.searchResults }, searchAdapter)
+  }
+
+  private fun setupAction() {
+    binding.illustrationError.btnTryAgain.setOnClickListener {
+      lastRefreshErrorMessage = null
+      searchAdapter.refresh()
+      binding.illustrationError.btnTryAgain.isVisible = false
+      binding.illustrationError.progressCircular.isVisible = true
+      showShimmer()
+    }
+
+    binding.swipeRefresh.setOnRefreshListener {
+      searchAdapter.refresh()
+      binding.swipeRefresh.isRefreshing = false
+    }
   }
 
   private fun showShimmer() {

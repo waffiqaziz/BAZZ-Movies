@@ -20,12 +20,16 @@
       android:id="@+id/search_bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="8dp"
+      android:fitsSystemWindows="false"
       android:hint="@string/search_any"
+      android:theme="@style/ThemeOverlay.App.SearchBar"
+      app:layout_scrollEffect="compress"
       app:layout_scrollFlags="scroll|enterAlways|snap"
+      app:liftOnScroll="false"
       app:navigationIcon="@drawable/ic_search"
       app:navigationIconTint="@color/yellow"
-      android:theme="@style/ThemeOverlay.App.SearchBar"
-      app:liftOnScroll="false"
       app:subtitleTextColor="@color/white"
       app:titleTextColor="@color/white" />
 
