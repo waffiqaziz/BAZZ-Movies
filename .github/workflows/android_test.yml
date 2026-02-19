@@ -28,6 +28,30 @@ permissions:
   contents: read
 
 jobs:
+  mobsfscan:
+    runs-on: ubuntu-latest
+    name: Mobsfscan code scanning
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: mobsfscan
+        uses: MobSF/mobsfscan@main
+        with:
+          args: '. --sarif --output results.sarif || true'
+
+      - name: Upload mobsfscan report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
+
   detekt_checks:
     name: Detekt Checks
     permissions:
