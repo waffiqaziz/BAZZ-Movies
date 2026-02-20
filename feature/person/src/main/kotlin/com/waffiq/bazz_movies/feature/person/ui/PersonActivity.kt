@@ -13,7 +13,6 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.isGone
@@ -21,7 +20,6 @@ import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.FACEBOOK_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.IMDB_PERSON_LINK
@@ -34,7 +32,6 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_CHANNEL_LINK
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
-import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_bold
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
@@ -88,9 +85,7 @@ class PersonActivity : AppCompatActivity() {
 
     addPaddingWhenNavigationEnable(binding.root)
     setSupportActionBar(binding.toolbar)
-
     justifyTextView(binding.tvBiography)
-    typefaceTitle(binding.collapse)
 
     showLoading(true)
 
@@ -99,11 +94,6 @@ class PersonActivity : AppCompatActivity() {
 
     setupView()
     showData()
-  }
-
-  private fun typefaceTitle(collapse: CollapsingToolbarLayout) {
-    collapse.setCollapsedTitleTypeface(ResourcesCompat.getFont(this, nunito_sans_bold))
-    collapse.setExpandedTitleTypeface(ResourcesCompat.getFont(this, nunito_sans_bold))
   }
 
   private fun getDataExtra(): Boolean {
@@ -267,7 +257,7 @@ class PersonActivity : AppCompatActivity() {
     // show birth info
     binding.tvBorn.isVisible = true
     binding.tvBornHeader.isVisible = true
-    val birthInfo = formatBirthInfo(person.birthday, person.placeOfBirth)
+    val birthInfo = formatBirthInfo(person.birthday, person.placeOfBirth, person.deathday)
     binding.tvBorn.text = birthInfo.ifEmpty { getString(no_data) }
   }
 

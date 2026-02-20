@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import java.time.LocalDate
 import java.time.Period
+import java.time.temporal.ChronoUnit
 import java.util.Calendar
 
 /**
@@ -54,6 +55,9 @@ object PersonPageHelper {
     }
   }
 
+  fun getAge(birthday: String?) =
+    ChronoUnit.YEARS.between(LocalDate.parse(birthday), LocalDate.now())
+
   fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean =
     !externalID.instagramId.isNullOrEmpty() ||
       !externalID.twitterId.isNullOrEmpty() ||
@@ -61,11 +65,14 @@ object PersonPageHelper {
       !externalID.tiktokId.isNullOrEmpty() ||
       !externalID.youtubeId.isNullOrEmpty()
 
-  fun formatBirthInfo(birthday: String?, placeOfBirth: String?): String {
+  fun Context.formatBirthInfo(birthday: String?, placeOfBirth: String?, deathday: String?): String {
     var birthText = birthday?.let { dateFormatterStandard(it) }
-    return if (birthText == null) {
+    return if (birthText.isNullOrEmpty()) {
       placeOfBirth.orEmpty()
     } else {
+      if (deathday.isNullOrEmpty()) {
+        birthText += " (${getAge(birthday)} ${getString(years_old)})"
+      }
       birthText += "\n${placeOfBirth.orEmpty()}"
       birthText
     }
