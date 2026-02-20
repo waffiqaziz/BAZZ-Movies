@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.asFlow
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.ListUpdateCallback
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -22,7 +21,6 @@ import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
@@ -34,7 +32,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMD
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.IMDB_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.mockk
@@ -75,7 +72,6 @@ abstract class BaseMediaDetailViewModelTest {
   protected val mockMediaStated = mockk<MediaState>()
   protected val mockMediaCredits = mockk<MediaCredits>()
   protected val mockOmdb = mockk<OMDbDetails>()
-  protected val mockTvExternalIds = mockk<TvExternalIds>()
 
   protected val mockWatchProvider = WatchProvidersItem(
     ads = listOf(mockk()),
@@ -329,24 +325,6 @@ abstract class BaseMediaDetailViewModelTest {
           assertThat(collectedLoadingStates).contains(true)
         }
       }
-    }
-  }
-
-  private class TestListCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {
-      /* do nothing */
-    }
-
-    override fun onRemoved(position: Int, count: Int) {
-      /* do nothing */
-    }
-
-    override fun onMoved(fromPosition: Int, toPosition: Int) {
-      /* do nothing */
-    }
-
-    override fun onChanged(position: Int, count: Int, payload: Any?) {
-      /* do nothing */
     }
   }
 }

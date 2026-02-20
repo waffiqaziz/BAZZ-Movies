@@ -22,7 +22,7 @@ object ReleaseDateHelper {
   /**
    * Get release date and its associated region from a movie.
    *
-   * The function employs a multi-step search strategy to locate a release date:
+   * The function employs a multistep search strategy to locate a release date:
    * 1. Checks if there is a release date corresponding to the specified user region.
    * 2. If no matching region is found, falls back to using the production country's release date.
    * 3. If the above options are unavailable, it searches for any valid release date in any region.
@@ -148,7 +148,7 @@ object ReleaseDateHelper {
   /**
    * Finds tv-series release date
    *
-   * @param data A list of `DetailTv` objects representing tv data.
+   * @param data A list of `DetailTv` objects representing TV data.
    *
    * @return string of selected year.
    *
@@ -192,7 +192,7 @@ object ReleaseDateHelper {
   /**
    * Get origin country of the series
    *
-   * @param data A list of `DetailTv` objects representing tv data.
+   * @param data A list of `DetailTv` objects representing TV data.
    *
    * @return string of origin country.
    */

@@ -27,7 +27,7 @@ private val koverExclusions = listOf(
   // BuildConfig
   "com.waffiq.bazz_movies.BuildConfig",
 
-  // Moshi - Json Adapter
+  // Moshi - JSON Adapter
   "com.waffiq.bazz_movies.*.*JsonAdapter",
 )
 

@@ -130,7 +130,7 @@ class UserPreferenceMockkTest {
     val testPrefs = mockk<Preferences>()
     val mutablePrefs = mockk<MutablePreferences>()
 
-    // Setup the mocks for the transform function
+    // Set up the mocks for the transform function
     every { testPrefs.toMutablePreferences() } returns mutablePrefs
     every { mutablePrefs[UserPreference.REGION_KEY] = "US" } just Runs
 

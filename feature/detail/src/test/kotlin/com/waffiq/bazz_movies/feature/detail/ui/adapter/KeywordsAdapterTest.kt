@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.os.Looper
-import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem

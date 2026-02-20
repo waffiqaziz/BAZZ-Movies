@@ -15,7 +15,7 @@ interface LocalDataSourceInterface {
   val getWatchlistMovies: Flow<List<FavoriteEntity>>
   val getWatchlistTv: Flow<List<FavoriteEntity>>
 
-  // use integer to save memory, i don't think it will more than 2.1 billion rows
+  // use integer to save memory, I don't think it will more than 2.1 billion rows
   suspend fun insert(favoriteEntityList: FavoriteEntity): DbResult<Int>
   suspend fun deleteItemFromDB(mediaId: Int, mediaType: String): DbResult<Int>
   suspend fun deleteAll(): DbResult<Int>

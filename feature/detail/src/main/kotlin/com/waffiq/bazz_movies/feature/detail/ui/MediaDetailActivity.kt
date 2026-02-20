@@ -128,7 +128,7 @@ class MediaDetailActivity : AppCompatActivity() {
       dataExtra = dataExtra.copy(listGenreIds = details.genreId)
 
       // only for movie while tv-series is missing imdb id
-      if (details.imdbId != null && details.imdbId.isNotEmpty()) {
+      if (!details.imdbId.isNullOrEmpty()) {
         detailViewModel.getOMDbDetails(details.imdbId)
       }
     }

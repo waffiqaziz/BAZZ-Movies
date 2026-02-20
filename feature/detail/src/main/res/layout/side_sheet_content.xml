@@ -30,7 +30,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Status" />
+    android:text="@string/status" />
 
   <TextView
     android:id="@+id/tv_status"
@@ -45,7 +45,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Original Language" />
+    android:text="@string/original_language" />
 
   <TextView
     android:id="@+id/tv_language"
@@ -60,7 +60,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Budget" />
+    android:text="@string/budget" />
 
   <TextView
     android:id="@+id/tv_budget"
@@ -75,7 +75,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Revenue" />
+    android:text="@string/revenue" />
 
   <TextView
     android:id="@+id/tv_revenue"
@@ -90,7 +90,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Keywords" />
+    android:text="@string/keywords" />
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/rv_keywords"

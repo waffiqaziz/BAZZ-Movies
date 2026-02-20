@@ -49,7 +49,7 @@ object MediaHelper {
           ignoreCase = true,
         )
       } // get official and trailer
-      .map { it.key } // get the key value (youtube id video)
+      .map { it.key } // get the key value (YouTube id video)
       .firstOrNull()
       ?.trim()
 

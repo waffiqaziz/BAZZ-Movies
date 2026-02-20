@@ -114,7 +114,7 @@ object GenreHelper {
     var temp = ""
 
     /*
-     *  "," Comma's are treated like an AND and query while "|" Pipe's are an OR.
+     *  "," Commas are treated like an AND query while "|" Pipes are an OR.
      *  https://www.themoviedb.org/talk/635968b34a4bf6007c5997f3
      *
      *  used to get id genre

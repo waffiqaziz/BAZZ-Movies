@@ -8,6 +8,7 @@ import org.robolectric.annotation.Implements
 class ShadowSettingsSecure {
   private val secureSettings = mutableMapOf<String, Int>()
 
+  @Suppress("unused")
   @Implementation
   fun getInt(name: String): Int =
     secureSettings[name] ?: throw Settings.SettingNotFoundException(name)
