@@ -21,7 +21,7 @@ object TestHelper {
     }
   }
 
-  suspend inline fun <reified D> Flow<*>.testResult(
+  suspend fun <D> Flow<D>.testResult(
     expectedData: D
   ) {
     test {

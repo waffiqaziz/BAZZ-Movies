@@ -309,15 +309,6 @@
     <item name="fontFamily">@font/nunito_sans_regular</item>
   </style>
 
-  <style name="ButtonSignOut" parent="Widget.Material3.Button">
-    <item name="strokeColor">@color/gray_400</item>
-    <item name="textAllCaps">false</item>
-    <item name="fontFamily">@font/nunito_sans_bold</item>
-    <item name="strokeWidth">0.8dp</item>
-    <item name="android:textColor">@color/red_matte</item>
-    <item name="backgroundTint">@android:color/transparent</item>
-  </style>
-
   <style name="customButton">
     <item name="textAllCaps">false</item>
     <item name="android:minHeight">39dp</item>
@@ -433,5 +424,19 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="cardBackgroundColor">@color/list_item_card_background</item>
     <item name="shapeAppearance">?attr/listItemShapeAppearanceSingle</item>
+  </style>
+
+  <style name="CollapsedTitleStyle" parent="TextAppearance.Material3.TitleMedium">
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="ExpandedTitleStyle" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:breakStrategy">simple</item>
+    <item name="android:hyphenationFrequency">none</item>
   </style>
 </resources>

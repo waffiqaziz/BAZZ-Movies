@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
-import org.robolectric.RobolectricTestRunner
-
 import android.content.Context
 import android.os.Looper
 import android.view.View
@@ -9,13 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.mockk
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 
 @RunWith(RobolectricTestRunner::class)

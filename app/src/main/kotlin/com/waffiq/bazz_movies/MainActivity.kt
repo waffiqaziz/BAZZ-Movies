@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     val navHostFragment =
       supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) as NavHostFragment
 
-    // setup the BottomNavigationView with NavController
+    // set up the BottomNavigationView with NavController
     binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
 
     binding.bottomNavigation.setOnItemSelectedListener { menuItem ->

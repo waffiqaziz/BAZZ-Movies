@@ -6,7 +6,6 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 /**
  * Used to retrieving age ratings based on the user's or others region
  */
-@Suppress("unused")
 object AgeRatingHelper {
 
   private const val FLAG_ANY_COUNTRY = "any country"

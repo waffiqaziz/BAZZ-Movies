@@ -166,7 +166,7 @@ class ScrollActionBarBehaviorTest {
     val maxScroll = shorterChild.height - nestedScrollView.height
     assertTrue("maxScroll should be negative", maxScroll < 0)
 
-    // attempt to scroll (this should trigger the listener even though it actually not scrolling)
+    // attempt to scroll (this should trigger the listener even though it's actually not scrolling)
     nestedScrollView.scrollTo(0, 100)
 
     // verify colors is not changed since percentage should be 0

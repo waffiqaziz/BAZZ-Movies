@@ -245,7 +245,7 @@ class ReleaseDateHelperTvTest {
     val data = TvDetail(
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
-        null, // This triggers the it?.airDate branch in mapNotNull
+        null, // This triggers it?.airDate branch in mapNotNull
         SeasonsItem(name = "Season 1", airDate = "2020-06-01")
       )
     )

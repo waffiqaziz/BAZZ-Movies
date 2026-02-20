@@ -1,8 +1,6 @@
 package com.waffiq.bazz_movies.core.common.utils
 
 object Constants {
-  const val SWIPE_THRESHOLD = 0.3f
-
   const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300/"
   const val TMDB_IMG_LINK_BACKDROP_W780 = "https://image.tmdb.org/t/p/w780/"
   const val TMDB_IMG_LINK_BACKDROP_ORIGINAL = "https://image.tmdb.org/t/p/original/"

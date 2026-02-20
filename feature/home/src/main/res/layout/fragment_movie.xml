@@ -92,7 +92,7 @@
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster" />
 
-        <!-- Top rated-->
+        <!-- Top-rated-->
         <TextView
           android:id="@+id/tv_top_rated"
           style="@style/TextHeader2"

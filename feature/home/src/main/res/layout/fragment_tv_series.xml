@@ -98,7 +98,7 @@
           tools:listitem="@layout/item_poster"
           tools:spanCount="2" />
 
-        <!-- Top rated -->
+        <!-- Top-rated -->
         <TextView
           android:id="@+id/tv_top_rated"
           style="@style/TextHeader2"

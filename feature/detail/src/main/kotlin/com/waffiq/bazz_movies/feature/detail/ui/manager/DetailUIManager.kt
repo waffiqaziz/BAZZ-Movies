@@ -376,7 +376,7 @@ class DetailUIManager(
   }
 
   /**
-   * Open trailer in youtube link.
+   * Open trailer in YouTube link.
    */
   fun playTrailer(link: String) {
     try {

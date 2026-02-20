@@ -1,4 +1,4 @@
-// Top-level build file, configuration options common to all sub-projects/modules.
+// Top-level build file, configuration options common to all subprojects/modules.
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
  *
  * This interface defines a method to launch a trailer link from the Media Detail Activity.
  * Implementations should handle the actual launching of the trailer, typically by opening
- * a web browser or a youtube app with the provided link.
+ * a web browser or a YouTube app with the provided link.
  */
 fun interface TrailerLauncher {
   fun launch(activity: AppCompatActivity, link: String)

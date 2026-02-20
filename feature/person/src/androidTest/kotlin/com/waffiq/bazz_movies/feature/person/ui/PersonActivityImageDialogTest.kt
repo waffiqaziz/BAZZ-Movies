@@ -105,8 +105,8 @@ class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonA
       }
       performClickListPhotos(1)
 
-      // verify the ViewPager is at the correct position
-      // but it require custom matchers or checking the adapter state
+      // verify the ViewPager is at the correct position,
+      // but it requires custom matchers or checking the adapter state
     }
   }
 
