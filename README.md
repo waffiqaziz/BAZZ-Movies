@@ -45,7 +45,7 @@
 [![Repo Size][BADGE-SIZE]][SIZE]
 [![Contributions][BADGE-CONTRIBUTION]][CONTRIBUTION]
 
-[<img src="https://i.postimg.cc/tJJ4sBkd/Thumbnail-Blur.png" width="550"/>](https://i.postimg.cc/tJJ4sBkd/Thumbnail-Blur.png)
+[<img src="https://i.postimg.cc/HnMv8FNp/Thumbnail-blur-v1-3-0.png" width="550"/>](https://i.postimg.cc/tJJ4sBkd/Thumbnail-Blur.png)
 
 </div>
 
