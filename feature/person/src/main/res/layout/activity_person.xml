@@ -26,14 +26,15 @@
       android:layout_height="match_parent"
       android:fitsSystemWindows="true"
       app:collapsedTitleGravity="fill_vertical"
+      app:collapsedTitleTextAppearance="@style/CollapsedTitleStyle"
       app:collapsedTitleTextColor="@color/white"
       app:contentScrim="@color/gray_1000"
       app:expandedTitleGravity="bottom|center_horizontal"
+      app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
       app:expandedTitleTextColor="@color/white"
       app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-      app:maxLines="1"
+      app:maxLines="2"
       app:titleCollapseMode="fade"
-      tools:expandedTitleTextAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
       tools:title="Morgan Freeman">
 
       <ImageView
@@ -349,8 +350,8 @@
 
   <com.google.android.material.loadingindicator.LoadingIndicator
     android:id="@+id/progress_bar"
-    android:layout_marginTop="200dp"
     style="@style/MyProgressBar"
+    android:layout_marginTop="200dp"
     tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

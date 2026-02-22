@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -34,13 +35,13 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitForActivityToBeDestroyed
 import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
 import com.waffiq.bazz_movies.feature.person.R.id.btn_back
-import com.waffiq.bazz_movies.feature.person.R.id.collapse
-import com.waffiq.bazz_movies.feature.person.R.id.divider1
 import com.waffiq.bazz_movies.feature.person.R.id.btn_facebook
 import com.waffiq.bazz_movies.feature.person.R.id.btn_instagram
 import com.waffiq.bazz_movies.feature.person.R.id.btn_link
-import com.waffiq.bazz_movies.feature.person.R.id.iv_picture
 import com.waffiq.bazz_movies.feature.person.R.id.btn_x
+import com.waffiq.bazz_movies.feature.person.R.id.collapse
+import com.waffiq.bazz_movies.feature.person.R.id.divider1
+import com.waffiq.bazz_movies.feature.person.R.id.iv_picture
 import com.waffiq.bazz_movies.feature.person.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.person.R.id.rv_known_for
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
@@ -61,6 +62,7 @@ import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.launchPersonActivity
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -71,9 +73,9 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -372,10 +374,10 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   @Test
   fun birthInfo_whenEmpty_showsNoData() = runTest {
     mockkObject(PersonPageHelper)
-    every { PersonPageHelper.formatBirthInfo(any(), any()) } returns ""
+    every { any<Context>().formatBirthInfo(any(), any(), any()) } returns ""
 
     context.launchPersonActivity {
-      verify { PersonPageHelper.formatBirthInfo(any(), any()) }
+      verify { any<Context>().formatBirthInfo(any(), any(), any()) }
       onView(withId(tv_born)).check(matches(withText(context.getString(no_data))))
     }
 
