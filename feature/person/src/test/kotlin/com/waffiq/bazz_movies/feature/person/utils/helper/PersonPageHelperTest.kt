@@ -15,15 +15,16 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
-import org.junit.Test
 import org.junit.Before
+import org.junit.Test
+import java.time.LocalDate
 
 class PersonPageHelperTest {
 
   val context: Context = mockk()
 
   @Before
-  fun setup(){
+  fun setup() {
     every { context.getString(no_data) } returns "no data"
   }
 
@@ -60,36 +61,44 @@ class PersonPageHelperTest {
 
   @Test
   fun formatBirthInfo_whenVariousInputValues_formatsCorrectly() {
+    val fixedNow = LocalDate.of(2025, 5, 15) // use date 15 May 2025
+
     every { context.getString(years_old) } returns "years old"
-    // valid birthday and place of birth
+    // valid birthday, place of birth, and death day
     assertEquals(
       "May 15, 1990\nNew York",
-      context.formatBirthInfo( "1990-05-15", "New York", "2000-12-12")
+      context.formatBirthInfo("1990-05-15", "New York", "2000-12-12")
     )
 
     // all null
-    assertEquals("", context.formatBirthInfo( null, null, null))
+    assertEquals("", context.formatBirthInfo(null, null, null))
 
     // all empty
-    assertEquals("", context.formatBirthInfo( "", "", ""))
+    assertEquals("", context.formatBirthInfo("", "", ""))
 
     // date null
-    assertEquals("New York", context.formatBirthInfo( null, "New York", null))
+    assertEquals("New York", context.formatBirthInfo(null, "New York", null))
 
     // place null
-    assertEquals("May 15, 1990 (35 years old)\n", context.formatBirthInfo( "1990-05-15", null, null))
+    assertEquals(
+      "May 15, 1990 (35 years old)\n",
+      context.formatBirthInfo("1990-05-15", null, null, fixedNow)
+    )
 
     // date empty
-    assertEquals("New York", context.formatBirthInfo( "", "New York", null))
+    assertEquals("New York", context.formatBirthInfo("", "New York", null))
 
     // place empty
-    assertEquals("May 15, 1990 (35 years old)\n", context.formatBirthInfo( "1990-05-15", "", ""))
+    assertEquals(
+      "May 15, 1990 (35 years old)\n",
+      context.formatBirthInfo("1990-05-15", "", "", fixedNow)
+    )
 
     // date null, place  empty
-    assertEquals("", context.formatBirthInfo( null, "", null))
+    assertEquals("", context.formatBirthInfo(null, "", null))
 
     // date empty, place  null
-    assertEquals("", context.formatBirthInfo( "", null, null))
+    assertEquals("", context.formatBirthInfo("", null, null))
   }
 
   @Test

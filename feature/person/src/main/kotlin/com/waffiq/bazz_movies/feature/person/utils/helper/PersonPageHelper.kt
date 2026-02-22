@@ -55,8 +55,8 @@ object PersonPageHelper {
     }
   }
 
-  fun getAge(birthday: String?) =
-    ChronoUnit.YEARS.between(LocalDate.parse(birthday), LocalDate.now())
+  fun getAge(birthday: String, currentDate: LocalDate = LocalDate.now()) =
+    ChronoUnit.YEARS.between(LocalDate.parse(birthday), currentDate)
 
   fun hasAnySocialMediaIds(externalID: ExternalIDPerson): Boolean =
     !externalID.instagramId.isNullOrEmpty() ||
@@ -65,18 +65,25 @@ object PersonPageHelper {
       !externalID.tiktokId.isNullOrEmpty() ||
       !externalID.youtubeId.isNullOrEmpty()
 
-  fun Context.formatBirthInfo(birthday: String?, placeOfBirth: String?, deathday: String?): String {
-    var birthText = birthday?.let { dateFormatterStandard(it) }
-    return if (birthText.isNullOrEmpty()) {
+  fun Context.formatBirthInfo(
+    birthday: String?,
+    placeOfBirth: String?,
+    deathday: String?,
+    currentDate: LocalDate = LocalDate.now(),
+  ): String = if (birthday == null) {
       placeOfBirth.orEmpty()
     } else {
-      if (deathday.isNullOrEmpty()) {
-        birthText += " (${getAge(birthday)} ${getString(years_old)})"
+      var birthText = dateFormatterStandard(birthday)
+      if (birthText.isEmpty()) {
+        placeOfBirth.orEmpty()
+      } else {
+        if (deathday.isNullOrEmpty()) {
+          birthText += " (${getAge(birthday, currentDate)} ${getString(years_old)})"
+        }
+        birthText += "\n${placeOfBirth.orEmpty()}"
+        birthText
       }
-      birthText += "\n${placeOfBirth.orEmpty()}"
-      birthText
     }
-  }
 
   fun Context.formatDeathInfo(birthday: String?, deathday: String?): String =
     if (deathday == null || birthday == null) {
