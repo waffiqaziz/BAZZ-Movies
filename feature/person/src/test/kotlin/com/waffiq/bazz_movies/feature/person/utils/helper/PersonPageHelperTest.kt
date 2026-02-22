@@ -6,11 +6,13 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.years_old
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
+import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAge
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.getAgeDeath
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -21,7 +23,9 @@ import java.time.LocalDate
 
 class PersonPageHelperTest {
 
+  val fixedNow: LocalDate = LocalDate.of(2025, 5, 15) // use date 15 May 2025
   val context: Context = mockk()
+  val born90 = "1990-05-15"
 
   @Before
   fun setup() {
@@ -61,13 +65,11 @@ class PersonPageHelperTest {
 
   @Test
   fun formatBirthInfo_whenVariousInputValues_formatsCorrectly() {
-    val fixedNow = LocalDate.of(2025, 5, 15) // use date 15 May 2025
-
     every { context.getString(years_old) } returns "years old"
     // valid birthday, place of birth, and death day
     assertEquals(
       "May 15, 1990\nNew York",
-      context.formatBirthInfo("1990-05-15", "New York", "2000-12-12")
+      context.formatBirthInfo(born90, "New York", "2000-12-12")
     )
 
     // all null
@@ -82,7 +84,7 @@ class PersonPageHelperTest {
     // place null
     assertEquals(
       "May 15, 1990 (35 years old)\n",
-      context.formatBirthInfo("1990-05-15", null, null, fixedNow)
+      context.formatBirthInfo(born90, null, null, fixedNow)
     )
 
     // date empty
@@ -91,7 +93,7 @@ class PersonPageHelperTest {
     // place empty
     assertEquals(
       "May 15, 1990 (35 years old)\n",
-      context.formatBirthInfo("1990-05-15", "", "", fixedNow)
+      context.formatBirthInfo(born90, "", "", fixedNow)
     )
 
     // date null, place  empty
@@ -102,14 +104,22 @@ class PersonPageHelperTest {
   }
 
   @Test
+  fun getAge_validParameters_returnsAgeCorrectly(){
+    assertEquals(35L, getAge(born90,fixedNow))
+
+    // use default locale to fulfill JaCoCo coverage
+    getAge(born90)
+  }
+
+  @Test
   fun formatDeathInfo_whenValidDatesProvided_returnsFormattedDateAndAge() {
-    val birthDate = "1990-05-15"
+    val birthDate = born90
     val deathDate = "2020-10-10"
 
     val formattedDeathDate = "Oct 10, 2020"
     val ageAtDeath = 30
 
-    mockkObject(PersonPageHelper) // This allows mocking the object methods
+    mockkObject(PersonPageHelper)
     every { getAgeDeath(birthDate, deathDate) } returns ageAtDeath
     every { context.getString(any()) } returns "years old"
 
@@ -118,6 +128,8 @@ class PersonPageHelperTest {
 
     verify { getAgeDeath(birthDate, deathDate) }
     verify { context.getString(any()) }
+
+    unmockkObject(PersonPageHelper)
   }
 
   @Test
@@ -138,7 +150,7 @@ class PersonPageHelperTest {
 
   @Test
   fun formatDeathInfo_whenDeathdayIsNull_returnsNoData() {
-    val result = context.formatDeathInfo(birthday = "1990-05-15", deathday = null)
+    val result = context.formatDeathInfo(birthday = born90, deathday = null)
     assertEquals("no data", result)
   }
 
