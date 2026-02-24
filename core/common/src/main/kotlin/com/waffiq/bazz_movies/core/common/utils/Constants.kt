@@ -1,16 +1,16 @@
 package com.waffiq.bazz_movies.core.common.utils
 
 object Constants {
-  const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300/"
-  const val TMDB_IMG_LINK_BACKDROP_W780 = "https://image.tmdb.org/t/p/w780/"
-  const val TMDB_IMG_LINK_BACKDROP_ORIGINAL = "https://image.tmdb.org/t/p/original/"
-  const val TMDB_IMG_LINK_POSTER_W185 = "https://image.tmdb.org/t/p/w185/"
-  const val TMDB_IMG_LINK_POSTER_W500 = "https://image.tmdb.org/t/p/w500/"
-  const val TMDB_IMG_LINK_POSTER_W780 = "https://image.tmdb.org/t/p/w780/"
-  const val TMDB_IMG_LINK_POSTER_W1280 = "https://image.tmdb.org/t/p/w1280/"
+  const val TMDB_IMG_LINK_BACKDROP_W300 = "https://image.tmdb.org/t/p/w300"
+  const val TMDB_IMG_LINK_BACKDROP_W780 = "https://image.tmdb.org/t/p/w780"
+  const val TMDB_IMG_LINK_BACKDROP_ORIGINAL = "https://image.tmdb.org/t/p/original"
+  const val TMDB_IMG_LINK_POSTER_W185 = "https://image.tmdb.org/t/p/w185"
+  const val TMDB_IMG_LINK_POSTER_W500 = "https://image.tmdb.org/t/p/w500"
+  const val TMDB_IMG_LINK_POSTER_W780 = "https://image.tmdb.org/t/p/w780"
+  const val TMDB_IMG_LINK_POSTER_W1280 = "https://image.tmdb.org/t/p/w1280"
   const val TMDB_IMG_LINK_ORIGINAL = "https://www.themoviedb.org/t/p/original"
   const val YOUTUBE_LINK_VIDEO = "https://www.youtube.com/watch?v="
-  const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200/"
+  const val TMDB_IMG_LINK_AVATAR = "https://image.tmdb.org/t/p/w200"
   const val GRAVATAR_LINK = "https://secure.gravatar.com/avatar/"
 
   const val INSTAGRAM_LINK = "https://www.instagram.com/"
