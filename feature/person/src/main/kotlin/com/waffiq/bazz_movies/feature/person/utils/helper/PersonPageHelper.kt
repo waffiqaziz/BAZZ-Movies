@@ -70,7 +70,8 @@ object PersonPageHelper {
     placeOfBirth: String?,
     deathday: String?,
     currentDate: LocalDate = LocalDate.now(),
-  ): String = if (birthday == null) {
+  ): String =
+    if (birthday == null) {
       placeOfBirth.orEmpty()
     } else {
       var birthText = dateFormatterStandard(birthday)

@@ -202,6 +202,8 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 # Image Loading
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+# libs.versions.toml
+glide-okhttp3 = { group = "com.github.bumptech.glide", name = "okhttp3-integration", version.ref = "glide" }
 
 # Google Services
 play-integrity = { group = "com.google.android.play", name = "integrity", version.ref = "playIntegrity" }

@@ -116,7 +116,7 @@ class FeaturedFragment : Fragment() {
 
   private fun showMainPicture() {
     Glide.with(requireContext())
-      .load(TMDB_IMG_LINK_BACKDROP_ORIGINAL + "bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
+      .load("$TMDB_IMG_LINK_BACKDROP_ORIGINAL/bQXAqRx2Fgc46uCVWgoPz5L5Dtr.jpg") // URL movie poster
       .placeholder(ic_bazz_placeholder_search)
       .transition(withCrossFade())
       .error(ic_broken_image)
