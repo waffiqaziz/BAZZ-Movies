@@ -57,8 +57,8 @@ class LoginActivity : AppCompatActivity() {
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     binding = ActivityLoginBinding.inflate(layoutInflater)
     setContentView(binding.root)
     applyWindowInsets(binding.root)

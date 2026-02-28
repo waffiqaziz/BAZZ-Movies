@@ -48,11 +48,11 @@ class MediaDetailActivity : AppCompatActivity() {
   private lateinit var dataManager: DetailDataManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
     enableEdgeToEdge(
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
       navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
     )
-    super.onCreate(savedInstanceState)
     setupActivity()
 
     if (!extractDataFromIntent()) {
