@@ -20,8 +20,8 @@ class RoutingActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     splashScreen = installSplashScreen()
-    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
     splashScreen.setKeepOnScreenCondition { true }
 
     userPreferenceViewModel.getUserPref().observe(this) {

@@ -15,6 +15,7 @@ dependencies {
   implementation(libs.google.material)
   implementation(libs.androidx.activity)
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.flexbox)
 
   // testing
   testImplementation(libs.androidx.core.testing)

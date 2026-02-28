@@ -28,20 +28,31 @@
     android:id="@+id/layout_bazz_movies"
     layout="@layout/custom_toolbar_item"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/default_margin_parent_20"
-    android:layout_marginTop="54dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_forget_password"
     style="@style/MyTransparentButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/forget_password" />
+
+  <androidx.constraintlayout.helper.widget.Flow
+    android:id="@+id/headerFlow"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="54dp"
+    android:layout_marginStart="20dp"
     android:layout_marginEnd="4dp"
-    android:text="@string/forget_password"
-    app:layout_constraintBottom_toBottomOf="@+id/layout_bazz_movies"
+
+    app:constraint_referenced_ids="layout_bazz_movies,btn_forget_password"
+
+    app:flow_wrapMode="chain"
+    app:flow_horizontalStyle="spread_inside"
+
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/layout_bazz_movies" />
+    app:layout_constraintTop_toTopOf="parent" />
   <!-- End of HEADER SECTION -->
 
   <!-- ========================== -->
