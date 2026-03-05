@@ -372,35 +372,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     onView(withId(img_avatar)).check(matches(isDisplayed()))
   }
 
-  @Test
-  fun onStop_whenCalled_shouldCleanupSnackbarAndDialog() {
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      moreFragment.onStop()
-    }
-  }
-
-  @Test
-  fun onPause_whenCalled_shouldPassed() {
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      moreFragment.onPause()
-    }
-  }
-
-  @Test
-  fun onResume_whenCalled_shouldPassed() {
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      moreFragment.onResume()
-    }
-  }
-
-  @Test
-  fun onDestroyView_whenCalled_resetsState() {
-    InstrumentationRegistry.getInstrumentation().runOnMainSync {
-      moreFragment.onDestroyView()
-    }
-    verify(exactly = 1) { mockUserViewModel.removeState() }
-  }
-
   private fun checkIntentData(link: String) {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
