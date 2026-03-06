@@ -31,6 +31,7 @@ dependencies {
   implementation(libs.androidx.navigation.fragment)
   implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.play.integrity)
+  implementation(libs.okhttp3.okhttp.tls)
 
   // leakcanary
   debugImplementation(libs.leakcanary)
