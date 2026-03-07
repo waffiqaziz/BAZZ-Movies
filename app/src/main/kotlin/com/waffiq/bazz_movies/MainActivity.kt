@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -61,7 +63,12 @@ class MainActivity : AppCompatActivity() {
       supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) as NavHostFragment
 
     // set up the BottomNavigationView with NavController
-    binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
+    navHostFragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
+      override fun onCreate(owner: LifecycleOwner) {
+        binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
+        navHostFragment.lifecycle.removeObserver(this)
+      }
+    })
 
     binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
       if (menuItem.itemId == navigation_search) {
@@ -96,14 +103,6 @@ class MainActivity : AppCompatActivity() {
     AnimatorInflater.loadAnimator(iconView.context, R.animator.search_rotate_pop).apply {
       setTarget(iconView)
       start()
-    }
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    setSupportActionBar(null)
-    supportFragmentManager.fragments.forEach { fragment ->
-      supportFragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss()
     }
   }
 
