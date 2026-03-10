@@ -13,13 +13,13 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
 
   @Before
   fun setup() {
-    getListMoviesInteractor = GetListMoviesInteractor(mockRepository)
+    getListMoviesInteractor = GetListMoviesInteractor(mockMovieRepository)
   }
 
   @Test
   fun getTopRatedMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getTopRatedMovies() },
+      mockCall = { mockMovieRepository.getTopRatedMovies() },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getTopRatedMovies() },
     ) { pagingList ->
@@ -30,7 +30,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getPopularMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getPopularMovies() },
+      mockCall = { mockMovieRepository.getPopularMovies() },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getPopularMovies() },
     ) { pagingList ->
@@ -41,7 +41,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getTrendingThisWeek_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getTrendingThisWeek(region) },
+      mockCall = { mockMovieRepository.getTrendingThisWeek(region) },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getTrendingThisWeek(region) },
     ) { pagingList ->
@@ -52,7 +52,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getTrendingToday_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getTrendingToday(region) },
+      mockCall = { mockMovieRepository.getTrendingToday(region) },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getTrendingToday(region) },
     ) { pagingList ->
@@ -63,7 +63,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getUpcomingMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getUpcomingMovies(region) },
+      mockCall = { mockMovieRepository.getUpcomingMovies(region) },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getUpcomingMovies(region) },
     ) { pagingList ->
@@ -74,7 +74,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getPlayingNowMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getPlayingNowMovies(region) },
+      mockCall = { mockMovieRepository.getPlayingNowMovies(region) },
       pagingData = fakePagingData,
       interactorCall = { getListMoviesInteractor.getPlayingNowMovies(region) },
     ) { pagingList ->

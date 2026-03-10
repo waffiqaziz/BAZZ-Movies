@@ -20,7 +20,7 @@ import org.junit.Rule
 abstract class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
-  protected val mockRepository: IMoviesRepository = mockk()
+  protected val mockMovieRepository: IMoviesRepository = mockk()
   protected val fakePagingData =
     PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))
   protected val region = "region"

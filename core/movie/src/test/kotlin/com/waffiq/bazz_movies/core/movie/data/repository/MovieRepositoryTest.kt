@@ -157,7 +157,6 @@ class MovieRepositoryTest {
     )
   }
 
-
   @Test
   fun getStatedMovie_whenSuccessful_returnsMappedStatedMovie() = runTest {
     coEvery { mockMovieDataSource.getMovieState("sessionId", 1234) } returns

@@ -4,9 +4,8 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
 import io.mockk.coEvery
-import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -15,13 +14,12 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-class GetTvStateInteractorTest {
-  private val mockRepository: IMoviesRepository = mockk()
+class GetTvStateInteractorTest : BaseInteractorTest() {
   private lateinit var getTvStateInteractor: GetTvStateInteractor
 
   @Before
   fun setup() {
-    getTvStateInteractor = GetTvStateInteractor(mockRepository)
+    getTvStateInteractor = GetTvStateInteractor(mockMovieRepository)
   }
 
   @Test
@@ -33,7 +31,7 @@ class GetTvStateInteractorTest {
       watchlist = true
     )
 
-    coEvery { mockRepository.getTvState("sessionId", 6789) } returns
+    coEvery { mockMovieRepository.getTvState("sessionId", 6789) } returns
       flowOf(Outcome.Success(stated))
 
     getTvStateInteractor.getTvState("sessionId", 6789).test {

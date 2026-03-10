@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.listtv
 
 import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.movieMediaItem
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.tvMediaItem
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -13,50 +13,50 @@ class GetListTvInteractorTest : BaseInteractorTest() {
 
   @Before
   fun setup() {
-    getListTvInteractor = GetListTvInteractor(mockRepository)
+    getListTvInteractor = GetListTvInteractor(mockMovieRepository)
   }
 
   @Test
   fun getPopularTv_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getPopularTv(region) },
+      mockCall = { mockMovieRepository.getPopularTv(region) },
       pagingData = fakePagingData,
       interactorCall = { getListTvInteractor.getPopularTv(region) },
     ) { pagingList ->
-      assertEquals(movieMediaItem, pagingList[0])
+      assertEquals(tvMediaItem, pagingList[0])
     }
   }
 
   @Test
   fun getAiringThisWeekTv_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getAiringThisWeekTv(region) },
+      mockCall = { mockMovieRepository.getAiringThisWeekTv(region) },
       pagingData = fakePagingData,
       interactorCall = { getListTvInteractor.getAiringThisWeekTv(region) },
     ) { pagingList ->
-      assertEquals(movieMediaItem, pagingList[0])
+      assertEquals(tvMediaItem, pagingList[0])
     }
   }
 
   @Test
   fun getAiringTodayTv_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getAiringTodayTv(region) },
+      mockCall = { mockMovieRepository.getAiringTodayTv(region) },
       pagingData = fakePagingData,
       interactorCall = { getListTvInteractor.getAiringTodayTv(region) },
     ) { pagingList ->
-      assertEquals(movieMediaItem, pagingList[0])
+      assertEquals(tvMediaItem, pagingList[0])
     }
   }
 
   @Test
   fun getTopRatedTv_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockRepository.getTopRatedTv() },
+      mockCall = { mockMovieRepository.getTopRatedTv() },
       pagingData = fakePagingData,
       interactorCall = { getListTvInteractor.getTopRatedTv() },
     ) { pagingList ->
-      assertEquals(movieMediaItem, pagingList[0])
+      assertEquals(tvMediaItem, pagingList[0])
     }
   }
 }
