@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.waffiq.bazz_movies.configureCommonAndroidSettings
 import com.waffiq.bazz_movies.configureMockitoAgent
+import com.waffiq.bazz_movies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -33,6 +34,9 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       dependencies {
         add("implementation", project(":core:designsystem"))
         add("implementation", project(":navigation"))
+        add("implementation", project(":navigation"))
+
+        add("implementation", libs.findLibrary("google.material").get())
 
         add("testImplementation", kotlin("test"))
         add("testImplementation", project(":core:test"))
