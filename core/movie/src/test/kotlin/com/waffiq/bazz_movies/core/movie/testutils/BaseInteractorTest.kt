@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.movieMediaItem
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.tvMediaItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import io.mockk.every
@@ -21,8 +22,10 @@ abstract class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
   protected val mockMovieRepository: IMoviesRepository = mockk()
-  protected val fakePagingData =
+  protected val fakeMoviePagingData =
     PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))
+  protected val fakeTvPagingData =
+    PagingData.from(listOf(tvMediaItem, tvMediaItem, tvMediaItem))
   protected val region = "region"
 
   @get:Rule
