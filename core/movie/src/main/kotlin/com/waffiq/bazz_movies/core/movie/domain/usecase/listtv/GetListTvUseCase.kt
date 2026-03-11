@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv
+package com.waffiq.bazz_movies.core.movie.domain.usecase.listtv
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem

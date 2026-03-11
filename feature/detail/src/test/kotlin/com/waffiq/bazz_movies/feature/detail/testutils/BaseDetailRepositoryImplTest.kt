@@ -36,57 +36,6 @@ abstract class BaseDetailRepositoryImplTest {
   }
 
   /**
-   * Generic test for successful paging data with non-empty results
-   */
-  protected fun testSuccessfulPagingData(
-    mockPagingData: PagingData<MediaResponseItem>,
-    dataSourceCall: suspend () -> Flow<PagingData<MediaResponseItem>>,
-    repositoryCall: suspend () -> Flow<PagingData<MediaItem>>,
-    verifyDataSourceCall: () -> Unit,
-  ) = runTest {
-    coEvery { dataSourceCall() } returns flowOf(mockPagingData)
-
-    repositoryCall().test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      val listMediaItem = differ.snapshot().items
-      assertTrue(listMediaItem.isEmpty().not())
-      job.cancel()
-
-      cancelAndIgnoreRemainingEvents()
-    }
-
-    verifyDataSourceCall()
-  }
-
-  /**
-   * Generic test for successful paging data with empty results
-   */
-  protected fun testEmptyPagingData(
-    dataSourceCall: suspend () -> Flow<PagingData<MediaResponseItem>>,
-    repositoryCall: suspend () -> Flow<PagingData<MediaItem>>,
-    verifyDataSourceCall: () -> Unit,
-  ) = runTest {
-    val emptyPagingData = PagingData.from(emptyList<MediaResponseItem>())
-    coEvery { dataSourceCall() } returns flowOf(emptyPagingData)
-
-    repositoryCall().test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
-
-      assertTrue(differ.snapshot().items.isEmpty())
-      job.cancel()
-
-      cancelAndIgnoreRemainingEvents()
-    }
-
-    verifyDataSourceCall()
-  }
-
-  /**
    * Generic test for paging data with mock/invalid items
    */
   protected fun testPagingDataWithMockItems(

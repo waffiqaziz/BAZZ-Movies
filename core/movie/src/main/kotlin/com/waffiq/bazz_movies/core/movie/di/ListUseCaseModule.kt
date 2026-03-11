@@ -1,9 +1,9 @@
-package com.waffiq.bazz_movies.feature.home.di
+package com.waffiq.bazz_movies.core.movie.di
 
-import com.waffiq.bazz_movies.feature.home.domain.usecase.getListMovie.GetListMoviesInteractor
-import com.waffiq.bazz_movies.feature.home.domain.usecase.getListMovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv.GetListTvInteractor
-import com.waffiq.bazz_movies.feature.home.domain.usecase.getListTv.GetListTvUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesInteractor
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvInteractor
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Suppress("unused")
 @Module
 @InstallIn(ViewModelComponent::class)
-interface HomeUseCaseModule {
+interface ListUseCaseModule {
 
   @Binds
   @ViewModelScoped

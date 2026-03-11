@@ -1,13 +1,12 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.core.domain.WatchlistParams
-import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.favoriteParams
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.postFavoriteWatchlistSuccess
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.watchlistParams
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -19,18 +18,15 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-class PostActionInteractorTest {
+class PostActionInteractorTest : BaseInteractorTest() {
 
-  private val moviesRepository: IMoviesRepository = mockk()
-  private val userRepository: IUserRepository = mockk()
+  private val mockUserRepository: IUserRepository = mockk()
   private lateinit var postActionInteractor: PostActionInteractor
-
-  val response = PostFavoriteWatchlist(201, "success")
 
   @Before
   fun setUp() {
-    postActionInteractor = PostActionInteractor(moviesRepository, userRepository)
-    coEvery { userRepository.getUserPref() } returns
+    postActionInteractor = PostActionInteractor(mockMovieRepository, mockUserRepository)
+    coEvery { mockUserRepository.getUserPref() } returns
       flowOf(
         UserModel(
           userId = 1234,
@@ -48,45 +44,31 @@ class PostActionInteractorTest {
 
   @Test
   fun postFavorite_whenSuccessful_emitsSuccess() = runTest {
-    val data = FavoriteParams(
-      mediaType = MOVIE_MEDIA_TYPE,
-      mediaId = 1234,
-      favorite = true
-    )
-    val response = PostFavoriteWatchlist(200, "success")
+    coEvery { mockMovieRepository.postFavorite(any(), favoriteParams, any()) } returns
+      flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
 
-    coEvery { moviesRepository.postFavorite(any(), data, any()) } returns
-      flowOf(Outcome.Success(response))
-
-    postActionInteractor.postFavoriteWithAuth(data).test {
+    postActionInteractor.postFavoriteWithAuth(favoriteParams).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success
-      assertEquals(response, result.data)
+      assertEquals(postFavoriteWatchlistSuccess, result.data)
       awaitComplete()
     }
-    coVerify { moviesRepository.postFavorite(any(), data, any()) }
+    coVerify { mockMovieRepository.postFavorite(any(), favoriteParams, any()) }
   }
-
 
   @Test
   fun postWatchlist_whenSuccessful_emitsSuccess() = runTest {
-    val data = WatchlistParams(
-      mediaType = MOVIE_MEDIA_TYPE,
-      mediaId = 23456,
-      watchlist = true
-    )
+    coEvery { mockMovieRepository.postWatchlist(any(), watchlistParams, any()) } returns
+      flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
 
-    coEvery { moviesRepository.postWatchlist(any(), data, any()) } returns
-      flowOf(Outcome.Success(response))
-
-    postActionInteractor.postWatchlistWithAuth(data).test {
+    postActionInteractor.postWatchlistWithAuth(watchlistParams).test {
       val result = awaitItem()
       assertTrue(result is Outcome.Success)
       result as Outcome.Success
-      assertEquals(response, result.data)
+      assertEquals(postFavoriteWatchlistSuccess, result.data)
       awaitComplete()
     }
-    coVerify { moviesRepository.postWatchlist(any(), data, any()) }
+    coVerify { mockMovieRepository.postWatchlist(any(), watchlistParams, any()) }
   }
 }
