@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
-import androidx.core.os.bundleOf
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -48,7 +47,9 @@ class FavoriteChildFragment : BaseFavoriteFragment<MediaItem>() {
 
     fun newInstance(mediaType: String) =
       FavoriteChildFragment().apply {
-        arguments = bundleOf(ARG_MEDIA_TYPE to mediaType)
+        arguments = Bundle().apply {
+          putString(ARG_MEDIA_TYPE, mediaType)
+        }
       }
   }
 }
