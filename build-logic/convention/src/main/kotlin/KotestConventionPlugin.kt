@@ -8,19 +8,20 @@ import org.gradle.kotlin.dsl.dependencies
 class KotestConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
-      extensions.configure<LibraryExtension> {
+      pluginManager.withPlugin("com.android.library") {
+        extensions.configure<LibraryExtension> {
 
-        // required for Kotest run with JUnit5
-        // https://kotest.io/docs/5.9.x/quickstart
-        testOptions {
-          unitTests.all {
-            it.useJUnitPlatform()
+          // required for Kotest run with JUnit5
+          // https://kotest.io/docs/5.9.x/quickstart
+          testOptions {
+            unitTests.all {
+              it.useJUnitPlatform()
+            }
           }
         }
-      }
-
-      dependencies {
-        add("testImplementation", libs.findBundle("kotest").get())
+        dependencies {
+          "testImplementation"(libs.findBundle("kotest").get())
+        }
       }
     }
   }
