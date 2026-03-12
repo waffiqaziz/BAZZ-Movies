@@ -274,6 +274,7 @@ bazzmovies-glide = { id = "bazzmovies.glide" }
 bazzmovies-hilt = { id = "bazzmovies.hilt" }
 bazzmovies-hilt-test = { id = "bazzmovies.hilt.test" }
 bazzmovies-jvm-library = { id = "bazzmovies.jvm.library" }
+bazzmovies-kotest = { id = "bazzmovies.kotest" }
 bazzmovies-shared-test = { id = "bazzmovies.shared.test" }
 
 [bundles]

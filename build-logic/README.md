@@ -44,3 +44,4 @@ Current list of convention plugins:
 - [`bazzmovies.hilt.test`](convention/src/main/kotlin/HiltTestConventionPlugin.kt)
 - [`bazzmovies.jvm.library`](convention/src/main/kotlin/JvmLibraryConventionPlugin.kt)
 - [`bazzmovies.test`](convention/src/main/kotlin/SharedTestConventionPlugin.kt)
+- [`bazzmovies.kotest`](convention/src/main/kotlin/KotestConventionPlugin.kt)

@@ -96,5 +96,9 @@ gradlePlugin {
       id = libs.plugins.bazzmovies.shared.test.get().pluginId
       implementationClass = "SharedTestConventionPlugin"
     }
+    register("kotest") {
+      id = libs.plugins.bazzmovies.kotest.get().pluginId
+      implementationClass = "KotestConventionPlugin"
+    }
   }
 }

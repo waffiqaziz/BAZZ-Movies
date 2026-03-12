@@ -1,20 +1,11 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.android.library.kover)
+  alias(libs.plugins.bazzmovies.kotest)
   id("kotlin-parcelize")
 }
 
-android {
-  namespace = "com.waffiq.bazz_movies.feature.favorite"
-
-  // required for Kotest run with JUnit5
-  // https://kotest.io/docs/5.9.x/quickstart
-  testOptions {
-    unitTests.all {
-      it.useJUnitPlatform()
-    }
-  }
-}
+android.namespace = "com.waffiq.bazz_movies.feature.favorite"
 
 dependencies {
   implementation(project(":core:favoritewatchlist"))
@@ -29,7 +20,6 @@ dependencies {
 
   testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.test.core)
-  testImplementation(libs.bundles.kotest)
   testImplementation(libs.androidx.junit.ktx) // used to run robolectric
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockk)
