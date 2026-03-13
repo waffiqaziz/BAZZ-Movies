@@ -21,7 +21,7 @@ env:
 
   ANDROID_PROFILE: Nexus 6
   ANDROID_TARGET: google_apis
-  ANDROID_API_LEVEL: 29
+  ANDROID_API_LEVEL: 31
   ANDROID_ARCH: x86_64
 
 permissions:
@@ -224,7 +224,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-31
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
