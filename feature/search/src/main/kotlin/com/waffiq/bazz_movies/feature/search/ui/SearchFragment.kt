@@ -175,25 +175,19 @@ class SearchFragment : Fragment() {
       .findViewById<ViewGroup>(open_search_view_toolbar)
       .getChildAt(0) as ImageButton
     binding.searchView.addTransitionListener { _, _, newState ->
-      when (newState) {
-        SearchView.TransitionState.SHOWING -> {
-          navIcon.alpha = 0f
-          navIcon.animate()
-            .alpha(1f)
-            .setStartDelay(DELAY_ANIM)
-            .setDuration(ANIM_DURATION)
-            .start()
-        }
-
-        SearchView.TransitionState.HIDING -> {
-          navIcon.animate()
-            .alpha(0f)
-            .setDuration(ANIM_DURATION)
-            .setStartDelay(0)
-            .start()
-        }
-
-        else -> {}
+      if (newState == SearchView.TransitionState.SHOWING) {
+        navIcon.alpha = 0f
+        navIcon.animate()
+          .alpha(1f)
+          .setStartDelay(DELAY_ANIM)
+          .setDuration(ANIM_DURATION)
+          .start()
+      } else if (newState == SearchView.TransitionState.HIDING) {
+        navIcon.animate()
+          .alpha(0f)
+          .setDuration(ANIM_DURATION)
+          .setStartDelay(0)
+          .start()
       }
     }
 
