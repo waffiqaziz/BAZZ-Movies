@@ -27,11 +27,14 @@ import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.R.id.open_search_view_toolbar
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_cross
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_left_icon
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
@@ -147,14 +150,17 @@ class SearchFragment : Fragment() {
   }
 
   private fun setupMaterialSearchView() {
-    // Change back button and close button on search view
-    val toolbar = ViewCompat.requireViewById<MaterialToolbar>(
-      binding.searchView,
-      open_search_view_toolbar,
-    )
-    toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), ic_cross)
-    toolbar.setNavigationIconTint(ContextCompat.getColor(requireContext(), yellow))
+    // set navigation icon with custom left icon
+    binding.searchView.post {
+      val toolbar = ViewCompat.requireViewById<MaterialToolbar>(
+        binding.searchView,
+        open_search_view_toolbar,
+      )
+      toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), ic_left_icon)
+      toolbar.setNavigationIconTint(ContextCompat.getColor(requireContext(), yellow))
+    }
 
+    // set clear icon with custom croll icon
     val clearButton = ViewCompat.requireViewById<ImageButton>(
       binding.searchView,
       open_search_view_clear_button,
@@ -163,6 +169,27 @@ class SearchFragment : Fragment() {
     clearButton.imageTintList = ColorStateList.valueOf(
       ContextCompat.getColor(requireContext(), yellow),
     )
+
+    // set animation on the navigation icon
+    val navIcon = binding.searchView
+      .findViewById<ViewGroup>(open_search_view_toolbar)
+      .getChildAt(0) as ImageButton
+    binding.searchView.addTransitionListener { _, _, newState ->
+      if (newState == SearchView.TransitionState.SHOWING) {
+        navIcon.alpha = 0f
+        navIcon.animate()
+          .alpha(1f)
+          .setStartDelay(DELAY_ANIM)
+          .setDuration(ANIM_DURATION)
+          .start()
+      } else if (newState == SearchView.TransitionState.HIDING) {
+        navIcon.animate()
+          .alpha(0f)
+          .setDuration(ANIM_DURATION)
+          .setStartDelay(0)
+          .start()
+      }
+    }
 
     // Setup SearchView text change listener
     binding.searchView.editText.setOnEditorActionListener { textView, _, _ ->
@@ -324,5 +351,9 @@ class SearchFragment : Fragment() {
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter
+  }
+
+  companion object {
+    const val DELAY_ANIM = 150L
   }
 }

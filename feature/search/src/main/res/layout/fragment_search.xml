@@ -22,6 +22,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="4dp"
       android:layout_marginBottom="8dp"
+      android:backgroundTint="@color/gray_950"
       android:fitsSystemWindows="false"
       android:hint="@string/search_any"
       android:theme="@style/ThemeOverlay.App.SearchBar"
@@ -30,8 +31,7 @@
       app:liftOnScroll="false"
       app:navigationIcon="@drawable/ic_search"
       app:navigationIconTint="@color/yellow"
-      app:subtitleTextColor="@color/white"
-      app:titleTextColor="@color/white" />
+      app:textCentered="true" />
 
   </com.google.android.material.appbar.AppBarLayout>
 
@@ -94,8 +94,8 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/gray_800"
     android:hint="@string/search_any"
-    android:textColorHint="@color/white"
     android:theme="@style/ThemeOverlay.App.SearchView"
+    app:animateNavigationIcon="false"
     app:layout_anchor="@id/search_bar">
 
     <!-- TODO: search suggestion/history use RecyclerView -->
