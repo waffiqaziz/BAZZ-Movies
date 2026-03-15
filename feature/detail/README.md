@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `:feature:detail` module handles displaying detailed information about movies and TV shows. It integrates data retrieval, domain logic, and UI components to present comprehensive content.
+The `:feature:detail` module handles displaying detailed information about movies and TV shows.
 
 ## Structure
 

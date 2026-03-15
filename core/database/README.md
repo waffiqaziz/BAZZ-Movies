@@ -8,7 +8,9 @@
 
 ## Overview
 
-`:core:database` is a module responsible for managing local data persistence using [Room Database](https://developer.android.com/jetpack/androidx/releases/room). It provides a structured and scalable approach to handling local storage while ensuring data integrity and efficient access.
+`:core:database` is a module responsible for managing local data persistence using [Room Database](https://developer.android.com/jetpack/androidx/releases/room). 
+It provides a structured and scalable approach to handling local storage while ensuring data 
+integrity and efficient access.
 
 ## Responsibilities
 
@@ -72,7 +74,8 @@ class FavoriteViewModel @Inject constructor(
 - **Utilize dependency injection** – Ensures database components are properly managed.
 - **Encapsulate logic in use cases** – Maintains separation of concerns and clean architecture.
 
-This module establishes a robust local storage layer, ensuring data persistence and offline capabilities for the application.
+This module establishes a robust local storage layer, ensuring data persistence and offline 
+capabilities for the application.
 
 <!-- LINK -->
 

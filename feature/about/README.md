@@ -8,7 +8,9 @@
 
 ## Overview
 
-`:feature:about` is a standalone feature module responsible for displaying information about the application. It provides a simple UI screen that presents details such as information about the app, developer information, and other relevant content.
+`:feature:about` is a standalone feature module responsible for displaying information about the 
+application. It provides a simple UI screen that presents details such as information about the app,
+developer information, and other relevant content.
 
 ## Structure
 

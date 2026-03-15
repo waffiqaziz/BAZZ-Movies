@@ -8,11 +8,13 @@
 
 ## Overview
 
-`:core:network` is a core module responsible for managing network interactions within the application. It provides a structured and scalable approach to handling API calls, ensuring efficiency, maintainability, and testability.
+`:core:network` is a core module responsible for managing network interactions within the 
+application. It provides a structured and scalable approach to handling API calls, 
+ensuring efficiency, maintainability, and testability.
 
 ## Responsibilities
 
-- **[API Communication](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/retrofit/services/)** – Defines Retrofit services for seamless interaction with external APIs.
+- **[API Communication](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/retrofit/services/)** – Defines Retrofit services for external APIs.
 - **[Remote Data Sources](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/datasource/)** – Encapsulates network request logic, ensuring separation of concerns.
 - **[Interceptors](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/retrofit/interceptors/ApiKeyInterceptor.kt)** – Implements request modification for authentication.
 - **[Response Models](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/responses/)** – Structures API responses into well-defined data models.
@@ -52,7 +54,8 @@ class MovieRepository @Inject constructor(
 - **Ensure proper error handling** – Use sealed classes or `NetworkResult` to standardize responses.
 - **Follow dependency injection principles** – Enables better testability and modularity.
 
-This module establishes a robust and scalable network layer, ensuring clean architecture principles are followed throughout the application.
+This module establishes a robust and scalable network layer, ensuring clean architecture principles
+are followed throughout the application.
 
 <!-- LINK -->
 

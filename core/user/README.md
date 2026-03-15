@@ -8,7 +8,9 @@
 
 ## Overview
 
-`:core:user` is responsible for managing user-related data, authentication, preferences, and account details. It provides a structured way to handle user sessions, authentication, and regional settings.
+`:core:user` is responsible for managing user-related data, authentication, preferences, 
+and account details. It provides a structured way to handle user sessions, authentication, 
+and regional settings.
 
 ## Responsibilities
 
@@ -97,7 +99,8 @@ viewModel.authenticateUser("sessionToken").observe(viewLifecycleOwner) { authSta
 - **Utilize dependency injection** for managing user dependencies efficiently.
 - **Encapsulate business logic in use cases** for maintainability and separation of concerns.
 
-This module provides a scalable and structured way to handle user-related operations, ensuring a seamless authentication and preference management experience for the application.
+This module provides a scalable and structured way to handle user-related operations,
+ensuring a seamless authentication and preference management experience for the application.
 
 <!-- LINK -->
 

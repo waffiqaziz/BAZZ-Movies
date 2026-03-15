@@ -8,7 +8,10 @@
 
 ## Overview
 
-`:core:movie` is responsible as shared managing movie-related data, including fetching movie details, handling repository logic, and implementing domain-specific use cases. This module follows clean architecture principles and integrates repository, use cases, and dependency injection to ensure modularity and testability.
+`:core:movie` is responsible as shared managing movie-related data, including fetching movie 
+details, handling repository logic, and implementing domain-specific use cases. This module follows 
+clean architecture principles and integrates repository, use cases, and dependency injection to 
+ensure modularity and testability.
 
 ## Responsibilities
 
@@ -37,7 +40,8 @@
 
 - **[MovieRepositoryModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/MovieRepositoryModule.kt)** – Provides [`MoviesRepository`](./src/main/kotlin/com/waffiq/bazz_movies/core/movie/data/repository/MoviesRepository.kt) as a dependency.
 
-- **[PostMethodUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/PostMethodUseCaseModule.kt)** – Supplies [`PostMethodUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt) for use in ViewModels and repositories.
+- **[PostMethodUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/PostMethodUseCaseModule.kt)** – Supplies [`PostMethodUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/postmethod/PostMethodUseCase.kt) for use in ViewModels 
+  and repositories.
 
 - **[StatedUseCaseModule](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/di/StatedUseCaseModule.kt)** – Provides [`GetStatedMovieUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedMovieUseCase.kt) and [`GetStatedTvUseCase`](../movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie/domain/usecase/mediastate/GetStatedTvUseCase.kt).
 
@@ -85,7 +89,8 @@ viewModelScope.launch {
 - **Encapsulate business logic in use cases** – Maintain a structured and testable architecture.
 - **Utilize mapper classes** – Convert raw API responses into clean domain models.
 
-This module ensures efficient movie data handling, making it a core component of the application’s media management system.
+This module ensures efficient movie data handling, making it a core component of the application’s 
+media management system.
 
 <!-- LINK -->
 

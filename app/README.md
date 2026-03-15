@@ -73,7 +73,7 @@ snackbarManager.showSnackbarWarning("Something is not working")
 ## Best Practices
 
 - **Use `AppNavigator` to centralize all `Intent` creation and transitions**. This decouples activities from one another and improves testability.
-- **Anchor snackbars to `bottom_navigation`** or other meaningful UI roots via `AppSnackbarManager`.
+- **Anchor SnackBars to `bottom_navigation`** or other meaningful UI roots via `AppSnackbarManager`.
 - **Keep `MainActivity` minimal** and delegate logic to fragments, ViewModels, or modules.
 - **Use Hilt modules (`NavigatorModule`, `SnackbarModule`)** to inject app-wide utilities cleanly.
 

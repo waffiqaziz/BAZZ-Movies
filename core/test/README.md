@@ -21,18 +21,14 @@ configurations for unit and instrumentation tests across multiple modules.
     Sets a `TestDispatcher` for coroutine-based tests.
   - [`MainDispatcherRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/MainDispatcherRule.kt) –
     Configures the main dispatcher for coroutine tests.
+  - [`PagingDataHelperTest`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingDataHelperTest.kt) –
+    Uses as helper to test [paging data](https://developer.android.com/reference/kotlin/androidx/paging/PagingData).
+    inside repository testing.  
+  - - [`PagingFlowHelperTest`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingFlowHelperTest.kt) –
+    Uses as helper to test [paging data](https://developer.android.com/reference/kotlin/androidx/paging/PagingData).
+    inside use case testing.
   - [`UnconfinedDispatcherRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/UnconfinedDispatcherRule.kt) –
     Uses an `UnconfinedTestDispatcher` for immediate coroutine execution.
-
-- **[Paging Test Helpers](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingDataHelperTest.kt)**
-  - `TestListCallback` – A no-op `ListUpdateCallback` for RecyclerView updates.
-  - `TestDiffCallback<T>` – A generic `DiffUtil.ItemCallback` for paging data tests.
-  - `differ()` – Creates a ready-to-use `AsyncPagingDataDiffer` for testing `PagingData`
-
-- **[Repository Test Helpers](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/RepositoryTestHelper.kt)**
-  - `testSuccessfulCall()` – Verifies success flow: loading → success + mapped data.
-  - `testUnsuccessfulCall()` – Verifies error flow and message propagation.
-  - `testLoadingState()` – Verifies repository emits `Outcome.Loading`.
 
 ## Integration
 

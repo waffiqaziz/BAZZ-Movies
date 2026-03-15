@@ -8,13 +8,15 @@
 
 ## Overview
 
-`:feature:home` is responsible for displaying the main home screen of the application. It features different sections such as trending movies, TV series, and featured content. This module follows a clean architecture approach, ensuring modularity, maintainability, and testability.
+`:feature:home` is responsible for displaying the main home screen of the application. 
+It features different sections such as trending movies, TV series, and featured content.
 
 ## Structure
 
 ### Data Layer
 
-- **[HomeRepositoryImpl](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/data/repository/HomeRepositoryImpl.kt)** – Implements [`IHomeRepository`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt), handling data fetching and caching mechanisms.
+- **[HomeRepositoryImpl](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/data/repository/HomeRepositoryImpl.kt)** 
+  – Implements [`IHomeRepository`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt), handling data fetching and caching mechanisms.
 
 ### Dependency Injection
 
@@ -24,7 +26,8 @@
 ### Domain Layer
 
 - **Repository Interface**
-  - **[IHomeRepository](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt)** – Defines the contract for data operations related to movies and TV shows.
+  - **[IHomeRepository](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt)**
+    – Defines the contract for data operations related to movies and TV shows.
 - **Use Cases** – Encapsulate business logic for fetching and processing home screen data.
   - **[GetListMoviesUseCase](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/usecase/getListMovie/GetListMoviesUseCase.kt)** – Retrieves a list of movies.
   - **[GetListTvUseCase](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/usecase/getListTv/GetListTvUseCase.kt)** – Retrieves a list of TV shows.

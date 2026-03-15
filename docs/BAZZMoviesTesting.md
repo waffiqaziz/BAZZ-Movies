@@ -6,7 +6,7 @@ via [CI (GitHub Action)](../.github/workflows/android_test.yml).
 
 ## Test Frameworks
 
-- [JUnit4](https://github.com/junit-team/junit4) → The main test framework used across the project
+- [JUnit4](https://github.com/junit-team/junit4) → Main test framework used across the project
   for both unit tests and instrumentation tests.
 - [Kotest](https://github.com/kotest/kotest) → Currently being explored for more expressive testing.
   For now, it is only adopted in unit tests within the [`:feature:favorite`](../feature/favorite)
@@ -41,18 +41,16 @@ coroutines, and assertions.
 
 ## Test Naming Convention
 
-We stick to the **`method_whenCondition_expected`** style for naming tests. It follows Kotlin’s *
-*camelCase**
-method style, with underscores (`_`) as separators.
+### Junit Testing
 
-This format makes each test’s purpose clear at a glance by showing **what is being tested**,
-**under which condition**, and **the expected outcome**.
+For main test we stick to the **`method_whenCondition_expected`** style for naming tests. 
+It follows Kotlin’s **camelCase** method style, with underscores (`_`) as separators.
 
-Why this matters?
+Purpose:
 
 - Makes the purpose of each test obvious
-- Keeps things consistent across the whole suite
-- Groups related tests together, so they’re easier to find
+- Keeps  consistent across the whole suite
+- Groups related tests together, so they’re easier to find especially for test coverage
 - Acts like documentation, no need to open the test body to know what it does
 
 The structure is defined as:
@@ -61,9 +59,9 @@ The structure is defined as:
 - **`whenCondition`** → the specific scenario or input being applied
 - **`expected`** → the result or behavior expected under that condition
 
-### Examples
+#### Examples
 
-#### ✅ Do
+##### ✅ Do
 
 ```kotlin
 loadInitialPage_whenApiCallSucceeds_returnCorrectPage()
@@ -73,7 +71,7 @@ logout_whenSessionExpired_clearUserSession()
 dataResponse_withCorrectValues_setsPropertiesCorrectly()
 ```
 
-#### ❌ Don't
+##### ❌ Don't
 
 ```kotlin
 test1()
@@ -83,6 +81,11 @@ shouldWork()
 
 > [!NOTE]
 > Stick to descriptive and consistent naming across all tests (unit and instrumentation).
+
+
+### Kotest Testing
+
+As for kotest, we use Behavior-Driven Development (BDD) style, see [here](https://kotest.io/docs/framework/testing-styles.html#behavior-spec).
 
 ## Module-Level Coverage
 
@@ -125,8 +128,8 @@ Run all unit tests with the following command:
 ./gradlew test
 ```
 
-Results will be shown in the console, or you can view them in a more readable format at
-`build/reports/tests/testDebugUnitTest/index.html`
+Results will be shown in the console, or you can view them in a more readable format at every module
+`**/build/reports/tests/testDebugUnitTest/index.html`
 
 ## Instrumentation Tests
 
@@ -210,7 +213,9 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
 > Kotlinx Kover coverage is currently enabled only for the [`:feature:favorite`](../feature/favorite/)
 > as an alternative coverage tool for Kotlin.
 >
-> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES],
+> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES], 
+> see also here https://github.com/Kotlin/kotlinx-kover/issues/96
+> 
 > **JaCoCo remains the primary coverage tool** due to its broader compatibility.
 
 ### Generating Kover Report for feature:favorite module
@@ -266,151 +271,151 @@ plugins {
 
 [app-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=app
 
-[app-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/app
+[app-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=app
 
 [core-common-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/common
 
 [core-common-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-common
 
-[core-common-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/common/src/main/kotlin/com/waffiq/bazz_movies/core/common
+[core-common-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-common
 
 [core-coroutines-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/coroutines
 
 [core-coroutines-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-coroutines
 
-[core-coroutines-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/coroutines/src/main/kotlin/com/waffiq/bazz_movies/core/coroutines
+[core-coroutines-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-coroutines
 
 [core-data-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/data
 
 [core-data-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-data
 
-[core-data-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/data/src/main/kotlin/com/waffiq/bazz_movies/core/data
+[core-data-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-data
 
 [core-database-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/database
 
 [core-database-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-database
 
-[core-database-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/database/src/main/kotlin/com/waffiq/bazz_movies/core/database
+[core-database-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-database
 
 [core-designsystem-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/designsystem
 
 [core-designsystem-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-designsystem
 
-[core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/designsystem/src/main/kotlin/com/waffiq/bazz_movies/core/designsystem
+[core-designsystem-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-designsystem
 
 [core-domain-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/domain
 
 [core-domain-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-domain
 
-[core-domain-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/domain/src/main/kotlin/com/waffiq/bazz_movies/core/domain
+[core-domain-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-domain
 
 [core-favoritewatchlist-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist
 
 [core-favoritewatchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-favoritewatchlist
 
-[core-favoritewatchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/favoritewatchlist/src/main/kotlin/com/waffiq/bazz_movies/core/favoritewatchlist
+[core-favoritewatchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-favoritewatchlist
 
 [core-instrumentationtest-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/instrumentationtest
 
 [core-instrumentationtest-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-instrumentationtest
 
-[core-instrumentationtest-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/instrumentationtest/src/main/kotlin/com/waffiq/bazz_movies/core/instrumentationtest
+[core-instrumentationtest-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-instrumentationtest
 
 [core-mappers-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/mappers
 
 [core-mappers-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mappers
 
-[core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/mappers/src/main/kotlin/com/waffiq/bazz_movies/core/mappers
+[core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-mappers
 
 [core-movie-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/movie
 
 [core-movie-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-movie
 
-[core-movie-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/movie/src/main/kotlin/com/waffiq/bazz_movies/core/movie
+[core-movie-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-movie
 
 [core-network-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/network
 
 [core-network-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-network
 
-[core-network-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/network/src/main/kotlin/com/waffiq/bazz_movies/core/network
+[core-network-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-network
 
 [core-test-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/test
 
 [core-test-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-test
 
-[core-test-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/test/src/main/kotlin/com/waffiq/bazz_movies/core/test
+[core-test-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-test
 
 [core-uihelper-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/uihelper
 
 [core-uihelper-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-uihelper
 
-[core-uihelper-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper
+[core-uihelper-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-uihelper
 
 [core-user-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/user
 
 [core-user-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-user
 
-[core-user-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/user/src/main/kotlin/com/waffiq/bazz_movies/core/user
+[core-user-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-user
 
 [core-utils-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/utils
 
 [core-utils-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-utils
 
-[core-utils-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/core/utils/src/main/kotlin/com/waffiq/bazz_movies/core/utils
+[core-utils-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-utils
 
 [feature-about-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/about
 
 [feature-about-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-about
 
-[feature-about-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/about/src/main/kotlin/com/waffiq/bazz_movies/feature/about
+[feature-about-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-about
 
 [feature-detail-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/detail
 
 [feature-detail-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-detail
 
-[feature-detail-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail
+[feature-detail-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-detail
 
 [feature-favorite-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/favorite
 
 [feature-favorite-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-favorite
 
-[feature-favorite-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite
+[feature-favorite-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-favorite
 
 [feature-home-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/home
 
 [feature-home-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-home
 
-[feature-home-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/home/src/main/kotlin/com/waffiq/bazz_movies/feature/home
+[feature-home-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-home
 
 [feature-login-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/login
 
 [feature-login-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-login
 
-[feature-login-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/login/src/main/kotlin/com/waffiq/bazz_movies/feature/login
+[feature-login-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-login
 
 [feature-more-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/more
 
 [feature-more-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-more
 
-[feature-more-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/more/src/main/kotlin/com/waffiq/bazz_movies/feature/more
+[feature-more-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-more
 
 [feature-person-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/person
 
 [feature-person-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-person
 
-[feature-person-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/person/src/main/kotlin/com/waffiq/bazz_movies/feature/person
+[feature-person-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-person
 
 [feature-search-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/search
 
 [feature-search-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-search
 
-[feature-search-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/search/src/main/kotlin/com/waffiq/bazz_movies/feature/search
+[feature-search-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-search
 
 [feature-watchlist-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist
 
 [feature-watchlist-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-watchlist
 
-[feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main/feature/watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist
+[feature-watchlist-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-watchlist
 
 [CODECOV]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies
 

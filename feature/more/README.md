@@ -8,7 +8,9 @@
 
 ## Overview
 
-`:feature:more` is responsible for displaying additional options and settings within the application. It provides a user interface where users can access various app-related features beyond the core functionalities.
+`:feature:more` is responsible for displaying additional options and settings within the application. 
+It provides a user interface where users can access various app-related features beyond the core
+functionalities.
 
 ## Structure
 
