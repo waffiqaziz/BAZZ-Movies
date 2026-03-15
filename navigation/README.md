@@ -6,13 +6,16 @@
 
 ## Overview  
 
-`:navigation` is a core module responsible for handling app navigation in a structured and centralized manner. It abstracts navigation logic, ensuring modularity, maintainability, and consistency across different app components.  
+`:navigation` is a core module responsible for handling app navigation in a structured and
+centralized manner. It abstracts navigation logic, ensuring modularity, maintainability, and 
+consistency across different app components.  
 
 ## Responsibilities  
 
 - **Navigation Interface** ([`INavigator`](../navigation/src/main/kotlin/com/waffiq/bazz_movies/navigation/INavigator.kt))  
   - Defines a contract for navigation between activities and screens.  
-  - Provides an abstraction layer, enabling easy replacement or modification of navigation implementations.  
+  - Provides an abstraction layer, enabling easy replacement or modification of navigation
+    implementations.  
 
 ### Navigation Methods  
 
@@ -35,7 +38,7 @@ dependencies {
 
 ## Example Usage  
 
-To navigate to the details screen, inject the `INavigator` implementation and call the appropriate method:  
+To navigate to the details screen, inject the `INavigator` implementation and call the method:  
 
 ```kotlin
 class MovieAdapter(private val navigator: INavigator) {

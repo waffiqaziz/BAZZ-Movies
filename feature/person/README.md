@@ -8,13 +8,15 @@
 
 ## Overview
 
-`:feature:person` module handles the functionality related to retrieving and displaying detailed information about actor or actresss, including their credits, images, and social media.
+`:feature:person` module handles the functionality related to retrieving and displaying detailed
+information about actor or actress, including their credits, images, and social media.
 
 ## Structure
 
 ### Data Layer
 
-- **[PersonRepositoryImpl](../person/src/main/kotlin/com/waffiq/bazz_movies/feature/person/data/repository/PersonRepositoryImpl.kt)** – Implements [`IPersonRepository`](./src/main/kotlin/com/waffiq/bazz_movies/feature/person/domain/repository/IPersonRepository.kt) to fetch person-related data from the API.
+- **[PersonRepositoryImpl](../person/src/main/kotlin/com/waffiq/bazz_movies/feature/person/data/repository/PersonRepositoryImpl.kt)**
+  – Implements [`IPersonRepository`](./src/main/kotlin/com/waffiq/bazz_movies/feature/person/domain/repository/IPersonRepository.kt) to fetch person-related data from the API.
 
 ### Dependency Injection (DI)
 

@@ -8,7 +8,9 @@
 
 ## Overview
 
-`:core:utils` is a utility module that provides various helper classes and functions to streamline common operations across the application. It contains reusable components that enhance code efficiency and maintainability.
+`:core:utils` is a utility module that provides various helper classes and functions to streamline
+common operations across the application. It contains reusable components that enhance code 
+efficiency and maintainability.
 
 ## Responsibilities
 
@@ -76,7 +78,8 @@ val genreName = GenreHelper.getGenreName(28) // Returns "Action"
 - **Ensure thread safety** when working with Flow and data transformations.
 - **Keep utilities modular** and avoid business logic in helper classes.
 
-This module serves as a central place for shared utility functions, improving maintainability and code reuse across the application.
+This module serves as a central place for shared utility functions, improving maintainability 
+and code reuse across the application.
 
 <!-- LINK -->
 

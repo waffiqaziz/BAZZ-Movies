@@ -1,11 +1,11 @@
 # Overview
 
 Modularization is the practice of breaking the concept of a monolithic, one-module codebase into
-loosely coupled, self contained modules.
+loosely coupled, self-contained modules.
 
 ## Benefits of modularization
 
-We use this approach because of this offers many benefits, including:
+We use this approach because of these offers many benefits, including:
 <table>
   <tr>
     <th>Aspect</th>
@@ -67,7 +67,7 @@ module for each of them. Each feature module has pattern like below:
       - **Data Source**: Write about Local(Room..), Remote(Retrofit..) etc.
       - **Repository(implements)**: Write an implementation of the repository interface of the Domain Layer. Write a code to communicate with Remote.
       - **Data Model**: Create a DTO to be used in the Repository
-      - **Mapper**: A class that converts the Data Model to an Domain Model.
+      - **Mapper**: A class that converts the Data Model to a Domain Model.
 
 2. **Domain Layer**
    - Consists purely of Kotlin code and has no dependencies on other layers or Android. Usecase and Repository interface, Domain Model exist.

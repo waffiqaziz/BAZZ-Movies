@@ -8,13 +8,15 @@
 
 ## Overview
 
-`:feature:search` is responsible for handling search functionality within the application. It allows users to search for movies, TV shows, and actors/actresses using multi-search feature. This module follows a clean architecture approach to maintain separation of concerns and modularity.
+`:feature:search` is responsible for handling search functionality within the application. 
+It allows users to search for movies, TV shows, and actors/actresses using multi-search feature.
 
 ## Structure
 
 ### Data Layer
 
-- **[SearchRepositoryImpl](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/data/repository/SearchRepositoryImpl.kt)** – Implements [`ISearchRepository`](./src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/repository/ISearchRepository.kt) to fetch and process search results.
+- **[SearchRepositoryImpl](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/data/repository/SearchRepositoryImpl.kt)** – Implements [`ISearchRepository`](./src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/repository/ISearchRepository.kt)
+  to fetch and process search results.
 
 ### Dependency Injection
 
@@ -24,9 +26,11 @@
 ### Domain Layer
 
 - **Repository Interface**
-  - **[ISearchRepository](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/repository/ISearchRepository.kt)** – Defines the contract for fetching search results.
+  - **[ISearchRepository](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/repository/ISearchRepository.kt)**
+    – Defines the contract for fetching search results.
 - **Use Cases**
-  - **[MultiSearchUseCase](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/usecase/MultiSearchUseCase.kt)** – Retrieves combined search results for movies, TV shows, and people.
+  - **[MultiSearchUseCase](../search/src/main/kotlin/com/waffiq/bazz_movies/feature/search/domain/usecase/MultiSearchUseCase.kt)**
+    – Retrieves combined search results for movies, TV shows, and people.
 
 ### UI Layer
 

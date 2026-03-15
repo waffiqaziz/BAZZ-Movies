@@ -43,7 +43,7 @@ dependencies {
 ```
 
 Then declare `HiltTestActivity` in `androidTest` manifest (`src/androidTest/AndroidManifest.xml`)
-like so:
+like:
 
 ```xml
 
@@ -60,7 +60,7 @@ like so:
 ```kotlin
 @Test
 fun someFragmentTest() {
-  launchFragmentInHiltContainer<MyFragment> {
+  launchFragmentInHiltContainer<SearchFragment> {
     // perform assertions or interactions here
   }
 }

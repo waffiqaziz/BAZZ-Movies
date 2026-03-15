@@ -8,7 +8,7 @@
 
 ## Overview
 
-`:core:common` is a utility module that provides shared constants and helper classes. It ensures consistency and avoids redundancy by centralizing commonly used values and event-handling mechanisms.
+`:core:common` is a utility module that provides shared constants. It ensures consistency and avoids redundancy by centralizing commonly used values and event-handling mechanisms.
 
 ## Responsibilities
 

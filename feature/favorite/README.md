@@ -8,13 +8,16 @@
 
 ## Overview
 
-`:feature:favorite` module handles the functionality for managing users' favorite movies and TV shows. It provides UI components and business logic to retrieve, display, and manage the user's saved favorites.
+`:feature:favorite` module handles the functionality for managing users' favorite movies and
+TV shows. It provides UI components and business logic to retrieve, display, and manage the user's
+saved favorites.
 
 ## Structure
 
 ### Data Layer
 
-- **[FavoriteRepositoryImpl](../favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite/data/repository/FavoriteRepositoryImpl.kt)** – Implements the repository interface to fetch and store favorite item.
+- **[FavoriteRepositoryImpl](../favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite/data/repository/FavoriteRepositoryImpl.kt)**
+  – Implements the repository interface to fetch and store favorite item.
 
 ### Dependency Injection
 
