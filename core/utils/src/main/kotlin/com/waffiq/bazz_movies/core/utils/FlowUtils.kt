@@ -16,20 +16,13 @@ import kotlinx.coroutines.launch
  */
 object FlowUtils {
 
-  /**
-   * Collects paging data from a provided Flow and submits it to a PagingDataAdapter.
-   * This function automatically handles lifecycle states, ensuring that data is collected and
-   * submitted when the Fragment's view lifecycle is in the CREATED state.
-   */
   fun <T : Any> collectAndSubmitData(
     fragment: Fragment,
     flowProvider: () -> Flow<PagingData<T>>,
     adapter: PagingDataAdapter<T, *>,
   ) {
     fragment.viewLifecycleOwner.lifecycleScope.launch {
-      fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-        // NOTE: collectLatest may not show coverage in JaCoCo due to suspend lambda bytecode,
-        // but is functionally tested and required for correct Paging behavior.
+      fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         flowProvider().collectLatest { pagingData ->
           adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
         }

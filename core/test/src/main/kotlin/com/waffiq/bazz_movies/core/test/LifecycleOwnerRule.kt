@@ -15,7 +15,7 @@ class LifecycleOwnerRule : TestWatcher() {
   val lifecycleRegistry by lazy { LifecycleRegistry(lifecycleOwner) }
 
   override fun starting(description: Description?) {
-    lifecycleRegistry.currentState = Lifecycle.State.CREATED
+    lifecycleRegistry.currentState = Lifecycle.State.STARTED
   }
 
   override fun finished(description: Description?) {

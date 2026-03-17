@@ -87,9 +87,7 @@ class MediaDetailActivityLoadStateTest :
           )
         )
       }
-
-      onView(withId(tv_recommendation_header)).check(matches(not(isDisplayed())))
-      onView(withId(rv_recommendation)).check(matches(not(isDisplayed())))
+      checkRecommendation(false)
     }
   }
 
@@ -103,9 +101,7 @@ class MediaDetailActivityLoadStateTest :
           )
         )
       }
-      onView(withId(rv_recommendation)).perform(scrollTo())
-      onView(withId(tv_recommendation_header)).check(matches(isDisplayed()))
-      onView(withId(rv_recommendation)).check(matches(isDisplayed()))
+      checkRecommendation(true)
     }
   }
 
@@ -119,10 +115,7 @@ class MediaDetailActivityLoadStateTest :
           )
         )
       }
-
-      onView(withId(rv_recommendation)).perform(scrollTo())
-      onView(withId(tv_recommendation_header)).check(matches(isDisplayed()))
-      onView(withId(rv_recommendation)).check(matches(isDisplayed()))
+      checkRecommendation(true)
     }
   }
 
@@ -153,9 +146,7 @@ class MediaDetailActivityLoadStateTest :
           )
         )
       }
-
-      onView(withId(tv_recommendation_header)).check(matches(not(isDisplayed())))
-      onView(withId(rv_recommendation)).check(matches(not(isDisplayed())))
+      checkRecommendation(false)
     }
   }
 
@@ -187,5 +178,16 @@ class MediaDetailActivityLoadStateTest :
     val listeners = listenersField.get(differ) as CopyOnWriteArrayList<(CombinedLoadStates) -> Unit>
 
     listeners.forEach { it(loadStates) }
+  }
+
+  private fun checkRecommendation(isVisible: Boolean) {
+    if (isVisible) {
+      onView(withId(rv_recommendation)).perform(scrollTo())
+      onView(withId(tv_recommendation_header)).check(matches(isDisplayed()))
+      onView(withId(rv_recommendation)).check(matches(isDisplayed()))
+    } else {
+      onView(withId(tv_recommendation_header)).check(matches(not(isDisplayed())))
+      onView(withId(rv_recommendation)).check(matches(not(isDisplayed())))
+    }
   }
 }
