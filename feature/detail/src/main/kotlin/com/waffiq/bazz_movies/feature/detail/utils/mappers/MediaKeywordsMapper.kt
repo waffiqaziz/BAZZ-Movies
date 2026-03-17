@@ -81,8 +81,13 @@ object MediaKeywordsMapper {
     )
 
   fun MediaKeywordsItem.toValidKeywordOrNull(): ValidKeywordItem? {
-    val validId = id ?: return null
-    val validName = name.takeUnless { it.isNullOrEmpty() } ?: return null
-    return ValidKeywordItem(id = validId, name = validName)
+    val validId = id
+    val validName = name.takeUnless { it.isNullOrEmpty() }
+
+    return if (validId != null && validName != null) {
+      ValidKeywordItem(id = validId, name = validName)
+    } else {
+      null
+    }
   }
 }
