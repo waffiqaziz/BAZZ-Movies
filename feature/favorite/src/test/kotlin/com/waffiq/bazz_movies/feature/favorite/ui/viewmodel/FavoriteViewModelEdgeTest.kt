@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
+import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistInteractor
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
@@ -21,7 +22,6 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
-import com.waffiq.bazz_movies.feature.favorite.testutils.InstantExecutorExtension
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,10 +31,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
+import javax.annotation.meta.When
 
 class FavoriteViewModelEdgeTest : BehaviorSpec({
 
-  extensions(InstantExecutorExtension)
+  extensions(KotestInstantExecutorExtension)
   val testDispatcher = UnconfinedTestDispatcher()
 
   val movieId = 12345

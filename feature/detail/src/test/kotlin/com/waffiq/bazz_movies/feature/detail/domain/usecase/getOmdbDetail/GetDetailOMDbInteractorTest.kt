@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail
 
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.IMDB_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.omdbDetails
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.IMDB_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetails
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test

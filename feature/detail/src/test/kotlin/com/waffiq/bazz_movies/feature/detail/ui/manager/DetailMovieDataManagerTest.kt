@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.dataMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.dataMediaItem
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.mockk
 import io.mockk.verify

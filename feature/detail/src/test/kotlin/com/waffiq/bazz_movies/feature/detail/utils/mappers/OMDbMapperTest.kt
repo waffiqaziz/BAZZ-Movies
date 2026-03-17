@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.omdbDetailsResponse
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetailsResponse
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.OMDbMapper.toOMDbDetails
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

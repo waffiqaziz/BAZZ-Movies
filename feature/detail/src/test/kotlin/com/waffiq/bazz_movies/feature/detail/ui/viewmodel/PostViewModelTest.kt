@@ -7,11 +7,11 @@ import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddFavoriteStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddWatchlistStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteFavoriteStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteWatchlistStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelAddFavoriteStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelAddWatchlistStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDeleteFavoriteStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDeleteWatchlistStateSuccess
 import com.waffiq.bazz_movies.feature.detail.testutils.PostTestHelper
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -2,11 +2,11 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.TV_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaState
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.tvMediaState
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaState
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvMediaState
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

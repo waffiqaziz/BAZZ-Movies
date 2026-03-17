@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesIte
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDatesItem
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailMovieResponse
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailMovieResponse
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

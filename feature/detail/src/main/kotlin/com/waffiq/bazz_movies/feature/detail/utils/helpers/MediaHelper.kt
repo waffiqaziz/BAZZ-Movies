@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import android.view.KeyEvent
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 
 /**
@@ -66,4 +67,7 @@ object MediaHelper {
 
   fun isBackReleased(keyCode: Int, action: Int): Boolean =
     keyCode == KeyEvent.KEYCODE_BACK && action == KeyEvent.ACTION_UP
+
+  fun getListOfKeywords(list: List<MediaKeywordsItem?>?) =
+    list?.filter { it?.id != null && !it.name.isNullOrEmpty() }
 }

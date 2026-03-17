@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.tv
 
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.tvDetailFull
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvDetailFull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull

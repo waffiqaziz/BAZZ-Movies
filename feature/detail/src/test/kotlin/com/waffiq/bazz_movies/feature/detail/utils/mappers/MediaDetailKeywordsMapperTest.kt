@@ -2,12 +2,12 @@ package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
 import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.fullMovieDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.fullTvDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockKeywordsItems
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockMediaKeywords
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockReleaseDateRegion
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockTvExternalIds
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaDetail
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -22,14 +22,14 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_idNonNull_returnsActualId() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals(1, result.id)
   }
 
   @Test
   fun tvDetail_idNull_returnsZero() {
     val result =
-      fullTvDetail.copy(id = null).toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      fullTvDetail.copy(id = null).toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals(0, result.id)
   }
 
@@ -37,20 +37,20 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_externalIdsNonNull_returnsImdbId() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("tt1234567", result.imdbId)
   }
 
   @Test
   fun tvDetail_externalIdsNull_returnsEmptyImdbId() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, externalIds = null)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, externalIds = null)
     assertEquals("", result.imdbId)
   }
 
   @Test
   fun tvDetail_externalIdsImdbIdNull_returnsEmptyImdbId() {
-    val externalIdsWithNullImdb = mockTvExternalIds.copy(imdbId = null)
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, externalIdsWithNullImdb)
+    val externalIdsWithNullImdb = tvExternalIds.copy(imdbId = null)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, externalIdsWithNullImdb)
     assertEquals("", result.imdbId)
   }
 
@@ -58,21 +58,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_mediaKeywordsNonNull_returnsKeywords() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
-    assertEquals(mockKeywordsItems, result.keywords)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
+    assertEquals(mediaKeywordsItems, result.keywords)
   }
 
   @Test
   fun tvDetail_mediaKeywordsNull_returnsNullKeywords() {
     val result =
-      fullTvDetail.toMediaDetail("US", mediaKeywords = null, externalIds = mockTvExternalIds)
+      fullTvDetail.toMediaDetail("US", mediaKeywords = null, externalIds = tvExternalIds)
     assertNull(result.keywords)
   }
 
   @Test
   fun tvDetail_mediaKeywordsWithNullKeywordsList_returnsNull() {
     val keywordsWithNullList = MediaKeywords(id = 100, keywords = null)
-    val result = fullTvDetail.toMediaDetail("US", keywordsWithNullList, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", keywordsWithNullList, tvExternalIds)
     assertNull(result.keywords)
   }
 
@@ -80,21 +80,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_voteAveragePositive_returnsTmdbScore() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("7.5", result.tmdbScore)
   }
 
   @Test
   fun tvDetail_voteAverageZero_returnsNullTmdbScore() {
     val result =
-      fullTvDetail.copy(voteAverage = 0.0).toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      fullTvDetail.copy(voteAverage = 0.0).toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertNull(result.tmdbScore)
   }
 
   @Test
   fun tvDetail_voteAverageNull_returnsNullTmdbScore() {
     val result = fullTvDetail.copy(voteAverage = null)
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertNull(result.tmdbScore)
   }
 
@@ -102,7 +102,7 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_genresValidList_returnsGenreString() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("Action, Comedy", result.genre)
     assertEquals(listOf(1, 2), result.genreId)
   }
@@ -110,7 +110,7 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun tvDetail_genresNull_returnsNullGenre() {
     val result =
-      fullTvDetail.copy(listGenres = null).toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      fullTvDetail.copy(listGenres = null).toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertNull(result.genre)
     assertNull(result.genreId)
   }
@@ -118,7 +118,7 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun tvDetail_genresEmpty_returnsNullGenre() {
     val result = fullTvDetail.copy(listGenres = emptyList())
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertNull(result.genre)
     assertEquals(emptyList<Int>(), result.genreId)
   }
@@ -127,7 +127,7 @@ class MediaDetailKeywordsMapperTest {
   fun tvDetail_genresWithNullItem_nullItemIsSkippedInGenreString() {
     val genresWithNull = listOf(GenresItem(id = 1, name = "Action"), null)
     val result = fullTvDetail.copy(listGenres = genresWithNull)
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("Action", result.genre)
     assertEquals(listOf(1, 0), result.genreId) // null item id elvis to 0
   }
@@ -137,21 +137,21 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun tvDetail_languageKnownCode_returnsLanguageName() {
     val result = fullTvDetail.copy(originalLanguage = "de")
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("German", result.language)
   }
 
   @Test
   fun tvDetail_languageUnknownCode_returnsEmpty() {
     val result = fullTvDetail.copy(originalLanguage = "xx")
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("No Language", result.language)
   }
 
   @Test
   fun tvDetail_languageNull_returnsEmpty() {
     val result = fullTvDetail.copy(originalLanguage = null)
-      .toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      .toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("", result.language)
   }
 
@@ -159,7 +159,7 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_budgetAndRevenue_alwaysReturnDash() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("-", result.budget)
     assertEquals("-", result.revenue)
   }
@@ -168,14 +168,14 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun tvDetail_statusNonNull_returnsStatus() {
-    val result = fullTvDetail.toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+    val result = fullTvDetail.toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertEquals("Returning Series", result.status)
   }
 
   @Test
   fun tvDetail_statusNull_returnsNull() {
     val result =
-      fullTvDetail.copy(status = null).toMediaDetail("US", mockMediaKeywords, mockTvExternalIds)
+      fullTvDetail.copy(status = null).toMediaDetail("US", mediaKeywords, tvExternalIds)
     assertNull(result.status)
   }
 
@@ -186,14 +186,14 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_idNonNull_returnsActualId() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals(1, result.id)
   }
 
   @Test
   fun movieDetail_idNull_returnsZero() {
     val result =
-      fullMovieDetail.copy(id = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(id = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals(0, result.id)
   }
 
@@ -201,20 +201,20 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_mediaKeywordsNonNull_returnsKeywords() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
-    assertEquals(mockKeywordsItems, result.keywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
+    assertEquals(mediaKeywordsItems, result.keywords)
   }
 
   @Test
   fun movieDetail_mediaKeywordsNull_returnsNullKeywords() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mediaKeywords = null)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords = null)
     assertNull(result.keywords)
   }
 
   @Test
   fun movieDetail_mediaKeywordsWithNullKeywordsList_returnsNull() {
     val keywordsWithNullList = MediaKeywords(id = 100, keywords = null)
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, keywordsWithNullList)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, keywordsWithNullList)
     assertNull(result.keywords)
   }
 
@@ -222,21 +222,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_runtimeValid_returnsDuration() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNotNull(result.duration) // e.g. "2h 0m" depending on convertRuntime
   }
 
   @Test
   fun movieDetail_runtimeZero_returnsNullDuration() {
     val result =
-      fullMovieDetail.copy(runtime = 0).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(runtime = 0).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.duration)
   }
 
   @Test
   fun movieDetail_runtimeNull_returnsNullDuration() {
     val result =
-      fullMovieDetail.copy(runtime = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(runtime = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.duration)
   }
 
@@ -244,21 +244,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_budgetValid_returnsFormattedUsd() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("$1,000,000.00", result.budget)
   }
 
   @Test
   fun movieDetail_budgetZero_returnsDash() {
     val result =
-      fullMovieDetail.copy(budget = 0).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(budget = 0).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("-", result.budget)
   }
 
   @Test
   fun movieDetail_budgetNull_returnsDash() {
     val result =
-      fullMovieDetail.copy(budget = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(budget = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("-", result.budget)
   }
 
@@ -266,21 +266,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_revenueValid_returnsFormattedUsd() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("$5,000,000.00", result.revenue)
   }
 
   @Test
   fun movieDetail_revenueZero_returnsDash() {
     val result =
-      fullMovieDetail.copy(revenue = 0L).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(revenue = 0L).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("-", result.revenue)
   }
 
   @Test
   fun movieDetail_revenueNull_returnsDash() {
     val result =
-      fullMovieDetail.copy(revenue = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(revenue = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("-", result.revenue)
   }
 
@@ -288,21 +288,21 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_voteAveragePositive_returnsTmdbScore() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("8.0", result.tmdbScore)
   }
 
   @Test
   fun movieDetail_voteAverageZero_returnsNullTmdbScore() {
     val result = fullMovieDetail.copy(voteAverage = 0.0)
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.tmdbScore)
   }
 
   @Test
   fun movieDetail_voteAverageNull_returnsNullTmdbScore() {
     val result = fullMovieDetail.copy(voteAverage = null)
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.tmdbScore)
   }
 
@@ -310,7 +310,7 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_genresValidList_returnsGenreString() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("Action, Comedy", result.genre)
     assertEquals(listOf(1, 2), result.genreId)
   }
@@ -318,7 +318,7 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun movieDetail_genresNull_returnsNullGenre() {
     val result = fullMovieDetail.copy(listGenres = null)
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.genre)
     assertNull(result.genreId)
   }
@@ -326,7 +326,7 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun movieDetail_genresEmpty_returnsNullGenre() {
     val result = fullMovieDetail.copy(listGenres = emptyList())
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.genre)
     assertEquals(emptyList<Int>(), result.genreId)
   }
@@ -335,7 +335,7 @@ class MediaDetailKeywordsMapperTest {
   fun movieDetail_genresWithNullItem_nullItemIsSkippedInGenreString() {
     val genresWithNull = listOf(GenresItem(id = 2, name = "Comedy"), null)
     val result = fullMovieDetail.copy(listGenres = genresWithNull)
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("Comedy", result.genre)
     assertEquals(listOf(2, 0), result.genreId) // null item id elvis to 0
   }
@@ -345,21 +345,21 @@ class MediaDetailKeywordsMapperTest {
   @Test
   fun movieDetail_languageKnownCode_returnsLanguageName() {
     val result = fullMovieDetail.copy(originalLanguage = "cs")
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("Czech", result.language)
   }
 
   @Test
   fun movieDetail_languageUnknownCode_returnsEmpty() {
     val result = fullMovieDetail.copy(originalLanguage = "zz")
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("", result.language)
   }
 
   @Test
   fun movieDetail_languageNull_returnsEmpty() {
     val result = fullMovieDetail.copy(originalLanguage = null)
-      .toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      .toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("", result.language)
   }
 
@@ -367,14 +367,14 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_imdbIdNonNull_returnsImdbId() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("tt9999999", result.imdbId)
   }
 
   @Test
   fun movieDetail_imdbIdNull_returnsNull() {
     val result =
-      fullMovieDetail.copy(imdbId = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(imdbId = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.imdbId)
   }
 
@@ -382,14 +382,14 @@ class MediaDetailKeywordsMapperTest {
 
   @Test
   fun movieDetail_statusNonNull_returnsStatus() {
-    val result = fullMovieDetail.toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+    val result = fullMovieDetail.toMediaDetail(releaseDateRegion, mediaKeywords)
     assertEquals("Released", result.status)
   }
 
   @Test
   fun movieDetail_statusNull_returnsNull() {
     val result =
-      fullMovieDetail.copy(status = null).toMediaDetail(mockReleaseDateRegion, mockMediaKeywords)
+      fullMovieDetail.copy(status = null).toMediaDetail(releaseDateRegion, mediaKeywords)
     assertNull(result.status)
   }
 

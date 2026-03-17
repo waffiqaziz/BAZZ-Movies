@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTv
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import org.junit.Assert.assertEquals
 import org.junit.Test

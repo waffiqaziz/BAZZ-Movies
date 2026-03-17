@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

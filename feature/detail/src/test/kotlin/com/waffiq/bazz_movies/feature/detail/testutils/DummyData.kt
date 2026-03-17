@@ -27,12 +27,10 @@ import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreToJoinStr
 import com.waffiq.bazz_movies.core.utils.GenreHelper.transformToGenreIDs
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCompaniesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.ProductionCountriesItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.SpokenLanguagesItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
@@ -50,6 +48,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.tv.NetworksItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.SeasonsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.AgeRatingHelper.getAgeRating
@@ -58,7 +58,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransf
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 
 // Used as data dumb testing
-object HelperTest {
+object DummyData {
 
   const val IMDB_ID = "tt1234567"
   const val USER_REGION = "US"
@@ -508,27 +508,28 @@ object HelperTest {
   )
 
 
-  val mockGenres = listOf(
+  val genresItems = listOf(
     GenresItem(id = 1, name = "Action"),
     GenresItem(id = 2, name = "Comedy")
   )
 
-  val mockKeywordsItems = listOf(
-    MediaKeywordsItem(id = 10, name = "superhero"),
-    MediaKeywordsItem(id = 20, name = "adventure")
-  )
+  val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
 
-  val mockMediaKeywords = MediaKeywords(
+  val mediaKeywordsItem2 = MediaKeywordsItem(id = 20, name = "adventure")
+
+  val mediaKeywordsItems = listOf(mediaKeywordsItem1, mediaKeywordsItem2)
+
+  val mediaKeywords = MediaKeywords(
     id = 100,
-    keywords = mockKeywordsItems
+    keywords = mediaKeywordsItems
   )
 
-  val mockReleaseDateRegion = ReleaseDateRegion(
+  val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",
     releaseDate = "2023"
   )
 
-  val mockTvExternalIds = TvExternalIds(
+  val tvExternalIds = TvExternalIds(
     imdbId = "tt1234567",
     id = 999
   )
@@ -536,7 +537,7 @@ object HelperTest {
   val fullTvDetail = TvDetail(
     id = 1,
     originalLanguage = "en",
-    listGenres = mockGenres,
+    listGenres = genresItems,
     voteAverage = 7.5,
     status = "Returning Series",
     listOriginCountry = listOf("US"),
@@ -547,7 +548,7 @@ object HelperTest {
   val fullMovieDetail = MovieDetail(
     id = 1,
     originalLanguage = "en",
-    listGenres = mockGenres,
+    listGenres = genresItems,
     voteAverage = 8.0,
     status = "Released",
     runtime = 120,

@@ -4,11 +4,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.dataMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddFavoriteStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelAddWatchlistStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteFavoriteStateSuccess
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.postModelDeleteWatchlistStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.dataMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelAddFavoriteStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelAddWatchlistStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDeleteFavoriteStateSuccess
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDeleteWatchlistStateSuccess
 import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest

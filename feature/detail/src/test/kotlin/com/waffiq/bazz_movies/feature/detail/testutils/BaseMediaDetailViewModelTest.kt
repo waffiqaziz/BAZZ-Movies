@@ -30,8 +30,8 @@ import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUs
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.IMDB_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.IMDB_ID
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import io.mockk.mockk

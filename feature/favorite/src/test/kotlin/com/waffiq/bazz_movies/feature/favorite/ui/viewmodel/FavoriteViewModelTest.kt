@@ -6,6 +6,9 @@ import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
+import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest
+import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
@@ -18,10 +21,8 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeError
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
-import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlowCustomDispatcher
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
-import com.waffiq.bazz_movies.feature.favorite.testutils.InstantExecutorExtension
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
@@ -39,7 +40,7 @@ import kotlinx.coroutines.test.setMain
  */
 class FavoriteViewModelTest : BehaviorSpec({
 
-  extensions(InstantExecutorExtension)
+  extensions(KotestInstantExecutorExtension)
   val testDispatcher = UnconfinedTestDispatcher()
 
   val response = PostFavoriteWatchlist(
@@ -74,7 +75,7 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       Then("it should emit the favorite movies list") {
-        testPagingFlowCustomDispatcher(viewModel.favoriteMovies(user.token)) {
+        testPagingFlowCancelRemaining(viewModel.favoriteMovies(user.token)) {
           it[0].id shouldBe 1
           it[0].title shouldBe "Inception"
           it[0].overview shouldBe "A mind-bending thriller"
@@ -89,7 +90,7 @@ class FavoriteViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       Then("it should emit the favorite TV shows list") {
-        testPagingFlowCustomDispatcher(viewModel.favoriteTvSeries(user.token)) {
+        testPagingFlowCancelRemaining(viewModel.favoriteTvSeries(user.token)) {
           it[0].id shouldBe 1
           it[0].title shouldBe "Breaking Bad"
           it[0].overview shouldBe "A high school chemistry teacher turned methamphetamine producer"

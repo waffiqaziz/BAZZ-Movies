@@ -207,7 +207,6 @@ class MediaDetailActivityTest :
 
   @Test
   fun creditsValue_withEmptyValue_showsReleaseDateCorrectly() {
-    // release date empty
     context.launchMediaDetailActivity {
       mediaCredits.postValue(
         testMediaCredits.copy(crew = emptyList(), cast = emptyList())
@@ -215,6 +214,4 @@ class MediaDetailActivityTest :
       onView(withId(rv_cast)).check(matches(not(isDisplayed())))
     }
   }
-
-
 }

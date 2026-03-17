@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.SESSION_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.PostTestHelper
 import io.mockk.coEvery
 import io.mockk.coVerify

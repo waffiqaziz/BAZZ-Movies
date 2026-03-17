@@ -8,14 +8,14 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailMovie
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockMediaKeywords
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.video
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.USER_REGION
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailMovie
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieCredits
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.video
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -37,7 +37,7 @@ class GetMovieDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieDetail_whenSuccessful_emitsSuccess() = runTest {
     every { mockRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-      flowOf(Outcome.Success(mockMediaKeywords))
+      flowOf(Outcome.Success(mediaKeywords))
     testSuccessScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       mockResponse = detailMovie,
@@ -70,7 +70,7 @@ class GetMovieDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieDetail_whenLoading_emitsLoading() = runTest {
     every { mockRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-      flowOf(Outcome.Success(mockMediaKeywords))
+      flowOf(Outcome.Success(mediaKeywords))
     testLoadingScenario(
       mockCall = { mockRepository.getMovieDetail(MOVIE_ID) },
       interactorCall = { interactor.getMovieDetail(MOVIE_ID, USER_REGION) }
