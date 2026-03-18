@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ERROR_MESSAGE
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
 

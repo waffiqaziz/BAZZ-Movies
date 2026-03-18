@@ -3,10 +3,10 @@ package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.MOVIE_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.USER_REGION
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

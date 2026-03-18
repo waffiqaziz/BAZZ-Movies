@@ -4,10 +4,10 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeMovieResponsePagingData
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvResponsePagingData
-import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testPagingFlow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -33,7 +33,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       every { dataSource.getFavoriteMovies(SESSION_ID) } returns
         flowOf(fakeMovieResponsePagingData)
       Then("it should return mapped MediaItem list") {
-        testPagingFlow(repository.getFavoriteMovies(SESSION_ID)) {
+        testPagingFlowAwaitComplete(repository.getFavoriteMovies(SESSION_ID)) {
           it[0].title shouldBe "Inception"
           it[1].title shouldBe "The Dark Knight"
         }
@@ -44,7 +44,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       every { dataSource.getFavoriteTv(SESSION_ID) } returns
         flowOf(fakeTvResponsePagingData)
       Then("it should return mapped MediaItem list") {
-        testPagingFlow(repository.getFavoriteTv(SESSION_ID)) {
+        testPagingFlowAwaitComplete(repository.getFavoriteTv(SESSION_ID)) {
           it[0].title shouldBe "Breaking Bad"
           it[1].title shouldBe "Game of Thrones"
         }
@@ -55,7 +55,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       every { dataSource.getFavoriteMovies(SESSION_ID) } returns
         flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
-        testPagingFlow(repository.getFavoriteMovies(SESSION_ID)) {
+        testPagingFlowAwaitComplete(repository.getFavoriteMovies(SESSION_ID)) {
           it shouldBe emptyList()
         }
       }
@@ -65,7 +65,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       every { dataSource.getFavoriteTv(SESSION_ID) } returns
         flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
-        testPagingFlow(repository.getFavoriteTv(SESSION_ID)) {
+        testPagingFlowAwaitComplete(repository.getFavoriteTv(SESSION_ID)) {
           it shouldBe emptyList()
         }
       }
@@ -95,7 +95,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       }
 
       And("first emission should contain movie data") {
-        testPagingFlow(flowOf(emissions[0])) { items ->
+        testPagingFlowAwaitComplete(flowOf(emissions[0])) { items ->
           items.size shouldBe 2
           items[0].title shouldBe "Inception"
           items[1].title shouldBe "The Dark Knight"
@@ -103,13 +103,13 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
       }
 
       And("second emission should be empty") {
-        testPagingFlow(flowOf(emissions[1])) { items ->
+        testPagingFlowAwaitComplete(flowOf(emissions[1])) { items ->
           items shouldBe emptyList()
         }
       }
 
       And("third emission should contain movie data again") {
-        testPagingFlow(flowOf(emissions[2])) { items ->
+        testPagingFlowAwaitComplete(flowOf(emissions[2])) { items ->
           items.size shouldBe 2
           items[0].title shouldBe "Inception"
           items[1].title shouldBe "The Dark Knight"

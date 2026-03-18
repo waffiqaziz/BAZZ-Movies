@@ -8,16 +8,16 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProviders
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.TV_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.USER_REGION
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.detailTv
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.externalTvID
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockMediaKeywords
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.mockTvExternalIds
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.movieMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.tvCredits
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.video
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.watchProviders
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.USER_REGION
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTv
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.externalTvID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvCredits
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.video
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.watchProviders
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -210,8 +210,8 @@ class GetTvDetailsInteractorTest : BaseInteractorTest() {
 
   private fun setupExternalIdAndKeywordsMockData(){
     every { mockRepository.getTvKeywords(TV_ID.toString()) } returns
-      flowOf(Outcome.Success(mockMediaKeywords))
+      flowOf(Outcome.Success(mediaKeywords))
     every { mockRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Success(mockTvExternalIds))
+      flowOf(Outcome.Success(tvExternalIds))
   }
 }

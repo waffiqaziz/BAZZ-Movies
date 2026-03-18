@@ -13,6 +13,7 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.paging.runtime)
   implementation(libs.androidx.recyclerview)
+  implementation(libs.bundles.kotest)
   implementation(libs.junit)
   implementation(libs.kotlinx.coroutines.test)
   implementation(libs.mockk)

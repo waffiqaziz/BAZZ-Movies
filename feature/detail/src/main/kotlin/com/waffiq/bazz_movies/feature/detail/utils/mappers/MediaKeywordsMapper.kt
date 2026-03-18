@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.core.utils.LanguageHelper.getLanguageName
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.ValidKeywordItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvDetail
@@ -78,4 +79,15 @@ object MediaKeywordsMapper {
       language = getLanguageName(originalLanguage),
       keywords = mediaKeywords?.keywords,
     )
+
+  fun MediaKeywordsItem.toValidKeywordOrNull(): ValidKeywordItem? {
+    val validId = id
+    val validName = name.takeUnless { it.isNullOrEmpty() }
+
+    return if (validId != null && validName != null) {
+      ValidKeywordItem(id = validId, name = validName)
+    } else {
+      null
+    }
+  }
 }

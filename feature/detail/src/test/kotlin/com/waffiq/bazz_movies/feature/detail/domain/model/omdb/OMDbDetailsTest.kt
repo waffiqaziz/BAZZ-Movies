@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model.omdb
 
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.oMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.HelperTest.ratingsItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.oMDbDetails
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ratingsItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

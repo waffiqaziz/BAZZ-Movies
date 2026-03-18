@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
+import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDateRegion
@@ -111,6 +112,13 @@ object DataDumb {
     releaseDateRegion = ReleaseDateRegion(
       regionRelease = "ID",
       releaseDate = "Jul 23, 2025",
+    ),
+    keywords = listOf(
+      MediaKeywordsItem("animation", 123),
+      MediaKeywordsItem("music", 4344),
+      MediaKeywordsItem("action", null),
+      MediaKeywordsItem(null, 334),
+      MediaKeywordsItem("", 335),
     )
   )
 

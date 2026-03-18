@@ -23,6 +23,8 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class CollectAndSubmitDataTest {
 
+  val samplePagingData = PagingData.from(listOf("Item 1", "Item 2"))
+
   @get:Rule
   val lifecycleOwnerRule = LifecycleOwnerRule()
 
@@ -41,7 +43,6 @@ class CollectAndSubmitDataTest {
       adapter = adapter
     )
 
-    val samplePagingData = PagingData.from(listOf("Item 1", "Item 2"))
     pagingDataFlow.value = samplePagingData
     advanceUntilIdle()
 
@@ -90,5 +91,24 @@ class CollectAndSubmitDataTest {
     advanceUntilIdle()
 
     verify(exactly = 2) { adapter.submitData(any(), any()) }
+  }
+
+  @Test
+  fun collectAndSubmitData_withLifecycle_shouldSubmitPagingData() = runTest {
+    val mockFragment = mockk<Fragment>(relaxed = true) {
+      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+    }
+
+    collectAndSubmitData(
+      lifecycleOwner = mockFragment.viewLifecycleOwner,
+      flowProvider = { pagingDataFlow },
+      adapter = adapter,
+    )
+
+    pagingDataFlow.value = samplePagingData
+    advanceUntilIdle()
+
+    // verify submitData was called with correct data
+   verify { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, samplePagingData) }
   }
 }

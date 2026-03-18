@@ -84,9 +84,11 @@ class DetailUIManager(
   private val navigator: INavigator,
 ) {
   private lateinit var adapterCast: CastAdapter
-  private lateinit var adapterRecommendation: RecommendationAdapter
   private lateinit var adapterGenre: GenreAdapter
   private lateinit var adapterKeywords: KeywordsAdapter
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  lateinit var adapterRecommendation: RecommendationAdapter
 
   lateinit var sideSheetDialog: SideSheetDialog
   lateinit var sideSheetBinding: SideSheetContentBinding
