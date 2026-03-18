@@ -74,5 +74,8 @@ class MediaKeywordsMapperTest {
 
     val result2 = MediaKeywordsItem(name = "name").toValidKeywordOrNull()
     assertNull(result2)
+
+    val result3 = MediaKeywordsItem(name = "").toValidKeywordOrNull()
+    assertNull(result3)
   }
 }
