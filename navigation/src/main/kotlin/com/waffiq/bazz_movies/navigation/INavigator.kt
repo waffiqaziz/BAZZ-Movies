@@ -11,4 +11,5 @@ interface INavigator {
   fun openLoginActivity(context: Context)
   fun openAboutActivity(context: Context)
   fun snackbarAnchor(): Int
+  fun openList(context: Context, args: ListArgs)
 }

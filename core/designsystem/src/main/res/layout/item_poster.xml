@@ -4,8 +4,8 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:paddingBottom="@dimen/margin_between_item"
-  android:paddingEnd="@dimen/margin_between_item">
+  android:paddingEnd="@dimen/margin_between_item"
+  android:paddingBottom="@dimen/margin_between_item">
 
   <!-- Poster -->
   <com.google.android.material.imageview.ShapeableImageView
@@ -13,9 +13,8 @@
     android:layout_width="100dp"
     android:layout_height="150dp"
     android:adjustViewBounds="true"
-    android:background="?attr/selectableItemBackground"
     android:contentDescription="@string/picture"
-    android:foreground="?attr/selectableItemBackground"
+    android:foreground="@drawable/bg_ripple_rounded_corner"
     app:shapeAppearanceOverlay="@style/roundedCornersImageView"
     tools:background="@drawable/ic_bazz_placeholder_poster" />
 </FrameLayout>

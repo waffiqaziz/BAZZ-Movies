@@ -8,13 +8,14 @@
 
   <com.google.android.material.chip.Chip
     android:id="@+id/chip"
-    app:chipStrokeColor="@color/gray_800"
-    android:textColor="@color/gray_600"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textAppearance="@style/ChipTextAppearance"
-    android:backgroundTint="@color/cardview_shadow_end_color"
+    android:textColor="@color/gray_600"
+    app:chipBackgroundColor="@color/gray_900"
+    app:chipStrokeColor="@color/gray_800"
     app:ensureMinTouchTargetSize="true"
+    app:rippleColor="@color/gray_800"
     tools:text="Action" />
 
 </FrameLayout>

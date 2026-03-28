@@ -138,6 +138,29 @@ class MovieDataSource @Inject constructor(
       tmdbApiService.getTopRatedTv(page).results
     }.flow.flowOn(ioDispatcher)
 
+  override fun getMovieByGenres(
+    genres: String,
+    region: String,
+  ): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      tmdbApiService.getMovieByGenres(genres, region, page).results
+    }.flow.flowOn(ioDispatcher)
+
+  override fun getTvByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      tmdbApiService.getTvByGenres(genres, region, page).results
+    }.flow.flowOn(ioDispatcher)
+
+  override fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      tmdbApiService.getMovieByKeywords(keywords, page).results
+    }.flow.flowOn(ioDispatcher)
+
+  override fun getTvByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      tmdbApiService.getTvByKeywords(keywords, page).results
+    }.flow.flowOn(ioDispatcher)
+
   override fun search(query: String): Flow<PagingData<MultiSearchResponseItem>> =
     Pager(
       config = PagingConfig(pageSize = PAGE_SIZE),

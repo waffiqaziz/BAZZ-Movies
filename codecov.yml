@@ -129,6 +129,11 @@ flag_management:
         - feature/home/
       carryforward: true
         
+    - name: feature-list
+      paths:
+        - feature/list/
+      carryforward: true
+
     - name: feature-login
       paths:
         - feature/login/

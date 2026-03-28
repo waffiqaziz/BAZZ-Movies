@@ -12,6 +12,9 @@ import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.about.ui.AboutActivity
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
+import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity.Companion.EXTRA_MOVIE
+import com.waffiq.bazz_movies.feature.list.ui.ListActivity
+import com.waffiq.bazz_movies.feature.list.ui.ListActivity.Companion.EXTRA_LIST
 import com.waffiq.bazz_movies.feature.login.ui.LoginActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import javax.inject.Inject
@@ -29,7 +32,7 @@ class AppNavigator @Inject constructor() : INavigator {
 
   override fun openDetails(context: Context, mediaItem: MediaItem) {
     val intent = Intent(context, MediaDetailActivity::class.java).apply {
-      putExtra(MediaDetailActivity.EXTRA_MOVIE, mediaItem)
+      putExtra(EXTRA_MOVIE, mediaItem)
     }
     val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
     ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
@@ -54,4 +57,12 @@ class AppNavigator @Inject constructor() : INavigator {
   }
 
   override fun snackbarAnchor(): Int = bottom_navigation
+
+  override fun openList(context: Context, args: ListArgs) {
+    val intent = Intent(context, ListActivity::class.java).apply {
+      putExtra(EXTRA_LIST, args)
+    }
+    val options = ActivityOptionsCompat.makeCustomAnimation(context, fade_in, fade_out)
+    ActivityCompat.startActivities(context, arrayOf(intent), options.toBundle())
+  }
 }

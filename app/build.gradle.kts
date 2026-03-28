@@ -17,6 +17,7 @@ dependencies {
   implementation(project(":feature:detail"))
   implementation(project(":feature:favorite"))
   implementation(project(":feature:home"))
+  implementation(project(":feature:list"))
   implementation(project(":feature:login"))
   implementation(project(":feature:more"))
   implementation(project(":feature:person"))

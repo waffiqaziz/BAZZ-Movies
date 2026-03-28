@@ -5,6 +5,8 @@ import android.widget.FrameLayout
 import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
+import com.waffiq.bazz_movies.navigation.INavigator
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -17,12 +19,19 @@ import org.robolectric.Shadows.shadowOf
 class KeywordsAdapterTest : BaseAdapterTest() {
 
   private lateinit var adapter: KeywordsAdapter
+  private val navigator: INavigator = mockk()
+  private lateinit var parent: FrameLayout
+  private lateinit var viewHolder:  KeywordsAdapter.ViewHolder
+  private lateinit var binding: ChipGenreBinding
 
   @Before
   fun setup() {
     super.baseSetup()
-    adapter = KeywordsAdapter()
+    adapter = KeywordsAdapter(navigator)
     recyclerView.adapter = adapter
+    parent = FrameLayout(context)
+    viewHolder =  adapter.onCreateViewHolder(parent, 0)
+    binding =  ChipGenreBinding.bind(viewHolder.itemView)
   }
 
   @Test
@@ -45,11 +54,9 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
-    val parent = FrameLayout(context)
-
     val testData = listOf(
-      MediaKeywordsItem(name = "war"),
-      MediaKeywordsItem(name = "tragedy"),
+      MediaKeywordsItem(name = "war", id = 21),
+      MediaKeywordsItem(name = "tragedy", id = 22),
     )
 
     adapter.submitList(testData)
@@ -58,18 +65,56 @@ class KeywordsAdapterTest : BaseAdapterTest() {
     shadowOf(Looper.getMainLooper()).idle()
 
     testData.forEachIndexed { index, item ->
-      val viewHolder = adapter.onCreateViewHolder(parent, 0)
       adapter.onBindViewHolder(viewHolder, index) // Covers getItem(position)
-
-      val binding = ChipGenreBinding.bind(viewHolder.itemView)
       assertEquals(item.name, binding.chip.text.toString())
     }
   }
 
   @Test
+  fun bind_withEmptyData_showsNothing() {
+    val testData = emptyList<MediaKeywordsItem>()
+
+    adapter.submitList(testData)
+    shadowOf(Looper.getMainLooper()).idle()
+
+    testData.forEachIndexed { index, _ ->
+      adapter.onBindViewHolder(viewHolder, index)
+      viewHolder.bind(MediaKeywordsItem())
+
+      assertEquals(adapter.itemCount, 0)
+    }
+  }
+
+  @Test
+  fun bind_withNullData_showsNothing() {
+    val testData = null
+
+    adapter.submitList(testData)
+    shadowOf(Looper.getMainLooper()).idle()
+  }
+
+  @Test
+  fun bind_whenIdIsNull_doesNotBindData() {
+    viewHolder.bind(MediaKeywordsItem(id = null, name = "war"))
+
+    val binding = ChipGenreBinding.bind(viewHolder.itemView)
+    assertEquals("", binding.chip.text.toString())
+  }
+
+  @Test
+  fun bind_whenNameIsNull_doesNotBindData() {
+    viewHolder.bind(MediaKeywordsItem(id = 1, name = null))
+    assertEquals("", binding.chip.text.toString())
+  }
+
+  @Test
+  fun bind_whenNameIsEmpty_doesNotBindData() {
+    viewHolder.bind(MediaKeywordsItem(id = 1, name = ""))
+    assertEquals("", binding.chip.text.toString())
+  }
+
+  @Test
   fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
-    val parent = FrameLayout(context)
-    val adapter = KeywordsAdapter()
     val viewHolder = adapter.onCreateViewHolder(parent, 0)
     assertNotNull(viewHolder)
 

@@ -251,6 +251,7 @@ jobs:
             adb wait-for-device
             ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
+            ./gradlew :feature:list:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
@@ -367,6 +368,7 @@ jobs:
           script: |
             ./gradlew :feature:about:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:detail:connectedDebugAndroidTest --stacktrace --continue
+            ./gradlew :feature:list:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:login:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:more:connectedDebugAndroidTest --stacktrace --continue
             ./gradlew :feature:person:connectedDebugAndroidTest --stacktrace --continue
@@ -596,6 +598,16 @@ jobs:
           flags: feature-home
           token: ${{ secrets.CODECOV_TOKEN }}
           name: feature-home-coverage
+        continue-on-error: true
+
+      - name: Upload coverage with feature-list flag
+        if: steps.check_coverage.outputs.coverage_exists == 'true'
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        with:
+          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
+          flags: feature-list
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: feature-list-coverage
         continue-on-error: true
 
       - name: Upload coverage with feature-login flag

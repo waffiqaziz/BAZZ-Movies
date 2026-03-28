@@ -25,11 +25,15 @@
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
-      android:name=".feature.person.ui.PersonActivity"
+      android:name=".feature.list.ui.ListActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
       android:name=".feature.detail.ui.MediaDetailActivity"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+      android:exported="false" />
+    <activity
+      android:name=".feature.person.ui.PersonActivity"
       android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
       android:exported="false" />
     <activity
