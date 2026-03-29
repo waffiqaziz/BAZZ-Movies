@@ -43,13 +43,13 @@ coroutines, and assertions.
 
 ### Junit Testing
 
-For main test we stick to the **`method_whenCondition_expected`** style for naming tests. 
+For main test we stick to the **`method_whenCondition_expected`** style for naming tests.
 It follows Kotlin’s **camelCase** method style, with underscores (`_`) as separators.
 
 Purpose:
 
 - Makes the purpose of each test obvious
-- Keeps  consistent across the whole suite
+- Keeps consistent across the whole suite
 - Groups related tests together, so they’re easier to find especially for test coverage
 - Acts like documentation, no need to open the test body to know what it does
 
@@ -82,10 +82,10 @@ shouldWork()
 > [!NOTE]
 > Stick to descriptive and consistent naming across all tests (unit and instrumentation).
 
-
 ### Kotest Testing
 
-As for kotest, we use Behavior-Driven Development (BDD) style, see [here](https://kotest.io/docs/framework/testing-styles.html#behavior-spec).
+As for kotest, we use Behavior-Driven Development (BDD) style,
+see [here](https://kotest.io/docs/framework/testing-styles.html#behavior-spec).
 
 ## Module-Level Coverage
 
@@ -113,6 +113,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:feature:detail`][feature-detail-link]                     | [![Coverage][feature-detail-coverage-badge]][feature-detail-coverage-link]                     |
 | [`:feature:favorite`][feature-favorite-link]                 | [![Coverage][feature-favorite-coverage-badge]][feature-favorite-coverage-link]                 |
 | [`:feature:home`][feature-home-link]                         | [![Coverage][feature-home-coverage-badge]][feature-home-coverage-link]                         |
+| [`:feature:list`][feature-list-link]                         | [![Coverage][feature-list-coverage-badge]][feature-list-coverage-link]                         |
 | [`:feature:login`][feature-login-link]                       | [![Coverage][feature-login-coverage-badge]][feature-login-coverage-link]                       |
 | [`:feature:more`][feature-more-link]                         | [![Coverage][feature-more-coverage-badge]][feature-more-coverage-link]                         |
 | [`:feature:person`][feature-person-link]                     | [![Coverage][feature-person-coverage-badge]][feature-person-coverage-link]                     |
@@ -210,12 +211,13 @@ For [`:feature:detail`](../feature/detail/) module on debug variant:
 ## Code Coverage Reports with [Kotlinx Kover](https://github.com/Kotlin/kotlinx-kover)
 
 > [!NOTE]
-> Kotlinx Kover coverage is currently enabled only for the [`:feature:favorite`](../feature/favorite/)
+> Kotlinx Kover coverage is currently enabled only for the [
+`:feature:favorite`](../feature/favorite/)
 > as an alternative coverage tool for Kotlin.
 >
-> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES], 
+> However, since [Kover does not support instrumentation tests on Android devices][KOVER-FEATURES],
 > see also here https://github.com/Kotlin/kotlinx-kover/issues/96
-> 
+>
 > **JaCoCo remains the primary coverage tool** due to its broader compatibility.
 
 ### Generating Kover Report for feature:favorite module
@@ -240,9 +242,9 @@ For [`:feature:favorite`](../feature/favorite/) module:
   ```
 
   The results can be viewed at:
-  - `build/reports/kover/html/index.html`
-  - `build/reports/kover/report.xml`
-  - `build/reports/kover/report.bin`
+    - `build/reports/kover/html/index.html`
+    - `build/reports/kover/report.xml`
+    - `build/reports/kover/report.bin`
 
 ### Coverage Verification
 
@@ -386,6 +388,12 @@ plugins {
 [feature-home-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-home
 
 [feature-home-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-home
+
+[feature-list-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/list
+
+[feature-list-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=feature-list
+
+[feature-list-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=feature-list
 
 [feature-login-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/feature/login
 

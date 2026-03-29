@@ -27,7 +27,12 @@ The `:feature:detail` module handles displaying detailed information about movie
 - **Activities & ViewModels** – [`DetailMovieActivity`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/MediaDetailActivity.kt) manages UI,
   while [`DetailMovieViewModel`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/viewmodel/DetailMovieViewModel.kt)
   and [`DetailUserPrefViewModel`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/viewmodel/DetailUserPrefViewModel.kt) handle state management.
-- **Adapters** – [`CastAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/CastAdapter.kt), [`RecommendationAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/RecommendationAdapter.kt), and [`WatchProvidersAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/WatchProvidersAdapter.kt) for rendering lists.
+- **Adapters**
+  – [`CastAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/CastAdapter.kt), 
+  [`GenreAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/GenreAdapter.kt),
+  [`KeywordsAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/KeywordsAdapter.kt),
+  [`RecommendationAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/RecommendationAdapter.kt), and 
+  [`WatchProvidersAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/WatchProvidersAdapter.kt) for rendering lists.
 - **Managers**
   Handle UI state and interaction logic:
   - [`DetailDataManager`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/DetailDataManager.kt) -

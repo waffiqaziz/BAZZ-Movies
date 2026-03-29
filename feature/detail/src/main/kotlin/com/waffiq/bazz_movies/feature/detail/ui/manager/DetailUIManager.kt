@@ -126,7 +126,7 @@ class DetailUIManager(
    * Initializes adapters for cast and recommendation lists, and sets them to their RecyclerViews.
    */
   private fun initializeAdapters() {
-    adapterGenre = GenreAdapter()
+    adapterGenre = GenreAdapter(navigator)
     adapterCast = CastAdapter(navigator)
     adapterRecommendation = RecommendationAdapter(navigator)
 
@@ -172,7 +172,7 @@ class DetailUIManager(
     sideSheetDialog.setCancelable(true)
 
     // setup for keywords
-    adapterKeywords = KeywordsAdapter()
+    adapterKeywords = KeywordsAdapter(navigator)
     sideSheetBinding.rvKeywords.layoutManager =
       FlexboxLayoutManager(binding.rvGenre.context).apply {
         flexDirection = FlexDirection.ROW
@@ -203,6 +203,8 @@ class DetailUIManager(
    * Displays general media info like images, title, release year, and overview.
    */
   fun showGeneralInfo(dataExtra: MediaItem) {
+    adapterGenre.setMediaType(dataExtra.mediaType)
+    adapterKeywords.setMediaType(dataExtra.mediaType)
     showBackdropAndPoster(dataExtra)
     updateBasicInfo(dataExtra)
   }

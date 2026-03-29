@@ -431,6 +431,11 @@
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
+  <style name="CollapsedHeaderTitleStyle" parent="TextAppearance.Material3.HeadlineMedium.Emphasized">
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
   <style name="ExpandedTitleStyle" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
@@ -438,5 +443,14 @@
     <item name="android:ellipsize">end</item>
     <item name="android:breakStrategy">simple</item>
     <item name="android:hyphenationFrequency">none</item>
+  </style>
+
+  <style name="Widget.App.Button" parent="Widget.Material3.Button">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
+  </style>
+
+  <style name="ThemeOverlay.App.Button" parent="ThemeOverlay.Material3.Button">
+    <item name="colorContainer">@color/gray_600_alpha</item>
+    <item name="colorOnContainer">@color/gray_400</item>
   </style>
 </resources>

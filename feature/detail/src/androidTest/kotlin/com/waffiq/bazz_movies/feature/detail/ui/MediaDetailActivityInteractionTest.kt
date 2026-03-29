@@ -1,12 +1,14 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -21,6 +23,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
@@ -34,10 +37,13 @@ import com.waffiq.bazz_movies.feature.detail.testutils.SetRatingAction
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -189,6 +195,27 @@ class MediaDetailActivityInteractionTest :
 
       // shows user rating correctly
       onView(withId(tv_score_your_score)).check(matches(withText("10.0")))
+    }
+  }
+
+  @Test
+  fun listOfGenre_whenClicked_triggersOpenDetailPage() {
+    context.launchMediaDetailActivity {
+      onView(withId(rv_genre)).perform(
+        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
+      )
+    }
+
+    verify {
+      mockNavigator.openList(
+        context = any(),
+        args = ListArgs(
+          listType = BY_GENRE,
+          mediaType = testMediaItem.mediaType,
+          title = "",
+          genreId = testMediaItem.listGenreIds?.get(0) ?: 0,
+        )
+      )
     }
   }
 

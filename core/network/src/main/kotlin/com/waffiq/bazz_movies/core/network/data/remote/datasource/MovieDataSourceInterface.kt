@@ -50,6 +50,11 @@ interface MovieDataSourceInterface {
   fun getTopRatedTv(): Flow<PagingData<MediaResponseItem>>
   fun search(query: String): Flow<PagingData<MultiSearchResponseItem>>
 
+  fun getMovieByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>>
+  fun getTvByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>>
+  fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>>
+  fun getTvByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>>
+
   // DETAIL PAGE
   fun getOMDbDetails(imdbId: String): Flow<NetworkResult<OMDbDetailsResponse>>
   fun getMovieCredits(movieId: Int): Flow<NetworkResult<MediaCreditsResponse>>

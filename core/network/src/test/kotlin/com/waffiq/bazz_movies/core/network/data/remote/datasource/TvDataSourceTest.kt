@@ -163,4 +163,20 @@ class TvDataSourceTest : BaseMediaDataSourceTest() {
     movieDataSource.getTopRatedTv().testPagingFlow(this, expected)
     coVerify { tmdbApiService.getTopRatedTv(1) }
   }
+
+  @Test
+  fun getTvByGenre_pagingFlow_returnsExpectedData() = runTest {
+    val expected = listOf(tvShowDump1)
+    coEvery { tmdbApiService.getTvByGenres("1", "id", 1) } returns defaultMediaResponse(expected)
+    movieDataSource.getTvByGenres("1", "id").testPagingFlow(this, expected)
+    coVerify { tmdbApiService.getTvByGenres("1", "id", 1) }
+  }
+
+  @Test
+  fun getTvByKeywords_pagingFlow_returnsExpectedData() = runTest {
+    val expected = listOf(tvShowDump1)
+    coEvery { tmdbApiService.getTvByKeywords("1", 1) } returns defaultMediaResponse(expected)
+    movieDataSource.getTvByKeywords("1").testPagingFlow(this, expected)
+    coVerify { tmdbApiService.getTvByKeywords("1", 1) }
+  }
 }

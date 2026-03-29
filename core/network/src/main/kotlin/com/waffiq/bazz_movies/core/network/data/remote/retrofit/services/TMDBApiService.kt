@@ -123,6 +123,36 @@ interface TMDBApiService {
   suspend fun getTopRatedTv(@Query("page") page: Int): MediaResponse
   // endregion TV
 
+  // region GENRE
+  @GET("3/discover/movie?language=en-US&include_adult=false&sort_by=popularity.desc")
+  suspend fun getMovieByGenres(
+    @Query("with_genres") genres: String,
+    @Query("watch_region") region: String,
+    @Query("page") page: Int,
+  ): MediaResponse
+
+  @GET("3/discover/tv?language=en-US&include_adult=false&sort_by=popularity.desc")
+  suspend fun getTvByGenres(
+    @Query("with_genres") genres: String,
+    @Query("watch_region") region: String,
+    @Query("page") page: Int,
+  ): MediaResponse
+  // endregion GENRE
+
+  // region KEYWORD
+  @GET("3/discover/movie?language=en-US&include_adult=false&sort_by=popularity.desc")
+  suspend fun getMovieByKeywords(
+    @Query("with_keywords") genres: String,
+    @Query("page") page: Int,
+  ): MediaResponse
+
+  @GET("3/discover/tv?language=en-US&include_adult=false&sort_by=popularity.desc")
+  suspend fun getTvByKeywords(
+    @Query("with_keywords") genres: String,
+    @Query("page") page: Int,
+  ): MediaResponse
+  // endregion KEYWORD
+
   // region RECOMMENDATION
   @GET("3/movie/{movieId}/recommendations")
   suspend fun getMovieRecommendations(
