@@ -110,7 +110,7 @@ class MediaDetailSideSheetTest :
           args = ListArgs(
             listType = BY_KEYWORD,
             mediaType = testMediaItem.mediaType,
-            title = testMediaDetail.keywords?.get(0)?.name ?: "",
+            title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
             keywordId = testMediaDetail.keywords?.get(0)?.id ?: 0,
           )
         )
@@ -132,7 +132,7 @@ class MediaDetailSideSheetTest :
           args = ListArgs(
             listType = BY_KEYWORD,
             mediaType = testMediaItem.mediaType,
-            title = testMediaDetail.keywords?.get(0)?.name ?: "",
+            title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
             keywordId = testMediaDetail.keywords?.get(0)?.id ?: 0,
           )
         )

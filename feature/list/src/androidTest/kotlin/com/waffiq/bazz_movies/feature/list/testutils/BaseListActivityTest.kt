@@ -19,7 +19,7 @@ import io.mockk.just
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-abstract class BaseListActivityTest {
+open class BaseListActivityTest {
 
   protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
   protected val movieGenreArgs = ListArgs(
