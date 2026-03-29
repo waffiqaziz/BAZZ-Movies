@@ -4,11 +4,12 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.postmethod.PostMethodUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
@@ -38,6 +39,8 @@ abstract class BaseInteractorTest {
   private val differ = differ<MediaItem>()
 
   protected val mockRepository: IDetailRepository = mockk()
+  protected val mockMoviesRepository: IMoviesRepository = mockk()
+  protected val mockUserRepository: IUserRepository = mockk()
 
   // for composite interactor tests
   protected val mockGetMovieDetailUseCase: GetMovieDetailUseCase = mockk()
@@ -45,7 +48,6 @@ abstract class BaseInteractorTest {
   protected val mockGetMovieStateUseCase: GetMovieStateUseCase = mockk()
   protected val mockGetTvStateUseCase: GetTvStateUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
-  protected val mockPostMethodUseCase: PostMethodUseCase = mockk()
   protected val mockGetOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
 
   @get:Rule
