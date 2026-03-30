@@ -25,22 +25,19 @@ class PostRateInteractorTest : BaseInteractorTest() {
   )
 
   override fun initInteractor() {
-    interactor = PostRateInteractor(
-      mockPostMethodUseCase,
-      mockUserPrefUseCase,
-    )
+    interactor = PostRateInteractor(mockMoviesRepository, mockUserRepository)
   }
 
   @Before
   override fun baseSetUp() {
     super.baseSetUp()
-    every { mockUserPrefUseCase.getUserToken() } returns flowOf(SESSION_ID)
+    every { mockUserRepository.getUserToken() } returns flowOf(SESSION_ID)
   }
 
   @Test
   fun postMovieRate_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockPostMethodUseCase.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
       mockResponse = post,
       interactorCall = { interactor.postMovieRate(rate, MOVIE_ID) }
     ) { emission ->
@@ -52,7 +49,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postMovieRate_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockPostMethodUseCase.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
       interactorCall = { interactor.postMovieRate(rate, MOVIE_ID) }
     )
   }
@@ -60,7 +57,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postMovieRate_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockPostMethodUseCase.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.postMovieRate(SESSION_ID, rate, MOVIE_ID) },
       interactorCall = { interactor.postMovieRate(rate, MOVIE_ID) }
     )
   }
@@ -68,7 +65,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockPostMethodUseCase.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       mockResponse = post,
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     ) { emission ->
@@ -80,7 +77,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockPostMethodUseCase.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     )
   }
@@ -88,7 +85,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockPostMethodUseCase.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     )
   }
