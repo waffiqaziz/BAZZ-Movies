@@ -92,8 +92,10 @@ class TvSeriesFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     showShimmer()
-
-    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { setData(it) }
+    setData()
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
+      handleLoadState(it)
+    }
   }
 
   private fun showShimmer() {
@@ -122,7 +124,7 @@ class TvSeriesFragment : Fragment() {
     }
   }
 
-  private fun setData(region: String) {
+  private fun setData() {
     refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
@@ -149,16 +151,13 @@ class TvSeriesFragment : Fragment() {
     )
 
     // Observe ViewModel data and submit to adapters
-    collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv(region) }, popularAdapter)
-    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv(region) }, airingTodayAdapter)
-    collectAndSubmitData(
-      this,
-      { tvSeriesViewModel.getAiringThisWeekTv(region) },
-      airingThisWeekAdapter,
-    )
+    collectAndSubmitData(this, { tvSeriesViewModel.getPopularTv() }, popularAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getAiringTodayTv() }, airingTodayAdapter)
+    collectAndSubmitData(this, { tvSeriesViewModel.getAiringThisWeekTv() }, airingThisWeekAdapter)
     collectAndSubmitData(this, { tvSeriesViewModel.getTopRatedTv() }, topRatedAdapter)
+  }
 
-    // Handle LoadState for RecyclerViews
+  private fun handleLoadState(region: String) {
     viewLifecycleOwner.handleLoadState(
       popularAdapter,
       binding.rvPopular,

@@ -8,10 +8,9 @@ import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -27,10 +26,9 @@ import kotlinx.coroutines.test.setMain
 
 class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
 
-  val getMovieStateUseCase: GetMovieStateUseCase = mockk(relaxed = true)
-  val getTvStateUseCase: GetTvStateUseCase = mockk(relaxed = true)
-  val postActionUseCase: PostActionUseCase = mockk(relaxed = true)
-  val userPrefUseCase: UserPrefUseCase = mockk(relaxed = true)
+  val mockMoviesRepository: IMoviesRepository = mockk(relaxed = true)
+  val mockPostActionUseCase: PostActionUseCase = mockk(relaxed = true)
+  val mockUserRepository: IUserRepository = mockk(relaxed = true)
 
   lateinit var checkAndAddToWatchlistInteractor: CheckAndAddToWatchlistInteractor
 
@@ -42,20 +40,18 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
     Dispatchers.setMain(UnconfinedTestDispatcher())
 
     checkAndAddToWatchlistInteractor = CheckAndAddToWatchlistInteractor(
-      getMovieStateUseCase,
-      getTvStateUseCase,
-      postActionUseCase,
-      userPrefUseCase,
+      mockMoviesRepository,
+      mockPostActionUseCase,
+      mockUserRepository
     )
-    coEvery { userPrefUseCase.getUserToken() } returns flowOf(token)
+    coEvery { mockUserRepository.getUserToken() } returns flowOf(token)
   }
 
   afterTest {
     clearMocks(
-      getMovieStateUseCase,
-      getTvStateUseCase,
-      postActionUseCase,
-      userPrefUseCase
+      mockMoviesRepository,
+      mockPostActionUseCase,
+      mockUserRepository
     )
   }
 
@@ -79,9 +75,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(postResponse)
 
         Then("should emit Loading then Added") {
@@ -91,9 +87,11 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
+          coVerify { mockMoviesRepository.getMovieState(any(), any()) }
           coVerify {
-            postActionUseCase.postWatchlistWithAuth(WatchlistParams(MOVIE_MEDIA_TYPE, movieId, true))
+            mockPostActionUseCase.postWatchlistWithAuth(
+              WatchlistParams(MOVIE_MEDIA_TYPE, movieId, true)
+            )
           }
         }
       }
@@ -108,7 +106,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(stateResponse)
 
         Then("should emit Loading then AlreadyInWatchlist") {
@@ -118,14 +116,14 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) } // this cause error
+          coVerify { mockMoviesRepository.getMovieState(any(), any()) }
+          coVerify(exactly = 0) { mockPostActionUseCase.postWatchlistWithAuth(any()) } // this cause error
         }
       }
 
       And("getting movie state returns error") {
         val errorMessage = "Failed to get movie state"
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(Outcome.Error(errorMessage))
 
         Then("should emit Loading then Error") {
@@ -135,8 +133,8 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             cancelAndIgnoreRemainingEvents()
           }
 
-          coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) } // this error its called
+          coVerify { mockMoviesRepository.getMovieState(any(), any()) }
+          coVerify(exactly = 0) { mockPostActionUseCase.postWatchlistWithAuth(any()) } // this error its called
         }
       }
 
@@ -150,12 +148,12 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(stateResponse)
           }
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
 
         Then("should emit all loading states and final result") {
@@ -179,9 +177,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
         )
         val errorMessage = "Failed to add to watchlist"
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(Outcome.Error(errorMessage))
 
         Then("should emit Loading then Error") {
@@ -191,8 +189,8 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getMovieStateUseCase.getMovieState(any(), any()) }
-          coVerify { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify { mockMoviesRepository.getMovieState(any(), any()) }
+          coVerify { mockPostActionUseCase.postWatchlistWithAuth(any()) }
         }
       }
 
@@ -206,9 +204,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
@@ -234,9 +232,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getMovieStateUseCase.getMovieState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getMovieState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(Outcome.Loading)
@@ -273,9 +271,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(postResponse)
 
         Then("should emit Loading then Added") {
@@ -285,9 +283,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getTvStateUseCase.getTvState(any(), any()) }
+          coVerify { mockMoviesRepository.getTvState(any(), any()) }
           coVerify {
-            postActionUseCase.postWatchlistWithAuth(WatchlistParams(TV_MEDIA_TYPE, tvId, true))
+            mockPostActionUseCase.postWatchlistWithAuth(WatchlistParams(TV_MEDIA_TYPE, tvId, true))
           }
         }
       }
@@ -302,7 +300,7 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(stateResponse)
 
         Then("should emit Loading then AlreadyInWatchlist") {
@@ -312,14 +310,14 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getTvStateUseCase.getTvState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify { mockMoviesRepository.getTvState(any(), any()) }
+          coVerify(exactly = 0) { mockPostActionUseCase.postWatchlistWithAuth(any()) }
         }
       }
 
       And("getting TV state returns error") {
         val errorMessage = "Failed to get TV state"
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(Outcome.Error(errorMessage))
 
         Then("should emit Loading then Error") {
@@ -329,8 +327,8 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getTvStateUseCase.getTvState(any(), any()) }
-          coVerify(exactly = 0) { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify { mockMoviesRepository.getTvState(any(), any()) }
+          coVerify(exactly = 0) { mockPostActionUseCase.postWatchlistWithAuth(any()) }
         }
       }
 
@@ -344,12 +342,12 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(stateResponse)
           }
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
 
         Then("should emit all loading states and final result") {
@@ -373,9 +371,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
         )
         val errorMessage = "Failed to add to watchlist"
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(Outcome.Error(errorMessage))
 
         Then("should emit Loading then Error") {
@@ -385,8 +383,8 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
             awaitComplete()
           }
 
-          coVerify { getTvStateUseCase.getTvState(any(), any()) }
-          coVerify { postActionUseCase.postWatchlistWithAuth(any()) }
+          coVerify { mockMoviesRepository.getTvState(any(), any()) }
+          coVerify { mockPostActionUseCase.postWatchlistWithAuth(any()) }
         }
       }
 
@@ -400,9 +398,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
@@ -428,9 +426,9 @@ class CheckAndAddToWatchlistInteractorTest : BehaviorSpec({
           )
         )
 
-        coEvery { getTvStateUseCase.getTvState(any(), any()) } returns
+        coEvery { mockMoviesRepository.getTvState(any(), any()) } returns
           flowOf(stateResponse)
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flow {
             emit(Outcome.Loading)
             emit(Outcome.Loading)

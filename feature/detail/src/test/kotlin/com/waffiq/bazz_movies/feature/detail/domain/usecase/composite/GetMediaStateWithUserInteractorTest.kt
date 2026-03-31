@@ -20,23 +20,19 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   private lateinit var interactor: GetMediaStateWithUserInteractor
 
   override fun initInteractor() {
-    interactor = GetMediaStateWithUserInteractor(
-      mockGetMovieStateUseCase,
-      mockGetTvStateUseCase,
-      mockUserPrefUseCase
-    )
+    interactor = GetMediaStateWithUserInteractor(mockMoviesRepository, mockUserRepository)
   }
 
   @Before
   override fun baseSetUp() {
     super.baseSetUp()
-    every { mockUserPrefUseCase.getUserToken() } returns flowOf(SESSION_ID)
+    every { mockUserRepository.getUserToken() } returns flowOf(SESSION_ID)
   }
 
   @Test
   fun getMovieStateWithUser_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockGetMovieStateUseCase.getMovieState(SESSION_ID, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.getMovieState(SESSION_ID, MOVIE_ID) },
       mockResponse = movieMediaState,
       interactorCall = { interactor.getMovieStateWithUser(MOVIE_ID) }
     ) { emission ->
@@ -48,7 +44,7 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieStateWithUser_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockGetMovieStateUseCase.getMovieState(SESSION_ID, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.getMovieState(SESSION_ID, MOVIE_ID) },
       interactorCall = { interactor.getMovieStateWithUser(MOVIE_ID) }
     )
   }
@@ -56,7 +52,7 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieStateWithUser_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockGetMovieStateUseCase.getMovieState(SESSION_ID, MOVIE_ID) },
+      mockCall = { mockMoviesRepository.getMovieState(SESSION_ID, MOVIE_ID) },
       interactorCall = { interactor.getMovieStateWithUser(MOVIE_ID) }
     )
   }
@@ -64,7 +60,7 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvStateWithUser_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockGetTvStateUseCase.getTvState(SESSION_ID, TV_ID) },
+      mockCall = { mockMoviesRepository.getTvState(SESSION_ID, TV_ID) },
       mockResponse = tvMediaState,
       interactorCall = { interactor.getTvStateWithUser(TV_ID) }
     ) { emission ->
@@ -76,7 +72,7 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvStateWithUser_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockGetTvStateUseCase.getTvState(SESSION_ID, TV_ID) },
+      mockCall = { mockMoviesRepository.getTvState(SESSION_ID, TV_ID) },
       interactorCall = { interactor.getTvStateWithUser(TV_ID) }
     )
   }
@@ -84,7 +80,7 @@ class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvStateWithUser_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockGetTvStateUseCase.getTvState(SESSION_ID, TV_ID) },
+      mockCall = { mockMoviesRepository.getTvState(SESSION_ID, TV_ID) },
       interactorCall = { interactor.getTvStateWithUser(TV_ID) }
     )
   }

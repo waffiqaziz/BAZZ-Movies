@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface GetListMoviesUseCase {
   fun getTopRatedMovies(): Flow<PagingData<MediaItem>>
   fun getPopularMovies(): Flow<PagingData<MediaItem>>
-  fun getTrendingThisWeek(region: String): Flow<PagingData<MediaItem>>
-  fun getTrendingToday(region: String): Flow<PagingData<MediaItem>>
-  fun getUpcomingMovies(region: String): Flow<PagingData<MediaItem>>
-  fun getPlayingNowMovies(region: String): Flow<PagingData<MediaItem>>
+  fun getTrendingThisWeek(): Flow<PagingData<MediaItem>>
+  fun getTrendingToday(): Flow<PagingData<MediaItem>>
+  fun getUpcomingMovies(): Flow<PagingData<MediaItem>>
+  fun getPlayingNowMovies(): Flow<PagingData<MediaItem>>
 }

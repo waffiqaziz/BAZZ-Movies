@@ -2,6 +2,8 @@ package com.waffiq.bazz_movies.core.movie.domain.usecase.listtv
 
 import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.tvMediaItem
+import io.mockk.every
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -12,8 +14,9 @@ class GetListTvInteractorTest : BaseInteractorTest() {
   private lateinit var getListTvInteractor: GetListTvInteractor
 
   @Before
-  fun setup() {
-    getListTvInteractor = GetListTvInteractor(mockMovieRepository)
+  override fun setup() {
+    super.setup()
+    getListTvInteractor = GetListTvInteractor(mockMovieRepository, mockUserRepository)
   }
 
   @Test
@@ -21,7 +24,7 @@ class GetListTvInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getPopularTv(region) },
       pagingData = fakeTvPagingData,
-      interactorCall = { getListTvInteractor.getPopularTv(region) },
+      interactorCall = { getListTvInteractor.getPopularTv() },
     ) { pagingList ->
       assertEquals(tvMediaItem, pagingList[0])
     }
@@ -32,7 +35,7 @@ class GetListTvInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getAiringThisWeekTv(region) },
       pagingData = fakeTvPagingData,
-      interactorCall = { getListTvInteractor.getAiringThisWeekTv(region) },
+      interactorCall = { getListTvInteractor.getAiringThisWeekTv() },
     ) { pagingList ->
       assertEquals(tvMediaItem, pagingList[0])
     }
@@ -43,7 +46,7 @@ class GetListTvInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getAiringTodayTv(region) },
       pagingData = fakeTvPagingData,
-      interactorCall = { getListTvInteractor.getAiringTodayTv(region) },
+      interactorCall = { getListTvInteractor.getAiringTodayTv() },
     ) { pagingList ->
       assertEquals(tvMediaItem, pagingList[0])
     }

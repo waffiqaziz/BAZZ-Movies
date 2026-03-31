@@ -133,21 +133,22 @@ class FeaturedFragment : Fragment() {
         regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
           if (countryCode.isNotEmpty()) { // if success
-            setData(countryCode)
+            handleLoadState(countryCode)
             userPreferenceViewModel.saveRegionPref(countryCode)
           } else { // if null, then set region using SIM Card or default phone configuration
             val region = getLocation(requireContext())
-            setData(region)
+            handleLoadState(region)
             userPreferenceViewModel.saveRegionPref(region)
           }
         }
       } else {
-        setData(userRegion) // user already have region
+        handleLoadState(userRegion)
       }
+      setData()
     }
   }
 
-  private fun setData(region: String) {
+  private fun setData() {
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = adapterTrending.loadStateFlow,
       onLoading = { if (adapterTrending.itemCount <= 0) showShimmer() },
@@ -173,29 +174,9 @@ class FeaturedFragment : Fragment() {
     )
 
     // Observe ViewModel data and submit to adapters
-    observeTrendingMovies(region, adapterTrending)
-    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, adapterUpcoming)
-    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, adapterPlayingNow)
-
-    // Handle LoadState for RecyclerViews
-    viewLifecycleOwner.handleLoadState(
-      adapterPlayingNow,
-      binding.rvPlayingNow,
-      getString(no_movies_currently_playing, getCountryDisplayName(region)),
-      binding.layoutNoPlaying,
-    )
-    viewLifecycleOwner.handleLoadState(
-      adapterUpcoming,
-      binding.rvUpcoming,
-      getString(no_upcoming_movies, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming,
-    )
-    viewLifecycleOwner.handleLoadState(
-      adapterTrending,
-      binding.rvTrending,
-      getString(no_trending, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming,
-    )
+    observeTrendingMovies(adapterTrending)
+    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies() }, adapterUpcoming)
+    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies() }, adapterPlayingNow)
 
     // Set up swipe-to-refresh
     setupSwipeRefresh(
@@ -215,21 +196,42 @@ class FeaturedFragment : Fragment() {
     )
   }
 
-  private fun observeTrendingMovies(region: String, adapter: TrendingAdapter) {
-    collectAndSubmitData(this, { movieViewModel.getTrendingWeek(region) }, adapter)
+  private fun handleLoadState(region: String) {
+    viewLifecycleOwner.handleLoadState(
+      adapterPlayingNow,
+      binding.rvPlayingNow,
+      getString(no_movies_currently_playing, getCountryDisplayName(region)),
+      binding.layoutNoPlaying,
+    )
+    viewLifecycleOwner.handleLoadState(
+      adapterUpcoming,
+      binding.rvUpcoming,
+      getString(no_upcoming_movies, getCountryDisplayName(region)),
+      binding.layoutNoUpcoming,
+    )
+    viewLifecycleOwner.handleLoadState(
+      adapterTrending,
+      binding.rvTrending,
+      getString(no_trending, getCountryDisplayName(region)),
+      binding.layoutNoUpcoming,
+    )
+  }
+
+  private fun observeTrendingMovies(adapter: TrendingAdapter) {
+    collectAndSubmitData(this, { movieViewModel.getTrendingWeek() }, adapter)
     binding.btnToday.setOnClickListener {
       binding.btnToday.isChecked = true
       binding.btnWeek.isChecked = false
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay(region) }, adapter)
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay() }, adapter)
     }
     binding.btnWeek.setOnClickListener {
       binding.btnToday.isChecked = false
       binding.btnWeek.isChecked = true
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek(region) }, adapter)
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek() }, adapter)
     }
   }
 
