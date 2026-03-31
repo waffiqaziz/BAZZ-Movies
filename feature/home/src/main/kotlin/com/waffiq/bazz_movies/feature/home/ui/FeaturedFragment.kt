@@ -95,6 +95,7 @@ class FeaturedFragment : Fragment() {
 
     showShimmer()
     setRegion()
+    setData()
     showMainPicture()
   }
 
@@ -132,19 +133,14 @@ class FeaturedFragment : Fragment() {
         regionViewModel.getCountryCode()
         regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
 
-          if (countryCode.isNotEmpty()) { // if success
-            handleLoadState(countryCode)
-            userPreferenceViewModel.saveRegionPref(countryCode)
-          } else { // if null, then set region using SIM Card or default phone configuration
-            val region = getLocation(requireContext())
-            handleLoadState(region)
-            userPreferenceViewModel.saveRegionPref(region)
-          }
+          // if still empty, then get region from device network location
+          val region = countryCode.ifEmpty { getLocation(requireContext()) }
+          handleLoadState(region)
+          userPreferenceViewModel.saveRegionPref(region)
         }
       } else {
         handleLoadState(userRegion)
       }
-      setData()
     }
   }
 
