@@ -6,10 +6,9 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
-import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -21,24 +20,23 @@ import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class CheckAndAddToWatchlistInteractor @Inject constructor(
-  private val getMovieStateUseCase: GetMovieStateUseCase,
-  private val getTvStateUseCase: GetTvStateUseCase,
+  private val moviesRepository: IMoviesRepository,
   private val postActionUseCase: PostActionUseCase,
-  private val userPrefUseCase: UserPrefUseCase,
+  private val userRepository: IUserRepository,
 ) : CheckAndAddToWatchlistUseCase {
 
   override fun addMovieToWatchlist(movieId: Int): Flow<Outcome<WatchlistActionResult>> =
     addToWatchlist(
       mediaId = movieId,
       mediaType = MOVIE_MEDIA_TYPE,
-      getStateFlow = { token -> getMovieStateUseCase.getMovieState(token, movieId) },
+      getStateFlow = { token -> moviesRepository.getMovieState(token, movieId) },
     )
 
   override fun addTvToWatchlist(tvId: Int): Flow<Outcome<WatchlistActionResult>> =
     addToWatchlist(
       mediaId = tvId,
       mediaType = TV_MEDIA_TYPE,
-      getStateFlow = { token -> getTvStateUseCase.getTvState(token, tvId) },
+      getStateFlow = { token -> moviesRepository.getTvState(token, tvId) },
     )
 
   private fun addToWatchlist(
@@ -46,7 +44,7 @@ class CheckAndAddToWatchlistInteractor @Inject constructor(
     mediaType: String,
     getStateFlow: (String) -> Flow<Outcome<MediaState>>,
   ): Flow<Outcome<WatchlistActionResult>> =
-    userPrefUseCase.getUserToken()
+    userRepository.getUserToken()
       .filterNotNull()
       .take(1)
       .flatMapConcat { token -> getStateFlow(token) }

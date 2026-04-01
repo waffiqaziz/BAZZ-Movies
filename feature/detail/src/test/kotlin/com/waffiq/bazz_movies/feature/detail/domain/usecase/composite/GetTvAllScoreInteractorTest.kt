@@ -21,23 +21,20 @@ class GetTvAllScoreInteractorTest : BaseInteractorTest() {
   private val tvExternalIds = TvExternalIds(imdbId = imdbId)
 
   override fun initInteractor() {
-    interactor = GetTvAllScoreInteractor(
-      mockGetTvDetailUseCase,
-      mockGetOMDbDetailUseCase,
-    )
+    interactor = GetTvAllScoreInteractor(mockDetailRepository)
   }
 
   @Before
   override fun baseSetUp() {
     super.baseSetUp()
-    every { mockGetTvDetailUseCase.getTvExternalIds(tmdbId) } returns
+    every { mockDetailRepository.getTvExternalIds(tmdbId) } returns
       flowOf(Outcome.Success(tvExternalIds))
   }
 
   @Test
   fun getTvAllScore_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) },
+      mockCall = { mockDetailRepository.getOMDbDetails(imdbId) },
       mockResponse = oMDbDetails,
       interactorCall = { interactor.getTvAllScore(tmdbId) }
     ) { emission ->
@@ -49,7 +46,7 @@ class GetTvAllScoreInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvAllScore_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) },
+      mockCall = { mockDetailRepository.getOMDbDetails(imdbId) },
       interactorCall = { interactor.getTvAllScore(tmdbId) }
     )
   }
@@ -57,7 +54,7 @@ class GetTvAllScoreInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvAllScore_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) },
+      mockCall = { mockDetailRepository.getOMDbDetails(imdbId) },
       interactorCall = { interactor.getTvAllScore(tmdbId) }
     )
   }

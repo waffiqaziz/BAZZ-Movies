@@ -10,17 +10,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
-import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
@@ -59,7 +56,6 @@ class MovieFragment : Fragment() {
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val movieViewModel: MovieViewModel by viewModels()
-  private val regionViewModel: RegionViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -92,7 +88,10 @@ class MovieFragment : Fragment() {
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvNowPlaying))
 
     showShimmer()
-    showData()
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
+      handleLoadState(it)
+    }
+    setData()
   }
 
   private fun showShimmer() {
@@ -113,31 +112,7 @@ class MovieFragment : Fragment() {
     }
   }
 
-  private fun showData() {
-    // check if user already have region
-    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) { userRegion ->
-
-      // if user didn't have region, then get region from Country API
-      if (userRegion == NAN) {
-        regionViewModel.getCountryCode()
-        regionViewModel.countryCode.observe(viewLifecycleOwner) { countryCode ->
-
-          if (countryCode.isNotEmpty()) { // if success
-            setData(countryCode)
-            userPreferenceViewModel.saveRegionPref(countryCode)
-          } else { // if null, then set region using SIM Card or default phone configuration
-            val region = getLocation(requireContext())
-            setData(region)
-            userPreferenceViewModel.saveRegionPref(region)
-          }
-        }
-      } else {
-        setData(userRegion) // user already have region
-      }
-    }
-  }
-
-  private fun setData(region: String) {
+  private fun setData() {
     refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
@@ -165,11 +140,12 @@ class MovieFragment : Fragment() {
 
     // Observe ViewModel data and submit to adapters
     collectAndSubmitData(this, { movieViewModel.getPopularMovies() }, popularAdapter)
-    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies(region) }, nowPlayingAdapter)
-    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies(region) }, upComingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies() }, nowPlayingAdapter)
+    collectAndSubmitData(this, { movieViewModel.getUpcomingMovies() }, upComingAdapter)
     collectAndSubmitData(this, { movieViewModel.getTopRatedMovies() }, topRatedAdapter)
+  }
 
-    // Handle LoadState for RecyclerViews
+  private fun handleLoadState(region: String) {
     viewLifecycleOwner.handleLoadState(
       nowPlayingAdapter,
       binding.rvNowPlaying,

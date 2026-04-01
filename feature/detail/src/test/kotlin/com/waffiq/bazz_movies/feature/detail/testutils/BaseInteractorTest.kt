@@ -5,16 +5,10 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
-import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,17 +32,9 @@ abstract class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
 
-  protected val mockRepository: IDetailRepository = mockk()
+  protected val mockDetailRepository: IDetailRepository = mockk()
   protected val mockMoviesRepository: IMoviesRepository = mockk()
   protected val mockUserRepository: IUserRepository = mockk()
-
-  // for composite interactor tests
-  protected val mockGetMovieDetailUseCase: GetMovieDetailUseCase = mockk()
-  protected val mockGetTvDetailUseCase: GetTvDetailUseCase = mockk()
-  protected val mockGetMovieStateUseCase: GetMovieStateUseCase = mockk()
-  protected val mockGetTvStateUseCase: GetTvStateUseCase = mockk()
-  protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
-  protected val mockGetOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()

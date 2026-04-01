@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import android.view.KeyEvent.ACTION_DOWN
+import android.view.KeyEvent.ACTION_UP
 import android.view.KeyEvent.KEYCODE_0
 import android.view.KeyEvent.KEYCODE_8
 import android.view.KeyEvent.KEYCODE_BACK
@@ -181,6 +182,11 @@ class MediaHelperTest {
   @Test
   fun isBackReleased_backDown_returnsFalse() {
     assertFalse(isBackReleased(KEYCODE_BACK, ACTION_DOWN))
+  }
+
+  @Test
+  fun isBackReleased_allCorrect_returnsTrue() {
+    assertTrue(isBackReleased(KEYCODE_BACK, ACTION_UP))
   }
 
   @Test

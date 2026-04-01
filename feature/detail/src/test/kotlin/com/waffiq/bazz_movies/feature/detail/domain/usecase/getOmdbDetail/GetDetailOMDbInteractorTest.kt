@@ -12,13 +12,13 @@ class GetDetailOMDbInteractorTest : BaseInteractorTest() {
   private lateinit var interactor: GetOMDbDetailInteractor
 
   override fun initInteractor() {
-    interactor = GetOMDbDetailInteractor(mockRepository)
+    interactor = GetOMDbDetailInteractor(mockDetailRepository)
   }
 
   @Test
   fun getDetailOMDb_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockRepository.getOMDbDetails(IMDB_ID) },
+      mockCall = { mockDetailRepository.getOMDbDetails(IMDB_ID) },
       mockResponse = omdbDetails,
       interactorCall = { interactor.getOMDbDetails(IMDB_ID) }
     ) { emission ->
@@ -46,7 +46,7 @@ class GetDetailOMDbInteractorTest : BaseInteractorTest() {
   @Test
   fun getDetailOMDb_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockRepository.getOMDbDetails(IMDB_ID) },
+      mockCall = { mockDetailRepository.getOMDbDetails(IMDB_ID) },
       interactorCall = { interactor.getOMDbDetails(IMDB_ID) }
     )
   }
@@ -54,7 +54,7 @@ class GetDetailOMDbInteractorTest : BaseInteractorTest() {
   @Test
   fun getOMDbDetails_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockRepository.getOMDbDetails(IMDB_ID) },
+      mockCall = { mockDetailRepository.getOMDbDetails(IMDB_ID) },
       interactorCall = { interactor.getOMDbDetails(IMDB_ID) }
     )
   }

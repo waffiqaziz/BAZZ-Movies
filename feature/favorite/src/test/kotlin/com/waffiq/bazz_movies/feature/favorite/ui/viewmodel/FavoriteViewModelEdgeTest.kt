@@ -6,11 +6,10 @@ import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetMovieStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.mediastate.GetTvStateUseCase
 import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
-import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistInteractor
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie.GetFavoriteMovieUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv.GetFavoriteTvUseCase
@@ -31,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
-import javax.annotation.meta.When
 
 class FavoriteViewModelEdgeTest : BehaviorSpec({
 
@@ -48,41 +46,33 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
 
   val getFavoriteMovieUseCase: GetFavoriteMovieUseCase = mockk()
   val getFavoriteTvUseCase: GetFavoriteTvUseCase = mockk()
-  val postActionUseCase: PostActionUseCase = mockk()
+  val mockPostActionUseCase: PostActionUseCase = mockk()
 
-  // Mock the lower-level dependencies
-  val getMovieStateUseCase: GetMovieStateUseCase = mockk()
-  val getTvStateUseCase: GetTvStateUseCase = mockk()
-  val userPrefUseCase: UserPrefUseCase = mockk()
+  val mockMoviesRepository: IMoviesRepository = mockk()
+  val mockUserRepository: IUserRepository = mockk()
 
-  // Use REAL implementation
   val checkAndAddToWatchlistUseCase = CheckAndAddToWatchlistInteractor(
-    getMovieStateUseCase,
-    getTvStateUseCase,
-    postActionUseCase,
-    userPrefUseCase
+    mockMoviesRepository,
+    mockPostActionUseCase,
+    mockUserRepository
   )
 
   lateinit var viewModel: FavoriteViewModel
 
   beforeTest {
     Dispatchers.setMain(testDispatcher)
-    every { userPrefUseCase.getUserToken() } returns flowOf("session")
+    every { mockUserRepository.getUserToken() } returns flowOf("session")
     viewModel = FavoriteViewModel(
       getFavoriteMovieUseCase,
       getFavoriteTvUseCase,
-      postActionUseCase,
+      mockPostActionUseCase,
       checkAndAddToWatchlistUseCase // Real implementation!
     )
   }
 
-  // Then update your tests to mock getMovieStateUseCase/getTvStateUseCase
-  // instead of checkAndAddToWatchlistUseCase
-
   Given("checks movie state before posting to watchlist") {
     When("the movie is not in watchlist") {
-      // Mock the STATE, not the use case
-      coEvery { getMovieStateUseCase.getMovieState("session", MOVIE_ID) } returns
+      coEvery { mockMoviesRepository.getMovieState("session", MOVIE_ID) } returns
         flowOf(
           outcomeSuccess(
             MediaState(
@@ -94,7 +84,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
           )
         )
 
-      coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+      coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
         flowOf(outcomeSuccess(response))
 
       Then("it should add to watchlist") {
@@ -115,7 +105,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
 
     Given("checks movie state before posting to watchlist") {
       When("the movie is not in watchlist") {
-        coEvery { getMovieStateUseCase.getMovieState("session", movieId) } returns
+        coEvery { mockMoviesRepository.getMovieState("session", movieId) } returns
           flowOf(
             outcomeSuccess(
               MediaState(
@@ -127,7 +117,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
             )
           )
 
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(outcomeSuccess(response))
 
         Then("it should add to watchlist") {
@@ -146,7 +136,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
       }
 
       When("the movie is already in watchlist") {
-        coEvery { getMovieStateUseCase.getMovieState("session", movieId) } returns
+        coEvery { mockMoviesRepository.getMovieState("session", movieId) } returns
           flowOf(
             outcomeSuccess(
               MediaState(
@@ -169,7 +159,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
       }
 
       When("getting movie state fails") {
-        coEvery { getMovieStateUseCase.getMovieState("session", movieId) } returns
+        coEvery { mockMoviesRepository.getMovieState("session", movieId) } returns
           flowOf(outcomeError)
 
         Then("it should show error message") {
@@ -183,7 +173,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
       }
 
       When("getting movie state is loading") {
-        coEvery { getMovieStateUseCase.getMovieState("session", movieId) } returns
+        coEvery { mockMoviesRepository.getMovieState("session", movieId) } returns
           flowOf(outcomeLoading)
 
         Then("it should do nothing") {
@@ -197,7 +187,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
       }
 
       When("posting to watchlist fails after state check") {
-        coEvery { getMovieStateUseCase.getMovieState("session", movieId) } returns
+        coEvery { mockMoviesRepository.getMovieState("session", movieId) } returns
           flowOf(
             outcomeSuccess(
               MediaState(
@@ -209,7 +199,7 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
             )
           )
 
-        coEvery { postActionUseCase.postWatchlistWithAuth(any()) } returns
+        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
           flowOf(outcomeError)
 
         Then("it should show error message") {

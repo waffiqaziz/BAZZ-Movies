@@ -12,8 +12,9 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   private lateinit var getListMoviesInteractor: GetListMoviesInteractor
 
   @Before
-  fun setup() {
-    getListMoviesInteractor = GetListMoviesInteractor(mockMovieRepository)
+  override fun setup() {
+    super.setup()
+    getListMoviesInteractor = GetListMoviesInteractor(mockMovieRepository, mockUserRepository)
   }
 
   @Test
@@ -43,7 +44,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getTrendingThisWeek(region) },
       pagingData = fakeMoviePagingData,
-      interactorCall = { getListMoviesInteractor.getTrendingThisWeek(region) },
+      interactorCall = { getListMoviesInteractor.getTrendingThisWeek() },
     ) { pagingList ->
       assertEquals(movieMediaItem, pagingList[0])
     }
@@ -54,7 +55,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getTrendingToday(region) },
       pagingData = fakeMoviePagingData,
-      interactorCall = { getListMoviesInteractor.getTrendingToday(region) },
+      interactorCall = { getListMoviesInteractor.getTrendingToday() },
     ) { pagingList ->
       assertEquals(movieMediaItem, pagingList[0])
     }
@@ -65,7 +66,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getUpcomingMovies(region) },
       pagingData = fakeMoviePagingData,
-      interactorCall = { getListMoviesInteractor.getUpcomingMovies(region) },
+      interactorCall = { getListMoviesInteractor.getUpcomingMovies() },
     ) { pagingList ->
       assertEquals(movieMediaItem, pagingList[0])
     }
@@ -76,7 +77,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
     testPagingData(
       mockCall = { mockMovieRepository.getPlayingNowMovies(region) },
       pagingData = fakeMoviePagingData,
-      interactorCall = { getListMoviesInteractor.getPlayingNowMovies(region) },
+      interactorCall = { getListMoviesInteractor.getPlayingNowMovies() },
     ) { pagingList ->
       assertEquals(movieMediaItem, pagingList[0])
     }

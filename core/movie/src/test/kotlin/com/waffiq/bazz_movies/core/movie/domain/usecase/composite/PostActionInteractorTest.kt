@@ -20,7 +20,6 @@ import org.junit.Test
 
 class PostActionInteractorTest : BaseInteractorTest() {
 
-  private val mockUserRepository: IUserRepository = mockk()
   private lateinit var postActionInteractor: PostActionInteractor
 
   @Before

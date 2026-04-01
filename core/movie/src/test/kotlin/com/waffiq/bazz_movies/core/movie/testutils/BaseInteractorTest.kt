@@ -4,10 +4,12 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvInteractor
 import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.movieMediaItem
 import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.tvMediaItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
+import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -16,12 +18,15 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 
 abstract class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
   protected val mockMovieRepository: IMoviesRepository = mockk()
+  protected val mockUserRepository: IUserRepository = mockk()
+
   protected val fakeMoviePagingData =
     PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))
   protected val fakeTvPagingData =
@@ -30,6 +35,11 @@ abstract class BaseInteractorTest {
 
   @get:Rule
   val mainDispatcherRule = UnconfinedDispatcherRule()
+
+  @Before
+  open fun setup() {
+    every { mockUserRepository.getUserRegionPref() } returns flowOf(region)
+  }
 
   protected fun testPagingData(
     mockCall: () -> Flow<PagingData<MediaItem>>,
