@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+
+  <Button
+    android:id="@+id/button"
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:backgroundTint="@color/gray_850"
+    android:checkable="true"
+    android:contentDescription="@string/open_in_horizontal_list"
+    android:paddingLeft="4dp"
+    android:scaleX="0.88"
+    android:scaleY="0.88"
+    app:icon="@drawable/ic_right_arrow"
+    app:iconTint="?attr/colorAccent"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small.Narrow" />
+
+</FrameLayout>

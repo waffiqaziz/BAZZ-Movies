@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.home.utils.helpers
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -33,22 +34,21 @@ import kotlinx.coroutines.launch
 object HomeFragmentHelper {
   fun LifecycleOwner.handleLoadState(
     adapter: PagingDataAdapter<*, *>,
-    recyclerView: RecyclerView,
     message: String,
     view: NoFoundLayoutBinding,
+    vararg toggleViews: View,
   ) {
     this.lifecycleScope.launch {
       adapter.loadStateFlow.debounce(DEBOUNCE_SHORT)
         .distinctUntilChanged().collectLatest { loadState ->
-          if (
+          val isEmpty =
             loadState.source.refresh is LoadState.NotLoading &&
-            loadState.append.endOfPaginationReached &&
-            adapter.itemCount < 1
-          ) {
-            view.root.isVisible = true
-            view.tvMessage.text = message
-            recyclerView.isGone = true
-          }
+              loadState.append.endOfPaginationReached &&
+              adapter.itemCount < 1
+
+          view.root.isVisible = isEmpty
+          if (isEmpty) view.tvMessage.text = message
+          toggleViews.forEach { it.isGone = isEmpty }
         }
     }
   }
