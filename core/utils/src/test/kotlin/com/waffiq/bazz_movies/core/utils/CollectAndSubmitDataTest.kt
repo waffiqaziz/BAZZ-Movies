@@ -6,15 +6,22 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.test.LifecycleOwnerRule
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.testutils.FakePagingAdapter
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,7 +54,7 @@ class CollectAndSubmitDataTest {
     advanceUntilIdle()
 
     // verify submitData was called with correct data
-    verify { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, samplePagingData) }
+    verify(atLeast = 1) { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, any()) }
   }
 
   @Test
@@ -108,7 +115,30 @@ class CollectAndSubmitDataTest {
     pagingDataFlow.value = samplePagingData
     advanceUntilIdle()
 
-    // verify submitData was called with correct data
-   verify { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, samplePagingData) }
+    coVerify(atLeast = 1) { adapter.submitData(any()) }
+  }
+
+  @Test
+  fun collectAndSubmitData_whenLifecycleCreated_shouldContainExpectedItems() = runTest {
+    Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+
+    val fakeAdapter = FakePagingAdapter()
+
+    val mockFragment = mockk<Fragment>(relaxed = true) {
+      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+    }
+
+    collectAndSubmitData(
+      fragment = mockFragment,
+      flowProvider = { pagingDataFlow },
+      adapter = fakeAdapter
+    )
+
+    pagingDataFlow.value = PagingData.from(listOf("Item 1", "Item 2"))
+    advanceUntilIdle()
+
+    assertEquals(listOf("Item 1", "Item 2"), fakeAdapter.snapshot().items)
+
+    Dispatchers.resetMain()
   }
 }

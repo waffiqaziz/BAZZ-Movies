@@ -8,7 +8,9 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -39,7 +41,6 @@ import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -74,15 +75,12 @@ class ListActivity : AppCompatActivity() {
     buttonAction()
     setupRecyclerView()
     setupList(args)
-    lifecycleScope.launch {
-      adapter.loadStateFlow
-        .distinctUntilChangedBy { it.refresh }
-        .map { it.toUiState() }
-        .collect(::handleRefreshState)
-    }
+    observeLoadState()
   }
 
   private fun extractDataFromIntent(): ListArgs? = extractArgsItemFromIntent(intent)
+
+  private var shouldUpdateBackdropFromItems = false
 
   private fun setupList(args: ListArgs) {
     adapter.setMediaType(args.mediaType)
@@ -91,20 +89,50 @@ class ListActivity : AppCompatActivity() {
     when (args.listType) {
       ListType.BY_GENRE -> showListBasedGenre(args)
 
-      ListType.BY_KEYWORD -> showListBasedKeywords(args)
+      // static backdrop, no loadStateChanged
+      ListType.BY_KEYWORD -> {
+        shouldUpdateBackdropFromItems = true
+        showListBasedKeywords(args)
+      }
 
-      ListType.NOW_PLAYING -> showNowPlaying(args)
+      ListType.NOW_PLAYING -> {
+        shouldUpdateBackdropFromItems = true
+        showNowPlaying(args)
+      }
 
-      ListType.POPULAR -> showPopular(args)
+      ListType.POPULAR -> {
+        shouldUpdateBackdropFromItems = true
+        showPopular(args)
+      }
 
-      ListType.TOP_RATED -> showTopRated(args)
+      ListType.TOP_RATED -> {
+        shouldUpdateBackdropFromItems = true
+        showTopRated(args)
+      }
 
-      ListType.UPCOMING -> showUpcomingMovies()
+      ListType.UPCOMING -> {
+        shouldUpdateBackdropFromItems = true
+        showUpcomingMovies()
+      }
 
-      ListType.AIRING_THIS_WEEK -> showTvAiringThisWeek()
+      ListType.AIRING_THIS_WEEK -> {
+        shouldUpdateBackdropFromItems = true
+        showTvAiringThisWeek()
+      }
 
-      else -> {
-        binding.toolbar.title = args.title
+      else -> binding.toolbar.title = args.title
+    }
+  }
+
+  private fun observeLoadState() {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        adapter.loadStateFlow
+          .distinctUntilChangedBy { it.refresh }
+          .collect { loadStates ->
+            handleRefreshState(loadStates.toUiState())
+            if (shouldUpdateBackdropFromItems) loadStateChanged()
+          }
       }
     }
   }
@@ -152,26 +180,16 @@ class ListActivity : AppCompatActivity() {
       },
       adapter,
     )
-
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   private fun showUpcomingMovies() {
     binding.toolbar.title = getString(upcoming)
     collectAndSubmitData(this, { viewModel.getUpcomingMovies() }, adapter)
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   private fun showTvAiringThisWeek() {
     binding.toolbar.title = getString(airing_this_week)
     collectAndSubmitData(this, { viewModel.getAiringThisWeekTv() }, adapter)
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   private fun showNowPlaying(args: ListArgs) {
@@ -188,9 +206,6 @@ class ListActivity : AppCompatActivity() {
       },
       adapter,
     )
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   private fun showTopRated(args: ListArgs) {
@@ -206,9 +221,6 @@ class ListActivity : AppCompatActivity() {
       },
       adapter,
     )
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   private fun showPopular(args: ListArgs) {
@@ -224,9 +236,6 @@ class ListActivity : AppCompatActivity() {
       },
       adapter,
     )
-    lifecycleScope.launch {
-      adapter.loadStateFlow.collect { loadStateChanged() }
-    }
   }
 
   @VisibleForTesting
@@ -259,6 +268,10 @@ class ListActivity : AppCompatActivity() {
   private fun buttonAction() {
     binding.btnClose.setOnClickListener { finish() }
     binding.swipeRefresh.setOnRefreshListener {
+      adapter.refresh()
+      binding.swipeRefresh.isRefreshing = false
+    }
+    binding.illustrationError.btnTryAgain.setOnClickListener {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }

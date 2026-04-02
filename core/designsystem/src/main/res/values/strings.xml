@@ -182,4 +182,6 @@
   <string name="about_us"><u>About Us</u></string>
   <string name="rating_added_successfully">Rating added successfully!</string>
 
+  <string name="open_in_horizontal_list">Open in horizontal list</string>
+
 </resources>

@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
+import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -21,9 +22,11 @@ object FlowUtils {
     flowProvider: () -> Flow<PagingData<T>>,
     adapter: PagingDataAdapter<T, *>,
   ) {
+    val cachedFlow = flowProvider().cachedIn(fragment.viewLifecycleOwner.lifecycleScope)
+
     fragment.viewLifecycleOwner.lifecycleScope.launch {
       fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        flowProvider().collectLatest { pagingData ->
+        cachedFlow.collectLatest { pagingData ->
           adapter.submitData(fragment.viewLifecycleOwner.lifecycle, pagingData)
         }
       }
@@ -35,9 +38,13 @@ object FlowUtils {
     flowProvider: () -> Flow<PagingData<T>>,
     adapter: PagingDataAdapter<T, *>,
   ) {
+    val cachedFlow = flowProvider().cachedIn(lifecycleOwner.lifecycleScope)
+
     lifecycleOwner.lifecycleScope.launch {
-      flowProvider().collectLatest { pagingData ->
-        adapter.submitData(lifecycleOwner.lifecycle, pagingData)
+      lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        cachedFlow.collectLatest { pagingData ->
+          adapter.submitData(pagingData)
+        }
       }
     }
   }

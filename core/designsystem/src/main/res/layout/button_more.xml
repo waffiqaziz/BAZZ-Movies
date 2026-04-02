@@ -11,6 +11,7 @@
     android:layout_height="48dp"
     android:backgroundTint="@color/gray_850"
     android:checkable="true"
+    android:contentDescription="@string/open_in_horizontal_list"
     android:paddingLeft="4dp"
     android:scaleX="0.88"
     android:scaleY="0.88"

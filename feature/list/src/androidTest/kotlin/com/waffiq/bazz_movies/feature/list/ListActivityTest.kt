@@ -14,6 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_close
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
@@ -234,6 +235,7 @@ class ListActivityTest : BaseListActivityTest() {
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
       onView(withId(rv_list))
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+      onView(withId(btn_try_again)).perform(click())
     }
   }
 
