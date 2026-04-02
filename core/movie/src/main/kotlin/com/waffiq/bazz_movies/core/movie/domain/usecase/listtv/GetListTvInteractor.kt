@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class GetListTvInteractor @Inject constructor(
@@ -17,9 +16,10 @@ class GetListTvInteractor @Inject constructor(
   private val userRepository: IUserRepository,
 ) : GetListTvUseCase {
 
-  private fun getRegion() = userRepository.getUserRegionPref()
-    .filter { it.isNotEmpty() && it != NAN }
-    .distinctUntilChanged()
+  private fun getRegion() =
+    userRepository.getUserRegionPref()
+      .filter { it.isNotEmpty() && it != NAN }
+      .distinctUntilChanged()
 
   override fun getPopularTv(): Flow<PagingData<MediaItem>> =
     getRegion().flatMapLatest { region ->

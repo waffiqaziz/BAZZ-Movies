@@ -453,4 +453,11 @@
     <item name="colorContainer">@color/gray_600_alpha</item>
     <item name="colorOnContainer">@color/gray_400</item>
   </style>
+
+  <style name="LayoutHeaderTheme">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">@dimen/default_margin_parent_20</item>
+    <item name="android:layout_marginStart">@dimen/default_margin_parent_20</item>
+  </style>
 </resources>

@@ -4,16 +4,15 @@ plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.glide)
   alias(libs.plugins.bazzmovies.kotest)
+  alias(libs.plugins.module.graph)
   id("kotlin-parcelize")
 }
 
 android.namespace = "com.waffiq.bazz_movies.feature.list"
 
 dependencies {
-  implementation(project(":core:common"))
-  implementation(project(":core:mappers"))
+  implementation(project(":core:movie"))
   implementation(project(":core:uihelper"))
-  implementation(project(":core:user"))
   implementation(project(":core:utils"))
 
   implementation(libs.androidx.activity)

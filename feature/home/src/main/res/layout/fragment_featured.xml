@@ -88,22 +88,33 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          style="@style/HomeRecyclerView"
           android:id="@+id/rv_trending"
+          style="@style/HomeRecyclerView"
           android:contentDescription="@string/trending"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster" />
 
         <!-- Upcoming-->
-        <TextView
-          android:id="@+id/tv_upcoming_movie"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="12dp"
-          android:text="@string/upcoming_movies" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout style="@style/LayoutHeaderTheme">
+
+          <TextView
+            android:id="@+id/tv_upcoming_movie"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/upcoming_movies" />
+
+          <include
+            android:id="@+id/btn_more_upcoming_movie"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
           android:id="@+id/layout_no_upcoming"
@@ -120,14 +131,27 @@
           tools:listitem="@layout/item_poster" />
 
         <!-- Playing now -->
-        <TextView
-          android:id="@+id/tv_playing_now"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="12dp"
-          android:text="@string/playing_now_on_theater" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            android:id="@+id/tv_playing_now"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/playing_now_on_theater" />
+
+          <include
+            android:id="@+id/btn_more_playing_now"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
           android:id="@+id/layout_no_playing"
@@ -141,7 +165,7 @@
           android:contentDescription="@string/playing_now_on_theater"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
-          tools:listitem="@layout/item_poster"/>
+          tools:listitem="@layout/item_poster" />
       </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

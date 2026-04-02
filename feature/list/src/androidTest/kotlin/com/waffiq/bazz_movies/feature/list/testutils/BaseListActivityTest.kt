@@ -4,7 +4,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakePagingMediaItem
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity
@@ -28,12 +34,33 @@ open class BaseListActivityTest {
     title = "title",
     genreId = 878,
   )
+  protected val tvGenreArgs = movieGenreArgs.copy(mediaType = TV_MEDIA_TYPE)
   protected val movieKeywordsArgs = ListArgs(
     listType = ListType.BY_KEYWORD,
     mediaType = MOVIE_MEDIA_TYPE,
     title = "post apocalyptic",
     genreId = 134,
   )
+  protected val tvKeywordsArgs = movieKeywordsArgs.copy(mediaType = TV_MEDIA_TYPE)
+  protected val movieNowPlayingArgs = ListArgs(
+    listType = ListType.NOW_PLAYING,
+    mediaType = MOVIE_MEDIA_TYPE,
+    title = "",
+  )
+  protected val tvNowPlayingArgs = movieNowPlayingArgs.copy(mediaType = TV_MEDIA_TYPE)
+  protected val moviePopularArgs = movieNowPlayingArgs.copy(listType = ListType.POPULAR)
+  protected val movieTopRatedArgs = movieNowPlayingArgs.copy(listType = ListType.TOP_RATED)
+  protected val movieUpcomingArgs = movieNowPlayingArgs.copy(listType = ListType.UPCOMING)
+  protected val tvPopularArgs = movieNowPlayingArgs.copy(
+    listType = ListType.POPULAR, mediaType = TV_MEDIA_TYPE
+  )
+  protected val tvTopRatedArgs = movieNowPlayingArgs.copy(
+    listType = ListType.TOP_RATED, mediaType = TV_MEDIA_TYPE
+  )
+  protected val tvAiringThisWeekArgs = movieNowPlayingArgs.copy(
+    listType = ListType.AIRING_THIS_WEEK, mediaType = TV_MEDIA_TYPE
+  )
+
 
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
     every { viewModel.getMovieByGenres(any()) } returns listResultsFlow
@@ -74,5 +101,15 @@ open class BaseListActivityTest {
       scenario.onActivity { /* do nothing */ }
       block(scenario)
     }
+  }
+
+  protected fun shouldShowTv(){
+    onView(withText("TV"))
+      .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+  }
+
+  protected fun shouldShowMovie(){
+    onView(withText("MOVIE"))
+      .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
   }
 }

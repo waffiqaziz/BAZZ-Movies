@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class GetListMoviesInteractor @Inject constructor(
@@ -17,9 +16,10 @@ class GetListMoviesInteractor @Inject constructor(
   private val userRepository: IUserRepository,
 ) : GetListMoviesUseCase {
 
-  private fun getRegion() = userRepository.getUserRegionPref()
-    .filter { it.isNotEmpty() && it != NAN }
-    .distinctUntilChanged()
+  private fun getRegion() =
+    userRepository.getUserRegionPref()
+      .filter { it.isNotEmpty() && it != NAN }
+      .distinctUntilChanged()
 
   override fun getTopRatedMovies(): Flow<PagingData<MediaItem>> =
     movieRepository.getTopRatedMovies()

@@ -57,9 +57,6 @@ class HomeFragment : Fragment() {
     )
     viewpager?.adapter = adapter
 
-    // Number of pages to keep in memory, make it more smooth
-    viewpager?.offscreenPageLimit = 2
-
     tabLayout?.let { tabLayoutNonNull ->
       viewpager?.let { viewpagerNonNull ->
         tabLayoutMediator = TabLayoutMediator(tabLayoutNonNull, viewpagerNonNull) { tab, position ->

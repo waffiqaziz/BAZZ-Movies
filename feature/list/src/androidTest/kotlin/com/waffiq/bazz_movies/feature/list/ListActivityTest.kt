@@ -14,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_close
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
@@ -67,33 +66,74 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun listActivity_movieData_showsCorrectViews() {
+  fun listActivity_withGenreType_showsCorrectViews() {
     context.launchListActivity {
       onView(withId(R.id.collapse)).check(matches(isDisplayed()))
       onView(withText("Science Fiction"))
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-      onView(withText("MOVIE"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      shouldShowMovie()
+    }
+    context.launchListActivity(tvGenreArgs) {
+      shouldShowTv()
     }
   }
 
-  @Test
-  fun listActivity_tvData_showsCorrectViews() {
-    context.launchListActivity(movieGenreArgs.copy(mediaType = TV_MEDIA_TYPE)) {
-      onView(withText("TV"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
-  }
 
   @Test
   fun listActivity_withKeywordsType_showsCorrectViews() {
     context.launchListActivity(movieKeywordsArgs) {
       onView(withText("Post Apocalyptic"))
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      shouldShowMovie()
     }
-    context.launchListActivity(movieKeywordsArgs.copy(mediaType = TV_MEDIA_TYPE)) {
+    context.launchListActivity(tvKeywordsArgs) {
       onView(withText("Post Apocalyptic"))
         .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      shouldShowTv()
+    }
+  }
+
+  @Test
+  fun listActivity_withNowPlayingType_showsCorrectViews() {
+    context.launchListActivity(movieNowPlayingArgs) {
+      shouldShowMovie()
+    }
+    context.launchListActivity(tvNowPlayingArgs) {
+      shouldShowTv()
+    }
+  }
+
+  @Test
+  fun listActivity_withPopularType_showsCorrectViews() {
+    context.launchListActivity(moviePopularArgs) {
+      shouldShowMovie()
+    }
+    context.launchListActivity(tvPopularArgs) {
+      shouldShowTv()
+    }
+  }
+
+  @Test
+  fun listActivity_withTopRatedType_showsCorrectViews() {
+    context.launchListActivity(movieTopRatedArgs) {
+      shouldShowMovie()
+    }
+    context.launchListActivity(tvTopRatedArgs) {
+      shouldShowTv()
+    }
+  }
+
+  @Test
+  fun listActivity_withUpcomingType_showsCorrectViews() {
+    context.launchListActivity(movieUpcomingArgs) {
+      shouldShowMovie()
+    }
+  }
+
+  @Test
+  fun listActivity_withAiringThisWeekType_showsCorrectViews() {
+    context.launchListActivity(tvAiringThisWeekArgs) {
+      shouldShowTv()
     }
   }
 
@@ -129,7 +169,7 @@ class ListActivityTest : BaseListActivityTest() {
   fun onKeywordsLoadState_itemNotZero_showsBackdrop() {
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
-        activity.onKeywordsLoadStateChanged()
+        activity.loadStateChanged()
       }
     }
   }
@@ -140,7 +180,7 @@ class ListActivityTest : BaseListActivityTest() {
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
-        activity.onKeywordsLoadStateChanged()
+        activity.loadStateChanged()
       }
     }
   }

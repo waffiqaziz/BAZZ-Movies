@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
@@ -33,6 +34,8 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -92,6 +95,7 @@ class MovieFragment : Fragment() {
       handleLoadState(it)
     }
     setData()
+    moreButtonAction()
   }
 
   private fun showShimmer() {
@@ -148,15 +152,17 @@ class MovieFragment : Fragment() {
   private fun handleLoadState(region: String) {
     viewLifecycleOwner.handleLoadState(
       nowPlayingAdapter,
-      binding.rvNowPlaying,
       getString(no_movies_currently_playing, getCountryDisplayName(region)),
       binding.layoutNoPlaying,
+      binding.rvNowPlaying,
+      binding.btnMoreAiringToday.root,
     )
     viewLifecycleOwner.handleLoadState(
       upComingAdapter,
-      binding.rvUpcoming,
       getString(no_upcoming_movies, getCountryDisplayName(region)),
       binding.layoutNoUpcoming,
+      binding.rvUpcoming,
+      binding.btnMoreUpcoming.root,
     )
   }
 
@@ -192,6 +198,33 @@ class MovieFragment : Fragment() {
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
+    }
+  }
+
+  private fun moreButtonAction() {
+    binding.btnMorePopular.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.POPULAR, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreAiringToday.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.NOW_PLAYING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreUpcoming.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.UPCOMING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreTopRated.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.TOP_RATED, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
     }
   }
 

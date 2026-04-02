@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
@@ -40,6 +41,8 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import javax.inject.Inject
@@ -97,6 +100,7 @@ class FeaturedFragment : Fragment() {
     setRegion()
     setData()
     showMainPicture()
+    moreButtonAction()
   }
 
   private fun showShimmer() {
@@ -195,21 +199,23 @@ class FeaturedFragment : Fragment() {
   private fun handleLoadState(region: String) {
     viewLifecycleOwner.handleLoadState(
       adapterPlayingNow,
-      binding.rvPlayingNow,
       getString(no_movies_currently_playing, getCountryDisplayName(region)),
       binding.layoutNoPlaying,
+      binding.rvPlayingNow,
+      binding.btnMorePlayingNow.root,
     )
     viewLifecycleOwner.handleLoadState(
       adapterUpcoming,
-      binding.rvUpcoming,
       getString(no_upcoming_movies, getCountryDisplayName(region)),
       binding.layoutNoUpcoming,
+      binding.rvUpcoming,
+      binding.btnMoreUpcomingMovie.root,
     )
     viewLifecycleOwner.handleLoadState(
       adapterTrending,
-      binding.rvTrending,
       getString(no_trending, getCountryDisplayName(region)),
-      binding.layoutNoUpcoming,
+      binding.layoutNoTrending,
+      binding.rvTrending,
     )
   }
 
@@ -246,6 +252,21 @@ class FeaturedFragment : Fragment() {
     }
   }
 
+  private fun moreButtonAction() {
+    binding.btnMorePlayingNow.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.NOW_PLAYING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreUpcomingMovie.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.UPCOMING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
+      )
+    }
+  }
+
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
@@ -272,7 +293,6 @@ class FeaturedFragment : Fragment() {
     }
 
     mSnackbar = null
-    Glide.get(requireContext()).clearMemory()
     _binding = null
   }
 }

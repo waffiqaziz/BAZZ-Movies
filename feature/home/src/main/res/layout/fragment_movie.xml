@@ -29,31 +29,57 @@
         android:paddingBottom="@dimen/bottom_nav_min_height">
 
         <!-- Popular -->
-        <TextView
-          android:id="@+id/tv_popular"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="@dimen/default_margin_parent_20"
-          android:text="@string/popular" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="@dimen/default_margin_parent_20">
+
+          <TextView
+            android:id="@+id/tv_popular"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/popular" />
+
+          <include
+            android:id="@+id/btn_more_popular"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-          style="@style/HomeRecyclerView"
           android:id="@+id/rv_popular"
+          style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_wide" />
 
         <!-- Airing today-->
-        <TextView
-          android:id="@+id/tv_airing_today"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp"
-          android:text="@string/now_playing" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="16dp">
+
+          <TextView
+            android:id="@+id/tv_airing_today"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/now_playing" />
+
+          <include
+            android:id="@+id/btn_more_airing_today"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
           android:id="@+id/layout_no_playing"
@@ -62,22 +88,35 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          style="@style/HomeRecyclerView"
           android:id="@+id/rv_now_playing"
+          style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
           tools:layout_height="330dp"
           tools:listitem="@layout/item_poster"
           tools:spanCount="2" />
 
         <!-- Upcoming -->
-        <TextView
-          android:id="@+id/tv_upcoming"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="12dp"
-          android:text="@string/upcoming" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            android:id="@+id/tv_upcoming"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/upcoming" />
+
+          <include
+            android:id="@+id/btn_more_upcoming"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
           android:id="@+id/layout_no_upcoming"
@@ -86,25 +125,38 @@
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          style="@style/HomeRecyclerView"
           android:id="@+id/rv_upcoming"
+          style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster" />
 
         <!-- Top-rated-->
-        <TextView
-          android:id="@+id/tv_top_rated"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/default_margin_parent_20"
-          android:layout_marginTop="12dp"
-          android:text="@string/top_rated" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            android:id="@+id/tv_top_rated"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/top_rated" />
+
+          <include
+            android:id="@+id/btn_more_top_rated"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-          style="@style/HomeRecyclerView"
           android:id="@+id/rv_top_rated"
+          style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
           tools:listitem="@layout/item_poster" />

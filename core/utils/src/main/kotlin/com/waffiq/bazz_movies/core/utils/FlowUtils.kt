@@ -36,10 +36,8 @@ object FlowUtils {
     adapter: PagingDataAdapter<T, *>,
   ) {
     lifecycleOwner.lifecycleScope.launch {
-      lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        flowProvider().collectLatest { pagingData ->
-          adapter.submitData(lifecycleOwner.lifecycle, pagingData)
-        }
+      flowProvider().collectLatest { pagingData ->
+        adapter.submitData(lifecycleOwner.lifecycle, pagingData)
       }
     }
   }

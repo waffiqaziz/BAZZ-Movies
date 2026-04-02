@@ -16,6 +16,12 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core.designsystem.R.string.airing_this_week
+import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
+import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
+import com.waffiq.bazz_movies.core.designsystem.R.string.popular
+import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
+import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
@@ -87,6 +93,16 @@ class ListActivity : AppCompatActivity() {
 
       ListType.BY_KEYWORD -> showListBasedKeywords(args)
 
+      ListType.NOW_PLAYING -> showNowPlaying(args)
+
+      ListType.POPULAR -> showPopular(args)
+
+      ListType.TOP_RATED -> showTopRated(args)
+
+      ListType.UPCOMING -> showUpcomingMovies()
+
+      ListType.AIRING_THIS_WEEK -> showTvAiringThisWeek()
+
       else -> {
         binding.toolbar.title = args.title
       }
@@ -138,12 +154,83 @@ class ListActivity : AppCompatActivity() {
     )
 
     lifecycleScope.launch {
-      adapter.loadStateFlow.collect { onKeywordsLoadStateChanged() }
+      adapter.loadStateFlow.collect { loadStateChanged() }
+    }
+  }
+
+  private fun showUpcomingMovies() {
+    binding.toolbar.title = getString(upcoming)
+    collectAndSubmitData(this, { viewModel.getUpcomingMovies() }, adapter)
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStateChanged() }
+    }
+  }
+
+  private fun showTvAiringThisWeek() {
+    binding.toolbar.title = getString(airing_this_week)
+    collectAndSubmitData(this, { viewModel.getAiringThisWeekTv() }, adapter)
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStateChanged() }
+    }
+  }
+
+  private fun showNowPlaying(args: ListArgs) {
+    collectAndSubmitData(
+      this,
+      {
+        if (args.mediaType == MOVIE_MEDIA_TYPE) {
+          binding.toolbar.title = getString(now_playing)
+          viewModel.getPlayingNowMovies()
+        } else {
+          binding.toolbar.title = getString(airing_today)
+          viewModel.getAiringTodayTv()
+        }
+      },
+      adapter,
+    )
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStateChanged() }
+    }
+  }
+
+  private fun showTopRated(args: ListArgs) {
+    binding.toolbar.title = getString(top_rated)
+    collectAndSubmitData(
+      this,
+      {
+        if (args.mediaType == MOVIE_MEDIA_TYPE) {
+          viewModel.getTopRatedMovies()
+        } else {
+          viewModel.getTopRatedTv()
+        }
+      },
+      adapter,
+    )
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStateChanged() }
+    }
+  }
+
+  private fun showPopular(args: ListArgs) {
+    binding.toolbar.title = getString(popular)
+    collectAndSubmitData(
+      this,
+      {
+        if (args.mediaType == MOVIE_MEDIA_TYPE) {
+          viewModel.getPopularMovies()
+        } else {
+          viewModel.getPopularTv()
+        }
+      },
+      adapter,
+    )
+    lifecycleScope.launch {
+      adapter.loadStateFlow.collect { loadStateChanged() }
     }
   }
 
   @VisibleForTesting
-  internal fun onKeywordsLoadStateChanged() {
+  internal fun loadStateChanged() {
     if (adapter.itemCount >= 1) {
       showBackdrop(adapter.snapshot().items.first().backdropPath)
     }

@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_popular_series
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_this_week
@@ -34,6 +35,8 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -96,6 +99,7 @@ class TvSeriesFragment : Fragment() {
     userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
       handleLoadState(it)
     }
+    moreButtonAction()
   }
 
   private fun showShimmer() {
@@ -160,21 +164,21 @@ class TvSeriesFragment : Fragment() {
   private fun handleLoadState(region: String) {
     viewLifecycleOwner.handleLoadState(
       popularAdapter,
-      binding.rvPopular,
       getString(no_popular_series, getCountryDisplayName(region)),
       binding.layoutNoPopular,
+      binding.rvPopular,
     )
     viewLifecycleOwner.handleLoadState(
       airingTodayAdapter,
-      binding.rvAiringToday,
       getString(no_series_airing_today, getCountryDisplayName(region)),
       binding.layoutNoAiringToday,
+      binding.rvAiringToday,
     )
     viewLifecycleOwner.handleLoadState(
       airingThisWeekAdapter,
-      binding.rvAiringThisWeek,
       getString(no_series_airing_this_week, getCountryDisplayName(region)),
       binding.layoutNoAiringThisWeek,
+      binding.rvAiringThisWeek,
     )
   }
 
@@ -219,6 +223,33 @@ class TvSeriesFragment : Fragment() {
       tvTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
+    }
+  }
+
+  private fun moreButtonAction() {
+    binding.btnMorePopular.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.POPULAR, mediaType = TV_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreAiringToday.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.NOW_PLAYING, mediaType = TV_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreAiringThisWeek.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.AIRING_THIS_WEEK, mediaType = TV_MEDIA_TYPE, title = ""),
+      )
+    }
+    binding.btnMoreTopRated.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(listType = ListType.TOP_RATED, mediaType = TV_MEDIA_TYPE, title = ""),
+      )
     }
   }
 
