@@ -13,6 +13,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.Description
+import org.junit.runners.model.Statement
 import kotlin.test.assertFailsWith
 
 class MainDispatcherRuleTest {
@@ -49,5 +51,64 @@ class MainDispatcherRuleTest {
 
     advanceUntilIdle()
     assertTrue(executed)
+  }
+
+  @Test
+  fun mainDispatcherManual_afterRuleFinished_shouldThrowIllegalStateException() {
+    val isolatedRule = MainDispatcherRule(StandardTestDispatcher())
+
+    // manual use rule full lifecycle via JUnit Statement API
+    isolatedRule.apply(
+      object : Statement() {
+        override fun evaluate() { /* just test  */
+        }
+      },
+      Description.EMPTY
+    ).evaluate()
+
+    // Dispatchers.Main it should reset by the rule finished()
+    assertFailsWith<IllegalStateException> {
+      runBlocking(Dispatchers.Main) { }
+    }
+  }
+
+  @Test
+  fun mainDispatcher_shouldUseTestDispatcher_whenRuleActive() {
+    val testDispatcher = StandardTestDispatcher()
+    val rule = MainDispatcherRule(testDispatcher)
+
+    var executed = false
+
+    rule.apply(
+      object : Statement() {
+        override fun evaluate() {
+          CoroutineScope(Dispatchers.Main).launch {
+            executed = true
+          }
+
+          testDispatcher.scheduler.advanceUntilIdle()
+          assertTrue(executed)
+        }
+      },
+      Description.EMPTY
+    ).evaluate()
+  }
+
+  @Test
+  fun mainDispatcher_afterRuleFinished_shouldThrow() {
+    val testDispatcher = StandardTestDispatcher()
+    val isolatedRule = MainDispatcherRule(testDispatcher)
+
+    isolatedRule.apply(
+      object : Statement() {
+        override fun evaluate() { /* no-op */
+        }
+      },
+      Description.EMPTY
+    ).evaluate()
+
+    assertFailsWith<IllegalStateException> {
+      Dispatchers.Main.immediate
+    }
   }
 }
