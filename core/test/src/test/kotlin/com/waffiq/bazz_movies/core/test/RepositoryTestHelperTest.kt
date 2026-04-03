@@ -41,121 +41,74 @@ class RepositoryTestHelperTest {
 
   @Test
   fun testSuccessfulCall_whenRepositoryEmitsSuccess_shouldEmitLoadingThenExpectedData() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(NetworkResult.Success(fakeString))
-    }
-
+    dataSourceEmitSuccess()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Success(fakeMappedInt))
     }
 
-    testSuccessfulCall(
-      mockResponse = fakeString,
-      dataSourceCall = mockDataSourceCall,
-      repositoryCall = mockRepositoryCall,
-      expectedData = fakeMappedInt,
-      verifyDataSourceCall = mockVerify,
-    )
+    assertTestSuccessfulCall()
 
     verify { mockVerify() }
   }
 
   @Test
   fun testSuccessfulCall_whenRepositoryEmitsError_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(NetworkResult.Success(fakeString))
-    }
-
+    dataSourceEmitSuccess()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("unexpected error"))
     }
 
     assertFailsWith<AssertionError> {
-      testSuccessfulCall(
-        mockResponse = fakeString,
-        dataSourceCall = mockDataSourceCall,
-        repositoryCall = mockRepositoryCall,
-        expectedData = fakeMappedInt,
-        verifyDataSourceCall = mockVerify,
-      )
+      assertTestSuccessfulCall()
     }
   }
 
   @Test
   fun testSuccessfulCall_whenRepositoryEmitsIncorrectData_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(NetworkResult.Success(fakeString))
-    }
-
+    dataSourceEmitSuccess()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Success(999)) // wrong data
     }
 
     assertFailsWith<AssertionError> {
-      testSuccessfulCall(
-        mockResponse = fakeString,
-        dataSourceCall = mockDataSourceCall,
-        repositoryCall = mockRepositoryCall,
-        expectedData = fakeMappedInt, // expects 42, gets 999
-        verifyDataSourceCall = mockVerify,
-      )
+      // expects 42, gets 999
+      assertTestSuccessfulCall()
     }
   }
 
   @Test
   fun testUnsuccessfulCall_whenRepositoryEmitsError_shouldEmitLoadingThenErrorMessage() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(RepositoryTestHelper.networkResultError)
-    }
+    dataSourceEmitError()
 
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error(RepositoryTestHelper.ERROR_MESSAGE))
     }
 
-    testUnsuccessfulCall(
-      dataSourceCall = mockDataSourceCall,
-      repositoryCall = mockRepositoryCall,
-      verifyDataSourceCall = mockVerify,
-    )
+    assertTestUnsuccessfulCall()
 
     verify { mockVerify() }
   }
 
   @Test
   fun testUnsuccessfulCall_whenRepositoryEmitsSuccess_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(RepositoryTestHelper.networkResultError)
-    }
-
+    dataSourceEmitError()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Success(fakeMappedInt)) // wrong, should be Error
     }
 
     assertFailsWith<AssertionError> {
-      testUnsuccessfulCall(
-        dataSourceCall = mockDataSourceCall,
-        repositoryCall = mockRepositoryCall,
-        verifyDataSourceCall = mockVerify,
-      )
+      assertTestUnsuccessfulCall()
     }
   }
 
   @Test
   fun testUnsuccessfulCall_whenErrorMessageDoesNotMatch_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-      emit(RepositoryTestHelper.networkResultError)
-    }
+    dataSourceEmitError()
 
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
@@ -163,49 +116,77 @@ class RepositoryTestHelperTest {
     }
 
     assertFailsWith<AssertionError> {
-      testUnsuccessfulCall(
-        dataSourceCall = mockDataSourceCall,
-        repositoryCall = mockRepositoryCall,
-        verifyDataSourceCall = mockVerify,
-      )
+      assertTestUnsuccessfulCall()
     }
   }
 
   @Test
   fun testLoadingState_whenRepositoryEmitsLoading_shouldPass() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-    }
-
+    dataSourceEmitLoading()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Loading)
     }
 
-    testLoadingState(
-      dataSourceCall = mockDataSourceCall,
-      repositoryCall = mockRepositoryCall,
-      verifyDataSourceCall = mockVerify,
-    )
+    assertTestLoadingState()
 
     verify { mockVerify() }
   }
 
   @Test
   fun testLoadingState_whenRepositoryEmitsNonLoading_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flow {
-      emit(NetworkResult.Loading)
-    }
-
+    dataSourceEmitLoading()
     coEvery { mockRepositoryCall() } returns flow {
       emit(Outcome.Success(fakeMappedInt)) // wrong, should be Loading
     }
 
     assertFailsWith<AssertionError> {
-      testLoadingState(
-        dataSourceCall = mockDataSourceCall,
-        repositoryCall = mockRepositoryCall,
-        verifyDataSourceCall = mockVerify,
-      )
+      assertTestLoadingState()
     }
+  }
+
+  private fun dataSourceEmitSuccess() {
+    coEvery { mockDataSourceCall() } returns flow {
+      emit(NetworkResult.Loading)
+      emit(NetworkResult.Success(fakeString))
+    }
+  }
+
+  private fun dataSourceEmitError() {
+    coEvery { mockDataSourceCall() } returns flow {
+      emit(NetworkResult.Loading)
+      emit(RepositoryTestHelper.networkResultError)
+    }
+  }
+
+  private fun dataSourceEmitLoading() {
+    coEvery { mockDataSourceCall() } returns flow {
+      emit(NetworkResult.Loading)
+    }
+  }
+
+  private suspend fun assertTestSuccessfulCall() {
+    testSuccessfulCall(
+      mockResponse = fakeString,
+      dataSourceCall = mockDataSourceCall,
+      repositoryCall = mockRepositoryCall,
+      expectedData = fakeMappedInt,
+      verifyDataSourceCall = mockVerify,
+    )
+  }
+
+  private suspend fun assertTestUnsuccessfulCall() {
+    testUnsuccessfulCall(
+      dataSourceCall = mockDataSourceCall,
+      repositoryCall = mockRepositoryCall,
+      verifyDataSourceCall = mockVerify,
+    )
+  }
+
+  private suspend fun assertTestLoadingState() {
+    testLoadingState(
+      dataSourceCall = mockDataSourceCall,
+      repositoryCall = mockRepositoryCall,
+      verifyDataSourceCall = mockVerify,
+    )
   }
 }
