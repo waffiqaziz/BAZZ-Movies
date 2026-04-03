@@ -68,6 +68,10 @@ private val coverageExclusions = listOf(
   //  "**/*Database_Impl*.*",
   //  "**/*Dao_Impl*.*",
 
+  // kotest helper
+  "**/KotestInstantExecutorExtension*",
+  "**/InstantTaskExecutor*",
+
   // Generated Kotlin files
   "**/*\$\$serializer.*",
   "**/*\$inlined*.*",
