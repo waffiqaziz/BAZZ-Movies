@@ -29,6 +29,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
 class FavoriteViewModelEdgeTest : BehaviorSpec({
@@ -68,6 +69,10 @@ class FavoriteViewModelEdgeTest : BehaviorSpec({
       mockPostActionUseCase,
       checkAndAddToWatchlistUseCase // Real implementation!
     )
+  }
+
+  afterTest {
+    Dispatchers.resetMain()
   }
 
   Given("checks movie state before posting to watchlist") {

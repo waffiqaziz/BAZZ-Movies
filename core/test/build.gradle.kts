@@ -1,5 +1,6 @@
 plugins {
   alias(libs.plugins.bazzmovies.android.library)
+  alias(libs.plugins.bazzmovies.android.library.jacoco)
   alias(libs.plugins.bazzmovies.shared.test)
 }
 
@@ -18,4 +19,6 @@ dependencies {
   implementation(libs.kotlinx.coroutines.test)
   implementation(libs.mockk)
   implementation(libs.turbine)
+
+  testImplementation(libs.androidx.core.testing)
 }

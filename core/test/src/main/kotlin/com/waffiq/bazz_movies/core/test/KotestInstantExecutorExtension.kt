@@ -8,16 +8,16 @@ import io.kotest.core.listeners.BeforeSpecListener
 import io.kotest.core.spec.Spec
 
 @SuppressLint("RestrictedApi")
-object KotestInstantExecutorExtension : BeforeSpecListener, AfterSpecListener {
+internal class InstantTaskExecutor : TaskExecutor() {
+  override fun executeOnDiskIO(runnable: Runnable) = runnable.run()
+  override fun postToMainThread(runnable: Runnable) = runnable.run()
+  override fun isMainThread(): Boolean = true
+}
 
+@SuppressLint("RestrictedApi")
+object KotestInstantExecutorExtension : BeforeSpecListener, AfterSpecListener {
   override suspend fun beforeSpec(spec: Spec) {
-    ArchTaskExecutor.getInstance().setDelegate(
-      object : TaskExecutor() {
-        override fun executeOnDiskIO(runnable: Runnable) = runnable.run()
-        override fun postToMainThread(runnable: Runnable) = runnable.run()
-        override fun isMainThread(): Boolean = true
-      },
-    )
+    ArchTaskExecutor.getInstance().setDelegate(InstantTaskExecutor())
   }
 
   override suspend fun afterSpec(spec: Spec) {

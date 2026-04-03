@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
-import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieMediaItemPagingData
@@ -23,7 +22,6 @@ import kotlinx.coroutines.test.setMain
 
 class ListViewModelTest : BehaviorSpec({
 
-  extensions(KotestInstantExecutorExtension)
   val testDispatcher = UnconfinedTestDispatcher()
 
   val mockGetListUseCase: GetListUseCase = mockk()

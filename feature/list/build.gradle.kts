@@ -4,7 +4,6 @@ plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.glide)
   alias(libs.plugins.bazzmovies.kotest)
-  alias(libs.plugins.module.graph)
   id("kotlin-parcelize")
 }
 
