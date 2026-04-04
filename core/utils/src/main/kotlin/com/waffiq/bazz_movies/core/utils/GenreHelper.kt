@@ -1,5 +1,7 @@
 package com.waffiq.bazz_movies.core.utils
 
+import android.content.Context
+import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.GenresItem
 
 /**
@@ -60,6 +62,16 @@ object GenreHelper {
       .map { getGenreName(it) }
       .filter { it.isNotEmpty() }
       .joinToString(", ")
+
+  /**
+   * Transform list of integer genre id to return genre names or not available if empty
+   */
+  fun Context.getGenre(data: List<Int>?): String =
+    if (data.isNullOrEmpty()) {
+      getString(not_available)
+    } else {
+      transformListGenreIdsToJoinName(data)
+    }
 
   // a map that associates genre names with their respective genre IDs for movies and TV shows.
   private val genreCodeMap = mapOf(

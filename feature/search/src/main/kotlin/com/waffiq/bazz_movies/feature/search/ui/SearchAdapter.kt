@@ -11,18 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
 import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
+import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
+import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.profileImageSource
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class SearchAdapter(private val navigator: INavigator) :
@@ -85,25 +87,20 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   private fun showDataPerson(binding: ItemResultBinding, data: MultiSearchItem) {
-    binding.ivPicture.contentDescription =
-      data.name ?: data.originalName
+    binding.ivPicture.contentDescription = nameHandler(data)
     Glide.with(binding.ivPicture)
-      .load(
-        if (!data.profilePath.isNullOrEmpty()) {
-          TMDB_IMG_LINK_POSTER_W185 + data.profilePath
-        } else {
-          ic_backdrop_error
-        },
-      )
+      .load(data.profileImageSource)
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error)
       .transform(CenterCrop())
       .transition(withCrossFade())
       .into(binding.ivPicture)
 
-    binding.tvTitle.text = data.name ?: data.originalName
-    binding.tvYearReleased.text = data.knownForDepartment
-    binding.tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
+    binding.apply {
+      tvTitle.text = binding.tvTitle.context.titleHandler(data)
+      tvYearReleased.text = data.knownForDepartment
+      tvGenre.text = data.listKnownFor?.let { getKnownFor(it) }
+    }
   }
 
   private fun showMediaData(
@@ -112,40 +109,17 @@ class SearchAdapter(private val navigator: INavigator) :
     view: View,
   ) {
     setImageMedia(binding, data)
-    binding.tvYearReleased.text = when {
-      !data.releaseDate.isNullOrEmpty() && !data.releaseDate.isBlank() -> data.releaseDate
-      !data.firstAirDate.isNullOrEmpty() && !data.firstAirDate.isBlank() -> data.firstAirDate
-      else -> view.context.getString(not_available)
+    binding.apply {
+      tvYearReleased.text = view.context.dateOf(data)
+      tvTitle.text = view.context.titleHandler(data)
+      tvGenre.text = view.context.getGenre(data.listGenreIds)
     }
-
-    binding.tvTitle.text = data.name ?: data.title ?: data.originalTitle ?: data.originalName
-    showGenreMovie(binding, data, view)
-  }
-
-  private fun showGenreMovie(
-    binding: ItemResultBinding,
-    data: MultiSearchItem,
-    view: View,
-  ) {
-    binding.tvGenre.text =
-      if (data.listGenreIds?.isEmpty() == true) {
-        view.context.getString(not_available)
-      } else {
-        data.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-      }
   }
 
   private fun setImageMedia(binding: ItemResultBinding, data: MultiSearchItem) {
-    binding.ivPicture.contentDescription =
-      data.name ?: data.title ?: data.originalTitle ?: data.originalName
+    binding.ivPicture.contentDescription = titleHandler(data)
     Glide.with(binding.ivPicture)
-      .load(
-        when {
-          !data.backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.backdropPath
-          !data.posterPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W300 + data.posterPath
-          else -> ic_backdrop_error
-        },
-      )
+      .load(data.imageSource)
       .transition(withCrossFade())
       .placeholder(ic_bazz_placeholder_search)
       .error(ic_backdrop_error)
