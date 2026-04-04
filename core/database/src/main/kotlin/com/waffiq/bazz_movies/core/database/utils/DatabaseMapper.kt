@@ -20,7 +20,7 @@ object DatabaseMapper {
       rating = voteAverage ?: 0.0f,
       backDrop = backdropPath ?: NOT_AVAILABLE,
       poster = posterPath ?: NOT_AVAILABLE,
-      genre = transformListGenreIdsToJoinName(listGenreIds.orEmpty()),
+      genre = transformListGenreIdsToJoinName(listGenreIds.orEmpty()).orEmpty(),
       popularity = popularity ?: 0.0,
       overview = overview ?: NOT_AVAILABLE,
       isFavorite = isFavorite,

@@ -79,14 +79,16 @@ object MediaHelper {
   fun getListOfKeywords(list: List<MediaKeywordsItem?>?) =
     list?.filter { it?.id != null && !it.name.isNullOrEmpty() }
 
-  val Imageble.backdropOriginalUrl: String?
-    get() = when {
-      backdropPath == NOT_AVAILABLE && posterPath == NOT_AVAILABLE -> null
+  private fun String?.isValidImagePath(): Boolean {
+    return !this.isNullOrBlank() && this != NOT_AVAILABLE
+  }
 
-      !backdropPath.isNullOrBlank() ->
+  private val Imageble.backdropOriginalUrl: String?
+    get() = when {
+      backdropPath.isValidImagePath() ->
         TMDB_IMG_LINK_BACKDROP_ORIGINAL + backdropPath
 
-      !posterPath.isNullOrBlank() ->
+      posterPath.isValidImagePath() ->
         TMDB_IMG_LINK_POSTER_W500 + posterPath
 
       else -> null
@@ -95,15 +97,19 @@ object MediaHelper {
   val Imageble.backdropOriginalSource: Any
     get() = backdropOriginalUrl ?: ic_backdrop_error_filled
 
-  val Imageble.isBackdropAvailable: Boolean
-    get() = backdropPath.isNullOrEmpty() || backdropPath == NOT_AVAILABLE
+  val Imageble.isBackdropNotAvailable: Boolean
+    get() = backdropPath.isNullOrBlank() || backdropPath == NOT_AVAILABLE
 
-  val Imageble.posterUrl: String?
+  private val Imageble.posterUrl: String?
     get() = posterPath
       ?.takeIf { it.isNotBlank() && it != NOT_AVAILABLE }
-      ?.let { TMDB_IMG_LINK_POSTER_W500 + it }
+      ?.let { TMDB_IMG_LINK_POSTER_W500 + it } // higher quality than on the list
 
-  val Imageble.posterSource: Any
+  /** Used on detail page, to show poster in higher quality
+   *
+   * @return Poster URL if available, otherwise fallback to drawable
+   */
+  val Imageble.posterDetailSource: Any
     get() = posterUrl ?: ic_poster_error
 
   fun Context.getOverview(overview: String?): String =

@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
@@ -58,20 +59,14 @@ class KnownForAdapter(private val navigator: INavigator) :
       binding.imgCastPhoto.tag = cast.id
 
       Glide.with(binding.imgCastPhoto)
-        .load(
-          if (!cast.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + cast.posterPath
-          } else {
-            ic_poster_error
-          },
-        )
+        .load(cast.posterSource)
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
         .error(ic_poster_error)
         .into(binding.imgCastPhoto)
 
-      binding.tvCastName.text = cast.name ?: cast.title ?: cast.originalName ?: cast.originalTitle
+      binding.tvCastName.text = nameHandler(cast)
       binding.tvCastCharacter.text = cast.character ?: itemView.context.getString(not_available)
 
       val mediaItem = MediaItem(

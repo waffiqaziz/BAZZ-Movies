@@ -22,17 +22,15 @@ class GenreHelperTest {
   @Test
   fun transformListGenreIdsToJoinName_withEmptyList_returnEmptyString() {
     val input = emptyList<Int>()
-    val expectedOutput = ""
     val actualOutput = transformListGenreIdsToJoinName(input)
-    assertEquals(expectedOutput, actualOutput)
+    assertNull(actualOutput)
   }
 
   @Test
   fun transformListGenreIdsToJoinName_withValidGenreItems_handleInvalidGenreId() {
     val input = listOf(999) // Non-existent genre ID
-    val expectedOutput = ""
     val actualOutput = transformListGenreIdsToJoinName(input)
-    assertEquals(expectedOutput, actualOutput)
+    assertNull(actualOutput)
   }
 
   @Test

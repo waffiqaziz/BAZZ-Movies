@@ -72,18 +72,16 @@ class KnownForAdapterTest {
     val binding = ItemPlayForBinding.inflate(inflater, null, false)
     val viewHolder = adapter.ViewHolder(binding)
 
-    val notAvailable = context.getString(not_available)
-
     val testCases = listOf(
       CastItem(name = "Test Name") to "Test Name",
-      CastItem(title = "Test Title") to "Test Title",
+      CastItem(title = "Test Title") to "Item",
       CastItem(originalName = "Original Name") to "Original Name",
-      CastItem(originalTitle = "Original Title") to "Original Title"
+      CastItem(originalTitle = "Original Title") to "Item"
     )
 
     val characterCases = listOf(
       CastItem(character = "Bjorn") to "Bjorn",
-      CastItem(character = null) to notAvailable
+      CastItem(character = null) to context.getString(not_available)
     )
 
     // test name/title/originalName/originalTitle branches

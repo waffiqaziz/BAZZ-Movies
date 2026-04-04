@@ -54,8 +54,8 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCr
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropAvailable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterSource
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterDetailSource
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -221,9 +221,9 @@ class DetailUIManager(
       .transition(withCrossFade())
       .into(binding.ivPictureBackdrop)
 
-    binding.tvBackdropNotFound.isVisible = dataExtra.isBackdropAvailable
+    binding.tvBackdropNotFound.isVisible = dataExtra.isBackdropNotAvailable
     Glide.with(binding.ivPoster)
-      .load(dataExtra.posterSource)
+      .load(dataExtra.posterDetailSource)
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_poster_error)
       .transition(withCrossFade())

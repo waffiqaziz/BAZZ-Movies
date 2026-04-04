@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class TvAdapter(private val navigator: INavigator) :
@@ -40,17 +41,10 @@ class TvAdapter(private val navigator: INavigator) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(tv: MediaItem) {
-      binding.imgPoster.contentDescription =
-        tv.name ?: tv.title ?: tv.originalTitle ?: tv.originalName
+      binding.imgPoster.contentDescription = titleHandler(tv)
 
       Glide.with(binding.imgPoster)
-        .load(
-          if (!tv.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + tv.posterPath
-          } else {
-            ic_broken_image
-          },
-        )
+        .load(tv.posterSource)
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())

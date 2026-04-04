@@ -1,8 +1,11 @@
 package com.waffiq.bazz_movies.core.utils
 
 import android.content.Context
+import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.Dateable
 import com.waffiq.bazz_movies.core.domain.Imageble
@@ -10,7 +13,9 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Titleable
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import java.text.NumberFormat
+import java.time.LocalDate
 import java.util.Locale
+import kotlin.text.isNullOrBlank
 
 object DetailDataUtils {
   /**
@@ -112,6 +117,24 @@ object DetailDataUtils {
     get() = fullImageUrl() ?: ic_backdrop_error
 
   /**
+   * Builds full poster URL from the available poster path.
+   *
+   * @return poster URL or null if no poster path exists.
+   */
+  private fun Imageble.posterUrl(): String? =
+    posterPath
+      ?.takeIf { it.isNotBlank() || it != NOT_AVAILABLE }
+      ?.let { TMDB_IMG_LINK_POSTER_W185 + it }
+
+  /**
+   * Provides poster image source for UI, used on list of media item.
+   *
+   * @return poster URL if available, otherwise fallback drawable.
+   */
+  val Imageble.posterSource: Any
+    get() = posterUrl() ?: ic_poster_error
+
+  /**
    * Returns the first available date.
    *
    * Priority:
@@ -127,9 +150,25 @@ object DetailDataUtils {
     ).firstOrNull { !it.isNullOrBlank() }
 
   /**
+   * Returns valid date format
+   *
+   * @return date if valid, otherwise a fallback text.
+   */
+  private fun String.isValidDate(): Boolean =
+    try {
+      LocalDate.parse(this) // expects ISO: yyyy-MM-dd
+      true
+    } catch (_: Exception) {
+      false
+    }
+
+  /**
    * Provides formatted date for UI.
    *
    * @return date if available, otherwise a fallback text.
    */
-  fun Context.dateOf(item: Dateable): String = item.displayDate ?: getString(not_available)
+  fun Context.dateOf(item: Dateable): String =
+    item.displayDate
+      ?.takeIf { it.isValidDate() }
+      ?: getString(not_available)
 }

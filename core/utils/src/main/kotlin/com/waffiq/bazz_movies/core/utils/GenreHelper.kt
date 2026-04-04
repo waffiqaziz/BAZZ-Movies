@@ -57,21 +57,20 @@ object GenreHelper {
    * @param listGenreIds A list of genre IDs to be transformed.
    * @return A string of genre names separated by commas.
    */
-  fun transformListGenreIdsToJoinName(listGenreIds: List<Int>): String =
+  fun transformListGenreIdsToJoinName(listGenreIds: List<Int>): String? =
     listGenreIds
       .map { getGenreName(it) }
       .filter { it.isNotEmpty() }
-      .joinToString(", ")
+      .takeIf { it.isNotEmpty() }
+      ?.joinToString(", ")
 
   /**
    * Transform list of integer genre id to return genre names or not available if empty
    */
   fun Context.getGenre(data: List<Int>?): String =
-    if (data.isNullOrEmpty()) {
-      getString(not_available)
-    } else {
-      transformListGenreIdsToJoinName(data)
-    }
+    data
+      ?.let { transformListGenreIdsToJoinName(it) }
+      ?: getString(not_available)
 
   // a map that associates genre names with their respective genre IDs for movies and TV shows.
   private val genreCodeMap = mapOf(

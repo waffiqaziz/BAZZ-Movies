@@ -3,11 +3,14 @@ package com.waffiq.bazz_movies.core.utils
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W300
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
@@ -280,6 +283,27 @@ class DetailDataUtilsTest {
   }
 
   @Test
+  fun posterSource_whenPosterPathAvailable_returnsBackdrop() {
+    val data = MediaItem(posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_POSTER_W185 + "poster", data.posterSource)
+  }
+
+  @Test
+  fun posterSource_whenPathsAreMissing_returnsCorrectValue() {
+    // null
+    val data1 = MediaItem()
+    assertEquals(ic_poster_error, data1.posterSource)
+
+    // path is empty
+    val data2 = MediaItem(posterPath = "")
+    assertEquals(ic_poster_error, data2.posterSource)
+
+    // path is blank
+    val data3 = MediaItem(posterPath = " ")
+    assertEquals(ic_poster_error, data3.posterSource)
+  }
+
+  @Test
   fun dateOf_whenAllDateFieldAvailable_returnsReleaseDate() {
     val data = context.dateOf(MediaItem(releaseDate = "2023-05-15", firstAirDate = "2010-10-10"))
     assertEquals("2023-05-15", data)
@@ -314,5 +338,9 @@ class DetailDataUtilsTest {
     // firstAirDate is blank
     val data7 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = "2023-05-15"))
     assertEquals("2023-05-15", data7)
+
+    // invalid date
+    val data8 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = "2023-e05-15"))
+    assertEquals("N/A", data8)
   }
 }

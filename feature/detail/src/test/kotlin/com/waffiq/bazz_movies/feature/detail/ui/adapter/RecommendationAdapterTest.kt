@@ -184,7 +184,7 @@ class RecommendationAdapterTest : BaseAdapterTest() {
   fun imgPoster_whenContentDescriptionAvailable_usesCorrectValue() = runTest {
     // all null
     submitDataYearReleased(
-      null,
+      "Item",
       MediaItem(id = 1, name = null, originalTitle = null, originalName = null)
     )
 

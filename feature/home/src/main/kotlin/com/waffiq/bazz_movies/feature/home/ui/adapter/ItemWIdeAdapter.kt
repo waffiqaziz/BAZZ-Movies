@@ -15,10 +15,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
-import com.waffiq.bazz_movies.core.utils.GenreHelper.transformListGenreIdsToJoinName
+import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 
@@ -48,8 +47,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
       setImage(binding.ivBackdrop, data)
 
       binding.tvTitle.text = itemView.context.titleHandler(data)
-      binding.tvGenre.text = data.listGenreIds?.let { transformListGenreIdsToJoinName(it) }
-        ?: itemView.context.getString(not_available)
+      binding.tvGenre.text = itemView.context.getGenre(data.listGenreIds)
       binding.tvYear.text =
         data.releaseDate?.take(n = 4) ?: data.firstAirDate?.take(n = 4).toString()
       binding.ratingBar.rating = (data.voteAverage ?: 0F) / 2
@@ -64,7 +62,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
       ivBackdrop.contentDescription = titleHandler(data)
       Glide.with(ivBackdrop)
         .load(
-          if (!data.posterPath.isNullOrEmpty()) {
+          if (!data.backdropPath.isNullOrEmpty()) {
             TMDB_IMG_LINK_BACKDROP_W780 + data.backdropPath
           } else {
             ic_backdrop_error_filled
