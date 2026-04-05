@@ -79,9 +79,7 @@ object MediaHelper {
   fun getListOfKeywords(list: List<MediaKeywordsItem?>?) =
     list?.filter { it?.id != null && !it.name.isNullOrEmpty() }
 
-  private fun String?.isValidImagePath(): Boolean {
-    return !this.isNullOrBlank() && this != NOT_AVAILABLE
-  }
+  private fun String?.isValidImagePath(): Boolean = !this.isNullOrBlank() && this != NOT_AVAILABLE
 
   private val Imageble.backdropOriginalUrl: String?
     get() = when {
