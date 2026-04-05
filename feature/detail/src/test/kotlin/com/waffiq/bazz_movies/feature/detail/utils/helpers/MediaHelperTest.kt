@@ -1,28 +1,50 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
+import android.content.Context
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.ACTION_UP
 import android.view.KeyEvent.KEYCODE_0
 import android.view.KeyEvent.KEYCODE_8
 import android.view.KeyEvent.KEYCODE_BACK
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
+import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterDetailSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 
 class MediaHelperTest {
+
+  val context: Context = mockk()
+  val noOverview = "Theres no overview translated in English"
+
+  @Before
+  fun setup() {
+    every { context.getString(no_overview) } returns noOverview
+  }
 
   @Test
   fun convertRuntime_withValidMinutes_returnsCorrectFormat() {
@@ -255,5 +277,96 @@ class MediaHelperTest {
     )
 
     assertEquals(listOf(validItem1, validItem2), result)
+  }
+
+  @Test
+  fun backdropOriginalUrl_whenAllPathAvailable_returnsBackdrop() {
+    val data = MediaItem(backdropPath = "backdrop", posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_BACKDROP_ORIGINAL + "backdrop", data.backdropOriginalSource)
+  }
+
+  @Test
+  fun backdropOriginalUrl_whenBackdropPathMissing_returnsCorrectValue() {
+    // all null
+    val data1 = MediaItem()
+    assertEquals(ic_backdrop_error_filled, data1.backdropOriginalSource)
+
+    // all N/A value
+    val data2 = MediaItem(backdropPath = "N/A", posterPath = "N/A")
+    assertEquals(ic_backdrop_error_filled, data2.backdropOriginalSource)
+
+    // all empty value
+    val data3 = MediaItem(backdropPath = "", posterPath = "")
+    assertEquals(ic_backdrop_error_filled, data3.backdropOriginalSource)
+
+    // all blank
+    val data4 = MediaItem(backdropPath = " ", posterPath = " ")
+    assertEquals(ic_backdrop_error_filled, data4.backdropOriginalSource)
+
+    // backdrop null
+    val data5 = MediaItem(posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_POSTER_W500 + "poster", data5.backdropOriginalSource)
+
+    // backdrop empty
+    val data6 = MediaItem(backdropPath = "", posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_POSTER_W500 + "poster", data6.backdropOriginalSource)
+
+    // backdrop blank
+    val data7 = MediaItem(backdropPath = " ", posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_POSTER_W500 + "poster", data7.backdropOriginalSource)
+  }
+
+  @Test
+  fun isBackdropNotAvailable_whenPathIsAvailable_returnsFalse() {
+    val data = MediaItem(backdropPath = "backdrop")
+    assertFalse(data.isBackdropNotAvailable)
+  }
+
+  @Test
+  fun isBackdropNotAvailable_whenPathIsNotAvailable_returnsTrue() {
+    // backdrop null
+    assertTrue(MediaItem(backdropPath = null).isBackdropNotAvailable)
+
+    // backdrop blank
+    assertTrue(MediaItem(backdropPath = " ").isBackdropNotAvailable)
+
+    // backdrop empty
+    assertTrue(MediaItem(backdropPath = "").isBackdropNotAvailable)
+
+    // backdrop N/A
+    assertTrue(MediaItem(backdropPath = "N/A").isBackdropNotAvailable)
+  }
+
+  @Test
+  fun posterDetailSource_whenPosterPathIsAvailable_returnsPoster() {
+    val data = MediaItem(posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_POSTER_W500 + "poster", data.posterDetailSource)
+  }
+
+  @Test
+  fun posterDetailSource_whenPosterPathIsMissing_returnsDrawable() {
+    // null
+    assertEquals(ic_poster_error, MediaItem(posterPath = null).posterDetailSource)
+
+    // empty
+    assertEquals(ic_poster_error, MediaItem(posterPath = "").posterDetailSource)
+
+    // blank
+    assertEquals(ic_poster_error, MediaItem(posterPath = " ").posterDetailSource)
+
+    // N/A
+    assertEquals(ic_poster_error, MediaItem(posterPath = "N/A").posterDetailSource)
+  }
+
+  @Test
+  fun getOverview_whenOverviewIsAvailable_returnsOverview() {
+    assertEquals("data overview", context.getOverview("data overview"))
+  }
+
+  @Test
+  fun getOverview_whenOverviewIsMissing_returnsNotAvailable() {
+    assertEquals(noOverview, context.getOverview(""))
+    assertEquals(noOverview, context.getOverview(" "))
+    assertEquals(noOverview, context.getOverview(null))
   }
 }

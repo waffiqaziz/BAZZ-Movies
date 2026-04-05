@@ -1,7 +1,11 @@
 package com.waffiq.bazz_movies.feature.search.utils
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
+import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.getKnownFor
+import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.profileImageSource
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -59,5 +63,27 @@ class SearchHelperTest {
 
     val result = getKnownFor(knownForItems)
     assertEquals("Movie 2, Movie 4", result)
+  }
+
+  @Test
+  fun profileImageSource_whenProfileIsAvailable_returnsProfileURL() {
+    val data = MultiSearchItem(profilePath = "profile", id = 1)
+    val result = data.profileImageSource
+    assertEquals(TMDB_IMG_LINK_POSTER_W185+"profile", result)
+  }
+
+  @Test
+  fun profileImageSource_whenProfileIsMissing_returnsFallback() {
+    // profile is null
+    val data1 = MultiSearchItem(profilePath = null, id = 1)
+    assertEquals(ic_backdrop_error, data1.profileImageSource)
+
+    // profile is empty
+    val data2 = MultiSearchItem(profilePath = "", id = 1)
+    assertEquals(ic_backdrop_error, data2.profileImageSource)
+
+    // profile is blank
+    val data3 = MultiSearchItem(profilePath = " ", id = 1)
+    assertEquals(ic_backdrop_error, data3.profileImageSource)
   }
 }

@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class RecommendationAdapter(private val navigator: INavigator) :
@@ -39,17 +40,10 @@ class RecommendationAdapter(private val navigator: INavigator) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(movie: MediaItem) {
-      binding.imgPoster.contentDescription =
-        movie.name ?: movie.title ?: movie.originalTitle ?: movie.originalName
+      binding.imgPoster.contentDescription = titleHandler(movie)
 
       Glide.with(binding.imgPoster)
-        .load(
-          if (!movie.posterPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_POSTER_W185 + movie.posterPath
-          } else {
-            ic_poster_error
-          },
-        ) // URL movie poster
+        .load(movie.posterSource) // URL movie poster
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())

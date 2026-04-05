@@ -24,14 +24,10 @@ import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -39,7 +35,7 @@ import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeOut
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
-import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.databinding.SideSheetContentBinding
@@ -53,9 +49,13 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterDetailSource
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -213,38 +213,17 @@ class DetailUIManager(
    * Loads and displays poster and backdrop images using Glide.
    */
   private fun showBackdropAndPoster(dataExtra: MediaItem) {
-    val backdropUrl = when {
-      dataExtra.backdropPath == NOT_AVAILABLE && dataExtra.posterPath == NOT_AVAILABLE ->
-        ic_backdrop_error_filled
-
-      !dataExtra.backdropPath.isNullOrEmpty() ->
-        TMDB_IMG_LINK_BACKDROP_ORIGINAL + dataExtra.backdropPath
-
-      !dataExtra.posterPath.isNullOrEmpty() ->
-        TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-
-      else -> ic_backdrop_error_filled
-    }
-
     Glide.with(binding.ivPictureBackdrop)
-      .load(backdropUrl)
+      .load(dataExtra.backdropOriginalSource)
       .placeholder(ic_bazz_placeholder_backdrops)
       .centerCrop()
       .error(ic_backdrop_error_filled)
       .transition(withCrossFade())
       .into(binding.ivPictureBackdrop)
 
-    binding.tvBackdropNotFound.isVisible =
-      dataExtra.backdropPath.isNullOrEmpty() || dataExtra.backdropPath == NOT_AVAILABLE
-
-    val posterUrl = when {
-      dataExtra.posterPath == NOT_AVAILABLE -> ic_poster_error
-      dataExtra.posterPath != null -> TMDB_IMG_LINK_POSTER_W500 + dataExtra.posterPath
-      else -> ic_poster_error
-    }
-
+    binding.tvBackdropNotFound.isVisible = dataExtra.isBackdropNotAvailable
     Glide.with(binding.ivPoster)
-      .load(posterUrl)
+      .load(dataExtra.posterDetailSource)
       .placeholder(ic_bazz_placeholder_poster)
       .error(ic_poster_error)
       .transition(withCrossFade())
@@ -259,12 +238,8 @@ class DetailUIManager(
     binding.apply {
       tvTitle.text = tvTitle.context.titleHandler(dataExtra)
       tvMediaType.text = dataExtra.mediaType.uppercase()
-      tvYearReleased.text = dateFormatterStandard(
-        dataExtra.releaseDate?.takeIf { it.isNotEmpty() }
-          ?: dataExtra.firstAirDate?.takeIf { it.isNotEmpty() }.orEmpty(),
-      )
-      tvOverview.text = dataExtra.overview?.takeIf { it.isNotBlank() }
-        ?: activity.getString(no_overview)
+      tvYearReleased.text = tvYearReleased.context.dateOf(dataExtra)
+      tvOverview.text = tvOverview.context.getOverview(dataExtra.overview)
     }
 
     // side sheet
