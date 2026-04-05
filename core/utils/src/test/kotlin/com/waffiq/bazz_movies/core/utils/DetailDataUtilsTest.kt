@@ -301,6 +301,10 @@ class DetailDataUtilsTest {
     // path is blank
     val data3 = MediaItem(posterPath = " ")
     assertEquals(ic_poster_error, data3.posterSource)
+
+    // path is N/A
+    val data4 = MediaItem(posterPath = "N/A")
+    assertEquals(ic_poster_error, data4.posterSource)
   }
 
   @Test
