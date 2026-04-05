@@ -123,7 +123,7 @@ object DetailDataUtils {
    */
   private fun Imageble.posterUrl(): String? =
     posterPath
-      ?.takeIf { it.isNotBlank() || it != NOT_AVAILABLE }
+      ?.takeIf { it.isNotBlank() && it != NOT_AVAILABLE }
       ?.let { TMDB_IMG_LINK_POSTER_W185 + it }
 
   /**
