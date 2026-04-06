@@ -12,16 +12,21 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_grid
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_list
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
+import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_grid_layout
+import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_list_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
 import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
@@ -275,6 +280,33 @@ class ListActivity : AppCompatActivity() {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false
     }
+    binding.btnToggleLayout.setOnClickListener { toggleLayout() }
+  }
+
+  private fun toggleLayout() {
+    val isGrid = !adapter.isGridMode()
+
+    binding.btnToggleLayout.contentDescription = getString(
+      if (isGrid) toggle_list_layout else toggle_grid_layout
+    )
+
+    // save scroll state from the outgoing LayoutManager
+    val savedState = binding.rvList.layoutManager!!.onSaveInstanceState()
+    binding.rvList.recycledViewPool.clear() // clear stale holders
+
+    // update the layout manager
+    adapter.setGridMode(isGrid)
+    binding.rvList.layoutManager = if (isGrid) {
+      GridLayoutManager(this, calculateSpanCount(), GridLayoutManager.VERTICAL, false)
+    } else {
+      LinearLayoutManager(this)
+    }
+
+    // set state into the incoming LayoutManager
+    binding.rvList.layoutManager!!.onRestoreInstanceState(savedState)
+
+    // swap icon
+    binding.btnToggleLayout.setIconResource(if (isGrid) ic_grid else ic_list)
   }
 
   private fun calculateSpanCount(): Int {

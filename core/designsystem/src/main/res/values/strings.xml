@@ -93,6 +93,8 @@
   <string name="no_data_explanation">We cannot find data you are looking for, maybe add favorite or watchlist first</string>
 
   <!-- DETAIL MOVIE/TV -->
+  <string name="toggle_list_layout">Switch to list view</string>
+  <string name="toggle_grid_layout">Switch to grid view</string>
   <string name="yt_not_installed">Youtube App Not Installed</string>
   <string name="backdrop_not_found">*Official backdrop has not been released yet</string>
   <string name="data_powered_by">*Data powered by</string>

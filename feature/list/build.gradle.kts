@@ -20,10 +20,12 @@ dependencies {
 
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockito.android.kotlin)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockk)
   testImplementation(libs.robolectric)
   testImplementation(libs.turbine)
+  testImplementation(libs.truth)
   testRuntimeOnly(libs.junit.vintage)
 
   androidTestImplementation(libs.androidx.espresso.intents)

@@ -87,4 +87,7 @@ object DummyData {
         mediaTvResponseItem2.toMediaItem(),
       )
     )
+
+  val mediaMovieItem = mediaMovieResponseItem.toMediaItem()
+  val mediaMovieItem2 = mediaMovieResponseItem2.toMediaItem()
 }
