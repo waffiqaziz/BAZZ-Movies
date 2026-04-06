@@ -8,7 +8,7 @@ object DummyData {
 
   val mediaItem = MediaItem(
     id = 1,
-    title = "title",
+    title = "movie title",
     overview = "overview",
     posterPath = "/poster1.jpg",
     backdropPath = "/backdrop1.jpg",
@@ -21,7 +21,7 @@ object DummyData {
     PagingData.from(
       listOf(
         mediaItem,
-        mediaItem.copy(id = 2),
+        mediaItem.copy(id = 2, title = "movie title 2"),
       )
     )
 }

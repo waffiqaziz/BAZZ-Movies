@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers
@@ -17,6 +18,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_close
+import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.list.R.id.loading_indicator
 import com.waffiq.bazz_movies.feature.list.R.id.rv_list
@@ -147,6 +149,30 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
+  fun listActivity_toggleButtonPressed_changesTheLayout() {
+    context.launchListActivity {
+      // should use grid layout on initial 
+      onView(withText("movie title")).check(doesNotExist())
+
+      // switch to linear layout
+      triggerListButton()
+      onView(withText("movie title"))
+        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+
+      // back to grid layout
+      onView(withId(btn_toggle_layout)).check(matches(isDisplayed())).perform(click())
+      onView(withText("movie title")).check(doesNotExist())
+    }
+  }
+
+  @Test
+  fun listActivity_performClickOnListLayout_changesTheLayout() {
+    context.launchListActivity {
+      triggerListButton()
+    }
+  }
+
+  @Test
   fun swipeRefreshMovie_whenScroll_runsWithoutProblem() {
     context.launchListActivity {
       onView(withId(rv_list)).perform(swipeDown())
@@ -244,5 +270,9 @@ class ListActivityTest : BaseListActivityTest() {
     context.launchNullListActivity(args = null) { scenario ->
       assertTrue(scenario.state == Lifecycle.State.DESTROYED)
     }
+  }
+
+  private fun triggerListButton(){
+    onView(withId(btn_toggle_layout)).check(matches(isDisplayed())).perform(click())
   }
 }
