@@ -19,20 +19,18 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
@@ -46,16 +44,14 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 class MediaDetailViewModel @Inject constructor(
-  private val getMovieDetailUseCase: GetMovieDetailUseCase,
-  private val getTvDetailUseCase: GetTvDetailUseCase,
+  private val getListMoviesUseCase: GetListMoviesUseCase,
+  private val getListTvUseCase: GetListTvUseCase,
   private val localDatabaseUseCase: LocalDatabaseUseCase,
   private val postRateUseCase: PostRateUseCase,
   private val postActionUseCase: PostActionUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,
-  private val getMediaStateUseCase: GetMediaStateWithUserUseCase,
-  private val getMovieDetailWithUserRegionUseCase: GetMovieDataWithUserRegionUseCase,
-  private val getTvDetailWithUserRegionUseCase: GetTvDataWithUserRegionUseCase,
-  private val getTvAllScoreUseCase: GetTvAllScoreUseCase,
+  private val mediaStateUseCase: MediaStateUseCase,
+  private val getMediaDetailUseCase: GetMediaDetailUseCase,
 ) : ViewModel() {
 
   // region OBSERVABLES
@@ -106,28 +102,28 @@ class MediaDetailViewModel @Inject constructor(
   // region MOVIE
   fun getMovieVideoLink(movieId: Int) {
     executeUseCase(
-      flowProvider = { getMovieDetailUseCase.getMovieVideoLinks(movieId) },
+      flowProvider = { getMediaDetailUseCase.getMovieVideoLinks(movieId) },
       onSuccess = { _linkVideo.value = it },
     )
   }
 
   fun getMovieDetail(movieId: Int) {
     executeUseCase(
-      flowProvider = { getMovieDetailWithUserRegionUseCase.getMovieDetailWithUserRegion(movieId) },
+      flowProvider = { getMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) },
       onSuccess = { _detailMedia.value = it },
     )
   }
 
   fun getMovieCredits(movieId: Int) {
     executeUseCase(
-      flowProvider = { getMovieDetailUseCase.getMovieCredits(movieId) },
+      flowProvider = { getMediaDetailUseCase.getMovieCredits(movieId) },
       onSuccess = { _mediaCredits.value = it },
     )
   }
 
   fun getMovieRecommendation(movieId: Int) {
     viewModelScope.launch {
-      getMovieDetailUseCase.getMovieRecommendationPagingData(movieId).collect {
+      getListMoviesUseCase.getMovieRecommendation(movieId).collect {
         _recommendation.value = it
       }
     }
@@ -135,7 +131,7 @@ class MediaDetailViewModel @Inject constructor(
 
   fun getMovieState(id: Int) {
     executeUseCase(
-      flowProvider = { getMediaStateUseCase.getMovieStateWithUser(id) },
+      flowProvider = { mediaStateUseCase.getMovieStateWithUser(id) },
       onSuccess = { _itemState.value = it },
     )
   }
@@ -143,7 +139,7 @@ class MediaDetailViewModel @Inject constructor(
   fun getMovieWatchProviders(movieId: Int) {
     viewModelScope.launch {
       collectWatchProviders(
-        getMovieDetailWithUserRegionUseCase.getMovieWatchProvidersWithUserRegion(movieId),
+        getMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId),
       )
     }
   }
@@ -152,28 +148,28 @@ class MediaDetailViewModel @Inject constructor(
   // region TV-SERIES
   fun getTvTrailerLink(tvId: Int) {
     executeUseCase(
-      flowProvider = { getTvDetailUseCase.getTvTrailerLink(tvId) },
+      flowProvider = { getMediaDetailUseCase.getTvTrailerLink(tvId) },
       onSuccess = { _linkVideo.value = it },
     )
   }
 
   fun getTvDetail(tvId: Int) {
     executeUseCase(
-      flowProvider = { getTvDetailWithUserRegionUseCase.getTvDetailWithUserRegion(tvId) },
+      flowProvider = { getMediaDetailUseCase.getTvDetailWithUserRegion(tvId) },
       onSuccess = { _detailMedia.value = it },
     )
   }
 
   fun getTvCredits(tvId: Int) {
     executeUseCase(
-      flowProvider = { getTvDetailUseCase.getTvCredits(tvId) },
+      flowProvider = { getMediaDetailUseCase.getTvCredits(tvId) },
       onSuccess = { _mediaCredits.value = it },
     )
   }
 
   fun getTvRecommendation(tvId: Int) {
     viewModelScope.launch {
-      getTvDetailUseCase.getTvRecommendationPagingData(tvId).collect {
+      getListTvUseCase.getTvRecommendation(tvId).collect {
         _recommendation.value = it
       }
     }
@@ -181,7 +177,7 @@ class MediaDetailViewModel @Inject constructor(
 
   fun getTvState(id: Int) {
     executeUseCase(
-      flowProvider = { getMediaStateUseCase.getTvStateWithUser(id) },
+      flowProvider = { mediaStateUseCase.getTvStateWithUser(id) },
       onSuccess = { _itemState.value = it },
     )
   }
@@ -189,14 +185,14 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvWatchProviders(tvId: Int) {
     viewModelScope.launch {
       collectWatchProviders(
-        getTvDetailWithUserRegionUseCase.getTvWatchProvidersWithUserRegion(tvId),
+        getMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId),
       )
     }
   }
 
   fun getTvAllScore(tvId: Int) {
     executeUseCase(
-      flowProvider = { getTvAllScoreUseCase.getTvAllScore(tvId) },
+      flowProvider = { getOMDbDetailUseCase.getTvAllScore(tvId) },
       onSuccess = { _omdbResult.value = it },
     )
   }

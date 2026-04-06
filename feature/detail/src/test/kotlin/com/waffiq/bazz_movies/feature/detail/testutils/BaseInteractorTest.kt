@@ -1,25 +1,17 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
-import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -29,8 +21,6 @@ import org.junit.Rule
  * Base class for interactor tests, providing common setup and utility methods.
  */
 abstract class BaseInteractorTest {
-
-  private val differ = differ<MediaItem>()
 
   protected val mockDetailRepository: IDetailRepository = mockk()
   protected val mockMoviesRepository: IMoviesRepository = mockk()
@@ -101,31 +91,5 @@ abstract class BaseInteractorTest {
     }
 
     coVerify { mockCall() }
-  }
-
-  /**
-   * Generic test for paging data scenarios with flexible parameters
-   */
-  protected fun testPagingData(
-    mockCall: () -> Flow<PagingData<MediaItem>>,
-    pagingData: PagingData<MediaItem>,
-    interactorCall: () -> Flow<PagingData<MediaItem>>,
-    assertions: (List<MediaItem>) -> Unit,
-  ) = runTest {
-    every { mockCall() } returns flowOf(pagingData)
-
-    interactorCall().test {
-      val actualPagingData = awaitItem()
-      val job = launch { differ.submitData(actualPagingData) }
-      advanceUntilIdle()
-
-      val pagingList = differ.snapshot().items
-      assertions(pagingList)
-
-      job.cancel()
-      awaitComplete()
-    }
-
-    verify { mockCall() }
   }
 }

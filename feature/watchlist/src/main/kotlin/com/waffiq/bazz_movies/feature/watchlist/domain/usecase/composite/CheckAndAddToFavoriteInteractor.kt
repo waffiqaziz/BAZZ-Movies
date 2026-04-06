@@ -6,48 +6,41 @@ import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.domain.repository.IMoviesRepository
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.watchlist.domain.model.FavoriteActionResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 class CheckAndAddToFavoriteInteractor @Inject constructor(
-  private val moviesRepository: IMoviesRepository,
+  private val mediaStateUseCase: MediaStateUseCase,
   private val postActionUseCase: PostActionUseCase,
-  private val userRepository: IUserRepository,
 ) : CheckAndAddToFavoriteUseCase {
 
   override fun addMovieToFavorite(movieId: Int): Flow<Outcome<FavoriteActionResult>> =
     addToFavorite(
       mediaId = movieId,
       mediaType = MOVIE_MEDIA_TYPE,
-      getStateFlow = { token -> moviesRepository.getMovieState(token, movieId) },
+      getStateFlow = { mediaStateUseCase.getMovieStateWithUser(movieId) },
     )
 
   override fun addTvToFavorite(tvId: Int): Flow<Outcome<FavoriteActionResult>> =
     addToFavorite(
       mediaId = tvId,
       mediaType = TV_MEDIA_TYPE,
-      getStateFlow = { token -> moviesRepository.getTvState(token, tvId) },
+      getStateFlow = { mediaStateUseCase.getTvStateWithUser(tvId) },
     )
 
   private fun addToFavorite(
     mediaId: Int,
     mediaType: String,
-    getStateFlow: (String) -> Flow<Outcome<MediaState>>,
+    getStateFlow: () -> Flow<Outcome<MediaState>>,
   ): Flow<Outcome<FavoriteActionResult>> =
-    userRepository.getUserToken()
-      .filterNotNull()
-      .take(1)
-      .flatMapConcat { token -> getStateFlow(token) }
+    getStateFlow()
       .flatMapConcat { stateOutcome ->
         when (stateOutcome) {
           is Outcome.Success -> {

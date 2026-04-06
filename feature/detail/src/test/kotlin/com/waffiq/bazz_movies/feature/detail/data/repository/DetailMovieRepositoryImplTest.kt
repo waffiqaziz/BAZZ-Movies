@@ -4,8 +4,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.cast
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.MovieKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.movie.DetailMovieResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testEmptyPagingData
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
@@ -16,7 +14,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.t
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MovieMapper.toDetailMovie
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -139,37 +136,6 @@ class DetailMovieRepositoryImplTest : BaseDetailRepositoryImplTest() {
       dataSourceCall = { movieDataSource.getMovieKeywords(idString) },
       repositoryCall = { repository.getMovieKeywords(idString) },
       verifyDataSourceCall = { coVerify { movieDataSource.getMovieKeywords(idString) } }
-    )
-  }
-
-  @Test
-  fun getMovieRecommendation_whenSuccessful_returnsDataCorrectly() {
-    val response = createSampleMediaItemResponse()
-    val fakePagingData = createSamplePagingData(response, response)
-
-    testSuccessfulPagingData(
-      mockPagingData = fakePagingData,
-      dataSourceCall = { movieDataSource.getMovieRecommendation(id) },
-      repositoryCall = { repository.getMovieRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getMovieRecommendation(id) } }
-    )
-  }
-
-  @Test
-  fun getMovieRecommendation_whenSuccessful_returnsPagedData() {
-    testEmptyPagingData(
-      dataSourceCall = { movieDataSource.getMovieRecommendation(id) },
-      repositoryCall = { repository.getMovieRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getMovieRecommendation(id) } }
-    )
-  }
-
-  @Test
-  fun getMovieRecommendation_whenSearchItemIsNull_returnsNonEmptyPagingData() {
-    testPagingDataWithMockItems(
-      dataSourceCall = { movieDataSource.getMovieRecommendation(id) },
-      repositoryCall = { repository.getMovieRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getMovieRecommendation(id) } }
     )
   }
 }

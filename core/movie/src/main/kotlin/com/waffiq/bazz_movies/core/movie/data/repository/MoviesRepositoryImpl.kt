@@ -93,6 +93,16 @@ class MoviesRepositoryImpl @Inject constructor(private val movieDataSource: Movi
     movieDataSource.getTvState(sessionId, tvId)
       .toOutcome { it.toMediaState() }
 
+  override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>> =
+    movieDataSource.getMovieRecommendation(movieId).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
+    }
+
+  override fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>> =
+    movieDataSource.getTvRecommendation(tvId).map { pagingData ->
+      pagingData.map { it.toMediaItem() }
+    }
+
   // region POST FAVORITE AND WATCHLIST
   override fun postFavorite(
     sessionId: String,

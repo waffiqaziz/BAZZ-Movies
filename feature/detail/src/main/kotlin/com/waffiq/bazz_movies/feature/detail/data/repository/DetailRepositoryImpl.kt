@@ -1,10 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
-import androidx.paging.PagingData
-import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
@@ -25,7 +21,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTv
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.WatchProvidersMapper.toWatchProviders
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
@@ -54,16 +49,6 @@ class DetailRepositoryImpl @Inject constructor(private val movieDataSource: Movi
 
   override fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>> =
     movieDataSource.getTvCredits(tvId).toOutcome { it.toMediaCredits() }
-
-  override fun getMovieRecommendationPagingData(movieId: Int): Flow<PagingData<MediaItem>> =
-    movieDataSource.getMovieRecommendation(movieId).map { pagingData ->
-      pagingData.map { it.toMediaItem() }
-    }
-
-  override fun getTvRecommendationPagingData(tvId: Int): Flow<PagingData<MediaItem>> =
-    movieDataSource.getTvRecommendation(tvId).map { pagingData ->
-      pagingData.map { it.toMediaItem() }
-    }
 
   override fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>> =
     movieDataSource.getWatchProviders(params, id).toOutcome { it.toWatchProviders() }

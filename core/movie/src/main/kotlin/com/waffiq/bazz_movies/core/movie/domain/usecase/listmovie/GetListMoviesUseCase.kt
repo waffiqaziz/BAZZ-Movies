@@ -11,4 +11,5 @@ interface GetListMoviesUseCase {
   fun getTrendingToday(): Flow<PagingData<MediaItem>>
   fun getUpcomingMovies(): Flow<PagingData<MediaItem>>
   fun getPlayingNowMovies(): Flow<PagingData<MediaItem>>
+  fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>>
 }

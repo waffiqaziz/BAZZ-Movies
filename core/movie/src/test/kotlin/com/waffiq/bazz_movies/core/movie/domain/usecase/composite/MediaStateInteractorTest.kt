@@ -1,12 +1,12 @@
-package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
+package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.domain.MediaState
-import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaState
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvMediaState
+import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.MOVIE_ID
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.SESSION_ID
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.TV_ID
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.movieMediaState
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.tvMediaState
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -15,17 +15,13 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertIs
 
-class GetMediaStateWithUserInteractorTest : BaseInteractorTest() {
+class MediaStateInteractorTest : BaseInteractorTest() {
 
-  private lateinit var interactor: GetMediaStateWithUserInteractor
-
-  override fun initInteractor() {
-    interactor = GetMediaStateWithUserInteractor(mockMoviesRepository, mockUserRepository)
-  }
+  private lateinit var interactor: MediaStateInteractor
 
   @Before
-  override fun baseSetUp() {
-    super.baseSetUp()
+  override fun setup() {
+    interactor = MediaStateInteractor(mockMoviesRepository, mockUserRepository)
     every { mockUserRepository.getUserToken() } returns flowOf(SESSION_ID)
   }
 

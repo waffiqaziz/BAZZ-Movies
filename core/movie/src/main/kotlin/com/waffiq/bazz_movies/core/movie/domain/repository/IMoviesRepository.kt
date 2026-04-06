@@ -23,6 +23,8 @@ interface IMoviesRepository {
   fun getAiringTodayTv(region: String): Flow<PagingData<MediaItem>>
   fun getTrendingThisWeek(region: String): Flow<PagingData<MediaItem>>
   fun getTopRatedTv(): Flow<PagingData<MediaItem>>
+  fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>>
+  fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>>
   // endregion LIST
 
   fun getMovieState(sessionId: String, movieId: Int): Flow<Outcome<MediaState>>

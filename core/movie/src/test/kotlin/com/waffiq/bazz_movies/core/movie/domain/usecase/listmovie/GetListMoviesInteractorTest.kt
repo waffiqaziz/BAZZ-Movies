@@ -1,6 +1,8 @@
 package com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie
 
 import com.waffiq.bazz_movies.core.movie.testutils.BaseInteractorTest
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.MOVIE_ID
+import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.USER_REGION
 import com.waffiq.bazz_movies.core.movie.testutils.TestVariables.movieMediaItem
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -14,13 +16,13 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Before
   override fun setup() {
     super.setup()
-    getListMoviesInteractor = GetListMoviesInteractor(mockMovieRepository, mockUserRepository)
+    getListMoviesInteractor = GetListMoviesInteractor(mockMoviesRepository, mockUserRepository)
   }
 
   @Test
   fun getTopRatedMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getTopRatedMovies() },
+      mockCall = { mockMoviesRepository.getTopRatedMovies() },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getTopRatedMovies() },
     ) { pagingList ->
@@ -31,7 +33,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getPopularMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getPopularMovies() },
+      mockCall = { mockMoviesRepository.getPopularMovies() },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getPopularMovies() },
     ) { pagingList ->
@@ -42,7 +44,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getTrendingThisWeek_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getTrendingThisWeek(region) },
+      mockCall = { mockMoviesRepository.getTrendingThisWeek(USER_REGION) },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getTrendingThisWeek() },
     ) { pagingList ->
@@ -53,7 +55,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getTrendingToday_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getTrendingToday(region) },
+      mockCall = { mockMoviesRepository.getTrendingToday(USER_REGION) },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getTrendingToday() },
     ) { pagingList ->
@@ -64,7 +66,7 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getUpcomingMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getUpcomingMovies(region) },
+      mockCall = { mockMoviesRepository.getUpcomingMovies(USER_REGION) },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getUpcomingMovies() },
     ) { pagingList ->
@@ -75,9 +77,20 @@ class GetListMoviesInteractorTest : BaseInteractorTest() {
   @Test
   fun getPlayingNowMovies_whenValueIsValid_returnsDataCorrectly() = runTest {
     testPagingData(
-      mockCall = { mockMovieRepository.getPlayingNowMovies(region) },
+      mockCall = { mockMoviesRepository.getPlayingNowMovies(USER_REGION) },
       pagingData = fakeMoviePagingData,
       interactorCall = { getListMoviesInteractor.getPlayingNowMovies() },
+    ) { pagingList ->
+      assertEquals(movieMediaItem, pagingList[0])
+    }
+  }
+
+  @Test
+  fun getMovieRecommendation_whenValueIsValid_returnsDataCorrectly() = runTest {
+    testPagingData(
+      mockCall = { mockMoviesRepository.getMovieRecommendation(MOVIE_ID) },
+      pagingData = fakeMoviePagingData,
+      interactorCall = { getListMoviesInteractor.getMovieRecommendation(MOVIE_ID) },
     ) { pagingList ->
       assertEquals(movieMediaItem, pagingList[0])
     }
