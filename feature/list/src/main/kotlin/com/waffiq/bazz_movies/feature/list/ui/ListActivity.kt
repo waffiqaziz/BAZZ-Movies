@@ -283,13 +283,21 @@ class ListActivity : AppCompatActivity() {
 
   private fun toggleLayout() {
     val isGrid = !adapter.isGridMode()
-    adapter.setGridMode(isGrid)
 
+    // save scroll state from the outgoing LayoutManager
+    val savedState = binding.rvList.layoutManager!!.onSaveInstanceState()
+    binding.rvList.recycledViewPool.clear() // clear stale holders
+
+    // update the layout manager
+    adapter.setGridMode(isGrid)
     binding.rvList.layoutManager = if (isGrid) {
       GridLayoutManager(this, calculateSpanCount(), GridLayoutManager.VERTICAL, false)
     } else {
       LinearLayoutManager(this)
     }
+
+    // set state into the incoming LayoutManager
+    binding.rvList.layoutManager!!.onRestoreInstanceState(savedState)
 
     // swap icon
     binding.btnToggleLayout.setIconResource(if (isGrid) ic_grid else ic_list)
