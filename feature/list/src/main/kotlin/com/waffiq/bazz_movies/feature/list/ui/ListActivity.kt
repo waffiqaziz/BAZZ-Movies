@@ -25,6 +25,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
+import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_grid_layout
+import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_list_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
 import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
@@ -283,6 +285,10 @@ class ListActivity : AppCompatActivity() {
 
   private fun toggleLayout() {
     val isGrid = !adapter.isGridMode()
+
+    binding.btnToggleLayout.contentDescription = getString(
+      if (isGrid) toggle_list_layout else toggle_grid_layout
+    )
 
     // save scroll state from the outgoing LayoutManager
     val savedState = binding.rvList.layoutManager!!.onSaveInstanceState()
