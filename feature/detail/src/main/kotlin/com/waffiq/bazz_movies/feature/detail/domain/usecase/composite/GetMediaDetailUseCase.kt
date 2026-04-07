@@ -13,7 +13,6 @@ interface GetMediaDetailUseCase {
   fun getMovieVideoLinks(movieId: Int): Flow<Outcome<String>>
   fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
 
-  fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
   fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>>
   fun getTvDetailWithUserRegion(tvId: Int): Flow<Outcome<MediaDetail>>

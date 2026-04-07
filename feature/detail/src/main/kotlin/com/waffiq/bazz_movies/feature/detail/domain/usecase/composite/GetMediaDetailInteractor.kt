@@ -4,7 +4,6 @@ import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.repository.IDetailRepository
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
@@ -76,9 +75,6 @@ class GetMediaDetailInteractor @Inject constructor(
 
   override fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>> =
     detailRepository.getMovieCredits(movieId)
-
-  override fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>> =
-    detailRepository.getTvExternalIds(tvId)
 
   override fun getTvTrailerLink(tvId: Int): Flow<Outcome<String>> =
     detailRepository.getTvTrailerLink(tvId).map { outcome ->

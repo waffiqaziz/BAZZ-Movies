@@ -13,7 +13,6 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.USER_REGION
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailMovie
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.detailTv
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.externalTvID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvCredits
@@ -202,25 +201,6 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     testErrorScenario(
       mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
       interactorCall = { interactor.getMovieCredits(MOVIE_ID) }
-    )
-  }
-
-  @Test
-  fun getTvExternalIds_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getTvExternalIds(TV_ID) },
-      mockResponse = externalTvID,
-      interactorCall = { interactor.getTvExternalIds(TV_ID) }
-    ) { emission ->
-      assertEquals("tt87654321", emission.data.imdbId)
-    }
-  }
-
-  @Test
-  fun getTvExternalIds_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getTvExternalIds(TV_ID) },
-      interactorCall = { interactor.getTvExternalIds(TV_ID) }
     )
   }
 

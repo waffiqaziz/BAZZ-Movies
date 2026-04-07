@@ -19,7 +19,10 @@ class GetOMDbDetailInteractor @Inject constructor(
 
   override fun getTvAllScore(tvId: Int): Flow<Outcome<OMDbDetails>> =
     detailRepository.getTvExternalIds(tvId)
-      .filterIsInstance<Outcome.Success<TvExternalIds>>() // Only passes or take Success
+      // Intentionally filters out Loading/Error if external IDs fail, the flow completes empty.
+      // This is expected: OMDb score is a supplementary rating view, so failures should silently
+      // show nothing rather than trigger an error page.
+      .filterIsInstance<Outcome.Success<TvExternalIds>>()
       .take(1)
       .flatMapConcat { outcome ->
         when (outcome) {
