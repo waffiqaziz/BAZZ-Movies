@@ -20,13 +20,13 @@ class RoutingActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     splashScreen = installSplashScreen()
-    super.onCreate(savedInstanceState)
     enableEdgeToEdge()
-    splashScreen.setKeepOnScreenCondition { true }
+    super.onCreate(savedInstanceState)
 
-    userPreferenceViewModel.getUserPref().observe(this) {
-      Log.d("RoutingActivity", "User is  $it")
-      if (it.isLogin) gotoMainActivity(true) else gotoMainActivity(false)
+    Log.d("RoutingActivity", "Running without Firebase Messaging")
+    userPreferenceViewModel.getUserPref().observe(this) { user ->
+      Log.d("RoutingActivity", "User is $user")
+      gotoMainActivity(user.isLogin)
     }
   }
 

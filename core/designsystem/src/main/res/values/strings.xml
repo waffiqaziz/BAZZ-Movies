@@ -1,8 +1,17 @@
 <resources>
   <string name="app_name_release">BAZZ Movies</string>
+  <string name="default_notification_channel_id">firebase_channel</string>
+  <string name="notification_channel_name">Firebase Notification</string>
 
   <string name="poster">Poster</string>
   <string name="back">Back</string>
+
+  <!-- ROUTING -->
+  <string name="stay_updated">Stay Updated</string>
+  <string name="notification_description">We only send notifications for important app updates and bug fixes.</string>
+  <string name="allow">Allow</string>
+  <string name="not_now">Not now</string>
+  <string name="notification_later">You can enable notifications later in settings</string>
 
   <!-- LOGIN -->
   <string name="join_tmdb">Don\’t Have Account? Join TMDB</string>
