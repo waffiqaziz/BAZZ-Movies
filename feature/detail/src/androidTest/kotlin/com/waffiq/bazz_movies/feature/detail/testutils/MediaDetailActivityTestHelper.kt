@@ -11,25 +11,20 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
-import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
+import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testOMDbDetails
-import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testTvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testUserModel
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testWatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
-import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -37,6 +32,9 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Test helper for [MediaDetailActivity] that provides mock implementations
@@ -44,39 +42,47 @@ import kotlinx.coroutines.flow.MutableSharedFlow
  */
 class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
-  override val isFavorite = MutableLiveData<Boolean>()
-  override val isWatchlist = MutableLiveData<Boolean>()
-  override val itemState = MutableLiveData<MediaState>()
-  override val mediaCredits = MutableLiveData<MediaCredits>()
-  override val omdbResult = MutableLiveData<OMDbDetails>()
-  override val loadingState = MutableLiveData<Boolean>()
-  override val errorState = MutableSharedFlow<String>(replay = 1)
-  override val rateState = MutableLiveData<Event<Boolean>>()
-  override val postModelState = MutableLiveData<Event<UpdateMediaStateResult>>()
-  override val linkVideo = MutableLiveData<String>()
-  override val detailMedia = MutableLiveData<MediaDetail>()
-  override val tvExternalID = MutableLiveData<TvExternalIds>()
-  override val recommendation = MutableLiveData<PagingData<MediaItem>>()
-  override val watchProvidersUiState = MutableLiveData<WatchProvidersUiState>()
+  override val recommendations = MutableStateFlow<PagingData<MediaItem>>(
+    value = PagingData.empty()
+  )
+  override val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
+  override val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+  override val uiState = MutableStateFlow(MediaDetailUiState())
   override lateinit var context: Context
 
   override val token = MutableLiveData<String>()
   override val region = MutableLiveData<String>()
   override val userModel = MutableLiveData<UserModel>()
 
-  override fun setupBaseMocks() {
-    isFavorite.postValue(false)
-    isWatchlist.postValue(false)
-    itemState.postValue(testMediaState)
-    mediaCredits.postValue(testMediaCredits)
-    omdbResult.postValue(testOMDbDetails)
-    loadingState.postValue(false)
+  val sRecommendations = recommendations.asStateFlow()
+  val sErrorEvent = errorEvent.asSharedFlow()
+  val sToastEvent = toastEvent.asSharedFlow()
+  val sUiState = uiState.asStateFlow()
 
-    linkVideo.postValue("link video")
-    detailMedia.postValue(testMediaDetail)
-    tvExternalID.postValue(testTvExternalIds)
-    recommendation.postValue(PagingData.from(listOf(testMediaItem, testMediaItem)))
-    watchProvidersUiState.postValue(testWatchProvidersUiState)
+  override fun setupBaseMocks() {
+
+    uiState.value = MediaDetailUiState(
+      detail = testMediaDetail,
+      credits = MediaCredits(
+        cast = listOf(MediaCastItem()),
+        id = 90,
+        crew = listOf(MediaCrewItem())
+      ),
+      omdbDetails = OMDbDetails(),
+      videoLink = "link",
+      recommendations = PagingData.from(listOf(MediaItem())),
+      watchProviders = testWatchProvidersUiState,
+      itemState = MediaState(
+        id = 90,
+        favorite = false,
+        rated = Rated.Value(90.0),
+        watchlist = false
+      ),
+      isFavorite = false,
+      isWatchlist = false,
+      mediaStateResult = null, // it should only initiate when add to watchlist/favorite
+      isLoading = false,
+    )
 
     token.postValue("NaN")
     region.postValue("id")
@@ -112,19 +118,10 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   }
 
   override fun setupObservables(mockMediaDetailViewModel: MediaDetailViewModel) {
-    every { mockMediaDetailViewModel.isFavorite } returns isFavorite
-    every { mockMediaDetailViewModel.isWatchlist } returns isWatchlist
-    every { mockMediaDetailViewModel.itemState } returns itemState
-    every { mockMediaDetailViewModel.mediaCredits } returns mediaCredits
-    every { mockMediaDetailViewModel.omdbResult } returns omdbResult
-    every { mockMediaDetailViewModel.loadingState } returns loadingState
-    every { mockMediaDetailViewModel.errorState } returns errorState
-    every { mockMediaDetailViewModel.rateState } returns rateState
-    every { mockMediaDetailViewModel.mediaStateResult } returns postModelState
-    every { mockMediaDetailViewModel.linkVideo } returns linkVideo
-    every { mockMediaDetailViewModel.detailMedia } returns detailMedia
-    every { mockMediaDetailViewModel.recommendation } returns recommendation
-    every { mockMediaDetailViewModel.watchProvidersUiState } returns watchProvidersUiState
+    every { mockMediaDetailViewModel.uiState } returns sUiState
+    every { mockMediaDetailViewModel.errorEvent } returns sErrorEvent
+    every { mockMediaDetailViewModel.toastEvent } returns sToastEvent
+    every { mockMediaDetailViewModel.recommendations } returns sRecommendations
   }
 
   override fun setupNavigatorMocks(mockNavigator: INavigator) {
@@ -178,4 +175,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
   }
+
+
 }

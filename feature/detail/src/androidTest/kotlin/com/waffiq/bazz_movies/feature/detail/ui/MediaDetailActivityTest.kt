@@ -25,13 +25,18 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -100,9 +105,20 @@ class MediaDetailActivityTest :
   }
 
   @Test
+  fun metaData_whenInitiateNull_doNothing() {
+    // due to base test helper always set initiate to not null,
+    // then we set initiate to null for only this case
+    every { mockMediaDetailViewModel.uiState } returns MutableStateFlow(MediaDetailUiState())
+
+    context.launchMediaDetailActivity {
+      verify(exactly = 0){ mockMediaDetailViewModel.getOMDbDetails(any()) }
+    }
+  }
+
+  @Test
   fun imdbId_withValidValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(imdbId = "tt1234567"))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = "tt1234567")) }
       shortDelay()
     }
   }
@@ -110,7 +126,7 @@ class MediaDetailActivityTest :
   @Test
   fun imdbId_withNullValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(imdbId = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = null)) }
       shortDelay()
     }
   }
@@ -118,7 +134,7 @@ class MediaDetailActivityTest :
   @Test
   fun imdbId_withEmptyValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(imdbId = ""))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = "")) }
       shortDelay()
     }
   }
@@ -126,7 +142,7 @@ class MediaDetailActivityTest :
   @Test
   fun imdbId_withBlankValue_shouldHandleAllPossibility() {
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(imdbId = " "))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = " ")) }
       shortDelay()
     }
   }
@@ -135,44 +151,44 @@ class MediaDetailActivityTest :
   fun mediaDetailValue_withMixedValue_showsViewsCorrectly() {
     // genre null
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(genreId = emptyList()))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = emptyList())) }
     }
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(genreId = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = null)) }
     }
 
     // status
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(status = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
     }
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(status = ""))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
     }
 
     // movie duration null
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(duration = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(duration = null)) }
       onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
         .check(matches(isDisplayed()))
     }
 
     // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
-      detailMedia.postValue(testMediaDetail.copy(status = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
       onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
         .check(matches(isDisplayed()))
 
-      detailMedia.postValue(testMediaDetail.copy(status = ""))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
       onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
         .check(matches(isDisplayed()))
     }
 
     // tmdb score hidden
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(tmdbScore = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = null)) }
       onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
 
-      detailMedia.postValue(testMediaDetail.copy(tmdbScore = ""))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = "")) }
       onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
     }
   }
@@ -181,13 +197,13 @@ class MediaDetailActivityTest :
   fun ageRatingValue_withMixedValue_showsAgeViewsCorrectly() {
     // age rating null
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(ageRating = null))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = null)) }
       onView(withId(tv_age_rating)).check(matches(not(isDisplayed())))
     }
 
     // age rating empty
     context.launchMediaDetailActivity {
-      detailMedia.postValue(testMediaDetail.copy(ageRating = ""))
+      uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = "")) }
       onView(withId(tv_age_rating)).check(matches(not(isDisplayed())))
     }
   }
@@ -196,11 +212,13 @@ class MediaDetailActivityTest :
   fun releaseDateValue_withEmptyValue_showsReleaseDateCorrectly() {
     // release date empty
     context.launchMediaDetailActivity {
-      detailMedia.postValue(
-        testMediaDetail.copy(
-          releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = "")
+      uiState.update { s ->
+        s.copy(
+          detail = testMediaDetail.copy(
+            releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = "")
+          )
         )
-      )
+      }
       onView(withId(tv_year_released)).check(matches(not(isDisplayed())))
     }
   }
@@ -208,9 +226,9 @@ class MediaDetailActivityTest :
   @Test
   fun creditsValue_withEmptyValue_showsReleaseDateCorrectly() {
     context.launchMediaDetailActivity {
-      mediaCredits.postValue(
-        testMediaCredits.copy(crew = emptyList(), cast = emptyList())
-      )
+      uiState.update { s ->
+        s.copy(credits = testMediaCredits.copy(crew = emptyList(), cast = emptyList()))
+      }
       onView(withId(rv_cast)).check(matches(not(isDisplayed())))
     }
   }

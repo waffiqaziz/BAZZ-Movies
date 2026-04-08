@@ -4,21 +4,16 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.UserModel
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
-import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
-import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Interface for setting up the test environment for [MediaDetailActivity].
@@ -27,20 +22,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
  * including mock data, view models, and navigation.
  */
 interface MediaDetailActivityTestSetup {
-  val isFavorite: MutableLiveData<Boolean>
-  val isWatchlist: MutableLiveData<Boolean>
-  val itemState: MutableLiveData<MediaState>
-  val mediaCredits: MutableLiveData<MediaCredits>
-  val omdbResult: MutableLiveData<OMDbDetails>
-  val loadingState: MutableLiveData<Boolean>
-  val errorState: MutableSharedFlow<String>
-  val rateState: MutableLiveData<Event<Boolean>>
-  val postModelState: MutableLiveData<Event<UpdateMediaStateResult>>
-  val linkVideo: MutableLiveData<String>
-  val detailMedia: MutableLiveData<MediaDetail>
-  val tvExternalID: MutableLiveData<TvExternalIds>
-  val recommendation: MutableLiveData<PagingData<MediaItem>>
-  val watchProvidersUiState: MutableLiveData<WatchProvidersUiState>
+
+  val uiState: MutableStateFlow<MediaDetailUiState>
+  val errorEvent: MutableSharedFlow<String>
+  val toastEvent: MutableSharedFlow<Int>
+  val recommendations: MutableStateFlow<PagingData<MediaItem>>
   var context: Context
 
   val token: MutableLiveData<String>
@@ -69,4 +55,7 @@ interface MediaDetailActivityTestSetup {
   )
 
   fun checkIntentData(link: String)
+
+  fun updateState(block: MediaDetailUiState.() -> MediaDetailUiState) =
+    uiState.update { it.block() }
 }

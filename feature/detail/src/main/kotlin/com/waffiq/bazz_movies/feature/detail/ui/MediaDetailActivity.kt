@@ -2,12 +2,16 @@ package com.waffiq.bazz_movies.feature.detail.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
@@ -19,11 +23,13 @@ import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
 import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -116,43 +122,50 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun setupObservers() {
-    setupViewModelObservers()
-    uiManager.setupLoadingObserver(detailViewModel.loadingState)
-    uiManager.setupErrorObserver(detailViewModel.errorState)
-  }
-
-  private fun setupViewModelObservers() {
-    // observe detail data changes
-    detailViewModel.detailMedia.observe(this) { details ->
-      uiManager.updateDetailUI(details, dataExtra.mediaType)
-      dataExtra = dataExtra.copy(listGenreIds = details.genreId)
-
-      // only for movie while tv-series is missing imdb id
-      if (!details.imdbId.isNullOrEmpty()) {
-        detailViewModel.getOMDbDetails(details.imdbId)
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        detailViewModel.uiState.collect { state ->
+          renderState(state)
+        }
       }
     }
 
-    detailViewModel.mediaCredits.observe(this) { credits ->
-      uiManager.updateCreditsUI(credits)
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        detailViewModel.errorEvent.collect { message ->
+          uiManager.showLoadingDim(false)
+          uiManager.showSnackbarWarning(message)
+        }
+      }
     }
 
-    detailViewModel.omdbResult.observe(this) { omdbScore ->
-      uiManager.updateOMDbScores(omdbScore)
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        detailViewModel.toastEvent.collect { resId ->
+          uiManager.showToast(getString(resId))
+        }
+      }
     }
+  }
 
-    detailViewModel.linkVideo.observe(this) { videoLink ->
-      uiManager.setupTrailerButton(videoLink)
+  private fun renderState(state: MediaDetailUiState) {
+    uiManager.showLoadingDim(state.isLoading)
+
+    state.detail?.let { detail ->
+      Log.e("LLLLLLLLLLL", state.toString())
+      uiManager.updateDetailUI(detail, dataExtra.mediaType)
+      dataExtra = dataExtra.copy(listGenreIds = detail.genreId)
+      if (!detail.imdbId.isNullOrEmpty()) {
+        detailViewModel.getOMDbDetails(detail.imdbId)
+      }
     }
+    watchProvidersManager.handleWatchProvidersState(state.watchProviders)
+    state.credits?.let { uiManager.updateCreditsUI(it) }
+    state.omdbDetails?.let { uiManager.updateOMDbScores(it) }
+    state.recommendations?.let { uiManager.updateRecommendations(it, lifecycle) }
+    uiManager.setupTrailerButton(state.videoLink)
 
-    detailViewModel.recommendation.observe(this) { recommendations ->
-      uiManager.updateRecommendations(recommendations, lifecycle)
-    }
-
-    watchProvidersManager.observeWatchProviders(
-      detailViewModel.watchProvidersUiState,
-      this,
-    )
+    userInteractionHandler.renderState(state)
   }
 
   private fun loadInitialData() {

@@ -15,7 +15,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
@@ -101,7 +100,7 @@ class MediaDetailActivityInteractionTest :
   fun errorState_whenErrorOccur_showsTheToast() = runTest {
     context.launchMediaDetailActivity {
       launch {
-        errorState.emit("Error")
+        errorEvent.emit("Error")
       }
       advanceUntilIdle()
       // Hard to test toast in code, so must check it manually
@@ -114,6 +113,13 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity {
       onView(withId(btn_favorite)).check(matches(isDisplayed())).perform(click())
       onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
+    }
+  }
+
+  @Test
+  fun mediaStateResult_whenNull_doNothing() {
+    context.launchMediaDetailActivity {
+      updateState { copy(mediaStateResult = null) }
     }
   }
 
@@ -187,14 +193,13 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity(
       data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
     ) {
-      itemState.postValue(testMediaStateRated)
-      rateState.postValue(Event(true))
+      updateState { copy(itemState = testMediaStateRated) }
       setupLoginUser()
 
       submitRating()
 
       // shows user rating correctly
-      onView(withId(tv_score_your_score)).check(matches(withText("10.0")))
+      onView(withId(tv_score_your_score)).check(matches(withText("7.0")))
     }
   }
 
@@ -224,33 +229,13 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity(
       data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
     ) {
-      itemState.postValue(testMediaStateRated) // mock rated
-      rateState.postValue(Event(false)) // unsuccessful rating
+      updateState { copy(itemState = testMediaStateRated) }
+      errorEvent.tryEmit("error")  // ← tryEmit, not emit
       setupLoginUser()
 
       submitRating()
 
-      // shows user rating correctly
       onView(withId(tv_score_your_score)).check(matches(not(withText("10.0"))))
-    }
-  }
-
-  @Test
-  fun observeRatingState_whenEventAlreadyHandled_shouldNotProcessAgain() {
-    context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
-    ) {
-      // same event
-      val event = Event(true)
-
-      setupLoginUser()
-      itemState.postValue(testMediaStateRated)
-
-      submitRating()
-      rateState.postValue(event)
-
-      submitRating()
-      rateState.postValue(event)
     }
   }
 
@@ -258,7 +243,7 @@ class MediaDetailActivityInteractionTest :
   fun buttonActionUserLogin_whenClicked_shouldHandlePostData() {
     context.launchMediaDetailActivity {
       setupLoginUser()
-      itemState.postValue(testMediaState) // mock as not favorite and not watchlist
+      updateState { copy(itemState = testMediaState) } // mock as not favorite and not watchlist
 
       performClickButtonFavorite()
       performClickButtonWatchlist()
@@ -269,7 +254,7 @@ class MediaDetailActivityInteractionTest :
   fun itemState_whenNullValue_doNothing() {
     context.launchMediaDetailActivity {
       setupLoginUser()
-      itemState.postValue(null)
+      updateState { copy(itemState = null) }
 
       performClickButtonFavorite()
     }
@@ -279,43 +264,77 @@ class MediaDetailActivityInteractionTest :
   fun buttonActionUserLogin_whenClickedWithMultipleCase_shouldHandlePostData() {
     context.launchMediaDetailActivity {
       setupLoginUser()
-      itemState.postValue(testMediaState.copy(favorite = false, watchlist = false))
+      updateState {
+        copy(itemState = testMediaState.copy(favorite = false, watchlist = false))
+      }
 
       // post to watchlist success
       performClickButtonWatchlist()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false))
-      )
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false)
+        )
+      }
 
       // delete from watchlist success
       performClickButtonWatchlist()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true))
-      )
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true)
+        )
+      }
 
       // post to watchlist failed
       performClickButtonWatchlist()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false))
-      )
+      updateState { copy(itemState = null) }
+
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false)
+        )
+      }
 
       // post to favorite success
       performClickButtonFavorite()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false))
-      )
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false)
+        )
+      }
 
       // delete from favorite success
       performClickButtonFavorite()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true))
-      )
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true)
+        )
+      }
 
       // post to favorite failed
       performClickButtonFavorite()
-      postModelState.postValue(
-        Event(UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false))
-      )
+      updateState {
+        copy(
+          mediaStateResult =
+            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false)
+        )
+      }
+
+      // post to watchlist when not yet
+      updateState {
+        copy(isFavorite=false, isWatchlist = false)
+      }
+      performClickButtonWatchlist()
+
+      // remove from watchlist
+      updateState {
+        copy(isFavorite=true, isWatchlist = true)
+      }
+      performClickButtonWatchlist()
     }
   }
 
@@ -323,16 +342,18 @@ class MediaDetailActivityInteractionTest :
   fun observeFavoriteWatchlistPost_whenEventAlreadyHandled_shouldNotProcessAgain() {
     context.launchMediaDetailActivity {
       // same event
-      val event =
-        Event(UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false))
+      val result =
+        UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false)
 
       setupLoginUser()
-      itemState.postValue(testMediaState.copy(favorite = false, watchlist = false))
+      updateState {
+        copy(itemState = testMediaState.copy(favorite = false, watchlist = false))
+      }
 
       performClickButtonFavorite()
-      postModelState.postValue(event)
+      updateState { copy(mediaStateResult = result) }
       performClickButtonFavorite()
-      postModelState.postValue(event)
+      updateState { copy(mediaStateResult = result) }
     }
   }
 

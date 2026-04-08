@@ -7,9 +7,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -51,15 +48,13 @@ import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropNotAvailable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterDetailSource
 import com.waffiq.bazz_movies.navigation.INavigator
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
 
 /**
  * Manages the UI presentation logic for the Detail Movie screen.
@@ -252,10 +247,10 @@ class DetailUIManager(
   fun updateDetailUI(details: MediaDetail, mediaType: String) {
     binding.apply {
       if (details.genreId != null) adapterGenre.setGenre(details.genreId)
-      if (details.tmdbScore == null) {
+      if (details.tmdbScore.isNullOrEmpty()) {
         tmdbViewGroup.isVisible = false
       } else {
-        tvScoreTmdb.text = details.tmdbScore
+        tvScoreTmdb.text = formatRating(details.tmdbScore.toDouble())
         tmdbViewGroup.isVisible = true
       }
 
@@ -387,30 +382,6 @@ class DetailUIManager(
   }
 
   /**
-   * Binds a LiveData<Boolean> to the loading UI.
-   */
-  fun setupLoadingObserver(loadingState: LiveData<Boolean>) {
-    loadingState.observe(activity) { isLoading ->
-      showLoadingDim(isLoading)
-    }
-  }
-
-  /**
-   * Observes error messages and shows them using Snackbar.
-   */
-  fun setupErrorObserver(errorState: Flow<String>) {
-    activity.lifecycleScope.launch {
-      activity.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        errorState
-          .debounce(DEBOUNCE_LONG)
-          .collect { errorMessage ->
-            showSnackbarWarning(errorMessage)
-          }
-      }
-    }
-  }
-
-  /**
    * Displays a styled Toast message.
    */
   fun showToast(text: String) {
@@ -426,7 +397,7 @@ class DetailUIManager(
   /**
    * Shows a warning message using a Snackbar.
    */
-  private fun showSnackbarWarning(message: String) {
+  fun showSnackbarWarning(message: String) {
     mSnackbar = snackBarWarning(binding.coordinatorLayout, null, message)
   }
 

@@ -5,8 +5,6 @@ import android.content.Intent
 import android.view.View
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
@@ -137,26 +135,11 @@ class WatchProvidersManager(
   }
 
   /**
-   * Observes the [WatchProvidersUiState] from ViewModel and updates the UI accordingly.
-   *
-   * @param watchProvidersUiState The LiveData to observe.
-   * @param lifecycleOwner The lifecycle owner for binding observation.
-   */
-  fun observeWatchProviders(
-    watchProvidersUiState: LiveData<WatchProvidersUiState>,
-    lifecycleOwner: LifecycleOwner,
-  ) {
-    watchProvidersUiState.observe(lifecycleOwner) { state ->
-      handleWatchProvidersState(state)
-    }
-  }
-
-  /**
    * Handles UI updates based on the current state of watch providers.
    *
    * @param state The state representing loading, success, or error.
    */
-  private fun handleWatchProvidersState(state: WatchProvidersUiState) {
+  fun handleWatchProvidersState(state: WatchProvidersUiState) {
     when (state) {
       is WatchProvidersUiState.Loading -> {
         showLoading(true)

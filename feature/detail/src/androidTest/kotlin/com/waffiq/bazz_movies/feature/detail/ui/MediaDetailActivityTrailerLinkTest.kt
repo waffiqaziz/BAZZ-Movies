@@ -24,6 +24,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.update
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -77,13 +78,13 @@ class MediaDetailActivityTrailerLinkTest :
   @Test
   fun trailerLink_withMixedValue_showsTrailerCorrectly() {
     context.launchMediaDetailActivity {
-      linkVideo.postValue(null)
+      uiState.update { s -> s.copy(videoLink = null) }
       onView(withId(ib_play)).check(matches(not(isDisplayed())))
-      linkVideo.postValue("")
+      uiState.update { s -> s.copy(videoLink = "") }
       onView(withId(ib_play)).check(matches(not(isDisplayed())))
-      linkVideo.postValue(" ")
+      uiState.update { s -> s.copy(videoLink = " ") }
       onView(withId(ib_play)).check(matches(not(isDisplayed())))
-      linkVideo.postValue("OIuG1bBkfs0")
+      uiState.update { s -> s.copy(videoLink = "OIuG1bBkfs0") }
       onView(withId(ib_play)).check(matches(isDisplayed())).perform(click())
       checkIntentData("${YOUTUBE_LINK_VIDEO}OIuG1bBkfs0")
     }
@@ -101,7 +102,7 @@ class MediaDetailActivityTrailerLinkTest :
         activity.uiManager.trailerLauncher = mockTrailerLauncher
       }
 
-      linkVideo.postValue("test_video_id")
+      uiState.update { s -> s.copy(videoLink = "test_video_id") }
       onView(withId(ib_play)).perform(click())
       onView(withText(yt_not_installed)).check(matches(isDisplayed()))
 

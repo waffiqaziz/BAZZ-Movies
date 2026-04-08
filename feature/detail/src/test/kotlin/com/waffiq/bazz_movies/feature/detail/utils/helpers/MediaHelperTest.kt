@@ -18,6 +18,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
@@ -368,5 +369,13 @@ class MediaHelperTest {
     assertEquals(noOverview, context.getOverview(""))
     assertEquals(noOverview, context.getOverview(" "))
     assertEquals(noOverview, context.getOverview(null))
+  }
+
+  @Test
+  fun formatRating_withValue_returnsCorrectly(){
+    assertEquals("10.0", formatRating(10.0))
+    assertEquals("10.0", formatRating(10.0f))
+    assertEquals("10.0", formatRating(10))
+    assertEquals("0.0", formatRating(0))
   }
 }
