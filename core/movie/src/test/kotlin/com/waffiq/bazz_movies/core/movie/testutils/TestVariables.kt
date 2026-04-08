@@ -5,7 +5,9 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.PostResult
+import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
@@ -15,6 +17,12 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.Medi
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 
 object TestVariables {
+
+  const val USER_REGION = "US"
+  const val ERROR_MESSAGE = "Network error"
+  const val SESSION_ID = "session123"
+  const val MOVIE_ID = 1001
+  const val TV_ID = 2002
 
   fun createSampleMediaItemResponse(
     id: Int = 1,
@@ -70,7 +78,6 @@ object TestVariables {
     statusMessage = "Success Rating Tv"
   )
 
-  const val MOVIE_ID = 1001
   val movieMediaItem = MediaItem(
     firstAirDate = "",
     overview = "Overview",
@@ -94,4 +101,13 @@ object TestVariables {
   )
 
   val tvMediaItem = movieMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+
+  val movieMediaState = MediaState(
+    id = MOVIE_ID,
+    favorite = true,
+    rated = Rated.Unrated,
+    watchlist = false
+  )
+
+  val tvMediaState = movieMediaState.copy(id = TV_ID)
 }

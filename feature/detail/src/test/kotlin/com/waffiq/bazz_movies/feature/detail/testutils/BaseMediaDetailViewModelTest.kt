@@ -14,7 +14,10 @@ import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
@@ -22,14 +25,9 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaStateWithUserUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMovieDataWithUserRegionUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvAllScoreUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetTvDataWithUserRegionUseCase
+import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getMovieDetail.GetMovieDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.usecase.getTvDetail.GetTvDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.IMDB_ID
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
@@ -49,17 +47,15 @@ abstract class BaseMediaDetailViewModelTest {
 
   protected lateinit var viewModel: MediaDetailViewModel
 
-  protected val getMovieDetailUseCase: GetMovieDetailUseCase = mockk()
-  protected val getTvDetailUseCase: GetTvDetailUseCase = mockk()
-  protected val localDatabaseUseCase: LocalDatabaseUseCase = mockk()
-  protected val postRateUseCase: PostRateUseCase = mockk()
-  protected val postActionUseCase: PostActionUseCase = mockk()
-  protected val getOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
-  protected val getMediaStateWithUserUseCase: GetMediaStateWithUserUseCase = mockk()
-  protected val getMovieDataWithUserPrefUseCase: GetMovieDataWithUserRegionUseCase = mockk()
-  protected val getTvDataWithUserPrefUseCase: GetTvDataWithUserRegionUseCase = mockk()
+  protected val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
+  protected val mockGetListTvUseCase: GetListTvUseCase = mockk()
+  protected val mockLocalDatabaseUseCase: LocalDatabaseUseCase = mockk()
+  protected val mockPostRateUseCase: PostRateUseCase = mockk()
+  protected val mockPostActionUseCase: PostActionUseCase = mockk()
+  protected val mockGetOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()
+  protected val mockMediaStateUseCase: MediaStateUseCase = mockk()
+  protected val mockGetMediaDetailUseCase: GetMediaDetailUseCase = mockk()
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
-  protected val getTvAllScoreUseCase: GetTvAllScoreUseCase = mockk()
 
   protected val imdbId = IMDB_ID
   protected val movieId = 123
@@ -114,16 +110,14 @@ abstract class BaseMediaDetailViewModelTest {
   @Before
   open fun setup() {
     viewModel = MediaDetailViewModel(
-      getMovieDetailUseCase,
-      getTvDetailUseCase,
-      localDatabaseUseCase,
-      postRateUseCase,
-      postActionUseCase,
-      getOMDbDetailUseCase,
-      getMediaStateWithUserUseCase,
-      getMovieDataWithUserPrefUseCase,
-      getTvDataWithUserPrefUseCase,
-      getTvAllScoreUseCase,
+      mockGetListMoviesUseCase,
+      mockGetListTvUseCase,
+      mockLocalDatabaseUseCase,
+      mockPostRateUseCase,
+      mockPostActionUseCase,
+      mockGetOMDbDetailUseCase,
+      mockMediaStateUseCase,
+      mockGetMediaDetailUseCase,
     )
   }
 

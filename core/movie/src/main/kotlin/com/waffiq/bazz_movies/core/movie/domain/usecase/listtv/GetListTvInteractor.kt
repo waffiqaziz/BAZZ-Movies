@@ -37,4 +37,7 @@ class GetListTvInteractor @Inject constructor(
     }
 
   override fun getTopRatedTv(): Flow<PagingData<MediaItem>> = movieRepository.getTopRatedTv()
+
+  override fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>> =
+    movieRepository.getTvRecommendation(tvId)
 }

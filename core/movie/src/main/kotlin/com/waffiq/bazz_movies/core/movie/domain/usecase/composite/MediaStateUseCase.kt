@@ -1,10 +1,10 @@
-package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
+package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import kotlinx.coroutines.flow.Flow
 
-interface GetMediaStateWithUserUseCase {
+interface MediaStateUseCase {
   fun getMovieStateWithUser(movieId: Int): Flow<Outcome<MediaState>>
   fun getTvStateWithUser(tvId: Int): Flow<Outcome<MediaState>>
 }

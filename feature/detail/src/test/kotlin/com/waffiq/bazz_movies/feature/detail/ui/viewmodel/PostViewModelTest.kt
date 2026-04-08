@@ -62,9 +62,9 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
 
   @Test
   fun postFavorite_withMovieWhenSuccessful_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
+    coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -73,16 +73,16 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(postModelAddFavoriteStateSuccess),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
       },
     )
   }
 
   @Test
   fun postFavorite_withTvWhenSuccessful_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteTvData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteTvData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns
+    coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -90,16 +90,16 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddFavoriteStateSuccess),
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteTvData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteTvData) }
       },
     )
   }
 
   @Test
   fun postFavorite_performDelete_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
+    coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -108,14 +108,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(postModelDeleteFavoriteStateSuccess),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) }
       },
     )
   }
 
   @Test
   fun postFavorite_whenUnsuccessful_emitsError() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -125,14 +125,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = expectedFailed(isDelete = false, isFavorite = true),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
       }
     )
   }
 
   @Test
   fun postFavorite_whenUnsuccessfulDelete_emitsError() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -142,14 +142,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = expectedFailed(isDelete = true, isFavorite = true),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteDeleteData) }
       }
     )
   }
 
   @Test
   fun postFavorite_whenLoading_doesNothing() = runTest {
-    coEvery { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
+    coEvery { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) } returns
       loadingFlow
 
     testViewModelFlowEvent(
@@ -157,16 +157,16 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.mediaStateResult,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
+        coVerify { mockPostActionUseCase.postFavoriteWithAuth(postFavoriteMovieData) }
       }
     )
   }
 
   @Test
   fun postWatchlist_withMovieWhenSuccessful_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
+    coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -175,16 +175,16 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(postModelAddWatchlistStateSuccess),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
       },
     )
   }
 
   @Test
   fun postWatchlist_withTvWhenSuccessful_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistTvData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistTvData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getTvStateWithUser(tvId) } returns
+    coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -192,16 +192,16 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.mediaStateResult,
       expectedSuccess = Event(postModelAddWatchlistStateSuccess),
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistTvData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistTvData) }
       },
     )
   }
 
   @Test
   fun postWatchlist_whenDelete_emitsSuccess() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) } returns
       flowSuccessWithLoading(mockPostFavoriteWatchlist)
-    coEvery { getMediaStateWithUserUseCase.getMovieStateWithUser(movieId) } returns
+    coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
 
     testViewModelFlowEvent(
@@ -210,14 +210,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = Event(postModelDeleteWatchlistStateSuccess),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) }
       },
     )
   }
 
   @Test
   fun postWatchlist_whenUnsuccessful_emitsError() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -227,14 +227,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = expectedFailed(isDelete = false, isFavorite = false),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
       }
     )
   }
 
   @Test
   fun postWatchlist_whenUnsuccessfulDelete_emitsError() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) } returns
       flowFailedWithLoading
 
     testViewModelFlowEvent(
@@ -244,14 +244,14 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       expectedSuccess = expectedFailed(isDelete = true, isFavorite = false),
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistDeleteData) }
       }
     )
   }
 
   @Test
   fun postWatchlist_whenLoading_doesNothing() = runTest {
-    coEvery { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
+    coEvery { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) } returns
       loadingFlow
 
     testViewModelFlowEvent(
@@ -259,7 +259,7 @@ class PostViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
       liveData = viewModel.mediaStateResult,
       checkLoading = true,
       verifyBlock = {
-        coVerify { postActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
+        coVerify { mockPostActionUseCase.postWatchlistWithAuth(postWatchlistMovieData) }
       }
     )
   }

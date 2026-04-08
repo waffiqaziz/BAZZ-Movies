@@ -287,7 +287,7 @@ class ListActivity : AppCompatActivity() {
     val isGrid = !adapter.isGridMode()
 
     binding.btnToggleLayout.contentDescription = getString(
-      if (isGrid) toggle_list_layout else toggle_grid_layout
+      if (isGrid) toggle_list_layout else toggle_grid_layout,
     )
 
     // save scroll state from the outgoing LayoutManager

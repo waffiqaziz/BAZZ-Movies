@@ -174,35 +174,4 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       verifyDataSourceCall = { coVerify { movieDataSource.getTvKeywords(idString) } }
     )
   }
-
-  @Test
-  fun getTvRecommendation_whenSuccessful_returnsDataCorrectly() {
-    val response = createSampleMediaItemResponse()
-    val fakePagingData = createSamplePagingData(response, response)
-
-    testSuccessfulPagingData(
-      mockPagingData = fakePagingData,
-      dataSourceCall = { movieDataSource.getTvRecommendation(id) },
-      repositoryCall = { repository.getTvRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getTvRecommendation(id) } }
-    )
-  }
-
-  @Test
-  fun getTvRecommendation_whenSuccessful_returnsPagedData() {
-    testEmptyPagingData(
-      dataSourceCall = { movieDataSource.getTvRecommendation(id) },
-      repositoryCall = { repository.getTvRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getTvRecommendation(id) } }
-    )
-  }
-
-  @Test
-  fun getTvRecommendation_whenSearchItemIsNull_returnsNonEmptyPagingData() {
-    testPagingDataWithMockItems(
-      dataSourceCall = { movieDataSource.getTvRecommendation(id) },
-      repositoryCall = { repository.getTvRecommendationPagingData(id) },
-      verifyDataSourceCall = { verify { movieDataSource.getTvRecommendation(id) } }
-    )
-  }
 }

@@ -45,4 +45,7 @@ class GetListMoviesInteractor @Inject constructor(
     getRegion().flatMapLatest { region ->
       movieRepository.getPlayingNowMovies(region)
     }
+
+  override fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>> =
+    movieRepository.getMovieRecommendation(movieId)
 }

@@ -25,7 +25,6 @@ dependencies {
 
   implementation(libs.androidx.paging.runtime)
   implementation(libs.androidx.viewpager2)
-  implementation(libs.expandable.textview)
 
   implementation(libs.google.material)
   implementation(libs.facebook.shimmer)

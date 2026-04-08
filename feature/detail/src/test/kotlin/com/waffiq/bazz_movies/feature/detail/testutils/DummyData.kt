@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.MediaState
-import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.GenresResponseItem
@@ -482,15 +480,6 @@ object DummyData {
       isDelete = true,
       isFavorite = false
     )
-
-  val movieMediaState = MediaState(
-    id = MOVIE_ID,
-    favorite = true,
-    rated = Rated.Unrated,
-    watchlist = false
-  )
-
-  val tvMediaState = movieMediaState.copy(id = TV_ID)
 
   val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
     id = 333,

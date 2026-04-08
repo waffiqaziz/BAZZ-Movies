@@ -32,6 +32,7 @@ import org.junit.Test
 
 class MovieRepositoryTest {
 
+  private val id = 123
   private val region = "id"
   private val response = createSampleMediaItemResponse()
   private val fakePagingData = createSamplePagingData(response, response)
@@ -154,6 +155,26 @@ class MovieRepositoryTest {
       dataSourceCall = { mockMovieDataSource.getTrendingThisWeek(region) },
       repositoryCall = { movieRepository.getTrendingThisWeek(region) },
       verifyDataSourceCall = { verify { mockMovieDataSource.getTrendingThisWeek(region) } }
+    )
+  }
+
+  @Test
+  fun getMovieRecommendation_whenSuccessful_returnsDataCorrectly() {
+    testSuccessfulPagingData(
+      mockPagingData = fakePagingData,
+      dataSourceCall = { mockMovieDataSource.getMovieRecommendation(id) },
+      repositoryCall = { movieRepository.getMovieRecommendation(id) },
+      verifyDataSourceCall = { verify { mockMovieDataSource.getMovieRecommendation(any()) } }
+    )
+  }
+
+  @Test
+  fun getTvRecommendation_whenSuccessful_returnsDataCorrectly() {
+    testSuccessfulPagingData(
+      mockPagingData = fakePagingData,
+      dataSourceCall = { mockMovieDataSource.getTvRecommendation(id) },
+      repositoryCall = { movieRepository.getTvRecommendation(id) },
+      verifyDataSourceCall = { verify { mockMovieDataSource.getTvRecommendation(any()) } }
     )
   }
 

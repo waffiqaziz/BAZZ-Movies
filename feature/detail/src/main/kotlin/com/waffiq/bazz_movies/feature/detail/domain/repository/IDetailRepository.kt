@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.domain.repository
 
-import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
@@ -22,8 +20,6 @@ interface IDetailRepository {
   fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
   fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
-  fun getMovieRecommendationPagingData(movieId: Int): Flow<PagingData<MediaItem>>
-  fun getTvRecommendationPagingData(tvId: Int): Flow<PagingData<MediaItem>>
   fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>>
   fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>>
   fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>>

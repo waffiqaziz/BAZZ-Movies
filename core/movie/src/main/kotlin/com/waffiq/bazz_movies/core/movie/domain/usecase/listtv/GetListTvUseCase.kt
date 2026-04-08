@@ -9,4 +9,5 @@ interface GetListTvUseCase {
   fun getAiringThisWeekTv(): Flow<PagingData<MediaItem>>
   fun getAiringTodayTv(): Flow<PagingData<MediaItem>>
   fun getTopRatedTv(): Flow<PagingData<MediaItem>>
+  fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>>
 }

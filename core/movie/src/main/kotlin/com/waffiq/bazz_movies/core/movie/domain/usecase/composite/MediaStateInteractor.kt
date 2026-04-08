@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
+package com.waffiq.bazz_movies.core.movie.domain.usecase.composite
 
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
-class GetMediaStateWithUserInteractor @Inject constructor(
+class MediaStateInteractor @Inject constructor(
   private val moviesRepository: IMoviesRepository,
   private val userRepository: IUserRepository,
-) : GetMediaStateWithUserUseCase {
+) : MediaStateUseCase {
 
   private fun getToken() = userRepository.getUserToken().take(1)
 
