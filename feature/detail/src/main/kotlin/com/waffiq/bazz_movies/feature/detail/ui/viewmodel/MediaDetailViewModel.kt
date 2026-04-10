@@ -1,43 +1,44 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaData
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,85 +55,59 @@ class MediaDetailViewModel @Inject constructor(
   private val getMediaDetailUseCase: GetMediaDetailUseCase,
 ) : ViewModel() {
 
-  // region OBSERVABLES
-  private val _isFavorite = MutableLiveData<Boolean>()
-  val isFavorite: LiveData<Boolean> = _isFavorite
+  private val _uiState = MutableStateFlow(MediaDetailUiState())
+  val uiState: StateFlow<MediaDetailUiState> = _uiState.asStateFlow()
 
-  private val _isWatchlist = MutableLiveData<Boolean>()
-  val isWatchlist: LiveData<Boolean> = _isWatchlist
+  private val _errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
+  val errorEvent: SharedFlow<String> = _errorEvent.asSharedFlow()
 
-  private val _itemState = MutableLiveData<MediaState>()
-  val itemState: LiveData<MediaState> get() = _itemState
+  private val _toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+  val toastEvent: SharedFlow<Int> = _toastEvent.asSharedFlow()
 
-  private val _mediaCredits = MutableLiveData<MediaCredits>()
-  val mediaCredits: LiveData<MediaCredits> get() = _mediaCredits
+  private val _recommendations = MutableStateFlow<PagingData<MediaItem>>(PagingData.empty())
+  val recommendations: StateFlow<PagingData<MediaItem>> = _recommendations.asStateFlow()
 
-  private val _omdbResult = MutableLiveData<OMDbDetails>()
-  val omdbResult: LiveData<OMDbDetails> get() = _omdbResult
-
-  private val _loadingState = MutableLiveData<Boolean>()
-  val loadingState: LiveData<Boolean> get() = _loadingState
-
-  private val _errorState = MutableSharedFlow<String>(
-    replay = 0,
-    extraBufferCapacity = 1,
-    onBufferOverflow = BufferOverflow.DROP_OLDEST,
-  )
-  val errorState: SharedFlow<String> get() = _errorState
-
-  private val _rateState = MutableLiveData<Event<Boolean>>()
-  val rateState: LiveData<Event<Boolean>> get() = _rateState
-
-  private val _mediaStateResult = MutableLiveData<Event<UpdateMediaStateResult>>()
-  val mediaStateResult: LiveData<Event<UpdateMediaStateResult>> get() = _mediaStateResult
-
-  private val _linkVideo = MutableLiveData<String>()
-  val linkVideo: LiveData<String> = _linkVideo
-
-  private val _detailMedia = MutableLiveData<MediaDetail>()
-  val detailMedia: LiveData<MediaDetail> get() = _detailMedia
-
-  private val _recommendation = MutableLiveData<PagingData<MediaItem>>()
-  val recommendation: LiveData<PagingData<MediaItem>> get() = _recommendation
-
-  private val _watchProvidersUiState = MutableLiveData<WatchProvidersUiState>()
-  val watchProvidersUiState: LiveData<WatchProvidersUiState> = _watchProvidersUiState
   // endregion OBSERVABLES
 
   // region MOVIE
   fun getMovieVideoLink(movieId: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getMovieVideoLinks(movieId) },
-      onSuccess = { _linkVideo.value = it },
+      onSuccess = { copy(videoLink = it) },
     )
   }
 
   fun getMovieDetail(movieId: Int) {
     executeUseCase(
       flowProvider = { getMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) },
-      onSuccess = { _detailMedia.value = it },
+      onSuccess = {
+        updateState { copy(detail = it) }
+        if (!it.imdbId.isNullOrEmpty()) {
+          getOMDbDetails(it.imdbId)
+        }
+      },
     )
   }
 
   fun getMovieCredits(movieId: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getMovieCredits(movieId) },
-      onSuccess = { _mediaCredits.value = it },
+      onSuccess = { copy(credits = it) },
     )
   }
 
   fun getMovieRecommendation(movieId: Int) {
     viewModelScope.launch {
       getListMoviesUseCase.getMovieRecommendation(movieId).collect {
-        _recommendation.value = it
+        _recommendations.value = it
       }
     }
   }
 
   fun getMovieState(id: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { mediaStateUseCase.getMovieStateWithUser(id) },
-      onSuccess = { _itemState.value = it },
+      onSuccess = { copy(itemState = it) },
     )
   }
 
@@ -147,38 +122,38 @@ class MediaDetailViewModel @Inject constructor(
 
   // region TV-SERIES
   fun getTvTrailerLink(tvId: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getTvTrailerLink(tvId) },
-      onSuccess = { _linkVideo.value = it },
+      onSuccess = { copy(videoLink = it) },
     )
   }
 
   fun getTvDetail(tvId: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getTvDetailWithUserRegion(tvId) },
-      onSuccess = { _detailMedia.value = it },
+      onSuccess = { copy(detail = it) },
     )
   }
 
   fun getTvCredits(tvId: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { getMediaDetailUseCase.getTvCredits(tvId) },
-      onSuccess = { _mediaCredits.value = it },
+      onSuccess = { copy(credits = it) },
     )
   }
 
   fun getTvRecommendation(tvId: Int) {
     viewModelScope.launch {
       getListTvUseCase.getTvRecommendation(tvId).collect {
-        _recommendation.value = it
+        _recommendations.value = it
       }
     }
   }
 
   fun getTvState(id: Int) {
-    executeUseCase(
+    singleExecuteUseCase(
       flowProvider = { mediaStateUseCase.getTvStateWithUser(id) },
-      onSuccess = { _itemState.value = it },
+      onSuccess = { copy(itemState = it) },
     )
   }
 
@@ -193,7 +168,8 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvAllScore(tvId: Int) {
     executeUseCase(
       flowProvider = { getOMDbDetailUseCase.getTvAllScore(tvId) },
-      onSuccess = { _omdbResult.value = it },
+      onSuccess = { updateState { copy(omdbDetails = it) } },
+      onLoading = { updateState { copy(isLoading = true) } },
     )
   }
   // endregion TV-SERIES
@@ -201,28 +177,44 @@ class MediaDetailViewModel @Inject constructor(
   private fun collectWatchProviders(flow: Flow<Outcome<WatchProvidersItem>>) {
     viewModelScope.launch {
       flow.collect { outcome ->
-        _watchProvidersUiState.value = when (outcome) {
-          is Outcome.Success -> WatchProvidersUiState.Success(
-            ads = outcome.data.ads.orEmpty(),
-            buy = outcome.data.buy.orEmpty(),
-            flatrate = outcome.data.flatrate.orEmpty(),
-            free = outcome.data.free.orEmpty(),
-            rent = outcome.data.rent.orEmpty(),
-          )
+        when (outcome) {
+          is Outcome.Success -> {
+            updateState {
+              copy(
+                watchProviders =
+                WatchProvidersUiState.Success(
+                  ads = outcome.data.ads.orEmpty(),
+                  buy = outcome.data.buy.orEmpty(),
+                  flatrate = outcome.data.flatrate.orEmpty(),
+                  free = outcome.data.free.orEmpty(),
+                  rent = outcome.data.rent.orEmpty(),
+                ),
+              )
+            }
+          }
 
-          is Outcome.Loading -> WatchProvidersUiState.Loading
+          is Outcome.Loading -> {
+            updateState {
+              copy(watchProviders = WatchProvidersUiState.Loading)
+            }
+          }
 
-          is Outcome.Error -> WatchProvidersUiState.Error(outcome.message)
+          is Outcome.Error -> {
+            updateState {
+              copy(watchProviders = WatchProvidersUiState.Error(outcome.message))
+            }
+          }
         }
       }
     }
   }
 
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun getOMDbDetails(imdbId: String) {
     executeUseCase(
       flowProvider = { getOMDbDetailUseCase.getOMDbDetails(imdbId) },
-      onSuccess = { _omdbResult.value = it },
-      onFinallySuccess = { _loadingState.value = false },
+      onSuccess = { updateState { copy(omdbDetails = it) } },
+      onFinallySuccess = { updateState { copy(isLoading = false) } },
     )
   }
 
@@ -270,8 +262,8 @@ class MediaDetailViewModel @Inject constructor(
   fun isFavoriteDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isFavoriteDB(id, mediaType)) {
-        is DbResult.Success -> if (result.data) _isFavorite.value = true
-        is DbResult.Error -> _errorState.emit(result.errorMessage)
+        is DbResult.Success -> if (result.data) updateState { copy(isFavorite = true) }
+        is DbResult.Error -> _errorEvent.emit(result.errorMessage)
       }
     }
   }
@@ -279,8 +271,8 @@ class MediaDetailViewModel @Inject constructor(
   fun isWatchlistDB(id: Int, mediaType: String) {
     viewModelScope.launch {
       when (val result = localDatabaseUseCase.isWatchlistDB(id, mediaType)) {
-        is DbResult.Success -> if (result.data) _isWatchlist.value = true
-        is DbResult.Error -> _errorState.emit(result.errorMessage)
+        is DbResult.Success -> if (result.data) updateState { copy(isWatchlist = true) }
+        is DbResult.Error -> _errorEvent.emit(result.errorMessage)
       }
     }
   }
@@ -289,12 +281,16 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.insertToDB(fav) },
       onSuccess = {
-        if (fav.isFavorite) {
-          _isFavorite.value = true
-          emitPostState(isDelete = false, isFavorite = true)
-        } else {
-          _isWatchlist.value = true
-          emitPostState(isDelete = false, isFavorite = false)
+        updateState {
+          copy(
+            isFavorite = fav.isFavorite,
+            isWatchlist = !fav.isFavorite,
+            mediaStateResult = UpdateMediaStateResult(
+              isSuccess = true,
+              isDelete = false,
+              isFavorite = fav.isFavorite,
+            ),
+          )
         }
       },
     )
@@ -304,7 +300,7 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.updateFavoriteItemDB(false, fav) },
       onSuccess = {
-        _isFavorite.value = true
+        updateState { copy(isFavorite = true) }
         emitPostState(isDelete = false, isFavorite = true)
       },
     )
@@ -314,7 +310,7 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.updateFavoriteItemDB(true, fav) },
       onSuccess = {
-        _isFavorite.value = false
+        updateState { copy(isFavorite = false) }
         emitPostState(isDelete = true, isFavorite = true)
       },
     )
@@ -324,7 +320,7 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.updateWatchlistItemDB(false, fav) },
       onSuccess = {
-        _isWatchlist.value = true
+        updateState { copy(isWatchlist = true) }
         emitPostState(isDelete = false, isFavorite = false)
       },
     )
@@ -334,7 +330,7 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.updateWatchlistItemDB(true, fav) },
       onSuccess = {
-        _isWatchlist.value = false
+        updateState { copy(isWatchlist = false) }
         emitPostState(isDelete = true, isFavorite = false)
       },
     )
@@ -344,8 +340,7 @@ class MediaDetailViewModel @Inject constructor(
     executeDbAction(
       action = { localDatabaseUseCase.deleteFromDB(fav) },
       onSuccess = {
-        _isFavorite.value = false
-        _isWatchlist.value = false
+        updateState { copy(isFavorite = false, isWatchlist = false) }
         emitPostState(isDelete = true, isFavorite = fav.isFavorite)
       },
     )
@@ -364,7 +359,9 @@ class MediaDetailViewModel @Inject constructor(
       // only works if the function signatures match exactly.
       postAction = postActionUseCase::postFavoriteWithAuth,
 
-      updateState = { value: Boolean -> _isFavorite.value = value },
+      updateState = { value: Boolean ->
+        updateState { copy(isFavorite = value) }
+      },
     )
   }
 
@@ -374,25 +371,45 @@ class MediaDetailViewModel @Inject constructor(
       isFavorite = false,
       isChecked = data.watchlist,
       postAction = postActionUseCase::postWatchlistWithAuth,
-      updateState = { value: Boolean -> _isWatchlist.value = value },
+      updateState = { value: Boolean ->
+        updateState { copy(isWatchlist = value) }
+      },
     )
   }
 
   fun postMovieRate(rating: Float, movieId: Int) {
     executeUseCase(
       flowProvider = { postRateUseCase.postMovieRate(rating, movieId) },
-      onSuccess = { _rateState.value = Event(true) },
-      onFinallySuccess = { _loadingState.value = false },
-      onLoading = { _loadingState.value = true },
+      onSuccess = {
+        updateState {
+          copy(
+            isLoading = false,
+            itemState = itemState?.copy(rated = Rated.Value(rating.toDouble())),
+          )
+        }
+        _toastEvent.tryEmit(rating_added_successfully)
+      },
+      onLoading = { updateState { copy(isLoading = true) } },
+      onFinallySuccess = { updateState { copy(isLoading = false) } },
+      onFinallyError = { updateState { copy(isLoading = false) } },
     )
   }
 
   fun postTvRate(rating: Float, tvId: Int) {
     executeUseCase(
       flowProvider = { postRateUseCase.postTvRate(rating, tvId) },
-      onSuccess = { _rateState.value = Event(true) },
-      onFinallySuccess = { _loadingState.value = false },
-      onLoading = { _loadingState.value = true },
+      onSuccess = {
+        updateState {
+          copy(
+            isLoading = false,
+            itemState = itemState?.copy(rated = Rated.Value(rating.toDouble())),
+          )
+        }
+        _toastEvent.tryEmit(rating_added_successfully)
+      },
+      onLoading = { updateState { copy(isLoading = true) } },
+      onFinallySuccess = { updateState { copy(isLoading = false) } },
+      onFinallyError = { updateState { copy(isLoading = false) } },
     )
   }
   // endregion POST FAVORITE, WATCHLIST, RATE
@@ -405,13 +422,16 @@ class MediaDetailViewModel @Inject constructor(
     isDelete: Boolean,
     isFavorite: Boolean,
   ) {
-    _mediaStateResult.value = Event(
-      UpdateMediaStateResult(
-        isSuccess = isSuccess,
-        isDelete = isDelete,
-        isFavorite = isFavorite,
-      ),
-    )
+    updateState {
+      copy(
+        mediaStateResult =
+        UpdateMediaStateResult(
+          isSuccess = isSuccess,
+          isDelete = isDelete,
+          isFavorite = isFavorite,
+        ),
+      )
+    }
   }
 
   /**
@@ -420,7 +440,7 @@ class MediaDetailViewModel @Inject constructor(
   private fun executeDbAction(action: suspend () -> DbResult<Int>, onSuccess: () -> Unit) {
     viewModelScope.launch {
       when (val result = action()) {
-        is DbResult.Error -> _errorState.emit(result.errorMessage)
+        is DbResult.Error -> _errorEvent.emit(result.errorMessage)
         is DbResult.Success -> onSuccess()
       }
     }
@@ -437,25 +457,37 @@ class MediaDetailViewModel @Inject constructor(
     onFinallyError: () -> Unit = { /* default do nothing */ },
   ) {
     viewModelScope.launch {
-      val flow = flowProvider()
-      flow.collectLatest { outcome ->
+      flowProvider().collectLatest { outcome ->
         when (outcome) {
+          is Outcome.Loading -> onLoading()
+
           is Outcome.Success -> {
             onSuccess(outcome.data)
             onFinallySuccess()
           }
 
-          is Outcome.Loading -> onLoading()
-
           is Outcome.Error -> {
-            _loadingState.value = false
-            _errorState.emit(outcome.message)
+            updateState { copy(isLoading = false) }
+            _errorEvent.emit(outcome.message)
             onFinallyError()
           }
         }
       }
     }
   }
+
+  fun <T> singleExecuteUseCase(
+    flowProvider: () -> Flow<Outcome<T>>,
+    onSuccess: MediaDetailUiState.(T) -> MediaDetailUiState,
+  ) {
+    executeUseCase(
+      flowProvider = flowProvider,
+      onSuccess = { updateState { onSuccess(it) } },
+    )
+  }
+
+  private fun updateState(block: MediaDetailUiState.() -> MediaDetailUiState) =
+    _uiState.update { it.block() }
 
   /**
    * Helper to handle post action
@@ -477,13 +509,17 @@ class MediaDetailViewModel @Inject constructor(
           getTvState(data.mediaId)
         }
         updateState(isChecked)
-        _loadingState.value = false
+        updateState { copy(isLoading = false) }
       },
-      onLoading = { _loadingState.value = true },
+      onLoading = { updateState { copy(isLoading = true) } },
       onFinallyError = {
-        _loadingState.value = false
+        updateState { copy(isLoading = false) }
         emitPostState(false, !isChecked, isFavorite)
       },
     )
+  }
+
+  fun consumeMediaStateResult() {
+    updateState { copy(mediaStateResult = null) }
   }
 }

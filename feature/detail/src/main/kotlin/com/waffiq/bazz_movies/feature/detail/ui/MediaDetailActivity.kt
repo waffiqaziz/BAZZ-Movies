@@ -14,11 +14,14 @@ import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHe
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.UserInteractionHandler
 import com.waffiq.bazz_movies.feature.detail.ui.manager.WatchProvidersManager
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
@@ -116,43 +119,37 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun setupObservers() {
-    setupViewModelObservers()
-    uiManager.setupLoadingObserver(detailViewModel.loadingState)
-    uiManager.setupErrorObserver(detailViewModel.errorState)
+    collectFlow(detailViewModel.uiState) {
+      renderState(it)
+    }
+
+    collectFlow(detailViewModel.toastEvent, collectLatest = false) {
+      uiManager.showToast(getString(it))
+    }
+
+    collectFlow(detailViewModel.errorEvent, collectLatest = false) {
+      uiManager.showLoadingDim(false)
+      uiManager.showSnackbarWarning(it)
+    }
+
+    collectPagingData(detailViewModel.recommendations) {
+      uiManager.updateRecommendations(it, lifecycle)
+    }
   }
 
-  private fun setupViewModelObservers() {
-    // observe detail data changes
-    detailViewModel.detailMedia.observe(this) { details ->
-      uiManager.updateDetailUI(details, dataExtra.mediaType)
-      dataExtra = dataExtra.copy(listGenreIds = details.genreId)
+  private fun renderState(state: MediaDetailUiState) {
+    uiManager.showLoadingDim(state.isLoading)
 
-      // only for movie while tv-series is missing imdb id
-      if (!details.imdbId.isNullOrEmpty()) {
-        detailViewModel.getOMDbDetails(details.imdbId)
-      }
+    state.detail?.let { detail ->
+      uiManager.updateDetailUI(detail, dataExtra.mediaType)
+      dataExtra = dataExtra.copy(listGenreIds = detail.genreId)
     }
+    watchProvidersManager.handleWatchProvidersState(state.watchProviders)
+    state.credits?.let { uiManager.updateCreditsUI(it) }
+    state.omdbDetails?.let { uiManager.updateOMDbScores(it) }
+    uiManager.setupTrailerButton(state.videoLink)
 
-    detailViewModel.mediaCredits.observe(this) { credits ->
-      uiManager.updateCreditsUI(credits)
-    }
-
-    detailViewModel.omdbResult.observe(this) { omdbScore ->
-      uiManager.updateOMDbScores(omdbScore)
-    }
-
-    detailViewModel.linkVideo.observe(this) { videoLink ->
-      uiManager.setupTrailerButton(videoLink)
-    }
-
-    detailViewModel.recommendation.observe(this) { recommendations ->
-      uiManager.updateRecommendations(recommendations, lifecycle)
-    }
-
-    watchProvidersManager.observeWatchProviders(
-      detailViewModel.watchProvidersUiState,
-      this,
-    )
+    userInteractionHandler.renderState(state)
   }
 
   private fun loadInitialData() {

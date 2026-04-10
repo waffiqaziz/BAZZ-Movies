@@ -35,6 +35,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
+import kotlinx.coroutines.flow.update
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -138,15 +139,17 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenSuccessfulButEmptyData_hidesTheLayout() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        watchProvidersUiState.postValue(
-          WatchProvidersUiState.Success(
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList()
+        uiState.update { s ->
+          s.copy(
+            watchProviders = WatchProvidersUiState.Success(
+              emptyList(),
+              emptyList(),
+              emptyList(),
+              emptyList(),
+              emptyList()
+            )
           )
-        )
+        }
       }
       performClickWatchProvidersButton()
 
@@ -164,7 +167,9 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenErrorOccurs_showsError() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        watchProvidersUiState.postValue(WatchProvidersUiState.Error("Error fetching watch providers"))
+        uiState.update { s ->
+          s.copy(watchProviders = WatchProvidersUiState.Error("Error fetching watch providers"))
+        }
       }
       performClickWatchProvidersButton()
       onView(withText("Error fetching watch providers"))
@@ -185,7 +190,7 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderState_whenLoading_showsProgressBar() {
     context.launchMediaDetailActivity {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        watchProvidersUiState.postValue(WatchProvidersUiState.Loading)
+        uiState.update { s -> s.copy(watchProviders = WatchProvidersUiState.Loading) }
       }
       shortDelay()
       onView(withId(progress_bar)).check(matches(isDisplayed()))

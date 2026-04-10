@@ -12,12 +12,15 @@ import com.waffiq.bazz_movies.core.domain.Imageble
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
+import kotlin.math.roundToInt
 
 /**
  * Used for detail fragment
  */
 object MediaHelper {
   private const val SIXTY = 60
+  private const val DIGIT_NUMBER_INTEGER = 10
+  private const val DIGIT_NUMBER_DOUBLE = 10.0
 
   private fun convertRuntime(t: Int): String {
     val hours: Int = t / SIXTY
@@ -112,4 +115,7 @@ object MediaHelper {
 
   fun Context.getOverview(overview: String?): String =
     overview?.takeIf { it.isNotBlank() } ?: getString(no_overview)
+
+  fun formatRating(rating: Number): String =
+    ((rating.toFloat() * DIGIT_NUMBER_INTEGER).roundToInt() / DIGIT_NUMBER_DOUBLE).toString()
 }

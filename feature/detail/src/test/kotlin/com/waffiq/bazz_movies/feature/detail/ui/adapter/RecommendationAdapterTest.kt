@@ -1,13 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
-import com.waffiq.bazz_movies.navigation.INavigator
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -18,21 +17,12 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.verify
 
 class RecommendationAdapterTest : BaseAdapterTest() {
 
-  @Mock
-  lateinit var navigator: INavigator
-
   private lateinit var adapter: RecommendationAdapter
-  private lateinit var inflater: LayoutInflater
   private lateinit var binding: ItemPosterBinding
   private lateinit var viewHolder: RecommendationAdapter.ViewHolder
-  private lateinit var parent: FrameLayout
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
@@ -40,12 +30,9 @@ class RecommendationAdapterTest : BaseAdapterTest() {
   @Before
   fun setup() {
     super.baseSetup()
-    MockitoAnnotations.openMocks(this)
     adapter = RecommendationAdapter(navigator)
     recyclerView.adapter = adapter
 
-    parent = FrameLayout(context)
-    inflater = LayoutInflater.from(context)
     binding = ItemPosterBinding.inflate(inflater, parent, false)
     viewHolder = adapter.ViewHolder(binding)
   }
@@ -152,7 +139,7 @@ class RecommendationAdapterTest : BaseAdapterTest() {
       mediaType = "movie"
     )
 
-    verify(navigator).openDetails(eq(context), eq(expectedItem))
+    verify { navigator.openDetails(eq(context), eq(expectedItem)) }
   }
 
   @Test

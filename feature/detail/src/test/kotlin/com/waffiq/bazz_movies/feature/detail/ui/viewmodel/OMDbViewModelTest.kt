@@ -13,10 +13,10 @@ class OMDbViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } returns
       successFlow(mockOmdb)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getOMDbDetails(imdbId) },
-      liveData = viewModel.omdbResult,
-      expectedSuccess = mockOmdb,
+      stateSelector = { it.omdbDetails },
+      expectedStates = listOf(mockOmdb),
       verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } },
     )
   }
@@ -25,10 +25,10 @@ class OMDbViewModelTest : BaseMediaDetailViewModelTest() {
   fun getScoreOMDb_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } returns errorFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getOMDbDetails(imdbId) },
-      liveData = viewModel.omdbResult,
-      expectError = errorMessage,
+      stateSelector = { it.omdbDetails },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } }
     )
   }
@@ -37,9 +37,9 @@ class OMDbViewModelTest : BaseMediaDetailViewModelTest() {
   fun getScoreOMDb_whenLoading_doesNothing() = runTest {
     coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } returns loadingFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getOMDbDetails(imdbId) },
-      liveData = viewModel.omdbResult,
+      stateSelector = { it.omdbDetails },
       verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getOMDbDetails(imdbId) } }
     )
   }

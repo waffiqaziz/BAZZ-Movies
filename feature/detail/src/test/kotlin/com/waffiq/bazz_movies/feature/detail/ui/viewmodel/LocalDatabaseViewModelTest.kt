@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.dataMediaItem
@@ -11,8 +10,12 @@ import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDelete
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelDeleteWatchlistStateSuccess
 import io.mockk.coEvery
 import io.mockk.coVerify
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertNotNull
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
 
@@ -22,16 +25,16 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = false,
           watchlist = true,
-          data = dataMediaItem
+          data = dataMediaItem,
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelAddFavoriteStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelAddFavoriteStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) }
       },
@@ -47,19 +50,19 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
       )
     } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = false,
           watchlist = true,
-          data = dataMediaItem
+          data = dataMediaItem,
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) }
-      }
+      },
     )
   }
 
@@ -67,7 +70,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun insertToDB_withBtnFavoriteWhenSuccessful_emitsSuccess() = runTest {
     coEvery { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) } returns successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = false,
@@ -75,8 +78,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelAddFavoriteStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelAddFavoriteStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) }
       },
@@ -87,7 +90,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun insertToDB_withBtnFavoriteWhenUnsuccessful_emitsError() = runTest {
     coEvery { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = false,
@@ -95,8 +98,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) } }
     )
   }
@@ -106,7 +109,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = true,
@@ -114,8 +117,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelDeleteFavoriteStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelDeleteFavoriteStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) }
       },
@@ -131,7 +134,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
       )
     } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = true,
@@ -139,8 +142,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateFavoriteItemDB(true, any<Favorite>()) }
       }
@@ -151,7 +154,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun delFromFavoriteDB_withBtnFavoriteWhenSuccessful_emitsSuccess() = runTest {
     coEvery { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) } returns successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = true,
@@ -159,8 +162,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelDeleteFavoriteStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelDeleteFavoriteStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) }
       },
@@ -171,7 +174,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun delFromFavoriteDB_withBtnFavoriteWhenUnsuccessful_emitsError() = runTest {
     coEvery { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnFavorite(
           favorite = true,
@@ -179,8 +182,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) } }
     )
   }
@@ -192,7 +195,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = true,
@@ -200,8 +203,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelAddWatchlistStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelAddWatchlistStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) }
       },
@@ -217,7 +220,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
       )
     } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = true,
@@ -225,8 +228,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateWatchlistItemDB(false, any<Favorite>()) }
       }
@@ -238,7 +241,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = false,
@@ -246,8 +249,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelAddWatchlistStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelAddWatchlistStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) }
       },
@@ -258,7 +261,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun insertToDB_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = false,
@@ -266,8 +269,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.insertToDB(any<Favorite>()) }
       }
@@ -279,7 +282,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = true,
@@ -287,8 +290,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelDeleteWatchlistStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelDeleteWatchlistStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) }
       },
@@ -304,7 +307,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
       )
     } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = true,
@@ -312,8 +315,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.updateWatchlistItemDB(true, any<Favorite>()) }
       }
@@ -325,7 +328,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) } returns
       successDbResult(1)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = false,
@@ -333,8 +336,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectedSuccess = Event(postModelDeleteWatchlistStateSuccess),
+      stateSelector = { it.mediaStateResult },
+      expectedStates = listOf(postModelDeleteWatchlistStateSuccess),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) }
       },
@@ -345,7 +348,7 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   fun delFromFavoriteDB_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = {
         viewModel.handleBtnWatchlist(
           favorite = false,
@@ -353,8 +356,8 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
           data = dataMediaItem
         )
       },
-      liveData = viewModel.mediaStateResult,
-      expectError = errorMessage,
+      stateSelector = { it.mediaStateResult },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.deleteFromDB(any<Favorite>()) }
       }
@@ -362,15 +365,16 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
   }
   // endregion BUTTON WATCHLIST
 
+  // region FAVORITE & WATCHLIST STATE
   @Test
   fun isFavoriteDB_whenSuccessfulAndIsFavorite_emitsTrueValue() = runTest {
     coEvery { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) } returns
       successDbResult(true)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = { viewModel.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isFavorite,
-      expectedSuccess = true,
+      stateSelector = { it.isFavorite },
+      expectedStates = listOf(false, true),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) }
       },
@@ -382,10 +386,10 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) } returns
       successDbResult(false)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = { viewModel.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isFavorite,
-      expectedSuccess = null,
+      stateSelector = { it.isFavorite },
+      expectedStates = listOf(false),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) }
       },
@@ -394,12 +398,17 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun isFavoriteDB_whenUnsuccessful_emitsError() = runTest {
-    coEvery { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) } returns errorDbResult
+    coEvery {
+      mockLocalDatabaseUseCase.isFavoriteDB(
+        movieId,
+        MOVIE_MEDIA_TYPE
+      )
+    } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isFavorite,
-      expectError = errorMessage,
+      stateSelector = { it.isFavorite },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isFavoriteDB(movieId, MOVIE_MEDIA_TYPE) }
       }
@@ -411,10 +420,10 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) } returns
       successDbResult(true)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = { viewModel.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isWatchlist,
-      expectedSuccess = true,
+      stateSelector = { it.isWatchlist },
+      expectedStates = listOf(false, true),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) }
       },
@@ -426,10 +435,10 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) } returns
       successDbResult(false)
 
-    testViewModelFlowEvent(
+    testViewModelState(
       runBlock = { viewModel.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isWatchlist,
-      expectedSuccess = null,
+      stateSelector = { it.isWatchlist },
+      expectedStates = listOf(false),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) }
       },
@@ -438,15 +447,41 @@ class LocalDatabaseViewModelTest : BaseMediaDetailViewModelTest() {
 
   @Test
   fun isWatchlistDB_whenUnsuccessful_emitsError() = runTest {
-    coEvery { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) } returns errorDbResult
+    coEvery {
+      mockLocalDatabaseUseCase.isWatchlistDB(
+        movieId,
+        MOVIE_MEDIA_TYPE
+      )
+    } returns errorDbResult
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) },
-      liveData = viewModel.isWatchlist,
-      expectError = errorMessage,
+      stateSelector = { it.isWatchlist },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = {
         coVerify { mockLocalDatabaseUseCase.isWatchlistDB(movieId, MOVIE_MEDIA_TYPE) }
       }
     )
+  }
+  // endregion FAVORITE & WATCHLIST STATE
+
+  @Test
+  fun consumeMediaStateResult_whenCalled_shouldUpdateTheState() = runTest {
+    // setup ui state
+    coEvery { mockLocalDatabaseUseCase.updateFavoriteItemDB(false, any<Favorite>()) } returns
+      successDbResult(1)
+    viewModel.handleBtnFavorite(favorite = false, watchlist = true, data = dataMediaItem)
+    advanceUntilIdle()
+
+    // should return true
+    assertNotNull(viewModel.uiState.value.mediaStateResult)
+    assertEquals(viewModel.uiState.value.mediaStateResult?.isFavorite ?: false, true)
+
+    // call
+    viewModel.consumeMediaStateResult()
+    advanceUntilIdle()
+
+    // should update to null
+    assertNull(viewModel.uiState.value.mediaStateResult)
   }
 }

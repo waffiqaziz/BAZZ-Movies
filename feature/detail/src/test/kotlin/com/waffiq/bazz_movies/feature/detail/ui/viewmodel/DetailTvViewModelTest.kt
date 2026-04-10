@@ -3,9 +3,11 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -18,11 +20,13 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns
       successFlow(mockMediaDetail)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvDetail(tvId) },
-      liveData = viewModel.detailMedia,
-      expectedSuccess = mockMediaDetail,
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } },
+      stateSelector = { it.detail },
+      expectedStates = listOf(mockMediaDetail),
+      verifyBlock = {
+        verify(exactly = 1) { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
+      },
     )
   }
 
@@ -30,11 +34,13 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvDetail_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns errorFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvDetail(tvId) },
-      liveData = viewModel.detailMedia,
-      expectError = errorMessage,
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } }
+      stateSelector = { it.detail },
+      expectedErrors = listOf(errorMessage),
+      verifyBlock = {
+        verify(exactly = 1) { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
+      }
     )
   }
 
@@ -42,22 +48,24 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvDetail_whenLoading_doesNothing() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } returns loadingFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvDetail(tvId) },
-      liveData = viewModel.detailMedia,
-      verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) } }
+      stateSelector = { it.detail },
+      verifyBlock = {
+        coVerify { mockGetMediaDetailUseCase.getTvDetailWithUserRegion(tvId) }
+      }
     )
   }
 
   @Test
   fun getTvTrailerLink_whenSuccessful_emitsSuccess() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns
-      successFlow(mockLinkVideo)
+      successFlow(mockVideoLink)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvTrailerLink(tvId) },
-      liveData = viewModel.linkVideo,
-      expectedSuccess = mockLinkVideo,
+      stateSelector = { it.videoLink },
+      expectedStates = listOf(mockVideoLink),
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } },
     )
   }
@@ -66,10 +74,10 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvTrailerLink_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns errorFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvTrailerLink(tvId) },
-      liveData = viewModel.linkVideo,
-      expectError = errorMessage,
+      stateSelector = { it.videoLink },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } }
     )
   }
@@ -78,9 +86,9 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvTrailerLink_whenLoading_doesNothing() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } returns loadingFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvTrailerLink(tvId) },
-      liveData = viewModel.detailMedia,
+      stateSelector = { it.videoLink },
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvTrailerLink(tvId) } }
     )
   }
@@ -90,10 +98,10 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockGetMediaDetailUseCase.getTvCredits(tvId) } returns
       successFlow(mockMediaCredits)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvCredits(tvId) },
-      liveData = viewModel.mediaCredits,
-      expectedSuccess = mockMediaCredits,
+      stateSelector = { it.credits },
+      expectedStates = listOf(mockMediaCredits),
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvCredits(tvId) } },
     )
   }
@@ -102,10 +110,10 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvCredits_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvCredits(tvId) } returns errorFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvCredits(tvId) },
-      liveData = viewModel.mediaCredits,
-      expectError = errorMessage,
+      stateSelector = { it.credits },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvCredits(tvId) } }
     )
   }
@@ -114,9 +122,9 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvCredits_whenLoading_doesNothing() = runTest {
     coEvery { mockGetMediaDetailUseCase.getTvCredits(tvId) } returns loadingFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvCredits(tvId) },
-      liveData = viewModel.mediaCredits,
+      stateSelector = { it.credits },
       verifyBlock = { coVerify { mockGetMediaDetailUseCase.getTvCredits(tvId) } }
     )
   }
@@ -126,10 +134,10 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns
       successFlow(mockMediaStated)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvState(tvId) },
-      liveData = viewModel.itemState,
-      expectedSuccess = mockMediaStated,
+      stateSelector = { it.itemState },
+      expectedStates = listOf(mockMediaStated),
       verifyBlock = { coVerify { mockMediaStateUseCase.getTvStateWithUser(tvId) } },
     )
   }
@@ -138,10 +146,10 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvState_whenUnsuccessful_emitsError() = runTest {
     coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns errorFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvState(tvId) },
-      liveData = viewModel.itemState,
-      expectError = errorMessage,
+      stateSelector = { it.itemState },
+      expectedErrors = listOf(errorMessage),
       verifyBlock = { coVerify { mockMediaStateUseCase.getTvStateWithUser(tvId) } }
     )
   }
@@ -150,9 +158,9 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvState_whenLoading_doesNothing() = runTest {
     coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns loadingFlow
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvState(tvId) },
-      liveData = viewModel.itemState,
+      stateSelector = { it.itemState },
       verifyBlock = { coVerify { mockMediaStateUseCase.getTvStateWithUser(tvId) } }
     )
   }
@@ -165,7 +173,7 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     viewModel.getTvWatchProviders(tvId)
     advanceUntilIdle()
 
-    assertThat(viewModel.watchProvidersUiState.value).isEqualTo(
+    assertThat(viewModel.uiState.value.watchProviders).isEqualTo(
       WatchProvidersUiState
         .Success(
           emptyList(),
@@ -181,12 +189,12 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvWatchProviders_withNonNullFields_skipsOrEmptyBranches() = runTest {
     coEvery {
       mockGetMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId)
-    } returns successFlow(fullProvider)
+    } returns successFlow(mockWatchProvider)
 
     viewModel.getTvWatchProviders(tvId)
     advanceUntilIdle()
 
-    assertThat(viewModel.watchProvidersUiState.value)
+    assertThat(viewModel.uiState.value.watchProviders)
       .isInstanceOf(WatchProvidersUiState.Success::class.java)
   }
 
@@ -195,24 +203,36 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
     coEvery { mockGetListTvUseCase.getTvRecommendation(tvId) } returns
       flowOf(PagingData.from(listOf(mockMediaItem)))
 
-    testPagingLiveData(
-      liveData = viewModel.recommendation,
+    testPagingState(
+      pagingFlow = viewModel.recommendations,
       runBlock = { viewModel.getTvRecommendation(tvId) },
       itemAssertions = { snapshot ->
-        assertThat(snapshot).isNotEmpty()
-      }
+        assertThat(snapshot).containsExactly(mockMediaItem)
+      },
     )
   }
 
   @Test
   fun getTvAllScore_whenSuccessful_emitsSuccess() {
     coEvery { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } returns
-      successFlow(mockOmdb)
+      successFlow(omdbDetails)
 
-    testViewModelFlow(
+    testViewModelState(
       runBlock = { viewModel.getTvAllScore(tvId) },
-      liveData = viewModel.omdbResult,
-      expectedSuccess = mockOmdb,
+      stateSelector = { it.omdbDetails },
+      expectedStates = listOf(omdbDetails),
+      verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } }
+    )
+  }
+
+  @Test
+  fun getTvAllScore_whenLoading_emitsLoading() {
+    coEvery { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } returns loadingFlow
+
+    testViewModelState(
+      runBlock = { viewModel.getTvAllScore(tvId) },
+      stateSelector = { it.omdbDetails },
+      expectedLoadingStates = listOf(true),
       verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } }
     )
   }

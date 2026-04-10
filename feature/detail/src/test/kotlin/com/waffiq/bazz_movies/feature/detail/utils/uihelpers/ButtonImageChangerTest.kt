@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.uihelpers
 
 import android.content.Context
+import android.os.Looper.getMainLooper
 import android.widget.ImageButton
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
@@ -11,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 
 /**
  * This test did not test the animation transitions themselves (like scale or alpha)
@@ -38,7 +40,8 @@ class ButtonImageChangerTest {
       iconActive = ic_hearth_selected,
       iconInactive = ic_hearth
     )
-    assertEquals(ic_hearth, imageButton.tag)
+    shadowOf(getMainLooper()).idle() // to trigger onAnimationEnd
+    checkImageButtonTagAndDrawable(ic_hearth)
   }
 
   @Test
@@ -51,7 +54,8 @@ class ButtonImageChangerTest {
       iconActive = ic_hearth_selected,
       iconInactive = ic_hearth
     )
-    assertEquals(ic_hearth_selected, imageButton.tag)
+    shadowOf(getMainLooper()).idle()
+    checkImageButtonTagAndDrawable(ic_hearth_selected)
   }
 
   @Test
@@ -65,5 +69,25 @@ class ButtonImageChangerTest {
       iconInactive = ic_hearth
     )
     assertEquals(ic_hearth_selected, imageButton.tag)
+  }
+
+  @Test
+  fun changeBtnAction_withDifferentExistingTag_updatesDrawable() {
+    imageButton.tag = ic_hearth
+
+    changeBtnAction(
+      button = imageButton,
+      isActivated = true,
+      iconActive = ic_hearth_selected,
+      iconInactive = ic_hearth
+    )
+    shadowOf(getMainLooper()).idle()
+    checkImageButtonTagAndDrawable(ic_hearth_selected)
+  }
+
+  private fun checkImageButtonTagAndDrawable(icon: Int) {
+    assertEquals(icon, imageButton.tag)
+    val shadowDrawable = shadowOf(imageButton.drawable)
+    assertEquals(icon, shadowDrawable.createdFromResId)
   }
 }

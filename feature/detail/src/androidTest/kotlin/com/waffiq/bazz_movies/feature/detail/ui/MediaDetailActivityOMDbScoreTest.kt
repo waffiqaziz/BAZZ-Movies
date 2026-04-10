@@ -22,6 +22,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
+import kotlinx.coroutines.flow.update
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -76,13 +77,15 @@ class MediaDetailActivityOMDbScoreTest :
   fun omdbScoreValue_withEmptyValue_hidesTheScore() {
     // omdb score empty
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = "",
-          metascore = "",
-          ratings = null
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = testOMDbDetails.copy(
+            imdbRating = "",
+            metascore = "",
+            ratings = null
+          )
         )
-      )
+      }
       scoreViewIsHidden()
     }
   }
@@ -90,13 +93,15 @@ class MediaDetailActivityOMDbScoreTest :
   @Test
   fun omdbScoreValue_withNullValue_hidesTheScore() {
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = null,
-          metascore = null,
-          ratings = null
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = testOMDbDetails.copy(
+            imdbRating = null,
+            metascore = null,
+            ratings = null
+          )
         )
-      )
+      }
       scoreViewIsHidden()
     }
   }
@@ -104,13 +109,15 @@ class MediaDetailActivityOMDbScoreTest :
   @Test
   fun omdbScoreValue_withEmptyRatings_hidesTheScore() {
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = null,
-          metascore = null,
-          ratings = emptyList()
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = testOMDbDetails.copy(
+            imdbRating = null,
+            metascore = null,
+            ratings = emptyList()
+          )
         )
-      )
+      }
       scoreViewIsHidden()
     }
   }
@@ -118,13 +125,15 @@ class MediaDetailActivityOMDbScoreTest :
   @Test
   fun omdbScoreValue_withValidRottenTomatoes_showsOMDbScoreCorrectly() {
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        testOMDbDetails.copy(
-          imdbRating = "",
-          metascore = "",
-          ratings = listOf(RatingsItem(source = "Rotten Tomatoes", value = "90%"))
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = testOMDbDetails.copy(
+            imdbRating = "",
+            metascore = "",
+            ratings = listOf(RatingsItem(source = "Rotten Tomatoes", value = "90%"))
+          )
         )
-      )
+      }
       onView(withId(tv_score_rotten_tomatoes)).check(matches((isDisplayed())))
         .check(matches(withText("90%")))
     }
@@ -133,13 +142,15 @@ class MediaDetailActivityOMDbScoreTest :
   @Test
   fun omdbScoreValue_withRottenTomatoesNull_hidesTheScore() {
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        OMDbDetails(
-          ratings = listOf(
-            RatingsItem(source = "Rotten Tomatoes", value = null),
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = OMDbDetails(
+            ratings = listOf(
+              RatingsItem(source = "Rotten Tomatoes", value = null),
+            )
           )
         )
-      )
+      }
       rottenTomatoesIsHidden()
     }
   }
@@ -147,13 +158,15 @@ class MediaDetailActivityOMDbScoreTest :
   @Test
   fun omdbScoreValue_withRottenTomatoesEmpty_hidesTheScore() {
     context.launchMediaDetailActivity {
-      omdbResult.postValue(
-        OMDbDetails(
-          ratings = listOf(
-            RatingsItem(source = "Rotten Tomatoes", value = ""),
+      uiState.update { s ->
+        s.copy(
+          omdbDetails = OMDbDetails(
+            ratings = listOf(
+              RatingsItem(source = "Rotten Tomatoes", value = ""),
+            )
           )
         )
-      )
+      }
       rottenTomatoesIsHidden()
     }
   }

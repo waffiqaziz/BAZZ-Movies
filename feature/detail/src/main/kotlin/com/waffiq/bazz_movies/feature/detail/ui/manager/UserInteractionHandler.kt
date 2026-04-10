@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.detail.ui.manager
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_hearth
@@ -15,7 +14,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.item_added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.item_removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
@@ -23,10 +21,10 @@ import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
+import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnAction
-import kotlin.math.roundToInt
 
 /**
  * Handles all user interactions within the movie detail screen.
@@ -62,9 +60,8 @@ class UserInteractionHandler(
    */
   init {
     initializeTags()
-    setupUser(activity)
+    setupUser()
     setupClickListeners()
-    observeFavoriteWatchlistPost(activity)
   }
 
   /**
@@ -74,7 +71,7 @@ class UserInteractionHandler(
    */
   fun setUserState(isLogin: Boolean) {
     userState = if (isLogin) UserAuthState.LoggedIn else UserAuthState.Guest
-    setupUser(activity)
+    setupUser()
   }
 
   // only for test purposes, to cover test cases where user state is not initialized
@@ -92,18 +89,18 @@ class UserInteractionHandler(
   /**
    * Observes the user token to determine login state and setup appropriate observers.
    */
-  private fun setupUser(lifecycleOwner: LifecycleOwner) {
+  private fun setupUser() {
     when (userState) {
       is UserAuthState.LoggedIn -> {
         binding.yourScoreViewGroup.isVisible = true
-        setupLoginUserObservers(lifecycleOwner)
-        observeRatingState(activity)
         binding.yourScoreViewGroup.setOnClickListener { showDialogRate() }
+        getMediaState()
       }
 
       is UserAuthState.Guest -> {
         binding.yourScoreViewGroup.isVisible = false
-        setupGuestUserObservers(lifecycleOwner)
+        detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
+        detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
       }
 
       is UserAuthState.NotInitialized -> {
@@ -113,90 +110,35 @@ class UserInteractionHandler(
     }
   }
 
-  /**
-   * Observes data for a logged-in user such as favorite/watchlist state and ratings.
-   */
-  private fun setupLoginUserObservers(lifecycleOwner: LifecycleOwner) {
-    getMediaState()
+  fun renderState(state: MediaDetailUiState) {
+    favorite = state.isFavorite
+    watchlist = state.isWatchlist
 
-    detailViewModel.itemState.observe(lifecycleOwner) { state ->
-      state?.let {
-        favorite = it.favorite
-        watchlist = it.watchlist
-        showRatingUserLogin(it)
-        changeBtnAction(
-          button = binding.btnFavorite,
-          isActivated = it.favorite,
-          iconActive = ic_hearth_selected,
-          iconInactive = ic_hearth,
-        )
-        changeBtnAction(
-          button = binding.btnWatchlist,
-          isActivated = it.watchlist,
-          iconActive = ic_watchlist_filled,
-          iconInactive = ic_watchlist_outlined,
-        )
-      }
-    }
-  }
+    changeBtnAction(
+      button = binding.btnFavorite,
+      isActivated = state.isFavorite,
+      iconActive = ic_hearth_selected,
+      iconInactive = ic_hearth,
+    )
+    changeBtnAction(
+      button = binding.btnWatchlist,
+      isActivated = state.isWatchlist,
+      iconActive = ic_watchlist_filled,
+      iconInactive = ic_watchlist_outlined,
+    )
 
-  /**
-   * Observes data from local DB for guest users (not logged in).
-   */
-  private fun setupGuestUserObservers(lifecycleOwner: LifecycleOwner) {
-    // guest user observers
-    detailViewModel.isFavoriteDB(dataExtra.id, dataExtra.mediaType)
-    detailViewModel.isFavorite.observe(lifecycleOwner) { isFav ->
-      changeBtnAction(
-        button = binding.btnFavorite,
-        isActivated = isFav,
-        iconActive = ic_hearth_selected,
-        iconInactive = ic_hearth,
-      )
-      favorite = isFav
-    }
+    state.itemState?.let { showRatingUserLogin(it) }
 
-    detailViewModel.isWatchlistDB(dataExtra.id, dataExtra.mediaType)
-    detailViewModel.isWatchlist.observe(lifecycleOwner) { isWatch ->
-      changeBtnAction(
-        button = binding.btnWatchlist,
-        isActivated = isWatch,
-        iconActive = ic_watchlist_filled,
-        iconInactive = ic_watchlist_outlined,
-      )
-      watchlist = isWatch
-    }
-  }
-
-  /**
-   * Observes result of add/remove item from favorite/watchlist.
-   */
-  private fun observeFavoriteWatchlistPost(lifecycleOwner: LifecycleOwner) {
-    detailViewModel.mediaStateResult.observe(lifecycleOwner) { eventResult ->
-      eventResult.getContentIfNotHandled()?.let { postModelState ->
-        if (!postModelState.isSuccess) return@let
-
-        val messageResId = when {
-          postModelState.isDelete && postModelState.isFavorite -> item_removed_from_favorite
-          postModelState.isDelete -> item_removed_from_watchlist
-          postModelState.isFavorite -> item_added_to_favorite
+    state.mediaStateResult?.let { result ->
+      if (result.isSuccess) {
+        val msgRes = when {
+          result.isDelete && result.isFavorite -> item_removed_from_favorite
+          result.isDelete -> item_removed_from_watchlist
+          result.isFavorite -> item_added_to_favorite
           else -> item_added_to_watchlist
         }
-
-        uiManager.showToast(activity.getString(messageResId))
-      }
-    }
-  }
-
-  /**
-   * Observes the result of submit a rating.
-   */
-  private fun observeRatingState(lifecycleOwner: LifecycleOwner) {
-    detailViewModel.rateState.observe(lifecycleOwner) { eventResult ->
-      eventResult.getContentIfNotHandled()?.let { isRateSuccessful ->
-        if (isRateSuccessful) {
-          uiManager.showToast(activity.getString(rating_added_successfully))
-        }
+        uiManager.showToast(activity.getString(msgRes))
+        detailViewModel.consumeMediaStateResult()
       }
     }
   }
@@ -311,7 +253,7 @@ class UserInteractionHandler(
   /**
    * Displays the user's current rating in the UI after submit a rating.
    */
-  private fun showRatingUserLogin(state: MediaState) {
+  fun showRatingUserLogin(state: MediaState) {
     binding.tvScoreYourScore.text = when (val rating = state.rated) {
       is Rated.Unrated -> activity.getString(not_available)
       is Rated.Value -> rating.value.toString()
@@ -332,20 +274,6 @@ class UserInteractionHandler(
       } else {
         detailViewModel.postTvRate(rating, dataExtra.id)
       }
-
-      // observe once
-      detailViewModel.rateState.observe(activity) { eventResult ->
-        eventResult.peekContent().let { isRateSuccessful ->
-          if (isRateSuccessful) {
-            binding.tvScoreYourScore.text =
-              ((rating * ROUNDING_FACTOR).roundToInt() / ROUNDING_FACTOR.toDouble()).toString()
-          }
-        }
-      }
     }.show()
-  }
-
-  companion object {
-    private const val ROUNDING_FACTOR = 10
   }
 }
