@@ -96,7 +96,9 @@
           tools:listitem="@layout/item_poster" />
 
         <!-- Upcoming-->
-        <androidx.coordinatorlayout.widget.CoordinatorLayout style="@style/LayoutHeaderTheme">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_upcoming"
+          style="@style/LayoutHeaderTheme">
 
           <TextView
             android:id="@+id/tv_upcoming_movie"
@@ -132,6 +134,7 @@
 
         <!-- Playing now -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_playing_now"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 

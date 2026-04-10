@@ -244,10 +244,10 @@ class FeaturedFragment : Fragment() {
       tvTrending.isVisible = isVisible
       buttonGroup.isVisible = isVisible
       rvTrending.isVisible = isVisible
-      tvUpcomingMovie.isVisible = isVisible
+      layoutUpcoming.isVisible = isVisible
       rvUpcoming.isVisible = isVisible
       rvPlayingNow.isVisible = isVisible
-      tvPlayingNow.isVisible = isVisible
+      layoutPlayingNow.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
     }
   }
