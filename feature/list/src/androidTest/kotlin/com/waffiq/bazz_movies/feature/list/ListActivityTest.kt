@@ -117,6 +117,18 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
+  fun listActivity_withRecommendationType_showsCorrectViews() {
+    context.launchListActivity(movieRecommendationArgs) {
+      shouldShowText(movieRecommendationArgs.title)
+      shouldShowText("Recommendation")
+    }
+    context.launchListActivity(tvRecommendationArgs) {
+      shouldShowText(tvRecommendationArgs.title)
+      shouldShowText("Recommendation")
+    }
+  }
+
+  @Test
   fun listActivity_withTopRatedType_showsCorrectViews() {
     context.launchListActivity(movieTopRatedArgs) {
       shouldShowMovie()
@@ -272,7 +284,7 @@ class ListActivityTest : BaseListActivityTest() {
     }
   }
 
-  private fun triggerListButton(){
+  private fun triggerListButton() {
     onView(withId(btn_toggle_layout)).check(matches(isDisplayed())).perform(click())
   }
 }

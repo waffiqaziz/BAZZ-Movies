@@ -43,7 +43,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
   override val recommendations = MutableStateFlow<PagingData<MediaItem>>(
-    value = PagingData.empty()
+    value = PagingData.from(listOf(testMediaItem))
   )
   override val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
   override val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
@@ -126,6 +126,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   override fun setupNavigatorMocks(mockNavigator: INavigator) {
     every { mockNavigator.openDetails(any(), any()) } just Runs
     every { mockNavigator.openPersonDetails(any(), any()) } just Runs
+    every { mockNavigator.openList(any(), any()) } just Runs
   }
 
   override fun initializeTest(context: Context) {

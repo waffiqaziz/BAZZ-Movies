@@ -50,7 +50,7 @@ class KeywordsAdapter(private val navigator: INavigator) :
             listType = BY_KEYWORD,
             mediaType = mediaType,
             title = keyword.name,
-            keywordId = keyword.id,
+            id = keyword.id,
           ),
         )
       }

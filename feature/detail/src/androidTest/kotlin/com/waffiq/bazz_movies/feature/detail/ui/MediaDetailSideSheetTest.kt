@@ -111,7 +111,7 @@ class MediaDetailSideSheetTest :
             listType = BY_KEYWORD,
             mediaType = testMediaItem.mediaType,
             title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
-            keywordId = testMediaDetail.keywords?.get(0)?.id ?: 0,
+            id = testMediaDetail.keywords?.get(0)?.id ?: 0,
           )
         )
       }
@@ -133,7 +133,7 @@ class MediaDetailSideSheetTest :
             listType = BY_KEYWORD,
             mediaType = testMediaItem.mediaType,
             title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
-            keywordId = testMediaDetail.keywords?.get(0)?.id ?: 0,
+            id = testMediaDetail.keywords?.get(0)?.id ?: 0,
           )
         )
       }

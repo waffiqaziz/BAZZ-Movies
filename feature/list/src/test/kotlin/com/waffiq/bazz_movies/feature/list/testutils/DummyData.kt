@@ -13,7 +13,7 @@ object DummyData {
     listType = ListType.BY_KEYWORD,
     mediaType = MOVIE_MEDIA_TYPE,
     title = "name keywords",
-    genreId = 12345,
+    id = 12345,
   )
 
   val mediaMovieResponseItem = MediaResponseItem(

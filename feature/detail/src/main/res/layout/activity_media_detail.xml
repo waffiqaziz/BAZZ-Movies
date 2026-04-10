@@ -665,14 +665,29 @@
           tools:orientation="horizontal" />
 
         <!-- Recommendation -->
-        <TextView
-          android:id="@+id/tv_recommendation_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_recommendation"
+          style="@style/LayoutHeaderTheme"
           android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp"
-          android:text="@string/recommendation" />
+          android:layout_marginTop="16dp">
+
+          <TextView
+            android:id="@+id/tv_recommendation_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/recommendation" />
+
+          <include
+            android:id="@+id/btn_more_recommendation"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <!-- End of DETAIL LOWER SECTION -->
 
         <androidx.recyclerview.widget.RecyclerView

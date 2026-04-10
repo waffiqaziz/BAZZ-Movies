@@ -32,14 +32,14 @@ open class BaseListActivityTest {
     listType = ListType.BY_GENRE,
     mediaType = MOVIE_MEDIA_TYPE,
     title = "title",
-    genreId = 878,
+    id = 878,
   )
   protected val tvGenreArgs = movieGenreArgs.copy(mediaType = TV_MEDIA_TYPE)
   protected val movieKeywordsArgs = ListArgs(
     listType = ListType.BY_KEYWORD,
     mediaType = MOVIE_MEDIA_TYPE,
     title = "post apocalyptic",
-    genreId = 134,
+    id = 134,
   )
   protected val tvKeywordsArgs = movieKeywordsArgs.copy(mediaType = TV_MEDIA_TYPE)
   protected val movieNowPlayingArgs = ListArgs(
@@ -59,6 +59,15 @@ open class BaseListActivityTest {
   )
   protected val tvAiringThisWeekArgs = movieNowPlayingArgs.copy(
     listType = ListType.AIRING_THIS_WEEK, mediaType = TV_MEDIA_TYPE
+  )
+  protected val movieRecommendationArgs = movieNowPlayingArgs.copy(
+    listType = ListType.RECOMMENDATION, title = "Movie Title", id = 12344
+  )
+  protected val tvRecommendationArgs = movieNowPlayingArgs.copy(
+    listType = ListType.RECOMMENDATION,
+    mediaType = TV_MEDIA_TYPE,
+    title = "Tv Title",
+    id = 12344
   )
 
 
@@ -103,13 +112,16 @@ open class BaseListActivityTest {
     }
   }
 
-  protected fun shouldShowTv(){
-    onView(withText("TV"))
-      .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+  protected fun shouldShowTv() {
+    shouldShowText("TV")
   }
 
-  protected fun shouldShowMovie(){
-    onView(withText("MOVIE"))
+  protected fun shouldShowMovie() {
+    shouldShowText("MOVIE")
+  }
+
+  protected fun shouldShowText(text: String) {
+    onView(withText(text))
       .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
   }
 }

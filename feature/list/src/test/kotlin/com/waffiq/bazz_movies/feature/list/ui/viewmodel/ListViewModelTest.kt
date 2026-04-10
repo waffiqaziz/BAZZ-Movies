@@ -22,6 +22,8 @@ import kotlinx.coroutines.test.setMain
 
 class ListViewModelTest : BehaviorSpec({
 
+  val id = 1234512
+
   val testDispatcher = UnconfinedTestDispatcher()
 
   val mockGetListUseCase: GetListUseCase = mockk()
@@ -150,6 +152,16 @@ class ListViewModelTest : BehaviorSpec({
         expected = expectedMovie,
       )
     }
+
+    When("fetching movie recommendation") {
+      coEvery { mockGetListMoviesUseCase.getMovieRecommendation(any()) } returns
+        flowOf(fakeMovieMediaItemPagingData)
+
+      thenEmitsCorrectItem(
+        flowProvider = { viewModel.getMovieRecommendation(id) },
+        expected = expectedMovie,
+      )
+    }
   }
 
   Given("tv shows list is requested") {
@@ -187,6 +199,15 @@ class ListViewModelTest : BehaviorSpec({
 
       thenEmitsCorrectItem(
         flowProvider = { viewModel.getAiringTodayTv() },
+      )
+    }
+
+    When("fetching tv recommendation") {
+      coEvery { mockGetListTvUseCase.getTvRecommendation(any()) } returns
+        flowOf(fakeTvMediaItemPagingData)
+
+      thenEmitsCorrectItem(
+        flowProvider = { viewModel.getTvRecommendation(id) },
       )
     }
   }

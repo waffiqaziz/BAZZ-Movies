@@ -8,6 +8,6 @@ data class ListArgs(
   val listType: ListType,
   val mediaType: String,
   val title: String,
-  val genreId: Int = -1,
-  val keywordId: Int = -1,
+  val id: Int = -1, // used for genre, keywords, and recommendation id
+  val backdrop: String = "",
 ) : Parcelable

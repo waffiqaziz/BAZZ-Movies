@@ -43,6 +43,9 @@ class ListViewModel @Inject constructor(
   fun getTopRatedMovies(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getTopRatedMovies().cachedIn(viewModelScope)
 
+  fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>> =
+    getListMoviesUseCase.getMovieRecommendation(movieId).cachedIn(viewModelScope)
+
   fun getPopularTv(): Flow<PagingData<MediaItem>> =
     getListTvUseCase.getPopularTv().cachedIn(viewModelScope)
 
@@ -54,4 +57,7 @@ class ListViewModel @Inject constructor(
 
   fun getAiringTodayTv(): Flow<PagingData<MediaItem>> =
     getListTvUseCase.getAiringTodayTv().cachedIn(viewModelScope)
+
+  fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>> =
+    getListTvUseCase.getTvRecommendation(tvId).cachedIn(viewModelScope)
 }

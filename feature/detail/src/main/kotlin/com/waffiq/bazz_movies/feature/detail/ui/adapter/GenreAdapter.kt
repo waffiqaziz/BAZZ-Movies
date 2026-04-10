@@ -51,7 +51,7 @@ class GenreAdapter(private val navigator: INavigator) :
             listType = BY_GENRE,
             mediaType = mediaType,
             title = "", // empty for genre
-            genreId = id,
+            id = id,
           ),
         )
       }

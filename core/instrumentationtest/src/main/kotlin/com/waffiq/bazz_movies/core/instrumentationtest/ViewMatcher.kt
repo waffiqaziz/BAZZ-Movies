@@ -4,9 +4,17 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.not
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist as notExist
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed as isViewDisplayed
 
 object ViewMatcher {
   fun withDrawable(resourceId: Int): Matcher<View> {
@@ -29,5 +37,23 @@ object ViewMatcher {
         return expectedBitmap.sameAs(actualBitmap)
       }
     }
+  }
+
+  fun Int.doesNotExist() {
+    onView(withId(this)).check(notExist())
+  }
+
+  fun Int.isNotDisplayed() {
+    onView(withId(this)).check(matches(not(isViewDisplayed())))
+  }
+
+  fun Int.isDisplayed() {
+    onView(withId(this)).check(matches(isViewDisplayed()))
+  }
+
+  fun Int.view(): ViewInteraction = onView(withId(this))
+
+  fun Int.hasText(text: String) {
+    view().check(matches(withText(text))).check(matches(isViewDisplayed()))
   }
 }

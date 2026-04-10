@@ -46,15 +46,17 @@ import com.waffiq.bazz_movies.feature.detail.ui.adapter.KeywordsAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.launcher.DefaultTrailerLauncher
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.CreateTableViewHelper.createTable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.backdropOriginalSource
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackdropNotAvailable
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.posterDetailSource
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType.RECOMMENDATION
 
 /**
  * Manages the UI presentation logic for the Detail Movie screen.
@@ -366,6 +368,27 @@ class DetailUIManager(
    */
   fun updateRecommendations(recommendations: PagingData<MediaItem>, lifecycle: Lifecycle) {
     adapterRecommendation.submitData(lifecycle, recommendations)
+  }
+
+  /**
+   * Open recommendation on list page
+   */
+  fun openListPage(
+    mediaType: String,
+    title: String,
+    backdrop: String,
+    mediaId: Int,
+  ) {
+    navigator.openList(
+      activity,
+      ListArgs(
+        listType = RECOMMENDATION,
+        mediaType = mediaType,
+        title = title,
+        id = mediaId,
+        backdrop = backdrop,
+      ),
+    )
   }
 
   /**

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -15,6 +16,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.designsystem.R.id.button
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
@@ -23,6 +25,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
@@ -218,7 +221,7 @@ class MediaDetailActivityInteractionTest :
           listType = BY_GENRE,
           mediaType = testMediaItem.mediaType,
           title = "",
-          genreId = testMediaItem.listGenreIds?.get(0) ?: 0,
+          id = testMediaItem.listGenreIds?.get(0) ?: 0,
         )
       )
     }
@@ -326,13 +329,13 @@ class MediaDetailActivityInteractionTest :
 
       // post to watchlist when not yet
       updateState {
-        copy(isFavorite=false, isWatchlist = false)
+        copy(isFavorite = false, isWatchlist = false)
       }
       performClickButtonWatchlist()
 
       // remove from watchlist
       updateState {
-        copy(isFavorite=true, isWatchlist = true)
+        copy(isFavorite = true, isWatchlist = true)
       }
       performClickButtonWatchlist()
     }
@@ -365,6 +368,16 @@ class MediaDetailActivityInteractionTest :
       }
       performClickButtonWatchlist()
       performClickButtonFavorite()
+    }
+  }
+
+  @Test
+  fun buttonMoreRecommendation_whenClicked_shouldOpenListPage() {
+    context.launchMediaDetailActivity {
+      onView(withId(rv_recommendation)).perform(scrollTo())
+      onView(withId(button)).check(matches(isDisplayed())).perform(click())
+
+      verify(exactly = 1) { mockNavigator.openList(any(), any()) }
     }
   }
 
