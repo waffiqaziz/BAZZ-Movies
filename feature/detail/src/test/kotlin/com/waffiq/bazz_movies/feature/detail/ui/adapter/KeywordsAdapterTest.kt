@@ -1,12 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import android.os.Looper
-import android.widget.FrameLayout
 import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
-import com.waffiq.bazz_movies.navigation.INavigator
-import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -19,19 +17,21 @@ import org.robolectric.Shadows.shadowOf
 class KeywordsAdapterTest : BaseAdapterTest() {
 
   private lateinit var adapter: KeywordsAdapter
-  private val navigator: INavigator = mockk()
-  private lateinit var parent: FrameLayout
-  private lateinit var viewHolder:  KeywordsAdapter.ViewHolder
+  private lateinit var viewHolder: KeywordsAdapter.ViewHolder
   private lateinit var binding: ChipGenreBinding
+
+  private val mediaKeywordsItemList = listOf(
+    MediaKeywordsItem(name = "war", id = 21),
+    MediaKeywordsItem(name = "tragedy", id = 22),
+  )
 
   @Before
   fun setup() {
     super.baseSetup()
     adapter = KeywordsAdapter(navigator)
     recyclerView.adapter = adapter
-    parent = FrameLayout(context)
-    viewHolder =  adapter.onCreateViewHolder(parent, 0)
-    binding =  ChipGenreBinding.bind(viewHolder.itemView)
+    viewHolder = adapter.onCreateViewHolder(parent, 0)
+    binding = ChipGenreBinding.bind(viewHolder.itemView)
   }
 
   @Test
@@ -54,17 +54,12 @@ class KeywordsAdapterTest : BaseAdapterTest() {
 
   @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
-    val testData = listOf(
-      MediaKeywordsItem(name = "war", id = 21),
-      MediaKeywordsItem(name = "tragedy", id = 22),
-    )
-
-    adapter.submitList(testData)
+    adapter.submitList(mediaKeywordsItemList)
 
     // Let ListAdapter process the diff
     shadowOf(Looper.getMainLooper()).idle()
 
-    testData.forEachIndexed { index, item ->
+    mediaKeywordsItemList.forEachIndexed { index, item ->
       adapter.onBindViewHolder(viewHolder, index) // Covers getItem(position)
       assertEquals(item.name, binding.chip.text.toString())
     }
@@ -121,6 +116,17 @@ class KeywordsAdapterTest : BaseAdapterTest() {
     // verify ViewHolder is correctly inflated
     assertNotNull(viewHolder.itemView)
     assertSame(parent.context, viewHolder.itemView.context)
+  }
+
+  @Test
+  fun onClick_whenClicked_opensMovieDetails() {
+    adapter.submitList(mediaKeywordsItemList)
+    shadowOf(Looper.getMainLooper()).idle()
+
+    adapter.onBindViewHolder(viewHolder, 0)
+    binding.chip.performClick()
+
+    verify { navigator.openList(any(), any()) }
   }
 
   @Test
