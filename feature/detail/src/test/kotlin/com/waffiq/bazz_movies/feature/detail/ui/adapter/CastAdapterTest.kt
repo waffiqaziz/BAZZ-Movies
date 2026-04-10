@@ -7,8 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
-import com.waffiq.bazz_movies.navigation.INavigator
-import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -21,14 +19,12 @@ import org.junit.Test
 import org.robolectric.Shadows.shadowOf
 
 class CastAdapterTest : BaseAdapterTest() {
-  lateinit var navigator: INavigator
 
   private lateinit var adapter: CastAdapter
 
   @Before
   fun setup() {
     super.baseSetup()
-    navigator = mockk(relaxed = true)
     adapter = CastAdapter(navigator)
     recyclerView.adapter = adapter
   }

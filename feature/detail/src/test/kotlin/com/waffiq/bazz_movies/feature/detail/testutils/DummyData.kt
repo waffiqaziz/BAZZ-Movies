@@ -63,6 +63,12 @@ object DummyData {
   const val ERROR_MESSAGE = "Network error"
   const val SESSION_ID = "session123"
 
+  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
+    id = 333,
+    name = "crime"
+  )
+
+
   val genresItemResponse = GenresResponseItem(
     id = 1,
     name = "Action"
@@ -308,6 +314,11 @@ object DummyData {
     writer = "Jonathan Nolan, Christopher Nolan"
   )
 
+  val genresItems = listOf(
+    GenresItem(id = 1, name = "Action"),
+    GenresItem(id = 2, name = "Comedy")
+  )
+
   // region MOVIE
   const val MOVIE_ID = 1001
   val detailMovie = MovieDetail(
@@ -336,7 +347,7 @@ object DummyData {
     genre = transformListGenreToJoinString(detailMovie.listGenres),
     genreId = transformToGenreIDs(detailMovie.listGenres),
     duration = getTransformDuration(detailMovie.runtime),
-    imdbId = detailMovie.imdbId,
+    imdbId = IMDB_ID,
     ageRating = getAgeRating(
       detailMovie,
       getReleaseDateRegion(detailMovie, USER_REGION).regionRelease
@@ -358,6 +369,18 @@ object DummyData {
     adult = false,
     voteCount = 8000
   )
+
+  val fullMovieDetail = MovieDetail(
+    id = 1,
+    originalLanguage = "en",
+    listGenres = genresItems,
+    voteAverage = 8.0,
+    status = "Released",
+    runtime = 120,
+    imdbId = "tt9999999",
+    budget = 1000000,
+    revenue = 5000000L
+  )
   // endregion MOVIE
 
   // region TV
@@ -374,8 +397,44 @@ object DummyData {
     ),
     firstAirDate = "2023-12-20T00:00:00.000Z"
   )
-  val externalTvID = TvExternalIds(imdbId = "tt87654321")
+
   val tvCredits = MediaCredits(cast = listOf(), crew = listOf(), id = TV_ID)
+
+  val tvMediaDetail = MediaDetail(
+    id = TV_ID,
+    genre = transformListGenreToJoinString(tvDetailFull.listGenres),
+    genreId = transformToGenreIDs(tvDetailFull.listGenres),
+    duration = tvDetailFull.status,
+    imdbId = "",
+    ageRating = getAgeRating(
+      tvDetailFull,
+      getReleaseDateRegion(tvDetailFull).regionRelease
+    ),
+    tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
+    releaseDateRegion = getReleaseDateRegion(tvDetailFull)
+  )
+
+  val tvKeywordsResponse = TvKeywordsResponse(
+    id = 66666,
+    keywords = listOf(mediaKeywordsResponseItem)
+  )
+
+  val tvExternalIds = TvExternalIds(
+    imdbId = "tt1234567",
+    id = 999
+  )
+
+
+  val fullTvDetail = TvDetail(
+    id = 1,
+    originalLanguage = "en",
+    listGenres = genresItems,
+    voteAverage = 7.5,
+    status = "Returning Series",
+    listOriginCountry = listOf("US"),
+    firstAirDate = "2020-01-01",
+    lastAirDate = "2023-06-01"
+  )
   // endregion TV
 
   val video = Video(
@@ -439,20 +498,6 @@ object DummyData {
     originCountry = listOf()
   )
 
-  val tvMediaDetail = MediaDetail(
-    id = TV_ID,
-    genre = transformListGenreToJoinString(tvDetailFull.listGenres),
-    genreId = transformToGenreIDs(tvDetailFull.listGenres),
-    duration = tvDetailFull.status,
-    imdbId = "",
-    ageRating = getAgeRating(
-      tvDetailFull,
-      getReleaseDateRegion(tvDetailFull).regionRelease
-    ),
-    tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
-    releaseDateRegion = getReleaseDateRegion(tvDetailFull)
-  )
-
   val postModelAddFavoriteStateSuccess =
     UpdateMediaStateResult(
       isSuccess = true,
@@ -481,26 +526,11 @@ object DummyData {
       isFavorite = false
     )
 
-  val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
-    id = 333,
-    name = "crime"
-  )
-
   val movieKeywordsResponse = MovieKeywordsResponse(
     id = 44444,
     keywords = listOf(mediaKeywordsResponseItem)
   )
 
-  val tvKeywordsResponse = TvKeywordsResponse(
-    id = 66666,
-    keywords = listOf(mediaKeywordsResponseItem)
-  )
-
-
-  val genresItems = listOf(
-    GenresItem(id = 1, name = "Action"),
-    GenresItem(id = 2, name = "Comedy")
-  )
 
   val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
 
@@ -516,33 +546,5 @@ object DummyData {
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",
     releaseDate = "2023"
-  )
-
-  val tvExternalIds = TvExternalIds(
-    imdbId = "tt1234567",
-    id = 999
-  )
-
-  val fullTvDetail = TvDetail(
-    id = 1,
-    originalLanguage = "en",
-    listGenres = genresItems,
-    voteAverage = 7.5,
-    status = "Returning Series",
-    listOriginCountry = listOf("US"),
-    firstAirDate = "2020-01-01",
-    lastAirDate = "2023-06-01"
-  )
-
-  val fullMovieDetail = MovieDetail(
-    id = 1,
-    originalLanguage = "en",
-    listGenres = genresItems,
-    voteAverage = 8.0,
-    status = "Released",
-    runtime = 120,
-    imdbId = "tt9999999",
-    budget = 1000000,
-    revenue = 5000000L
   )
 }

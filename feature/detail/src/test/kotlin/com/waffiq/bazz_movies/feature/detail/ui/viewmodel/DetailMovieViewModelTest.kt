@@ -21,11 +21,65 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
   fun getMovieDetail_whenSuccessful_emitsSuccess() = runTest {
     coEvery { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) } returns
       successFlow(mockMediaDetail)
+    coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(any()) } returns
+      successFlow(mockOmdb)
 
     testViewModelState(
       runBlock = { viewModel.getMovieDetail(movieId) },
       stateSelector = { it.detail },
       expectedStates = listOf(mockMediaDetail),
+      verifyBlock = {
+        verify(exactly = 1) { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) }
+      },
+    )
+  }
+
+  @Test
+  fun getMovieDetail_whenImdbIsMissing_emitsSuccess() = runTest {
+    coEvery { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) } returns
+      successFlow(mockMediaDetail.copy(imdbId = null))
+    setupGetOMDbDetailsMockReturnValue()
+
+    testViewModelState(
+      runBlock = { viewModel.getMovieDetail(movieId) },
+      stateSelector = { it.detail },
+      expectedStates = listOf(mockMediaDetail.copy(imdbId = null)),
+      verifyBlock = {
+        verify(exactly = 1) { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) }
+      },
+    )
+  }
+
+  @Test
+  fun getMovieDetail_whenImdbIsEmpty_emitsSuccess() = runTest {
+    coEvery { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) } returns
+      successFlow(mockMediaDetail.copy(imdbId = ""))
+    setupGetOMDbDetailsMockReturnValue()
+
+    testViewModelState(
+      runBlock = { viewModel.getMovieDetail(movieId) },
+      stateSelector = { it.detail },
+      expectedStates = listOf(
+        mockMediaDetail.copy(imdbId = "")
+      ),
+      verifyBlock = {
+        verify(exactly = 1) { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) }
+      },
+    )
+  }
+
+  @Test
+  fun getMovieDetail_whenImdbIsBlank_emitsSuccess() = runTest {
+    coEvery { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) } returns
+      successFlow(mockMediaDetail.copy(imdbId = " "))
+    setupGetOMDbDetailsMockReturnValue()
+
+    testViewModelState(
+      runBlock = { viewModel.getMovieDetail(movieId) },
+      stateSelector = { it.detail },
+      expectedStates = listOf(
+        mockMediaDetail.copy(imdbId = " "),
+      ),
       verifyBlock = {
         verify(exactly = 1) { mockGetMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) }
       },
@@ -192,7 +246,10 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
     testViewModelState(
       runBlock = { viewModel.getMovieWatchProviders(movieId) },
       stateSelector = { it.watchProviders },
-      expectedStates = listOf(WatchProvidersUiState.Loading, WatchProvidersUiState.Error(errorMessage)),
+      expectedStates = listOf(
+        WatchProvidersUiState.Loading,
+        WatchProvidersUiState.Error(errorMessage)
+      ),
       verifyBlock = {
         coVerify { mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId) }
       }
@@ -254,7 +311,7 @@ class DetailMovieViewModelTest : BaseMediaDetailViewModelTest() {
   fun getMovieWatchProviders_withNonNullFields_skipsOrEmptyBranches() = runTest {
     coEvery {
       mockGetMediaDetailUseCase.getMovieWatchProvidersWithUserRegion(movieId)
-    } returns successFlow(fullProvider)
+    } returns successFlow(mockWatchProvider)
 
     viewModel.getMovieWatchProviders(movieId)
     advanceUntilIdle()

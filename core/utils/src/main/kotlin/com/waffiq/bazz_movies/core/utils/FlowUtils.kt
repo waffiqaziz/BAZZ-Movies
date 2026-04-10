@@ -48,4 +48,33 @@ object FlowUtils {
       }
     }
   }
+
+  fun <T> LifecycleOwner.collectFlow(
+    flow: Flow<T>,
+    collectLatest: Boolean = true,
+    block: suspend (T) -> Unit,
+  ) {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        if (collectLatest) {
+          flow.collectLatest(block)
+        } else {
+          flow.collect(block)
+        }
+      }
+    }
+  }
+
+  fun <T : Any> LifecycleOwner.collectPagingData(
+    flow: Flow<PagingData<T>>,
+    block: suspend (PagingData<T>) -> Unit,
+  ) {
+    val cachedFlow = flow.cachedIn(lifecycleScope)
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        cachedFlow.collectLatest(block)
+      }
+    }
+  }
 }

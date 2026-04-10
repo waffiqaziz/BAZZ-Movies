@@ -10,12 +10,15 @@ import androidx.paging.PagingDataAdapter
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.swipeDown
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_recommendation_header
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.RecommendationAdapter
@@ -93,6 +96,7 @@ class MediaDetailActivityLoadStateTest :
 
   @Test
   fun recommendationVisibility_whenNotEmpty_showsViews() {
+    recommendations.value = PagingData.from(listOf(testMediaItem, testMediaItem))
     context.launchMediaDetailActivity {
       it.onActivity { activity ->
         activity.uiManager.adapterRecommendation.simulateLoadState(
@@ -107,6 +111,7 @@ class MediaDetailActivityLoadStateTest :
 
   @Test
   fun recommendationVisibility_whenLoadingState_showsViews() {
+    recommendations.value = PagingData.from(listOf(testMediaItem, testMediaItem))
     context.launchMediaDetailActivity {
       it.onActivity { activity ->
         activity.uiManager.adapterRecommendation.simulateLoadState(
@@ -122,18 +127,18 @@ class MediaDetailActivityLoadStateTest :
   @Test
   fun recommendationVisibility_whenEmptyWithEndOfPagination_hidesViews() {
     context.launchMediaDetailActivity {
-      it.onActivity { activity ->
-        val adapter = activity.uiManager.adapterRecommendation
-
-        // clear items first so itemCount = 0, this a must due to the test already post value
-        // `recommendation.postValue(PagingData.from(listOf(testMediaItem, testMediaItem)))`
-        // inside setupBaseMocks
-        activity.lifecycleScope.launch {
-          adapter.submitData(PagingData.empty())
-        }
-      }
-
-      Thread.sleep(500)
+//      it.onActivity { activity ->
+//        val adapter = activity.uiManager.adapterRecommendation
+//
+//        // clear items first so itemCount = 0, this a must due to the base test already set the value
+//        // `recommendation.postValue(PagingData.from(listOf(testMediaItem, testMediaItem)))`
+//        // inside setupBaseMocks
+//        activity.lifecycleScope.launch {
+//          adapter.submitData(PagingData.empty())
+//        }
+//      }
+//
+//      Thread.sleep(500)
 
       it.onActivity { activity ->
         val adapter = activity.uiManager.adapterRecommendation
@@ -183,6 +188,7 @@ class MediaDetailActivityLoadStateTest :
   private fun checkRecommendation(isVisible: Boolean) {
     if (isVisible) {
       onView(withId(rv_recommendation)).perform(scrollTo())
+      onView(withId(rv_recommendation)).perform(swipeUp())
       onView(withId(tv_recommendation_header)).check(matches(isDisplayed()))
       onView(withId(rv_recommendation)).check(matches(isDisplayed()))
     } else {

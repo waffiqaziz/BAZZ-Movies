@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -77,9 +78,14 @@ class MediaDetailViewModel @Inject constructor(
   }
 
   fun getMovieDetail(movieId: Int) {
-    singleExecuteUseCase(
+    executeUseCase(
       flowProvider = { getMediaDetailUseCase.getMovieDetailWithUserRegion(movieId) },
-      onSuccess = { copy(detail = it) },
+      onSuccess = {
+        updateState { copy(detail = it) }
+        if (!it.imdbId.isNullOrEmpty()) {
+          getOMDbDetails(it.imdbId)
+        }
+      },
     )
   }
 
@@ -176,13 +182,13 @@ class MediaDetailViewModel @Inject constructor(
             updateState {
               copy(
                 watchProviders =
-                WatchProvidersUiState.Success(
-                  ads = outcome.data.ads.orEmpty(),
-                  buy = outcome.data.buy.orEmpty(),
-                  flatrate = outcome.data.flatrate.orEmpty(),
-                  free = outcome.data.free.orEmpty(),
-                  rent = outcome.data.rent.orEmpty(),
-                ),
+                  WatchProvidersUiState.Success(
+                    ads = outcome.data.ads.orEmpty(),
+                    buy = outcome.data.buy.orEmpty(),
+                    flatrate = outcome.data.flatrate.orEmpty(),
+                    free = outcome.data.free.orEmpty(),
+                    rent = outcome.data.rent.orEmpty(),
+                  ),
               )
             }
           }
@@ -203,6 +209,7 @@ class MediaDetailViewModel @Inject constructor(
     }
   }
 
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   fun getOMDbDetails(imdbId: String) {
     executeUseCase(
       flowProvider = { getOMDbDetailUseCase.getOMDbDetails(imdbId) },
@@ -418,11 +425,11 @@ class MediaDetailViewModel @Inject constructor(
     updateState {
       copy(
         mediaStateResult =
-        UpdateMediaStateResult(
-          isSuccess = isSuccess,
-          isDelete = isDelete,
-          isFavorite = isFavorite,
-        ),
+          UpdateMediaStateResult(
+            isSuccess = isSuccess,
+            isDelete = isDelete,
+            isFavorite = isFavorite,
+          ),
       )
     }
   }

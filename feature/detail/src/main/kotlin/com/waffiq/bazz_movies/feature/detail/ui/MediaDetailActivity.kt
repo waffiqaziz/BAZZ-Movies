@@ -2,22 +2,20 @@ package com.waffiq.bazz_movies.feature.detail.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
+import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailDataManager
 import com.waffiq.bazz_movies.feature.detail.ui.manager.DetailUIManager
@@ -29,7 +27,6 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -122,29 +119,21 @@ class MediaDetailActivity : AppCompatActivity() {
   }
 
   private fun setupObservers() {
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.uiState.collect { state ->
-          renderState(state)
-        }
-      }
+    collectFlow(detailViewModel.uiState) {
+      renderState(it)
     }
 
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.errorEvent.collect { message ->
-          uiManager.showLoadingDim(false)
-          uiManager.showSnackbarWarning(message)
-        }
-      }
+    collectFlow(detailViewModel.toastEvent, collectLatest = false) {
+      uiManager.showToast(getString(it))
     }
 
-    lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        detailViewModel.toastEvent.collect { resId ->
-          uiManager.showToast(getString(resId))
-        }
-      }
+    collectFlow(detailViewModel.errorEvent, collectLatest = false) {
+      uiManager.showLoadingDim(false)
+      uiManager.showSnackbarWarning(it)
+    }
+
+    collectPagingData(detailViewModel.recommendations) {
+      uiManager.updateRecommendations(it, lifecycle)
     }
   }
 
@@ -152,17 +141,12 @@ class MediaDetailActivity : AppCompatActivity() {
     uiManager.showLoadingDim(state.isLoading)
 
     state.detail?.let { detail ->
-      Log.e("LLLLLLLLLLL", state.toString())
       uiManager.updateDetailUI(detail, dataExtra.mediaType)
       dataExtra = dataExtra.copy(listGenreIds = detail.genreId)
-      if (!detail.imdbId.isNullOrEmpty()) {
-        detailViewModel.getOMDbDetails(detail.imdbId)
-      }
     }
     watchProvidersManager.handleWatchProvidersState(state.watchProviders)
     state.credits?.let { uiManager.updateCreditsUI(it) }
     state.omdbDetails?.let { uiManager.updateOMDbScores(it) }
-    state.recommendations?.let { uiManager.updateRecommendations(it, lifecycle) }
     uiManager.setupTrailerButton(state.videoLink)
 
     userInteractionHandler.renderState(state)

@@ -70,7 +70,6 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
       ),
       omdbDetails = OMDbDetails(),
       videoLink = "link",
-      recommendations = PagingData.from(listOf(MediaItem())),
       watchProviders = testWatchProvidersUiState,
       itemState = MediaState(
         id = 90,

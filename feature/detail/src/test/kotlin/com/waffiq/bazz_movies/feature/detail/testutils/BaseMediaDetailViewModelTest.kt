@@ -18,17 +18,20 @@ import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
-import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.PostRateUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail.GetOMDbDetailUseCase
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.ERROR_MESSAGE
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.IMDB_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.TV_ID
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.movieMediaDetail
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.oMDbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,13 +61,13 @@ abstract class BaseMediaDetailViewModelTest {
   protected val mockUserPrefUseCase: UserPrefUseCase = mockk()
 
   protected val imdbId = IMDB_ID
-  protected val movieId = 123
-  protected val tvId = 456
+  protected val movieId = MOVIE_ID
+  protected val tvId = TV_ID
   protected val errorMessage = ERROR_MESSAGE
 
   protected val mockVideoLink = String()
   protected val mockMediaItem = mockk<MediaItem>()
-  protected val mockMediaDetail = mockk<MediaDetail>()
+  protected val mockMediaDetail = movieMediaDetail
   protected val mockMediaStated = MediaState(
     id = 112,
     favorite = false,
@@ -72,14 +75,14 @@ abstract class BaseMediaDetailViewModelTest {
     watchlist = false
   )
   protected val mockMediaCredits = mockk<MediaCredits>()
-  protected val mockOmdb = mockk<OMDbDetails>()
+  protected val mockOmdb = oMDbDetails
 
   protected val mockWatchProvider = WatchProvidersItem(
-    ads = listOf(mockk()),
-    buy = listOf(mockk()),
-    flatrate = listOf(mockk()),
-    free = listOf(),
-    rent = listOf(mockk()),
+    ads = emptyList(),
+    buy = emptyList(),
+    flatrate = emptyList(),
+    free = emptyList(),
+    rent = emptyList(),
     link = String()
   )
   protected val mockWatchProviderState = WatchProvidersUiState.Success(
@@ -96,14 +99,6 @@ abstract class BaseMediaDetailViewModelTest {
     free = null,
     rent = null,
     link = null
-  )
-  protected val fullProvider = WatchProvidersItem(
-    ads = listOf(mockk()),
-    buy = listOf(mockk()),
-    flatrate = listOf(mockk()),
-    free = listOf(mockk()),
-    rent = listOf(mockk()),
-    link = String()
   )
 
   @get:Rule
@@ -222,5 +217,10 @@ abstract class BaseMediaDetailViewModelTest {
     }
 
     verifyBlock()
+  }
+
+  fun setupGetOMDbDetailsMockReturnValue(){
+    coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(any()) } returns
+      successFlow(mockOmdb)
   }
 }

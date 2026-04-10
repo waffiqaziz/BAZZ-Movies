@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.omdbDetails
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -188,7 +189,7 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   fun getTvWatchProviders_withNonNullFields_skipsOrEmptyBranches() = runTest {
     coEvery {
       mockGetMediaDetailUseCase.getTvWatchProvidersWithUserRegion(tvId)
-    } returns successFlow(fullProvider)
+    } returns successFlow(mockWatchProvider)
 
     viewModel.getTvWatchProviders(tvId)
     advanceUntilIdle()
@@ -214,12 +215,12 @@ class DetailTvViewModelTest : BaseMediaDetailViewModelTest() {
   @Test
   fun getTvAllScore_whenSuccessful_emitsSuccess() {
     coEvery { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } returns
-      successFlow(mockOmdb)
+      successFlow(omdbDetails)
 
     testViewModelState(
       runBlock = { viewModel.getTvAllScore(tvId) },
       stateSelector = { it.omdbDetails },
-      expectedStates = listOf(mockOmdb),
+      expectedStates = listOf(omdbDetails),
       verifyBlock = { coVerify { mockGetOMDbDetailUseCase.getTvAllScore(tvId) } }
     )
   }
