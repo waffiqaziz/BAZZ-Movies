@@ -30,6 +30,7 @@
 
         <!-- Popular -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_popular"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="@dimen/default_margin_parent_20">
 
@@ -66,6 +67,7 @@
 
         <!-- Airing today -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_airing_today"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 
@@ -102,6 +104,7 @@
 
         <!-- Air this week -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_airing_this_week"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 
@@ -139,6 +142,7 @@
 
         <!-- Top-rated -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_top_rated"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 

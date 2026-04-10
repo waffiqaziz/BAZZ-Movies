@@ -214,13 +214,13 @@ class TvSeriesFragment : Fragment() {
   private fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
-      tvPopular.isVisible = isVisible
+      layoutPopular.isVisible = isVisible
       rvPopular.isVisible = isVisible
-      tvAiringToday.isVisible = isVisible
+      layoutAiringToday.isVisible = isVisible
       rvAiringToday.isVisible = isVisible
-      tvAiringThisWeek.isVisible = isVisible
+      layoutAiringThisWeek.isVisible = isVisible
       rvAiringThisWeek.isVisible = isVisible
-      tvTopRated.isVisible = isVisible
+      layoutTopRated.isVisible = isVisible
       rvTopRated.isVisible = isVisible
       illustrationError.root.isVisible = !isVisible
     }
