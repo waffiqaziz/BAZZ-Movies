@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.detail.ui.state
 
-import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail

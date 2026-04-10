@@ -182,13 +182,13 @@ class MediaDetailViewModel @Inject constructor(
             updateState {
               copy(
                 watchProviders =
-                  WatchProvidersUiState.Success(
-                    ads = outcome.data.ads.orEmpty(),
-                    buy = outcome.data.buy.orEmpty(),
-                    flatrate = outcome.data.flatrate.orEmpty(),
-                    free = outcome.data.free.orEmpty(),
-                    rent = outcome.data.rent.orEmpty(),
-                  ),
+                WatchProvidersUiState.Success(
+                  ads = outcome.data.ads.orEmpty(),
+                  buy = outcome.data.buy.orEmpty(),
+                  flatrate = outcome.data.flatrate.orEmpty(),
+                  free = outcome.data.free.orEmpty(),
+                  rent = outcome.data.rent.orEmpty(),
+                ),
               )
             }
           }
@@ -425,11 +425,11 @@ class MediaDetailViewModel @Inject constructor(
     updateState {
       copy(
         mediaStateResult =
-          UpdateMediaStateResult(
-            isSuccess = isSuccess,
-            isDelete = isDelete,
-            isFavorite = isFavorite,
-          ),
+        UpdateMediaStateResult(
+          isSuccess = isSuccess,
+          isDelete = isDelete,
+          isFavorite = isFavorite,
+        ),
       )
     }
   }
