@@ -27,9 +27,7 @@ import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.R.id.open_search_view_toolbar
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.search.SearchView
 import com.google.android.material.snackbar.Snackbar
-import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.color.yellow
@@ -169,27 +167,6 @@ class SearchFragment : Fragment() {
     clearButton.imageTintList = ColorStateList.valueOf(
       ContextCompat.getColor(requireContext(), yellow),
     )
-
-    // set animation on the navigation icon
-    val navIcon = binding.searchView
-      .findViewById<ViewGroup>(open_search_view_toolbar)
-      .getChildAt(0) as ImageButton
-    binding.searchView.addTransitionListener { _, _, newState ->
-      if (newState == SearchView.TransitionState.SHOWING) {
-        navIcon.alpha = 0f
-        navIcon.animate()
-          .alpha(1f)
-          .setStartDelay(DELAY_ANIM)
-          .setDuration(ANIM_DURATION)
-          .start()
-      } else if (newState == SearchView.TransitionState.HIDING) {
-        navIcon.animate()
-          .alpha(0f)
-          .setDuration(ANIM_DURATION)
-          .setStartDelay(0)
-          .start()
-      }
-    }
 
     // Setup SearchView text change listener
     binding.searchView.editText.setOnEditorActionListener { textView, _, _ ->
@@ -351,9 +328,5 @@ class SearchFragment : Fragment() {
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter
-  }
-
-  companion object {
-    const val DELAY_ANIM = 150L
   }
 }
