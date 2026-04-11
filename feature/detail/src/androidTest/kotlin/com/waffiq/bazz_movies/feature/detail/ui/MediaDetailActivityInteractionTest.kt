@@ -16,11 +16,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.designsystem.R.id.button
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
+import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
@@ -375,7 +375,7 @@ class MediaDetailActivityInteractionTest :
   fun buttonMoreRecommendation_whenClicked_shouldOpenListPage() {
     context.launchMediaDetailActivity {
       onView(withId(rv_recommendation)).perform(scrollTo())
-      onView(withId(button)).check(matches(isDisplayed())).perform(click())
+      onView(withId(btn_more_recommendation)).check(matches(isDisplayed())).perform(click())
 
       verify(exactly = 1) { mockNavigator.openList(any(), any()) }
     }
