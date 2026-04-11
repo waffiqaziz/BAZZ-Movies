@@ -19,11 +19,13 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.feature.detail.utils.uihelpers.ButtonImageChanger.changeBtnAction
 
 /**
@@ -151,6 +153,14 @@ class UserInteractionHandler(
       btnWatchlist.setOnClickListener { handleWatchlistClick() }
       btnSidebar.setOnClickListener { uiManager.showSideSheet() }
       swipeRefresh.setOnRefreshListener { handleSwipeRefresh() }
+      btnMoreRecommendation.button.setOnClickListener {
+        uiManager.openListPage(
+          mediaType = dataExtra.mediaType,
+          title = titleHandler(dataExtra),
+          backdrop = dataExtra.backdropPathSource,
+          mediaId = dataExtra.id,
+        )
+      }
     }
   }
 

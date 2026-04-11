@@ -25,6 +25,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
+import com.waffiq.bazz_movies.core.designsystem.R.string.recommendation
 import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_grid_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_list_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
@@ -125,6 +126,11 @@ class ListActivity : AppCompatActivity() {
         showTvAiringThisWeek()
       }
 
+      ListType.RECOMMENDATION -> {
+        shouldUpdateBackdropFromItems = false
+        showRecommendation(args)
+      }
+
       else -> binding.toolbar.title = args.title
     }
   }
@@ -144,19 +150,19 @@ class ListActivity : AppCompatActivity() {
 
   private fun showListBasedGenre(args: ListArgs) {
     val backdrop = if (args.mediaType == MOVIE_MEDIA_TYPE) {
-      getBackdropMovieGenre(args.genreId)
+      getBackdropMovieGenre(args.id)
     } else {
-      getBackdropTvGenre(args.genreId)
+      getBackdropTvGenre(args.id)
     }
     showBackdrop(backdrop)
-    binding.toolbar.title = getGenreName(args.genreId)
+    binding.toolbar.title = getGenreName(args.id)
     collectAndSubmitData(
       this,
       {
         if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getMovieByGenres(args.genreId.toString())
+          viewModel.getMovieByGenres(args.id.toString())
         } else {
-          viewModel.getTvByGenres(args.genreId.toString())
+          viewModel.getTvByGenres(args.id.toString())
         }
       },
       adapter,
@@ -178,9 +184,9 @@ class ListActivity : AppCompatActivity() {
       this,
       {
         if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getMovieByKeywords(args.keywordId.toString())
+          viewModel.getMovieByKeywords(args.id.toString())
         } else {
-          viewModel.getTvByKeywords(args.keywordId.toString())
+          viewModel.getTvByKeywords(args.id.toString())
         }
       },
       adapter,
@@ -237,6 +243,23 @@ class ListActivity : AppCompatActivity() {
           viewModel.getPopularMovies()
         } else {
           viewModel.getPopularTv()
+        }
+      },
+      adapter,
+    )
+  }
+
+  private fun showRecommendation(args: ListArgs) {
+    binding.toolbar.title = args.title
+    binding.toolbar.subtitle = getString(recommendation)
+    showBackdrop(args.backdrop)
+    collectAndSubmitData(
+      this,
+      {
+        if (args.mediaType == MOVIE_MEDIA_TYPE) {
+          viewModel.getMovieRecommendation(args.id)
+        } else {
+          viewModel.getTvRecommendation(args.id)
         }
       },
       adapter,

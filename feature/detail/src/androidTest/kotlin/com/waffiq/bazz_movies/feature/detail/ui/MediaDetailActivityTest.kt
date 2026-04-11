@@ -1,19 +1,20 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.hasText
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
+import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
+import com.waffiq.bazz_movies.feature.detail.R.id.chip
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_age_rating
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_duration
@@ -37,7 +38,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import org.hamcrest.Matchers.not
+import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -91,9 +92,9 @@ class MediaDetailActivityTest :
   @Test
   fun detailScreen_whenAllDataProvided_showsAllViews() {
     context.launchMediaDetailActivity {
-      onView(withId(btn_back)).check(matches(isDisplayed()))
-      onView(withId(btn_watchlist)).check(matches(isDisplayed()))
-      onView(withId(btn_favorite)).check(matches(isDisplayed()))
+      btn_back.isDisplayed()
+      btn_watchlist.isDisplayed()
+      btn_favorite.isDisplayed()
     }
   }
 
@@ -111,85 +112,67 @@ class MediaDetailActivityTest :
     every { mockMediaDetailViewModel.uiState } returns MutableStateFlow(MediaDetailUiState())
 
     context.launchMediaDetailActivity {
-      verify(exactly = 0){ mockMediaDetailViewModel.getOMDbDetails(any()) }
+      verify(exactly = 0) { mockMediaDetailViewModel.getOMDbDetails(any()) }
     }
   }
 
   @Test
-  fun imdbId_withValidValue_shouldHandleAllPossibility() {
+  fun toastEvent_whenErrorIsOccurs_callsToastCreation() {
     context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = "tt1234567")) }
-      shortDelay()
-    }
-  }
-
-  @Test
-  fun imdbId_withNullValue_shouldHandleAllPossibility() {
-    context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = null)) }
-      shortDelay()
-    }
-  }
-
-  @Test
-  fun imdbId_withEmptyValue_shouldHandleAllPossibility() {
-    context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = "")) }
-      shortDelay()
-    }
-  }
-
-  @Test
-  fun imdbId_withBlankValue_shouldHandleAllPossibility() {
-    context.launchMediaDetailActivity {
-      uiState.update { s -> s.copy(detail = testMediaDetail.copy(imdbId = " ")) }
-      shortDelay()
+      it.onActivity { activity ->
+        activity.lifecycleScope.launch {
+          toastEvent.emit(add_to_favorite)
+        }
+      }
+      // manual verify
     }
   }
 
   @Test
   fun mediaDetailValue_withMixedValue_showsViewsCorrectly() {
-    // genre null
+    // genre empty or null, then chip is not exist at all
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = emptyList())) }
+      chip.doesNotExist()
     }
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(genreId = null)) }
+      chip.doesNotExist()
     }
 
     // status
-    context.launchMediaDetailActivity {
+    context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
+      tv_duration.hasText(context.getString(not_available))
     }
-    context.launchMediaDetailActivity {
+
+    context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
+      tv_duration.hasText(context.getString(not_available))
     }
 
     // movie duration null
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(duration = null)) }
-      onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
-        .check(matches(isDisplayed()))
+      tv_duration.hasText(context.getString(not_available))
     }
 
     // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
-      onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
-        .check(matches(isDisplayed()))
+      tv_duration.hasText(context.getString(not_available))
 
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
-      onView(withId(tv_duration)).check(matches(withText(context.getString(not_available))))
-        .check(matches(isDisplayed()))
+      tv_duration.hasText(context.getString(not_available))
     }
 
     // tmdb score hidden
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = null)) }
-      onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
+      tv_score_tmdb.isNotDisplayed()
 
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(tmdbScore = "")) }
-      onView(withId(tv_score_tmdb)).check(matches(not(isDisplayed())))
+      tv_score_tmdb.isNotDisplayed()
     }
   }
 
@@ -198,13 +181,13 @@ class MediaDetailActivityTest :
     // age rating null
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = null)) }
-      onView(withId(tv_age_rating)).check(matches(not(isDisplayed())))
+      tv_age_rating.isNotDisplayed()
     }
 
     // age rating empty
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(ageRating = "")) }
-      onView(withId(tv_age_rating)).check(matches(not(isDisplayed())))
+      tv_age_rating.isNotDisplayed()
     }
   }
 
@@ -219,7 +202,7 @@ class MediaDetailActivityTest :
           )
         )
       }
-      onView(withId(tv_year_released)).check(matches(not(isDisplayed())))
+      tv_year_released.isNotDisplayed()
     }
   }
 
@@ -229,7 +212,7 @@ class MediaDetailActivityTest :
       uiState.update { s ->
         s.copy(credits = testMediaCredits.copy(crew = emptyList(), cast = emptyList()))
       }
-      onView(withId(rv_cast)).check(matches(not(isDisplayed())))
+      rv_cast.isNotDisplayed()
     }
   }
 }

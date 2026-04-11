@@ -22,7 +22,7 @@ object ReleaseDateHelper {
   /**
    * Get release date and its associated region from a movie.
    *
-   * The function employs a multistep search strategy to locate a release date:
+   * The function use this step in order to get proper release date:
    * 1. Checks if there is a release date corresponding to the specified user region.
    * 2. If no matching region is found, falls back to using the production country's release date.
    * 3. If the above options are unavailable, it searches for any valid release date in any region.
@@ -35,7 +35,7 @@ object ReleaseDateHelper {
   fun getReleaseDateRegion(data: MovieDetail?, userRegion: String): ReleaseDateRegion {
     var releaseDateRegion: ReleaseDateRegion? = null
 
-    // Step 1: get release date based user's region.
+    // get release date based user's region.
     val userRegionAndDate =
       getMatchingRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem, userRegion)
     if (userRegionAndDate != null) {
@@ -45,7 +45,7 @@ object ReleaseDateHelper {
       )
     }
 
-    // Step 2: fallback - use production country and its release date
+    // fallback, use production country and its release date
     // if no match is found for the user region.
     if (releaseDateRegion == null) {
       // get production country
@@ -62,7 +62,7 @@ object ReleaseDateHelper {
       }
     }
 
-    // Step 3: final Fallback - use any valid region and release date.
+    // final Fallback, use any valid region and release date.
     if (releaseDateRegion == null) {
       val fallback = getAnyValidRegionAndReleaseDateMovie(data?.releaseDates?.listReleaseDatesItem)
       releaseDateRegion = ReleaseDateRegion(
@@ -132,8 +132,7 @@ object ReleaseDateHelper {
   /**
    * For TV-Series
    *
-   * Determines and returns the most relevant release date and its associated region for a given
-   * tv-series.
+   * Get the most relevant release date and its associated region for a given tv-series.
    *
    * @param data A `DetailTv` object containing details about the tv-series, including its release
    *        dates and original country.

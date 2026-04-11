@@ -78,7 +78,7 @@ class GenreAdapterTest : BaseAdapterTest() {
           listType = ListType.BY_GENRE,
           mediaType = MOVIE_MEDIA_TYPE,
           title = "",
-          genreId = movieGenreIds.first(),
+          id = movieGenreIds.first(),
         )
       )
     }
@@ -95,7 +95,7 @@ class GenreAdapterTest : BaseAdapterTest() {
           listType = ListType.BY_GENRE,
           mediaType = TV_MEDIA_TYPE,
           title = "",
-          genreId = tvGenreIds.first(),
+          id = tvGenreIds.first(),
         )
       )
     }
