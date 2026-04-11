@@ -39,7 +39,7 @@
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:text="@string/popular" />
 
           <include
@@ -47,7 +47,7 @@
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end|center"
+            android:layout_gravity="end|center"
             android:layout_marginEnd="-4dp" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -70,7 +70,7 @@
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:text="@string/now_playing" />
 
           <include
@@ -78,7 +78,7 @@
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end|center"
+            android:layout_gravity="end|center"
             android:layout_marginEnd="-4dp" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -108,7 +108,7 @@
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:text="@string/upcoming" />
 
           <include
@@ -116,7 +116,7 @@
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end|center"
+            android:layout_gravity="end|center"
             android:layout_marginEnd="-4dp" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -145,7 +145,7 @@
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:text="@string/top_rated" />
 
           <include
@@ -153,7 +153,7 @@
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end|center"
+            android:layout_gravity="end|center"
             android:layout_marginEnd="-4dp" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
