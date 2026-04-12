@@ -70,12 +70,15 @@ open class BaseListActivityTest {
     id = 12344
   )
 
-
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
-    every { viewModel.getMovieByGenres(any()) } returns listResultsFlow
-    every { viewModel.getTvByGenres(any()) } returns listResultsFlow
-    every { viewModel.getMovieByKeywords(any()) } returns listResultsFlow
-    every { viewModel.getTvByKeywords(any()) } returns listResultsFlow
+    every { viewModel.getAiringThisWeekTv() } returns listResultsFlow
+    every { viewModel.getByGenre(any(), any()) } returns listResultsFlow
+    every { viewModel.getByKeyword(any(), any()) } returns listResultsFlow
+    every { viewModel.getNowPlaying(any()) } returns listResultsFlow
+    every { viewModel.getRecommendation(any(), any()) } returns listResultsFlow
+    every { viewModel.getTopRated(any()) } returns listResultsFlow
+    every { viewModel.getUpcomingMovies() } returns listResultsFlow
+    every { viewModel.getPopular(any()) } returns listResultsFlow
     every { navigator.openDetails(any(), any()) } just Runs
   }
 

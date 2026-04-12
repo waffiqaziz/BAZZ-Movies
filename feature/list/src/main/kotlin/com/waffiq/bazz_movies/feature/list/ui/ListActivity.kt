@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -33,13 +34,12 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
-import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
+import com.waffiq.bazz_movies.core.utils.FlowUtils.load
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.feature.list.databinding.ActivityListBinding
 import com.waffiq.bazz_movies.feature.list.ui.adapter.ListAdapter
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
-import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdropMovieGenre
-import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdropTvGenre
+import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdrop
 import com.waffiq.bazz_movies.feature.list.utils.Helper.capitaliseEachWord
 import com.waffiq.bazz_movies.feature.list.utils.ParcelableHelper.extractArgsItemFromIntent
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -92,45 +92,21 @@ class ListActivity : AppCompatActivity() {
     adapter.setMediaType(args.mediaType)
     binding.toolbar.subtitle = args.mediaType.uppercase()
 
+    shouldUpdateBackdropFromItems = args.listType.shouldUpdateBackdrop()
+
+    handleListType(args)
+  }
+
+  private fun handleListType(args: ListArgs) {
     when (args.listType) {
       ListType.BY_GENRE -> showListBasedGenre(args)
-
-      // static backdrop, no loadStateChanged
-      ListType.BY_KEYWORD -> {
-        shouldUpdateBackdropFromItems = true
-        showListBasedKeywords(args)
-      }
-
-      ListType.NOW_PLAYING -> {
-        shouldUpdateBackdropFromItems = true
-        showNowPlaying(args)
-      }
-
-      ListType.POPULAR -> {
-        shouldUpdateBackdropFromItems = true
-        showPopular(args)
-      }
-
-      ListType.TOP_RATED -> {
-        shouldUpdateBackdropFromItems = true
-        showTopRated(args)
-      }
-
-      ListType.UPCOMING -> {
-        shouldUpdateBackdropFromItems = true
-        showUpcomingMovies()
-      }
-
-      ListType.AIRING_THIS_WEEK -> {
-        shouldUpdateBackdropFromItems = true
-        showTvAiringThisWeek()
-      }
-
-      ListType.RECOMMENDATION -> {
-        shouldUpdateBackdropFromItems = false
-        showRecommendation(args)
-      }
-
+      ListType.BY_KEYWORD -> showListBasedKeywords(args)
+      ListType.NOW_PLAYING -> showNowPlaying(args)
+      ListType.POPULAR -> showPopular(args)
+      ListType.TOP_RATED -> showTopRated(args)
+      ListType.UPCOMING -> showUpcomingMovies()
+      ListType.AIRING_THIS_WEEK -> showTvAiringThisWeek()
+      ListType.RECOMMENDATION -> showRecommendation(args)
       else -> binding.toolbar.title = args.title
     }
   }
@@ -148,27 +124,6 @@ class ListActivity : AppCompatActivity() {
     }
   }
 
-  private fun showListBasedGenre(args: ListArgs) {
-    val backdrop = if (args.mediaType == MOVIE_MEDIA_TYPE) {
-      getBackdropMovieGenre(args.id)
-    } else {
-      getBackdropTvGenre(args.id)
-    }
-    showBackdrop(backdrop)
-    binding.toolbar.title = getGenreName(args.id)
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getMovieByGenres(args.id.toString())
-        } else {
-          viewModel.getTvByGenres(args.id.toString())
-        }
-      },
-      adapter,
-    )
-  }
-
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   internal fun handleRefreshState(state: UIState<Unit>) {
     binding.loadingIndicator.isVisible = state.isLoading
@@ -178,92 +133,57 @@ class ListActivity : AppCompatActivity() {
     binding.illustrationError.btnTryAgain.isVisible = state is UIState.Error
   }
 
+  private fun showListBasedGenre(args: ListArgs) {
+    showBackdrop(getBackdrop(args.mediaType, args.id))
+    binding.toolbar.title = getGenreName(args.id)
+    load(viewModel.getByGenre(args.mediaType, args.id.toString()), adapter)
+  }
+
   private fun showListBasedKeywords(args: ListArgs) {
-    binding.toolbar.title = args.title.capitaliseEachWord()
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getMovieByKeywords(args.id.toString())
-        } else {
-          viewModel.getTvByKeywords(args.id.toString())
-        }
-      },
-      adapter,
-    )
+    setToolbarTitle(args.title.capitaliseEachWord())
+    load(viewModel.getByKeyword(args.mediaType, args.id.toString()), adapter)
   }
 
   private fun showUpcomingMovies() {
-    binding.toolbar.title = getString(upcoming)
-    collectAndSubmitData(this, { viewModel.getUpcomingMovies() }, adapter)
+    setToolbarTitle(upcoming)
+    load(viewModel.getUpcomingMovies(), adapter)
   }
 
   private fun showTvAiringThisWeek() {
-    binding.toolbar.title = getString(airing_this_week)
-    collectAndSubmitData(this, { viewModel.getAiringThisWeekTv() }, adapter)
+    setToolbarTitle(airing_this_week)
+    load(viewModel.getAiringThisWeekTv(), adapter)
   }
 
   private fun showNowPlaying(args: ListArgs) {
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          binding.toolbar.title = getString(now_playing)
-          viewModel.getPlayingNowMovies()
-        } else {
-          binding.toolbar.title = getString(airing_today)
-          viewModel.getAiringTodayTv()
-        }
-      },
-      adapter,
+    setToolbarTitle(
+      if (args.mediaType == MOVIE_MEDIA_TYPE) getString(now_playing) else getString(airing_today)
     )
+    load(viewModel.getNowPlaying(args.mediaType), adapter)
   }
 
   private fun showTopRated(args: ListArgs) {
-    binding.toolbar.title = getString(top_rated)
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getTopRatedMovies()
-        } else {
-          viewModel.getTopRatedTv()
-        }
-      },
-      adapter,
-    )
+    setToolbarTitle(top_rated)
+    load(viewModel.getTopRated(args.mediaType), adapter)
   }
 
   private fun showPopular(args: ListArgs) {
-    binding.toolbar.title = getString(popular)
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getPopularMovies()
-        } else {
-          viewModel.getPopularTv()
-        }
-      },
-      adapter,
-    )
+    setToolbarTitle(popular)
+    load(viewModel.getPopular(args.mediaType), adapter)
   }
 
   private fun showRecommendation(args: ListArgs) {
-    binding.toolbar.title = args.title
+    setToolbarTitle(args.title)
     binding.toolbar.subtitle = getString(recommendation)
     showBackdrop(args.backdrop)
-    collectAndSubmitData(
-      this,
-      {
-        if (args.mediaType == MOVIE_MEDIA_TYPE) {
-          viewModel.getMovieRecommendation(args.id)
-        } else {
-          viewModel.getTvRecommendation(args.id)
-        }
-      },
-      adapter,
-    )
+    load(viewModel.getRecommendation(args.mediaType, args.id), adapter)
+  }
+
+  private fun setToolbarTitle(@StringRes res: Int) {
+    binding.toolbar.title = getString(res)
+  }
+
+  private fun setToolbarTitle(text: String) {
+    binding.toolbar.title = text
   }
 
   @VisibleForTesting

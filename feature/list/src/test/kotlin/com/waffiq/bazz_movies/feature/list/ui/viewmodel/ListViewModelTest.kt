@@ -1,9 +1,11 @@
 package com.waffiq.bazz_movies.feature.list.ui.viewmodel
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieMediaItemPagingData
@@ -23,6 +25,9 @@ import kotlinx.coroutines.test.setMain
 class ListViewModelTest : BehaviorSpec({
 
   val id = 1234512
+
+  val movieMediaType = MOVIE_MEDIA_TYPE
+  val tvMediaType = TV_MEDIA_TYPE
 
   val testDispatcher = UnconfinedTestDispatcher()
 
@@ -74,7 +79,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getMovieByGenres("1") },
+        flowProvider = { viewModel.getByGenre(movieMediaType, "1") },
         expected = expectedMovie,
       )
     }
@@ -84,7 +89,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTvByGenres("1") },
+        flowProvider = { viewModel.getByGenre(tvMediaType, "1") },
       )
     }
   }
@@ -96,7 +101,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getMovieByKeywords("1") },
+        flowProvider = { viewModel.getByKeyword(movieMediaType, "1") },
         expected = expectedMovie,
       )
     }
@@ -106,7 +111,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTvByKeywords("1") },
+        flowProvider = { viewModel.getByKeyword(tvMediaType, "1") },
       )
     }
   }
@@ -128,7 +133,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getPlayingNowMovies() },
+        flowProvider = { viewModel.getNowPlaying(movieMediaType) },
         expected = expectedMovie,
       )
     }
@@ -138,7 +143,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getPopularMovies() },
+        flowProvider = { viewModel.getPopular(movieMediaType) },
         expected = expectedMovie,
       )
     }
@@ -148,7 +153,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTopRatedMovies() },
+        flowProvider = { viewModel.getTopRated(movieMediaType) },
         expected = expectedMovie,
       )
     }
@@ -158,7 +163,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeMovieMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getMovieRecommendation(id) },
+        flowProvider = { viewModel.getRecommendation(movieMediaType, id) },
         expected = expectedMovie,
       )
     }
@@ -171,7 +176,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getPopularTv() },
+        flowProvider = { viewModel.getPopular(tvMediaType) },
       )
     }
 
@@ -180,7 +185,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTopRatedTv() },
+        flowProvider = { viewModel.getTopRated(tvMediaType) },
       )
     }
 
@@ -198,7 +203,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getAiringTodayTv() },
+        flowProvider = { viewModel.getNowPlaying(tvMediaType) },
       )
     }
 
@@ -207,7 +212,7 @@ class ListViewModelTest : BehaviorSpec({
         flowOf(fakeTvMediaItemPagingData)
 
       thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTvRecommendation(id) },
+        flowProvider = { viewModel.getRecommendation(tvMediaType, id) },
       )
     }
   }

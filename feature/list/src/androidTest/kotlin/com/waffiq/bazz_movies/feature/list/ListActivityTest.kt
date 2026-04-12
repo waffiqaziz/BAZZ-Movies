@@ -194,8 +194,8 @@ class ListActivityTest : BaseListActivityTest() {
 
   @Test
   fun listActivity_whenAdapterIsEmpty_doesNotLoadBackdrop() {
-    every { mockListViewModel.getMovieByKeywords(any()) } returns flowOf(PagingData.empty())
-    every { mockListViewModel.getTvByKeywords(any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
@@ -215,7 +215,7 @@ class ListActivityTest : BaseListActivityTest() {
 
   @Test
   fun onKeywordsLoadState_itemCountZero_skipsShowBackdrop() {
-    every { mockListViewModel.getMovieByKeywords(any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->

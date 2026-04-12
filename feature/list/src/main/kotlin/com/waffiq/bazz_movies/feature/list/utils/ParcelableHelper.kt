@@ -8,7 +8,8 @@ import com.waffiq.bazz_movies.navigation.ListArgs
 
 object ParcelableHelper {
 
-  fun extractArgsItemFromIntent(intent: Intent): ListArgs? = try {
+  fun extractArgsItemFromIntent(intent: Intent): ListArgs? =
+    try {
       intent.setExtrasClassLoader(ListArgs::class.java.classLoader)
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

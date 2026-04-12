@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -19,45 +20,33 @@ class ListViewModel @Inject constructor(
   private val getListTvUseCase: GetListTvUseCase,
 ) : ViewModel() {
 
-  fun getMovieByGenres(genres: String): Flow<PagingData<MediaItem>> =
-    getListUseCase.getMovieByGenres(genres).cachedIn(viewModelScope)
+  fun getByGenre(mediaType: String, id: String) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListUseCase.getMovieByGenres(id)
+    else getListUseCase.getTvByGenres(id)).cachedIn(viewModelScope)
 
-  fun getTvByGenres(genres: String): Flow<PagingData<MediaItem>> =
-    getListUseCase.getTvByGenres(genres).cachedIn(viewModelScope)
+  fun getByKeyword(mediaType: String, id: String) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListUseCase.getMovieByKeywords(id)
+    else getListUseCase.getTvByKeywords(id)).cachedIn(viewModelScope)
 
-  fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaItem>> =
-    getListUseCase.getMovieByKeywords(keywords).cachedIn(viewModelScope)
+  fun getNowPlaying(mediaType: String) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListMoviesUseCase.getPlayingNowMovies()
+    else getListTvUseCase.getAiringTodayTv()).cachedIn(viewModelScope)
 
-  fun getTvByKeywords(keywords: String): Flow<PagingData<MediaItem>> =
-    getListUseCase.getTvByKeywords(keywords).cachedIn(viewModelScope)
+  fun getPopular(mediaType: String) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListMoviesUseCase.getPopularMovies()
+    else getListTvUseCase.getPopularTv()).cachedIn(viewModelScope)
+
+  fun getTopRated(mediaType: String) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListMoviesUseCase.getTopRatedMovies()
+    else getListTvUseCase.getTopRatedTv()).cachedIn(viewModelScope)
+
+  fun getRecommendation(mediaType: String, id: Int) =
+    (if (mediaType == MOVIE_MEDIA_TYPE) getListMoviesUseCase.getMovieRecommendation(id)
+    else getListTvUseCase.getTvRecommendation(id)).cachedIn(viewModelScope)
 
   fun getUpcomingMovies(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getUpcomingMovies().cachedIn(viewModelScope)
 
-  fun getPlayingNowMovies(): Flow<PagingData<MediaItem>> =
-    getListMoviesUseCase.getPlayingNowMovies().cachedIn(viewModelScope)
-
-  fun getPopularMovies(): Flow<PagingData<MediaItem>> =
-    getListMoviesUseCase.getPopularMovies().cachedIn(viewModelScope)
-
-  fun getTopRatedMovies(): Flow<PagingData<MediaItem>> =
-    getListMoviesUseCase.getTopRatedMovies().cachedIn(viewModelScope)
-
-  fun getMovieRecommendation(movieId: Int): Flow<PagingData<MediaItem>> =
-    getListMoviesUseCase.getMovieRecommendation(movieId).cachedIn(viewModelScope)
-
-  fun getPopularTv(): Flow<PagingData<MediaItem>> =
-    getListTvUseCase.getPopularTv().cachedIn(viewModelScope)
-
-  fun getTopRatedTv(): Flow<PagingData<MediaItem>> =
-    getListTvUseCase.getTopRatedTv().cachedIn(viewModelScope)
-
   fun getAiringThisWeekTv(): Flow<PagingData<MediaItem>> =
     getListTvUseCase.getAiringThisWeekTv().cachedIn(viewModelScope)
-
-  fun getAiringTodayTv(): Flow<PagingData<MediaItem>> =
-    getListTvUseCase.getAiringTodayTv().cachedIn(viewModelScope)
-
-  fun getTvRecommendation(tvId: Int): Flow<PagingData<MediaItem>> =
-    getListTvUseCase.getTvRecommendation(tvId).cachedIn(viewModelScope)
 }
