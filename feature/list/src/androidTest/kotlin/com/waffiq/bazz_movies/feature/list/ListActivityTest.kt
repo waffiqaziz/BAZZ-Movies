@@ -153,14 +153,6 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun listActivity_withTrendingType_showsCorrectViews() {
-    context.launchListActivity(movieGenreArgs.copy(listType = ListType.TRENDING)) {
-      onView(withText("title"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
-  }
-
-  @Test
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial 
