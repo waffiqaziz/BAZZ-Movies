@@ -97,18 +97,19 @@ class ListActivity : AppCompatActivity() {
     handleListType(args)
   }
 
+  private val handlers: Map<ListType, (ListArgs) -> Unit> = mapOf(
+    ListType.BY_GENRE to ::showListBasedGenre,
+    ListType.BY_KEYWORD to ::showListBasedKeywords,
+    ListType.NOW_PLAYING to ::showNowPlaying,
+    ListType.POPULAR to ::showPopular,
+    ListType.TOP_RATED to ::showTopRated,
+    ListType.UPCOMING to { showUpcomingMovies() },
+    ListType.AIRING_THIS_WEEK to { showTvAiringThisWeek() },
+    ListType.RECOMMENDATION to ::showRecommendation,
+  )
+
   private fun handleListType(args: ListArgs) {
-    when (args.listType) {
-      ListType.BY_GENRE -> showListBasedGenre(args)
-      ListType.BY_KEYWORD -> showListBasedKeywords(args)
-      ListType.NOW_PLAYING -> showNowPlaying(args)
-      ListType.POPULAR -> showPopular(args)
-      ListType.TOP_RATED -> showTopRated(args)
-      ListType.UPCOMING -> showUpcomingMovies()
-      ListType.AIRING_THIS_WEEK -> showTvAiringThisWeek()
-      ListType.RECOMMENDATION -> showRecommendation(args)
-      else -> binding.toolbar.title = args.title
-    }
+    handlers.getValue(args.listType).invoke(args)
   }
 
   private fun observeLoadState() {
