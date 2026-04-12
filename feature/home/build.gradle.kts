@@ -15,9 +15,9 @@ android {
 }
 
 dependencies {
+  implementation(project(":core:data"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
-  implementation(project(":core:movie"))
 
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)

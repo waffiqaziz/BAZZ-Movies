@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.auth.AuthRemoteDataSource
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.data.repository.UserRepositoryImpl
 import com.waffiq.bazz_movies.core.user.di.DatastoreModule
@@ -51,6 +51,6 @@ object TestUserModule {
   @Singleton
   fun provideUserRepository(
     userPreference: UserPreference,
-    userDataSource: UserDataSource,
+    userDataSource: AuthRemoteDataSource,
   ): IUserRepository = UserRepositoryImpl(userPreference, userDataSource)
 }

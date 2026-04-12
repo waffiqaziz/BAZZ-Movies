@@ -46,7 +46,7 @@ class GetMediaDetailInteractor @Inject constructor(
     movieId: Int,
   ): Flow<Outcome<WatchProvidersItem>> =
     getRegion().flatMapConcat { region ->
-      detailRepository.getWatchProviders("movie", movieId).map { outcome ->
+      detailRepository.getMovieWatchProviders(movieId).map { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             val countryProvider = outcome.data.results?.get(region.uppercase())
@@ -113,7 +113,7 @@ class GetMediaDetailInteractor @Inject constructor(
 
   override fun getTvWatchProvidersWithUserRegion(tvId: Int): Flow<Outcome<WatchProvidersItem>> =
     getRegion().flatMapConcat { region ->
-      detailRepository.getWatchProviders("tv", tvId).map { outcome ->
+      detailRepository.getTvWatchProviders(tvId).map { outcome ->
         when (outcome) {
           is Outcome.Success -> {
             val countryProvider = outcome.data.results?.get(region)

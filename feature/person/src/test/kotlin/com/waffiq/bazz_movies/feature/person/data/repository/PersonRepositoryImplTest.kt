@@ -23,28 +23,28 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
     val mockResponse = mockk<DetailPersonResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getPersonDetails(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonDetails(id) },
       repositoryCall = { repository.getDetailPerson(id) },
       expectedData = mockResponse.toDetailPerson(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonDetails(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonDetails(id) } }
     )
   }
 
   @Test
   fun getDetailPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getPersonDetails(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonDetails(id) },
       repositoryCall = { repository.getDetailPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonDetails(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonDetails(id) } }
     )
   }
 
   @Test
   fun getDetailPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getPersonDetails(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonDetails(id) },
       repositoryCall = { repository.getDetailPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonDetails(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonDetails(id) } }
     )
   }
 
@@ -53,28 +53,28 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
     val mockResponse = mockk<CombinedCreditResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getPersonCredits(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
       repositoryCall = { repository.getKnownForPerson(id) },
       expectedData = mockResponse.toCombinedCredit(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonCredits(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonCredits(id) } }
     )
   }
 
   @Test
   fun getKnownForPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getPersonCredits(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
       repositoryCall = { repository.getKnownForPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonCredits(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonCredits(id) } }
     )
   }
 
   @Test
   fun getKnownForPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getPersonCredits(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonCredits(id) },
       repositoryCall = { repository.getKnownForPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonCredits(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonCredits(id) } }
     )
   }
 
@@ -83,28 +83,28 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
     val mockResponse = mockk<ImagePersonResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getPersonImages(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonImages(id) },
       repositoryCall = { repository.getImagePerson(id) },
       expectedData = mockResponse.toImagePerson(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonImages(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonImages(id) } }
     )
   }
 
   @Test
   fun getImagePerson_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getPersonImages(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonImages(id) },
       repositoryCall = { repository.getImagePerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonImages(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonImages(id) } }
     )
   }
 
   @Test
   fun getImagePerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getPersonImages(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonImages(id) },
       repositoryCall = { repository.getImagePerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonImages(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonImages(id) } }
     )
   }
 
@@ -113,28 +113,28 @@ class PersonRepositoryImplTest : BasePersonRepositoryImplTest() {
     val mockResponse = mockk<ExternalIDPersonResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getPersonExternalIds(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
       repositoryCall = { repository.getExternalIDPerson(id) },
       expectedData = mockResponse.toExternalIDPerson(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getPersonExternalIds(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockPersonRemoteDataSource.getPersonExternalIds(id) } }
     )
   }
 
   @Test
   fun getExternalIDPerson_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getPersonExternalIds(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
       repositoryCall = { repository.getExternalIDPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonExternalIds(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonExternalIds(id) } }
     )
   }
 
   @Test
   fun getExternalIDPerson_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getPersonExternalIds(id) },
+      dataSourceCall = { mockPersonRemoteDataSource.getPersonExternalIds(id) },
       repositoryCall = { repository.getExternalIDPerson(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getPersonExternalIds(id) } }
+      verifyDataSourceCall = { coVerify { mockPersonRemoteDataSource.getPersonExternalIds(id) } }
     )
   }
 }

@@ -3,18 +3,20 @@ package com.waffiq.bazz_movies.core.network.data.remote.pagingsources
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.search.MultiSearchResponseItem
-import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TMDBApiService
+import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
 import com.waffiq.bazz_movies.core.network.utils.common.Constants.INITIAL_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class SearchPagingSource(private val apiService: TMDBApiService, private val query: String) :
-  PagingSource<Int, MultiSearchResponseItem>() {
+class SearchPagingSource(
+  private val searchApiService: SearchApiService,
+  private val query: String,
+) : PagingSource<Int, MultiSearchResponseItem>() {
 
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MultiSearchResponseItem> =
     try {
       val position = params.key ?: INITIAL_PAGE_INDEX
-      val responseData = apiService.search(query, position).results
+      val responseData = searchApiService.search(query, position).results
 
       if (responseData != null) {
         LoadResult.Page(

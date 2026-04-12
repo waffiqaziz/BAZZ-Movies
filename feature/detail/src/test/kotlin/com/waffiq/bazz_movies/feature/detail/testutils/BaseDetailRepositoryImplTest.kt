@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.detail.testutils
 
-import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
-import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb.OmdbRemoteDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import com.waffiq.bazz_movies.feature.detail.data.repository.DetailRepositoryImpl
 import io.mockk.mockk
@@ -12,7 +12,10 @@ import kotlin.test.BeforeTest
 abstract class BaseDetailRepositoryImplTest {
 
   protected lateinit var repository: DetailRepositoryImpl
-  protected val movieDataSource: MovieDataSource = mockk()
+  protected val mockMovieDataSource: MovieRemoteDataSource = mockk()
+  protected val mockTvRemoteDataSource: TvRemoteDataSource = mockk()
+  protected val mockOmdbRemoteDataSource: OmdbRemoteDataSource = mockk()
+
   protected val id = 1
   protected val idString = "tt12345"
 
@@ -21,21 +24,10 @@ abstract class BaseDetailRepositoryImplTest {
 
   @BeforeTest
   fun setUp() {
-    repository = DetailRepositoryImpl(movieDataSource)
+    repository = DetailRepositoryImpl(
+      mockMovieDataSource,
+      mockTvRemoteDataSource,
+      mockOmdbRemoteDataSource,
+    )
   }
-
-  /**
-   * Creates sample test data for paging tests
-   */
-  protected fun createSampleMediaItemResponse(
-    id: Int = 1,
-    name: String = "Test Name",
-  ): MediaResponseItem = MediaResponseItem(id = id, name = name)
-
-  /**
-   * Creates paging data with sample items
-   */
-  protected fun createSamplePagingData(
-    vararg items: MediaResponseItem,
-  ): PagingData<MediaResponseItem> = PagingData.from(items.toList())
 }

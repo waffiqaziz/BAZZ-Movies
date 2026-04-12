@@ -3,7 +3,8 @@ package com.waffiq.bazz_movies.core.user.data.repository
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.auth.AuthRemoteDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.country.CountryRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.responses.countryip.CountryIPResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AccountDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.AuthenticationResponse
@@ -69,14 +70,19 @@ class UserRepositoryTest {
 
   private lateinit var userRepository: UserRepositoryImpl
   private val mockUserPreference: UserPreference = mockk()
-  private val mockUserDataSource: UserDataSource = mockk()
+  private val mockUserDataSource: AuthRemoteDataSource = mockk()
+  private val mockCountryRemoteDataSource: CountryRemoteDataSource = mockk()
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   fun setup() {
-    userRepository = UserRepositoryImpl(mockUserPreference, mockUserDataSource)
+    userRepository = UserRepositoryImpl(
+      mockUserPreference,
+      mockUserDataSource,
+      mockCountryRemoteDataSource,
+    )
   }
 
   @Test
@@ -342,14 +348,14 @@ class UserRepositoryTest {
     )
 
     val flowResult = flowOf(NetworkResult.Success(countryIPResponse))
-    coEvery { mockUserDataSource.getCountryCode() } returns flowResult
+    coEvery { mockCountryRemoteDataSource.getCountryCode() } returns flowResult
 
     val result = userRepository.getCountryCode().first()
 
     assertTrue(result is Outcome.Success)
     result as Outcome.Success
     assertEquals("ID", result.data.country)
-    coVerify { mockUserDataSource.getCountryCode() }
+    coVerify { mockCountryRemoteDataSource.getCountryCode() }
 
     // inline test
     userRepository.getCountryCode().testOutcome(

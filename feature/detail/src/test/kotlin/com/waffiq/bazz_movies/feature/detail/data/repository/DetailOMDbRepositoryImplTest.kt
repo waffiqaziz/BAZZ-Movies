@@ -20,28 +20,30 @@ class DetailOMDbRepositoryImplTest : BaseDetailRepositoryImplTest() {
     val mockResponse = mockk<OMDbDetailsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getOMDbDetails(imdb) },
+      dataSourceCall = { mockOmdbRemoteDataSource.getOMDbDetails(imdb) },
       repositoryCall = { repository.getOMDbDetails(imdb) },
       expectedData = mockResponse.toOMDbDetails(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getOMDbDetails(imdb) } }
+      verifyDataSourceCall = {
+        coVerify(atLeast = 1) { mockOmdbRemoteDataSource.getOMDbDetails(imdb) }
+      }
     )
   }
 
   @Test
   fun getOMDbDetails_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getOMDbDetails(imdb) },
+      dataSourceCall = { mockOmdbRemoteDataSource.getOMDbDetails(imdb) },
       repositoryCall = { repository.getOMDbDetails(imdb) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getOMDbDetails(imdb) } }
+      verifyDataSourceCall = { coVerify { mockOmdbRemoteDataSource.getOMDbDetails(imdb) } }
     )
   }
 
   @Test
   fun getOMDbDetails_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getOMDbDetails(imdb) },
+      dataSourceCall = { mockOmdbRemoteDataSource.getOMDbDetails(imdb) },
       repositoryCall = { repository.getOMDbDetails(imdb) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getOMDbDetails(imdb) } }
+      verifyDataSourceCall = { coVerify { mockOmdbRemoteDataSource.getOMDbDetails(imdb) } }
     )
   }
 }

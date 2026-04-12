@@ -9,11 +9,13 @@ enum class ListType {
   RECOMMENDATION,
   TOP_RATED,
   TRENDING,
-  UPCOMING;
+  UPCOMING,
+  ;
 
-  fun shouldUpdateBackdrop() = when (this) {
-    BY_GENRE -> false
-    RECOMMENDATION -> false
-    else -> true
-  }
+    fun shouldUpdateBackdrop() =
+    when (this) {
+      BY_GENRE -> false
+      RECOMMENDATION -> false
+      else -> true
+    }
 }

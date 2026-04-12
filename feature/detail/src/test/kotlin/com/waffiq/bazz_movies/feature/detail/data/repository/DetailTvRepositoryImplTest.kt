@@ -5,8 +5,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keyw
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testEmptyPagingData
-import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
 import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
@@ -18,7 +16,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTv
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -30,28 +27,28 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getTvDetail(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
       expectedData = mockResponse.toTvDetail(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvDetail(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvDetail(id) } }
     )
   }
 
   @Test
   fun getTvDetail_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getTvDetail(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvDetail(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvDetail(id) } }
     )
   }
 
   @Test
   fun getTvDetail_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getTvDetail(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvDetail(id) },
       repositoryCall = { repository.getTvDetail(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvDetail(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvDetail(id) } }
     )
   }
 
@@ -60,28 +57,28 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
     val mockResponse = mockk<ExternalIdResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getTvExternalIds(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
       repositoryCall = { repository.getTvExternalIds(id) },
       expectedData = mockResponse.toExternalTvID(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvExternalIds(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvExternalIds(id) } }
     )
   }
 
   @Test
   fun getTvExternalIds_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getTvExternalIds(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
       repositoryCall = { repository.getTvExternalIds(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvExternalIds(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvExternalIds(id) } }
     )
   }
 
   @Test
   fun getTvExternalIds_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getTvExternalIds(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvExternalIds(id) },
       repositoryCall = { repository.getTvExternalIds(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvExternalIds(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvExternalIds(id) } }
     )
   }
 
@@ -90,28 +87,28 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
     val mockResponse = mockk<VideoResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getTvVideo(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
       repositoryCall = { repository.getTvTrailerLink(id) },
       expectedData = mockResponse.toVideo(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvVideo(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvVideo(id) } }
     )
   }
 
   @Test
   fun getTvTrailerLink_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getTvVideo(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
       repositoryCall = { repository.getTvTrailerLink(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvVideo(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvVideo(id) } }
     )
   }
 
   @Test
   fun getTvTrailerLink_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getTvVideo(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
       repositoryCall = { repository.getTvTrailerLink(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvVideo(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvVideo(id) } }
     )
   }
 
@@ -120,28 +117,28 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
     val mockResponse = mockk<MediaCreditsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getTvCredits(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },
       expectedData = mockResponse.toMediaCredits(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvCredits(id) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvCredits(id) } }
     )
   }
 
   @Test
   fun getTvCredits_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getTvCredits(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvCredits(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvCredits(id) } }
     )
   }
 
   @Test
   fun getTvCredits_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getTvCredits(id) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvCredits(id) },
       repositoryCall = { repository.getTvCredits(id) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvCredits(id) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvCredits(id) } }
     )
   }
 
@@ -150,28 +147,28 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
     val mockResponse = mockk<TvKeywordsResponse>(relaxed = true)
     testSuccessfulCall(
       mockResponse = mockResponse,
-      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(idString) },
       repositoryCall = { repository.getTvKeywords(idString) },
       expectedData = mockResponse.toMediaKeywords(),
-      verifyDataSourceCall = { coVerify(atLeast = 1) { movieDataSource.getTvKeywords(idString) } }
+      verifyDataSourceCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvKeywords(idString) } }
     )
   }
 
   @Test
   fun getTvKeywords_whenUnsuccessful_returnsErrorResult() = runTest {
     testUnsuccessfulCall(
-      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(idString) },
       repositoryCall = { repository.getTvKeywords(idString) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvKeywords(idString) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvKeywords(idString) } }
     )
   }
 
   @Test
   fun getTvKeywords_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
     testLoadingState(
-      dataSourceCall = { movieDataSource.getTvKeywords(idString) },
+      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(idString) },
       repositoryCall = { repository.getTvKeywords(idString) },
-      verifyDataSourceCall = { coVerify { movieDataSource.getTvKeywords(idString) } }
+      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvKeywords(idString) } }
     )
   }
 }

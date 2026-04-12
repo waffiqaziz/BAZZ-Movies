@@ -10,10 +10,10 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase

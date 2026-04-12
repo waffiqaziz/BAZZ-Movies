@@ -71,7 +71,6 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
 
     // Directly adding to the freeCompilerArgs list
     if (project.path != ":core:domain" &&
-      project.path != ":core:data" &&
       project.path != ":core:common" &&
       project.path != ":core:mappers"
     ) {

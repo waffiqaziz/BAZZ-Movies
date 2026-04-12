@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.favorite.data.repository
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeMovieResponsePagingData
@@ -20,17 +20,17 @@ import kotlinx.coroutines.test.setMain
 class FavoriteRepositoryImplTest : BehaviorSpec({
 
   lateinit var repository: FavoriteRepositoryImpl
-  val dataSource: MovieDataSource = mockk(relaxed = true)
+  val mockAccountRemoteDataSource: AccountRemoteDataSource = mockk(relaxed = true)
 
   beforeTest {
     Dispatchers.setMain(UnconfinedTestDispatcher())
-    repository = FavoriteRepositoryImpl(dataSource)
+    repository = FavoriteRepositoryImpl(mockAccountRemoteDataSource)
   }
 
   Given("FavoriteRepositoryImpl") {
 
     When("getFavoriteMovies is called") {
-      every { dataSource.getFavoriteMovies(SESSION_ID) } returns
+      every { mockAccountRemoteDataSource.getFavoriteMovies(SESSION_ID) } returns
         flowOf(fakeMovieResponsePagingData)
       Then("it should return mapped MediaItem list") {
         testPagingFlowAwaitComplete(repository.getFavoriteMovies(SESSION_ID)) {
@@ -41,7 +41,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteTv is called") {
-      every { dataSource.getFavoriteTv(SESSION_ID) } returns
+      every { mockAccountRemoteDataSource.getFavoriteTv(SESSION_ID) } returns
         flowOf(fakeTvResponsePagingData)
       Then("it should return mapped MediaItem list") {
         testPagingFlowAwaitComplete(repository.getFavoriteTv(SESSION_ID)) {
@@ -52,7 +52,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteMovies is called with empty data") {
-      every { dataSource.getFavoriteMovies(SESSION_ID) } returns
+      every { mockAccountRemoteDataSource.getFavoriteMovies(SESSION_ID) } returns
         flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
         testPagingFlowAwaitComplete(repository.getFavoriteMovies(SESSION_ID)) {
@@ -62,7 +62,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
     }
 
     When("getFavoriteTv is called with empty data") {
-      every { dataSource.getFavoriteTv(SESSION_ID) } returns
+      every { mockAccountRemoteDataSource.getFavoriteTv(SESSION_ID) } returns
         flowOf(PagingData.empty())
       Then("it should return empty MediaItem list") {
         testPagingFlowAwaitComplete(repository.getFavoriteTv(SESSION_ID)) {
@@ -73,7 +73,7 @@ class FavoriteRepositoryImplTest : BehaviorSpec({
   }
 
   Given("multiple paging data emissions") {
-    every { dataSource.getFavoriteMovies(SESSION_ID) } returns
+    every { mockAccountRemoteDataSource.getFavoriteMovies(SESSION_ID) } returns
       flowOf(
         fakeMovieResponsePagingData,
         PagingData.empty(),
