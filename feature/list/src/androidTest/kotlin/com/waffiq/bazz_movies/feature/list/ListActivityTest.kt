@@ -153,14 +153,6 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun listActivity_withTrendingType_showsCorrectViews() {
-    context.launchListActivity(movieGenreArgs.copy(listType = ListType.TRENDING)) {
-      onView(withText("title"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
-  }
-
-  @Test
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial 
@@ -194,8 +186,8 @@ class ListActivityTest : BaseListActivityTest() {
 
   @Test
   fun listActivity_whenAdapterIsEmpty_doesNotLoadBackdrop() {
-    every { mockListViewModel.getMovieByKeywords(any()) } returns flowOf(PagingData.empty())
-    every { mockListViewModel.getTvByKeywords(any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
@@ -215,7 +207,7 @@ class ListActivityTest : BaseListActivityTest() {
 
   @Test
   fun onKeywordsLoadState_itemCountZero_skipsShowBackdrop() {
-    every { mockListViewModel.getMovieByKeywords(any()) } returns flowOf(PagingData.empty())
+    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->

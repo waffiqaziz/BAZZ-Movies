@@ -1,13 +1,16 @@
 package com.waffiq.bazz_movies.core.utils
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.test.LifecycleOwnerRule
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
+import com.waffiq.bazz_movies.core.utils.FlowUtils.load
 import com.waffiq.bazz_movies.core.utils.testutils.FakePagingAdapter
 import io.mockk.coVerify
 import io.mockk.every
@@ -28,6 +31,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -116,6 +120,20 @@ class FlowUtilsTest {
     )
 
     pagingDataFlow.value = samplePagingData
+    advanceUntilIdle()
+
+    coVerify(atLeast = 1) { adapter.submitData(any()) }
+  }
+
+  @Test
+  fun load_withCorrectActivity_shouldSubmitPagingData() = runTest {
+    val controller = Robolectric.buildActivity(AppCompatActivity::class.java)
+    val activity = controller.get()
+
+    activity.setTheme(Base_Theme_BAZZ_movies)
+    controller.setup()
+    activity.load(pagingDataFlow, adapter)
+
     advanceUntilIdle()
 
     coVerify(atLeast = 1) { adapter.submitData(any()) }

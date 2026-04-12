@@ -1,14 +1,22 @@
 package com.waffiq.bazz_movies.feature.list.utils
 
+import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdrop
 import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdropMovieGenre
 import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdropTvGenre
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
+import kotlin.test.assertEquals
 
 class GetBackdropGenreTest : BehaviorSpec({
 
   given("a known movie genre id") {
+    `when`("getBackdrop is called") {
+      then("should return correct backdrop url") {
+        assertEquals("/kPmE7vEwQWSvhQt5P0ZR8NIwNRN.jpg", getBackdrop("movie", 16))
+      }
+    }
+
     `when`("getBackdropMovieGenre is called") {
       withData(
         nameFn = { (genreId, _) -> "genreId=$genreId" },
@@ -48,6 +56,12 @@ class GetBackdropGenreTest : BehaviorSpec({
   }
 
   given("a known tv genre id") {
+    `when`("getBackdrop is called") {
+      then("should return correct backdrop url") {
+        assertEquals("/cvytcYJFiVlp3tVUIfjSRHcSTfS.jpg", getBackdrop("tv", 16))
+      }
+    }
+
     `when`("getBackdropTvGenre is called") {
       withData(
         nameFn = { (genreId, _) -> "genreId=$genreId" },

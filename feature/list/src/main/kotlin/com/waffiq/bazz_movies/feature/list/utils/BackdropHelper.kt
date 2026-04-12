@@ -1,7 +1,13 @@
 package com.waffiq.bazz_movies.feature.list.utils
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+
 @Suppress("MagicNumber", "CyclomaticComplexMethod")
 object BackdropHelper {
+
+  fun getBackdrop(mediaType: String, id: Int) =
+    if (mediaType == MOVIE_MEDIA_TYPE) getBackdropMovieGenre(id) else getBackdropTvGenre(id)
+
   fun getBackdropMovieGenre(genreId: Int): String =
     when (genreId) {
       28 -> "/jDnhdNm7XVwl0GisIV77o64EcDa.jpg"
