@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.core.utils
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -45,6 +46,17 @@ object FlowUtils {
         cachedFlow.collectLatest { pagingData ->
           adapter.submitData(pagingData)
         }
+      }
+    }
+  }
+
+  fun <T : Any> AppCompatActivity.load(
+    flow: Flow<PagingData<T>>,
+    adapter: PagingDataAdapter<T, *>,
+  ) {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        flow.collectLatest(adapter::submitData)
       }
     }
   }
