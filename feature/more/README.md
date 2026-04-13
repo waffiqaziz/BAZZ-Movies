@@ -8,7 +8,7 @@
 
 ## Overview
 
-`:feature:more` is responsible for displaying additional options and settings within the application. 
+`:feature:more` is responsible for displaying additional options and settings within the application.
 It provides a user interface where users can access various app-related features beyond the core
 functionalities.
 
@@ -27,16 +27,6 @@ functionalities.
 
 - **[MoreUserViewModel](../more/src/main/kotlin/com/waffiq/bazz_movies/feature/more/ui/MoreUserViewModel.kt)**
   - Handles user-related data and interactions.
-
-## Integration
-
-To use this module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:more"))
-}
-```
 
 ## Navigation
 

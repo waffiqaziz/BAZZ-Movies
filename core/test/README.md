@@ -15,6 +15,8 @@ configurations for unit and instrumentation tests across multiple modules.
 
 - **Test Rules**
 
+  - [`KotestInstantExecutorExtension`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/KotestInstantExecutorExtension.kt) –
+    Custom [kotest](https://github.com/kotest/kotest) executor in main thread.
   - [`LifecycleOwnerRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/LifecycleOwnerRule.kt) –
     Manages a `LifecycleOwner` for testing lifecycle-dependent components.
   - [`MainCoroutineRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/MainCoroutineRule.kt) –
@@ -24,21 +26,11 @@ configurations for unit and instrumentation tests across multiple modules.
   - [`PagingDataHelperTest`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingDataHelperTest.kt) –
     Uses as helper to test [paging data](https://developer.android.com/reference/kotlin/androidx/paging/PagingData).
     inside repository testing.  
-  - - [`PagingFlowHelperTest`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingFlowHelperTest.kt) –
+  - [`PagingFlowHelperTest`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/PagingFlowHelperTest.kt) –
     Uses as helper to test [paging data](https://developer.android.com/reference/kotlin/androidx/paging/PagingData).
     inside use case testing.
   - [`UnconfinedDispatcherRule`](../test/src/main/kotlin/com/waffiq/bazz_movies/core/test/UnconfinedDispatcherRule.kt) –
     Uses an `UnconfinedTestDispatcher` for immediate coroutine execution.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    testImplementation(project(":core:test"))
-}
-```
 
 ## Example Usage
 

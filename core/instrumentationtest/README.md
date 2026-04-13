@@ -24,6 +24,8 @@ It provides utilities to simplify fragment testing with Hilt without requiring a
 - [`launchFragmentInHiltContainer`](src/main/kotlin/com/waffiq/bazz_movies/core/instrumentationtest/HiltExt.kt) –
     A helper function to launch a fragment inside `HiltTestActivity` as a workaround for
     `launchFragmentInContainer`, which cannot be used when depending on the `:app` module.
+- [`ViewMatcher`](src/main/kotlin/com/waffiq/bazz_movies/core/instrumentationtest/ViewMatcher.kt) –
+    Custom view matcher to help reduce boilerplate when use traditional view matcher.
 
 ## Integration
 

@@ -14,39 +14,46 @@ gestures, animations, and snackbars.
 
 ## Responsibilities
 
+### State
+
+- **[UIState](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/state/UIState.kt)**
+  – A unified representation of UI state for observing asynchronous data flows.
+
 ### UI Components
 
-- **[ISnackbar](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/ISnackbar.kt)** – Interface for handling Snackbar interactions across the app.
+- **[ISnackbar](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/snackbar/ISnackbar.kt)**
+  – Interface for handling Snackbar interactions across the app.
 
-- **[LoadingStateAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/ui/adapter/LoadingStateAdapter.kt)** – Adapter for handling pagination loading states in lists.
+- **[LoadingStateAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/ui/adapter/LoadingStateAdapter.kt)**
+  – Adapter for handling pagination loading states in lists.
 
 ### Utility Classes
 
-- **[ActionBarBehavior](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ActionBarBehavior.kt)** – Custom behavior for managing ActionBar animations and visibility.
+- **[ActionBarBehavior](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ActionBarBehavior.kt)**
+  – Custom behavior for managing ActionBar animations and visibility.
 
-- **[Animation](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/Animation.kt)** – Provides reusable animation utilities for UI components.
+- **[Animation](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/Animation.kt)**
+  – Provides reusable animation utilities for UI components.
 
-- **[CustomSnapHelper](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/CustomSnapHelper.kt)** – Custom SnapHelper for RecyclerView snapping behavior.
+- **[CustomSnapHelper](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/CustomSnapHelper.kt)**
+  – Custom SnapHelper for RecyclerView snapping behavior.
 
 - **[GestureHelper](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/GestureHelper.kt)** - Utility for handling gesture interactions like swipe and drag.
 
-- **[Helpers](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/Helpers.kt)** – General helper functions for UI-related operations.
+- **[Helpers](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/Helpers.kt)**
+  – General helper functions for UI-related operations.
 
-- **[ScrollActionBarUtils](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ScrollActionBarUtils.kt)** – Utility for managing scroll-based ActionBar visibility.
+- **[ScrollActionBarUtils](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/ScrollActionBarUtils.kt)**
+  – Utility for managing scroll-based ActionBar visibility.
 
-- **[SnackBarManager](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SnackBarManager.kt)** – Manages showing and dismissing SnackBars and Toast.
+- **[SnackBarManager](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SnackBarManager.kt)**
+  – Manages showing and dismissing SnackBars and Toast.
 
-- **[GenericViewPagerAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/GenericViewPagerAdapter.kt)** – A custom adapter for managing fragments in a `ViewPager2`.
+- **[GenericViewPagerAdapter](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/GenericViewPagerAdapter.kt)**
+  – A custom adapter for managing fragments in a `ViewPager2`.
 
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:uihelper"))
-}
-```
+- **[SpannableUtils](../uihelper/src/main/kotlin/com/waffiq/bazz_movies/core/uihelper/utils/SpannableUtils.kt)**
+  – A custom span text with bold style. Used on snackbar.
 
 ## Example Usage
 

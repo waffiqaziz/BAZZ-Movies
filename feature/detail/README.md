@@ -28,10 +28,10 @@ The `:feature:detail` module handles displaying detailed information about movie
   while [`DetailMovieViewModel`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/viewmodel/DetailMovieViewModel.kt)
   and [`DetailUserPrefViewModel`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/viewmodel/DetailUserPrefViewModel.kt) handle state management.
 - **Adapters**
-  – [`CastAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/CastAdapter.kt), 
+  – [`CastAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/CastAdapter.kt),
   [`GenreAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/GenreAdapter.kt),
   [`KeywordsAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/KeywordsAdapter.kt),
-  [`RecommendationAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/RecommendationAdapter.kt), and 
+  [`RecommendationAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/RecommendationAdapter.kt), and
   [`WatchProvidersAdapter`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/adapter/WatchProvidersAdapter.kt) for rendering lists.
 - **Managers**
   Handle UI state and interaction logic:
@@ -39,13 +39,13 @@ The `:feature:detail` module handles displaying detailed information about movie
   Manages the data coordination between domain use cases and UI rendering.
   - [`DetailUIManager`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/DetailUIManager.kt) –
     Applies visual display logic such as conditional visibility and content binding.
-  - [`UserInteractionHandler`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/UserInteractionHandler.kt) – 
+  - [`UserInteractionHandler`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/UserInteractionHandler.kt) –
     Centralizes handling of user-driven actions like button clicks, item taps, or sharing.
   - [`WatchProvidersManager`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/WatchProvidersManager.kt) –
     Manages the organization and presentation logic for streaming providers.
     Handle UI state and interaction logic:
 - **State**
-  Handles UI state representation:
+  UI state:
   - [`WatchProvidersUiState`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/state/WatchProvidersUiState.kt), -
     Represents the UI state of the watch provider section, including loading, success (`flatrate`, `rent`, `buy`, and `free`), and error cases.
   - [`UserAuthState`](../detail/src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/state/UserAuthState.kt), -
@@ -55,16 +55,6 @@ The `:feature:detail` module handles displaying detailed information about movie
 
 - **Helpers** – Functions for handling ratings, release dates, and UI components.
 - **Mappers** – Convert raw data into structured domain models.
-
-## Integration
-
-To use this module, add it as a dependency:
-
-```gradle
-dependencies {
-    implementation(project(":feature:detail"))
-}
-```
 
 ## Navigation
 

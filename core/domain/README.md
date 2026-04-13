@@ -4,8 +4,8 @@
 
 ## Overview
 
-`:core:domain` is responsible as shared core business models and result states used throughout the 
-application. It acts as the intermediary between data sources and the presentation layer, ensuring 
+`:core:domain` is responsible as shared core business models and result states used throughout the
+application. It acts as the intermediary between data sources and the presentation layer, ensuring
 a clean separation of concerns.
 
 ## Responsibilities
@@ -17,16 +17,6 @@ a clean separation of concerns.
 
 - **State Management**
   - Uses [`Outcome`](../domain/src/main/kotlin/com/waffiq/bazz_movies/core/domain/Outcome.kt) to represent success, loading, and error states.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:domain"))
-}
-```
 
 ## Example Usage
 
@@ -49,7 +39,7 @@ fun fetchMovies(): Outcome<List<Movie>> {
 - Use sealed classes [`Outcome`](./src/main/kotlin/com/waffiq/bazz_movies/core/domain/Outcome.kt) for **consistent state representation**.
 - Ensure domain models **only contain business logic** and remain independent module.
 
-This module plays a crucial role in maintaining a well-structured architecture by defining core 
+This module plays a crucial role in maintaining a well-structured architecture by defining core
 entities and managing application states effectively.
 
 <!-- LINK -->

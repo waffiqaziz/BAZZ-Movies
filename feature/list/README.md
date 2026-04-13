@@ -10,16 +10,6 @@
 
 `:feature:list` is responsible for handling to show list of movie and tv-series based on genre.
 
-## Integration
-
-To use this module, add it as a dependency in the `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:list"))
-}
-```
-
 ## Testing
 
 In this module, we use JUnit4 for standard unit and instrumentation testing but also Kotest for more expressive behavior-driven for unit tests.

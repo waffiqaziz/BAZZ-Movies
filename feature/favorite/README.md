@@ -10,7 +10,7 @@
 
 `:feature:favorite` module handles the functionality for managing users' favorite movies and
 TV shows. It provides UI components and business logic to retrieve, display, and manage the user's
-saved favorites.
+saved favorites both for guest and logged user.
 
 ## Structure
 
@@ -39,16 +39,6 @@ saved favorites.
   - [`MyFavoriteTvSeriesFragment`](../favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite/ui/MyFavoriteTvSeriesFragment.kt) – Displays favorite TV series.
 - **ViewModel**
   - [`MyFavoriteViewModel`](../favorite/src/main/kotlin/com/waffiq/bazz_movies/feature/favorite/ui/MyFavoriteViewModel.kt) – Manages favorite data and UI state.
-
-## Integration
-
-To use this module, add it as a dependency:
-
-```gradle
-dependencies {
-    implementation(project(":feature:favorite"))
-}
-```
 
 <!-- LINK -->
 

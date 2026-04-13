@@ -8,8 +8,8 @@
 
 ## Overview
 
-`:core:user` is responsible for managing user-related data, authentication, preferences, 
-and account details. It provides a structured way to handle user sessions, authentication, 
+`:core:user` is responsible for managing user-related data, authentication, preferences,
+and account details. It provides a structured way to handle user sessions, authentication,
 and regional settings.
 
 ## Responsibilities
@@ -55,16 +55,6 @@ and regional settings.
 
 - **[Constants](../user/src/main/kotlin/com/waffiq/bazz_movies/core/user/utils/common/Constants.kt)** – Stores constant values used in the module.
 - **[AccountMapper](../user/src/main/kotlin/com/waffiq/bazz_movies/core/user/utils/mappers/AccountMapper.kt)** – Mapper account data between different layers.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:user"))
-}
-```
 
 ## Example Usage
 

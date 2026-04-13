@@ -8,29 +8,10 @@
 
 ## Overview
 
-`:feature:home` is responsible for displaying the main home screen of the application. 
+`:feature:home` is responsible for displaying the main home screen of the application.
 It features different sections such as trending movies, TV series, and featured content.
 
 ## Structure
-
-### Data Layer
-
-- **[HomeRepositoryImpl](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/data/repository/HomeRepositoryImpl.kt)** 
-  – Implements [`IHomeRepository`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt), handling data fetching and caching mechanisms.
-
-### Dependency Injection
-
-- **[HomeRepositoryModule](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/di/HomeRepositoryModule.kt)** – Provides dependencies for repository implementations.
-- **[HomeUseCaseModule](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/di/HomeUseCaseModule.kt)** – Supplies use case dependencies to interact with the domain layer.
-
-### Domain Layer
-
-- **Repository Interface**
-  - **[IHomeRepository](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/repository/IHomeRepository.kt)**
-    – Defines the contract for data operations related to movies and TV shows.
-- **Use Cases** – Encapsulate business logic for fetching and processing home screen data.
-  - **[GetListMoviesUseCase](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/usecase/getListMovie/GetListMoviesUseCase.kt)** – Retrieves a list of movies.
-  - **[GetListTvUseCase](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/domain/usecase/getListTv/GetListTvUseCase.kt)** – Retrieves a list of TV shows.
 
 ### UI Layer
 
@@ -55,16 +36,6 @@ It features different sections such as trending movies, TV series, and featured 
   - [`FlowJobHelper.kt`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/utils/helpers/FlowJobHelper.kt) – Manages coroutine jobs for UI.
   - [`Helper.kt`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/utils/helpers/Helper.kt) – Contains utility functions for common operations.
   - [`HomeFragmentHelper.kt`](../home/src/main/kotlin/com/waffiq/bazz_movies/feature/home/utils/helpers/HomeFragmentHelper.kt) – Assists in UI logic for the home screen.
-
-## Integration
-
-To use this module, add it as a dependency in the `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:home"))
-}
-```
 
 <!-- LINK -->
 

@@ -1,36 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="320pt" height="116pt" viewBox="0.00 0.00 320.04 116.00">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="472pt" height="116pt" viewBox="0.00 0.00 472.00 116.00">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>G</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-112 316.04,-112 316.04,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 467.8,-112 467.8,4 -4,4"/>
 <!-- :core:utils -->
 <g id="node1" class="node">
 <title>:core:utils</title>
-<ellipse fill="none" stroke="black" cx="167.06" cy="-90" rx="49.65" ry="18"/>
-<text text-anchor="middle" x="167.06" y="-85.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+<ellipse fill="none" stroke="black" cx="236.81" cy="-90" rx="49.65" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="236.81" y="-85.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+</g>
+<!-- :core:common -->
+<g id="node2" class="node">
+<title>:core:common</title>
+<ellipse fill="none" stroke="black" cx="66.81" cy="-18" rx="66.81" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="66.81" y="-13.8" font-family="Times,serif" font-size="14.00">:core:common</text>
+</g>
+<!-- :core:utils&#45;&gt;:core:common -->
+<g id="edge1" class="edge">
+<title>:core:utils-&gt;:core:common</title>
+<path fill="none" stroke="black" d="M204.84,-75.83C178.88,-65.15 141.94,-49.94 112.81,-37.94"/>
+<polygon fill="black" stroke="black" points="114.44,-34.83 103.87,-34.26 111.78,-41.3 114.44,-34.83"/>
 </g>
 <!-- :core:designsystem -->
-<g id="node2" class="node">
+<g id="node3" class="node">
 <title>:core:designsystem</title>
-<ellipse fill="none" stroke="black" cx="85.06" cy="-18" rx="85.06" ry="18"/>
-<text text-anchor="middle" x="85.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+<ellipse fill="none" stroke="black" cx="236.81" cy="-18" rx="85.06" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="236.81" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
 </g>
 <!-- :core:utils&#45;&gt;:core:designsystem -->
-<g id="edge1" class="edge">
+<g id="edge2" class="edge">
 <title>:core:utils-&gt;:core:designsystem</title>
-<path fill="none" stroke="red" stroke-width="2" d="M148.45,-73.12C138.06,-64.24 124.9,-53.01 113.26,-43.08"/>
-<polygon fill="red" stroke="red" stroke-width="2" points="116.91,-41.59 107.04,-37.76 112.37,-46.92 116.91,-41.59"/>
+<path fill="none" stroke="black" d="M236.81,-71.7C236.81,-64.41 236.81,-55.73 236.81,-47.54"/>
+<polygon fill="black" stroke="black" points="240.31,-47.62 236.81,-37.62 233.31,-47.62 240.31,-47.62"/>
 </g>
 <!-- :core:domain -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>:core:domain</title>
-<ellipse fill="none" stroke="black" cx="250.06" cy="-18" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="250.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<ellipse fill="none" stroke="black" cx="401.81" cy="-18" rx="61.99" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="401.81" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
 </g>
 <!-- :core:utils&#45;&gt;:core:domain -->
-<g id="edge2" class="edge">
+<g id="edge3" class="edge">
 <title>:core:utils-&gt;:core:domain</title>
-<path fill="none" stroke="black" d="M185.89,-73.12C196.49,-64.18 209.93,-52.85 221.76,-42.86"/>
-<polygon fill="black" stroke="black" points="223.89,-45.65 229.27,-36.53 219.37,-40.3 223.89,-45.65"/>
+<path fill="none" stroke="black" d="M268.24,-75.67C293.44,-64.98 329.13,-49.83 357.28,-37.89"/>
+<polygon fill="black" stroke="black" points="358.43,-41.21 366.27,-34.08 355.7,-34.76 358.43,-41.21"/>
 </g>
 </g>
 </svg>

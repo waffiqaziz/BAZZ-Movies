@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1011pt" height="116pt" viewBox="0.00 0.00 1010.71 116.00">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1011pt" height="116pt" viewBox="0.00 0.00 1011.00 116.00">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>G</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-112 1006.71,-112 1006.71,4 -4,4"/>
@@ -6,13 +6,13 @@
 <g id="node1" class="node">
 <title>:feature:search</title>
 <ellipse fill="none" stroke="black" cx="529.06" cy="-90" rx="67.87" ry="18"/>
-<text text-anchor="middle" x="529.06" y="-85.8" font-family="Times,serif" font-size="14.00">:feature:search</text>
+<text xml:space="preserve" text-anchor="middle" x="529.06" y="-85.8" font-family="Times,serif" font-size="14.00">:feature:search</text>
 </g>
 <!-- :core:designsystem -->
 <g id="node2" class="node">
 <title>:core:designsystem</title>
 <ellipse fill="none" stroke="black" cx="85.06" cy="-18" rx="85.06" ry="18"/>
-<text text-anchor="middle" x="85.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+<text xml:space="preserve" text-anchor="middle" x="85.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:designsystem -->
 <g id="edge1" class="edge">
@@ -24,19 +24,19 @@
 <g id="node3" class="node">
 <title>:navigation</title>
 <ellipse fill="none" stroke="black" cx="243.06" cy="-18" rx="54.48" ry="18"/>
-<text text-anchor="middle" x="243.06" y="-13.8" font-family="Times,serif" font-size="14.00">:navigation</text>
+<text xml:space="preserve" text-anchor="middle" x="243.06" y="-13.8" font-family="Times,serif" font-size="14.00">:navigation</text>
 </g>
 <!-- :feature:search&#45;&gt;:navigation -->
 <g id="edge2" class="edge">
 <title>:feature:search-&gt;:navigation</title>
-<path fill="none" stroke="red" stroke-width="2" d="M478.91,-77.54C433.65,-67.08 365.27,-51.02 306.06,-36 302.49,-35.09 298.81,-34.15 295.11,-33.18"/>
-<polygon fill="red" stroke="red" stroke-width="2" points="297.5,-30.19 286.94,-31.02 295.72,-36.96 297.5,-30.19"/>
+<path fill="none" stroke="black" d="M478.91,-77.54C433.65,-67.08 365.27,-51.02 306.06,-36 302.49,-35.09 298.81,-34.15 295.11,-33.18"/>
+<polygon fill="black" stroke="black" points="296.04,-29.8 285.48,-30.63 294.25,-36.57 296.04,-29.8"/>
 </g>
 <!-- :core:common -->
 <g id="node4" class="node">
 <title>:core:common</title>
 <ellipse fill="none" stroke="black" cx="382.06" cy="-18" rx="66.81" ry="18"/>
-<text text-anchor="middle" x="382.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:common</text>
+<text xml:space="preserve" text-anchor="middle" x="382.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:common</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:common -->
 <g id="edge3" class="edge">
@@ -48,7 +48,7 @@
 <g id="node5" class="node">
 <title>:core:domain</title>
 <ellipse fill="none" stroke="black" cx="529.06" cy="-18" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="529.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<text xml:space="preserve" text-anchor="middle" x="529.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:domain -->
 <g id="edge4" class="edge">
@@ -60,7 +60,7 @@
 <g id="node6" class="node">
 <title>:core:network</title>
 <ellipse fill="none" stroke="black" cx="674.06" cy="-18" rx="64.66" ry="18"/>
-<text text-anchor="middle" x="674.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:network</text>
+<text xml:space="preserve" text-anchor="middle" x="674.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:network</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:network -->
 <g id="edge5" class="edge">
@@ -72,7 +72,7 @@
 <g id="node7" class="node">
 <title>:core:uihelper</title>
 <ellipse fill="none" stroke="black" cx="821.06" cy="-18" rx="64.66" ry="18"/>
-<text text-anchor="middle" x="821.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:uihelper</text>
+<text xml:space="preserve" text-anchor="middle" x="821.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:uihelper</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:uihelper -->
 <g id="edge6" class="edge">
@@ -84,7 +84,7 @@
 <g id="node8" class="node">
 <title>:core:utils</title>
 <ellipse fill="none" stroke="black" cx="953.06" cy="-18" rx="49.65" ry="18"/>
-<text text-anchor="middle" x="953.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+<text xml:space="preserve" text-anchor="middle" x="953.06" y="-13.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
 </g>
 <!-- :feature:search&#45;&gt;:core:utils -->
 <g id="edge7" class="edge">

@@ -19,7 +19,7 @@
 
 ### UI Layer
 
-- **[LoginActivity](../login/src/main/kotlin/com/waffiq/bazz_movies/feature/login/ui/LoginActivity.kt)**: 
+- **[LoginActivity](../login/src/main/kotlin/com/waffiq/bazz_movies/feature/login/ui/LoginActivity.kt)**:
   The main login screen where users enter credentials.
 - **[AuthenticationViewModel](../login/src/main/kotlin/com/waffiq/bazz_movies/feature/login/ui/AuthenticationViewModel.kt)**:
   Manages authentication logic and communicates with the domain layer.
@@ -28,16 +28,6 @@
 
 - **[CustomTypefaceSpan](../login/src/main/kotlin/com/waffiq/bazz_movies/feature/login/utils/CustomTypefaceSpan.kt)**: Utility class for customizing text appearance.
 - **[Constants](../login/src/main/kotlin/com/waffiq/bazz_movies/feature/login/utils/common/Constants.kt)**: Common constants used in the login feature.
-
-## Integration
-
-To use this module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:login"))
-}
-```
 
 ## Navigation
 
