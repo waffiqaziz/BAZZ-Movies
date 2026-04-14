@@ -25,7 +25,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   )
 
   override fun initInteractor() {
-    interactor = PostRateInteractor(mockMoviesRepository, mockUserRepository)
+    interactor = PostRateInteractor(mockMoviesRepository, mockTvRepository, mockUserRepository)
   }
 
   @Before
@@ -65,7 +65,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockTvRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       mockResponse = post,
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     ) { emission ->
@@ -77,7 +77,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockTvRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     )
   }
@@ -85,7 +85,7 @@ class PostRateInteractorTest : BaseInteractorTest() {
   @Test
   fun postTvRate_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockMoviesRepository.postTvRate(SESSION_ID, rate, TV_ID) },
+      mockCall = { mockTvRepository.postTvRate(SESSION_ID, rate, TV_ID) },
       interactorCall = { interactor.postTvRate(rate, TV_ID) }
     )
   }

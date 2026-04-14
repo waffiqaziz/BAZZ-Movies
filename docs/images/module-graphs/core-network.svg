@@ -1,36 +1,216 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="296pt" height="116pt" viewBox="0.00 0.00 296.23 116.00">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000pt" height="332pt" viewBox="0.00 0.00 1000.00 332.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 328)">
 <title>G</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-112 292.23,-112 292.23,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-328 995.88,-328 995.88,4 -4,4"/>
 <!-- :core:network -->
 <g id="node1" class="node">
 <title>:core:network</title>
-<ellipse fill="none" stroke="black" cx="137.99" cy="-90" rx="64.66" ry="18"/>
-<text text-anchor="middle" x="137.99" y="-85.8" font-family="Times,serif" font-size="14.00">:core:network</text>
+<ellipse fill="none" stroke="black" cx="234.4" cy="-90" rx="64.66" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="234.4" y="-85.8" font-family="Times,serif" font-size="14.00">:core:network</text>
 </g>
 <!-- :core:domain -->
 <g id="node2" class="node">
 <title>:core:domain</title>
-<ellipse fill="none" stroke="black" cx="61.99" cy="-18" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="61.99" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<ellipse fill="none" stroke="black" cx="234.4" cy="-18" rx="61.99" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="234.4" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
 </g>
 <!-- :core:network&#45;&gt;:core:domain -->
 <g id="edge1" class="edge">
 <title>:core:network-&gt;:core:domain</title>
-<path fill="none" stroke="red" stroke-width="2" d="M119.97,-72.41C110.51,-63.69 98.73,-52.85 88.27,-43.21"/>
-<polygon fill="red" stroke="red" stroke-width="2" points="91.82,-41.72 82.09,-37.52 87.08,-46.87 91.82,-41.72"/>
+<path fill="none" stroke="red" stroke-width="2" d="M234.4,-71.7C234.4,-64.41 234.4,-55.73 234.4,-47.54"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="237.9,-49.13 234.4,-39.13 230.9,-49.13 237.9,-49.13"/>
 </g>
 <!-- :core:coroutines -->
 <g id="node3" class="node">
 <title>:core:coroutines</title>
-<ellipse fill="none" stroke="black" cx="214.99" cy="-18" rx="73.25" ry="18"/>
-<text text-anchor="middle" x="214.99" y="-13.8" font-family="Times,serif" font-size="14.00">:core:coroutines</text>
+<ellipse fill="none" stroke="black" cx="472.4" cy="-18" rx="73.25" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="472.4" y="-13.8" font-family="Times,serif" font-size="14.00">:core:coroutines</text>
 </g>
 <!-- :core:network&#45;&gt;:core:coroutines -->
 <g id="edge2" class="edge">
 <title>:core:network-&gt;:core:coroutines</title>
-<path fill="none" stroke="black" d="M156.23,-72.41C165.75,-63.76 177.58,-53 188.13,-43.42"/>
-<polygon fill="black" stroke="black" points="190.44,-46.05 195.48,-36.73 185.73,-40.87 190.44,-46.05"/>
+<path fill="none" stroke="black" d="M277.78,-76.24C316.55,-64.84 373.6,-48.06 415.92,-35.61"/>
+<polygon fill="black" stroke="black" points="416.83,-38.99 425.44,-32.81 414.86,-32.28 416.83,-38.99"/>
+</g>
+<!-- :core:mappers -->
+<g id="node4" class="node">
+<title>:core:mappers</title>
+<ellipse fill="none" stroke="black" cx="273.4" cy="-162" rx="65.73" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="273.4" y="-157.8" font-family="Times,serif" font-size="14.00">:core:mappers</text>
+</g>
+<!-- :core:mappers&#45;&gt;:core:network -->
+<g id="edge4" class="edge">
+<title>:core:mappers-&gt;:core:network</title>
+<path fill="none" stroke="red" stroke-width="2" d="M263.96,-144.05C259.62,-136.26 254.36,-126.82 249.49,-118.08"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="253.42,-117.95 245.5,-110.92 247.31,-121.36 253.42,-117.95"/>
+</g>
+<!-- :core:mappers&#45;&gt;:core:domain -->
+<g id="edge3" class="edge">
+<title>:core:mappers-&gt;:core:domain</title>
+<path fill="none" stroke="black" d="M288.53,-144.16C302.98,-125.93 320.84,-96.22 308.4,-72 301.44,-58.45 289.22,-47.59 276.7,-39.31"/>
+<polygon fill="black" stroke="black" points="278.79,-36.49 268.43,-34.27 275.15,-42.47 278.79,-36.49"/>
+</g>
+<!-- :core:data -->
+<g id="node5" class="node">
+<title>:core:data</title>
+<ellipse fill="none" stroke="black" cx="187.4" cy="-234" rx="49.1" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="187.4" y="-229.8" font-family="Times,serif" font-size="14.00">:core:data</text>
+</g>
+<!-- :core:data&#45;&gt;:core:network -->
+<g id="edge8" class="edge">
+<title>:core:data-&gt;:core:network</title>
+<path fill="none" stroke="black" d="M187.16,-215.7C187.45,-197.34 189.47,-167.75 198.4,-144 201.91,-134.67 207.37,-125.39 212.99,-117.25"/>
+<polygon fill="black" stroke="black" points="215.81,-119.33 218.9,-109.19 210.16,-115.18 215.81,-119.33"/>
+</g>
+<!-- :core:data&#45;&gt;:core:domain -->
+<g id="edge6" class="edge">
+<title>:core:data-&gt;:core:domain</title>
+<path fill="none" stroke="black" d="M178.04,-215.96C162.58,-185.38 135.79,-119.9 160.4,-72 167.36,-58.45 179.58,-47.59 192.1,-39.31"/>
+<polygon fill="black" stroke="black" points="193.65,-42.47 200.37,-34.27 190.01,-36.49 193.65,-42.47"/>
+</g>
+<!-- :core:data&#45;&gt;:core:mappers -->
+<g id="edge7" class="edge">
+<title>:core:data-&gt;:core:mappers</title>
+<path fill="none" stroke="black" d="M206.92,-217.12C218,-208.09 232.09,-196.62 244.45,-186.57"/>
+<polygon fill="black" stroke="black" points="246.35,-189.53 251.89,-180.51 241.93,-184.11 246.35,-189.53"/>
+</g>
+<!-- :core:common -->
+<g id="node6" class="node">
+<title>:core:common</title>
+<ellipse fill="none" stroke="black" cx="424.4" cy="-162" rx="66.81" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="424.4" y="-157.8" font-family="Times,serif" font-size="14.00">:core:common</text>
+</g>
+<!-- :core:data&#45;&gt;:core:common -->
+<g id="edge5" class="edge">
+<title>:core:data-&gt;:core:common</title>
+<path fill="none" stroke="black" d="M224.69,-221.99C263.63,-210.49 325.1,-192.33 369.57,-179.2"/>
+<polygon fill="black" stroke="black" points="370.43,-182.59 379.03,-176.4 368.45,-175.88 370.43,-182.59"/>
+</g>
+<!-- :core:user -->
+<g id="node7" class="node">
+<title>:core:user</title>
+<ellipse fill="none" stroke="black" cx="64.4" cy="-162" rx="49.11" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="64.4" y="-157.8" font-family="Times,serif" font-size="14.00">:core:user</text>
+</g>
+<!-- :core:data&#45;&gt;:core:user -->
+<g id="edge9" class="edge">
+<title>:core:data-&gt;:core:user</title>
+<path fill="none" stroke="red" stroke-width="2" d="M161.62,-218.33C143.74,-208.15 119.7,-194.47 100,-183.26"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="103.2,-181.06 92.78,-179.15 99.74,-187.14 103.2,-181.06"/>
+</g>
+<!-- :core:database -->
+<g id="node8" class="node">
+<title>:core:database</title>
+<ellipse fill="none" stroke="black" cx="424.4" cy="-234" rx="66.26" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="424.4" y="-229.8" font-family="Times,serif" font-size="14.00">:core:database</text>
+</g>
+<!-- :core:database&#45;&gt;:core:domain -->
+<g id="edge10" class="edge">
+<title>:core:database-&gt;:core:domain</title>
+<path fill="none" stroke="black" d="M458.79,-218.29C474.5,-209.62 491.55,-196.97 500.4,-180 507.8,-165.81 508.98,-157.51 500.4,-144 456.54,-74.92 363.24,-43.34 299.66,-29.38"/>
+<polygon fill="black" stroke="black" points="300.53,-25.98 290.03,-27.36 299.1,-32.84 300.53,-25.98"/>
+</g>
+<!-- :core:database&#45;&gt;:core:coroutines -->
+<g id="edge12" class="edge">
+<title>:core:database-&gt;:core:coroutines</title>
+<path fill="none" stroke="black" d="M474.08,-221.65C496.25,-213.84 520.29,-200.96 533.4,-180 558.86,-139.31 553.31,-115.68 533.4,-72 528.05,-60.27 518.69,-50.14 508.88,-41.96"/>
+<polygon fill="black" stroke="black" points="511.1,-39.26 501.04,-35.93 506.84,-44.8 511.1,-39.26"/>
+</g>
+<!-- :core:database&#45;&gt;:core:common -->
+<g id="edge11" class="edge">
+<title>:core:database-&gt;:core:common</title>
+<path fill="none" stroke="black" d="M424.4,-215.7C424.4,-208.41 424.4,-199.73 424.4,-191.54"/>
+<polygon fill="black" stroke="black" points="427.9,-191.62 424.4,-181.62 420.9,-191.62 427.9,-191.62"/>
+</g>
+<!-- :core:utils -->
+<g id="node9" class="node">
+<title>:core:utils</title>
+<ellipse fill="none" stroke="black" cx="635.4" cy="-162" rx="49.65" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="635.4" y="-157.8" font-family="Times,serif" font-size="14.00">:core:utils</text>
+</g>
+<!-- :core:database&#45;&gt;:core:utils -->
+<g id="edge13" class="edge">
+<title>:core:database-&gt;:core:utils</title>
+<path fill="none" stroke="black" d="M465.33,-219.42C500.78,-207.66 552.04,-190.66 589,-178.39"/>
+<polygon fill="black" stroke="black" points="589.67,-181.86 598.06,-175.39 587.47,-175.21 589.67,-181.86"/>
+</g>
+<!-- :core:favoritewatchlist -->
+<g id="node10" class="node">
+<title>:core:favoritewatchlist</title>
+<ellipse fill="none" stroke="black" cx="424.4" cy="-306" rx="97.91" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="424.4" y="-301.8" font-family="Times,serif" font-size="14.00">:core:favoritewatchlist</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:domain -->
+<g id="edge16" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:domain</title>
+<path fill="none" stroke="black" d="M326.79,-303.67C257.65,-299.43 164.27,-286.86 89.4,-252 45.13,-231.39 26.68,-224.43 6.4,-180 -29.63,-101.06 96.32,-53.78 175.26,-32.49"/>
+<polygon fill="black" stroke="black" points="175.81,-35.96 184.6,-30.04 174.04,-29.19 175.81,-35.96"/>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:mappers -->
+<g id="edge18" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:mappers</title>
+<path fill="none" stroke="black" d="M397.5,-288.35C382.64,-278.59 364.24,-265.54 349.4,-252 328.18,-232.64 307.22,-207.53 292.71,-188.91"/>
+<polygon fill="black" stroke="black" points="295.53,-186.84 286.66,-181.04 289.98,-191.1 295.53,-186.84"/>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:data -->
+<g id="edge14" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:data</title>
+<path fill="none" stroke="red" stroke-width="2" d="M374.14,-290.15C333.28,-278.09 275.99,-261.17 235.68,-249.26"/>
+<polygon fill="red" stroke="red" stroke-width="2" points="238.27,-246.37 227.69,-246.9 236.28,-253.09 238.27,-246.37"/>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:user -->
+<g id="edge19" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:user</title>
+<path fill="none" stroke="black" d="M339.2,-296.79C264.85,-288.35 163.65,-273.42 129.4,-252 105.89,-237.29 88.16,-210.71 77.21,-190.41"/>
+<polygon fill="black" stroke="black" points="80.33,-188.83 72.66,-181.53 74.1,-192.02 80.33,-188.83"/>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:database -->
+<g id="edge15" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:database</title>
+<path fill="none" stroke="black" d="M424.4,-287.7C424.4,-280.41 424.4,-271.73 424.4,-263.54"/>
+<polygon fill="black" stroke="black" points="427.9,-263.62 424.4,-253.62 420.9,-263.62 427.9,-263.62"/>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:utils -->
+<g id="edge20" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:utils</title>
+<path fill="none" stroke="black" d="M450.06,-288.2C464.87,-278.19 483.62,-264.94 499.4,-252 517.39,-237.25 518.56,-229.65 537.4,-216 555.42,-202.94 577.04,-190.91 595.38,-181.63"/>
+<polygon fill="black" stroke="black" points="596.71,-184.88 604.11,-177.3 593.6,-178.61 596.71,-184.88"/>
+</g>
+<!-- :core:uihelper -->
+<g id="node11" class="node">
+<title>:core:uihelper</title>
+<ellipse fill="none" stroke="black" cx="611.4" cy="-234" rx="64.66" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="611.4" y="-229.8" font-family="Times,serif" font-size="14.00">:core:uihelper</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:uihelper -->
+<g id="edge17" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:uihelper</title>
+<path fill="none" stroke="black" d="M466.37,-289.29C495.14,-278.52 533.38,-264.21 563.37,-252.98"/>
+<polygon fill="black" stroke="black" points="564.46,-256.31 572.59,-249.53 562,-249.75 564.46,-256.31"/>
+</g>
+<!-- :core:designsystem -->
+<g id="node12" class="node">
+<title>:core:designsystem</title>
+<ellipse fill="none" stroke="black" cx="779.4" cy="-234" rx="85.06" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="779.4" y="-229.8" font-family="Times,serif" font-size="14.00">:core:designsystem</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:core:designsystem -->
+<g id="edge21" class="edge">
+<title>:core:favoritewatchlist-&gt;:core:designsystem</title>
+<path fill="none" stroke="black" d="M489.51,-292.16C551.17,-280 643.55,-261.79 707.38,-249.2"/>
+<polygon fill="black" stroke="black" points="707.93,-252.66 717.07,-247.29 706.58,-245.79 707.93,-252.66"/>
+</g>
+<!-- :navigation -->
+<g id="node13" class="node">
+<title>:navigation</title>
+<ellipse fill="none" stroke="black" cx="937.4" cy="-234" rx="54.48" ry="18"/>
+<text xml:space="preserve" text-anchor="middle" x="937.4" y="-229.8" font-family="Times,serif" font-size="14.00">:navigation</text>
+</g>
+<!-- :core:favoritewatchlist&#45;&gt;:navigation -->
+<g id="edge22" class="edge">
+<title>:core:favoritewatchlist-&gt;:navigation</title>
+<path fill="none" stroke="black" d="M513.57,-298.23C604.58,-290.45 749.65,-275.61 873.4,-252 877.66,-251.19 882.06,-250.24 886.46,-249.23"/>
+<polygon fill="black" stroke="black" points="886.96,-252.71 895.85,-246.94 885.3,-245.91 886.96,-252.71"/>
 </g>
 </g>
 </svg>

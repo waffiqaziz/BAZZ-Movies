@@ -157,7 +157,7 @@ class ListActivity : AppCompatActivity() {
 
   private fun showNowPlaying(args: ListArgs) {
     setToolbarTitle(
-      if (args.mediaType == MOVIE_MEDIA_TYPE) getString(now_playing) else getString(airing_today)
+      if (args.mediaType == MOVIE_MEDIA_TYPE) getString(now_playing) else getString(airing_today),
     )
     load(viewModel.getNowPlaying(args.mediaType), adapter)
   }

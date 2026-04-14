@@ -8,8 +8,8 @@
 
 ## Overview
 
-`:core:database` is a module responsible for managing local data persistence using [Room Database](https://developer.android.com/jetpack/androidx/releases/room). 
-It provides a structured and scalable approach to handling local storage while ensuring data 
+`:core:database` is a module responsible for managing local data persistence using [Room Database](https://developer.android.com/jetpack/androidx/releases/room).
+It provides a structured and scalable approach to handling local storage while ensuring data
 integrity and efficient access.
 
 ## Responsibilities
@@ -42,16 +42,6 @@ integrity and efficient access.
 - **[Dependency Injection](../database/src/main/kotlin/com/waffiq/bazz_movies/core/database/di/)**
   - Provides Hilt modules for injecting database dependencies.
 
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:database"))
-}
-```
-
 ## Example Usage
 
 Inject the [`LocalDatabaseUseCase`](./src/main/kotlin/com/waffiq/bazz_movies/core/database/domain/usecase/localdatabase/LocalDatabaseUseCase.kt) in ViewModel and use it to interact with the database:
@@ -74,7 +64,7 @@ class FavoriteViewModel @Inject constructor(
 - **Utilize dependency injection** – Ensures database components are properly managed.
 - **Encapsulate logic in use cases** – Maintains separation of concerns and clean architecture.
 
-This module establishes a robust local storage layer, ensuring data persistence and offline 
+This module establishes a robust local storage layer, ensuring data persistence and offline
 capabilities for the application.
 
 <!-- LINK -->

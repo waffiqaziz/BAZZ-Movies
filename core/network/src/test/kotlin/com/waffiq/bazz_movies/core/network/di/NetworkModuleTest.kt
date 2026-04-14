@@ -13,14 +13,28 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Retrofit
 
 class NetworkModuleTest {
 
-  private lateinit var debugConfig: IDebugConfig
+  private val debugConfig: IDebugConfig = mockk()
+  private val moshi = NetworkModule().provideMoshi()
+
+  private lateinit var loggingInterceptor: HttpLoggingInterceptor
+  private lateinit var client: OkHttpClient
+  private lateinit var tmdbRetrofit: Retrofit
+  private lateinit var omdbRetrofit: Retrofit
+  private lateinit var countryRetrofit: Retrofit
 
   @Before
   fun setup() {
-    debugConfig = mockk()
+    every { debugConfig.isDebug() } returns true
+
+    loggingInterceptor = NetworkModule().provideLoggingInterceptor(debugConfig)
+    client = NetworkModule().provideOkHttpClient(loggingInterceptor)
+    countryRetrofit = NetworkModule().provideCountryRetrofit(client, moshi)
+    tmdbRetrofit = NetworkModule().provideTMDBRetrofit(client, moshi)
+    omdbRetrofit = NetworkModule().provideOMDbRetrofit(client, moshi)
   }
 
   @Test
@@ -41,7 +55,6 @@ class NetworkModuleTest {
 
   @Test
   fun provideMoshi_whenAlreadyInitialized_returnsValidMoshiInstance() {
-    val moshi = NetworkModule().provideMoshi()
     assertNotNull(moshi.adapter(Any::class.java))
   }
 
@@ -56,10 +69,17 @@ class NetworkModuleTest {
   }
 
   @Test
-  fun provideCountryIPApiService_whenAlreadyInitialized_createsValidService() {
-    val client = mockk<OkHttpClient>(relaxed = true)
-    val service = NetworkModule().provideCountryIPApiService(client)
-    assertNotNull(service)
+  fun provideApi_whenAlreadyInitialized_createsValidService() {
+    assertNotNull(NetworkModule().provideCountryApi(countryRetrofit))
+    assertNotNull(NetworkModule().provideOMDbApi(omdbRetrofit))
+    assertNotNull(NetworkModule().provideAccountApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideAuthApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideDiscoverApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideMovieApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().providePersonApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideSearchApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideTrendingApi(tmdbRetrofit))
+    assertNotNull(NetworkModule().provideTvApi(tmdbRetrofit))
   }
 
   @Test
@@ -74,7 +94,7 @@ class NetworkModuleTest {
     every { clientBuilder.build() } returns mockk()
 
     val networkModule = NetworkModule()
-    val service = networkModule.provideOMDBApiService(client)
+    val service = networkModule.provideOMDbRetrofit(client, moshi)
 
     assertNotNull(service)
 
@@ -94,7 +114,7 @@ class NetworkModuleTest {
     every { clientBuilder.build() } returns mockk()
 
     val networkModule = NetworkModule()
-    val service = networkModule.provideTMDBApiService(client)
+    val service = networkModule.provideTMDBRetrofit(client, moshi)
 
     assertNotNull(service)
 

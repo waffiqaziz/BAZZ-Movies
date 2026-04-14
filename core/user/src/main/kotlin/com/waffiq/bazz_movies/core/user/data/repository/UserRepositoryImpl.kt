@@ -5,7 +5,8 @@ import com.waffiq.bazz_movies.core.domain.PostResult
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
 import com.waffiq.bazz_movies.core.mappers.PostMapper.toPostResult
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.UserDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.auth.AuthRemoteDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.country.CountryRemoteDataSource
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -26,28 +27,29 @@ import javax.inject.Singleton
 @Singleton
 class UserRepositoryImpl @Inject constructor(
   private val pref: UserPreference,
-  private val userDataSource: UserDataSource,
+  private val authRemoteDataSource: AuthRemoteDataSource,
+  private val countryRemoteDataSource: CountryRemoteDataSource,
 ) : IUserRepository {
 
   // region AUTH
   override fun createToken(): Flow<Outcome<Authentication>> =
-    userDataSource.createToken().toOutcome { it.toAuthentication() }
+    authRemoteDataSource.createToken().toOutcome { it.toAuthentication() }
 
   override fun login(
     username: String,
     pass: String,
     sessionId: String,
   ): Flow<Outcome<Authentication>> =
-    userDataSource.login(username, pass, sessionId).toOutcome { it.toAuthentication() }
+    authRemoteDataSource.login(username, pass, sessionId).toOutcome { it.toAuthentication() }
 
   override fun createSessionLogin(requestToken: String): Flow<Outcome<CreateSession>> =
-    userDataSource.createSessionLogin(requestToken).toOutcome { it.toCreateSession() }
+    authRemoteDataSource.createSessionLogin(requestToken).toOutcome { it.toCreateSession() }
 
   override fun deleteSession(sessionId: String): Flow<Outcome<PostResult>> =
-    userDataSource.deleteSession(sessionId).toOutcome { it.toPostResult() }
+    authRemoteDataSource.deleteSession(sessionId).toOutcome { it.toPostResult() }
 
   override fun getAccountDetails(sessionId: String): Flow<Outcome<AccountDetails>> =
-    userDataSource.getAccountDetails(sessionId).toOutcome { it.toAccountDetails() }
+    authRemoteDataSource.getAccountDetails(sessionId).toOutcome { it.toAccountDetails() }
   // endregion AUTH
 
   // region PREF
@@ -66,5 +68,5 @@ class UserRepositoryImpl @Inject constructor(
   // endregion PREF
 
   override fun getCountryCode(): Flow<Outcome<CountryIP>> =
-    userDataSource.getCountryCode().toOutcome { it.toCountryIP() }
+    countryRemoteDataSource.getCountryCode().toOutcome { it.toCountryIP() }
 }

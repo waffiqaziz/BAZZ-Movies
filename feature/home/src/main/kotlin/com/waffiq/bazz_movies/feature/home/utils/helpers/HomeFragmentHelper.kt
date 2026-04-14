@@ -66,11 +66,15 @@ object HomeFragmentHelper {
   fun setupRetryButton(
     binding: IllustrationErrorBinding,
     vararg adapters: PagingDataAdapter<*, *>,
+    action: () -> Unit = {},
   ) {
     binding.btnTryAgain.setOnClickListener {
-      adapters.forEach { pagingDataAdapter -> pagingDataAdapter.refresh() }
+      adapters.forEach { it.refresh() }
+
       binding.btnTryAgain.isVisible = false
       binding.progressCircular.isVisible = true
+
+      action()
     }
   }
 

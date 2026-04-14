@@ -103,7 +103,6 @@ Below you can find a list of BAZZ Movies modules.
 | [`:core:favoritewatchlist`][core-favoritewatchlist-link]     | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]     |
 | [`:core:instrumentationtest`][core-instrumentationtest-link] | [![Coverage][core-instrumentationtest-coverage-badge]][core-instrumentationtest-coverage-link] |
 | [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |
-| [`:core:movie`][core-movie-link]                             | [![Coverage][core-movie-coverage-badge]][core-movie-coverage-link]                             |
 | [`:core:network`][core-network-link]                         | [![Coverage][core-network-coverage-badge]][core-network-coverage-link]                         |
 | [`:core:test`][core-test-link]                               | [![Coverage][core-test-coverage-badge]][core-test-coverage-link]                               |
 | [`:core:uihelper`][core-uihelper-link]                       | [![Coverage][core-uihelper-coverage-badge]][core-uihelper-coverage-link]                       |
@@ -328,12 +327,6 @@ plugins {
 [core-mappers-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-mappers
 
 [core-mappers-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-mappers
-
-[core-movie-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/movie
-
-[core-movie-coverage-badge]: https://codecov.io/gh/waffiqaziz/BAZZ-Movies/branch/main/graph/badge.svg?flag=core-movie
-
-[core-movie-coverage-link]: https://app.codecov.io/gh/waffiqaziz/BAZZ-Movies/tree/main?flags%5B0%5D=core-movie
 
 [core-network-link]: https://github.com/waffiqaziz/BAZZ-Movies/tree/main/core/network
 

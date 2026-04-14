@@ -500,16 +500,6 @@ jobs:
           name: core-mappers-coverage
         continue-on-error: true
 
-      - name: Upload coverage with core-movie flag
-        if: steps.check_coverage.outputs.coverage_exists == 'true'
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
-        with:
-          files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          flags: core-movie
-          token: ${{ secrets.CODECOV_TOKEN }}
-          name: core-movie-coverage
-        continue-on-error: true
-
       - name: Upload coverage with core-network flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de

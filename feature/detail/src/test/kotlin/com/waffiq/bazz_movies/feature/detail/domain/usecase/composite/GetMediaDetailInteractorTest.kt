@@ -114,7 +114,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("movie", MOVIE_ID) },
+      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
       mockResponse = watchProviders,
       interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
     ) { emission ->
@@ -127,7 +127,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   fun getMovieWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() = runTest {
     val flow = flowOf(Outcome.Success(WatchProviders(results = emptyMap(), id = MOVIE_ID)))
 
-    coEvery { mockDetailRepository.getWatchProviders("movie", MOVIE_ID) } returns flow
+    coEvery { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) } returns flow
 
     interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID).test {
       val emission = awaitItem()
@@ -139,13 +139,13 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       awaitComplete()
     }
 
-    coVerify { mockDetailRepository.getWatchProviders("movie", MOVIE_ID) }
+    coVerify { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) }
   }
 
   @Test
   fun getMovieWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("movie", MOVIE_ID) },
+      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
       interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
     )
   }
@@ -153,7 +153,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieWatchProvidersWithUserRegion_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("movie", MOVIE_ID) },
+      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
       interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
     )
   }
@@ -359,7 +359,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
     testSuccessScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("tv", TV_ID) },
+      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
       mockResponse = watchProviders,
       interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
     ) { emission ->
@@ -371,7 +371,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() = runTest {
     val emptyWatchProviders = WatchProviders(results = emptyMap(), id = TV_ID)
-    coEvery { mockDetailRepository.getWatchProviders("tv", TV_ID) } returns
+    coEvery { mockDetailRepository.getTvWatchProviders(TV_ID) } returns
       flowOf(Outcome.Success(emptyWatchProviders))
 
     interactor.getTvWatchProvidersWithUserRegion(TV_ID).test {
@@ -384,13 +384,13 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       awaitComplete()
     }
 
-    coVerify { mockDetailRepository.getWatchProviders("tv", TV_ID) }
+    coVerify { mockDetailRepository.getTvWatchProviders(TV_ID) }
   }
 
   @Test
   fun getTvWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() = runTest {
     testErrorScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("tv", TV_ID) },
+      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
       interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
     )
   }
@@ -398,7 +398,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvWatchProvidersWithUserRegion_whenLoading_emitsLoading() = runTest {
     testLoadingScenario(
-      mockCall = { mockDetailRepository.getWatchProviders("tv", TV_ID) },
+      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
       interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
     )
   }

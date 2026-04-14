@@ -64,14 +64,14 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
   private fun observeUserState() {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
       if (user.token != Constants.NAN) {
-        setupLoggedUser(user.token)
+        setupLoggedUser()
       } else {
         setupGuestUser()
       }
     }
   }
 
-  private fun setupLoggedUser(token: String) {
+  private fun setupLoggedUser() {
     guestUserDelegate?.cleanup()
     guestUserDelegate = null
 
@@ -84,7 +84,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
       iSnackbar = iSnackbar,
       navigator = navigator,
     ).apply {
-      setup(token)
+      setup()
     }
   }
 

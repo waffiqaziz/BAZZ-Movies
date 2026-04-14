@@ -54,16 +54,6 @@ information about actor or actress, including their credits, images, and social 
 - **[PersonMapper](../person/src/main/kotlin/com/waffiq/bazz_movies/feature/person/utils/mapper/PersonMapper.kt)** – Maps API responses to domain models.
 - **[PersonPageHelper](../person/src/main/kotlin/com/waffiq/bazz_movies/feature/person/utils/helper/PersonPageHelper.kt)** – Provides helper functions for person-related UI logic.
 
-## Integration
-
-To use this module, add the dependency in `build.gradle`:
-
-```gradle
-dependencies {
-    implementation(project(":feature:person"))
-}
-```
-
 ## Navigation
 
 To navigate to the Person details screen:

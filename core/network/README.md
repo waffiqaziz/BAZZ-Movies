@@ -8,8 +8,8 @@
 
 ## Overview
 
-`:core:network` is a core module responsible for managing network interactions within the 
-application. It provides a structured and scalable approach to handling API calls, 
+`:core:network` is a core module responsible for managing network interactions within the
+application. It provides a structured and scalable approach to handling API calls,
 ensuring efficiency, maintainability, and testability.
 
 ## Responsibilities
@@ -21,16 +21,6 @@ ensuring efficiency, maintainability, and testability.
 - **[Paging Integration](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/data/remote/pagingsources/)** – Supports efficient data fetching using Paging 3.
 - **[Dependency Injection](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/di/)** – Provides network-related dependencies using Hilt.
 - **[Error Handling](../network/src/main/kotlin/com/waffiq/bazz_movies/core/network/utils/helpers/SafeApiCallHelper.kt)** – Implements standardized approaches to handle network failures and retries.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:network"))
-}
-```
 
 ### Example Usage
 

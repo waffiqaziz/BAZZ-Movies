@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -14,7 +13,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.FavoritePagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
@@ -29,7 +27,6 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
@@ -53,10 +50,10 @@ class LoggedUserDelegate(
 
   private val snackbarAnchor = navigator.snackbarAnchor()
 
-  fun setup(token: String) {
+  fun setup() {
     setupAdapter()
     setupRefresh()
-    setupData(token)
+    setupData()
     observeSnackbarEvents()
   }
 
@@ -69,13 +66,6 @@ class LoggedUserDelegate(
   fun cleanup() {
     dismissSnackbar()
   }
-
-  fun getFavoriteData(token: String): Flow<PagingData<MediaItem>> =
-    if (mediaType == MOVIE_MEDIA_TYPE) {
-      favoriteViewModel.favoriteMovies(token)
-    } else {
-      favoriteViewModel.favoriteTvSeries(token)
-    }
 
   private fun setupAdapter() {
     adapter = FavoritePagingAdapter(navigator, mediaType, onDelete = { mediaItem ->
@@ -108,7 +98,7 @@ class LoggedUserDelegate(
     }
   }
 
-  private fun setupData(token: String) {
+  private fun setupData() {
     binding.illustrationError.btnTryAgain.setOnClickListener {
       baseViewModel.resetSnackbarShown()
       adapter.refresh()
@@ -116,7 +106,7 @@ class LoggedUserDelegate(
 
     collectAndSubmitData(
       fragment = fragment,
-      flowProvider = { getFavoriteData(token) },
+      flowProvider = { favoriteViewModel.getFavoriteData(mediaType) },
       adapter = adapter,
     )
 

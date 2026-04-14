@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
@@ -18,10 +22,6 @@ import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listmovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
 import com.waffiq.bazz_movies.feature.detail.domain.model.watchproviders.WatchProvidersItem
 import com.waffiq.bazz_movies.feature.detail.domain.usecase.composite.GetMediaDetailUseCase
@@ -107,7 +107,13 @@ class MediaDetailViewModel @Inject constructor(
   fun getMovieState(id: Int) {
     singleExecuteUseCase(
       flowProvider = { mediaStateUseCase.getMovieStateWithUser(id) },
-      onSuccess = { copy(itemState = it) },
+      onSuccess = {
+        copy(
+          itemState = it,
+          isFavorite = it.favorite,
+          isWatchlist = it.watchlist,
+        )
+      },
     )
   }
 
@@ -153,7 +159,13 @@ class MediaDetailViewModel @Inject constructor(
   fun getTvState(id: Int) {
     singleExecuteUseCase(
       flowProvider = { mediaStateUseCase.getTvStateWithUser(id) },
-      onSuccess = { copy(itemState = it) },
+      onSuccess = {
+        copy(
+          itemState = it,
+          isFavorite = it.favorite,
+          isWatchlist = it.watchlist,
+        )
+      },
     )
   }
 

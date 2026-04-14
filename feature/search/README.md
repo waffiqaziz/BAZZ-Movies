@@ -8,7 +8,7 @@
 
 ## Overview
 
-`:feature:search` is responsible for handling search functionality within the application. 
+`:feature:search` is responsible for handling search functionality within the application.
 It allows users to search for movies, TV shows, and actors/actresses using multi-search feature.
 
 ## Structure
@@ -50,19 +50,9 @@ It allows users to search for movies, TV shows, and actors/actresses using multi
   - [`SearchHelper.kt`](./src/main/kotlin/com/waffiq/bazz_movies/feature/search/utils/SearchHelper.kt) – Provides utility functions for processing search data.
   - [`SearchMapper.kt`](./src/main/kotlin/com/waffiq/bazz_movies/feature/search/utils/SearchMapper.kt) – Maps API responses to UI models.
 
-## Integration
-
-To use this module, add it as a dependency in the `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:search"))
-}
-```
-
 ## Testing
 
-In this module, we use JUnit4 for standard unit and instrumentation testing but also leverage 
+In this module, we use JUnit4 for standard unit and instrumentation testing but also leverage
 Kotest for more expressive behavior-driven for unit tests.
 
 <!-- LINK -->

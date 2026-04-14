@@ -89,7 +89,7 @@ class BaseFavoriteFragmentTest2 :
       }
     }
 
-    every { mockFavoriteViewModel.favoriteMovies(any()) } returns pager.flow
+    every { mockFavoriteViewModel.getFavoriteData("movie") } returns pager.flow
 
     // Launch parent fragment
     launchFragmentInHiltContainer<FavoriteFragment> {

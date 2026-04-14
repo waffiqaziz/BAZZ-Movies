@@ -18,7 +18,7 @@ It allows users to save and view their favorite movies and TV series for later v
 The data layer is responsible for handling watchlist-related data.
 
 - **[WatchlistRepositoryImpl](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/data/repository/WatchlistRepositoryImpl.kt)**
-  – Implements [`IWatchlistRepository`](<(../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)>) 
+  – Implements [`IWatchlistRepository`](<(../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/domain/repository/IWatchlistRepository.kt)>)
     to manage adding, removing, and retrieving watchlist items.
 
 ### Dependency Injection
@@ -42,16 +42,6 @@ The data layer is responsible for handling watchlist-related data.
   - **[MyWatchlistTvSeriesFragment](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/ui/MyWatchlistTvSeriesFragment.kt)** – Shows only TV series in the watchlist.
 - **ViewModel**
   - **[MyWatchlistViewModel](../watchlist/src/main/kotlin/com/waffiq/bazz_movies/feature/watchlist/ui/MyWatchlistViewModel.kt)** – Manages watchlist data and interactions.
-
-## Integration
-
-To use this module, add it as a dependency in the `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":feature:watchlist"))
-}
-```
 
 <!-- LINK -->
 

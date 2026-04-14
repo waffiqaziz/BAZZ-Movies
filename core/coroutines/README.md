@@ -15,9 +15,9 @@ promoting testability and maintainability.
 ## Responsibilities
 
 - **[Dispatcher Module](../coroutines/src/main/kotlin/com/waffiq/bazz_movies/core/coroutines/DispatcherModule.kt)**
-    - Defines and provides coroutine dispatchers
+  - Defines and provides coroutine dispatchers
       using [Hilt](https://developer.android.com/training/dependency-injection/hilt-android?).
-    - Ensures a consistent way to inject different dispatchers (`Default`, `IO`, `Main`) throughout
+  - Ensures a consistent way to inject different dispatchers (`Default`, `IO`, `Main`) throughout
       the application.
 
 ### Provided Dispatchers
@@ -25,16 +25,6 @@ promoting testability and maintainability.
 - `@DefaultDispatcher` – As `Dispatchers.Default`, optimized for CPU-intensive tasks.
 - `@IoDispatcher` – As `Dispatchers.IO`, used for network and disk operations.
 - `@MainDispatcher` – As `Dispatchers.Main`, intended for UI-related tasks.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:coroutines"))
-}
-```
 
 ## Example Usage
 

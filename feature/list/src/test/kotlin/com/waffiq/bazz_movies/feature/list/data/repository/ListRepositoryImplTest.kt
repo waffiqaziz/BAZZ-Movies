@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.feature.list.data.repository
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.discover.DiscoverRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieResponsePagingData
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeTvResponsePagingData
@@ -26,11 +26,11 @@ class ListRepositoryImplTest : BehaviorSpec({
 
   lateinit var repository: ListRepositoryImpl
 
-  val dataSource: MovieDataSource = mockk(relaxed = true)
+  val mockDiscoverRemoteDataSource: DiscoverRemoteDataSource = mockk(relaxed = true)
 
   beforeTest {
     Dispatchers.setMain(UnconfinedTestDispatcher())
-    repository = ListRepositoryImpl(dataSource)
+    repository = ListRepositoryImpl(mockDiscoverRemoteDataSource)
   }
 
   suspend fun BehaviorSpecWhenContainerScope.thenEmitsMappedMediaItems(
@@ -49,7 +49,7 @@ class ListRepositoryImplTest : BehaviorSpec({
   Given("the data source returns paging data successfully") {
 
     When("fetching movies by genre") {
-      every { dataSource.getMovieByGenres(any(), any()) } returns
+      every { mockDiscoverRemoteDataSource.getMovieByGenres(any(), any()) } returns
         flowOf(fakeMovieResponsePagingData)
 
       thenEmitsMappedMediaItems(
@@ -62,7 +62,7 @@ class ListRepositoryImplTest : BehaviorSpec({
     }
 
     When("fetching tv shows by genre") {
-      every { dataSource.getTvByGenres(any(), any()) } returns
+      every { mockDiscoverRemoteDataSource.getTvByGenres(any(), any()) } returns
         flowOf(fakeTvResponsePagingData)
 
       thenEmitsMappedMediaItems(
@@ -75,7 +75,7 @@ class ListRepositoryImplTest : BehaviorSpec({
     }
 
     When("fetching movies by keyword") {
-      every { dataSource.getMovieByKeywords(any()) } returns
+      every { mockDiscoverRemoteDataSource.getMovieByKeywords(any()) } returns
         flowOf(fakeMovieResponsePagingData)
 
       thenEmitsMappedMediaItems(
@@ -88,7 +88,7 @@ class ListRepositoryImplTest : BehaviorSpec({
     }
 
     When("fetching tv shows by keyword") {
-      every { dataSource.getTvByKeywords(any()) } returns
+      every { mockDiscoverRemoteDataSource.getTvByKeywords(any()) } returns
         flowOf(fakeTvResponsePagingData)
 
       thenEmitsMappedMediaItems(

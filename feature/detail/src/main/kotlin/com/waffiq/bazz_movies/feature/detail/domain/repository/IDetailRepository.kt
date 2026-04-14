@@ -16,11 +16,12 @@ interface IDetailRepository {
   fun getMovieDetail(movieId: Int): Flow<Outcome<MovieDetail>>
   fun getMovieTrailerLink(movieId: Int): Flow<Outcome<Video>>
   fun getMovieCredits(movieId: Int): Flow<Outcome<MediaCredits>>
+  fun getMovieWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
+  fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>>
   fun getTvDetail(tvId: Int): Flow<Outcome<TvDetail>>
   fun getTvExternalIds(tvId: Int): Flow<Outcome<TvExternalIds>>
   fun getTvTrailerLink(tvId: Int): Flow<Outcome<Video>>
   fun getTvCredits(tvId: Int): Flow<Outcome<MediaCredits>>
-  fun getWatchProviders(params: String, id: Int): Flow<Outcome<WatchProviders>>
-  fun getMovieKeywords(movieId: String): Flow<Outcome<MediaKeywords>>
+  fun getTvWatchProviders(id: Int): Flow<Outcome<WatchProviders>>
   fun getTvKeywords(tvId: String): Flow<Outcome<MediaKeywords>>
 }

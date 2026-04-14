@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.person.data.repository
 
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
-import com.waffiq.bazz_movies.core.network.data.remote.datasource.MovieDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.person.PersonRemoteDataSource
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -17,17 +17,19 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PersonRepositoryImpl @Inject constructor(private val movieDataSource: MovieDataSource) :
-  IPersonRepository {
+class PersonRepositoryImpl @Inject constructor(
+  private val personRemoteDataSource: PersonRemoteDataSource,
+) : IPersonRepository {
+
   override fun getDetailPerson(id: Int): Flow<Outcome<DetailPerson>> =
-    movieDataSource.getPersonDetails(id).toOutcome { it.toDetailPerson() }
+    personRemoteDataSource.getPersonDetails(id).toOutcome { it.toDetailPerson() }
 
   override fun getKnownForPerson(id: Int): Flow<Outcome<CombinedCreditPerson>> =
-    movieDataSource.getPersonCredits(id).toOutcome { it.toCombinedCredit() }
+    personRemoteDataSource.getPersonCredits(id).toOutcome { it.toCombinedCredit() }
 
   override fun getImagePerson(id: Int): Flow<Outcome<ImagePerson>> =
-    movieDataSource.getPersonImages(id).toOutcome { it.toImagePerson() }
+    personRemoteDataSource.getPersonImages(id).toOutcome { it.toImagePerson() }
 
   override fun getExternalIDPerson(id: Int): Flow<Outcome<ExternalIDPerson>> =
-    movieDataSource.getPersonExternalIds(id).toOutcome { it.toExternalIDPerson() }
+    personRemoteDataSource.getPersonExternalIds(id).toOutcome { it.toExternalIDPerson() }
 }

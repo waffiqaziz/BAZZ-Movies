@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritetv
 
 import com.waffiq.bazz_movies.feature.favorite.testutils.BaseFavoriteInteractorTest
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvMediaItemPagingData
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -11,10 +10,12 @@ class GetFavoriteTvInteractorTest : BaseFavoriteInteractorTest() {
 
   init {
     should("return favorite movies") {
-      val interactor = GetFavoriteTvInteractor(repository)
-      every { repository.getFavoriteTv(SESSION_ID) } returns flowOf(fakeTvMediaItemPagingData)
+      val interactor = GetFavoriteTvInteractor(mockFavoriteRepository, mockUserRepository)
+      every { mockFavoriteRepository.getFavoriteTv(any(), any()) } returns flowOf(
+        fakeTvMediaItemPagingData
+      )
 
-      testPagingFlow(interactor.getFavoriteTv(SESSION_ID)) { list ->
+      testPagingFlow(interactor.getFavoriteTv()) { list ->
         list[0].id shouldBe 1
         list[0].title shouldBe "Breaking Bad"
         list[0].overview shouldBe "A high school chemistry teacher turned methamphetamine producer"

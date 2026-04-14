@@ -6,8 +6,8 @@
 
 ## Overview
 
-`:core:designsystem` is a module dedicated to managing the UI components and design resources used 
-across the application. It provides a centralized place for reusable UI elements, styles, and 
+`:core:designsystem` is a module dedicated to managing the UI components and design resources used
+across the application. It provides a centralized place for reusable UI elements, styles, and
 animations, ensuring consistency and reducing redundancy in the project.
 
 ## Responsibilities
@@ -17,19 +17,10 @@ animations, ensuring consistency and reducing redundancy in the project.
   - **Colors:** Defines the primary, secondary, and state-dependent colors for UI components.
   - **Drawables:** Includes background shapes, ripple effects, icons, and placeholders.
   - **Fonts:** Provides custom fonts for text styling.
-  - **Layouts:** Contains XML files for various UI components like toolbar items, lists, and error 
+  - **Layouts:** Contains XML files for various UI components like toolbar items, lists, and error
     illustrations.
   - **Themes:** Centralizes app themes and night mode configurations.
-
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:designsystem"))
-}
-```
+  - **Strings:** Centralizes strings for better localization on the future.
 
 ## Example Usage
 
@@ -45,8 +36,7 @@ Applying a custom background drawable:
 ## Best Practices
 
 - **Encapsulate reusable UI components** – Avoid duplicating UI resource across modules.
-- **Use theme attributes instead of hardcoded values** – Improves flexibility and adaptability to 
+- **Use theme attributes instead of hardcoded values** – Improves flexibility and adaptability to
   dark mode.
 
-This module provides a structured approach to UI design, making the application more scalable and 
-maintainable.
+This module provides a structured approach to UI design, making the application more scalable and maintainable.

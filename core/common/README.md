@@ -21,16 +21,6 @@
   - Implements a wrapper class to handle one-time events in LiveData and ViewModels.
   - Prevents multiple consumption of UI-triggered actions like navigation or messages.
 
-## Integration
-
-To use the module, add it as a dependency in `build.gradle` file:
-
-```gradle
-dependencies {
-    implementation(project(":core:common"))
-}
-```
-
 ## Example Usage
 
 Using `Constants` to get predefined URLs or values:

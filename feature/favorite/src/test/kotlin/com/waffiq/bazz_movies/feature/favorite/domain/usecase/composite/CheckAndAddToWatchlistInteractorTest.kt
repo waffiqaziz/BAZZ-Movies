@@ -7,9 +7,9 @@ import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
-import com.waffiq.bazz_movies.core.movie.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.MediaStateUseCase
-import com.waffiq.bazz_movies.core.movie.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
