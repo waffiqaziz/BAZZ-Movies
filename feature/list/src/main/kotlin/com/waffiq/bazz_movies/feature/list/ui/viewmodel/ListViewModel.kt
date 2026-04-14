@@ -23,54 +23,54 @@ class ListViewModel @Inject constructor(
   fun getByGenre(mediaType: String, id: String) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListUseCase.getMovieByGenres(id)
+        getListUseCase.getMovieByGenres(id)
       } else {
-          getListUseCase.getTvByGenres(id)
+        getListUseCase.getTvByGenres(id)
       }
       ).cachedIn(viewModelScope)
 
   fun getByKeyword(mediaType: String, id: String) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListUseCase.getMovieByKeywords(id)
+        getListUseCase.getMovieByKeywords(id)
       } else {
-          getListUseCase.getTvByKeywords(id)
+        getListUseCase.getTvByKeywords(id)
       }
       ).cachedIn(viewModelScope)
 
   fun getNowPlaying(mediaType: String) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListMoviesUseCase.getPlayingNowMovies()
+        getListMoviesUseCase.getPlayingNowMovies()
       } else {
-          getListTvUseCase.getAiringTodayTv()
+        getListTvUseCase.getAiringTodayTv()
       }
       ).cachedIn(viewModelScope)
 
   fun getPopular(mediaType: String) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListMoviesUseCase.getPopularMovies()
+        getListMoviesUseCase.getPopularMovies()
       } else {
-          getListTvUseCase.getPopularTv()
+        getListTvUseCase.getPopularTv()
       }
       ).cachedIn(viewModelScope)
 
   fun getTopRated(mediaType: String) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListMoviesUseCase.getTopRatedMovies()
+        getListMoviesUseCase.getTopRatedMovies()
       } else {
-          getListTvUseCase.getTopRatedTv()
+        getListTvUseCase.getTopRatedTv()
       }
       ).cachedIn(viewModelScope)
 
   fun getRecommendation(mediaType: String, id: Int) =
     (
       if (mediaType == MOVIE_MEDIA_TYPE) {
-          getListMoviesUseCase.getMovieRecommendation(id)
+        getListMoviesUseCase.getMovieRecommendation(id)
       } else {
-          getListTvUseCase.getTvRecommendation(id)
+        getListTvUseCase.getTvRecommendation(id)
       }
       ).cachedIn(viewModelScope)
 

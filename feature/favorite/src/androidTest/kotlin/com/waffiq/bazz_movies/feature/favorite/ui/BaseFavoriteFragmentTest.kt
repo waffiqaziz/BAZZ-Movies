@@ -72,7 +72,7 @@ class BaseFavoriteFragmentTest :
   @Test
   fun loggedUser_failedFavorite_showButtonTryAgain() {
     mockUserModel.postValue(userModel)
-    every { getFavoriteMovieUseCase.getFavoriteMovies(any()) } returns
+    every { getFavoriteMovieUseCase.getFavoriteMovies() } returns
       flowOf(PagingData.from(listOf(testMediaItem)))
     launchFragment()
 

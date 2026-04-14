@@ -81,7 +81,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
     every { favoriteViewModel.snackBarAlready } returns mockSnackBarAlready
     every { favoriteViewModel.snackBarAdded } returns mockSnackBarAdded
 
-    every { favoriteViewModel.favoriteMovies(any()) } returns
+    every { favoriteViewModel.getFavoriteData("movie") } returns
       flowOf(
         PagingData.from(
           listOf(
@@ -91,7 +91,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
         )
       )
 
-    every { favoriteViewModel.favoriteTvSeries(any()) } returns
+    every { favoriteViewModel.getFavoriteData("tv") } returns
       flowOf(
         PagingData.from(
           listOf(

@@ -1,11 +1,13 @@
 package com.waffiq.bazz_movies.feature.favorite.ui.viewmodel
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
-import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.test.KotestInstantExecutorExtension
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
@@ -19,7 +21,6 @@ import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.fakeTvMediaIte
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeError
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeLoading
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.outcomeSuccess
-import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.user
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelFlow
 import com.waffiq.bazz_movies.feature.favorite.testutils.Helper.testViewModelLiveDataEvent
 import io.kotest.core.spec.style.BehaviorSpec
@@ -70,11 +71,11 @@ class FavoriteViewModelTest : BehaviorSpec({
 
   Given("fetching favorite movies") {
     When("the response is successful") {
-      coEvery { getFavoriteMovieUseCase.getFavoriteMovies(user.token) } returns
+      coEvery { getFavoriteMovieUseCase.getFavoriteMovies() } returns
         flowOf(fakeMovieMediaItemPagingData)
 
       Then("it should emit the favorite movies list") {
-        testPagingFlowCancelRemaining(viewModel.favoriteMovies(user.token)) {
+        testPagingFlowCancelRemaining(viewModel.getFavoriteData(MOVIE_MEDIA_TYPE)) {
           it[0].id shouldBe 1
           it[0].title shouldBe "Inception"
           it[0].overview shouldBe "A mind-bending thriller"
@@ -85,11 +86,11 @@ class FavoriteViewModelTest : BehaviorSpec({
 
   Given("fetching favorite TV shows") {
     When("the response is successful") {
-      coEvery { getFavoriteTvUseCase.getFavoriteTv(user.token) } returns
+      coEvery { getFavoriteTvUseCase.getFavoriteTv() } returns
         flowOf(fakeTvMediaItemPagingData)
 
       Then("it should emit the favorite TV shows list") {
-        testPagingFlowCancelRemaining(viewModel.favoriteTvSeries(user.token)) {
+        testPagingFlowCancelRemaining(viewModel.getFavoriteData(TV_MEDIA_TYPE)) {
           it[0].id shouldBe 1
           it[0].title shouldBe "Breaking Bad"
           it[0].overview shouldBe "A high school chemistry teacher turned methamphetamine producer"

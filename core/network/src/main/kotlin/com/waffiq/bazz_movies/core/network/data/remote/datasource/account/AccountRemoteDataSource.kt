@@ -20,24 +20,30 @@ class AccountRemoteDataSource @Inject constructor(
   @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : AccountRemoteDataSourceInterface {
 
-  override fun getFavoriteMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+  override fun getFavoriteMovies(
+    userId: Int,
+    sessionId: String,
+  ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      accountApiService.getFavoriteMovies(sessionId, page).results
+      accountApiService.getFavoriteMovies(userId, sessionId, page).results
     }.flow.flowOn(ioDispatcher)
 
-  override fun getFavoriteTv(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+  override fun getFavoriteTv(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      accountApiService.getFavoriteTv(sessionId, page).results
+      accountApiService.getFavoriteTv(userId, sessionId, page).results
     }.flow.flowOn(ioDispatcher)
 
-  override fun getWatchlistTv(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+  override fun getWatchlistTv(userId: Int, sessionId: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      accountApiService.getWatchlistTv(sessionId, page).results
+      accountApiService.getWatchlistTv(userId, sessionId, page).results
     }.flow.flowOn(ioDispatcher)
 
-  override fun getWatchlistMovies(sessionId: String): Flow<PagingData<MediaResponseItem>> =
+  override fun getWatchlistMovies(
+    userId: Int,
+    sessionId: String,
+  ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      accountApiService.getWatchlistMovies(sessionId, page).results
+      accountApiService.getWatchlistMovies(userId, sessionId, page).results
     }.flow.flowOn(ioDispatcher)
 
   override fun postFavorite(

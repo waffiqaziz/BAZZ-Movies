@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.core.utils.GeneralHelper
+import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.favorite.databinding.FragmentFavoriteChildBinding
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.GuestUserDelegate
 import com.waffiq.bazz_movies.feature.favorite.ui.delegate.LoggedUserDelegate
@@ -56,22 +56,18 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
 
   private fun setupRecyclerView() {
     binding.rvFavorite.apply {
-      layoutManager = GeneralHelper.initLinearLayoutManagerVertical(requireContext())
+      layoutManager = initLinearLayoutManagerVertical(requireContext())
       itemAnimator = DefaultItemAnimator()
     }
   }
 
   private fun observeUserState() {
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != Constants.NAN) {
-        setupLoggedUser(user.token)
-      } else {
-        setupGuestUser()
-      }
+      if (user.token != Constants.NAN) setupLoggedUser() else setupGuestUser()
     }
   }
 
-  private fun setupLoggedUser(token: String) {
+  private fun setupLoggedUser() {
     guestUserDelegate?.cleanup()
     guestUserDelegate = null
 
@@ -84,7 +80,7 @@ abstract class BaseFavoriteFragment<T : Any> : Fragment() {
       iSnackbar = iSnackbar,
       navigator = navigator,
     ).apply {
-      setup(token)
+      setup()
     }
   }
 

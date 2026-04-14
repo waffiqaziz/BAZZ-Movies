@@ -40,11 +40,14 @@ class FavoriteViewModel @Inject constructor(
   private val _snackBarAdded = Channel<SnackBarUserLoginData>(Channel.CONFLATED)
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
-  fun favoriteMovies(sesId: String): Flow<PagingData<MediaItem>> =
-    getFavoriteMovieUseCase.getFavoriteMovies(sesId).cachedIn(viewModelScope)
-
-  fun favoriteTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
-    getFavoriteTvUseCase.getFavoriteTv(sesId).cachedIn(viewModelScope)
+  fun getFavoriteData(mediaType: String): Flow<PagingData<MediaItem>> =
+    (
+      if (mediaType == MOVIE_MEDIA_TYPE) {
+        getFavoriteMovieUseCase.getFavoriteMovies()
+      } else {
+        getFavoriteTvUseCase.getFavoriteTv()
+      }
+      ).cachedIn(viewModelScope)
 
   fun postFavorite(data: FavoriteParams, title: String) {
     launchAndHandleOutcome(

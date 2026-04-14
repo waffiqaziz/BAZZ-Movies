@@ -40,11 +40,14 @@ class WatchlistViewModel @Inject constructor(
   val snackBarAdded = _snackBarAdded.receiveAsFlow()
 
   // region NETWORK
-  fun watchlistMovies(sesId: String): Flow<PagingData<MediaItem>> =
-    getWatchlistMovieUseCase.getWatchlistMovies(sesId).cachedIn(viewModelScope)
-
-  fun watchlistTvSeries(sesId: String): Flow<PagingData<MediaItem>> =
-    getWatchlistTvUseCase.getWatchlistTv(sesId).cachedIn(viewModelScope)
+  fun getWatchlistData(mediaType: String): Flow<PagingData<MediaItem>> =
+    (
+      if (mediaType == MOVIE_MEDIA_TYPE) {
+        getWatchlistMovieUseCase.getWatchlistMovies()
+      } else {
+        getWatchlistTvUseCase.getWatchlistTv()
+      }
+      ).cachedIn(viewModelScope)
 
   fun postFavorite(data: FavoriteParams, title: String) {
     launchAndHandleOutcome(

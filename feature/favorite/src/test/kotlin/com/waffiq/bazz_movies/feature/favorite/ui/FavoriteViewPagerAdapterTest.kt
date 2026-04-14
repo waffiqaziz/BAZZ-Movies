@@ -20,7 +20,7 @@ import org.robolectric.annotation.Config
 // https://github.com/kotest/kotest-extensions-robolectric
 
 // another workaround https://github.com/LeoColman/kotest-android/
-// but not support with latest Kotest 6.0.7 and one of contributor is dropped
+// but not support with Kotest 6.0.1 and above. Also one of contributor is dropped
 // https://github.com/LeoColman/kotest-android/issues/46#issuecomment-3442427020
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28])

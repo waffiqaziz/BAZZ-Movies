@@ -65,10 +65,10 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getFavoriteMovies_pagingSource_returnsExpectedData() = runTest {
     val pagingSource =
-      GenericPagingSource { mockAccountApiService.getFavoriteMovies("session_id", 1).results }
+      GenericPagingSource { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1).results }
     TestHelper.testPagingSource(
       mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump6)),
-      mockApiCall = { mockAccountApiService.getFavoriteMovies("session_id", 1) },
+      mockApiCall = { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) },
       loader = { pagingSource.toLoadResult() }
     ) { page ->
       TestCase.assertEquals(1, page.data.size)
@@ -78,10 +78,10 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getWatchlistMovies_pagingSource_returnsExpectedData() = runTest {
     val pagingSource =
-      GenericPagingSource { mockAccountApiService.getWatchlistMovies("session_id", 1).results }
+      GenericPagingSource { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1).results }
     TestHelper.testPagingSource(
       mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump2)),
-      mockApiCall = { mockAccountApiService.getWatchlistMovies("session_id", 1) },
+      mockApiCall = { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) },
       loader = { pagingSource.toLoadResult() }
     ) { page ->
       TestCase.assertEquals(1, page.data.size)
