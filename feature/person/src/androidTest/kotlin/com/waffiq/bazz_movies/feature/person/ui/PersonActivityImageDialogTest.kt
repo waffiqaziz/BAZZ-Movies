@@ -4,12 +4,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.clickItemAt
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performScrollTo
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
 import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog

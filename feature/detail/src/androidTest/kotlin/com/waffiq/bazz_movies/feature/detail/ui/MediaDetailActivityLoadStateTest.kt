@@ -8,10 +8,10 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performScrollTo
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performSwipeUp
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeUp
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_recommendation_header
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem

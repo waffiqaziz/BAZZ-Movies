@@ -4,12 +4,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.clickItemAt
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performScrollTo
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_justwatch
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_ads
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_buy

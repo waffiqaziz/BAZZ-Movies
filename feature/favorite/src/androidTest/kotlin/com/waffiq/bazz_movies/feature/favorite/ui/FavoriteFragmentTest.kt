@@ -9,11 +9,10 @@ import com.google.android.material.tabs.TabLayout
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performSwipeLeft
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performTextClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.favorite.R.id.tabs
 import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager

@@ -6,15 +6,11 @@ import androidx.paging.PagingData
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.viewpager2.widget.ViewPager2
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
@@ -26,14 +22,12 @@ import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.actionOnItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.scrollToPosition
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.actionOnItemAt
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.clickItemAt
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isTextVisible
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isVisible
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.R.id.rv_favorite
@@ -129,7 +123,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
     rv_favorite.isDisplayed()
     onIdle()
 
-    rv_favorite.clickItemAt(0)
+    rv_favorite.scrollToPosition(0)
     performSwipeAction(0, swipeLeft())
     performSwipeAction(1, swipeRight())
   }

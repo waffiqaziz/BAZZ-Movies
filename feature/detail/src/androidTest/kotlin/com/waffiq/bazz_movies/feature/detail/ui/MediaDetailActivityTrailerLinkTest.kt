@@ -5,9 +5,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.textIsDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.ib_play
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup

@@ -10,9 +10,9 @@ import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.viewpager2.widget.ViewPager2
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -106,7 +106,7 @@ class BaseFavoriteFragmentTest2 :
     }
 
     // Wait for ViewPager + debounce + paging load states
-    onView(isRoot()).perform(waitFor(800))
+    onView(isRoot()).perform(waitFor(1000))
 
     // Check empty view is displayed
     illustration_no_data_view.isDisplayed()

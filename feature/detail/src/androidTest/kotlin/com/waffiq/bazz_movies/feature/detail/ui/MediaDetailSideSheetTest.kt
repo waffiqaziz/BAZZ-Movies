@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.feature.detail.ui
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.intent.Intents
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.clickItemAt
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_sidebar
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_keywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaDetail

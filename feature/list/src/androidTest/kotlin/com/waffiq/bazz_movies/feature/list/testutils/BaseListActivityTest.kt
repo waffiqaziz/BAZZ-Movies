@@ -7,7 +7,7 @@ import androidx.test.core.app.ActivityScenario
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakePagingMediaItem
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity.Companion.EXTRA_LIST

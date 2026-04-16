@@ -24,16 +24,16 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasContentDescription
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isGone
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitForActivityToBeDestroyed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesHaveText
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.hasContentDescription
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isGone
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performScrollTo
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performSwipeDown
 import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
 import com.waffiq.bazz_movies.feature.person.R.id.btn_back
 import com.waffiq.bazz_movies.feature.person.R.id.btn_facebook
@@ -449,10 +449,11 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   }
 
   // helper action
-  private fun noBiography(){
+  private fun noBiography() {
     tv_biography.performScrollTo()
     tv_biography.doesHaveText(context.getString(no_biography))
   }
+
   private fun checkCollapseTitle(title: String?) {
     rv_photos.performScrollTo()
     onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
