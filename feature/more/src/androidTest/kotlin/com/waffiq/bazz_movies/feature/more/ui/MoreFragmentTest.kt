@@ -8,7 +8,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -16,10 +15,8 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.FAQ_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
@@ -32,6 +29,15 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isEnable
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotEnable
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performTextClick
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.textIsDisplayed
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -119,51 +125,51 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun buttonFaq_whenClicked_shouldOpenFaqLink() {
-    onView(withId(btn_faq)).perform(click())
+    btn_faq.performClick()
     checkIntentData(FAQ_LINK)
   }
 
   @Test
   fun buttonPrivacyPolicy_whenClicked_shouldOpenPrivacyPolicyLink() {
-    onView(withId(tv_privacy_policy)).perform(click())
+    tv_privacy_policy.performClick()
     checkIntentData(PRIVACY_POLICY_LINK)
   }
 
   @Test
   fun buttonTermsCondition_whenClicked_shouldOpenTermsConditionsLink() {
-    onView(withId(tv_terms_condition)).perform(click())
+    tv_terms_condition.performClick()
     checkIntentData(TERMS_CONDITIONS_LINK)
   }
 
   @Test
   fun buttonSuggestion_whenClicked_shouldOpenFormHelperLink() {
-    onView(withId(btn_suggestion)).perform(click())
+    btn_suggestion.performClick()
     checkIntentData(FORM_HELPER)
   }
 
   @Test
   fun buttonAboutUs_whenClicked_shouldNavigateToAboutActivity() {
-    onView(withId(btn_about_us)).perform(click())
+    btn_about_us.performClick()
     verify { mockNavigator.openAboutActivity(any()) }
   }
 
   @Test
   fun setData_whenUserPrefProvided_shouldDisplayUserInfo() {
-    onView(withId(tv_fullName)).check(matches(withText("Test Name")))
-    onView(withId(tv_username)).check(matches(withText("Test Username")))
+    tv_fullName.doesHaveText("Test Name")
+    tv_username.doesHaveText("Test Username")
   }
 
   @Test
   fun setData_whenUserPrefHasTmdbAvatar_shouldDisplayCorrectAvatar() {
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    img_avatar.isDisplayed()
   }
 
   @Test
   fun regionSetup_whenCountryCodeSet_shouldSetCountryPickerCorrectly() {
     mockRegionPref.postValue("AR")
-    onView(withText("AR")).check(matches(isDisplayed()))
+    "AR".isDisplayed()
     // verify country picker is set with the correct country
-    onView(withId(btn_country_picker)).check(matches(isDisplayed()))
+    btn_country_picker.isDisplayed()
   }
 
   @Test
@@ -196,10 +202,10 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun signOut_whenLoggedInUser_shouldShowLoggedInDialog() {
-    onView(withId(btn_signout)).perform(click())
+    btn_signout.performClick()
 
-    onView(withText(warning)).check(matches(isDisplayed()))
-    onView(withText(warning_signOut_logged_user)).check(matches(isDisplayed()))
+    warning.textIsDisplayed()
+    warning_signOut_logged_user.textIsDisplayed()
   }
 
   @Test
@@ -212,11 +218,11 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun signOutDialog_whenNoClicked_shouldDismissDialog() {
-    onView(withId(btn_signout)).perform(click())
-    onView(withText(no)).perform(click())
+    btn_signout.performClick()
+    no.performTextClick()
 
     // dialog should be dismissed, verify warning text is not displayed
-    onView(withText(warning)).check(doesNotExist())
+    warning.doesNotExist()
   }
 
   @Test
@@ -229,7 +235,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     performSignOutAction()
     mockUIState.emit(UIState.Loading)
 
-    onView(withId(progress_bar)).check(matches(isDisplayed()))
+    progress_bar.isDisplayed()
   }
 
   @Test
@@ -248,12 +254,12 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     advanceUntilIdle()
 
     onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
-    onView(withId(btn_signout)).check(matches(not(isEnabled())))
+    btn_signout.isNotEnable()
 
     mockUIState.emit(UIState.Error("Sign out failed"))
     advanceUntilIdle()
 
-    onView(withId(btn_signout)).check(matches(isEnabled()))
+    btn_signout.isEnable()
     onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
   }
 
@@ -265,7 +271,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     mockUIState.emit(UIState.Error("Database error"))
     shortDelay()
 
-    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+    progress_bar.isNotDisplayed()
     verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<String>()) }
   }
 
@@ -331,12 +337,12 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun progressBar_initialState_shouldBeHidden() {
-    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+    progress_bar.isNotDisplayed()
   }
 
   @Test
   fun btnCountryPicker_selectCountry_callsCorrectFunction() {
-    onView(withId(btn_country_picker)).check(matches(isDisplayed())).perform(click())
+    btn_country_picker.performClick()
     onView(isAssignableFrom(EditText::class.java))
       .inRoot(isDialog())
       .perform(typeText("Ind"), closeSoftKeyboard())
@@ -349,27 +355,22 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
-  fun signOutButton_initialState_shouldBeEnabled() {
-    onView(withId(progress_bar)).check(matches(isEnabled()))
-  }
-
-  @Test
   fun allButtons_shouldBeDisplayed() {
-    onView(withId(btn_faq)).check(matches(isDisplayed()))
-    onView(withId(tv_privacy_policy)).check(matches(isDisplayed()))
-    onView(withId(tv_terms_condition)).check(matches(isDisplayed()))
-    onView(withId(btn_suggestion)).check(matches(isDisplayed()))
-    onView(withId(btn_about_us)).check(matches(isDisplayed()))
-    onView(withId(btn_signout)).check(matches(isDisplayed()))
-    onView(withId(btn_region)).check(matches(isDisplayed()))
-    onView(withId(btn_country_picker)).check(matches(isDisplayed()))
+    btn_faq.isDisplayed()
+    tv_privacy_policy.isDisplayed()
+    tv_terms_condition.isDisplayed()
+    btn_suggestion.isDisplayed()
+    btn_about_us.isDisplayed()
+    btn_signout.isDisplayed()
+    btn_region.isDisplayed()
+    btn_country_picker.isDisplayed()
   }
 
   @Test
   fun userInfo_shouldBeDisplayed() {
-    onView(withId(tv_fullName)).check(matches(isDisplayed()))
-    onView(withId(tv_username)).check(matches(isDisplayed()))
-    onView(withId(img_avatar)).check(matches(isDisplayed()))
+    tv_fullName.isDisplayed()
+    tv_username.isDisplayed()
+    img_avatar.isDisplayed()
   }
 
   private fun checkIntentData(link: String) {
@@ -383,8 +384,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   private fun performSignOutAction() {
-    onView(withId(btn_signout)).perform(click())
-    onView(withText(yes)).perform(click())
+    btn_signout.performClick()
+    yes.performTextClick()
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {
@@ -392,6 +393,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
     shortDelay()
 
     onView(withId(img_avatar)).check(matches(viewMatcher))
-    onView(withId(tv_fullName)).check(matches(withText(userModel.name)))
+    tv_fullName.doesHaveText(userModel.name)
   }
 }

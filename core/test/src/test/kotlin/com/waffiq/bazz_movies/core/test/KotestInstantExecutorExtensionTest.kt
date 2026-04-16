@@ -1,7 +1,6 @@
 package com.waffiq.bazz_movies.core.test
 
 import androidx.arch.core.executor.ArchTaskExecutor
-import androidx.arch.core.executor.TaskExecutor
 import io.kotest.core.spec.style.FunSpec
 import org.junit.Assert.assertTrue
 

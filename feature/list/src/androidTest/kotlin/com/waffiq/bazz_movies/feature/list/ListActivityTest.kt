@@ -4,28 +4,24 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performSwipeDown
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_close
 import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
+import com.waffiq.bazz_movies.feature.list.R.id.collapse
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.list.R.id.loading_indicator
 import com.waffiq.bazz_movies.feature.list.R.id.rv_list
 import com.waffiq.bazz_movies.feature.list.testutils.BaseListActivityTest
 import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -71,9 +67,8 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun listActivity_withGenreType_showsCorrectViews() {
     context.launchListActivity {
-      onView(withId(R.id.collapse)).check(matches(isDisplayed()))
-      onView(withText("Science Fiction"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      collapse.isDisplayed()
+      "Science Fiction".isVisible()
       shouldShowMovie()
     }
     context.launchListActivity(tvGenreArgs) {
@@ -85,13 +80,11 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun listActivity_withKeywordsType_showsCorrectViews() {
     context.launchListActivity(movieKeywordsArgs) {
-      onView(withText("Post Apocalyptic"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      "Post Apocalyptic".isVisible()
       shouldShowMovie()
     }
     context.launchListActivity(tvKeywordsArgs) {
-      onView(withText("Post Apocalyptic"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      "Post Apocalyptic".isVisible()
       shouldShowTv()
     }
   }
@@ -119,12 +112,12 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun listActivity_withRecommendationType_showsCorrectViews() {
     context.launchListActivity(movieRecommendationArgs) {
-      shouldShowText(movieRecommendationArgs.title)
-      shouldShowText("Recommendation")
+      movieRecommendationArgs.title.isVisible()
+      "Recommendation".isVisible()
     }
     context.launchListActivity(tvRecommendationArgs) {
-      shouldShowText(tvRecommendationArgs.title)
-      shouldShowText("Recommendation")
+      tvRecommendationArgs.title.isVisible()
+      "Recommendation".isVisible()
     }
   }
 
@@ -156,16 +149,15 @@ class ListActivityTest : BaseListActivityTest() {
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial 
-      onView(withText("movie title")).check(doesNotExist())
+      "movie title".doesNotExist()
 
       // switch to linear layout
       triggerListButton()
-      onView(withText("movie title"))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+      "movie title".isVisible()
 
       // back to grid layout
-      onView(withId(btn_toggle_layout)).check(matches(isDisplayed())).perform(click())
-      onView(withText("movie title")).check(doesNotExist())
+      btn_toggle_layout.performClick()
+      "movie title".doesNotExist()
     }
   }
 
@@ -179,8 +171,8 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun swipeRefreshMovie_whenScroll_runsWithoutProblem() {
     context.launchListActivity {
-      onView(withId(rv_list)).perform(swipeDown())
-      onView(withId(rv_list)).perform(swipeDown())
+      rv_list.performSwipeDown()
+      rv_list.performSwipeDown()
     }
   }
 
@@ -219,7 +211,7 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun buttonClose_whenClicked_finishTheActivity() {
     context.launchListActivity { scenario ->
-      onView(withId(btn_close)).check(matches(isDisplayed())).perform(click())
+      btn_close.performClick()
 
       // check if the activity is finished
       scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -233,12 +225,9 @@ class ListActivityTest : BaseListActivityTest() {
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Loading)
       }
-      onView(withId(loading_indicator))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-      onView(withId(rv_list))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-      onView(withId(illustration_error))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+      loading_indicator.isDisplayed()
+      rv_list.isNotDisplayed()
+      illustration_error.isNotDisplayed()
     }
   }
 
@@ -248,10 +237,8 @@ class ListActivityTest : BaseListActivityTest() {
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Success(Unit))
       }
-      onView(withId(rv_list))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-      onView(withId(loading_indicator))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+      rv_list.isDisplayed()
+      loading_indicator.isNotDisplayed()
     }
   }
 
@@ -261,11 +248,9 @@ class ListActivityTest : BaseListActivityTest() {
       scenario.onActivity { activity ->
         activity.handleRefreshState(UIState.Error("Something went wrong"))
       }
-      onView(withId(illustration_error))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-      onView(withId(rv_list))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-      onView(withId(btn_try_again)).perform(click())
+      illustration_error.isDisplayed()
+      rv_list.isNotDisplayed()
+      btn_try_again.performClick()
     }
   }
 
@@ -277,6 +262,7 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   private fun triggerListButton() {
-    onView(withId(btn_toggle_layout)).check(matches(isDisplayed())).perform(click())
+    btn_toggle_layout.isDisplayed()
+    btn_toggle_layout.performClick()
   }
 }

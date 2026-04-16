@@ -2,11 +2,11 @@ package com.waffiq.bazz_movies.feature.favorite.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.domain.usecase.composite.CheckAndAddToWatchlistUseCase
@@ -77,6 +77,6 @@ class BaseFavoriteFragmentTest :
     launchFragment()
 
     waitUntilVisible(withText("Try Again"))
-    onView(withText("Try Again")).perform(click())
+    "Try Again".performClick()
   }
 }

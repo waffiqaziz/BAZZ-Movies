@@ -13,6 +13,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
@@ -65,8 +66,8 @@ object Helper {
     }
   }
 
-  fun shortDelay() {
-    onView(isRoot()).perform(waitFor(DELAY_TIME_UI))
+  fun shortDelay(delay: Long = DELAY_TIME_UI) {
+    onView(isRoot()).perform(waitFor(delay))
   }
 
   fun waitUntilVisible(matcher: Matcher<View>, timeoutMs: Long = 5000) {
@@ -103,4 +104,23 @@ object Helper {
       override fun matchesSafely(editText: EditText): Boolean =
         editText.error?.toString() == expectedError
     }
+
+  private fun withoutError(): Matcher<View> =
+    object : BoundedMatcher<View, EditText>(EditText::class.java) {
+      override fun describeTo(description: Description) {
+        description.appendText("without error text")
+      }
+
+      override fun matchesSafely(editText: EditText): Boolean = editText.error == null
+    }
+
+  fun Int.hasErrorText(text: String) {
+    onView(withId(this))
+      .check(matches(withErrorText(text)))
+  }
+
+  fun Int.hasNoError() {
+    onView(withId(this))
+      .check(matches(withoutError()))
+  }
 }

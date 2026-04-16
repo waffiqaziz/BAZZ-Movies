@@ -2,15 +2,12 @@ package com.waffiq.bazz_movies.feature.detail.ui
 
 import android.content.ActivityNotFoundException
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.YOUTUBE_LINK_VIDEO
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.textIsDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.ib_play
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
@@ -25,7 +22,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.update
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -79,13 +75,13 @@ class MediaDetailActivityTrailerLinkTest :
   fun trailerLink_withMixedValue_showsTrailerCorrectly() {
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(videoLink = null) }
-      onView(withId(ib_play)).check(matches(not(isDisplayed())))
+      ib_play.isNotDisplayed()
       uiState.update { s -> s.copy(videoLink = "") }
-      onView(withId(ib_play)).check(matches(not(isDisplayed())))
+      ib_play.isNotDisplayed()
       uiState.update { s -> s.copy(videoLink = " ") }
-      onView(withId(ib_play)).check(matches(not(isDisplayed())))
+      ib_play.isNotDisplayed()
       uiState.update { s -> s.copy(videoLink = "OIuG1bBkfs0") }
-      onView(withId(ib_play)).check(matches(isDisplayed())).perform(click())
+      ib_play.performClick()
       checkIntentData("${YOUTUBE_LINK_VIDEO}OIuG1bBkfs0")
     }
   }
@@ -103,8 +99,8 @@ class MediaDetailActivityTrailerLinkTest :
       }
 
       uiState.update { s -> s.copy(videoLink = "test_video_id") }
-      onView(withId(ib_play)).perform(click())
-      onView(withText(yt_not_installed)).check(matches(isDisplayed()))
+      ib_play.performClick()
+      yt_not_installed.textIsDisplayed()
 
       verify { mockTrailerLauncher.launch(any(), "test_video_id") }
     }

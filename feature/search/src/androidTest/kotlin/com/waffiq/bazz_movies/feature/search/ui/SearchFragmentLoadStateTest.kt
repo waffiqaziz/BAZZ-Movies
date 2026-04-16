@@ -4,12 +4,10 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -27,7 +25,6 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.flowOf
-import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -75,10 +72,10 @@ class SearchFragmentLoadStateTest {
     }
     shortDelay()
 
-    onView(withId(illustration_error)).check(matches(isDisplayed()))
-    onView(withId(illustration_search_view)).check(matches(not(isDisplayed())))
-    onView(withId(rv_search)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_no_result_view)).check(matches(not(isDisplayed())))
+    illustration_error.isDisplayed()
+    illustration_search_view.isNotDisplayed()
+    rv_search.isNotDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
@@ -92,10 +89,10 @@ class SearchFragmentLoadStateTest {
     }
     shortDelay()
 
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_view)).check(matches(not(isDisplayed())))
-    onView(withId(rv_search)).check(matches(isDisplayed()))
-    onView(withId(illustration_search_no_result_view)).check(matches(not(isDisplayed())))
+    illustration_error.isNotDisplayed()
+    illustration_search_view.isNotDisplayed()
+    rv_search.isDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
@@ -113,10 +110,10 @@ class SearchFragmentLoadStateTest {
     }
     shortDelay()
 
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_view)).check(matches(not(isDisplayed())))
-    onView(withId(rv_search)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_no_result_view)).check(matches(isDisplayed()))
+    illustration_error.isNotDisplayed()
+    illustration_search_view.isNotDisplayed()
+    rv_search.isNotDisplayed()
+    illustration_search_no_result_view.isDisplayed()
   }
 
   @Test
@@ -132,10 +129,10 @@ class SearchFragmentLoadStateTest {
     }
     shortDelay()
 
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_view)).check(matches(isDisplayed()))
-    onView(withId(rv_search)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_no_result_view)).check(matches(not(isDisplayed())))
+    illustration_error.isNotDisplayed()
+    illustration_search_view.isDisplayed()
+    rv_search.isNotDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
@@ -177,10 +174,10 @@ class SearchFragmentLoadStateTest {
     }
     shortDelay()
 
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
-    onView(withId(rv_search)).check(matches(isDisplayed()))
-    onView(withId(illustration_search_view)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_no_result_view)).check(matches(not(isDisplayed())))
+    illustration_error.isNotDisplayed()
+    rv_search.isDisplayed()
+    illustration_search_view.isNotDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 
   private fun setupCombinedLoadStates(states: LoadState): CombinedLoadStates {

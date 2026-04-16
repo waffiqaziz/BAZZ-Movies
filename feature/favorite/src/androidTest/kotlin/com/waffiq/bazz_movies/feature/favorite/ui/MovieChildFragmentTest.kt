@@ -4,12 +4,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getString
 import androidx.test.espresso.Espresso.onIdle
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R.id.snackbar_text
@@ -24,6 +20,7 @@ import com.waffiq.bazz_movies.core.domain.FavoriteParams
 import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesHaveText
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test
@@ -128,7 +125,7 @@ class MovieChildFragmentTest :
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
-    onView(withId(snackbar_text)).check(matches(withText("Title $snackbarText")))
+    snackbar_text.doesHaveText("Title $snackbarText")
     performUndoAction()
   }
 
@@ -153,7 +150,7 @@ class MovieChildFragmentTest :
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
-    onView(withId(snackbar_text)).check(matches(withText("Title $snackbarText")))
+    snackbar_text.doesHaveText("Title $snackbarText")
     performUndoAction()
   }
 
@@ -176,7 +173,7 @@ class MovieChildFragmentTest :
     performSwipeAction(1, swipeRight())
 
     mockSnackBarChannel.send(failedDate)
-    onView(withId(snackbar_text)).check(matches(withText(failedDate.title)))
+    snackbar_text.doesHaveText(failedDate.title)
     onIdle()
   }
 
@@ -222,7 +219,7 @@ class MovieChildFragmentTest :
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
-    onView(withId(snackbar_text)).check(matches(withText("${data.title} $snackbarText")))
+    snackbar_text.doesHaveText("${data.title} $snackbarText")
     performUndoAction()
 
     // swipe right delete data not in watchlist
@@ -248,7 +245,7 @@ class MovieChildFragmentTest :
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), already_watchlist)
-    onView(withId(snackbar_text)).check(matches(withText("${data.title} $snackbarText")))
+    snackbar_text.doesHaveText("${data.title} $snackbarText")
     onIdle()
   }
 
@@ -267,7 +264,7 @@ class MovieChildFragmentTest :
     onIdle()
 
     val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
-    onView(withId(snackbar_text)).check(matches(withText("${data.title} $snackbarText")))
+    snackbar_text.doesHaveText("${data.title} $snackbarText")
     performUndoAction()
   }
 

@@ -2,19 +2,18 @@ package com.waffiq.bazz_movies.feature.favorite.ui
 
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeLeft
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasChildCount
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performSwipeLeft
+import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.performTextClick
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.favorite.R.id.tabs
 import com.waffiq.bazz_movies.feature.favorite.R.id.view_pager
@@ -51,51 +50,49 @@ class FavoriteFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFragme
 
   @Test
   fun fragment_whenCreated_shouldDisplayCorrectly() {
-    onView(withId(view_pager)).check(matches(isDisplayed()))
-    onView(withId(tabs)).check(matches(isDisplayed()))
+    view_pager.isDisplayed()
+    tabs.isDisplayed()
   }
 
   @Test
   fun tabLayout_whenCreated_shouldHaveCorrectNumberOfTabs() {
-    onView(withId(tabs)).check(matches(hasChildCount(1))) // 0-based index, so 1 means 2 tabs
+    onView(withId(tabs)).check { view, _ ->
+      val tabLayout = view as TabLayout
+      assertThat(tabLayout.tabCount).isEqualTo(2)
+    }
   }
 
   @Test
   fun viewPager_whenCreated_shouldHaveSwipeDisabled() {
     // Verify that ViewPager swiping is disabled by checking the property directly
-    onView(withId(view_pager)).check { view, _ ->
-      val viewPager = view as ViewPager2
-      assertThat(viewPager.isUserInputEnabled).isFalse()
-    }
+    view_pager.assertViewPagerUserInputEnabled(false)
 
     // Test current item doesn't change after swipe attempt
-    onView(withId(view_pager)).perform(swipeLeft()).check { view, _ ->
-      val viewPager = view as ViewPager2
-      assertThat(viewPager.currentItem).isEqualTo(0) // should still be at position 0
-    }
+    view_pager.performSwipeLeft()
+    view_pager.assertViewPagerPosition(0) // should still be at position 0
   }
 
   @Test
   fun tabTvSeries_whenClicked_showsTvSeriesTab() {
     onIdle()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
   }
 
   @Test
   fun tabMovie_whenClicked_showsMoviesTab() {
     onIdle()
-    onView(withText(movies)).perform(click())
+    movies.performTextClick()
   }
 
   @Test
   fun viewPager_whenCreated_shouldContainTwoFragments() {
-    onView(withId(view_pager)).check(matches(hasChildCount(1))) // 0-based index, so 1 means 2 fragments
+    view_pager.assertViewPagerItemCount(2)
   }
 
   @Test
   fun tabLayoutMediator_whenClickSpecificTabs_shouldBeAttachedOnViewCreated() {
     shortDelay()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     onView(withId(view_pager)).check { view, _ ->
       val viewPager = view as ViewPager2
       assertThat(viewPager.currentItem).isEqualTo(1)

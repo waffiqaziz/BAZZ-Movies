@@ -30,15 +30,8 @@ dependencies {
 
   androidTestImplementation(libs.androidx.core.testing)
   androidTestImplementation(libs.androidx.datastore.preferences)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.contrib)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
   androidTestImplementation(libs.truth)
-
-//  androidTestImplementation(libs.kotest.property)
-//  androidTestImplementation(libs.kotest.runner.junit5)
-//  androidTestImplementation(libs.kotest.kotest.assertions.core)
-//  androidTestImplementation(libs.kotest.framework.concurrency)
 }
