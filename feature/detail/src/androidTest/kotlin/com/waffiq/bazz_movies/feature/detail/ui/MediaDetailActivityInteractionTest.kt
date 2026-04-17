@@ -1,23 +1,21 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.action.ViewActions.swipeLeft
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.cancel
 import com.waffiq.bazz_movies.core.designsystem.R.string.submit
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotHaveText
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
@@ -49,7 +47,6 @@ import io.mockk.verify
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -114,8 +111,8 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun button_whenClicked_showsToast() {
     context.launchMediaDetailActivity {
-      onView(withId(btn_favorite)).check(matches(isDisplayed())).perform(click())
-      onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
+      btn_favorite.performClick()
+      btn_watchlist.performClick()
     }
   }
 
@@ -129,7 +126,7 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun buttonBack_whenClicked_finishTheActivity() {
     context.launchMediaDetailActivity { scenario ->
-      onView(withId(btn_back)).check(matches(isDisplayed())).perform(click())
+      btn_back.performClick()
 
       // check if the activity is finished
       scenario.moveToState(Lifecycle.State.DESTROYED)
@@ -142,15 +139,15 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity {
       // set token and region to simulate user logged in
       setupLoginUser()
-      onView(withId(iv_poster)).perform(swipeDown())
+      iv_poster.performSwipeDown()
 
       // token is not set, so it should not crash
       token.postValue(NAN)
-      onView(withId(iv_poster)).perform(swipeDown())
+      iv_poster.performSwipeDown()
 
       // set token to empty string, should not crash
       token.postValue("")
-      onView(withId(iv_poster)).perform(swipeDown())
+      iv_poster.performSwipeDown()
     }
   }
 
@@ -159,7 +156,7 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity(
       data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
     ) {
-      onView(withId(iv_poster)).perform(swipeDown())
+      iv_poster.performSwipeDown()
     }
   }
 
@@ -168,7 +165,7 @@ class MediaDetailActivityInteractionTest :
     context.launchMediaDetailActivity(
       data = testMediaItem.copy(mediaType = "NAN")
     ) {
-      onView(withId(iv_poster)).perform(swipeDown())
+      iv_poster.performSwipeDown()
     }
   }
 
@@ -179,15 +176,15 @@ class MediaDetailActivityInteractionTest :
 
       // submit rating without selecting any rating
       performScoreClick()
-      onView(withText(submit)).perform(click())
+      submit.performTextClick()
 
       // press cancel button
       performScoreClick()
-      onView(withText(cancel)).perform(click())
+      cancel.performTextClick()
 
       performScoreClick()
-      onView(withId(rating_bar_action)).perform(SetRatingAction(3.5f))
-      onView(withText(submit)).perform(click())
+      rating_bar_action.performAction(SetRatingAction(3.5f))
+      submit.performTextClick()
     }
   }
 
@@ -202,16 +199,14 @@ class MediaDetailActivityInteractionTest :
       submitRating()
 
       // shows user rating correctly
-      onView(withId(tv_score_your_score)).check(matches(withText("7.0")))
+      tv_score_your_score.doesHaveText("7.0")
     }
   }
 
   @Test
   fun listOfGenre_whenClicked_triggersOpenDetailPage() {
     context.launchMediaDetailActivity {
-      onView(withId(rv_genre)).perform(
-        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
-      )
+      rv_genre.clickItemAt(0)
     }
 
     verify {
@@ -238,7 +233,7 @@ class MediaDetailActivityInteractionTest :
 
       submitRating()
 
-      onView(withId(tv_score_your_score)).check(matches(not(withText("10.0"))))
+      tv_score_your_score.doesNotHaveText("10.0")
     }
   }
 
@@ -374,30 +369,30 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun buttonMoreRecommendation_whenClicked_shouldOpenListPage() {
     context.launchMediaDetailActivity {
-      onView(withId(rv_recommendation)).perform(scrollTo())
-      onView(withId(btn_more_recommendation)).check(matches(isDisplayed())).perform(click())
+      rv_recommendation.performScrollTo()
+      btn_more_recommendation.performClick()
 
       verify(exactly = 1) { mockNavigator.openList(any(), any()) }
     }
   }
 
   private fun performClickButtonFavorite() {
-    onView(withId(btn_favorite)).check(matches(isDisplayed())).perform(click())
+    btn_favorite.performClick()
   }
 
   private fun performClickButtonWatchlist() {
-    onView(withId(btn_watchlist)).check(matches(isDisplayed())).perform(click())
+    btn_watchlist.performClick()
   }
 
   private fun performScoreClick() {
-    onView(withId(score_scrollview)).perform(swipeLeft())
-    onView(withId(your_score_viewGroup)).perform(click())
+    score_scrollview.performSwipeLeft()
+    your_score_viewGroup.performClick()
   }
 
   private fun submitRating() {
     performScoreClick()
-    onView(withId(rating_bar_action)).perform(SetRatingAction(5f))
-    onView(withText(submit)).perform(click())
+    rating_bar_action.performAction(SetRatingAction(5f))
+    submit.performTextClick()
   }
 
   private fun setupLoginUser() {

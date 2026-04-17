@@ -5,12 +5,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.doesNotExist
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.hasText
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.ViewMatcher.isNotDisplayed
 import com.waffiq.bazz_movies.core.designsystem.R.string.add_to_favorite
+import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
@@ -143,27 +143,27 @@ class MediaDetailActivityTest :
     // status
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
-      tv_duration.hasText(context.getString(not_available))
+      tv_duration.doesHaveText(context.getString(not_available))
     }
 
     context.launchMediaDetailActivity(testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
-      tv_duration.hasText(context.getString(not_available))
+      tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // movie duration null
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(duration = null)) }
-      tv_duration.hasText(context.getString(not_available))
+      tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // tv status null or empty
     context.launchMediaDetailActivity(data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)) {
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = null)) }
-      tv_duration.hasText(context.getString(not_available))
+      tv_duration.doesHaveText(context.getString(not_available))
 
       uiState.update { s -> s.copy(detail = testMediaDetail.copy(status = "")) }
-      tv_duration.hasText(context.getString(not_available))
+      tv_duration.doesHaveText(context.getString(not_available))
     }
 
     // tmdb score hidden

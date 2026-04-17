@@ -3,20 +3,16 @@ package com.waffiq.bazz_movies.feature.favorite.testutils
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.action.ViewActions.swipeRight
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.viewpager2.widget.ViewPager2
+import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Event
@@ -26,6 +22,11 @@ import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.actionOnItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.scrollToPosition
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -119,11 +120,10 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   }
 
   override fun performSwipeActions() {
-    onView(withId(rv_favorite)).check(matches(isDisplayed()))
+    rv_favorite.isDisplayed()
     onIdle()
 
-    onView(withId(rv_favorite))
-      .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
+    rv_favorite.scrollToPosition(0)
     performSwipeAction(0, swipeLeft())
     performSwipeAction(1, swipeRight())
   }
@@ -134,14 +134,34 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   }
 
   override fun performUndoAction() {
-    onView(withText(undo)).check(matches(isDisplayed())).perform(click())
+    undo.isTextVisible() // check if "undo" text is visible inside snackbar
+    undo.performTextClick()
     shortDelay()
     onIdle()
   }
 
   override fun performSwipeAction(position: Int, viewAction: ViewAction) {
-    onView(withId(rv_favorite)).perform(
-      RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, viewAction)
-    )
+    rv_favorite.actionOnItemAt(position, viewAction)
+  }
+
+  override fun Int.assertViewPagerPosition(expected: Int) {
+    onView(withId(this)).check { view, _ ->
+      val vp = view as ViewPager2
+      assertThat(vp.currentItem).isEqualTo(expected)
+    }
+  }
+
+  override fun Int.assertViewPagerUserInputEnabled(expected: Boolean) {
+    onView(withId(this)).check { view, _ ->
+      val vp = view as ViewPager2
+      assertThat(vp.isUserInputEnabled).isEqualTo(expected)
+    }
+  }
+
+  override fun Int.assertViewPagerItemCount(expected: Int) {
+    onView(withId(this)).check { view, _ ->
+      val vp = view as ViewPager2
+      assertThat(vp.adapter?.itemCount).isEqualTo(expected)
+    }
   }
 }

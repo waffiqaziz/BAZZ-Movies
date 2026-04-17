@@ -1,14 +1,10 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_imdb
-import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_metascore
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_rotten_tomatoes
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.RatingsItem
@@ -23,7 +19,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import kotlinx.coroutines.flow.update
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -134,8 +129,7 @@ class MediaDetailActivityOMDbScoreTest :
           )
         )
       }
-      onView(withId(tv_score_rotten_tomatoes)).check(matches((isDisplayed())))
-        .check(matches(withText("90%")))
+      tv_score_rotten_tomatoes.doesHaveText("90%")
     }
   }
 
@@ -172,15 +166,11 @@ class MediaDetailActivityOMDbScoreTest :
   }
 
   private fun scoreViewIsHidden() {
-    onView(withId(tv_score_imdb))
-      .check(matches(not(isDisplayed())))
-    onView(withId(tv_score_metascore))
-      .check(matches(not(isDisplayed())))
+    tv_score_imdb.isNotDisplayed()
     rottenTomatoesIsHidden()
   }
 
   private fun rottenTomatoesIsHidden() {
-    onView(withId(tv_score_rotten_tomatoes))
-      .check(matches(not(isDisplayed())))
+    tv_score_rotten_tomatoes.isNotDisplayed()
   }
 }

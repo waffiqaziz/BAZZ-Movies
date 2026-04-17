@@ -42,6 +42,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         add("testImplementation", project(":core:test"))
 
         add("androidTestImplementation", kotlin("test"))
+        add("androidTestImplementation", libs.findLibrary("androidx.espresso.intents").get())
         add("androidTestImplementation", project(":core:instrumentationtest"))
       }
     }

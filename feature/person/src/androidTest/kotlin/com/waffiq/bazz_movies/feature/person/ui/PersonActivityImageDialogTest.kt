@@ -1,18 +1,14 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.person.R.id.btn_close_dialog
 import com.waffiq.bazz_movies.feature.person.R.id.rv_photos
@@ -33,7 +29,8 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonActivityTestHelper() {
+class PersonActivityImageDialogTest :
+  PersonActivityTestHelper by DefaultPersonActivityTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -87,11 +84,11 @@ class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonA
       performClickListPhotos(0)
 
       // close dialog
-      onView(withId(btn_close_dialog)).perform(click())
+      btn_close_dialog.performClick()
       shortDelay()
 
       // verify dialog is dismissed
-      onView(withId(view_pager_dialog)).check(doesNotExist())
+      view_pager_dialog.doesNotExist()
     }
   }
 
@@ -123,7 +120,7 @@ class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonA
       shortDelay()
 
       // expected dialog is dismissed
-      onView(withId(view_pager_dialog)).check(doesNotExist())
+      view_pager_dialog.doesNotExist()
     }
   }
 
@@ -131,13 +128,12 @@ class PersonActivityImageDialogTest : PersonActivityTestHelper by DefaultPersonA
     // delay before perform action
     shortDelay()
 
-    onView(withId(rv_photos)).perform(scrollTo())
-    onView(withId(rv_photos))
-      .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+    rv_photos.performScrollTo()
+    rv_photos.clickItemAt(position)
     shortDelay()
 
     // verify dialog and close button is visible
-    onView(withId(view_pager_dialog)).check(matches(isDisplayed()))
-    onView(withId(btn_close_dialog)).check(matches(isDisplayed()))
+    view_pager_dialog.isDisplayed()
+    btn_close_dialog.isDisplayed()
   }
 }

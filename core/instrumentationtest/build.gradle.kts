@@ -11,6 +11,7 @@ dependencies {
   implementation(libs.androidx.appcompat)
   implementation(libs.hilt.test)
   implementation(libs.androidx.espresso.core)
+  implementation(libs.androidx.espresso.contrib)
   implementation(libs.androidx.test.core)
   implementation(libs.androidx.test.runner)
 }

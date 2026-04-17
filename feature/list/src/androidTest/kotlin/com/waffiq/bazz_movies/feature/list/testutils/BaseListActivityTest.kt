@@ -4,14 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakePagingMediaItem
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity.Companion.EXTRA_LIST
@@ -116,15 +112,10 @@ open class BaseListActivityTest {
   }
 
   protected fun shouldShowTv() {
-    shouldShowText("TV")
+    "TV".isVisible()
   }
 
   protected fun shouldShowMovie() {
-    shouldShowText("MOVIE")
-  }
-
-  protected fun shouldShowText(text: String) {
-    onView(withText(text))
-      .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+    "MOVIE".isVisible()
   }
 }

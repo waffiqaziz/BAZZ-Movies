@@ -33,9 +33,6 @@ dependencies {
   testImplementation(libs.truth)
   testImplementation(libs.turbine)
 
-  androidTestImplementation(libs.androidx.espresso.contrib)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.espresso.intents)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)
 }

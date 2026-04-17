@@ -8,21 +8,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.action.ViewActions.swipeDown
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
@@ -31,6 +24,14 @@ import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasContentDescription
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isGone
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitForActivityToBeDestroyed
 import com.waffiq.bazz_movies.feature.person.R.id.background_dim_person
@@ -129,15 +130,16 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       }
       shortDelay()
 
-      onView(withId(iv_picture)).check(matches(withContentDescription("with_profile")))
-      onView(withId(collapse)).check(matches(isDisplayed()))
-      onView(withId(tv_biography)).check(matches(withText(testDetailPerson.biography)))
-      onView(withId(rv_known_for)).check(matches(isDisplayed()))
+      iv_picture.hasContentDescription("with_profile")
+      collapse.isDisplayed()
+      tv_biography.performScrollTo()
+      tv_biography.doesHaveText(testDetailPerson.biography ?: "")
+      rv_known_for.isDisplayed()
 
-      onView(withId(tv_born)).perform(scrollTo())
-      onView(withId(tv_born)).check(matches(isDisplayed()))
-      onView(withId(tv_death)).check(matches(not(isDisplayed())))
-      onView(withId(rv_photos)).check(matches(isDisplayed()))
+      rv_photos.performScrollTo()
+      tv_born.isDisplayed()
+      tv_death.isNotDisplayed()
+      rv_photos.isDisplayed()
 
       verify { mockPersonViewModel.getDetailPerson(testExternalIDPerson.id!!) }
       verify { mockPersonViewModel.getKnownFor(testExternalIDPerson.id!!) }
@@ -174,7 +176,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       }
       shortDelay()
 
-      onView(withId(btn_back)).perform(click())
+      btn_back.performClick()
       scenario.waitForActivityToBeDestroyed()
     }
 
@@ -232,15 +234,15 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
     context.launchPersonActivity {
       loadingStateLiveData.postValue(true)
 
-      onView(withId(progress_bar)).check(matches(isDisplayed()))
-      onView(withId(background_dim_person)).check(matches(isDisplayed()))
+      progress_bar.isDisplayed()
+      background_dim_person.isDisplayed()
 
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         loadingStateLiveData.postValue(false)
       }
 
-      onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-      onView(withId(background_dim_person)).check(matches(not(isDisplayed())))
+      progress_bar.isNotDisplayed()
+      background_dim_person.isNotDisplayed()
     }
   }
 
@@ -253,14 +255,14 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
         errorStateLiveData.postValue(Event(errorMessage))
       }
 
-      onView(withText(errorMessage)).check(matches(isDisplayed()))
+      errorMessage.isDisplayed()
     }
   }
 
   @Test
   fun buttonBack_whenPressed_closesPersonActivity() = runTest {
     context.launchPersonActivity { scenario ->
-      onView(withId(btn_back)).perform(click())
+      btn_back.performClick()
 
       scenario.moveToState(Lifecycle.State.DESTROYED)
       assertEquals(Lifecycle.State.DESTROYED, scenario.state)
@@ -270,22 +272,22 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   @Test
   fun photoProfile_whenNull_showsNoProfile() = runTest {
     context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
-      onView(withId(iv_picture)).check(matches(withContentDescription("no_profile")))
+      iv_picture.hasContentDescription("no_profile")
     }
   }
 
   @Test
   fun photoProfile_whenEmpty_showsNoProfile() = runTest {
     context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
-      onView(withId(iv_picture)).check(matches(withContentDescription("no_profile")))
+      iv_picture.hasContentDescription("no_profile")
     }
   }
 
   @Test
   fun swipeRefresh_whenScroll_runsCorrectly() = runTest {
     context.launchPersonActivity {
-      onView(withId(rv_known_for)).perform(scrollTo())
-      onView(withId(rv_known_for)).perform(swipeDown())
+      rv_known_for.performScrollTo()
+      rv_known_for.performSwipeDown()
       onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
     }
   }
@@ -303,9 +305,9 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       }
       shortDelay()
 
-      onView(withId(rv_photos)).perform(scrollTo())
+      rv_photos.performScrollTo()
       checkHomePageLink(isDisplayed())
-      onView(withId(btn_link)).perform(click())
+      btn_link.performClick()
 
       intended(
         allOf(
@@ -344,10 +346,10 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         externalIdPersonLiveData.postValue(testExternalIds)
       }
-      onView(withId(view_group_social_media)).check(matches(isDisplayed()))
-      onView(withId(btn_instagram)).check(matches(isDisplayed()))
-      onView(withId(btn_x)).check(matches(isDisplayed()))
-      onView(withId(btn_facebook)).check(matches(isDisplayed()))
+      view_group_social_media.isDisplayed()
+      btn_instagram.isDisplayed()
+      btn_x.isDisplayed()
+      btn_facebook.isDisplayed()
     }
   }
 
@@ -366,8 +368,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
         externalIdPersonLiveData.postValue(testExternalIds)
       }
 
-      onView(withId(view_group_social_media))
-        .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+      view_group_social_media.isGone()
     }
   }
 
@@ -378,7 +379,8 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
     context.launchPersonActivity {
       verify { any<Context>().formatBirthInfo(any(), any(), any()) }
-      onView(withId(tv_born)).check(matches(withText(context.getString(no_data))))
+      tv_born.performScrollTo()
+      tv_born.doesHaveText(context.getString(no_data))
     }
 
     unmockkObject(PersonPageHelper)
@@ -390,7 +392,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         detailPersonLiveData.postValue(testDetailPerson.copy(deathday = "2023-01-01"))
       }
-      onView(withId(tv_death)).perform(scrollTo())
+      tv_death.performScrollTo()
       checkDeathInfo(isDisplayed())
     }
   }
@@ -421,8 +423,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         detailPersonLiveData.postValue(testDetailPerson.copy(biography = ""))
       }
-      onView(withId(tv_biography))
-        .check(matches(withText(context.getString(no_biography))))
+      noBiography()
     }
   }
 
@@ -432,8 +433,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         detailPersonLiveData.postValue(testDetailPerson.copy(biography = null))
       }
-      onView(withId(tv_biography))
-        .check(matches(withText(context.getString(no_biography))))
+      noBiography()
     }
   }
 
@@ -444,19 +444,24 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
     }
 
     ActivityScenario.launch<PersonActivity>(intent).use { _ ->
-      onView(withId(iv_picture)).check(matches(isDisplayed()))
+      iv_picture.isDisplayed()
     }
   }
 
   // helper action
+  private fun noBiography() {
+    tv_biography.performScrollTo()
+    tv_biography.doesHaveText(context.getString(no_biography))
+  }
+
   private fun checkCollapseTitle(title: String?) {
-    onView(withId(rv_photos)).perform(scrollTo())
+    rv_photos.performScrollTo()
     onView(isAssignableFrom(CollapsingToolbarLayout::class.java))
       .check(matches(withCollapsingToolbarTitle(title)))
   }
 
   private fun checkDeathInfo(viewMatcher: Matcher<View>) {
-    onView(withId(rv_known_for)).perform(scrollTo())
+    rv_known_for.performScrollTo()
     onView(withId(tv_death)).check(matches(viewMatcher))
     onView(withId(tv_dead_header)).check(matches(viewMatcher))
   }

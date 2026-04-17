@@ -1,17 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_sidebar
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_keywords
@@ -80,29 +75,27 @@ class MediaDetailSideSheetTest :
   @Test
   fun sideSheet_whenPressBackButton_closeTheDialog() {
     context.launchMediaDetailActivity {
-      onView(withId(btn_sidebar)).perform(click())
+      btn_sidebar.performClick()
 
       // check some ui is shown correctly
-      onView(withText("name")).check(matches(isDisplayed()))
-      onView(withText("animation")).check(matches(isDisplayed()))
-      onView(withText("action")).check(doesNotExist())
+      "name".isDisplayed()
+      "animation".isDisplayed()
+      "action".doesNotExist()
 
       // perform close dialog
       pressBack()
       shortDelay()
 
       // check that animation not exist
-      onView(withText("animation")).check(doesNotExist())
+      "animation".doesNotExist()
     }
   }
 
   @Test
   fun sideSheet_whenKeywordClicked_openListPage() {
     context.launchMediaDetailActivity {
-      onView(withId(btn_sidebar)).perform(click())
-      onView(withId(rv_keywords)).perform(
-        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
-      )
+      btn_sidebar.performClick()
+      rv_keywords.clickItemAt(0)
 
       verify {
         mockNavigator.openList(
@@ -121,10 +114,8 @@ class MediaDetailSideSheetTest :
   @Test
   fun sideSheet_whenNullKeywords_doesnShowsTheKeywords() {
     context.launchMediaDetailActivity {
-      onView(withId(btn_sidebar)).perform(click())
-      onView(withId(rv_keywords)).perform(
-        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
-      )
+      btn_sidebar.performClick()
+      rv_keywords.clickItemAt(0)
 
       verify {
         mockNavigator.openList(

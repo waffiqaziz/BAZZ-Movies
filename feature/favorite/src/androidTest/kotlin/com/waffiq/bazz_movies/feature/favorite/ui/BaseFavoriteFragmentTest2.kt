@@ -6,14 +6,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.viewpager2.widget.ViewPager2
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -33,7 +32,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -108,10 +106,10 @@ class BaseFavoriteFragmentTest2 :
     }
 
     // Wait for ViewPager + debounce + paging load states
-    onView(isRoot()).perform(waitFor(3000))
+    onView(isRoot()).perform(waitFor(1000))
 
     // Check empty view is displayed
-    onView(withId(illustration_no_data_view)).check(matches(isDisplayed()))
-    onView(withId(progress_bar)).check(matches(not(isDisplayed())))
+    illustration_no_data_view.isDisplayed()
+    progress_bar.isNotDisplayed()
   }
 }

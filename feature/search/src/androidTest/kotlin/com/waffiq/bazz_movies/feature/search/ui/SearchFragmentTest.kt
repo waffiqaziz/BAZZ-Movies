@@ -10,20 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.clearText
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.Visibility
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.material.R.id.open_search_view_edit_text
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.id.progress_circular
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -43,7 +43,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
-import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -78,10 +77,10 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
 
   @Test
   fun searchFragment_whenInitialState_displaysViewsCorrectly() {
-    onView(withId(illustration_search_view)).check(matches(isDisplayed()))
-    onView(withId(rv_search)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_search_no_result_view)).check(matches(not(isDisplayed())))
+    illustration_search_view.isDisplayed()
+    rv_search.isVisible()
+    illustration_error.isNotDisplayed()
+    illustration_search_no_result_view.isNotDisplayed()
   }
 
   @Test
@@ -90,9 +89,9 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
     performTypeAndSearchAction()
 
     // verify loading state UI
-    onView(withId(rv_search)).check(matches(isDisplayed()))
-    onView(withId(illustration_search_view)).check(matches(not(isDisplayed())))
-    onView(withId(illustration_error)).check(matches(not(isDisplayed())))
+    rv_search.isDisplayed()
+    illustration_search_view.isNotDisplayed()
+    illustration_error.isNotDisplayed()
 
     verify { mockSearchViewModel.search(testQuery) }
   }
@@ -113,9 +112,8 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
     performClickSearchAction()
 
     // perform search without query
-    onView(withId(open_search_view_edit_text))
-      .check(matches(isDisplayed()))
-      .perform(pressImeActionButton())
+    open_search_view_edit_text.isDisplayed()
+    open_search_view_edit_text.performAction(pressImeActionButton())
     // verify search was only called once
     verify(exactly = 0) { mockSearchViewModel.search(testQuery) }
   }
@@ -123,13 +121,13 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
   @Test
   fun swipeRefresh_whenSwiped_triggersRefresh() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      onView(withId(swipe_refresh)).perform(swipeDown())
+      swipe_refresh.performSwipeDown()
     } else {
-      onView(withId(swipe_refresh)).perform(triggerSwipeRefresh())
+      swipe_refresh.performAction(triggerSwipeRefresh())
     }
     shortDelay()
 
-    onView(withId(illustration_search_view)).check(matches(isDisplayed()))
+    illustration_search_view.isDisplayed()
     verify(exactly = 1) { searchAdapter.refresh() }
   }
 
@@ -170,7 +168,7 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
       Bundle()
     )
     shortDelay()
-    onView(withId(search_view)).check(matches(isDisplayed()))
+    search_view.isDisplayed()
   }
 
   @Test
@@ -203,25 +201,27 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
       searchFragment.handleRefreshState(combinedLoadStates, errorState)
     }
 
-    onView(withId(illustration_error)).check(matches(isDisplayed()))
-    onView(withId(btn_try_again)).check(matches(isDisplayed()))
+    illustration_error.isDisplayed()
+    btn_try_again.isDisplayed()
 
     // perform button try again click
-    onView(withId(btn_try_again)).perform(click())
+    btn_try_again.performClick()
 
-    onView(withId(btn_try_again)).check(matches(not(isDisplayed())))
-    onView(withId(progress_circular)).check(matches(isDisplayed()))
+    btn_try_again.isNotDisplayed()
+    progress_circular.isDisplayed()
     verify(exactly = 1) { searchAdapter.refresh() }
   }
 
   private fun performClickSearchAction() {
-    onView(withId(search_bar)).perform(click())
-    onView(withId(open_search_view_edit_text)).check(matches(isDisplayed()))
+    search_bar.performClick()
+    open_search_view_edit_text.isDisplayed()
   }
 
   private fun performTypeAndSearchAction() {
-    onView(withId(open_search_view_edit_text))
-      .check(matches(isDisplayed()))
-      .perform(clearText(), typeText(testQuery), pressImeActionButton())
+    open_search_view_edit_text.isDisplayed()
+    open_search_view_edit_text.performAction(clearText())
+    shortDelay()
+    open_search_view_edit_text.performType(testQuery)
+    open_search_view_edit_text.performAction(pressImeActionButton())
   }
 }

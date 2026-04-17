@@ -1,18 +1,14 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.JUSTWATCH_LINK_MAIN
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_justwatch
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_ads
@@ -36,7 +32,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import kotlinx.coroutines.flow.update
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -85,17 +80,17 @@ class MediaDetailActivityWatchProvidersTest :
   @Test
   fun expandWatchProvider_whenClicked_opensWatchProvider() {
     context.launchMediaDetailActivity {
-      onView(withId(tv_toggle_watch_providers)).perform(scrollTo())
+      tv_toggle_watch_providers.performScrollTo()
       performClickWatchProvidersButton()
 
       // check that all watch provider layouts are displayed
-      onView(withId(layout_ads)).check(matches(isDisplayed()))
-      onView(withId(layout_free)).perform(scrollTo())
-      onView(withId(layout_free)).check(matches(isDisplayed()))
-      onView(withId(layout_rent)).check(matches(isDisplayed()))
-      onView(withId(layout_streaming)).check(matches(isDisplayed()))
-      onView(withId(layout_buy)).perform(scrollTo())
-      onView(withId(layout_buy)).check(matches(isDisplayed()))
+      layout_ads.isDisplayed()
+      layout_free.performScrollTo()
+      layout_free.isDisplayed()
+      layout_rent.isDisplayed()
+      layout_streaming.isDisplayed()
+      layout_buy.performScrollTo()
+      layout_buy.isDisplayed()
     }
   }
 
@@ -107,11 +102,11 @@ class MediaDetailActivityWatchProvidersTest :
       performClickWatchProvidersButton()
 
       // check that all watch provider layouts are not displayed
-      onView(withId(layout_ads)).check(matches(not(isDisplayed())))
-      onView(withId(layout_buy)).check(matches(not(isDisplayed())))
-      onView(withId(layout_free)).check(matches(not(isDisplayed())))
-      onView(withId(layout_rent)).check(matches(not(isDisplayed())))
-      onView(withId(layout_streaming)).check(matches(not(isDisplayed())))
+      layout_ads.isNotDisplayed()
+      layout_buy.isNotDisplayed()
+      layout_free.isNotDisplayed()
+      layout_rent.isNotDisplayed()
+      layout_streaming.isNotDisplayed()
     }
   }
 
@@ -119,7 +114,8 @@ class MediaDetailActivityWatchProvidersTest :
   fun buttonJustWatch_whenClicked_opensJustWatch() {
     context.launchMediaDetailActivity {
       performClickWatchProvidersButton()
-      onView(withId(btn_justwatch)).perform(scrollTo(), click())
+      btn_justwatch.performScrollTo()
+      btn_justwatch.performClick()
       checkIntentData(JUSTWATCH_LINK_MAIN)
     }
   }
@@ -128,10 +124,8 @@ class MediaDetailActivityWatchProvidersTest :
   fun watchProviderItem_whenClicked_opensTMDB() {
     context.launchMediaDetailActivity {
       performClickWatchProvidersButton()
-      onView(withId(layout_streaming)).perform(scrollTo())
-      onView(withId(rv_streaming)).perform(
-        RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
-      )
+      layout_streaming.performScrollTo()
+      rv_streaming.clickItemAt(0)
     }
   }
 
@@ -154,12 +148,12 @@ class MediaDetailActivityWatchProvidersTest :
       performClickWatchProvidersButton()
 
       // check that all watch provider layouts are not displayed
-      onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-      onView(withId(layout_ads)).check(matches(not(isDisplayed())))
-      onView(withId(layout_buy)).check(matches(not(isDisplayed())))
-      onView(withId(layout_free)).check(matches(not(isDisplayed())))
-      onView(withId(layout_rent)).check(matches(not(isDisplayed())))
-      onView(withId(layout_streaming)).check(matches(not(isDisplayed())))
+      progress_bar.isNotDisplayed()
+      layout_ads.isNotDisplayed()
+      layout_buy.isNotDisplayed()
+      layout_free.isNotDisplayed()
+      layout_rent.isNotDisplayed()
+      layout_streaming.isNotDisplayed()
     }
   }
 
@@ -172,17 +166,16 @@ class MediaDetailActivityWatchProvidersTest :
         }
       }
       performClickWatchProvidersButton()
-      onView(withText("Error fetching watch providers"))
-        .check(matches(isDisplayed()))
+      "Error fetching watch providers".isDisplayed()
 
       // check that all watch provider layouts are not displayed
-      onView(withId(progress_bar)).check(matches(not(isDisplayed())))
-      onView(withId(layout_justwatch)).check(matches(not(isDisplayed())))
-      onView(withId(layout_ads)).check(matches(not(isDisplayed())))
-      onView(withId(layout_buy)).check(matches(not(isDisplayed())))
-      onView(withId(layout_free)).check(matches(not(isDisplayed())))
-      onView(withId(layout_rent)).check(matches(not(isDisplayed())))
-      onView(withId(layout_streaming)).check(matches(not(isDisplayed())))
+      progress_bar.isNotDisplayed()
+      layout_justwatch.isNotDisplayed()
+      layout_ads.isNotDisplayed()
+      layout_buy.isNotDisplayed()
+      layout_free.isNotDisplayed()
+      layout_rent.isNotDisplayed()
+      layout_streaming.isNotDisplayed()
     }
   }
 
@@ -193,13 +186,12 @@ class MediaDetailActivityWatchProvidersTest :
         uiState.update { s -> s.copy(watchProviders = WatchProvidersUiState.Loading) }
       }
       shortDelay()
-      onView(withId(progress_bar)).check(matches(isDisplayed()))
-      onView(withId(tv_watch_providers_message)).check(matches(not(isDisplayed())))
+      progress_bar.isDisplayed()
+      tv_watch_providers_message.isNotDisplayed()
     }
   }
 
   private fun performClickWatchProvidersButton() {
-    onView(withId(tv_toggle_watch_providers))
-      .check(matches(isDisplayed())).perform(click())
+    tv_toggle_watch_providers.performClick()
   }
 }

@@ -39,4 +39,7 @@ interface FavoriteFragmentTestHelper {
   fun performSwipeAction(position: Int, viewAction: ViewAction)
   fun performPullToRefresh()
   fun performUndoAction()
+  fun Int.assertViewPagerPosition(expected: Int)
+  fun Int.assertViewPagerUserInputEnabled(expected: Boolean)
+  fun Int.assertViewPagerItemCount(expected: Int)
 }

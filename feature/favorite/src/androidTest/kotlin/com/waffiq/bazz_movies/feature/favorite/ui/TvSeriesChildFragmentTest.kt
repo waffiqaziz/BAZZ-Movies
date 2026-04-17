@@ -1,10 +1,8 @@
 package com.waffiq.bazz_movies.feature.favorite.ui
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test
@@ -60,7 +58,7 @@ class TvSeriesChildFragmentTest :
   fun loggedUser_swipeAction_shouldPassed() {
     loggedUser(mockFavoriteViewModel)
     launchFragment()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     performSwipeActions()
   }
 
@@ -68,7 +66,7 @@ class TvSeriesChildFragmentTest :
   fun loggedUser_pullToRefresh_shouldTriggerRefresh() {
     loggedUser(mockFavoriteViewModel)
     launchFragment()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     performPullToRefresh()
   }
 
@@ -76,7 +74,7 @@ class TvSeriesChildFragmentTest :
   fun guestUser_swipeAction_shouldPassed() {
     guestUser(mockSharedDBViewModel)
     launchFragment()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     performSwipeActions()
   }
 
@@ -84,7 +82,7 @@ class TvSeriesChildFragmentTest :
   fun guestUser_pullToRefresh_shouldTriggerRefresh() {
     guestUser(mockSharedDBViewModel)
     launchFragment()
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     performPullToRefresh()
   }
 
@@ -98,7 +96,7 @@ class TvSeriesChildFragmentTest :
 
     launchFragment()
 
-    onView(withText(tv_series)).perform(click())
+    tv_series.performTextClick()
     performPullToRefresh()
   }
 }

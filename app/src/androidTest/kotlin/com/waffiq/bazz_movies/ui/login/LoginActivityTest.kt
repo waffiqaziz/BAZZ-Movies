@@ -3,20 +3,21 @@ package com.waffiq.bazz_movies.ui.login
 import android.content.Context
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.R.id.activity_main
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.isPasswordHidden
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.withErrorText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.replaceWithText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.withErrorText
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
 import com.waffiq.bazz_movies.feature.login.R.id.btn_forget_password
@@ -56,20 +57,20 @@ class LoginActivityTest {
   @Test
   fun allView_isVisible() {
     // Verify that all UI elements are visible
-    onView(withId(btn_forget_password)).check(matches(isDisplayed()))
-    onView(withId(layout_bazz_movies)).check(matches(isDisplayed()))
-    onView(withId(ed_username)).check(matches(isDisplayed()))
-    onView(withId(ed_pass)).check(matches(isDisplayed()))
-    onView(withId(btn_eye)).check(matches(isDisplayed()))
-    onView(withId(btn_login)).check(matches(isDisplayed()))
-    onView(withId(tv_guest)).check(matches(isDisplayed()))
-    onView(withId(tv_joinTMDB)).check(matches(isDisplayed()))
+    btn_forget_password.isDisplayed()
+    layout_bazz_movies.isDisplayed()
+    ed_username.isDisplayed()
+    ed_pass.isDisplayed()
+    btn_eye.isDisplayed()
+    btn_login.isDisplayed()
+    tv_guest.isDisplayed()
+    tv_joinTMDB.isDisplayed()
   }
 
   @Test
   fun login_withoutUsernameAndPassword_showsErrorMessage() {
     // Click login button without entering username/password
-    onView(withId(btn_login)).perform(click())
+    btn_login.performClick()
 
     // Verify that error messages are shown
     onView(withId(ed_username))
@@ -83,10 +84,10 @@ class LoginActivityTest {
     onView(withId(ed_pass)).perform(typeText("password123"))
 
     // unmask the edit text
-    onView(withId(btn_eye)).perform(click())
-    onView(withId(ed_pass)).check(matches(withText("password123")))
+    btn_eye.performClick()
+    ed_pass.doesHaveText("password123")
 
-    onView(withId(btn_eye)).perform(click())
+    btn_eye.performClick()
     onView(withId(ed_pass)).check(matches(isPasswordHidden())) // Masked password
   }
 
@@ -95,30 +96,30 @@ class LoginActivityTest {
 //    // Enter valid credentials
 //    onView(withId(ed_username)).perform(typeText(TEST_USERNAME))
 //    closeSoftKeyboard()
-//    onView(withId(ed_pass)).perform(ViewActions.replaceText(TEST_PASS))
+//    onView(withId(ed_pass)).perform(replaceText(TEST_PASS))
 //    closeSoftKeyboard()
 //
-//    onView(withId(btn_login)).perform(click())
-//    onView(withId(activity_main)).check(matches(isDisplayed()))
+//    btn_login.performClick()
+//    onView(withId(activity_main.isDisplayed()
 //    Thread.sleep(500L)
 //  }
 
   @Test
   fun login_withInvalidCredential_returnToLoginActivity() {
     // Enter invalid credentials
-    onView(withId(ed_username)).perform(typeText("random"))
+    ed_username.performType("random")
     closeSoftKeyboard()
-    onView(withId(ed_pass)).perform(ViewActions.replaceText("random"))
+    ed_pass.replaceWithText("random")
     closeSoftKeyboard()
 
-    onView(withId(btn_login)).perform(click())
-    onView(withId(activity_login)).check(matches(isDisplayed()))
+    btn_login.performClick()
+    activity_login.isDisplayed()
   }
 
   @Test
   fun login_asGuest_openMainActivity() {
-    onView(withId(tv_guest)).perform(click())
-    onView(withId(activity_main)).check(matches(isDisplayed()))
+    tv_guest.performClick()
+    activity_main.isDisplayed()
     shortDelay()
   }
 }

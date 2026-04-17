@@ -42,7 +42,7 @@ import kotlinx.coroutines.flow.asStateFlow
  */
 class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
-  override val recommendations = MutableStateFlow<PagingData<MediaItem>>(
+  override val recommendations = MutableStateFlow(
     value = PagingData.from(listOf(testMediaItem))
   )
   override val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
@@ -175,6 +175,4 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
   }
-
-
 }

@@ -2,19 +2,11 @@ package com.waffiq.bazz_movies.core.data.data.repository
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.testutils.BaseRepositoryTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.favoriteParams
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.mediaStateResponse
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postFavoriteWatchlistResponseSuccess
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postMovieResponseSuccess
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postTvRateResponseSuccess
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.watchlistParams
-import com.waffiq.bazz_movies.core.data.utils.Helper.getDateToday
-import com.waffiq.bazz_movies.core.data.utils.Helper.getDateTwoWeeksFromToday
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
-import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData
 import io.mockk.coEvery

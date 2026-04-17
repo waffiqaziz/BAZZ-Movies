@@ -32,7 +32,6 @@ dependencies {
   testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.core.testing)
-  androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)

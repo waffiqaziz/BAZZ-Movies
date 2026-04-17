@@ -1,15 +1,12 @@
 package com.waffiq.bazz_movies.feature.detail.ui
 
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_picture_backdrop
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestSetup
@@ -82,7 +79,7 @@ class MediaDetailActivityBackdropTest :
         overview = null,
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -99,7 +96,7 @@ class MediaDetailActivityBackdropTest :
         overview = "",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -116,7 +113,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -132,7 +129,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -148,7 +145,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -162,7 +159,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = "",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
 
     context.launchMediaDetailActivity(
@@ -173,7 +170,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = null,
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -189,7 +186,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -205,7 +202,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -221,7 +218,7 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
   }
 
@@ -237,7 +234,11 @@ class MediaDetailActivityBackdropTest :
         overview = "overview",
       )
     ) {
-      onView(withId(iv_picture_backdrop)).check(matches(isDisplayed()))
+      backdropIsDisplayed()
     }
+  }
+
+  private fun backdropIsDisplayed(){
+    iv_picture_backdrop.isDisplayed()
   }
 }
