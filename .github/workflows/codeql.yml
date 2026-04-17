@@ -90,9 +90,9 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: manual
-          # Nightly is required for now to support Kotlin 2.3.10. Once CodeQL stable supports it, we
-          # can remove this.
-          tools: nightly
+          # linked is required for now to support Kotlin 2.3.20.
+          # See: https://github.com/github/codeql/issues/21484#issuecomment-4252044622
+          tools: linked
 
       # Custom build steps instead of auto-build
       - name: Build with Gradle
