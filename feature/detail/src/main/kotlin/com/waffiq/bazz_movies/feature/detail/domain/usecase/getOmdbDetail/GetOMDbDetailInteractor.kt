@@ -25,15 +25,11 @@ class GetOMDbDetailInteractor @Inject constructor(
       .filterIsInstance<Outcome.Success<TvExternalIds>>()
       .take(1)
       .flatMapConcat { outcome ->
-        when (outcome) {
-          is Outcome.Success -> {
-            val imdbId = outcome.data.imdbId
-            if (imdbId.isNullOrEmpty()) {
-              flowOf(Outcome.Error(""))
-            } else {
-              detailRepository.getOMDbDetails(imdbId)
-            }
-          }
+        val imdbId = outcome.data.imdbId
+        if (imdbId.isNullOrEmpty()) {
+          flowOf(Outcome.Error(""))
+        } else {
+          detailRepository.getOMDbDetails(imdbId)
         }
       }
 }
