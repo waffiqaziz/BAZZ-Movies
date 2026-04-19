@@ -1,13 +1,17 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropOriginalSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.backdropPathSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdropNotAvailable
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.profileImageSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -129,5 +133,30 @@ class ImageHelperTest {
 
     // N/A
     assertEquals(ic_poster_error, MediaItem(posterPath = "N/A").posterDetailSource)
+  }
+
+  @Test
+  fun profileImageSource_whenPathIsAvailable_returnsPoster() {
+    val data = MediaCrewItem(profilePath = "path")
+    assertEquals(TMDB_IMG_LINK_POSTER_W300 + "path", data.profileImageSource)
+  }
+
+  @Test
+  fun profileImageSource_whenPathPathMissing_returnsCorrectValue() {
+    // all null
+    val data1 = MediaCrewItem()
+    assertEquals(ic_no_profile_rounded, data1.profileImageSource)
+
+    // all N/A value
+    val data2 = MediaCrewItem(profilePath = "N/A", )
+    assertEquals(ic_no_profile_rounded, data2.profileImageSource)
+
+    // all empty value
+    val data3 = MediaCrewItem(profilePath = "", )
+    assertEquals(ic_no_profile_rounded, data3.profileImageSource)
+
+    // all blank
+    val data4 = MediaCrewItem(profilePath = " ", )
+    assertEquals(ic_no_profile_rounded, data4.profileImageSource)
   }
 }

@@ -18,8 +18,8 @@ import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
 import com.waffiq.bazz_movies.feature.search.utils.Constants.PERSON_MEDIA_TYPE
@@ -87,7 +87,7 @@ class SearchAdapter(private val navigator: INavigator) :
   }
 
   private fun showDataPerson(binding: ItemResultBinding, data: MultiSearchItem) {
-    binding.ivPicture.contentDescription = nameHandler(data)
+    binding.ivPicture.contentDescription = data.validName
     Glide.with(binding.ivPicture)
       .load(data.profileImageSource)
       .placeholder(ic_bazz_placeholder_search)

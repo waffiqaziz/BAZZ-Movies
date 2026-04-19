@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.testutils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.domain.GenresItem
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.OMDbDetailsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.omdb.RatingsItemResponse
@@ -546,5 +547,20 @@ object DummyData {
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",
     releaseDate = "2023"
+  )
+
+  val testMediaCastItem = MediaCastItem(
+    castId = 1111,
+    character = "character",
+    gender = 1,
+    creditId = "22222",
+    knownForDepartment = "actor 1",
+    originalName = "original name",
+    popularity = 12345.0,
+    name = "name",
+    profilePath = "profile_path.jpg",
+    id = 123456,
+    adult = false,
+    order = 12
   )
 }

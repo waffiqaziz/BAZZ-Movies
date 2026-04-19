@@ -15,10 +15,13 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_favorite
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_more_recommendation
+import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
@@ -28,6 +31,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_score_your_score
 import com.waffiq.bazz_movies.feature.detail.R.id.your_score_viewGroup
 import com.waffiq.bazz_movies.feature.detail.domain.model.UpdateMediaStateResult
+import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaCredits
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaState
 import com.waffiq.bazz_movies.feature.detail.testutils.DataDumb.testMediaStateRated
@@ -44,6 +48,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -373,6 +378,39 @@ class MediaDetailActivityInteractionTest :
       btn_more_recommendation.performClick()
 
       verify(exactly = 1) { mockNavigator.openList(any(), any()) }
+    }
+  }
+
+  @Test
+  fun showBottomSheet_whenButtonClicked_showsTheView() {
+    context.launchMediaDetailActivity {
+      uiState.update { s -> s.copy(credits = testMediaCredits) }
+      btn_view_all_cast.performScrollTo()
+      btn_view_all_cast.performClick()
+
+      // test cast value
+      "Cast (2)".performClick()
+      testMediaCredits.cast[0].name?.isVisible()
+      testMediaCredits.cast[1].name?.isVisible()
+
+      // test crew value
+      "Crew (1)".performClick()
+      testMediaCredits.crew[0].name?.isVisible()
+
+      // back to cast layout again
+      "Cast (2)".performClick()
+    }
+  }
+
+  @Test
+  fun showBottomSheet_whenCreditsIsNull_showsNothing() {
+    context.launchMediaDetailActivity {
+      uiState.update { s -> s.copy(credits = null) }
+      btn_view_all_cast.performScrollTo()
+      btn_view_all_cast.performClick()
+
+      "Cast".doesNotExist()
+      "Crew".doesNotExist()
     }
   }
 

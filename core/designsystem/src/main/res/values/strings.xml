@@ -111,10 +111,12 @@
   <string name="no_overview">Theres no overview translated in English</string>
   <string name="watch_trailer">Watch Trailer</string>
   <string name="cast">Cast</string>
+  <string name="crew">Crew</string>
   <string name="as">as</string>
   <string name="recommendation">Recommendation</string>
   <string name="cancel">Cancel</string>
   <string name="submit">Submit</string>
+  <string name="view_all">View all</string>
   <string name="your_score">Your Score</string>
   <string name="your_rating">Your rating:</string>
   <string name="not_available">N/A</string>

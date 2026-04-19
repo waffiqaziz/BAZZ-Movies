@@ -22,6 +22,7 @@ import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.detail.databinding.ActivityMediaDetailBinding
 import com.waffiq.bazz_movies.feature.detail.ui.dialog.RateDialog
+import com.waffiq.bazz_movies.feature.detail.ui.fragment.CreditsBottomSheet
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.state.UserAuthState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -153,6 +154,12 @@ class UserInteractionHandler(
       btnWatchlist.setOnClickListener { handleWatchlistClick() }
       btnSidebar.setOnClickListener { uiManager.showSideSheet() }
       swipeRefresh.setOnRefreshListener { handleSwipeRefresh() }
+      binding.btnViewAllCast.setOnClickListener {
+        CreditsBottomSheet().show(
+          activity.supportFragmentManager,
+          CreditsBottomSheet::class.java.simpleName,
+        )
+      }
       btnMoreRecommendation.button.setOnClickListener {
         uiManager.openListPage(
           mediaType = dataExtra.mediaType,

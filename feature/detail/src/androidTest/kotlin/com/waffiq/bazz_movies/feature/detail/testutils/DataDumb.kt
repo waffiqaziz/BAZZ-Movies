@@ -51,7 +51,7 @@ object DataDumb {
     character = "character",
     gender = 1,
     creditId = "22222",
-    knownForDepartment = "actor",
+    knownForDepartment = "actor 1",
     originalName = "original name",
     popularity = 12345.0,
     name = "name",
@@ -76,7 +76,7 @@ object DataDumb {
   )
 
   val testMediaCredits = MediaCredits(
-    cast = listOf(testMediaCastItem),
+    cast = listOf(testMediaCastItem, testMediaCastItem.copy(id = 89, name = "actor 2")),
     id = 1234,
     crew = listOf(testMediaCrewItem)
   )

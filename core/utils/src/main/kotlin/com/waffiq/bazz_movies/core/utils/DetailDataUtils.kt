@@ -10,12 +10,12 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.domain.Dateable
 import com.waffiq.bazz_movies.core.domain.Imageble
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Nameable
 import com.waffiq.bazz_movies.core.domain.Titleable
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Locale
-import kotlin.text.isNullOrBlank
 
 object DetailDataUtils {
   /**
@@ -54,7 +54,16 @@ object DetailDataUtils {
    *
    * @return The name of the person, or "Item" if no title is found.
    */
-  fun nameHandler(item: Titleable): String = item.name ?: item.originalName ?: "Item"
+  val Titleable.validName: String get() = name ?: originalName ?: "Item"
+
+  /**
+   * Returns name from [Nameable] cast/crew item based the following properties in order:
+   * - `name`
+   * - `originalName`
+   *
+   * @return The name of the person, or "Item" if no title is found.
+   */
+  val Nameable.validName: String get() = name ?: originalName ?: "Item"
 
   /**
    * Returns valid years. The function checks the following properties in order:
@@ -171,4 +180,12 @@ object DetailDataUtils {
     item.displayDate
       ?.takeIf { it.isValidDate() }
       ?: getString(not_available)
+
+  /**
+   * Provides characters or department of the cast or crew.
+   *
+   * @return the role if available, otherwise a fallback text.
+   */
+  val String?.roleName: String
+    get() = this?.takeIf { it.isNotBlank() } ?: "TBA"
 }

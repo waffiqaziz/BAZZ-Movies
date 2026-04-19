@@ -19,6 +19,7 @@
     <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
 
     <item name="sideSheetDialogTheme">@style/ThemeOverlay.App.SideSheetDialog</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
   </style>
 
   <style name="WindowAnimationStyle">
@@ -346,6 +347,10 @@
   <style name="ThemeOverlay.App.SideSheetDialog" parent="ThemeOverlay.Material3.SideSheetDialog">
     <item name="sideSheetModalStyle">@style/Widget.App.SideSheet.Modal</item>
     <item name="android:navigationBarColor">@color/gray_1000</item>
+  </style>
+
+  <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
   </style>
 
   <style name="MyIconButtonStyle" parent="ThemeOverlay.Material3Expressive.Button.IconButton.Standard">
