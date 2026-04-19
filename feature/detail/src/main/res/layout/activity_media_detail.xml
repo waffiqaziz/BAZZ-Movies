@@ -644,14 +644,35 @@
           tools:layout_height="100dp" />
 
         <!-- Cast | Actor | Actress -->
-        <TextView
-          android:id="@+id/tv_cast_header"
-          style="@style/TextHeader2"
-          android:layout_width="wrap_content"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_cast"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-          android:layout_marginTop="16dp"
-          android:text="@string/cast" />
+          android:layout_marginStart="@dimen/default_margin_parent_20"
+          android:layout_marginTop="16dp">
+
+          <TextView
+            android:id="@+id/tv_cast_header"
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="@string/cast" />
+
+          <Button
+            android:id="@+id/btn_view_all_cast"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:paddingHorizontal="12dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/nunito_sans_regular"
+            android:text="@string/view_all"
+            android:textColor="?attr/colorAccent"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Xsmall" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/rv_cast"

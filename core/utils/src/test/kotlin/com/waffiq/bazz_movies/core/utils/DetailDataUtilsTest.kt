@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
 import junit.framework.TestCase.assertEquals
@@ -346,5 +347,13 @@ class DetailDataUtilsTest {
     // invalid date
     val data8 = context.dateOf(MediaItem(firstAirDate = " ", releaseDate = "2023-e05-15"))
     assertEquals("N/A", data8)
+  }
+
+  @Test
+  fun roleName_mixedString_returnsCorrectValue(){
+    assertEquals("TBA", null.roleName)
+    assertEquals("TBA", " ".roleName)
+    assertEquals("TBA", "".roleName)
+    assertEquals("Cameraman", "Cameraman".roleName)
   }
 }

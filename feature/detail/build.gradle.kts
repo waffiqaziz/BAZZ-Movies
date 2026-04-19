@@ -14,8 +14,9 @@ dependencies {
 
   implementation(libs.androidx.activity)
   implementation(libs.androidx.cardview)
-  implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.paging.runtime)
+  implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.expandable.textview)
   implementation(libs.flexbox)
 

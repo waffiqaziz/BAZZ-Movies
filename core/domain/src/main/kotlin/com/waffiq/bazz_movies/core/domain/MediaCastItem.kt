@@ -5,16 +5,18 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MediaCastItem(
+  override val name: String? = null,
+  override val originalName: String? = null,
+  override val profilePath: String? = null,
+  val id: Int? = null,
   val castId: Int? = null,
   val character: String? = null,
   val gender: Int? = null,
   val creditId: String? = null,
   val knownForDepartment: String? = null,
-  val originalName: String? = null,
   val popularity: Double? = null,
-  val name: String? = null,
-  val profilePath: String? = null,
-  val id: Int? = null,
   val adult: Boolean? = null,
   val order: Int? = null,
-) : Parcelable
+) : Nameable,
+  Parcelable,
+  Profilable

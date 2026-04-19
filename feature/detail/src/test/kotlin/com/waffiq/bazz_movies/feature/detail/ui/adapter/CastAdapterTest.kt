@@ -6,7 +6,9 @@ import android.widget.FrameLayout
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.testMediaCastItem
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -21,12 +23,20 @@ import org.robolectric.Shadows.shadowOf
 class CastAdapterTest : BaseAdapterTest() {
 
   private lateinit var adapter: CastAdapter
+  private lateinit var itemCreditsBinding: ItemCreditsPersonBinding
+  private lateinit var itemCastBinding: ItemCastBinding
+  private lateinit var horizontalViewHolder: CastAdapter.HorizontalViewHolder
+  private lateinit var verticalViewHolder: CastAdapter.VerticalViewHolder
 
   @Before
   fun setup() {
     super.baseSetup()
     adapter = CastAdapter(navigator)
     recyclerView.adapter = adapter
+    itemCreditsBinding = ItemCreditsPersonBinding.inflate(inflater, parent, false)
+    itemCastBinding = ItemCastBinding.inflate(inflater, parent, false)
+    horizontalViewHolder = adapter.HorizontalViewHolder(itemCastBinding)
+    verticalViewHolder = adapter.VerticalViewHolder(itemCreditsBinding)
   }
 
   @Test
@@ -48,10 +58,18 @@ class CastAdapterTest : BaseAdapterTest() {
   }
 
   @Test
+  fun setVerticalMode_whenCalled_updateTheValue() {
+    adapter.setVerticalMode(false)
+    assertFalse(adapter.isVerticalMode())
+    adapter.setVerticalMode(true)
+    assertTrue(adapter.isVerticalMode())
+  }
+
+  @Test
   fun onBindViewHolder_whenCalled_bindsCorrectForAllData() {
     val inflater = LayoutInflater.from(context)
     val binding = ItemCastBinding.inflate(inflater, null, false)
-    val viewHolder = adapter.ViewHolder(binding)
+    val viewHolder = adapter.HorizontalViewHolder(binding)
 
     val testCases = listOf(
       MediaCastItem(name = "Test Name") to "Test Name",
@@ -98,7 +116,7 @@ class CastAdapterTest : BaseAdapterTest() {
   fun bind_whenCalled_loadsCorrectImageOrPlaceholder() {
     val binding = ItemCastBinding.inflate(LayoutInflater.from(context))
     val adapter = CastAdapter(navigator)
-    val viewHolder = adapter.ViewHolder(binding)
+    val viewHolder = adapter.HorizontalViewHolder(binding)
 
     val testCases = listOf(
       MediaCastItem(id = 1, name = "name1", profilePath = "valid_image.jpg") to "name1",
@@ -115,27 +133,12 @@ class CastAdapterTest : BaseAdapterTest() {
   }
 
   @Test
-  fun onBindViewHolder_whenClicked_callsNavigator() {
-    val castItem = MediaCastItem(
-      id = 1,
-      castId = 123,
-      character = "test char",
-      gender = 1,
-      creditId = "1234",
-      knownForDepartment = "Acting",
-      originalName = "original name",
-      popularity = 12345.0,
-      name = "name",
-      profilePath = "profile path",
-      adult = false,
-      order = 123,
-    )
-
+  fun horizontalViewHolder_performClick_callsNavigator() {
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())
     val binding = ItemCastBinding.inflate(inflater, FrameLayout(inflater.context), false)
-    val viewHolder = adapter.ViewHolder(binding)
+    val viewHolder = adapter.HorizontalViewHolder(binding)
 
-    adapter.submitList(listOf(castItem))
+    adapter.submitList(listOf(testMediaCastItem))
     adapter.onBindViewHolder(viewHolder, 0)
 
     // use slot to capture MediaCastItem
@@ -150,8 +153,17 @@ class CastAdapterTest : BaseAdapterTest() {
 
     // expect captured MediaCastItem matches expected values
     val capturedResult = resultSlot.captured
-    assertEquals(castItem.id, capturedResult.id)
-    assertEquals(castItem.name, capturedResult.name)
+    assertEquals(testMediaCastItem.id, capturedResult.id)
+    assertEquals(testMediaCastItem.name, capturedResult.name)
+  }
+
+  @Test
+  fun verticalViewHolder_performClick_callsNavigator() {
+    // test use simpler method
+    verticalViewHolder.bind(MediaCastItem())
+    adapter.setVerticalMode(true)
+    itemCreditsBinding.container.performClick()
+    verify { navigator.openPersonDetails(any(), any()) }
   }
 
   @Test
