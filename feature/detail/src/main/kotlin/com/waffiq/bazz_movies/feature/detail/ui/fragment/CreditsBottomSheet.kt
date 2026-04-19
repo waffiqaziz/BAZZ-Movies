@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.waffiq.bazz_movies.core.designsystem.R.string.cast
 import com.waffiq.bazz_movies.core.designsystem.R.string.crew
 import com.waffiq.bazz_movies.feature.detail.databinding.BottomSheetCreditsBinding
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CastAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.adapter.CrewAdapter
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
@@ -43,15 +44,22 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
+    setupBottomSheetBehavior()
+
+    val credits = viewModel.uiState.value.credits ?: return
+    setupRecyclerView(credits)
+    setupTabs(credits)
+  }
+
+  private fun setupBottomSheetBehavior() {
     (dialog as BottomSheetDialog).behavior.apply {
       state = BottomSheetBehavior.STATE_HALF_EXPANDED
       skipCollapsed = false
     }
-    setupRecyclerView()
-    setupTabs()
   }
 
-  private fun setupRecyclerView() {
+  private fun setupRecyclerView(credits: MediaCredits) {
     castAdapter = CastAdapter(navigator)
     crewAdapter = CrewAdapter()
 
@@ -63,13 +71,10 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
     }
 
     // load initial cast list
-    val credits = viewModel.uiState.value.credits ?: return
     castAdapter.submitList(credits.cast)
   }
 
-  private fun setupTabs() {
-    val credits = viewModel.uiState.value.credits ?: return
-
+  private fun setupTabs(credits:  MediaCredits) {
     binding.tabLayout.apply {
       addTab(newTab().setText(getString(cast) + " (${credits.cast.size})"))
       addTab(newTab().setText(getString(crew) + " (${credits.crew.size})"))
@@ -77,10 +82,9 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
 
     binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
       override fun onTabSelected(tab: TabLayout.Tab) {
-        val currentCredits = viewModel.uiState.value.credits ?: return
         binding.rvCredits.adapter = when (tab.position) {
-          0 -> castAdapter.also { it.submitList(currentCredits.cast) }
-          else -> crewAdapter.also { it.submitList(currentCredits.crew) }
+          0 -> castAdapter.also { it.submitList(credits.cast) }
+          else -> crewAdapter.also { it.submitList(credits.crew) }
         }
       }
 
