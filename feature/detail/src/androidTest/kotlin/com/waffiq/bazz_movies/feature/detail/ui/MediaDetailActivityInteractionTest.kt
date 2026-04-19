@@ -15,6 +15,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeLeft
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_back
@@ -398,6 +399,18 @@ class MediaDetailActivityInteractionTest :
 
       // back to cast layout again
       "Cast (2)".performClick()
+    }
+  }
+
+  @Test
+  fun showBottomSheet_whenCreditsIsNull_showsNothing() {
+    context.launchMediaDetailActivity {
+      uiState.update { s -> s.copy(credits = null) }
+      btn_view_all_cast.performScrollTo()
+      btn_view_all_cast.performClick()
+
+      "Cast".doesNotExist()
+      "Crew".doesNotExist()
     }
   }
 

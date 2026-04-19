@@ -6,10 +6,11 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
@@ -155,27 +156,33 @@ class DetailDataUtilsTest {
   }
 
   @Test
-  fun nameHandler_whenAllNameAvailable_returnsName() {
-    val result = nameHandler(MediaItem(name = "name", originalName = "original name"))
-    assertEquals("name", result)
+  fun validName_withMediaItem_returnsCorrectly() {
+    val result1 = MediaItem(name = "name", originalName = "original name").validName
+    assertEquals("name", result1)
+
+    val result2 = MediaItem(name = "name", originalName = null).validName
+    assertEquals("name", result2)
+
+    val result3 = MediaItem(name = null, originalName = "original name").validName
+    assertEquals("original name", result3)
+
+    val result4 = MediaItem().validName
+    assertEquals("Item", result4)
   }
 
   @Test
-  fun nameHandler_whenOriginalNameNull_returnsName() {
-    val result = nameHandler(MediaItem(name = "name", originalName = null))
-    assertEquals("name", result)
-  }
+  fun validName_withCastItem_returnsCorrectly() {
+    val result1 = MediaCastItem(name = "name", originalName = "original name").validName
+    assertEquals("name", result1)
 
-  @Test
-  fun nameHandler_whenNameIsNull_returnsOriginalName() {
-    val result = nameHandler(MediaItem(name = null, originalName = "original name"))
-    assertEquals("original name", result)
-  }
+    val result2 = MediaCastItem(name = "name", originalName = null).validName
+    assertEquals("name", result2)
 
-  @Test
-  fun nameHandler_whenAllNull_returnsItem() {
-    val result = nameHandler(MediaItem())
-    assertEquals("Item", result)
+    val result3 = MediaCastItem(name = null, originalName = "original name").validName
+    assertEquals("original name", result3)
+
+    val result4 = MediaCastItem().validName
+    assertEquals("Item", result4)
   }
 
   @Test

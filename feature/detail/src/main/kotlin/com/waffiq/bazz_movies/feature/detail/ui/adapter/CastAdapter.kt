@@ -14,8 +14,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile_rounded
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
 import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.nameHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.profileImageSource
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -67,7 +67,7 @@ class CastAdapter(private val navigator: INavigator) :
         .error(ic_broken_image)
         .into(binding.imgCastPhoto)
 
-      binding.tvCastName.text = nameHandler(cast)
+      binding.tvCastName.text = cast.validName
       binding.tvCastCharacter.text = cast.character?.takeIf { it.isNotBlank() } ?: "TBA"
 
       binding.container.setOnClickListener {
@@ -89,7 +89,7 @@ class CastAdapter(private val navigator: INavigator) :
         .error(ic_broken_image)
         .into(binding.ivProfile)
 
-      binding.tvName.text = nameHandler(cast)
+      binding.tvName.text = cast.validName
       binding.tvRole.text = cast.character.roleName
 
       binding.container.setOnClickListener {

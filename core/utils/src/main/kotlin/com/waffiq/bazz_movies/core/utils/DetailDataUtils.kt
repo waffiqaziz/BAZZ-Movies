@@ -16,7 +16,6 @@ import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.Locale
-import kotlin.text.isNullOrBlank
 
 object DetailDataUtils {
   /**
@@ -55,7 +54,7 @@ object DetailDataUtils {
    *
    * @return The name of the person, or "Item" if no title is found.
    */
-  fun nameHandler(item: Titleable): String = item.name ?: item.originalName ?: "Item"
+  val Titleable.validName: String get() = name ?: originalName ?: "Item"
 
   /**
    * Returns name from [Nameable] cast/crew item based the following properties in order:
@@ -64,7 +63,7 @@ object DetailDataUtils {
    *
    * @return The name of the person, or "Item" if no title is found.
    */
-  fun nameHandler(item: Nameable): String = item.name ?: item.originalName ?: "Item"
+  val Nameable.validName: String get() = name ?: originalName ?: "Item"
 
   /**
    * Returns valid years. The function checks the following properties in order:
