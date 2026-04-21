@@ -8,17 +8,16 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthenticationViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
   private val authTMDbAccountUseCase: AuthTMDbAccountUseCase,
+  private val userPrefUseCase: UserPrefUseCase,
 ) : ViewModel() {
-
-  private val _userModel = MutableLiveData<UserModel>()
-  val userModel: LiveData<UserModel> get() = _userModel
 
   private val _loadingState = MutableLiveData<Boolean>()
   val loadingState: LiveData<Boolean> get() = _loadingState
@@ -116,7 +115,7 @@ class AuthenticationViewModel @Inject constructor(
       authTMDbAccountUseCase.getAccountDetails(sessionId).collect { outcome ->
         when (outcome) {
           is Outcome.Success -> {
-            _userModel.value = UserModel(
+            val userModel = UserModel(
               userId = outcome.data.id ?: 0,
               name = outcome.data.name.toString(),
               username = outcome.data.username.toString(),
@@ -127,6 +126,7 @@ class AuthenticationViewModel @Inject constructor(
               gravatarHash = outcome.data.avatarItem?.gravatar?.hash,
               tmdbAvatar = outcome.data.avatarItem?.avatarTMDb?.avatarPath,
             )
+            userPrefUseCase.saveUserPref(userModel)
             _loginState.value = true
             _loadingState.value = false
           }
@@ -140,6 +140,23 @@ class AuthenticationViewModel @Inject constructor(
           }
         }
       }
+    }
+  }
+
+  fun saveGuestUserPref(name: String, username: String) {
+    val guestModel = UserModel(
+      userId = 0,
+      name = name,
+      username = username,
+      password = NAN,
+      region = NAN,
+      token = NAN,
+      isLogin = true,
+      gravatarHash = null,
+      tmdbAvatar = null,
+    )
+    viewModelScope.launch {
+      userPrefUseCase.saveUserPref(guestModel)
     }
   }
 }

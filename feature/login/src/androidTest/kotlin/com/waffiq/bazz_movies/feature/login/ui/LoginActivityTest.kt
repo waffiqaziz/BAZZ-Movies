@@ -18,7 +18,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -30,7 +29,6 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.withDrawable
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
@@ -69,7 +67,6 @@ class LoginActivityTest {
   private val validPassword = "validPassword1234"
 
   private val loginStateLiveData = MutableLiveData<Boolean>()
-  private val userModelLiveData = MutableLiveData<UserModel>()
   private val errorStateLiveData = MutableLiveData<String>()
   private val loadingStateLiveData = MutableLiveData<Boolean>()
 
@@ -90,11 +87,8 @@ class LoginActivityTest {
 
   @BindValue
   @JvmField
-  val mockAuthViewModel: AuthenticationViewModel = mockk(relaxed = true)
+  val mockAuthViewModel: LoginViewModel = mockk(relaxed = true)
 
-  @BindValue
-  @JvmField
-  val mockUserPrefViewModel: UserPreferenceViewModel = mockk(relaxed = true)
 
   @Before
   fun init() {
@@ -106,9 +100,8 @@ class LoginActivityTest {
 
     every { mockAuthViewModel.errorState } returns errorStateLiveData
     every { mockAuthViewModel.loginState } returns loginStateLiveData
-    every { mockAuthViewModel.userModel } returns userModelLiveData
     every { mockAuthViewModel.loadingState } returns loadingStateLiveData
-    every { mockUserPrefViewModel.saveUserPref(any()) } just Runs
+    every { mockAuthViewModel.saveGuestUserPref(any(), any()) } just Runs
   }
 
   @Test
@@ -303,12 +296,9 @@ class LoginActivityTest {
 
     // verify guest user is saved
     verify {
-      mockUserPrefViewModel.saveUserPref(
-        match { userModel ->
-          userModel.userId == 0 &&
-            userModel.name == context.getString(guest_user) &&
-            userModel.username == context.getString(guest_user) && userModel.isLogin
-        }
+      mockAuthViewModel.saveGuestUserPref(
+        context.getString(guest_user),
+        context.getString(guest_user),
       )
     }
 

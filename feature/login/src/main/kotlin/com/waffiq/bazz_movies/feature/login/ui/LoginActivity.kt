@@ -18,7 +18,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
@@ -26,12 +25,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successfu
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_browser_installed
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
@@ -55,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityLoginBinding
 
-  private val authenticationViewModel: AuthenticationViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val authenticationViewModel: LoginViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -65,22 +61,25 @@ class LoginActivity : AppCompatActivity() {
     setContentView(binding.root)
     applyWindowInsets(binding.root)
 
+    stateObserver()
+    binding.progressBar.isVisible = false
+
+    showPassword()
+    buttonListener()
+  }
+
+  private fun stateObserver() {
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(
         binding.layoutBackground.bgAlpha,
         ANIM_DURATION,
       )
-      binding.btnLogin.isEnabled = true
-      binding.tvGuest.isEnabled = true
+      enableButton(true)
       snackBarWarning(binding.activityLogin, null, errorMessage)
     }
-    authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
-    binding.progressBar.isVisible = false
-
-    showPassword()
-    openTMDB()
-    btnLoginListener()
-    btnGuestListener()
+    authenticationViewModel.loginState.observe(this) { success ->
+      if (success) goToMainActivity(isGuest = false)
+    }
   }
 
   private fun launchUri(url: String) {
@@ -88,24 +87,6 @@ class LoginActivity : AppCompatActivity() {
       .onFailure {
         Toast.makeText(this, getString(no_browser_installed), Toast.LENGTH_SHORT).show()
       }
-  }
-
-  private fun openTMDB() {
-    binding.tvJoinTMDB.setOnClickListener {
-      launchUri(TMDB_LINK_SIGNUP)
-    }
-    binding.btnForgetPassword.setOnClickListener {
-      launchUri(TMDB_LINK_FORGET_PASSWORD)
-    }
-  }
-
-  private fun getDetailUser(loginState: Boolean) {
-    if (loginState) {
-      authenticationViewModel.userModel.observe(this) { dataUser ->
-        userPreferenceViewModel.saveUserPref(dataUser)
-        goToMainActivity(isGuest = false)
-      }
-    }
   }
 
   private fun showPassword() {
@@ -128,7 +109,20 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
-  private fun btnLoginListener() {
+  private fun buttonListener() {
+    binding.tvJoinTMDB.setOnClickListener {
+      launchUri(TMDB_LINK_SIGNUP)
+    }
+    binding.btnForgetPassword.setOnClickListener {
+      launchUri(TMDB_LINK_FORGET_PASSWORD)
+    }
+
+    // login as guest
+    binding.tvGuest.setOnClickListener {
+      authenticationViewModel.saveGuestUserPref(getString(guest_user), getString(guest_user))
+      goToMainActivity(isGuest = true)
+    }
+
     // login as user
     binding.btnLogin.setOnClickListener {
       validateFormFields()
@@ -146,11 +140,20 @@ class LoginActivity : AppCompatActivity() {
 
       // process login if form is valid
       if (formNotEmpty()) {
-        binding.tvGuest.isEnabled = false
-        binding.btnLogin.isEnabled = false
+        enableButton(false)
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         loginAsUserRegistered()
       }
+    }
+  }
+
+  private fun enableButton(isEnable: Boolean) {
+    binding.apply {
+      tvGuest.isEnabled = isEnable
+      tvJoinTMDB.isEnabled = isEnable
+      btnLogin.isEnabled = isEnable
+      btnForgetPassword.isEnabled = isEnable
+      btnEye.isEnabled = isEnable
     }
   }
 
@@ -168,26 +171,6 @@ class LoginActivity : AppCompatActivity() {
       binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
     } else {
       binding.edUsername.error = null
-    }
-  }
-
-  private fun btnGuestListener() {
-    // login as guest
-    binding.tvGuest.setOnClickListener {
-      userPreferenceViewModel.saveUserPref(
-        UserModel(
-          userId = 0,
-          name = resources.getString(guest_user),
-          username = resources.getString(guest_user),
-          password = NAN,
-          region = NAN,
-          token = NAN,
-          isLogin = true,
-          gravatarHash = null,
-          tmdbAvatar = null,
-        ),
-      )
-      goToMainActivity(isGuest = true)
     }
   }
 
