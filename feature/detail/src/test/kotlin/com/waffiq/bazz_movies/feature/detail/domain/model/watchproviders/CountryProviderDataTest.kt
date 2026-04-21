@@ -63,11 +63,11 @@ class CountryProviderDataTest {
     )
 
     assertEquals("https://example.com", providerData.link)
-    assertTrue(providerData.ads!!.isEmpty())
-    assertTrue(providerData.buy!!.isEmpty())
-    assertTrue(providerData.flatrate!!.isEmpty())
-    assertTrue(providerData.free!!.isEmpty())
-    assertTrue(providerData.rent!!.isEmpty())
+    assertTrue(providerData.ads?.isEmpty() ?: false)
+    assertTrue(providerData.buy?.isEmpty() ?: false)
+    assertTrue(providerData.flatrate?.isEmpty() ?: false)
+    assertTrue(providerData.free?.isEmpty() ?: false)
+    assertTrue(providerData.rent?.isEmpty() ?: false)
   }
 
   @Test

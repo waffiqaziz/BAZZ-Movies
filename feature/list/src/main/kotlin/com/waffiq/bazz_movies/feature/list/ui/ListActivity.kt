@@ -235,7 +235,7 @@ class ListActivity : AppCompatActivity() {
     )
 
     // save scroll state from the outgoing LayoutManager
-    val savedState = binding.rvList.layoutManager!!.onSaveInstanceState()
+    val savedState = binding.rvList.layoutManager?.onSaveInstanceState()
     binding.rvList.recycledViewPool.clear() // clear stale holders
 
     // update the layout manager
@@ -247,7 +247,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     // set state into the incoming LayoutManager
-    binding.rvList.layoutManager!!.onRestoreInstanceState(savedState)
+    binding.rvList.layoutManager?.onRestoreInstanceState(savedState)
 
     // swap icon
     binding.btnToggleLayout.setIconResource(if (isGrid) ic_grid else ic_list)
