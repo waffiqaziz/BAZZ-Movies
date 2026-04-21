@@ -1,6 +1,5 @@
 package com.waffiq.bazz_movies.feature.login.ui
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -9,14 +8,13 @@ import android.text.SpannableStringBuilder
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
@@ -25,6 +23,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successful
+import com.waffiq.bazz_movies.core.designsystem.R.string.no_browser_installed
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
 import com.waffiq.bazz_movies.core.domain.UserModel
@@ -40,6 +39,7 @@ import com.waffiq.bazz_movies.feature.login.utils.CustomTypefaceSpan
 import com.waffiq.bazz_movies.feature.login.utils.InsetListener.applyWindowInsets
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
+import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncher
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -50,8 +50,10 @@ class LoginActivity : AppCompatActivity() {
   @Inject
   lateinit var navigator: INavigator
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  lateinit var binding: ActivityLoginBinding
+  @Inject
+  lateinit var uriLauncher: UriLauncher
+
+  private lateinit var binding: ActivityLoginBinding
 
   private val authenticationViewModel: AuthenticationViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
@@ -81,13 +83,19 @@ class LoginActivity : AppCompatActivity() {
     btnGuestListener()
   }
 
+  private fun launchUri(url: String) {
+    uriLauncher.launch(url)
+      .onFailure {
+        Toast.makeText(this, getString(no_browser_installed), Toast.LENGTH_SHORT).show()
+      }
+  }
+
   private fun openTMDB() {
     binding.tvJoinTMDB.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, TMDB_LINK_SIGNUP.toUri()))
+      launchUri(TMDB_LINK_SIGNUP)
     }
-
     binding.btnForgetPassword.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, TMDB_LINK_FORGET_PASSWORD.toUri()))
+      launchUri(TMDB_LINK_FORGET_PASSWORD)
     }
   }
 
@@ -184,9 +192,7 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun formNotEmpty(): Boolean =
-    binding.edUsername.text.isNotEmpty() &&
-      binding.edUsername.text.isNotBlank() &&
-      binding.edPass.text.isNotEmpty() &&
+    binding.edUsername.text.isNotBlank() &&
       binding.edPass.text.isNotBlank()
 
   private fun goToMainActivity(isGuest: Boolean) {
