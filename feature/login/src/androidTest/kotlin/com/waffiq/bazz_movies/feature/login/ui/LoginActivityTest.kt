@@ -1,22 +1,18 @@
 package com.waffiq.bazz_movies.feature.login.ui
 
-import android.app.Activity
-import android.app.Instrumentation.ActivityResult
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.view.View
 import android.widget.EditText
+import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.rule.IntentsRule
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -24,6 +20,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
@@ -45,6 +42,9 @@ import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
 import com.waffiq.bazz_movies.feature.login.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
 import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
+import com.waffiq.bazz_movies.feature.login.ui.testutils.FakeUriLauncher
+import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
+import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -56,7 +56,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
-import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -75,10 +75,13 @@ class LoginActivityTest {
 
   private lateinit var context: Context
 
-  @get:Rule
+  @get:Rule(order = 0)
   var hiltRule = HiltAndroidRule(this)
 
-  @get:Rule
+  @get:Rule(order = 1)
+  var intentsRule = IntentsRule()
+
+  @get:Rule(order = 2)
   var activityRule = ActivityScenarioRule(LoginActivity::class.java)
 
   @BindValue
@@ -96,7 +99,6 @@ class LoginActivityTest {
   @Before
   fun init() {
     hiltRule.inject()
-    Intents.init()
 
     activityRule.scenario.onActivity { activity ->
       context = activity.applicationContext
@@ -107,11 +109,6 @@ class LoginActivityTest {
     every { mockAuthViewModel.userModel } returns userModelLiveData
     every { mockAuthViewModel.loadingState } returns loadingStateLiveData
     every { mockUserPrefViewModel.saveUserPref(any()) } just Runs
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
   }
 
   @Test
@@ -138,41 +135,88 @@ class LoginActivityTest {
   }
 
   @Test
-  fun login_withoutUsernameAndPassword_showsErrorMessage() {
-    // click login button without entering username/password
-    btn_login.performClick()
+  fun clickForgetPassword_successful_launchesCorrectURI() {
+    btn_forget_password.performClick()
 
-    // verify that error messages are shown
-    ed_username.hasErrorText("Please enter a username")
-    ed_pass.hasErrorText("Please enter a password")
+    activityRule.scenario.onActivity { activity ->
+      val fake = activity.uriLauncher as FakeUriLauncher
+      assertEquals(TMDB_LINK_FORGET_PASSWORD.toUri(), fake.launchedUris.first())
+    }
   }
 
   @Test
-  fun login_withOnlyUsername_showsPasswordError() {
+  fun clickJoinTMDB_successful_launchesCorrectURI() {
+    tv_joinTMDB.performClick()
+
+    activityRule.scenario.onActivity { activity ->
+      val fake = activity.uriLauncher as FakeUriLauncher
+      assertEquals(TMDB_LINK_SIGNUP.toUri(), fake.launchedUris.first())
+    }
+  }
+
+  @Test
+  fun clickJoinTMDB_noBrowser_launchesToast() {
+    activityRule.scenario.onActivity { activity ->
+      (activity.uriLauncher as FakeUriLauncher).shouldFail = true
+    }
+
+    tv_joinTMDB.performClick()
+    // Hard to test toast in code, so must check it manually
+  }
+
+  @Test
+  fun login_withCorrectParams_callsAuthenticationViewModel() {
+    performValidLogin()
+    verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
+  }
+
+  @Test
+  fun login_withIncorrectCredential_showsErrorMessage() {
+    // without entering username/password
+    btn_login.performClick()
+    ed_username.hasErrorText("Please enter a username")
+    ed_pass.hasErrorText("Please enter a password")
+
+    clearForm()
+
+    // only username
     typeUserName(validUsername)
     btn_login.performClick()
-
     ed_username.hasNoError()
     ed_pass.hasErrorText("Please enter a password")
-  }
 
-  @Test
-  fun login_withOnlyPassword_showsUsernameError() {
+    clearForm()
+
+    // only password
     typePassword(validPassword)
     btn_login.performClick()
-
     ed_username.hasErrorText("Please enter a username")
     ed_pass.hasNoError()
-  }
 
-  @Test
-  fun login_withBlankSpaces_showsErrorMessages() {
+    clearForm()
+
+    // blank value
     typeUserName("   ")
     typePassword("   ")
     btn_login.performClick()
-
     ed_username.hasErrorText("Please enter a username")
     ed_pass.hasErrorText("Please enter a password")
+
+    clearForm()
+
+    // empty pass
+    typeUserName(validUsername)
+    typePassword("")
+    btn_login.performClick()
+    ed_pass.hasErrorText("Please enter a password")
+
+    clearForm()
+
+    // empty user
+    typeUserName("")
+    typePassword(validPassword)
+    btn_login.performClick()
+    ed_username.hasErrorText("Please enter a username")
   }
 
   @Test
@@ -194,7 +238,7 @@ class LoginActivityTest {
     ed_pass.performType(validPassword)
 
     // move cursor to middle
-    onView(withId(ed_pass)).perform(clickAtPosition(Random.nextInt(1, 6)))
+    ed_pass.performAction(clickAtPosition(Random.nextInt(1, 6)))
 
     // toggle password visibility
     btn_eye.performClick()
@@ -273,36 +317,6 @@ class LoginActivityTest {
   }
 
   @Test
-  fun forgetPasswordButton_whenClicked_opensWebBrowser() {
-    // mock intent to verify URL opening
-    val expectedIntent = hasAction(Intent.ACTION_VIEW)
-    intending(expectedIntent).respondWith(ActivityResult(Activity.RESULT_OK, null))
-
-    btn_forget_password.performClick()
-
-    // verify intent was sent
-    intended(expectedIntent)
-  }
-
-  @Test
-  fun joinTMDBButton_whenClicked_opensWebBrowser() {
-    // mock intent to verify URL opening
-    val expectedIntent = hasAction(Intent.ACTION_VIEW)
-    intending(expectedIntent).respondWith(ActivityResult(Activity.RESULT_OK, null))
-
-    tv_joinTMDB.performClick()
-
-    // verify intent was sent
-    intended(expectedIntent)
-  }
-
-  @Test
-  fun login_withCorrectParams_callsAuthenticationViewModel() {
-    performValidLogin()
-    verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
-  }
-
-  @Test
   fun loginScreen_whenConfigurationChange_maintainsTheState() {
     typeValidCredentials()
 
@@ -318,6 +332,11 @@ class LoginActivityTest {
     // verify data is maintained
     ed_username.doesHaveText(validUsername)
     ed_pass.doesHaveText(validPassword)
+  }
+
+  private fun clearForm() {
+    ed_username.performAction(clearText())
+    ed_pass.performAction(clearText())
   }
 
   private fun typeUserName(userName: String) {

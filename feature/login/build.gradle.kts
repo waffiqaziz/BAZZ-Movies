@@ -19,6 +19,7 @@ dependencies {
 
   // testing
   testImplementation(libs.androidx.core.testing)
+  testImplementation(libs.androidx.test.core.ktx)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.mockito.core)
   testImplementation(libs.mockk)
