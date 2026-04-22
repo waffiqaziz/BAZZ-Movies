@@ -56,27 +56,4 @@ object TestHelper {
         view.title?.toString() == expectedTitle
     }
   }
-
-  /**
-   * Starts [PersonActivity] with a test [person] and runs the given [block] while it's active.
-   *
-   * Used to launch [PersonActivity] for UI tests.
-   *
-   * @param person The person to show in the activity (default is [testMediaCastItem]).
-   * @param block What to do with the launched [PersonActivity].
-   */
-  inline fun Context.launchPersonActivity(
-    person: MediaCastItem? = testMediaCastItem,
-    block: (ActivityScenario<PersonActivity>) -> Unit,
-  ) {
-    val intent = Intent(this, PersonActivity::class.java).apply {
-      if (person != null) {
-        putExtra(PersonActivity.EXTRA_PERSON, person)
-      }
-    }
-
-    ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
-      block(scenario)
-    }
-  }
 }

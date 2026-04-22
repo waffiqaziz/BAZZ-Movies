@@ -1,10 +1,13 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
@@ -13,6 +16,8 @@ import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testDetailPe
 import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testImagesList
 import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testKnownForList
+import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
+import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.Runs
@@ -66,6 +71,38 @@ class DefaultPersonActivityTestHelper : PersonActivityTestHelper {
     this.context = context
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       Glide.get(context).clearMemory()
+    }
+  }
+
+  override fun Context.launchPersonActivity(
+    person: MediaCastItem,
+    block: (ActivityScenario<PersonActivity>) -> Unit,
+  ) {
+    val intent = Intent(this, PersonActivity::class.java).apply {
+      putExtra(PersonActivity.EXTRA_PERSON, person)
+    }
+
+    ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
+      block(scenario)
+    }
+  }
+
+  override fun Context.launchPersonActivity(
+    block: (ActivityScenario<PersonActivity>) -> Unit,
+  ) {
+    this.launchPersonActivity(testMediaCastItem) { block(it) }
+  }
+
+  override fun Context.launchNullPersonActivity(
+    person: MediaCastItem?,
+    block: (ActivityScenario<PersonActivity>) -> Unit,
+  ) {
+    val intent = Intent(this, PersonActivity::class.java).apply {
+      putExtra(PersonActivity.EXTRA_PERSON, person)
+    }
+
+    ActivityScenario.launch<PersonActivity>(intent).use { scenario ->
+      block(scenario)
     }
   }
 }

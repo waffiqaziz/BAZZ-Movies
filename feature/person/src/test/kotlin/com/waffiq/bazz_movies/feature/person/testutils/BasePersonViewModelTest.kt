@@ -103,24 +103,20 @@ abstract class BasePersonViewModelTest {
     runBlock()
     advanceUntilIdle()
 
-    // ✅ Verify success result
     expectedSuccess?.let {
       assertThat(successData).containsExactly(it)
       assertThat(liveData.value).isEqualTo(it)
     }
 
-    // ✅ Verify error result
     expectError?.let {
       val error = personViewModel.errorState.value?.getContentIfNotHandled()
       assertThat(error).isEqualTo(it)
     }
 
-    // ✅ Optional: check loading behavior
     if (checkLoading) {
       checkEventLoading(loadingStates, expectedSuccess, expectError)
     }
 
-    // ✅ Custom verification
     verifyBlock()
   }
 
