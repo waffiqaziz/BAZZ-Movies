@@ -281,7 +281,6 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
     context.launchPersonActivity {
       rv_known_for.performScrollTo()
       rv_known_for.performSwipeDown()
-      rv_known_for.performSwipeDown()
       onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
     }
   }

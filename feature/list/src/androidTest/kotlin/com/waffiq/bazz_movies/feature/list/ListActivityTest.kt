@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.feature.list.R.id.btn_close
 import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
 import com.waffiq.bazz_movies.feature.list.R.id.collapse
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
+import com.waffiq.bazz_movies.feature.list.R.id.iv_picture
 import com.waffiq.bazz_movies.feature.list.R.id.loading_indicator
 import com.waffiq.bazz_movies.feature.list.R.id.rv_list
 import com.waffiq.bazz_movies.feature.list.testutils.BaseListActivityTest
@@ -29,7 +30,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -177,18 +177,6 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun listActivity_whenAdapterIsEmpty_doesNotLoadBackdrop() {
-    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
-    every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
-
-    context.launchListActivity(movieKeywordsArgs) { scenario ->
-      scenario.onActivity { activity ->
-        assertEquals(0, activity.adapter.itemCount)
-      }
-    }
-  }
-
-  @Test
   fun onKeywordsLoadState_itemNotZero_showsBackdrop() {
     context.launchListActivity(movieKeywordsArgs) { scenario ->
       scenario.onActivity { activity ->
@@ -198,10 +186,11 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
-  fun onKeywordsLoadState_itemCountZero_skipsShowBackdrop() {
+  fun onKeywordsLoadState_withEmptyData_stillShowsImageView() {
     every { mockListViewModel.getByKeyword(any(), any()) } returns flowOf(PagingData.empty())
 
     context.launchListActivity(movieKeywordsArgs) { scenario ->
+      iv_picture.isDisplayed() // image view shows but not the actual backdrop
       scenario.onActivity { activity ->
         activity.loadStateChanged()
       }

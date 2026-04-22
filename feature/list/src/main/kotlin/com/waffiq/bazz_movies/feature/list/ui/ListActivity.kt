@@ -57,9 +57,7 @@ class ListActivity : AppCompatActivity() {
   lateinit var navigator: INavigator
 
   private lateinit var binding: ActivityListBinding
-
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  lateinit var adapter: ListAdapter
+  private lateinit var adapter: ListAdapter
 
   private val viewModel: ListViewModel by viewModels()
 
