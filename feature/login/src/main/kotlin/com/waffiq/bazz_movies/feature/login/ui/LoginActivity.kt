@@ -93,18 +93,18 @@ class LoginActivity : AppCompatActivity() {
     binding.apply {
       btnEye.setOnClickListener {
         // save last cursor position
-        val selectionStart = edPass.selectionStart
-        val selectionEnd = edPass.selectionEnd
+        val selectionStart = etPass.selectionStart
+        val selectionEnd = etPass.selectionEnd
 
         // if not clicked yet, then hide password
-        if (edPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
-          edPass.transformationMethod = PasswordTransformationMethod.getInstance()
+        if (etPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
+          etPass.transformationMethod = PasswordTransformationMethod.getInstance()
           btnEye.setImageResource(ic_eye_off)
         } else { // show password
-          edPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
+          etPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
           btnEye.setImageResource(ic_eye)
         }
-        edPass.setSelection(selectionStart, selectionEnd) // set cursor at last position
+        etPass.setSelection(selectionStart, selectionEnd) // set cursor at last position
       }
     }
   }
@@ -128,14 +128,14 @@ class LoginActivity : AppCompatActivity() {
       validateFormFields()
 
       // listener to show button eye
-      binding.edPass.addTextChangedListener {
+      binding.etPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
-        binding.edPass.error = null
+        binding.etPass.error = null
       }
 
       // listener to remove error on username
-      binding.edUsername.addTextChangedListener {
-        binding.edUsername.error = null
+      binding.etUsername.addTextChangedListener {
+        binding.etUsername.error = null
       }
 
       // process login if form is valid
@@ -159,24 +159,24 @@ class LoginActivity : AppCompatActivity() {
 
   private fun validateFormFields() {
     // check password field
-    if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
-      binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
+    if (binding.etPass.text.isEmpty() || binding.etPass.text.isBlank()) {
+      binding.etPass.error = applyFontFamily(getString(please_enter_a_password))
       binding.btnEye.visibility = View.GONE
     } else {
-      binding.edPass.error = null
+      binding.etPass.error = null
     }
 
     // check username field
-    if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank()) {
-      binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
+    if (binding.etUsername.text.isEmpty() || binding.etUsername.text.isBlank()) {
+      binding.etUsername.error = applyFontFamily(getString(please_enter_a_username))
     } else {
-      binding.edUsername.error = null
+      binding.etUsername.error = null
     }
   }
 
   private fun formNotEmpty(): Boolean =
-    binding.edUsername.text.isNotBlank() &&
-      binding.edPass.text.isNotBlank()
+    binding.etUsername.text.isNotBlank() &&
+      binding.etPass.text.isNotBlank()
 
   private fun goToMainActivity(isGuest: Boolean) {
     navigator.openMainActivity(this)
@@ -205,8 +205,8 @@ class LoginActivity : AppCompatActivity() {
      * 3. Create a new session id with the authorized request token
      */
     authenticationViewModel.userLogin(
-      binding.edUsername.text.toString(),
-      binding.edPass.text.toString(),
+      binding.etUsername.text.toString(),
+      binding.etPass.text.toString(),
     )
   }
 

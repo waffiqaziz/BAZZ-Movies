@@ -26,7 +26,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed as isViewDisplaye
 
 @Suppress("TooManyFunctions")
 object CustomViewMatchers {
-  fun withDrawable(resourceId: Int): Matcher<View> {
+  fun withResDrawable(resourceId: Int): Matcher<View> {
     return object : BoundedMatcher<View, ImageView>(ImageView::class.java) {
 
       override fun describeTo(description: Description) {
@@ -46,6 +46,10 @@ object CustomViewMatchers {
         return expectedBitmap.sameAs(actualBitmap)
       }
     }
+  }
+
+  fun Int.withDrawable(resourceId: Int) {
+    onView(withId(this)).check(matches(withResDrawable(resourceId)))
   }
 
   fun Int.doesNotExist() {
@@ -111,6 +115,10 @@ object CustomViewMatchers {
 
   fun Int.hasContentDescription(expected: String) {
     onView(withId(this)).check(matches(withContentDescription(expected)))
+  }
+
+  fun Int.checkMatches(matcher: Matcher<View>) {
+    onView(withId(this)).check(matches(matcher))
   }
 
   fun Int.view(): ViewInteraction = onView(withId(this))

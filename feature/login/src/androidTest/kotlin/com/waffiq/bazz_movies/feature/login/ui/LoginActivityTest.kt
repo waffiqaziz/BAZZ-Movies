@@ -7,21 +7,18 @@ import android.widget.EditText
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.closeSoftKeyboard
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.clearText
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.rule.IntentsRule
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performType
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.checkMatches
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasErrorText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasNoError
@@ -34,8 +31,8 @@ import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
 import com.waffiq.bazz_movies.feature.login.R.id.btn_forget_password
 import com.waffiq.bazz_movies.feature.login.R.id.btn_login
-import com.waffiq.bazz_movies.feature.login.R.id.ed_pass
-import com.waffiq.bazz_movies.feature.login.R.id.ed_username
+import com.waffiq.bazz_movies.feature.login.R.id.et_pass
+import com.waffiq.bazz_movies.feature.login.R.id.et_username
 import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
 import com.waffiq.bazz_movies.feature.login.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
@@ -53,7 +50,6 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -105,26 +101,19 @@ class LoginActivityTest {
   }
 
   @Test
-  fun loginScreen_whenInitialized_showsAllViews() {
+  fun loginScreen_whenInitialized_showsAllViewsCorrectly() {
     btn_forget_password.isDisplayed()
     layout_bazz_movies.isDisplayed()
-    ed_username.isDisplayed()
-    ed_pass.isDisplayed()
+    et_username.isDisplayed()
+    et_pass.isDisplayed()
     btn_eye.isDisplayed()
     btn_login.isDisplayed()
     tv_guest.isDisplayed()
     tv_joinTMDB.isDisplayed()
-  }
 
-  @Test
-  fun loginScreen_whenInitialized_progressBarIsGone() {
     progress_bar.isNotDisplayed()
-  }
-
-  @Test
-  fun loginScreen_whenInitialized_showsButtonEyeOff() {
-    onView(withId(btn_eye))
-      .check(matches(allOf(isDisplayed(), withDrawable(ic_eye_off))))
+    btn_eye.isDisplayed()
+    btn_eye.withDrawable(ic_eye_off)
   }
 
   @Test
@@ -167,24 +156,24 @@ class LoginActivityTest {
   fun login_withIncorrectCredential_showsErrorMessage() {
     // without entering username/password
     btn_login.performClick()
-    ed_username.hasErrorText("Please enter a username")
-    ed_pass.hasErrorText("Please enter a password")
+    et_username.hasErrorText("Please enter a username")
+    et_pass.hasErrorText("Please enter a password")
 
     clearForm()
 
     // only username
     typeUserName(validUsername)
     btn_login.performClick()
-    ed_username.hasNoError()
-    ed_pass.hasErrorText("Please enter a password")
+    et_username.hasNoError()
+    et_pass.hasErrorText("Please enter a password")
 
     clearForm()
 
     // only password
     typePassword(validPassword)
     btn_login.performClick()
-    ed_username.hasErrorText("Please enter a username")
-    ed_pass.hasNoError()
+    et_username.hasErrorText("Please enter a username")
+    et_pass.hasNoError()
 
     clearForm()
 
@@ -192,8 +181,8 @@ class LoginActivityTest {
     typeUserName("   ")
     typePassword("   ")
     btn_login.performClick()
-    ed_username.hasErrorText("Please enter a username")
-    ed_pass.hasErrorText("Please enter a password")
+    et_username.hasErrorText("Please enter a username")
+    et_pass.hasErrorText("Please enter a password")
 
     clearForm()
 
@@ -201,7 +190,7 @@ class LoginActivityTest {
     typeUserName(validUsername)
     typePassword("")
     btn_login.performClick()
-    ed_pass.hasErrorText("Please enter a password")
+    et_pass.hasErrorText("Please enter a password")
 
     clearForm()
 
@@ -209,7 +198,7 @@ class LoginActivityTest {
     typeUserName("")
     typePassword(validPassword)
     btn_login.performClick()
-    ed_username.hasErrorText("Please enter a username")
+    et_username.hasErrorText("Please enter a username")
   }
 
   @Test
@@ -218,46 +207,46 @@ class LoginActivityTest {
 
     // unmask the edit text
     btn_eye.performClick()
-    ed_pass.doesHaveText(validPassword)
+    et_pass.doesHaveText(validPassword)
 
     btn_eye.performClick()
 
     // verify password is masked
-    onView(withId(ed_pass)).check(matches(isPasswordHidden()))
+    et_pass.checkMatches(isPasswordHidden())
   }
 
   @Test
   fun passwordToggle_whenMovingTheCursor_maintainsCursorPosition() {
-    ed_pass.performType(validPassword)
+    et_pass.performType(validPassword)
 
     // move cursor to middle
-    ed_pass.performAction(clickAtPosition(Random.nextInt(1, 6)))
+    et_pass.performAction(clickAtPosition(Random.nextInt(1, 6)))
 
     // toggle password visibility
     btn_eye.performClick()
 
     // verify cursor position is maintained
-    ed_pass.doesHaveText(validPassword)
+    et_pass.doesHaveText(validPassword)
   }
 
   @Test
   fun textWatcher_removesUsernameError_whenTyping() {
     // create an error
     btn_login.performClick()
-    ed_username.hasErrorText("Please enter a username")
+    et_username.hasErrorText("Please enter a username")
 
     // type to remove error
     typeUserName(validUsername)
-    ed_username.hasNoError()
+    et_username.hasNoError()
   }
 
   @Test
   fun textWatcher_removesPasswordError_whenTyping() {
     btn_login.performClick()
-    ed_pass.hasErrorText("Please enter a password")
+    et_pass.hasErrorText("Please enter a password")
 
     typePassword(validPassword)
-    ed_pass.hasNoError()
+    et_pass.hasNoError()
   }
 
   @Test
@@ -320,22 +309,22 @@ class LoginActivityTest {
     }
 
     // verify data is maintained
-    ed_username.doesHaveText(validUsername)
-    ed_pass.doesHaveText(validPassword)
+    et_username.doesHaveText(validUsername)
+    et_pass.doesHaveText(validPassword)
   }
 
   private fun clearForm() {
-    ed_username.performAction(clearText())
-    ed_pass.performAction(clearText())
+    et_username.performAction(clearText())
+    et_pass.performAction(clearText())
   }
 
   private fun typeUserName(userName: String) {
-    ed_username.performType(userName)
+    et_username.performType(userName)
     closeSoftKeyboard()
   }
 
   private fun typePassword(pass: String) {
-    ed_pass.performType(pass)
+    et_pass.performType(pass)
     closeSoftKeyboard()
   }
 
