@@ -42,6 +42,8 @@ import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
 import com.waffiq.bazz_movies.feature.list.utils.BackdropHelper.getBackdrop
 import com.waffiq.bazz_movies.feature.list.utils.Helper.capitaliseEachWord
 import com.waffiq.bazz_movies.feature.list.utils.ParcelableHelper.extractArgsItemFromIntent
+import com.waffiq.bazz_movies.feature.list.utils.RecyclerViewLayoutHelper.restoreInstanceState
+import com.waffiq.bazz_movies.feature.list.utils.RecyclerViewLayoutHelper.saveInstanceState
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
@@ -233,7 +235,7 @@ class ListActivity : AppCompatActivity() {
     )
 
     // save scroll state from the outgoing LayoutManager
-    val savedState = binding.rvList.layoutManager?.onSaveInstanceState()
+    val savedState = binding.rvList.saveInstanceState
     binding.rvList.recycledViewPool.clear() // clear stale holders
 
     // update the layout manager
@@ -245,7 +247,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     // set state into the incoming LayoutManager
-    binding.rvList.layoutManager?.onRestoreInstanceState(savedState)
+    binding.rvList.restoreInstanceState(savedState)
 
     // swap icon
     binding.btnToggleLayout.setIconResource(if (isGrid) ic_grid else ic_list)
