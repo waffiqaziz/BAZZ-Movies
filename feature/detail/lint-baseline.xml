@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.1.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.1.0)" variant="all" version="9.1.0">
+<issues format="6" by="lint 9.2.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.0)" variant="all" version="9.2.0">
 
     <issue
         id="Overdraw"
@@ -13,14 +13,36 @@
     </issue>
 
     <issue
-        id="SetTextI18n"
-        message="Number formatting does not take into account locale settings. Consider using `String.format` instead."
-        errorLine1="              ((rating * ROUNDING_FACTOR).roundToInt() / ROUNDING_FACTOR.toDouble()).toString()"
-        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;?attr/selectableItemBackground&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/kotlin/com/waffiq/bazz_movies/feature/detail/ui/manager/UserInteractionHandler.kt"
-            line="341"
-            column="15"/>
+            file="src/main/res/layout/item_credits_person.xml"
+            line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="TooManyViews"
+        message="`activity_media_detail.xml` has more than 80 views, bad for performance"
+        errorLine1="  &lt;View"
+        errorLine2="   ~~~~">
+        <location
+            file="src/main/res/layout/activity_media_detail.xml"
+            line="731"
+            column="4"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="  &lt;ImageView"
+        errorLine2="   ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_cast_vertical.xml"
+            line="10"
+            column="4"/>
     </issue>
 
 </issues>
