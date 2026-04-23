@@ -13,7 +13,7 @@ versionName = "1.3.2-dev"
 agp = "9.2.0"
 androidTools = "32.2.0"
 kotlin = "2.3.20"
-ksp = "2.3.6"
+ksp = "2.3.7"
 hilt = "2.59.2"
 
 # Google Services
