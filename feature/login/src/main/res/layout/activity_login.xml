@@ -46,12 +46,12 @@
     android:text="@string/login"
     android:textColor="@color/white"
     android:textSize="40sp"
-    app:layout_constraintBottom_toTopOf="@+id/ed_username"
+    app:layout_constraintBottom_toTopOf="@+id/et_username"
     app:layout_constraintStart_toStartOf="parent" />
 
   <!-- Login Form -->
   <EditText
-    android:id="@+id/ed_username"
+    android:id="@+id/et_username"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -65,14 +65,14 @@
     android:textColorHint="@color/gray_400"
     android:textColorLink="@color/white"
     android:textCursorDrawable="@drawable/cursor_color"
-    app:layout_constraintBottom_toTopOf="@+id/ed_pass"
+    app:layout_constraintBottom_toTopOf="@+id/et_pass"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="1.0"
     app:layout_constraintStart_toStartOf="@+id/textView"
     tools:ignore="DuplicateSpeakableTextCheck" />
 
   <EditText
-    android:id="@+id/ed_pass"
+    android:id="@+id/et_pass"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/default_margin_parent_20"
@@ -104,9 +104,9 @@
     android:padding="8dp"
     android:scaleType="fitCenter"
     android:src="@drawable/ic_eye_off"
-    app:layout_constraintBottom_toBottomOf="@+id/ed_pass"
+    app:layout_constraintBottom_toBottomOf="@+id/et_pass"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/ed_pass" />
+    app:layout_constraintTop_toTopOf="@+id/et_pass" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btn_forget_password"

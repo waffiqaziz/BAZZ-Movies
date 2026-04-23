@@ -22,8 +22,8 @@ import com.waffiq.bazz_movies.feature.login.R.id.activity_login
 import com.waffiq.bazz_movies.feature.login.R.id.btn_eye
 import com.waffiq.bazz_movies.feature.login.R.id.btn_forget_password
 import com.waffiq.bazz_movies.feature.login.R.id.btn_login
-import com.waffiq.bazz_movies.feature.login.R.id.ed_pass
-import com.waffiq.bazz_movies.feature.login.R.id.ed_username
+import com.waffiq.bazz_movies.feature.login.R.id.et_pass
+import com.waffiq.bazz_movies.feature.login.R.id.et_username
 import com.waffiq.bazz_movies.feature.login.R.id.layout_bazz_movies
 import com.waffiq.bazz_movies.feature.login.R.id.tv_guest
 import com.waffiq.bazz_movies.feature.login.R.id.tv_joinTMDB
@@ -59,8 +59,8 @@ class LoginActivityTest {
     // Verify that all UI elements are visible
     btn_forget_password.isDisplayed()
     layout_bazz_movies.isDisplayed()
-    ed_username.isDisplayed()
-    ed_pass.isDisplayed()
+    et_username.isDisplayed()
+    et_pass.isDisplayed()
     btn_eye.isDisplayed()
     btn_login.isDisplayed()
     tv_guest.isDisplayed()
@@ -73,22 +73,22 @@ class LoginActivityTest {
     btn_login.performClick()
 
     // Verify that error messages are shown
-    onView(withId(ed_username))
+    onView(withId(et_username))
       .check(matches(withErrorText(context.getString(please_enter_a_username))))
-    onView(withId(ed_pass))
+    onView(withId(et_pass))
       .check(matches(withErrorText(context.getString(please_enter_a_password))))
   }
 
   @Test
   fun triggerPasswordToggle_showsPassword() {
-    onView(withId(ed_pass)).perform(typeText("password123"))
+    onView(withId(et_pass)).perform(typeText("password123"))
 
     // unmask the edit text
     btn_eye.performClick()
-    ed_pass.doesHaveText("password123")
+    et_pass.doesHaveText("password123")
 
     btn_eye.performClick()
-    onView(withId(ed_pass)).check(matches(isPasswordHidden())) // Masked password
+    onView(withId(et_pass)).check(matches(isPasswordHidden())) // Masked password
   }
 
 //  @Test
@@ -107,9 +107,9 @@ class LoginActivityTest {
   @Test
   fun login_withInvalidCredential_returnToLoginActivity() {
     // Enter invalid credentials
-    ed_username.performType("random")
+    et_username.performType("random")
     closeSoftKeyboard()
-    ed_pass.replaceWithText("random")
+    et_pass.replaceWithText("random")
     closeSoftKeyboard()
 
     btn_login.performClick()

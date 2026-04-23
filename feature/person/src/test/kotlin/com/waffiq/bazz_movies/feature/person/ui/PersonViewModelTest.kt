@@ -1,10 +1,17 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonViewModelTest
 import io.mockk.coEvery
 import io.mockk.coVerify
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PersonViewModelTest : BasePersonViewModelTest() {
@@ -33,6 +40,20 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       runBlock = { personViewModel.getDetailPerson(personId) },
       liveData = personViewModel.detailPerson,
       expectError = errorMessage,
+      verifyBlock = {
+        coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
+      }
+    )
+  }
+
+  @Test
+  fun getDetailPerson_whenLoading_emitsLoading() {
+    coEvery { getDetailPersonUseCase.getDetailPerson(personId) } returns flowOf(Outcome.Loading)
+
+    testViewModel(
+      runBlock = { personViewModel.getDetailPerson(personId) },
+      liveData = personViewModel.detailPerson,
+      checkLoading = true,
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
       }
@@ -162,5 +183,36 @@ class PersonViewModelTest : BasePersonViewModelTest() {
         coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
       }
     )
+  }
+
+  @Test
+  fun executeUseCase_whenError_shouldUpdateErrorStateAndLoadingState() = runTest {
+    val errorMessage = "Something went wrong"
+    val flow = flowOf(Outcome.Error(errorMessage))
+
+    personViewModel.executeUseCase(
+      flowProvider = { flow },
+      onSuccess = {}
+    )
+    advanceUntilIdle()
+
+    assertFalse(personViewModel.loadingState.value == true)
+    assertEquals(errorMessage, personViewModel.errorState.value?.getContentIfNotHandled())
+  }
+
+  @Test
+  fun executeUseCase_whenLoading_withDefaultOnLoading_shouldDoNothing() = runTest {
+    val flow = flowOf(Outcome.Loading)
+
+    // Don't pass onLoading — uses the default
+    personViewModel.executeUseCase(
+      flowProvider = { flow },
+      onSuccess = {}
+      // onLoading not passed intentionally
+    )
+
+    // Just verify nothing crashes and no state changes occurred
+    assertFalse(personViewModel.loadingState.value == true)
+    assertNull(personViewModel.errorState.value)
   }
 }

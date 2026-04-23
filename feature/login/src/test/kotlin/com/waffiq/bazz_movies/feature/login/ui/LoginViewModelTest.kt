@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.login.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
@@ -12,12 +11,14 @@ import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarTMDb
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.core.user.domain.model.account.Gravatar
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
+import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
+import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -26,10 +27,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class AuthenticationViewModelTest {
+class LoginViewModelTest {
 
-  private lateinit var viewModel: AuthenticationViewModel
-  private val authTMDbAccountUseCase: AuthTMDbAccountUseCase = mockk()
+  private lateinit var viewModel: LoginViewModel
+  private val mockAuthTMDbAccountUseCase: AuthTMDbAccountUseCase = mockk()
+  private val mockUserPrefUseCase: UserPrefUseCase = mockk()
 
   @get:Rule
   val instantExecutorRule = InstantTaskExecutorRule() // for LiveData testing
@@ -41,7 +43,6 @@ class AuthenticationViewModelTest {
   private val loadingStates = mutableListOf<Boolean>()
   private val errorStates = mutableListOf<String?>()
   private val loginStates = mutableListOf<Boolean>()
-  private val userModels = mutableListOf<UserModel?>()
 
   // test constants
   companion object {
@@ -53,31 +54,30 @@ class AuthenticationViewModelTest {
 
   @Before
   fun setup() {
-    viewModel = AuthenticationViewModel(authTMDbAccountUseCase)
+    viewModel = LoginViewModel(mockAuthTMDbAccountUseCase,mockUserPrefUseCase)
 
     // reset observer lists
     loadingStates.clear()
     errorStates.clear()
     loginStates.clear()
-    userModels.clear()
 
     // set up observers
     viewModel.loadingState.observeForever { loadingStates.add(it) }
     viewModel.errorState.observeForever { errorStates.add(it) }
     viewModel.loginState.observeForever { loginStates.add(it) }
-    viewModel.userModel.observeForever { userModels.add(it) }
+    coEvery { mockUserPrefUseCase.saveUserPref(any()) } just Runs
   }
 
   // helper methods to reduce duplication
   private fun mockSuccessfulTokenCreation() {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
+    coEvery { mockAuthTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN))
     )
   }
 
   private fun mockSuccessfulLogin() {
     coEvery {
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN))
     )
@@ -85,7 +85,7 @@ class AuthenticationViewModelTest {
 
   private fun mockSuccessfulSessionCreation() {
     coEvery {
-      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     } returns flowOf(
       Outcome.Success(CreateSession(success = true, sessionId = TEST_SESSION))
     )
@@ -93,7 +93,7 @@ class AuthenticationViewModelTest {
 
   private fun mockSuccessfulUserDetail() {
     coEvery {
-      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
+      mockAuthTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(AccountDetails(id = 1, username = TEST_USER))
     )
@@ -101,37 +101,37 @@ class AuthenticationViewModelTest {
 
   // verification helper methods
   private fun verifyTokenCreation() {
-    coVerify { authTMDbAccountUseCase.createToken() }
+    coVerify { mockAuthTMDbAccountUseCase.createToken() }
   }
 
   private fun verifyFullLoginSequence() {
     coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
-      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
-      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
+      mockAuthTMDbAccountUseCase.createToken()
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     }
   }
 
   private fun verifyUpToLoginSequence() {
     coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createToken()
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     }
   }
 
   private fun verifyUpToSessionCreationSequence() {
     coVerifySequence {
-      authTMDbAccountUseCase.createToken()
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
-      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createToken()
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     }
   }
 
   @Test
   fun userLogin_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
     // mock the UseCase to emit a failure
-    coEvery { authTMDbAccountUseCase.createToken() } returns flow {
+    coEvery { mockAuthTMDbAccountUseCase.createToken() } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Token creation failed"))
     }
@@ -168,7 +168,7 @@ class AuthenticationViewModelTest {
 
   @Test
   fun userLogin_whenResponseSuccessButAuthFails_setsLoginStateFalse() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
+    coEvery { mockAuthTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = false, requestToken = null))
     )
 
@@ -181,7 +181,7 @@ class AuthenticationViewModelTest {
 
   @Test
   fun userLogin_whenResponseSuccessButNullToken_setsLoginStateFalse() = runTest {
-    coEvery { authTMDbAccountUseCase.createToken() } returns flowOf(
+    coEvery { mockAuthTMDbAccountUseCase.createToken() } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = null))
     )
 
@@ -197,7 +197,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulTokenCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     } returns flowOf(
       Outcome.Success(Authentication(success = true, requestToken = null))
     )
@@ -216,7 +216,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulTokenCreation()
 
     coEvery {
-      authTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.login(TEST_USER, TEST_PASS, TEST_TOKEN)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Token creation failed"))
@@ -237,7 +237,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulLogin()
 
     coEvery {
-      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     } returns flowOf(
       Outcome.Success(CreateSession(success = false, sessionId = TEST_SESSION)) // success false
     )
@@ -256,7 +256,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulLogin()
 
     coEvery {
-      authTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
+      mockAuthTMDbAccountUseCase.createSessionLogin(TEST_TOKEN)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Create login token failed"))
@@ -278,7 +278,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
+      mockAuthTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
@@ -297,7 +297,6 @@ class AuthenticationViewModelTest {
 
     assertThat(loginStates).containsExactly(false, true)
     assertThat(loadingStates).containsExactly(false)
-    assertEquals(0, userModels[0]?.userId)
 
     verifyFullLoginSequence()
   }
@@ -309,7 +308,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
+      mockAuthTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flowOf(
       Outcome.Success(
         AccountDetails(
@@ -328,9 +327,6 @@ class AuthenticationViewModelTest {
 
     assertThat(loginStates).containsExactly(false, true)
     assertThat(loadingStates).containsExactly(false)
-    assertEquals(0, userModels[0]?.userId)
-    assertNull(userModels[0]?.tmdbAvatar)
-    assertNull(userModels[0]?.gravatarHash)
 
     verifyFullLoginSequence()
   }
@@ -342,7 +338,7 @@ class AuthenticationViewModelTest {
     mockSuccessfulSessionCreation()
 
     coEvery {
-      authTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
+      mockAuthTMDbAccountUseCase.getAccountDetails(TEST_SESSION)
     } returns flow {
       emit(Outcome.Loading)
       emit(Outcome.Error("Can't get user details"))
@@ -355,5 +351,21 @@ class AuthenticationViewModelTest {
     assertThat(errorStates).contains("Can't get user details") // error message captured
 
     verifyFullLoginSequence()
+  }
+
+  @Test
+  fun saveGuestUserPref_withCorrectValue_shouldSaveCorrectly() = runTest {
+    viewModel.saveGuestUserPref("name", "username")
+    advanceUntilIdle()
+    coVerify {
+      mockUserPrefUseCase.saveUserPref(
+        match { userModel ->
+          userModel.userId == 0 &&
+            userModel.name == "name" &&
+            userModel.username == "username" &&
+            userModel.isLogin
+        }
+      )
+    }
   }
 }

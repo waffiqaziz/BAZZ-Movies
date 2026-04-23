@@ -115,7 +115,8 @@ class CustomSnapHelperTest {
     val snapHelper = CustomSnapHelper()
     snapHelper.attachToRecyclerView(emptyRecyclerView)
 
-    val distances = snapHelper.calculateDistanceToFinalSnap(emptyRecyclerView.layoutManager!!, targetView)
+    val layoutManager = requireNotNull(emptyRecyclerView.layoutManager)
+    val distances = snapHelper.calculateDistanceToFinalSnap(layoutManager, targetView)
 
     assertNull(distances) // no view to snap to, should return null
   }

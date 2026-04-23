@@ -3,17 +3,14 @@ package com.waffiq.bazz_movies.feature.person.ui
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -49,6 +46,8 @@ import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePagerAdapter
 import com.waffiq.bazz_movies.feature.person.ui.adapter.ImagePersonAdapter
 import com.waffiq.bazz_movies.feature.person.ui.adapter.KnownForAdapter
+import com.waffiq.bazz_movies.feature.person.utils.helper.DialogHelper.setupTransparentDialog
+import com.waffiq.bazz_movies.feature.person.utils.helper.ParcelableHelper.extractMediaCastItemFromIntent
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatDeathInfo
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.hasAnySocialMediaIds
@@ -90,25 +89,18 @@ class PersonActivity : AppCompatActivity() {
     showLoading(true)
 
     // get the data from intent, if not available, finish the activity
-    if (!getDataExtra()) return
+    if (!extractDataFromIntent()) {
+      finish()
+      return
+    }
 
     setupView()
     showData()
   }
 
-  private fun getDataExtra(): Boolean {
-    if (!intent.hasExtra(EXTRA_PERSON)) {
-      finish()
-      return false
-    }
-
-    dataExtra = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      intent.getParcelableExtra(EXTRA_PERSON, MediaCastItem::class.java)
-    } else {
-      @Suppress("DEPRECATION")
-      intent.getParcelableExtra(EXTRA_PERSON)
-    } ?: error("No DataExtra")
-
+  private fun extractDataFromIntent(): Boolean {
+    val item = extractMediaCastItemFromIntent(intent) ?: return false
+    dataExtra = item
     return true
   }
 
@@ -212,12 +204,7 @@ class PersonActivity : AppCompatActivity() {
   private fun showImageDialog(position: Int, imageUrls: List<String>) {
     dialog = Dialog(this).apply {
       setContentView(dialog_image)
-      window?.setDimAmount(DIALOG_ALPHA) // set transparent percent
-      window?.setLayout(
-        WindowManager.LayoutParams.MATCH_PARENT,
-        WindowManager.LayoutParams.WRAP_CONTENT,
-      )
-      window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable()) // set background transparent
+      setupTransparentDialog() // set background transparent
 
       val viewPager: ViewPager2 = findViewById(view_pager_dialog)
       viewPager.adapter = ImagePagerAdapter(imageUrls)
@@ -259,11 +246,6 @@ class PersonActivity : AppCompatActivity() {
     binding.tvBornHeader.isVisible = true
     val birthInfo = formatBirthInfo(person.birthday, person.placeOfBirth, person.deathday)
     binding.tvBorn.text = birthInfo.ifEmpty { getString(no_data) }
-  }
-
-  override fun onSupportNavigateUp(): Boolean {
-    onBackPressedDispatcher.onBackPressed()
-    return true
   }
 
   override fun onDestroy() {

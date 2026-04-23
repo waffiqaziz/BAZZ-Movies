@@ -179,10 +179,10 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
     val viewHolder = provideViewHolder<FavoritePagingAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
-    assertNotNull(viewHolder!!.swipeCallback)
+    assertNotNull(viewHolder?.swipeCallback)
 
     // Trigger the actual callback
-    viewHolder.swipeCallback.onSwipeStateChanged(
+    viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(reveal_layout_start),
       100
@@ -197,10 +197,10 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
     val viewHolder = provideViewHolder<FavoritePagingAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
-    assertNotNull(viewHolder!!.swipeCallback)
+    assertNotNull(viewHolder?.swipeCallback)
 
     // Trigger the actual callback
-    viewHolder.swipeCallback.onSwipeStateChanged(
+    viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(reveal_layout_end),
       100
@@ -215,17 +215,17 @@ class FavoritePagingAdapterTest : BaseAdapterPagingTest() {
     val viewHolder = provideViewHolder<FavoritePagingAdapter.ViewHolder>()
 
     assertNotNull(viewHolder)
-    assertNotNull(viewHolder!!.swipeCallback)
+    assertNotNull(viewHolder?.swipeCallback)
 
     // simulate dragging
-    viewHolder.swipeCallback.onSwipeStateChanged(
+    viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_DRAGGING,
       viewHolder.itemView.findViewById(reveal_layout_end),
       100
     )
 
     // simulate swipe wrong item
-    viewHolder.swipeCallback.onSwipeStateChanged(
+    viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(container_result),
       100

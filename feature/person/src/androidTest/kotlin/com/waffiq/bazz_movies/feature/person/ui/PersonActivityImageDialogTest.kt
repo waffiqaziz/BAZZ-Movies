@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.person.ui
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.intent.Intents
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomRecyclerViewActions.clickItemAt
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -16,14 +15,12 @@ import com.waffiq.bazz_movies.feature.person.R.id.view_pager_dialog
 import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testProfileItem
 import com.waffiq.bazz_movies.feature.person.testutils.DefaultPersonActivityTestHelper
 import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
-import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.launchPersonActivity
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,16 +41,11 @@ class PersonActivityImageDialogTest :
   val mockNavigator: INavigator = mockk(relaxed = true)
 
   @Before
-  fun init() {
+  override fun init() {
+    super.init()
     hiltRule.inject()
     setupMocks()
-    Intents.init()
     initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
   }
 
   private fun setupMocks() {

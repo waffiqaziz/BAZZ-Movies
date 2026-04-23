@@ -18,7 +18,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
-import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.designsystem.R.font.nunito_sans_regular
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_guest_successful
@@ -26,12 +25,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.login_as_user_successfu
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_browser_installed
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_password
 import com.waffiq.bazz_movies.core.designsystem.R.string.please_enter_a_username
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation
 import com.waffiq.bazz_movies.core.uihelper.utils.Animation.fadeInAlpha50
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.snackBarWarning
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
-import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
@@ -55,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityLoginBinding
 
-  private val authenticationViewModel: AuthenticationViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val authenticationViewModel: LoginViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -65,22 +61,25 @@ class LoginActivity : AppCompatActivity() {
     setContentView(binding.root)
     applyWindowInsets(binding.root)
 
+    stateObserver()
+    binding.progressBar.isVisible = false
+
+    showPassword()
+    buttonListener()
+  }
+
+  private fun stateObserver() {
     authenticationViewModel.errorState.observe(this) { errorMessage ->
       Animation.fadeOut(
         binding.layoutBackground.bgAlpha,
         ANIM_DURATION,
       )
-      binding.btnLogin.isEnabled = true
-      binding.tvGuest.isEnabled = true
+      enableButton(true)
       snackBarWarning(binding.activityLogin, null, errorMessage)
     }
-    authenticationViewModel.loginState.observe(this) { getDetailUser(it) }
-    binding.progressBar.isVisible = false
-
-    showPassword()
-    openTMDB()
-    btnLoginListener()
-    btnGuestListener()
+    authenticationViewModel.loginState.observe(this) { success ->
+      if (success) goToMainActivity(isGuest = false)
+    }
   }
 
   private fun launchUri(url: String) {
@@ -90,110 +89,94 @@ class LoginActivity : AppCompatActivity() {
       }
   }
 
-  private fun openTMDB() {
+  private fun showPassword() {
+    binding.apply {
+      btnEye.setOnClickListener {
+        // save last cursor position
+        val selectionStart = etPass.selectionStart
+        val selectionEnd = etPass.selectionEnd
+
+        // if not clicked yet, then hide password
+        if (etPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
+          etPass.transformationMethod = PasswordTransformationMethod.getInstance()
+          btnEye.setImageResource(ic_eye_off)
+        } else { // show password
+          etPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
+          btnEye.setImageResource(ic_eye)
+        }
+        etPass.setSelection(selectionStart, selectionEnd) // set cursor at last position
+      }
+    }
+  }
+
+  private fun buttonListener() {
     binding.tvJoinTMDB.setOnClickListener {
       launchUri(TMDB_LINK_SIGNUP)
     }
     binding.btnForgetPassword.setOnClickListener {
       launchUri(TMDB_LINK_FORGET_PASSWORD)
     }
-  }
 
-  private fun getDetailUser(loginState: Boolean) {
-    if (loginState) {
-      authenticationViewModel.userModel.observe(this) { dataUser ->
-        userPreferenceViewModel.saveUserPref(dataUser)
-        goToMainActivity(isGuest = false)
-      }
+    // login as guest
+    binding.tvGuest.setOnClickListener {
+      authenticationViewModel.saveGuestUserPref(getString(guest_user), getString(guest_user))
+      goToMainActivity(isGuest = true)
     }
-  }
 
-  private fun showPassword() {
-    binding.apply {
-      btnEye.setOnClickListener {
-        // save last cursor position
-        val selectionStart = edPass.selectionStart
-        val selectionEnd = edPass.selectionEnd
-
-        // if not clicked yet, then hide password
-        if (edPass.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())) {
-          edPass.transformationMethod = PasswordTransformationMethod.getInstance()
-          btnEye.setImageResource(ic_eye_off)
-        } else { // show password
-          edPass.transformationMethod = HideReturnsTransformationMethod.getInstance()
-          btnEye.setImageResource(ic_eye)
-        }
-        edPass.setSelection(selectionStart, selectionEnd) // set cursor at last position
-      }
-    }
-  }
-
-  private fun btnLoginListener() {
     // login as user
     binding.btnLogin.setOnClickListener {
       validateFormFields()
 
       // listener to show button eye
-      binding.edPass.addTextChangedListener {
+      binding.etPass.addTextChangedListener {
         binding.btnEye.visibility = View.VISIBLE
-        binding.edPass.error = null
+        binding.etPass.error = null
       }
 
       // listener to remove error on username
-      binding.edUsername.addTextChangedListener {
-        binding.edUsername.error = null
+      binding.etUsername.addTextChangedListener {
+        binding.etUsername.error = null
       }
 
       // process login if form is valid
       if (formNotEmpty()) {
-        binding.tvGuest.isEnabled = false
-        binding.btnLogin.isEnabled = false
+        enableButton(false)
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         loginAsUserRegistered()
       }
     }
   }
 
-  private fun validateFormFields() {
-    // check password field
-    if (binding.edPass.text.isEmpty() || binding.edPass.text.isBlank()) {
-      binding.edPass.error = applyFontFamily(getString(please_enter_a_password))
-      binding.btnEye.visibility = View.GONE
-    } else {
-      binding.edPass.error = null
-    }
-
-    // check username field
-    if (binding.edUsername.text.isEmpty() || binding.edUsername.text.isBlank()) {
-      binding.edUsername.error = applyFontFamily(getString(please_enter_a_username))
-    } else {
-      binding.edUsername.error = null
+  private fun enableButton(isEnable: Boolean) {
+    binding.apply {
+      tvGuest.isEnabled = isEnable
+      tvJoinTMDB.isEnabled = isEnable
+      btnLogin.isEnabled = isEnable
+      btnForgetPassword.isEnabled = isEnable
+      btnEye.isEnabled = isEnable
     }
   }
 
-  private fun btnGuestListener() {
-    // login as guest
-    binding.tvGuest.setOnClickListener {
-      userPreferenceViewModel.saveUserPref(
-        UserModel(
-          userId = 0,
-          name = resources.getString(guest_user),
-          username = resources.getString(guest_user),
-          password = NAN,
-          region = NAN,
-          token = NAN,
-          isLogin = true,
-          gravatarHash = null,
-          tmdbAvatar = null,
-        ),
-      )
-      goToMainActivity(isGuest = true)
+  private fun validateFormFields() {
+    // check password field
+    if (binding.etPass.text.isEmpty() || binding.etPass.text.isBlank()) {
+      binding.etPass.error = applyFontFamily(getString(please_enter_a_password))
+      binding.btnEye.visibility = View.GONE
+    } else {
+      binding.etPass.error = null
+    }
+
+    // check username field
+    if (binding.etUsername.text.isEmpty() || binding.etUsername.text.isBlank()) {
+      binding.etUsername.error = applyFontFamily(getString(please_enter_a_username))
+    } else {
+      binding.etUsername.error = null
     }
   }
 
   private fun formNotEmpty(): Boolean =
-    binding.edUsername.text.isNotBlank() &&
-      binding.edPass.text.isNotBlank()
+    binding.etUsername.text.isNotBlank() &&
+      binding.etPass.text.isNotBlank()
 
   private fun goToMainActivity(isGuest: Boolean) {
     navigator.openMainActivity(this)
@@ -222,8 +205,8 @@ class LoginActivity : AppCompatActivity() {
      * 3. Create a new session id with the authorized request token
      */
     authenticationViewModel.userLogin(
-      binding.edUsername.text.toString(),
-      binding.edPass.text.toString(),
+      binding.etUsername.text.toString(),
+      binding.etPass.text.toString(),
     )
   }
 

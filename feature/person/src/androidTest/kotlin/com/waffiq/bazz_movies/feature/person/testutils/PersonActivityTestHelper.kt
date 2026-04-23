@@ -2,13 +2,19 @@ package com.waffiq.bazz_movies.feature.person.testutils
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ProfilesItem
+import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import com.waffiq.bazz_movies.feature.person.ui.PersonViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
+import org.junit.After
+import org.junit.Before
 
 /**
  * Interface for providing test utilities for PersonActivity.
@@ -26,8 +32,29 @@ interface PersonActivityTestHelper {
   val loadingStateLiveData: MutableLiveData<Boolean>
   var context: Context
 
+  @Before
+  fun init() {
+    Intents.init()
+  }
+
+  @After
+  fun tearDown() {
+    Intents.release()
+  }
+
   fun setupBaseMocks()
   fun setupViewModelMocks(mockPersonViewModel: PersonViewModel)
   fun setupNavigatorMocks(mockNavigator: INavigator)
   fun initializeTest(context: Context)
+
+  fun Context.launchPersonActivity(block: (ActivityScenario<PersonActivity>) -> Unit)
+  fun Context.launchPersonActivity(
+    person: MediaCastItem,
+    block: (ActivityScenario<PersonActivity>) -> Unit,
+  )
+
+  fun Context.launchNullPersonActivity(
+    person: MediaCastItem? = null,
+    block: (ActivityScenario<PersonActivity>) -> Unit,
+  )
 }

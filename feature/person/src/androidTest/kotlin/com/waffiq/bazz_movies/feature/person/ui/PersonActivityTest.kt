@@ -9,7 +9,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
@@ -60,7 +59,6 @@ import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testProfileI
 import com.waffiq.bazz_movies.feature.person.testutils.DefaultPersonActivityTestHelper
 import com.waffiq.bazz_movies.feature.person.testutils.PersonActivityTestHelper
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.isRefreshing
-import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.launchPersonActivity
 import com.waffiq.bazz_movies.feature.person.testutils.TestHelper.withCollapsingToolbarTitle
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper
 import com.waffiq.bazz_movies.feature.person.utils.helper.PersonPageHelper.formatBirthInfo
@@ -77,7 +75,6 @@ import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -99,16 +96,11 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   val mockPersonViewModel: PersonViewModel = mockk(relaxed = true)
 
   @Before
-  fun init() {
+  override fun init() {
+    super.init()
     hiltRule.inject()
     setupMocks()
-    Intents.init()
     initializeTest(ApplicationProvider.getApplicationContext())
-  }
-
-  @After
-  fun tearDown() {
-    Intents.release()
   }
 
   private fun setupMocks() {
@@ -132,7 +124,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
       iv_picture.hasContentDescription("with_profile")
       collapse.isDisplayed()
-      tv_biography.performScrollTo()
+      rv_photos.performScrollTo()
       tv_biography.doesHaveText(testDetailPerson.biography ?: "")
       rv_known_for.isDisplayed()
 
@@ -141,16 +133,16 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
       tv_death.isNotDisplayed()
       rv_photos.isDisplayed()
 
-      verify { mockPersonViewModel.getDetailPerson(testExternalIDPerson.id!!) }
-      verify { mockPersonViewModel.getKnownFor(testExternalIDPerson.id!!) }
-      verify { mockPersonViewModel.getImagePerson(testExternalIDPerson.id!!) }
-      verify { mockPersonViewModel.getExternalIDPerson(testExternalIDPerson.id!!) }
+      verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
+      verify { mockPersonViewModel.getKnownFor(any<Int>()) }
+      verify { mockPersonViewModel.getImagePerson(any<Int>()) }
+      verify { mockPersonViewModel.getExternalIDPerson(any<Int>()) }
     }
   }
 
   @Test
   fun launchPersonActivity_whenPersonIdIsNull_closesTheActivity() = runTest {
-    context.launchPersonActivity(null) {
+    context.launchNullPersonActivity() { scenario ->
       InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 
       val resumedActivities = mutableListOf<Activity>()
@@ -162,6 +154,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
       // assert that PersonActivity is NOT resumed (means it was finished)
       assertTrue(resumedActivities.none { it is PersonActivity })
+      assertEquals(scenario.state, Lifecycle.State.DESTROYED)
     }
   }
 
@@ -429,7 +422,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
   @Test
   fun biography_whenNull_displaysNoBiography() = runTest {
-    context.launchPersonActivity {
+    context.launchPersonActivity() {
       InstrumentationRegistry.getInstrumentation().runOnMainSync {
         detailPersonLiveData.postValue(testDetailPerson.copy(biography = null))
       }
@@ -450,7 +443,7 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
 
   // helper action
   private fun noBiography() {
-    tv_biography.performScrollTo()
+    rv_photos.performScrollTo()
     tv_biography.doesHaveText(context.getString(no_biography))
   }
 

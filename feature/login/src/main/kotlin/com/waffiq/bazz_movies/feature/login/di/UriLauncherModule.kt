@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.login.di
 
-import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncherImpl
 import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncher
+import com.waffiq.bazz_movies.feature.login.utils.openurl.UriLauncherImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

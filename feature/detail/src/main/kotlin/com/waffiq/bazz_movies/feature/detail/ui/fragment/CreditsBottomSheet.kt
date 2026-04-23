@@ -74,7 +74,7 @@ class CreditsBottomSheet : BottomSheetDialogFragment() {
     castAdapter.submitList(credits.cast)
   }
 
-  private fun setupTabs(credits:  MediaCredits) {
+  private fun setupTabs(credits: MediaCredits) {
     binding.tabLayout.apply {
       addTab(newTab().setText(getString(cast) + " (${credits.cast.size})"))
       addTab(newTab().setText(getString(crew) + " (${credits.crew.size})"))

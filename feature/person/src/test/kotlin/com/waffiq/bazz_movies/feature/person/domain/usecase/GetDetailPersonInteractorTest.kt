@@ -203,6 +203,18 @@ class GetDetailPersonInteractorTest {
   }
 
   @Test
+  fun getKnownForPerson_whenLoading_emitsLoading() = runTest {
+    coEvery { mockRepository.getKnownForPerson(personId) } returns flowOf(Outcome.Loading)
+
+    getDetailPersonInteractor.getKnownForPerson(personId).test {
+      val emission = awaitItem()
+      assertTrue(emission is Outcome.Loading)
+      awaitComplete()
+    }
+    coVerify { mockRepository.getKnownForPerson(personId) }
+  }
+
+  @Test
   fun getKnownForPerson_whenUnsuccessful_emitsError() = runTest {
     val flow = flowOf(Outcome.Error(message = errorMessage))
     coEvery { mockRepository.getKnownForPerson(personId) } returns flow

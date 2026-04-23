@@ -68,7 +68,7 @@ class WindowInsetsListenerRoboTest {
     val result = activity.applyWindowInsets(view)
     assertNotNull(result)
 
-    val returnedInsets = result!!.onApplyWindowInsets(view, mockInsets)
+    val returnedInsets = result?.onApplyWindowInsets(view, mockInsets)
 
     // verify padding was set correctly
     assertEquals(8, view.paddingLeft)
@@ -95,7 +95,7 @@ class WindowInsetsListenerRoboTest {
 
     assertNotNull(result)
 
-    val returnedInsets = result!!.onApplyWindowInsets(view, mockInsets)
+    val returnedInsets = result?.onApplyWindowInsets(view, mockInsets)
 
     // verify padding was set correctly
     assertEquals(8, view.paddingLeft)

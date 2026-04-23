@@ -60,7 +60,7 @@ class MediaDetailTest {
     )
 
     assertEquals(789, detail.id)
-    assertTrue(detail.genreId!!.isEmpty())
+    assertTrue(detail.genreId?.isEmpty() ?: false)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
   }
 
