@@ -45,7 +45,7 @@
 [![Repo Size][BADGE-SIZE]][SIZE]
 [![Contributions][BADGE-CONTRIBUTION]][CONTRIBUTION]
 
-<img src="https://i.postimg.cc/HnMv8FNp/Thumbnail-blur-v1-3-0.png" width="550"/>
+<img src="https://i.postimg.cc/zGRYF0bw/Thumbnail-blur-1-4-0.png" width="550" alt="Header image"/>
 
 </div>
 
@@ -81,7 +81,7 @@ BAZZ Movies available downloaded via Google Play Store
 1. **Install Android Studio**
 
    - Download and install [Android Studio](https://developer.android.com/studio).
-   - Minimum required version: **Panda 2 | 2025.3.2**
+   - Minimum required version: **Panda 4 | 2025.3.4**
 
 2. **Install JDK 21**
 
@@ -89,7 +89,7 @@ BAZZ Movies available downloaded via Google Play Store
 
 3. **Clone the Project**
 
-   Clone this repository to your local machine using Git.
+   Clone this repository to your local machine using [Git](https://git-scm.com/).
 
 4. **(Optional) Set up Firebase Services**
 
