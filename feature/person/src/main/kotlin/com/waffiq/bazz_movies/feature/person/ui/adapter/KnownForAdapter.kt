@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
@@ -66,7 +66,7 @@ class KnownForAdapter(private val navigator: INavigator) :
         .error(ic_poster_error)
         .into(binding.imgCastPhoto)
 
-      binding.tvCastName.text = cast.validName
+      binding.tvCastName.text = titleHandler(cast)
       binding.tvCastCharacter.text = cast.character ?: itemView.context.getString(not_available)
 
       val mediaItem = MediaItem(
