@@ -74,9 +74,10 @@ class KnownForAdapterTest {
 
     val testCases = listOf(
       CastItem(name = "Test Name") to "Test Name",
-      CastItem(title = "Test Title") to "Item",
+      CastItem(title = "Test Title") to "Test Title",
       CastItem(originalName = "Original Name") to "Original Name",
-      CastItem(originalTitle = "Original Title") to "Item"
+      CastItem(originalTitle = "Original Title") to "Original Title",
+      CastItem() to "Item"
     )
 
     val characterCases = listOf(

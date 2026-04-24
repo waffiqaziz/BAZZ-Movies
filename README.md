@@ -45,7 +45,7 @@
 [![Repo Size][BADGE-SIZE]][SIZE]
 [![Contributions][BADGE-CONTRIBUTION]][CONTRIBUTION]
 
-<img src="https://i.postimg.cc/zGRYF0bw/Thumbnail-blur-1-4-0.png" width="550" alt="Header image"/>
+<img src="https://i.postimg.cc/BnBDL259/Thumbnail-blur-1-4-1.png" width="550" alt="Header image"/>
 
 </div>
 
