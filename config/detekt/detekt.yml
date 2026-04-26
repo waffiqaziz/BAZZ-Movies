@@ -724,7 +724,7 @@ style:
   MandatoryBracesLoops:
     active: false
   MaxChainedCallsOnSameLine:
-    active: false
+    active: true
     maxChainedCalls: 5
   MaxLineLength:
     active: true
@@ -784,8 +784,8 @@ style:
     active: true
   SerialVersionUIDInSerializableClass:
     active: true
-  SpacingAfterPackageDeclaration:
-    active: false
+  SpacingAfterPackageAndImports:
+    active: true
   StringShouldBeRawString:
     active: false
     maxEscapedCharacterCount: 2
