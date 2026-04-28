@@ -85,6 +85,24 @@ class AuthTMDbAccountInteractorTest {
       )
     )
   }
+
+  private suspend fun assertSessionCreationFailed() {
+    performLogin().test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Session creation failed", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+  }
+
+  private suspend fun assertNoOutcomeEmitted() {
+    performLogin().test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("No outcome emitted from step", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+  }
+
+  private fun performLogin() = interactor.login(TEST_USER, TEST_PASS)
   // endregion Helper
 
   private fun stubFullSuccess() {
@@ -100,7 +118,7 @@ class AuthTMDbAccountInteractorTest {
   fun login_whenAllStepsSucceed_emitsLoadingThenSuccess() = runTest {
     stubFullSuccess()
 
-    interactor.login(TEST_USER, TEST_PASS).test {
+    performLogin().test {
       assertTrue(awaitItem() is Outcome.Loading)
       assertTrue(awaitItem() is Outcome.Success)
       awaitComplete()
@@ -111,7 +129,7 @@ class AuthTMDbAccountInteractorTest {
   fun login_whenAllStepsSucceed_callsRepositoryInOrder() = runTest {
     stubFullSuccess()
 
-    interactor.login(TEST_USER, TEST_PASS).collect()
+    performLogin().collect()
 
     inOrder(mockRepository) {
       verify(mockRepository).createToken()
@@ -126,7 +144,7 @@ class AuthTMDbAccountInteractorTest {
   fun login_whenAllStepsSucceed_savesCorrectUserModel() = runTest {
     stubFullSuccess()
 
-    interactor.login(TEST_USER, TEST_PASS).collect()
+    performLogin().collect()
 
     val captor = argumentCaptor<UserModel>()
     verify(mockRepository).saveUserPref(captor.capture())
@@ -149,7 +167,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Error("Token creation failed"))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
+    performLogin().test {
       assertTrue(awaitItem() is Outcome.Loading)
       assertEquals("Token creation failed", (awaitItem() as Outcome.Error).message)
       awaitComplete()
@@ -168,7 +186,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Success(Authentication(success = true, requestToken = null)))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
+    performLogin().test {
       assertTrue(awaitItem() is Outcome.Loading)
       assertEquals("Request token was null", (awaitItem() as Outcome.Error).message)
       awaitComplete()
@@ -182,11 +200,7 @@ class AuthTMDbAccountInteractorTest {
   fun createToken_unexpectedState_emitsUnexpectedStateError() = runTest {
     whenever(mockRepository.createToken()).thenReturn(flowOf(Outcome.Loading))
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertNoOutcomeEmitted()
 
     verify(mockRepository, never()).login(any(), any(), any())
   }
@@ -200,7 +214,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Error("Authorize token failed"))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
+    performLogin().test {
       assertTrue(awaitItem() is Outcome.Loading)
       assertEquals("Authorize token failed", (awaitItem() as Outcome.Error).message)
       awaitComplete()
@@ -235,11 +249,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Loading)
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertNoOutcomeEmitted()
 
     verify(mockRepository, never()).createSessionLogin(any())
   }
@@ -254,11 +264,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Error("Session creation failed"))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Session creation failed", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertSessionCreationFailed()
 
     verify(mockRepository).createSessionLogin(TEST_TOKEN)
     verify(mockRepository, never()).getAccountDetails(any())
@@ -273,11 +279,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Success(CreateSession(success = false, sessionId = TEST_SESSION)))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Session creation failed", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertSessionCreationFailed()
 
     verify(mockRepository, never()).getAccountDetails(any())
     verify(mockRepository, never()).saveUserPref(any())
@@ -291,11 +293,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Loading)
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertNoOutcomeEmitted()
 
     verify(mockRepository, never()).getAccountDetails(any())
   }
@@ -311,7 +309,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Error("Can't get user details"))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
+    performLogin().test {
       assertTrue(awaitItem() is Outcome.Loading)
       assertEquals("Can't get user details", (awaitItem() as Outcome.Error).message)
       awaitComplete()
@@ -330,11 +328,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Loading)
     )
 
-    interactor.login(TEST_USER, TEST_PASS).test {
-      assertTrue(awaitItem() is Outcome.Loading)
-      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
-      awaitComplete()
-    }
+    assertNoOutcomeEmitted()
 
     verify(mockRepository, never()).saveUserPref(any())
   }
@@ -350,7 +344,7 @@ class AuthTMDbAccountInteractorTest {
       flowOf(Outcome.Success(AccountDetails(id = null, username = TEST_USER)))
     )
 
-    interactor.login(TEST_USER, TEST_PASS).collect()
+    performLogin().collect()
 
     val captor = argumentCaptor<UserModel>()
     verify(mockRepository).saveUserPref(captor.capture())
@@ -374,7 +368,7 @@ class AuthTMDbAccountInteractorTest {
       )
     )
 
-    interactor.login(TEST_USER, TEST_PASS).collect()
+    performLogin().collect()
 
     val captor = argumentCaptor<UserModel>()
     verify(mockRepository).saveUserPref(captor.capture())
