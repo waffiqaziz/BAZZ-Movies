@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.login.utils
 
 import android.graphics.Typeface
 import android.text.TextPaint
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -36,5 +37,11 @@ class CustomTypefaceSpanTest {
   fun updateMeasureState_whenCalled_shouldSetCorrectTypeface() {
     customTypefaceSpan.updateMeasureState(mockTextPaint)
     verify(mockTextPaint).typeface = mockTypeface
+  }
+
+  @Test
+  fun customTypefaceSpan_usingConstructor_setsTypeface() {
+    val span = CustomTypefaceSpan(mockTypeface)
+    assertEquals(mockTypeface, span.typeface)
   }
 }

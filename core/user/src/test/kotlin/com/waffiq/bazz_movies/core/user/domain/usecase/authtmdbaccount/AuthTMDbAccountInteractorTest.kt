@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.PostResult
+import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.user.domain.model.account.AccountDetails
 import com.waffiq.bazz_movies.core.user.domain.model.account.Authentication
 import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarItem
@@ -10,15 +11,20 @@ import com.waffiq.bazz_movies.core.user.domain.model.account.AvatarTMDb
 import com.waffiq.bazz_movies.core.user.domain.model.account.CreateSession
 import com.waffiq.bazz_movies.core.user.domain.model.account.Gravatar
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -26,104 +32,364 @@ import org.mockito.kotlin.whenever
  * Test AuthTMDbAccountInteractor using mockito
  */
 class AuthTMDbAccountInteractorTest {
-  private val sessionId = "session_id"
-  private val errorMessage = "Network error"
-  private val requestToken = "request_token"
 
   private val mockRepository: IUserRepository = mock()
-  private lateinit var authTMDbAccountInteractor: AuthTMDbAccountInteractor
+  private lateinit var interactor: AuthTMDbAccountInteractor
 
   @Before
   fun setup() {
-    authTMDbAccountInteractor = AuthTMDbAccountInteractor(mockRepository)
+    interactor = AuthTMDbAccountInteractor(mockRepository)
   }
 
-  @Test
-  fun login_whenSuccessful_returnsSuccessResult() = runTest {
-    val response = Authentication(
-      success = true,
-      expireAt = "date_expire",
-      requestToken = "request_token_verified"
+  companion object {
+    private const val TEST_USER = "username"
+    private const val TEST_PASS = "password"
+    private const val TEST_TOKEN = "request_token"
+    private const val TEST_SESSION = "session_id"
+    private const val ERROR_MESSAGE = "Network error"
+  }
+
+  // region Helper
+  private fun stubTokenSuccess() {
+    whenever(mockRepository.createToken()).thenReturn(
+      flowOf(Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN)))
     )
-    val username = "username"
-    val pass = "password"
+  }
 
-    val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.login(username, pass, requestToken)).thenReturn(flow)
+  private fun stubLoginSuccess() {
+    whenever(mockRepository.login(TEST_USER, TEST_PASS, TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Success(Authentication(success = true, requestToken = TEST_TOKEN)))
+    )
+  }
 
-    authTMDbAccountInteractor.login(username, pass, requestToken).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      emission as Outcome.Success
-      assertTrue(emission.data.success)
-      assertEquals("date_expire", emission.data.expireAt)
-      assertEquals("request_token_verified", emission.data.requestToken)
+  private fun stubSessionSuccess() {
+    whenever(mockRepository.createSessionLogin(TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Success(CreateSession(success = true, sessionId = TEST_SESSION)))
+    )
+  }
+
+  private fun stubAccountDetailsSuccess() {
+    whenever(mockRepository.getAccountDetails(TEST_SESSION)).thenReturn(
+      flowOf(
+        Outcome.Success(
+          AccountDetails(
+            id = 1,
+            name = "Waffiq",
+            username = TEST_USER,
+            avatarItem = AvatarItem(
+              gravatar = Gravatar(hash = "hash123"),
+              avatarTMDb = AvatarTMDb(avatarPath = "/path.jpg")
+            )
+          )
+        )
+      )
+    )
+  }
+  // endregion Helper
+
+  private fun stubFullSuccess() {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    stubSessionSuccess()
+    stubAccountDetailsSuccess()
+  }
+
+  // Success path
+
+  @Test
+  fun login_whenAllStepsSucceed_emitsLoadingThenSuccess() = runTest {
+    stubFullSuccess()
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertTrue(awaitItem() is Outcome.Success)
       awaitComplete()
     }
-    verify(mockRepository, times(1)).login(username, pass, requestToken)
   }
 
   @Test
-  fun login_whenFailedOccur_returnsErrorMessage() = runTest {
-    val username = "username"
-    val pass = "password"
-    val sessionId = "session_id"
+  fun login_whenAllStepsSucceed_callsRepositoryInOrder() = runTest {
+    stubFullSuccess()
 
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.login(username, pass, sessionId)).thenReturn(flow)
+    interactor.login(TEST_USER, TEST_PASS).collect()
 
-    authTMDbAccountInteractor.login(username, pass, sessionId).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
-      awaitComplete()
+    inOrder(mockRepository) {
+      verify(mockRepository).createToken()
+      verify(mockRepository).login(TEST_USER, TEST_PASS, TEST_TOKEN)
+      verify(mockRepository).createSessionLogin(TEST_TOKEN)
+      verify(mockRepository).getAccountDetails(TEST_SESSION)
+      verify(mockRepository).saveUserPref(any())
     }
-    verify(mockRepository, times(1)).login(username, pass, sessionId)
   }
 
   @Test
-  fun createToken_whenSuccessful_returnsSuccessResult() = runTest {
+  fun login_whenAllStepsSucceed_savesCorrectUserModel() = runTest {
+    stubFullSuccess()
+
+    interactor.login(TEST_USER, TEST_PASS).collect()
+
+    val captor = argumentCaptor<UserModel>()
+    verify(mockRepository).saveUserPref(captor.capture())
+    captor.firstValue.also { user ->
+      assertEquals(1, user.userId)
+      assertEquals("Waffiq", user.name)
+      assertEquals(TEST_USER, user.username)
+      assertEquals(TEST_SESSION, user.token)
+      assertTrue(user.isLogin)
+      assertEquals("hash123", user.gravatarHash)
+      assertEquals("/path.jpg", user.tmdbAvatar)
+    }
+  }
+
+  // Step 1: createToken
+
+  @Test
+  fun createToken_errorOutcome_emitErrorAndStopsChain() = runTest {
+    whenever(mockRepository.createToken()).thenReturn(
+      flowOf(Outcome.Error("Token creation failed"))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Token creation failed", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).createToken()
+    verify(mockRepository, never()).login(any(), any(), any())
+    verify(mockRepository, never()).createSessionLogin(any())
+    verify(mockRepository, never()).getAccountDetails(any())
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  @Test
+  fun createToken_nullRequestTokenInSuccess_emitsErrorAndStopsChain() = runTest {
+    whenever(mockRepository.createToken()).thenReturn(
+      flowOf(Outcome.Success(Authentication(success = true, requestToken = null)))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Request token was null", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).createToken()
+    verify(mockRepository, never()).login(any(), any(), any())
+  }
+
+  @Test
+  fun createToken_unexpectedState_emitsUnexpectedStateError() = runTest {
+    whenever(mockRepository.createToken()).thenReturn(flowOf(Outcome.Loading))
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository, never()).login(any(), any(), any())
+  }
+
+  // Step 2: login (authorize token)
+
+  @Test
+  fun authorize_errorOutcome_emitsErrorAndStopsChain() = runTest {
+    stubTokenSuccess()
+    whenever(mockRepository.login(TEST_USER, TEST_PASS, TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Error("Authorize token failed"))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Authorize token failed", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).login(TEST_USER, TEST_PASS, TEST_TOKEN)
+    verify(mockRepository, never()).createSessionLogin(any())
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  @Test
+  fun authorize_nullRequestTokenInSuccess_emitsErrorAndStopsChain() = runTest {
+    stubTokenSuccess()
+    whenever(mockRepository.login(TEST_USER, TEST_PASS, TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Success(Authentication(success = true, requestToken = null)))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Authorized token was null", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).login(TEST_USER, TEST_PASS, TEST_TOKEN)
+    verify(mockRepository, never()).createSessionLogin(any())
+  }
+
+  @Test
+  fun authorize_unexpectedState_emitsUnexpectedStateError() = runTest {
+    stubTokenSuccess()
+    whenever(mockRepository.login(TEST_USER, TEST_PASS, TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Loading)
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository, never()).createSessionLogin(any())
+  }
+
+  // Step 3: createSession
+
+  @Test
+  fun createSession_errorOutcome_emitsErrorAndStopsChain() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    whenever(mockRepository.createSessionLogin(TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Error("Session creation failed"))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Session creation failed", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).createSessionLogin(TEST_TOKEN)
+    verify(mockRepository, never()).getAccountDetails(any())
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  @Test
+  fun createSession_unsuccessful_emitsSessionCreationFailedAndStopsChain() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    whenever(mockRepository.createSessionLogin(TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Success(CreateSession(success = false, sessionId = TEST_SESSION)))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Session creation failed", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository, never()).getAccountDetails(any())
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  @Test
+  fun createSession_unexpectedState_emitsUnexpectedStateError() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    whenever(mockRepository.createSessionLogin(TEST_TOKEN)).thenReturn(
+      flowOf(Outcome.Loading)
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository, never()).getAccountDetails(any())
+  }
+
+  // Step 4: getAccountDetails
+
+  @Test
+  fun getAccountDetails_errorOutcome_emitsErrorAndNotSaveUser() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    stubSessionSuccess()
+    whenever(mockRepository.getAccountDetails(TEST_SESSION)).thenReturn(
+      flowOf(Outcome.Error("Can't get user details"))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Can't get user details", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository).getAccountDetails(TEST_SESSION)
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  @Test
+  fun getAccountDetails_unexpectedState_emitsUnexpectedStateError() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    stubSessionSuccess()
+    whenever(mockRepository.getAccountDetails(TEST_SESSION)).thenReturn(
+      flowOf(Outcome.Loading)
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).test {
+      assertTrue(awaitItem() is Outcome.Loading)
+      assertEquals("Unexpected state", (awaitItem() as Outcome.Error).message)
+      awaitComplete()
+    }
+
+    verify(mockRepository, never()).saveUserPref(any())
+  }
+
+  // Step 5: saveUserPref edge cases
+
+  @Test
+  fun saveUserPref_nullAccountId_savesUserIdAsZero() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    stubSessionSuccess()
+    whenever(mockRepository.getAccountDetails(TEST_SESSION)).thenReturn(
+      flowOf(Outcome.Success(AccountDetails(id = null, username = TEST_USER)))
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).collect()
+
+    val captor = argumentCaptor<UserModel>()
+    verify(mockRepository).saveUserPref(captor.capture())
+    assertEquals(0, captor.firstValue.userId)
+  }
+
+  @Test
+  fun saveUserPref_nullAvatars_savesNullGravatarHashAndTmdbAvatar() = runTest {
+    stubTokenSuccess()
+    stubLoginSuccess()
+    stubSessionSuccess()
+    whenever(mockRepository.getAccountDetails(TEST_SESSION)).thenReturn(
+      flowOf(
+        Outcome.Success(
+          AccountDetails(
+            id = 1,
+            username = TEST_USER,
+            avatarItem = AvatarItem(gravatar = null, avatarTMDb = null)
+          )
+        )
+      )
+    )
+
+    interactor.login(TEST_USER, TEST_PASS).collect()
+
+    val captor = argumentCaptor<UserModel>()
+    verify(mockRepository).saveUserPref(captor.capture())
+    assertNull(captor.firstValue.gravatarHash)
+    assertNull(captor.firstValue.tmdbAvatar)
+  }
+
+  @Test
+  fun deleteSession_whenSuccessful_returnsSuccessResult() = runTest {
     val response =
-      Authentication(success = true, expireAt = "date_expire", requestToken = "request_token")
-
+      PostResult(success = true, statusCode = 200, statusMessage = "Delete session success")
     val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.createToken()).thenReturn(flow)
+    whenever(mockRepository.deleteSession(TEST_SESSION)).thenReturn(flow)
 
-    authTMDbAccountInteractor.createToken().test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      emission as Outcome.Success
-      assertTrue(emission.data.success)
-      assertEquals("date_expire", emission.data.expireAt)
-      assertEquals("request_token", emission.data.requestToken)
-      awaitComplete()
-    }
-    verify(mockRepository, times(1)).createToken()
-  }
-
-  @Test
-  fun createToken_whenFailedOccur_returnsErrorMessage() = runTest {
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.createToken()).thenReturn(flow)
-
-    authTMDbAccountInteractor.createToken().test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
-      awaitComplete()
-    }
-    verify(mockRepository, times(1)).createToken()
-  }
-
-  @Test
-  fun deleteSession_whenSuccessfull_returnsSuccessResult() = runTest {
-    val response = PostResult(success = true, statusCode = 200, statusMessage = "Delete session success")
-    val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
-
-    authTMDbAccountInteractor.deleteSession(sessionId).test {
+    interactor.deleteSession(TEST_SESSION).test {
       val emission = awaitItem()
       assertTrue(emission is Outcome.Success)
       emission as Outcome.Success
@@ -132,102 +398,19 @@ class AuthTMDbAccountInteractorTest {
       assertEquals("Delete session success", emission.data.statusMessage)
       awaitComplete()
     }
-    verify(mockRepository, times(1)).deleteSession(sessionId)
+    verify(mockRepository, times(1)).deleteSession(TEST_SESSION)
   }
 
   @Test
   fun deleteSession_whenFailedOccur_returnsErrorMessage() = runTest {
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.deleteSession(sessionId)).thenReturn(flow)
+    val flow = flowOf(Outcome.Error(message = ERROR_MESSAGE))
+    whenever(mockRepository.deleteSession(TEST_SESSION)).thenReturn(flow)
 
-    authTMDbAccountInteractor.deleteSession(sessionId).test {
+    interactor.deleteSession(TEST_SESSION).test {
       val emission = awaitItem()
       assertTrue(emission is Outcome.Error)
       emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun createSession_whenLoginSuccess_returnsSuccessResult() = runTest {
-    val response = CreateSession(success = true, sessionId = "session_id")
-
-    val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.createSessionLogin(requestToken)).thenReturn(flow)
-
-    authTMDbAccountInteractor.createSessionLogin(requestToken).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      emission as Outcome.Success
-      assertTrue(emission.data.success)
-      assertEquals("session_id", emission.data.sessionId)
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun createSession_whenLoginFailed_returnsErrorMessage() = runTest {
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.createSessionLogin(requestToken)).thenReturn(flow)
-
-    authTMDbAccountInteractor.createSessionLogin(requestToken).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun getAccountDetails_whenSuccessful_returnsUserDataCorrectly() = runTest {
-    val response = AccountDetails(
-      includeAdult = false,
-      iso31661 = "en",
-      name = "Waffiq",
-      avatarItem = AvatarItem(
-        gravatar = Gravatar(
-          hash = "325987423659432"
-        ),
-        avatarTMDb = AvatarTMDb(
-          avatarPath = "347589074283054"
-        )
-      ),
-      id = 12345678,
-      iso6391 = "ID",
-      username = "waffiq12345",
-    )
-
-    val flow = flowOf(Outcome.Success(response))
-    whenever(mockRepository.getAccountDetails(sessionId)).thenReturn(flow)
-
-    authTMDbAccountInteractor.getAccountDetails(sessionId).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      emission as Outcome.Success
-      assertFalse(emission.data.includeAdult == true)
-      assertEquals("en", emission.data.iso31661)
-      assertEquals("Waffiq", emission.data.name)
-      assertEquals("325987423659432", emission.data.avatarItem?.gravatar?.hash)
-      assertEquals("347589074283054", emission.data.avatarItem?.avatarTMDb?.avatarPath)
-      assertEquals(12345678, emission.data.id)
-      assertEquals("ID", emission.data.iso6391)
-      assertEquals("waffiq12345", emission.data.username)
-      awaitComplete()
-    }
-  }
-
-  @Test
-  fun getAccountDetails_whenFailedOccur_returnsErrorMessage() = runTest {
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    whenever(mockRepository.getAccountDetails(sessionId)).thenReturn(flow)
-
-    authTMDbAccountInteractor.getAccountDetails(sessionId).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
+      assertEquals(ERROR_MESSAGE, emission.message)
       awaitComplete()
     }
   }
