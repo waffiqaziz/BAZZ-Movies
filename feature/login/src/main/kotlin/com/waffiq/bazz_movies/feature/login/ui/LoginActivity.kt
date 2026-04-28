@@ -14,7 +14,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
@@ -33,6 +32,7 @@ import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye
 import com.waffiq.bazz_movies.feature.login.R.drawable.ic_eye_off
 import com.waffiq.bazz_movies.feature.login.databinding.ActivityLoginBinding
 import com.waffiq.bazz_movies.feature.login.utils.CustomTypefaceSpan
+import com.waffiq.bazz_movies.feature.login.utils.Helper.loadTypeface
 import com.waffiq.bazz_movies.feature.login.utils.InsetListener.applyWindowInsets
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_FORGET_PASSWORD
 import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIGNUP
@@ -198,12 +198,6 @@ class LoginActivity : AppCompatActivity() {
       binding.progressBar.isVisible = it
     }
 
-    /*
-     * login steps
-     * 1. Create a new request token
-     * 2. Get the user to authorize the request token
-     * 3. Create a new session id with the authorized request token
-     */
     authenticationViewModel.userLogin(
       binding.etUsername.text.toString(),
       binding.etPass.text.toString(),
@@ -212,13 +206,8 @@ class LoginActivity : AppCompatActivity() {
 
   private fun applyFontFamily(text: String): SpannableStringBuilder {
     val spannableStringBuilder = SpannableStringBuilder(text)
-    val typeface = ResourcesCompat.getFont(
-      this,
-      nunito_sans_regular,
-    )
-    val customTypefaceSpan = typeface?.let {
-      CustomTypefaceSpan(it)
-    }
+    val customTypefaceSpan = CustomTypefaceSpan(loadTypeface(nunito_sans_regular))
+
     spannableStringBuilder.setSpan(
       customTypefaceSpan,
       0,

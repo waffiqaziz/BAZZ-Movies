@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.intent.rule.IntentsRule
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.waffiq.bazz_movies.core.designsystem.R.string.guest_user
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.isPasswordHidden
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performAction
@@ -23,6 +23,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHa
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasErrorText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.hasNoError
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.withDrawable
@@ -50,6 +51,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.Matcher
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -74,8 +76,7 @@ class LoginActivityTest {
   @get:Rule(order = 1)
   var intentsRule = IntentsRule()
 
-  @get:Rule(order = 2)
-  var activityRule = ActivityScenarioRule(LoginActivity::class.java)
+  private lateinit var scenario: ActivityScenario<LoginActivity>
 
   @BindValue
   @JvmField
@@ -83,21 +84,29 @@ class LoginActivityTest {
 
   @BindValue
   @JvmField
-  val mockAuthViewModel: LoginViewModel = mockk(relaxed = true)
-
+  val mockLoginViewModel: LoginViewModel = mockk(relaxed = true)
 
   @Before
   fun init() {
     hiltRule.inject()
 
-    activityRule.scenario.onActivity { activity ->
+    every { mockLoginViewModel.errorState } returns errorStateLiveData
+    every { mockLoginViewModel.loginState } returns loginStateLiveData
+    every { mockLoginViewModel.loadingState } returns loadingStateLiveData
+    every { mockLoginViewModel.loadingState } returns loadingStateLiveData
+    every { mockLoginViewModel.userLogin(any(), any()) } just Runs
+    every { mockLoginViewModel.saveGuestUserPref(any(), any()) } just Runs
+
+    scenario = ActivityScenario.launch(LoginActivity::class.java)
+
+    scenario.onActivity { activity ->
       context = activity.applicationContext
     }
+  }
 
-    every { mockAuthViewModel.errorState } returns errorStateLiveData
-    every { mockAuthViewModel.loginState } returns loginStateLiveData
-    every { mockAuthViewModel.loadingState } returns loadingStateLiveData
-    every { mockAuthViewModel.saveGuestUserPref(any(), any()) } just Runs
+  @After
+  fun tearDown() {
+    scenario.close()
   }
 
   @Test
@@ -120,7 +129,7 @@ class LoginActivityTest {
   fun clickForgetPassword_successful_launchesCorrectURI() {
     btn_forget_password.performClick()
 
-    activityRule.scenario.onActivity { activity ->
+    scenario.onActivity { activity ->
       val fake = activity.uriLauncher as FakeUriLauncher
       assertEquals(TMDB_LINK_FORGET_PASSWORD.toUri(), fake.launchedUris.first())
     }
@@ -130,7 +139,7 @@ class LoginActivityTest {
   fun clickJoinTMDB_successful_launchesCorrectURI() {
     tv_joinTMDB.performClick()
 
-    activityRule.scenario.onActivity { activity ->
+    scenario.onActivity { activity ->
       val fake = activity.uriLauncher as FakeUriLauncher
       assertEquals(TMDB_LINK_SIGNUP.toUri(), fake.launchedUris.first())
     }
@@ -138,7 +147,7 @@ class LoginActivityTest {
 
   @Test
   fun clickJoinTMDB_noBrowser_launchesToast() {
-    activityRule.scenario.onActivity { activity ->
+    scenario.onActivity { activity ->
       (activity.uriLauncher as FakeUriLauncher).shouldFail = true
     }
 
@@ -149,7 +158,7 @@ class LoginActivityTest {
   @Test
   fun login_withCorrectParams_callsAuthenticationViewModel() {
     performValidLogin()
-    verify { mockAuthViewModel.userLogin(validUsername, validPassword) }
+    verify { mockLoginViewModel.userLogin(validUsername, validPassword) }
   }
 
   @Test
@@ -260,10 +269,10 @@ class LoginActivityTest {
   }
 
   @Test
-  fun login_withValidCredentials_disablesButtonsAndShowsLoading() {
+  fun login_withWhenLoading_disablesButtonsAndShowsLoading() {
     // mock successful login flow
     val loadingLiveData = MutableLiveData<Boolean>()
-    every { mockAuthViewModel.loadingState } returns loadingLiveData
+    every { mockLoginViewModel.loadingState } returns loadingLiveData
 
     performValidLogin()
 
@@ -272,11 +281,48 @@ class LoginActivityTest {
     tv_guest.isNotEnable()
 
     // simulate loading state
-    activityRule.scenario.onActivity {
+    scenario.onActivity {
       loadingLiveData.postValue(true)
     }
 
     progress_bar.isDisplayed()
+  }
+
+  @Test
+  fun login_withSuccessful_navigatesToMainActivity() {
+    performValidLogin()
+    scenario.onActivity {
+      loginStateLiveData.postValue(true)
+    }
+
+    // verify navigation happened
+    verify { mockNavigator.openMainActivity(any()) }
+  }
+
+  @Test
+  fun login_unSuccessful_doesNotNavigate() {
+    performValidLogin()
+
+    scenario.onActivity {
+      loginStateLiveData.postValue(false)
+    }
+
+    // verify navigation never happened
+    verify(exactly = 0) { mockNavigator.openMainActivity(any()) }
+  }
+
+  @Test
+  fun login_whenErrorStateReceived_showsSnackbarAndEnablesButtons() {
+    every { mockLoginViewModel.userLogin(any(), any()) } answers {
+      scenario.onActivity {
+        errorStateLiveData.value = "Invalid credentials"
+      }
+    }
+
+    performValidLogin()
+
+    btn_login.isEnable()
+    tv_guest.isEnable()
   }
 
   @Test
@@ -285,7 +331,7 @@ class LoginActivityTest {
 
     // verify guest user is saved
     verify {
-      mockAuthViewModel.saveGuestUserPref(
+      mockLoginViewModel.saveGuestUserPref(
         context.getString(guest_user),
         context.getString(guest_user),
       )
@@ -300,7 +346,7 @@ class LoginActivityTest {
     typeValidCredentials()
 
     // simulate configuration change (rotation)
-    activityRule.scenario.onActivity { activity ->
+    scenario.onActivity { activity ->
       activity.onConfigurationChanged(
         Configuration().apply {
           orientation = Configuration.ORIENTATION_LANDSCAPE
