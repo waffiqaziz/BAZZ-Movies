@@ -44,7 +44,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val oldList = listOf(MediaCastItem(id = 1, name = "Old Cast"))
     val newList = listOf(
       MediaCastItem(id = 2, name = "New Cast"),
-      MediaCastItem(id = 3, name = "No Cast")
+      MediaCastItem(id = 3, name = "No Cast"),
     )
 
     adapter.submitList(oldList) {
@@ -79,7 +79,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val characterCases = listOf(
       MediaCastItem(character = "Bjorn") to "Bjorn",
       MediaCastItem(character = null) to "TBA",
-      MediaCastItem(character = "") to "TBA"
+      MediaCastItem(character = "") to "TBA",
     )
 
     // test name/originalName
@@ -88,7 +88,6 @@ class CastAdapterTest : BaseAdapterTest() {
         adapter.onBindViewHolder(viewHolder, 0)
         assertEquals(expectedText, binding.tvCastName.text.toString())
       }
-
     }
 
     // test character fallback
@@ -121,7 +120,7 @@ class CastAdapterTest : BaseAdapterTest() {
     val testCases = listOf(
       MediaCastItem(id = 1, name = "name1", profilePath = "valid_image.jpg") to "name1",
       MediaCastItem(id = 2, originalName = "name2", character = "", profilePath = "") to null,
-      MediaCastItem(id = 3, name = "name3", character = "Char", profilePath = null) to "name3"
+      MediaCastItem(id = 3, name = "name3", character = "Char", profilePath = null) to "name3",
     )
 
     testCases.forEach { (data, expected) ->

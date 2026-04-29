@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.data.testutils.TestVariables.createSamplePagi
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import org.junit.Rule
 
-abstract class BaseRepositoryTest {
+open class BaseRepositoryTest {
 
   protected val id = 123
   protected val region = "id"

@@ -13,46 +13,50 @@ import org.junit.Test
 class DiscoverRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun getMovieByGenres_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(DataDumpManager.movieDump5)
+  fun getMovieByGenres_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(DataDumpManager.movieDump5)
 
-    coEvery { mockDiscoverApiService.getMovieByGenres("1", "id", 1) } returns
-      defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.getMovieByGenres("1", "id", 1) } returns
+        defaultMediaResponse(expected)
 
-    discoverRemoteDataSource.getMovieByGenres("1", "id").testPagingFlow(this, expected)
-    coVerify { mockDiscoverApiService.getMovieByGenres("1", "id", 1) }
-  }
-
-  @Test
-  fun getMovieByKeywords_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(DataDumpManager.movieDump2)
-
-    coEvery { mockDiscoverApiService.getMovieByKeywords("1", 1) } returns
-      defaultMediaResponse(expected)
-
-    discoverRemoteDataSource.getMovieByKeywords("1").testPagingFlow(this, expected)
-    coVerify { mockDiscoverApiService.getMovieByKeywords("1", 1) }
-  }
+      discoverRemoteDataSource.getMovieByGenres("1", "id").testPagingFlow(this, expected)
+      coVerify { mockDiscoverApiService.getMovieByGenres("1", "id", 1) }
+    }
 
   @Test
-  fun getTvByGenre_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(tvShowDump1)
+  fun getMovieByKeywords_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(DataDumpManager.movieDump2)
 
-    coEvery { mockDiscoverApiService.getTvByGenres("1", "id", 1) } returns
-      defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.getMovieByKeywords("1", 1) } returns
+        defaultMediaResponse(expected)
 
-    discoverRemoteDataSource.getTvByGenres("1", "id").testPagingFlow(this, expected)
-    coVerify { mockDiscoverApiService.getTvByGenres("1", "id", 1) }
-  }
+      discoverRemoteDataSource.getMovieByKeywords("1").testPagingFlow(this, expected)
+      coVerify { mockDiscoverApiService.getMovieByKeywords("1", 1) }
+    }
 
   @Test
-  fun getTvByKeywords_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(tvShowDump1)
+  fun getTvByGenre_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(tvShowDump1)
 
-    coEvery { mockDiscoverApiService.getTvByKeywords("1", 1) } returns
-      defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.getTvByGenres("1", "id", 1) } returns
+        defaultMediaResponse(expected)
 
-    discoverRemoteDataSource.getTvByKeywords("1").testPagingFlow(this, expected)
-    coVerify { mockDiscoverApiService.getTvByKeywords("1", 1) }
-  }
+      discoverRemoteDataSource.getTvByGenres("1", "id").testPagingFlow(this, expected)
+      coVerify { mockDiscoverApiService.getTvByGenres("1", "id", 1) }
+    }
+
+  @Test
+  fun getTvByKeywords_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(tvShowDump1)
+
+      coEvery { mockDiscoverApiService.getTvByKeywords("1", 1) } returns
+        defaultMediaResponse(expected)
+
+      discoverRemoteDataSource.getTvByKeywords("1").testPagingFlow(this, expected)
+      coVerify { mockDiscoverApiService.getTvByKeywords("1", 1) }
+    }
 }

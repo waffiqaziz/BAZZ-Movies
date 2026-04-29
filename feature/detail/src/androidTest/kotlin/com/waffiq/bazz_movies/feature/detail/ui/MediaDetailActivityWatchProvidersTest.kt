@@ -140,8 +140,8 @@ class MediaDetailActivityWatchProvidersTest :
               emptyList(),
               emptyList(),
               emptyList(),
-              emptyList()
-            )
+              emptyList(),
+            ),
           )
         }
       }

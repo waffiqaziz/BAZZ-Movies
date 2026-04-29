@@ -112,7 +112,7 @@ class WindowInsetsListenerRoboTest {
 
     // use Robolectric's configuration management
     RuntimeEnvironment.setQualifiers(
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) "land" else "port"
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) "land" else "port",
     )
 
     // recreate activity with new configuration

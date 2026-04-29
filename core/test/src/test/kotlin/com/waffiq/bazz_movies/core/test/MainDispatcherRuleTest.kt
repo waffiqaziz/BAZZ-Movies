@@ -23,11 +23,12 @@ class MainDispatcherRuleTest {
   val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
 
   @Test
-  fun runTest_whenUsingMainDispatcher_shouldExecuteCoroutineSuccessfully() = runTest {
-    var executed = false
-    withContext(Dispatchers.Main) { executed = true }
-    assertTrue(executed)
-  }
+  fun runTest_whenUsingMainDispatcher_shouldExecuteCoroutineSuccessfully() =
+    runTest {
+      var executed = false
+      withContext(Dispatchers.Main) { executed = true }
+      assertTrue(executed)
+    }
 
   @Test
   fun mainDispatcher_afterRuleFinished_shouldThrowIllegalStateException() {
@@ -39,19 +40,20 @@ class MainDispatcherRuleTest {
   }
 
   @Test
-  fun runTest_whenUsingStandardTestDispatcher_shouldNotExecuteUntilAdvanced() = runTest {
-    var executed = false
+  fun runTest_whenUsingStandardTestDispatcher_shouldNotExecuteUntilAdvanced() =
+    runTest {
+      var executed = false
 
-    CoroutineScope(Dispatchers.Main).launch {
-      executed = true
+      CoroutineScope(Dispatchers.Main).launch {
+        executed = true
+      }
+
+      // should false, due to StandardTestDispatcher
+      assertFalse(executed)
+
+      advanceUntilIdle()
+      assertTrue(executed)
     }
-
-    // should false, due to StandardTestDispatcher
-    assertFalse(executed)
-
-    advanceUntilIdle()
-    assertTrue(executed)
-  }
 
   @Test
   fun mainDispatcherManual_afterRuleFinished_shouldThrowIllegalStateException() {
@@ -60,10 +62,11 @@ class MainDispatcherRuleTest {
     // manual use rule full lifecycle via JUnit Statement API
     isolatedRule.apply(
       object : Statement() {
-        override fun evaluate() { /* just test  */
+        override fun evaluate() {
+          /* just test  */
         }
       },
-      Description.EMPTY
+      Description.EMPTY,
     ).evaluate()
 
     // Dispatchers.Main it should reset by the rule finished()
@@ -90,7 +93,7 @@ class MainDispatcherRuleTest {
           assertTrue(executed)
         }
       },
-      Description.EMPTY
+      Description.EMPTY,
     ).evaluate()
   }
 
@@ -101,10 +104,11 @@ class MainDispatcherRuleTest {
 
     isolatedRule.apply(
       object : Statement() {
-        override fun evaluate() { /* no-op */
+        override fun evaluate() {
+          /* no-op */
         }
       },
-      Description.EMPTY
+      Description.EMPTY,
     ).evaluate()
 
     assertFailsWith<IllegalStateException> {

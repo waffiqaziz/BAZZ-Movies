@@ -28,7 +28,7 @@ class NetworksItemResponseTest {
   @Test
   fun networksItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val networksItemResponse = NetworksItemResponse(
-      id = 675674
+      id = 675674,
     )
     assertEquals(675674, networksItemResponse.id)
     assertNull(networksItemResponse.name)

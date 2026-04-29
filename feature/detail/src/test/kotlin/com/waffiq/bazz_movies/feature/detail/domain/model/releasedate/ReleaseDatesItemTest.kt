@@ -21,7 +21,7 @@ class ReleaseDatesItemTest {
 
     val item = ReleaseDatesItem(
       iso31661 = iso31661,
-      listReleaseDatesItemValue = list
+      listReleaseDatesItemValue = list,
     )
 
     assertEquals(iso31661, item.iso31661)

@@ -10,8 +10,8 @@ class CrewAdapterTest : BaseAdapterTest() {
 
   @Test
   fun areItemsTheSame_whenItemsIsSame_returnsTrue() {
-    val oldItem = MediaCrewItem(id = 1,creditId = "1")
-    val newItem = MediaCrewItem(id = 1,creditId = "1")
+    val oldItem = MediaCrewItem(id = 1, creditId = "1")
+    val newItem = MediaCrewItem(id = 1, creditId = "1")
 
     val diffCallback = CrewAdapter.CrewDiffCallback()
     assertTrue(diffCallback.areItemsTheSame(oldItem, newItem))

@@ -15,7 +15,7 @@ class ReleaseDateHelperTvTest {
     val data = tvWithSeasons(
       origin = "US",
       "Season 1" to "2018-05-01",
-      "Season 2" to "2020-04-01"
+      "Season 2" to "2020-04-01",
     )
     checkTvReleaseDate(data, "(US)", "2018-2020")
   }
@@ -24,7 +24,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withSingleSeason_returnsSingleYear() {
     val data = tvWithSeasons(
       origin = "JP",
-      "Season 1" to "2019-10-01"
+      "Season 1" to "2019-10-01",
     )
     checkTvReleaseDate(data, "(JP)", "2019")
   }
@@ -33,7 +33,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withNoValidSeason_returnsEmptyDate() {
     val data = tvWithSeasons(
       origin = "KR",
-      "Specials" to "2019-01-01"
+      "Specials" to "2019-01-01",
     )
     checkTvReleaseDate(data, "(KR)", "")
   }
@@ -43,7 +43,7 @@ class ReleaseDateHelperTvTest {
     val seasonData = SeasonsItem(name = null, airDate = "2020-01-01")
     val data = TvDetail(
       listOriginCountry = listOf("US"),
-      listSeasonsItem = listOf(seasonData)
+      listSeasonsItem = listOf(seasonData),
     )
     checkTvReleaseDate(data, "(US)", "")
   }
@@ -53,19 +53,19 @@ class ReleaseDateHelperTvTest {
     val seasonData = SeasonsItem(name = "Season 1", airDate = "12")
     val data = TvDetail(
       listOriginCountry = null,
-      listSeasonsItem = listOf(seasonData)
+      listSeasonsItem = listOf(seasonData),
     )
 
     checkTvReleaseDate(data, "()", "")
     checkTvReleaseDate(
       data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = "invalid"))),
       "()",
-      ""
+      "",
     )
     checkTvReleaseDate(
       data.copy(listSeasonsItem = listOf(seasonData.copy(airDate = null))),
       "()",
-      ""
+      "",
     )
     checkTvReleaseDate(data.copy(listSeasonsItem = listOf(null)), "()", "")
     checkTvReleaseDate(data.copy(listSeasonsItem = null), "()", "")
@@ -75,7 +75,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withEmptyOriginCountry_returnsEmptyRegion() {
     val data = tvWithSeasons(
       origin = "",
-      "Season 1" to "2020-06-01"
+      "Season 1" to "2020-06-01",
     )
     checkTvReleaseDate(data, "()", "2020")
   }
@@ -84,7 +84,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withNullSeasonsList_returnsEmptyDate() {
     val data = TvDetail(
       listOriginCountry = listOf("US"),
-      listSeasonsItem = emptyList()
+      listSeasonsItem = emptyList(),
     )
     checkTvReleaseDate(data, "(US)", "")
   }
@@ -93,7 +93,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withInvalidSeasonDates_returnsEmptyDate() {
     val data = tvWithSeasons(
       origin = "KR",
-      "Season 1" to ""
+      "Season 1" to "",
     )
     checkTvReleaseDate(data, "(KR)", "")
   }
@@ -103,8 +103,8 @@ class ReleaseDateHelperTvTest {
     val data = TvDetail(
       listOriginCountry = null,
       listSeasonsItem = listOf(
-        SeasonsItem(name = "Season 1", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "()", "2020")
   }
@@ -127,8 +127,8 @@ class ReleaseDateHelperTvTest {
     val data = TvDetail(
       listOriginCountry = emptyList(),
       listSeasonsItem = listOf(
-        SeasonsItem(name = "Season 1", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "()", "2020")
   }
@@ -137,7 +137,7 @@ class ReleaseDateHelperTvTest {
   fun getReleaseDateRegionTv_withNullSeasonsItem_returnsEmptyDate() {
     val data = TvDetail(
       listOriginCountry = listOf("US"),
-      listSeasonsItem = null // Null seasons list
+      listSeasonsItem = null, // Null seasons list
     )
     checkTvReleaseDate(data, "(US)", "")
   }
@@ -149,8 +149,8 @@ class ReleaseDateHelperTvTest {
       listSeasonsItem = listOf(
         null, // Null season item
         SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
-        SeasonsItem(name = "Season 2", airDate = "2021-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2021-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020-2021")
   }
@@ -161,8 +161,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = null, airDate = "2019-06-01"),
-        SeasonsItem(name = "Season 1", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -174,8 +174,8 @@ class ReleaseDateHelperTvTest {
       listSeasonsItem = listOf(
         SeasonsItem(name = "Specials", airDate = "2019-06-01"),
         SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
-        SeasonsItem(name = "Bonus Content", airDate = "2021-06-01")
-      )
+        SeasonsItem(name = "Bonus Content", airDate = "2021-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -186,8 +186,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "invalid-date"),
-        SeasonsItem(name = "Season 2", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -198,8 +198,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "20"), // Too short for year
-        SeasonsItem(name = "Season 2", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -210,8 +210,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // Null air date
-        SeasonsItem(name = "Season 2", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -222,8 +222,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Specials", airDate = "2019-06-01"),
-        SeasonsItem(name = "Behind the Scenes", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Behind the Scenes", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "")
   }
@@ -234,8 +234,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
-        SeasonsItem(name = "Season 2", airDate = "invalid-date")
-      )
+        SeasonsItem(name = "Season 2", airDate = "invalid-date"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -246,8 +246,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         null, // This triggers it?.airDate branch in mapNotNull
-        SeasonsItem(name = "Season 1", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -258,8 +258,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // This triggers the ?.take(YEAR) branch
-        SeasonsItem(name = "Season 2", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -270,8 +270,8 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         null, // This null item should be filtered out, but triggers it?.airDate branch
-        SeasonsItem(name = "Season 1", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 1", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
@@ -282,22 +282,21 @@ class ReleaseDateHelperTvTest {
       listOriginCountry = listOf("US"),
       listSeasonsItem = listOf(
         SeasonsItem(name = "Season 1", airDate = null), // Null airDate triggers ?.take(YEAR) branch
-        SeasonsItem(name = "Season 2", airDate = "2020-06-01")
-      )
+        SeasonsItem(name = "Season 2", airDate = "2020-06-01"),
+      ),
     )
     checkTvReleaseDate(data, "(US)", "2020")
   }
   // endregion
 
   // region Helpers
-  private fun tvWithSeasons(origin: String, vararg seasons: Pair<String, String>): TvDetail {
-    return TvDetail(
+  private fun tvWithSeasons(origin: String, vararg seasons: Pair<String, String>): TvDetail =
+    TvDetail(
       listOriginCountry = listOf(origin),
       listSeasonsItem = seasons.map {
         SeasonsItem(name = it.first, airDate = it.second)
-      }
+      },
     )
-  }
 
   private fun checkTvReleaseDate(
     data: TvDetail,

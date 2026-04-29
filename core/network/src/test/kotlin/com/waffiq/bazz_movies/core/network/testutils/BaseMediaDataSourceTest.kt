@@ -45,12 +45,12 @@ import retrofit2.Response
  * Provides common mock dependencies, error response stubs, and a shared setup routine
  * to be reused across concrete test implementations.
  */
-abstract class BaseMediaDataSourceTest {
+open class BaseMediaDataSourceTest {
 
   protected val apiMaintenanceErrorResponse: Response<PostResponse> = Response.error(
     503,
     """{"status_code": 503, "status_message": "The API is undergoing maintenance. Try again later."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
 
   protected val apiMaintenanceErrorMessage = "The API is undergoing maintenance. Try again later."
@@ -58,23 +58,23 @@ abstract class BaseMediaDataSourceTest {
   protected val backendErrorResponse: Response<PostResponse> = Response.error(
     502,
     """{"status_code": 502, "status_message": "Couldn't connect to the backend server."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
 
   protected val notAuthorizedErrorResponse: Response<PostResponse> = Response.error(
     401,
     """{"status_code": 401, "status_message": "Not Authorized"}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
   protected val invalidServiceErrorResponse: Response<PostResponse> = Response.error(
     501,
     """{"status_code": 501, "status_message": "Invalid service: this service does not exist."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
   protected val invalidParameterErrorResponse: Response<PostResponse> = Response.error(
     422,
     """{"status_code": 422, "status_message": "Invalid parameters: Your request parameters are incorrect."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
 
   protected val userId = 123123

@@ -25,10 +25,7 @@ interface MoreFragmentTestHelper {
   val mockCountryCode: MutableLiveData<String>
   val mockUserModel: MutableLiveData<UserModel>
 
-  fun setupMocks(
-    mockNavigator: INavigator,
-    mockSnackbar: ISnackbar,
-  )
+  fun setupMocks(mockNavigator: INavigator, mockSnackbar: ISnackbar)
 
   fun setupViewModelMocks(
     mockMoreLocalViewModel: MoreLocalViewModel,
@@ -40,7 +37,7 @@ interface MoreFragmentTestHelper {
   @Before
   fun setUp() {
     Intents.init()
-    moreFragment = launchFragmentInHiltContainer<MoreFragment>()
+    moreFragment = launchFragmentInHiltContainer<MoreFragment>().fragment
     shortDelay()
   }
 

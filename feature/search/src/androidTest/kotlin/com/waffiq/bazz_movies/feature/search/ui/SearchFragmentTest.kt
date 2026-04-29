@@ -165,7 +165,7 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
     // simulate fragment result
     searchFragment.parentFragmentManager.setFragmentResult(
       "open_search_view",
-      Bundle()
+      Bundle(),
     )
     shortDelay()
     search_view.isDisplayed()
@@ -194,7 +194,7 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
         refresh = errorState,
         prepend = LoadState.NotLoading(endOfPaginationReached = false),
         append = LoadState.NotLoading(endOfPaginationReached = false),
-      )
+      ),
     )
 
     InstrumentationRegistry.getInstrumentation().runOnMainSync {

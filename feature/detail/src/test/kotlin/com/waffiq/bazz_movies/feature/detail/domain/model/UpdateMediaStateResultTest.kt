@@ -11,7 +11,7 @@ class UpdateMediaStateResultTest {
     val mediaStateResult = UpdateMediaStateResult(
       isSuccess = true,
       isDelete = true,
-      isFavorite = true
+      isFavorite = true,
     )
 
     assertTrue(mediaStateResult.isSuccess)
@@ -24,7 +24,7 @@ class UpdateMediaStateResultTest {
     val mediaStateResult = UpdateMediaStateResult(
       isSuccess = false,
       isDelete = false,
-      isFavorite = false
+      isFavorite = false,
     )
 
     assertFalse(mediaStateResult.isSuccess)
@@ -37,7 +37,7 @@ class UpdateMediaStateResultTest {
     val mediaStateResult = UpdateMediaStateResult(
       isSuccess = true,
       isDelete = false,
-      isFavorite = true
+      isFavorite = true,
     )
 
     assertTrue(mediaStateResult.isSuccess)
@@ -50,7 +50,7 @@ class UpdateMediaStateResultTest {
     val mediaStateResult = UpdateMediaStateResult(
       isSuccess = false,
       isDelete = true,
-      isFavorite = false
+      isFavorite = false,
     )
 
     assertFalse(mediaStateResult.isSuccess)

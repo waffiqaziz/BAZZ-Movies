@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@Suppress("InjectDispatcher")
 class DispatcherModuleTest {
 
   @Test

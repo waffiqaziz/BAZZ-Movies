@@ -9,7 +9,7 @@ class MediaKeywordsResponseItemTest {
   fun mediaKeywordsResponseItem_withValidValues_setsPropertiesCorrectly() {
     val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
       id = 4444,
-      name = "family"
+      name = "family",
     )
     assertEquals(4444, mediaKeywordsResponseItem.id)
     assertEquals("family", mediaKeywordsResponseItem.name)

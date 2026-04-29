@@ -10,12 +10,12 @@ import com.waffiq.bazz_movies.core.domain.MediaCastItem
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
-import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.roleName
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.toUsd
+import com.waffiq.bazz_movies.core.utils.DetailDataUtils.validName
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,8 +33,8 @@ class DetailDataUtilsTest {
           name = "Test Name",
           title = "Test Title",
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Name", result)
   }
@@ -47,8 +47,8 @@ class DetailDataUtilsTest {
           name = null,
           title = "Test Title",
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Title", result)
   }
@@ -61,8 +61,8 @@ class DetailDataUtilsTest {
           name = null,
           title = null,
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Original Title", result)
   }
@@ -75,8 +75,8 @@ class DetailDataUtilsTest {
           name = null,
           title = null,
           originalTitle = null,
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Original Name", result)
   }
@@ -85,7 +85,7 @@ class DetailDataUtilsTest {
   fun contextTitleHandler_allTitleNull_returnsNotAvailable() {
     val result =
       context.titleHandler(
-        MediaItem(name = null, title = null, originalTitle = null, originalName = null)
+        MediaItem(name = null, title = null, originalTitle = null, originalName = null),
       )
     assertEquals("N/A", result)
   }
@@ -98,8 +98,8 @@ class DetailDataUtilsTest {
           name = "Test Name",
           title = "Test Title",
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Name", result)
   }
@@ -112,8 +112,8 @@ class DetailDataUtilsTest {
           name = null,
           title = "Test Title",
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Title", result)
   }
@@ -126,8 +126,8 @@ class DetailDataUtilsTest {
           name = null,
           title = null,
           originalTitle = "Test Original Title",
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Original Title", result)
   }
@@ -140,8 +140,8 @@ class DetailDataUtilsTest {
           name = null,
           title = null,
           originalTitle = null,
-          originalName = "Test Original Name"
-        )
+          originalName = "Test Original Name",
+        ),
       )
     assertEquals("Test Original Name", result)
   }
@@ -150,7 +150,7 @@ class DetailDataUtilsTest {
   fun titleHandler_whenAllNull_returnsItem() {
     val result =
       titleHandler(
-        MediaItem(name = null, title = null, originalTitle = null, originalName = null)
+        MediaItem(name = null, title = null, originalTitle = null, originalName = null),
       )
     assertEquals("Item", result)
   }
@@ -191,7 +191,7 @@ class DetailDataUtilsTest {
       MediaItem(
         firstAirDate = "2007-06-27",
         releaseDate = "2007-06-27",
-      )
+      ),
     )
     assertEquals("Jun 27, 2007", result)
   }
@@ -202,7 +202,7 @@ class DetailDataUtilsTest {
       MediaItem(
         releaseDate = "2007-06-27",
         firstAirDate = null,
-      )
+      ),
     )
     assertEquals("Jun 27, 2007", result)
   }
@@ -213,7 +213,7 @@ class DetailDataUtilsTest {
       MediaItem(
         releaseDate = null,
         firstAirDate = "2007-06-27",
-      )
+      ),
     )
     assertEquals("Jun 27, 2007", result)
   }
@@ -224,7 +224,7 @@ class DetailDataUtilsTest {
       MediaItem(
         releaseDate = null,
         firstAirDate = null,
-      )
+      ),
     )
     assertEquals("N/A", result)
   }
@@ -235,11 +235,10 @@ class DetailDataUtilsTest {
       MediaItem(
         releaseDate = "invalid date",
         firstAirDate = "  ",
-      )
+      ),
     )
     assertEquals("N/A", result)
   }
-
 
   @Test
   fun toUsd_invalidData_returnsCorrectly() {
@@ -357,7 +356,7 @@ class DetailDataUtilsTest {
   }
 
   @Test
-  fun roleName_mixedString_returnsCorrectValue(){
+  fun roleName_mixedString_returnsCorrectValue() {
     assertEquals("TBA", null.roleName)
     assertEquals("TBA", " ".roleName)
     assertEquals("TBA", "".roleName)

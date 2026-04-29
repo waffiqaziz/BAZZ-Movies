@@ -24,7 +24,7 @@ object DataDumpTest {
       biography = "Test biography for the actor",
       birthday = "1990-01-01",
       placeOfBirth = "Test City",
-      homepage = "https://example.com"
+      homepage = "https://example.com",
     )
 
   val testCastItem =
@@ -33,14 +33,14 @@ object DataDumpTest {
       title = "Test Movie",
       character = "Test Character",
       posterPath = "/test_poster.jpg",
-      releaseDate = "2023-01-01"
+      releaseDate = "2023-01-01",
     )
 
   val testProfileItem =
     ProfilesItem(
       filePath = "/test_image.jpg",
       width = 500,
-      height = 750
+      height = 750,
     )
 
   val testExternalIDPerson =
@@ -52,7 +52,7 @@ object DataDumpTest {
       facebookId = "test_facebook",
       tiktokId = null,
       youtubeId = null,
-      wikidataId = "Q123456"
+      wikidataId = "Q123456",
     )
 
   val testKnownForList =
@@ -61,8 +61,8 @@ object DataDumpTest {
         id = 1,
         title = "Test Movie",
         character = "Test Character",
-        posterPath = "/test.jpg"
-      )
+        posterPath = "/test.jpg",
+      ),
     )
 
   val testImagesList =
@@ -70,7 +70,7 @@ object DataDumpTest {
       ProfilesItem(
         filePath = "/test1.jpg",
         width = 300,
-        height = 450
-      )
+        height = 450,
+      ),
     )
 }

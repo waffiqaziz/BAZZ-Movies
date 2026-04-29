@@ -32,7 +32,7 @@ class DatabaseModuleUnitTest {
   }
 
   /**
-   * Tests that the provideDatabase method in DatabaseModule correctly creates and returns a database
+   * Tests the provideDatabase method in DatabaseModule correctly creates and returns a database
    * with migration configuration.
    *
    * This test verifies:
@@ -91,7 +91,7 @@ class DatabaseModuleUnitTest {
     val database = Room.databaseBuilder(
       context,
       FavoriteDatabase::class.java,
-      testDatabaseName
+      testDatabaseName,
     ).build()
 
     val dao = databaseModule.provideFavoriteDao(database)
@@ -108,7 +108,7 @@ class DatabaseModuleUnitTest {
       InstrumentationRegistry.getInstrumentation(),
       FavoriteDatabase::class.java,
       emptyList(), // no auto-migrations
-      FrameworkSQLiteOpenHelperFactory()
+      FrameworkSQLiteOpenHelperFactory(),
     )
 
     // create v1 database and insert test data
@@ -131,7 +131,7 @@ class DatabaseModuleUnitTest {
                     is_favorited INTEGER,
                     is_watchlist INTEGER
                 )
-        """.trimIndent()
+        """.trimIndent(),
       )
 
       // insert test data with NULL values
@@ -139,7 +139,7 @@ class DatabaseModuleUnitTest {
         """
                 INSERT INTO favorite (mediaId, mediaType, genre, is_favorited, is_watchlist)
                 VALUES (101, NULL, NULL, 1, 0)
-                """
+                """,
       )
 
       close()

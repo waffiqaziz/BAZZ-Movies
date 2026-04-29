@@ -19,7 +19,7 @@ class SnackBarUserLoginDataTest {
       isSuccess = true,
       title = "Login successful",
       favoriteModel = favorite,
-      watchlistModel = watchlist
+      watchlistModel = watchlist,
     )
 
     assertTrue(data.isSuccess)
@@ -59,7 +59,7 @@ class SnackBarUserLoginDataTest {
       isSuccess = false,
       title = "Failed",
       favoriteModel = null,
-      watchlistModel = null
+      watchlistModel = null,
     )
 
     assertFalse(data.isSuccess)

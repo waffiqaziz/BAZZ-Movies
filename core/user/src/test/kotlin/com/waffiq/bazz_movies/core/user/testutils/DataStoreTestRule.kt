@@ -12,7 +12,8 @@ class DataStoreTestRule : TestWatcher() {
     private set
 
   override fun starting(description: Description) {
-    val testFile = File.createTempFile("test_${description.methodName}_${System.nanoTime()}", ".preferences_pb")
+    val testFile =
+      File.createTempFile("test_${description.methodName}_${System.nanoTime()}", ".preferences_pb")
     testDataStore = PreferenceDataStoreFactory.create { testFile }
   }
 }

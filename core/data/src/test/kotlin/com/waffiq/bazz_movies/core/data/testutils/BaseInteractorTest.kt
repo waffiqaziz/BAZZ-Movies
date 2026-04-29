@@ -3,8 +3,6 @@ package com.waffiq.bazz_movies.core.data.testutils
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.domain.repository.IAccountRepository
-import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITvRepository
@@ -12,6 +10,8 @@ import com.waffiq.bazz_movies.core.data.testutils.TestVariables.ERROR_MESSAGE
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.USER_REGION
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.movieMediaItem
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
+import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
@@ -30,7 +30,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 
-abstract class BaseInteractorTest {
+open class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
   protected val mockAccountRepository: IAccountRepository = mockk()

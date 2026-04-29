@@ -13,9 +13,10 @@ class MainDispatcherRuleDefaultTest {
   val mainDispatcherRule = MainDispatcherRule() // use default value
 
   @Test
-  fun runTest_whenUsingMainDispatcher_shouldExecuteCoroutineSuccessfully() = runTest {
-    var executed = false
-    withContext(Dispatchers.Main) { executed = true }
-    assertTrue(executed)
-  }
+  fun runTest_whenUsingMainDispatcher_shouldExecuteCoroutineSuccessfully() =
+    runTest {
+      var executed = false
+      withContext(Dispatchers.Main) { executed = true }
+      assertTrue(executed)
+    }
 }

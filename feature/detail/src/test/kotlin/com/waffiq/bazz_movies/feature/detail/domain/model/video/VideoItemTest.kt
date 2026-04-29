@@ -34,7 +34,7 @@ class VideoItemTest {
       publishedAt = "2024-01-01T00:00:00Z",
       type = "Trailer",
       iso6391 = "en",
-      key = "dQw4w9WgXcQ"
+      key = "dQw4w9WgXcQ",
     )
 
     assertEquals("YouTube", videoItem.site)
@@ -61,7 +61,7 @@ class VideoItemTest {
       publishedAt = "2024-01-01",
       type = "Trailer",
       iso6391 = "en",
-      key = "abc123"
+      key = "abc123",
     )
 
     assertEquals("YouTube", videoItem.site)

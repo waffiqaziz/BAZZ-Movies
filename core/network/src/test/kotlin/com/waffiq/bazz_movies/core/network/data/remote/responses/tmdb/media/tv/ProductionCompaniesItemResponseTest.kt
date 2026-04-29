@@ -28,7 +28,7 @@ class ProductionCompaniesItemResponseTest {
   @Test
   fun productionCompaniesItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val productionCompaniesItemResponse = ProductionCompaniesResponseItem(
-      id = 7658762
+      id = 7658762,
     )
     assertEquals(7658762, productionCompaniesItemResponse.id)
     assertNull(productionCompaniesItemResponse.name)

@@ -10,30 +10,21 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class WindowInsetsListenerTest {
 
-  @Mock
-  private lateinit var mockActivity: Activity
-
-  @Mock
-  private lateinit var mockResources: Resources
-
-  @Mock
-  private lateinit var mockConfiguration: Configuration
-
-  @Mock
-  private lateinit var mockView: View
+  private val mockActivity: Activity = mock()
+  private val mockResources: Resources = mock()
+  private val mockConfiguration: Configuration = mock()
+  private val mockView: View = mock()
 
   @Before
   fun setup() {
-    MockitoAnnotations.openMocks(this)
     `when`(mockActivity.resources).thenReturn(mockResources)
     `when`(mockResources.configuration).thenReturn(mockConfiguration)
   }

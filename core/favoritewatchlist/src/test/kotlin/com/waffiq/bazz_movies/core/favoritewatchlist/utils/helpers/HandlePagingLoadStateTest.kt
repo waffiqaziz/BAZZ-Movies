@@ -66,39 +66,36 @@ class HandlePagingLoadStateTest {
     refresh: LoadState = LoadState.NotLoading(false),
     prepend: LoadState = LoadState.NotLoading(false),
     append: LoadState = LoadState.NotLoading(false),
-  ): CombinedLoadStates {
-    return CombinedLoadStates(
+  ): CombinedLoadStates =
+    CombinedLoadStates(
       refresh = refresh,
       prepend = prepend,
       append = append,
       source = LoadStates(
         refresh = refresh,
         prepend = prepend,
-        append = append
+        append = append,
       ),
-      mediator = null
-    )
-  }
-
-  private fun setupAndRunTest(
-    loadState: CombinedLoadStates,
-    itemCount: Int = 0,
-  ) = runTest {
-    every { mockAdapter.itemCount } returns itemCount
-
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
+      mediator = null,
     )
 
-    loadStateFlow.value = loadState
-    advanceUntilIdle()
-  }
+  private fun setupAndRunTest(loadState: CombinedLoadStates, itemCount: Int = 0) =
+    runTest {
+      every { mockAdapter.itemCount } returns itemCount
+
+      lifecycleOwner.handlePagingLoadState(
+        mockAdapter,
+        loadStateFlow,
+        mockRecyclerView,
+        mockProgressBar,
+        mockErrorView,
+        mockEmptyView,
+        onErrorCallback,
+      )
+
+      loadStateFlow.value = loadState
+      advanceUntilIdle()
+    }
 
   private fun verifyViewState(
     progressVisible: Boolean,
@@ -118,63 +115,67 @@ class HandlePagingLoadStateTest {
   }
 
   @Test
-  fun handlePagingLoadState_whenRefreshIsLoading_showsProgressBarAndRecyclerView() = runTest {
-    val loadState = createLoadState(refresh = LoadState.Loading)
+  fun handlePagingLoadState_whenRefreshIsLoading_showsProgressBarAndRecyclerView() =
+    runTest {
+      val loadState = createLoadState(refresh = LoadState.Loading)
 
-    setupAndRunTest(loadState)
+      setupAndRunTest(loadState)
 
-    verifyViewState(
-      progressVisible = true,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false
-    )
-  }
-
-  @Test
-  fun handlePagingLoadState_whenAppendIsLoading_showsProgressBarAndRecyclerView() = runTest {
-    val loadState = createLoadState(append = LoadState.Loading)
-
-    setupAndRunTest(loadState)
-
-    verifyViewState(
-      progressVisible = true,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false
-    )
-  }
+      verifyViewState(
+        progressVisible = true,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false,
+      )
+    }
 
   @Test
-  fun handlePagingLoadState_whenRefreshErrorAndEmptyAdapter_showsErrorView() = runTest {
-    val error = IOException("Network error")
-    val loadState = createLoadState(refresh = LoadState.Error(error))
+  fun handlePagingLoadState_whenAppendIsLoading_showsProgressBarAndRecyclerView() =
+    runTest {
+      val loadState = createLoadState(append = LoadState.Loading)
 
-    setupAndRunTest(loadState, itemCount = 0)
+      setupAndRunTest(loadState)
 
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = false,
-      errorVisible = true,
-      emptyVisible = false,
-      errorCallbackCalled = true
-    )
-  }
+      verifyViewState(
+        progressVisible = true,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false,
+      )
+    }
 
   @Test
-  fun handlePagingLoadState_whenRefreshErrorAndNonEmptyAdapter_showsRecyclerView() = runTest {
-    val loadState = createLoadState(refresh = LoadState.Error(IOException("Network error")))
+  fun handlePagingLoadState_whenRefreshErrorAndEmptyAdapter_showsErrorView() =
+    runTest {
+      val error = IOException("Network error")
+      val loadState = createLoadState(refresh = LoadState.Error(error))
 
-    setupAndRunTest(loadState, itemCount = 5)
+      setupAndRunTest(loadState, itemCount = 0)
 
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false,
-      errorCallbackCalled = true
-    )
-  }
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = false,
+        errorVisible = true,
+        emptyVisible = false,
+        errorCallbackCalled = true,
+      )
+    }
+
+  @Test
+  fun handlePagingLoadState_whenRefreshErrorAndNonEmptyAdapter_showsRecyclerView() =
+    runTest {
+      val loadState = createLoadState(refresh = LoadState.Error(IOException("Network error")))
+
+      setupAndRunTest(loadState, itemCount = 5)
+
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false,
+        errorCallbackCalled = true,
+      )
+    }
 
   @Test
   fun handlePagingLoadState_whenEndOfPaginationReachedAndEmptyAdapter_showsEmptyView() =
@@ -187,7 +188,7 @@ class HandlePagingLoadStateTest {
         progressVisible = false,
         recyclerVisible = false,
         errorVisible = false,
-        emptyVisible = true
+        emptyVisible = true,
       )
     }
 
@@ -202,102 +203,105 @@ class HandlePagingLoadStateTest {
         progressVisible = false,
         recyclerVisible = true,
         errorVisible = false,
-        emptyVisible = false
+        emptyVisible = false,
       )
     }
 
   @Test
-  fun handlePagingLoadState_whenNormalState_showsOnlyRecyclerView() = runTest {
-    val loadState = createLoadState() // Uses default values for normal state
+  fun handlePagingLoadState_whenNormalState_showsOnlyRecyclerView() =
+    runTest {
+      val loadState = createLoadState() // Uses default values for normal state
 
-    setupAndRunTest(loadState)
+      setupAndRunTest(loadState)
 
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false
-    )
-  }
-
-  @Test
-  fun handlePagingLoadState_whenDebounce_emitsMultipleValuesQuickly() = runTest {
-    // setup handler first
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      onErrorCallback
-    )
-
-    // first state - loading
-    loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
-
-    // advance time but not enough to trigger debounce
-    advanceTimeBy(DEBOUNCE_SHORT - 100)
-
-    // second state - normal - overwrites the first one before debounce completes
-    loadStateFlow.value = createLoadState()
-
-    // complete all pending work
-    advanceUntilIdle()
-
-    // only second state should take effect
-    verifyViewState(
-      progressVisible = false,
-      recyclerVisible = true,
-      errorVisible = false,
-      emptyVisible = false
-    )
-
-    // verify first state didn't take effect, progressbar is not visible
-    verify(exactly = 0) { mockProgressBar.isVisible = true }
-  }
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false,
+      )
+    }
 
   @Test
-  fun handlePagingLoadState_whenDistinctUntilChanged_emitsSameValueTwice() = runTest {
-    // track number of calls to a callback
-    var callCount = 0
-    val trackingCallback: (Event<String>?) -> Unit = { callCount++ }
+  fun handlePagingLoadState_whenDebounce_emitsMultipleValuesQuickly() =
+    runTest {
+      // setup handler first
+      lifecycleOwner.handlePagingLoadState(
+        mockAdapter,
+        loadStateFlow,
+        mockRecyclerView,
+        mockProgressBar,
+        mockErrorView,
+        mockEmptyView,
+        onErrorCallback,
+      )
 
-    // setup handler with tracking callback
-    lifecycleOwner.handlePagingLoadState(
-      mockAdapter,
-      loadStateFlow,
-      mockRecyclerView,
-      mockProgressBar,
-      mockErrorView,
-      mockEmptyView,
-      trackingCallback
-    )
+      // first state - loading
+      loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
 
-    // emit loading state
-    loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
-    advanceTimeBy(DEBOUNCE_SHORT * 2)
+      // advance time but not enough to trigger debounce
+      advanceTimeBy(DEBOUNCE_SHORT - 100)
 
-    // loading state doesn't trigger error callback
-    assertEquals(0, callCount)
+      // second state - normal - overwrites the first one before debounce completes
+      loadStateFlow.value = createLoadState()
 
-    // create an error state
-    val errorState = createLoadState(refresh = LoadState.Error(IOException("Test error")))
+      // complete all pending work
+      advanceUntilIdle()
 
-    // emit error state
-    loadStateFlow.value = errorState
-    advanceTimeBy(DEBOUNCE_SHORT * 2)
+      // only second state should take effect
+      verifyViewState(
+        progressVisible = false,
+        recyclerVisible = true,
+        errorVisible = false,
+        emptyVisible = false,
+      )
 
-    // error callback should be called once
-    assertEquals(1, callCount)
+      // verify first state didn't take effect, progressbar is not visible
+      verify(exactly = 0) { mockProgressBar.isVisible = true }
+    }
 
-    // emit identical error state again
-    loadStateFlow.value = errorState
-    advanceTimeBy(DEBOUNCE_SHORT * 2)
+  @Test
+  fun handlePagingLoadState_whenDistinctUntilChanged_emitsSameValueTwice() =
+    runTest {
+      // track number of calls to a callback
+      var callCount = 0
+      val trackingCallback: (Event<String>?) -> Unit = { callCount++ }
 
-    // count should still be 1 due to distinctUntilChanged
-    assertEquals(1, callCount)
-  }
+      // setup handler with tracking callback
+      lifecycleOwner.handlePagingLoadState(
+        mockAdapter,
+        loadStateFlow,
+        mockRecyclerView,
+        mockProgressBar,
+        mockErrorView,
+        mockEmptyView,
+        trackingCallback,
+      )
+
+      // emit loading state
+      loadStateFlow.value = createLoadState(refresh = LoadState.Loading)
+      advanceTimeBy(DEBOUNCE_SHORT * 2)
+
+      // loading state doesn't trigger error callback
+      assertEquals(0, callCount)
+
+      // create an error state
+      val errorState = createLoadState(refresh = LoadState.Error(IOException("Test error")))
+
+      // emit error state
+      loadStateFlow.value = errorState
+      advanceTimeBy(DEBOUNCE_SHORT * 2)
+
+      // error callback should be called once
+      assertEquals(1, callCount)
+
+      // emit identical error state again
+      loadStateFlow.value = errorState
+      advanceTimeBy(DEBOUNCE_SHORT * 2)
+
+      // count should still be 1 due to distinctUntilChanged
+      assertEquals(1, callCount)
+    }
 
   // helper class for testing with lifecycle
   class TestLifecycleOwner : LifecycleOwner {

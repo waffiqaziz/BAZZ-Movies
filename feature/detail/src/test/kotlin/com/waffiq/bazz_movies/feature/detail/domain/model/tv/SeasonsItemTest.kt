@@ -15,7 +15,7 @@ class SeasonsItemTest {
       name = "Season 1",
       seasonNumber = 1,
       id = 123,
-      posterPath = "/poster.jpg"
+      posterPath = "/poster.jpg",
     )
 
     assertEquals("2023-01-01", seasonsItem.airDate)
@@ -45,7 +45,7 @@ class SeasonsItemTest {
     val seasonsItem = SeasonsItem(
       name = "Season 2",
       seasonNumber = 2,
-      episodeCount = 8
+      episodeCount = 8,
     )
 
     assertNull(seasonsItem.airDate)
@@ -62,7 +62,7 @@ class SeasonsItemTest {
     val seasonsItem = SeasonsItem(
       episodeCount = 0,
       seasonNumber = 0,
-      id = 0
+      id = 0,
     )
 
     assertEquals(0, seasonsItem.episodeCount)
@@ -76,7 +76,7 @@ class SeasonsItemTest {
       airDate = "",
       overview = "",
       name = "",
-      posterPath = ""
+      posterPath = "",
     )
 
     assertEquals("", seasonsItem.airDate)
@@ -90,7 +90,7 @@ class SeasonsItemTest {
     val seasonsItem = SeasonsItem(
       episodeCount = -1,
       seasonNumber = -5,
-      id = -10
+      id = -10,
     )
 
     assertEquals(-1, seasonsItem.episodeCount)

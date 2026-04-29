@@ -25,7 +25,7 @@ class WatchProvidersAdapterTest : BaseAdapterTest() {
     providerId = 1,
     providerName = "provider name1",
     logoPath = "logo path",
-    displayPriority = 1
+    displayPriority = 1,
   )
 
   private val clickListener: () -> Unit = mockk(relaxed = true)
@@ -44,7 +44,7 @@ class WatchProvidersAdapterTest : BaseAdapterTest() {
     val oldList = listOf(pvd)
     val newList = listOf(
       pvd.copy(providerId = 2),
-      pvd.copy(providerId = 3)
+      pvd.copy(providerId = 3),
     )
 
     adapter.setProviders(oldList)

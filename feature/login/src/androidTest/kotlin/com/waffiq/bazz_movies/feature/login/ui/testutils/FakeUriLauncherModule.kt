@@ -10,7 +10,7 @@ import dagger.hilt.testing.TestInstallIn
 @Suppress("unused")
 @TestInstallIn(
   components = [SingletonComponent::class],
-  replaces = [UriLauncherModule::class]
+  replaces = [UriLauncherModule::class],
 )
 @Module
 fun interface FakeUriLauncherModule {

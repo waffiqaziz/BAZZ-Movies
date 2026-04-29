@@ -25,7 +25,7 @@ class CastItemResponseTest {
         her new husband drop off his teenage son and young daughter for a rare weekend visit, a strange 
         and powerful lightning storm touches down.
       """.trimIndent(),
-      castItemResponse.overview
+      castItemResponse.overview,
     )
     assertEquals(50.065, castItemResponse.popularity)
     assertEquals("/6Biy7R9LfumYshur3YKhpj56MpB.jpg", castItemResponse.posterPath)

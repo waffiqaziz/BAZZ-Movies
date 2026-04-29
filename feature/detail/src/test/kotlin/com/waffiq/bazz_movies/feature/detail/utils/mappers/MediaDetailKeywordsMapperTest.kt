@@ -4,8 +4,8 @@ import com.waffiq.bazz_movies.core.domain.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywords
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.mediaKeywordsItems
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.tvExternalIds
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaDetail

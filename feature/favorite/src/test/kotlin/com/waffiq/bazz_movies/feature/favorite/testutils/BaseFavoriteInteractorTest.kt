@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 
-abstract class BaseFavoriteInteractorTest : ShouldSpec() {
+open class BaseFavoriteInteractorTest : ShouldSpec() {
 
   protected var mockFavoriteRepository: IFavoriteRepository = mockk()
   protected var mockUserRepository: IUserRepository = mockk()
@@ -33,8 +33,8 @@ abstract class BaseFavoriteInteractorTest : ShouldSpec() {
           token = "token",
           isLogin = true,
           gravatarHash = "url",
-          tmdbAvatar = "url"
-        )
+          tmdbAvatar = "url",
+        ),
       )
     }
   }

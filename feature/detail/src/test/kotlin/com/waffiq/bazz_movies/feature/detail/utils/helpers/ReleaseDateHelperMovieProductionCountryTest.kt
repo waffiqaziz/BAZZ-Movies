@@ -18,13 +18,13 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = null,
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
   }
@@ -37,13 +37,13 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = emptyList(),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
   }
@@ -56,16 +56,16 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "JP",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2022-09-10T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2022-09-10T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(
         ProductionCountriesItem(""),
-        ProductionCountriesItem("")
+        ProductionCountriesItem(""),
       ),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "JP", "Sep 10, 2022")
   }
@@ -78,17 +78,17 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(
         null,
         ProductionCountriesItem(""),
-        ProductionCountriesItem(null)
+        ProductionCountriesItem(null),
       ),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
   }
@@ -101,16 +101,16 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(
         null,
-        ProductionCountriesItem("")
+        ProductionCountriesItem(""),
       ),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "FR", "Dec 01, 2023")
   }
@@ -123,13 +123,13 @@ class ReleaseDateHelperMovieProductionCountryTest : BaseReleaseDateHelperMovieTe
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = ""),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }

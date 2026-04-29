@@ -29,21 +29,21 @@ object DataDumb {
     token = "NAN",
     isLogin = true,
     gravatarHash = "",
-    tmdbAvatar = ""
+    tmdbAvatar = "",
   )
 
   val testMediaState = MediaState(
     id = 12345,
     favorite = false,
     rated = Rated.Unrated,
-    watchlist = false
+    watchlist = false,
   )
 
   val testMediaStateRated = MediaState(
     id = 12345,
     favorite = true,
     rated = Rated.Value(7.0),
-    watchlist = true
+    watchlist = true,
   )
 
   val testMediaCastItem = MediaCastItem(
@@ -58,7 +58,7 @@ object DataDumb {
     profilePath = "profile_path.jpg",
     id = 123456,
     adult = false,
-    order = 12
+    order = 12,
   )
 
   val testMediaCrewItem = MediaCrewItem(
@@ -72,18 +72,18 @@ object DataDumb {
     id = 3333,
     adult = false,
     department = "director",
-    job = "director"
+    job = "director",
   )
 
   val testMediaCredits = MediaCredits(
     cast = listOf(testMediaCastItem, testMediaCastItem.copy(id = 89, name = "actor 2")),
     id = 1234,
-    crew = listOf(testMediaCrewItem)
+    crew = listOf(testMediaCrewItem),
   )
 
   private val testRatingsItem = RatingsItem(
     value = "8.5/10",
-    source = "Internet Movie Database"
+    source = "Internet Movie Database",
   )
 
   val testOMDbDetails = OMDbDetails(
@@ -97,7 +97,7 @@ object DataDumb {
   val testPostModelState = UpdateMediaStateResult(
     isSuccess = true,
     isDelete = false,
-    isFavorite = true
+    isFavorite = true,
   )
 
   val testMediaDetail = MediaDetail(
@@ -119,7 +119,7 @@ object DataDumb {
       MediaKeywordsItem("action", null),
       MediaKeywordsItem(null, 334),
       MediaKeywordsItem("", 335),
-    )
+    ),
   )
 
   val testTvExternalIds = TvExternalIds(
@@ -146,14 +146,14 @@ object DataDumb {
     voteCount = 1102,
     video = false,
     releaseDate = "2025-07-09",
-    originCountry = null
+    originCountry = null,
   )
 
   val testProvider = Provider(
     logoPath = "logo path",
     providerId = 123,
     providerName = "provider name",
-    displayPriority = 1
+    displayPriority = 1,
   )
 
   val testWatchProvidersUiState = WatchProvidersUiState.Success(

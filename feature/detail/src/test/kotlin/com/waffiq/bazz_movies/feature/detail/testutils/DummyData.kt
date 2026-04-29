@@ -66,13 +66,12 @@ object DummyData {
 
   val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
     id = 333,
-    name = "crime"
+    name = "crime",
   )
-
 
   val genresItemResponse = GenresResponseItem(
     id = 1,
-    name = "Action"
+    name = "Action",
   )
 
   val releaseDatesItemValueResponse = ReleaseDatesResponseItemValue(
@@ -81,23 +80,23 @@ object DummyData {
     type = 3,
     iso6391 = "en",
     certification = "R",
-    releaseDate = "2024-01-01"
+    releaseDate = "2024-01-01",
   )
 
   val releaseDatesItemResponse = ReleaseDatesResponseItem(
     iso31661 = "US",
-    listReleaseDateResponseItemValue = listOf(releaseDatesItemValueResponse)
+    listReleaseDateResponseItemValue = listOf(releaseDatesItemValueResponse),
   )
 
   val releaseDatesResponse = ReleaseDatesResponse(
-    listReleaseDatesResponseItem = listOf(releaseDatesItemResponse)
+    listReleaseDatesResponseItem = listOf(releaseDatesItemResponse),
   )
 
   val belongsToCollectionResponse = BelongsToCollectionResponse(
     backdropPath = "/backdrop.jpg",
     name = "Test Collection",
     id = 1,
-    posterPath = "/poster.jpg"
+    posterPath = "/poster.jpg",
   )
 
   val detailMovieResponse = DetailMovieResponse(
@@ -126,7 +125,7 @@ object DummyData {
     tagline = "Test tagline",
     adult = false,
     homepage = "https://testmovie.com",
-    status = "Released"
+    status = "Released",
   )
 
   val ratingsItem = listOf(RatingsItem())
@@ -156,14 +155,14 @@ object DummyData {
     poster = "poster.jpg",
     country = "USA",
     genre = "Action",
-    writer = "Writer Name"
+    writer = "Writer Name",
   )
 
   val networksItemResponse = NetworksItemResponse(
     logoPath = "/network_logo.jpg",
     name = "HBO",
     id = 1,
-    originCountry = "US"
+    originCountry = "US",
   )
 
   val seasonsItemResponse = SeasonsItemResponse(
@@ -173,7 +172,7 @@ object DummyData {
     name = "Season 1",
     seasonNumber = 1,
     id = 1,
-    posterPath = "/season_poster.jpg"
+    posterPath = "/season_poster.jpg",
   )
 
   val createdByItemResponse = CreatedByItemResponse(
@@ -181,7 +180,7 @@ object DummyData {
     creditId = "credit123",
     name = "Creator Name",
     profilePath = "/creator_profile.jpg",
-    id = 1
+    id = 1,
   )
 
   val lastEpisodeToAirResponse = LastEpisodeToAirResponse(
@@ -197,17 +196,17 @@ object DummyData {
     runtime = 60,
     id = 1,
     stillPath = "/episode_still.jpg",
-    voteCount = 100
+    voteCount = 100,
   )
 
   val contentRatingsItemResponse = ContentRatingsItemResponse(
     descriptors = listOf("Violence"),
     iso31661 = "US",
-    rating = "TV-MA"
+    rating = "TV-MA",
   )
 
   val contentRatingsResponse = ContentRatingsResponse(
-    contentRatingsItemResponse = listOf(contentRatingsItemResponse)
+    contentRatingsItemResponse = listOf(contentRatingsItemResponse),
   )
 
   val detailTvResponse = DetailTvResponse(
@@ -243,7 +242,7 @@ object DummyData {
     inProduction = true,
     lastAirDate = "2024-01-15",
     homepage = "https://testtv.com",
-    status = "Returning Series"
+    status = "Returning Series",
   )
 
   val tvDetailFull = TvDetail(
@@ -279,12 +278,12 @@ object DummyData {
     inProduction = false,
     lastAirDate = "2013-09-29",
     homepage = "http://www.amc.com/shows/breaking-bad",
-    status = "Ended"
+    status = "Ended",
   )
 
   private val ratingsItemResponse = RatingsItemResponse(
     value = "8.5/10",
-    source = "Internet Movie Database"
+    source = "Internet Movie Database",
   )
 
   val omdbDetailsResponse = OMDbDetailsResponse(
@@ -312,12 +311,12 @@ object DummyData {
     poster = "https://poster.jpg",
     country = "United States",
     genre = "Action, Crime, Drama",
-    writer = "Jonathan Nolan, Christopher Nolan"
+    writer = "Jonathan Nolan, Christopher Nolan",
   )
 
   val genresItems = listOf(
     GenresItem(id = 1, name = "Action"),
-    GenresItem(id = 2, name = "Comedy")
+    GenresItem(id = 2, name = "Comedy"),
   )
 
   // region MOVIE
@@ -335,12 +334,12 @@ object DummyData {
           listReleaseDatesItemValue = listOf(
             ReleaseDatesItemValue(
               releaseDate = "2023-11-20T00:00:00.000Z",
-              certification = "PG-13"
-            )
-          )
-        )
-      )
-    )
+              certification = "PG-13",
+            ),
+          ),
+        ),
+      ),
+    ),
   )
 
   val movieMediaDetail = MediaDetail(
@@ -351,16 +350,16 @@ object DummyData {
     imdbId = IMDB_ID,
     ageRating = getAgeRating(
       detailMovie,
-      getReleaseDateRegion(detailMovie, USER_REGION).regionRelease
+      getReleaseDateRegion(detailMovie, USER_REGION).regionRelease,
     ),
     tmdbScore = getTransformTMDBScore(detailMovie.voteAverage),
-    releaseDateRegion = getReleaseDateRegion(detailMovie, USER_REGION)
+    releaseDateRegion = getReleaseDateRegion(detailMovie, USER_REGION),
   )
 
   val movieCredits = MediaCredits(
     cast = listOf(),
     crew = listOf(),
-    id = MOVIE_ID
+    id = MOVIE_ID,
   )
 
   val movieMediaItem = MediaItem(
@@ -368,7 +367,7 @@ object DummyData {
     title = "Transformers",
     id = 99999,
     adult = false,
-    voteCount = 8000
+    voteCount = 8000,
   )
 
   val fullMovieDetail = MovieDetail(
@@ -380,7 +379,7 @@ object DummyData {
     runtime = 120,
     imdbId = "tt9999999",
     budget = 1000000,
-    revenue = 5000000L
+    revenue = 5000000L,
   )
   // endregion MOVIE
 
@@ -393,10 +392,10 @@ object DummyData {
     listGenres = listOf(GenresItem(id = 5, name = "Drama")),
     contentRatings = ContentRatings(
       contentRatingsItem = listOf(
-        ContentRatingsItem(iso31661 = "US", rating = "TV-MA")
-      )
+        ContentRatingsItem(iso31661 = "US", rating = "TV-MA"),
+      ),
     ),
-    firstAirDate = "2023-12-20T00:00:00.000Z"
+    firstAirDate = "2023-12-20T00:00:00.000Z",
   )
 
   val tvCredits = MediaCredits(cast = listOf(), crew = listOf(), id = TV_ID)
@@ -409,22 +408,21 @@ object DummyData {
     imdbId = "",
     ageRating = getAgeRating(
       tvDetailFull,
-      getReleaseDateRegion(tvDetailFull).regionRelease
+      getReleaseDateRegion(tvDetailFull).regionRelease,
     ),
     tmdbScore = getTransformTMDBScore(tvDetailFull.voteAverage),
-    releaseDateRegion = getReleaseDateRegion(tvDetailFull)
+    releaseDateRegion = getReleaseDateRegion(tvDetailFull),
   )
 
   val tvKeywordsResponse = TvKeywordsResponse(
     id = 66666,
-    keywords = listOf(mediaKeywordsResponseItem)
+    keywords = listOf(mediaKeywordsResponseItem),
   )
 
   val tvExternalIds = TvExternalIds(
     imdbId = "tt1234567",
-    id = 999
+    id = 999,
   )
-
 
   val fullTvDetail = TvDetail(
     id = 1,
@@ -434,13 +432,13 @@ object DummyData {
     status = "Returning Series",
     listOriginCountry = listOf("US"),
     firstAirDate = "2020-01-01",
-    lastAirDate = "2023-06-01"
+    lastAirDate = "2023-06-01",
   )
   // endregion TV
 
   val video = Video(
     1234,
-    results = listOf(VideoItem(name = "Trailer", type = "Trailer", key = "Link Trailer"))
+    results = listOf(VideoItem(name = "Trailer", type = "Trailer", key = "Link Trailer")),
   )
 
   val watchProviders = WatchProviders(
@@ -451,10 +449,10 @@ object DummyData {
         buy = null,
         flatrate = null,
         free = null,
-        rent = null
-      )
+        rent = null,
+      ),
     ),
-    id = 1234
+    id = 1234,
   )
 
   val omdbDetails = OMDbDetails(
@@ -474,7 +472,7 @@ object DummyData {
     imdbRating = "7.8",
     imdbVotes = "120,000",
     boxOffice = "$100,000,000",
-    website = "https://example.com"
+    website = "https://example.com",
   )
 
   val dataMediaItem = MediaItem(
@@ -496,42 +494,41 @@ object DummyData {
     video = false,
     title = "title",
     releaseDate = "release date",
-    originCountry = listOf()
+    originCountry = listOf(),
   )
 
   val postModelAddFavoriteStateSuccess =
     UpdateMediaStateResult(
       isSuccess = true,
       isDelete = false,
-      isFavorite = true
+      isFavorite = true,
     )
 
   val postModelDeleteFavoriteStateSuccess =
     UpdateMediaStateResult(
       isSuccess = true,
       isDelete = true,
-      isFavorite = true
+      isFavorite = true,
     )
 
   val postModelAddWatchlistStateSuccess =
     UpdateMediaStateResult(
       isSuccess = true,
       isDelete = false,
-      isFavorite = false
+      isFavorite = false,
     )
 
   val postModelDeleteWatchlistStateSuccess =
     UpdateMediaStateResult(
       isSuccess = true,
       isDelete = true,
-      isFavorite = false
+      isFavorite = false,
     )
 
   val movieKeywordsResponse = MovieKeywordsResponse(
     id = 44444,
-    keywords = listOf(mediaKeywordsResponseItem)
+    keywords = listOf(mediaKeywordsResponseItem),
   )
-
 
   val mediaKeywordsItem1 = MediaKeywordsItem(id = 10, name = "superhero")
 
@@ -541,12 +538,12 @@ object DummyData {
 
   val mediaKeywords = MediaKeywords(
     id = 100,
-    keywords = mediaKeywordsItems
+    keywords = mediaKeywordsItems,
   )
 
   val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "US",
-    releaseDate = "2023"
+    releaseDate = "2023",
   )
 
   val testMediaCastItem = MediaCastItem(
@@ -561,6 +558,6 @@ object DummyData {
     profilePath = "profile_path.jpg",
     id = 123456,
     adult = false,
-    order = 12
+    order = 12,
   )
 }

@@ -43,7 +43,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
   override val recommendations = MutableStateFlow(
-    value = PagingData.from(listOf(testMediaItem))
+    value = PagingData.from(listOf(testMediaItem)),
   )
   override val errorEvent = MutableSharedFlow<String>(extraBufferCapacity = 1)
   override val toastEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
@@ -60,13 +60,12 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
   val sUiState = uiState.asStateFlow()
 
   override fun setupBaseMocks() {
-
     uiState.value = MediaDetailUiState(
       detail = testMediaDetail,
       credits = MediaCredits(
         cast = listOf(MediaCastItem()),
         id = 90,
-        crew = listOf(MediaCrewItem())
+        crew = listOf(MediaCrewItem()),
       ),
       omdbDetails = OMDbDetails(),
       videoLink = "link",
@@ -75,7 +74,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
         id = 90,
         favorite = false,
         rated = Rated.Value(90.0),
-        watchlist = false
+        watchlist = false,
       ),
       isFavorite = false,
       isWatchlist = false,

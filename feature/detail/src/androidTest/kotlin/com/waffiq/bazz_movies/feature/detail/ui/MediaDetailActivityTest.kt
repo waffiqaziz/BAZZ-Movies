@@ -50,8 +50,7 @@ import org.junit.Test
  * and the correct display of media details based on various conditions.
  */
 @HiltAndroidTest
-class MediaDetailActivityTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailActivityTest : MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -198,8 +197,8 @@ class MediaDetailActivityTest :
       uiState.update { s ->
         s.copy(
           detail = testMediaDetail.copy(
-            releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = "")
-          )
+            releaseDateRegion = ReleaseDateRegion(regionRelease = "", releaseDate = ""),
+          ),
         )
       }
       tv_year_released.isNotDisplayed()

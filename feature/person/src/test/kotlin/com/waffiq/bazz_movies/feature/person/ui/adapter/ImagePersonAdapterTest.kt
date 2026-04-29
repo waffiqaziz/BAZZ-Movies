@@ -48,7 +48,7 @@ class ImagePersonAdapterTest {
   fun onBindViewHolder_withNullFilePath_handlesClickWithEmptyString() {
     val testProfiles = listOf(
       ProfilesItem(filePath = null),
-      ProfilesItem(filePath = "/test_path2.jpg")
+      ProfilesItem(filePath = "/test_path2.jpg"),
     )
 
     val inflater = LayoutInflater.from(context)
@@ -69,9 +69,9 @@ class ImagePersonAdapterTest {
     assertEquals(
       listOf(
         TMDB_IMG_LINK_POSTER_W1280 + "",
-        "$TMDB_IMG_LINK_POSTER_W1280/test_path2.jpg"
+        "$TMDB_IMG_LINK_POSTER_W1280/test_path2.jpg",
       ),
-      clickedList
+      clickedList,
     )
   }
 
@@ -98,7 +98,7 @@ class ImagePersonAdapterTest {
     val newProfiles = listOf(
       ProfilesItem(filePath = "/path3.jpg"),
       ProfilesItem(filePath = "/path4.jpg"),
-      ProfilesItem(filePath = "/path5.jpg")
+      ProfilesItem(filePath = "/path5.jpg"),
     )
     val adapter = ImagePersonAdapter { _, _ -> }
 
@@ -120,7 +120,7 @@ class ImagePersonAdapterTest {
     val testCases = listOf(
       ProfilesItem(filePath = "valid_image.jpg") to (TMDB_IMG_LINK_POSTER_W185 + "valid_image.jpg"),
       ProfilesItem(filePath = null) to null, // use `ic_poster_error`
-      ProfilesItem(filePath = "") to null // use `ic_poster_error`
+      ProfilesItem(filePath = "") to null, // use `ic_poster_error`
     )
 
     testCases.forEach { (profileItem, expectedUrl) ->

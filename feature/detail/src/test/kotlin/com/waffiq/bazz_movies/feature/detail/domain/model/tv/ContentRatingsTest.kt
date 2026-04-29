@@ -12,10 +12,10 @@ class ContentRatingsTest {
     val ratingsItem = ContentRatingsItem(
       descriptors = listOf("Violence"),
       iso31661 = "US",
-      rating = "TV-MA"
+      rating = "TV-MA",
     )
     val contentRatings = ContentRatings(
-      contentRatingsItem = listOf(ratingsItem)
+      contentRatingsItem = listOf(ratingsItem),
     )
 
     assertEquals(1, contentRatings.contentRatingsItem?.size)
@@ -32,7 +32,7 @@ class ContentRatingsTest {
   @Test
   fun createContentRatings_withEmptyList_setsEmptyList() {
     val contentRatings = ContentRatings(
-      contentRatingsItem = emptyList()
+      contentRatingsItem = emptyList(),
     )
 
     assertTrue(contentRatings.contentRatingsItem?.isEmpty() == true)
@@ -41,7 +41,7 @@ class ContentRatingsTest {
   @Test
   fun createContentRatings_withNullItems_setsNullItems() {
     val contentRatings = ContentRatings(
-      contentRatingsItem = listOf(null, null)
+      contentRatingsItem = listOf(null, null),
     )
 
     assertEquals(2, contentRatings.contentRatingsItem?.size)
@@ -53,7 +53,7 @@ class ContentRatingsTest {
   fun createContentRatings_withMixedItems_setsMixedItems() {
     val ratingsItem = ContentRatingsItem(rating = "PG-13")
     val contentRatings = ContentRatings(
-      contentRatingsItem = listOf(ratingsItem, null, ratingsItem)
+      contentRatingsItem = listOf(ratingsItem, null, ratingsItem),
     )
 
     assertEquals(3, contentRatings.contentRatingsItem?.size)
@@ -67,7 +67,7 @@ class ContentRatingsTest {
     val usRating = ContentRatingsItem(iso31661 = "US", rating = "TV-MA")
     val gbRating = ContentRatingsItem(iso31661 = "GB", rating = "15")
     val contentRatings = ContentRatings(
-      contentRatingsItem = listOf(usRating, gbRating)
+      contentRatingsItem = listOf(usRating, gbRating),
     )
 
     assertEquals(2, contentRatings.contentRatingsItem?.size)

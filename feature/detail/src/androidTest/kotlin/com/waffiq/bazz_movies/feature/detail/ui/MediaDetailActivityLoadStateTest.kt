@@ -81,7 +81,7 @@ class MediaDetailActivityLoadStateTest :
         activity.uiManager.adapterRecommendation.simulateLoadState(
           createCombinedLoadStates(
             appendState = LoadState.NotLoading(endOfPaginationReached = true),
-          )
+          ),
         )
       }
       isRecommendationSectionVisible(false)
@@ -96,7 +96,7 @@ class MediaDetailActivityLoadStateTest :
         activity.uiManager.adapterRecommendation.simulateLoadState(
           createCombinedLoadStates(
             appendState = LoadState.NotLoading(endOfPaginationReached = false),
-          )
+          ),
         )
       }
       isRecommendationSectionVisible(true)
@@ -111,7 +111,7 @@ class MediaDetailActivityLoadStateTest :
         activity.uiManager.adapterRecommendation.simulateLoadState(
           createCombinedLoadStates(
             refreshState = LoadState.Loading,
-          )
+          ),
         )
       }
       isRecommendationSectionVisible(true)
@@ -129,7 +129,7 @@ class MediaDetailActivityLoadStateTest :
           createCombinedLoadStates(
             refreshState = LoadState.NotLoading(endOfPaginationReached = false),
             appendState = LoadState.NotLoading(endOfPaginationReached = true),
-          )
+          ),
         )
       }
       isRecommendationSectionVisible(false)
@@ -139,16 +139,17 @@ class MediaDetailActivityLoadStateTest :
   private fun createCombinedLoadStates(
     refreshState: LoadState = LoadState.NotLoading(endOfPaginationReached = false),
     appendState: LoadState = LoadState.NotLoading(endOfPaginationReached = false),
-  ): CombinedLoadStates = CombinedLoadStates(
-    refresh = refreshState,
-    prepend = LoadState.NotLoading(endOfPaginationReached = false),
-    append = appendState,
-    source = LoadStates(
+  ): CombinedLoadStates =
+    CombinedLoadStates(
       refresh = refreshState,
       prepend = LoadState.NotLoading(endOfPaginationReached = false),
       append = appendState,
-    ),
-  )
+      source = LoadStates(
+        refresh = refreshState,
+        prepend = LoadState.NotLoading(endOfPaginationReached = false),
+        append = appendState,
+      ),
+    )
 
   private fun RecommendationAdapter.simulateLoadState(loadStates: CombinedLoadStates) {
     val differField = PagingDataAdapter::class.java

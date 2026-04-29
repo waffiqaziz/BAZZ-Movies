@@ -148,15 +148,15 @@ class ImageHelperTest {
     assertEquals(ic_no_profile_rounded, data1.profileImageSource)
 
     // all N/A value
-    val data2 = MediaCrewItem(profilePath = "N/A", )
+    val data2 = MediaCrewItem(profilePath = "N/A")
     assertEquals(ic_no_profile_rounded, data2.profileImageSource)
 
     // all empty value
-    val data3 = MediaCrewItem(profilePath = "", )
+    val data3 = MediaCrewItem(profilePath = "")
     assertEquals(ic_no_profile_rounded, data3.profileImageSource)
 
     // all blank
-    val data4 = MediaCrewItem(profilePath = " ", )
+    val data4 = MediaCrewItem(profilePath = " ")
     assertEquals(ic_no_profile_rounded, data4.profileImageSource)
   }
 }

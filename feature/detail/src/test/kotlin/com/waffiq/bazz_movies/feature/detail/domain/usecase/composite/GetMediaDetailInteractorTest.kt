@@ -46,31 +46,33 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   }
 
   @Test
-  fun getMovieDetailWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
-    every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-      flowOf(Outcome.Success(mediaKeywords))
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
-      mockResponse = detailMovie,
-      interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) }
-    ) { emission ->
-      val mediaDetail = assertIs<MediaDetail>(emission.data)
-      assertEquals(MOVIE_ID, mediaDetail.id)
+  fun getMovieDetailWithUserRegion_whenSuccessful_emitsSuccess() =
+    runTest {
+      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+        flowOf(Outcome.Success(mediaKeywords))
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
+        mockResponse = detailMovie,
+        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
+      ) { emission ->
+        val mediaDetail = assertIs<MediaDetail>(emission.data)
+        assertEquals(MOVIE_ID, mediaDetail.id)
+      }
     }
-  }
 
   @Test
-  fun getMovieDetailWithUserRegion_whenUnsuccessful_emitsError() = runTest {
-    every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-      flowOf(Outcome.Error("error"))
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
-      interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) }
-    )
-  }
+  fun getMovieDetailWithUserRegion_whenUnsuccessful_emitsError() =
+    runTest {
+      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+        flowOf(Outcome.Error("error"))
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
+        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
+      )
+    }
 
   @Test
-  fun getMovieDetailWithUserRegion_whenDetailSuccessButKeywordsError_emitsSuccessWithNullKeywords() =
+  fun getMovieDetailWithUserRegion_whenDetailSuccessButKeywordsError_emitsSuccessNullKeywords() =
     runTest {
       every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
         flowOf(Outcome.Error("keywords error"))
@@ -78,7 +80,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         mockResponse = detailMovie,
-        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) }
+        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords) // keywords should be null
@@ -86,7 +88,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     }
 
   @Test
-  fun getMovieDetailWithUserRegion_whenDetailSuccessButKeywordsLoading_emitsSuccessWithNullKeywords() =
+  fun getMovieDetailWithUserRegion_whenDetailSuccessButKeywordsLoading_emitsSuccessNullKeywords() =
     runTest {
       every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
         flowOf(Outcome.Loading)
@@ -94,7 +96,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         mockResponse = detailMovie,
-        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) }
+        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords)
@@ -102,187 +104,205 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     }
 
   @Test
-  fun getMovieDetailWithUserRegion_whenLoading_emitsLoading() = runTest {
-    every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-      flowOf(Outcome.Success(mediaKeywords))
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
-      interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) }
-    )
-  }
-
-  @Test
-  fun getMovieWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
-      mockResponse = watchProviders,
-      interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
-    ) { emission ->
-      val data = assertIs<WatchProvidersItem>(emission.data)
-      assertEquals("https://some-provider.com", data.link)
-    }
-  }
-
-  @Test
-  fun getMovieWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() = runTest {
-    val flow = flowOf(Outcome.Success(WatchProviders(results = emptyMap(), id = MOVIE_ID)))
-
-    coEvery { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) } returns flow
-
-    interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      assertEquals(
-        "No watch provider found for country code: US",
-        (emission as Outcome.Error).message
+  fun getMovieDetailWithUserRegion_whenLoading_emitsLoading() =
+    runTest {
+      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+        flowOf(Outcome.Success(mediaKeywords))
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
+        interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
       )
-      awaitComplete()
     }
 
-    coVerify { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) }
-  }
-
   @Test
-  fun getMovieWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
-      interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
-    )
-  }
-
-  @Test
-  fun getMovieWatchProvidersWithUserRegion_whenLoading_emitsLoading() = runTest {
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
-      interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) }
-    )
-  }
-
-  @Test
-  fun getMovieVideoLinks_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-      mockResponse = video,
-      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
-    ) { emission ->
-      assertEquals("Link Trailer", emission.data)
+  fun getMovieWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
+        mockResponse = watchProviders,
+        interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) },
+      ) { emission ->
+        val data = assertIs<WatchProvidersItem>(emission.data)
+        assertEquals("https://some-provider.com", data.link)
+      }
     }
-  }
 
   @Test
-  fun getMovieVideoLinks_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
-    )
-  }
+  fun getMovieWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() =
+    runTest {
+      val flow = flowOf(Outcome.Success(WatchProviders(results = emptyMap(), id = MOVIE_ID)))
 
-  @Test
-  fun getMovieVideoLinks_whenLoading_emitsLoading() = runTest {
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
-      interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) }
-    )
-  }
+      coEvery { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) } returns flow
 
-  @Test
-  fun getMovieCredits_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
-      mockResponse = movieCredits,
-      interactorCall = { interactor.getMovieCredits(MOVIE_ID) }
-    ) { emission ->
-      assertEquals(movieCredits, emission.data)
+      interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID).test {
+        val emission = awaitItem()
+        assertTrue(emission is Outcome.Error)
+        assertEquals(
+          "No watch provider found for country code: US",
+          (emission as Outcome.Error).message,
+        )
+        awaitComplete()
+      }
+
+      coVerify { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) }
     }
-  }
 
   @Test
-  fun getMovieCredits_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
-      interactorCall = { interactor.getMovieCredits(MOVIE_ID) }
-    )
-  }
-
-  @Test
-  fun getTvTrailerLink_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-      mockResponse = video,
-      interactorCall = { interactor.getTvTrailerLink(TV_ID) }
-    ) { emission ->
-      assertEquals("Link Trailer", emission.data)
+  fun getMovieWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
+        interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) },
+      )
     }
-  }
 
   @Test
-  fun getTvTrailerLink_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-      interactorCall = { interactor.getTvTrailerLink(TV_ID) }
-    )
-  }
-
-  @Test
-  fun getTvTrailerLink_whenLoading_emitsLoading() = runTest {
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
-      interactorCall = { interactor.getTvTrailerLink(TV_ID) }
-    )
-  }
-
-  @Test
-  fun getTvCredits_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
-      mockResponse = tvCredits,
-      interactorCall = { interactor.getTvCredits(TV_ID) }
-    ) { emission ->
-      assertEquals(tvCredits, emission.data)
+  fun getMovieWatchProvidersWithUserRegion_whenLoading_emitsLoading() =
+    runTest {
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) },
+        interactorCall = { interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID) },
+      )
     }
-  }
 
   @Test
-  fun getTvCredits_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
-      interactorCall = { interactor.getTvCredits(TV_ID) }
-    )
-  }
-
-  @Test
-  fun getTvDetailWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
-    setupExternalIdAndKeywordsMockData()
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
-      mockResponse = detailTv,
-      interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
-    ) { emission ->
-      val mediaDetail = assertIs<MediaDetail>(emission.data)
-      assertEquals(TV_ID, mediaDetail.id)
+  fun getMovieVideoLinks_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
+        mockResponse = video,
+        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
+      ) { emission ->
+        assertEquals("Link Trailer", emission.data)
+      }
     }
-  }
 
   @Test
-  fun getTvDetailWithUserRegion_whenUnsuccessful_emitsError() = runTest {
-    every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
-      flowOf(Outcome.Error("error"))
-    every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-      flowOf(Outcome.Error("error"))
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
-      interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
-    )
-  }
+  fun getMovieVideoLinks_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
+        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
+      )
+    }
 
   @Test
-  fun getTvDetailWithUserRegion_whenLoading_emitsLoading() = runTest {
-    setupExternalIdAndKeywordsMockData()
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
-      interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
-    )
-  }
+  fun getMovieVideoLinks_whenLoading_emitsLoading() =
+    runTest {
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getMovieTrailerLink(MOVIE_ID) },
+        interactorCall = { interactor.getMovieVideoLinks(MOVIE_ID) },
+      )
+    }
+
+  @Test
+  fun getMovieCredits_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
+        mockResponse = movieCredits,
+        interactorCall = { interactor.getMovieCredits(MOVIE_ID) },
+      ) { emission ->
+        assertEquals(movieCredits, emission.data)
+      }
+    }
+
+  @Test
+  fun getMovieCredits_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getMovieCredits(MOVIE_ID) },
+        interactorCall = { interactor.getMovieCredits(MOVIE_ID) },
+      )
+    }
+
+  @Test
+  fun getTvTrailerLink_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
+        mockResponse = video,
+        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
+      ) { emission ->
+        assertEquals("Link Trailer", emission.data)
+      }
+    }
+
+  @Test
+  fun getTvTrailerLink_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
+        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
+      )
+    }
+
+  @Test
+  fun getTvTrailerLink_whenLoading_emitsLoading() =
+    runTest {
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getTvTrailerLink(TV_ID) },
+        interactorCall = { interactor.getTvTrailerLink(TV_ID) },
+      )
+    }
+
+  @Test
+  fun getTvCredits_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
+        mockResponse = tvCredits,
+        interactorCall = { interactor.getTvCredits(TV_ID) },
+      ) { emission ->
+        assertEquals(tvCredits, emission.data)
+      }
+    }
+
+  @Test
+  fun getTvCredits_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getTvCredits(TV_ID) },
+        interactorCall = { interactor.getTvCredits(TV_ID) },
+      )
+    }
+
+  @Test
+  fun getTvDetailWithUserRegion_whenSuccessful_emitsSuccess() =
+    runTest {
+      setupExternalIdAndKeywordsMockData()
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
+        mockResponse = detailTv,
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
+      ) { emission ->
+        val mediaDetail = assertIs<MediaDetail>(emission.data)
+        assertEquals(TV_ID, mediaDetail.id)
+      }
+    }
+
+  @Test
+  fun getTvDetailWithUserRegion_whenUnsuccessful_emitsError() =
+    runTest {
+      every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
+        flowOf(Outcome.Error("error"))
+      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
+        flowOf(Outcome.Error("error"))
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
+      )
+    }
+
+  @Test
+  fun getTvDetailWithUserRegion_whenLoading_emitsLoading() =
+    runTest {
+      setupExternalIdAndKeywordsMockData()
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
+      )
+    }
 
   @Test
   fun getTvDetailWithUserRegion_whenDetailSuccessButKeywordsError_emitsSuccessWithNullKeywords() =
@@ -295,7 +315,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
         mockResponse = detailTv,
-        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords)
@@ -313,7 +333,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
         mockResponse = detailTv,
-        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords)
@@ -331,7 +351,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
         mockResponse = detailTv,
-        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords)
@@ -349,7 +369,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
         mockResponse = detailTv,
-        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) }
+        interactorCall = { interactor.getTvDetailWithUserRegion(TV_ID) },
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertNull(mediaDetail.keywords)
@@ -357,51 +377,55 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     }
 
   @Test
-  fun getTvWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() = runTest {
-    testSuccessScenario(
-      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
-      mockResponse = watchProviders,
-      interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
-    ) { emission ->
-      val data = assertIs<WatchProvidersItem>(emission.data)
-      assertEquals("https://some-provider.com", data.link)
+  fun getTvWatchProvidersWithUserRegion_whenSuccessful_emitsSuccess() =
+    runTest {
+      testSuccessScenario(
+        mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
+        mockResponse = watchProviders,
+        interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) },
+      ) { emission ->
+        val data = assertIs<WatchProvidersItem>(emission.data)
+        assertEquals("https://some-provider.com", data.link)
+      }
     }
-  }
 
   @Test
-  fun getTvWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() = runTest {
-    val emptyWatchProviders = WatchProviders(results = emptyMap(), id = TV_ID)
-    coEvery { mockDetailRepository.getTvWatchProviders(TV_ID) } returns
-      flowOf(Outcome.Success(emptyWatchProviders))
+  fun getTvWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() =
+    runTest {
+      val emptyWatchProviders = WatchProviders(results = emptyMap(), id = TV_ID)
+      coEvery { mockDetailRepository.getTvWatchProviders(TV_ID) } returns
+        flowOf(Outcome.Success(emptyWatchProviders))
 
-    interactor.getTvWatchProvidersWithUserRegion(TV_ID).test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      assertEquals(
-        "No watch provider found for country code: US",
-        (emission as Outcome.Error).message
+      interactor.getTvWatchProvidersWithUserRegion(TV_ID).test {
+        val emission = awaitItem()
+        assertTrue(emission is Outcome.Error)
+        assertEquals(
+          "No watch provider found for country code: US",
+          (emission as Outcome.Error).message,
+        )
+        awaitComplete()
+      }
+
+      coVerify { mockDetailRepository.getTvWatchProviders(TV_ID) }
+    }
+
+  @Test
+  fun getTvWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() =
+    runTest {
+      testErrorScenario(
+        mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
+        interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) },
       )
-      awaitComplete()
     }
 
-    coVerify { mockDetailRepository.getTvWatchProviders(TV_ID) }
-  }
-
   @Test
-  fun getTvWatchProvidersWithUserRegion_whenUnsuccessful_emitsError() = runTest {
-    testErrorScenario(
-      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
-      interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
-    )
-  }
-
-  @Test
-  fun getTvWatchProvidersWithUserRegion_whenLoading_emitsLoading() = runTest {
-    testLoadingScenario(
-      mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
-      interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) }
-    )
-  }
+  fun getTvWatchProvidersWithUserRegion_whenLoading_emitsLoading() =
+    runTest {
+      testLoadingScenario(
+        mockCall = { mockDetailRepository.getTvWatchProviders(TV_ID) },
+        interactorCall = { interactor.getTvWatchProvidersWithUserRegion(TV_ID) },
+      )
+    }
 
   private fun setupExternalIdAndKeywordsMockData() {
     every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns

@@ -4,41 +4,42 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import io.kotest.core.spec.style.FunSpec
 import org.junit.Assert.assertTrue
 
-class KotestInstantExecutorExtensionTest : FunSpec({
+class KotestInstantExecutorExtensionTest :
+  FunSpec({
 
-  extensions(KotestInstantExecutorExtension)
+    extensions(KotestInstantExecutorExtension)
 
-  test("postToMainThread executes runnable synchronously") {
-    var executed = false
-    ArchTaskExecutor.getInstance().postToMainThread { executed = true }
-    assertTrue(executed)
-  }
+    test("postToMainThread executes runnable synchronously") {
+      var executed = false
+      ArchTaskExecutor.getInstance().postToMainThread { executed = true }
+      assertTrue(executed)
+    }
 
-  test("executeOnDiskIO executes runnable synchronously") {
-    var executed = false
-    ArchTaskExecutor.getInstance().executeOnDiskIO { executed = true }
-    assertTrue(executed)
-  }
+    test("executeOnDiskIO executes runnable synchronously") {
+      var executed = false
+      ArchTaskExecutor.getInstance().executeOnDiskIO { executed = true }
+      assertTrue(executed)
+    }
 
-  test("isMainThread returns true while delegate is set") {
-    assertTrue(ArchTaskExecutor.getInstance().isMainThread)
-  }
+    test("isMainThread returns true while delegate is set") {
+      assertTrue(ArchTaskExecutor.getInstance().isMainThread)
+    }
 
-  test("postToMainThread executes synchronously (explicit runnable)") {
-    var executed = false
-    val runnable = Runnable { executed = true }
+    test("postToMainThread executes synchronously (explicit runnable)") {
+      var executed = false
+      val runnable = Runnable { executed = true }
 
-    ArchTaskExecutor.getInstance().postToMainThread(runnable)
+      ArchTaskExecutor.getInstance().postToMainThread(runnable)
 
-    assertTrue(executed)
-  }
+      assertTrue(executed)
+    }
 
-  test("executeOnDiskIO executes synchronously (explicit runnable)") {
-    var executed = false
-    val runnable = Runnable { executed = true }
+    test("executeOnDiskIO executes synchronously (explicit runnable)") {
+      var executed = false
+      val runnable = Runnable { executed = true }
 
-    ArchTaskExecutor.getInstance().executeOnDiskIO(runnable)
+      ArchTaskExecutor.getInstance().executeOnDiskIO(runnable)
 
-    assertTrue(executed)
-  }
-})
+      assertTrue(executed)
+    }
+  })

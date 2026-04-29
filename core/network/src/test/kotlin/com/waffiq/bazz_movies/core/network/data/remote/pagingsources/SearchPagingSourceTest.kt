@@ -30,92 +30,98 @@ class SearchPagingSourceTest {
   private val query = "test query"
 
   @Test
-  fun fetchPage_withSuccessfulApiCall_returnsCorrectPageData() = runTest {
-    val mediaItems = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
-    testLoadReturnsPage(
-      pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
-      setupMock = {
-        coEvery {
-          mockSearchApiService.search(query, INITIAL_PAGE_INDEX)
-        } returns MultiSearchResponse(results = mediaItems)
-      },
-      params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
-      expectedData = mediaItems,
-      expectedPrevKey = null,
-      expectedNextKey = INITIAL_PAGE_INDEX + 1
-    )
-  }
-
-  @Test
-  fun fetchPage_withIOException_returnsError() = runTest {
-    testLoadReturnsErrorOnException(
-      pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
-      setupMock = {
-        coEvery { mockSearchApiService.search(query, INITIAL_PAGE_INDEX) } throws IOException()
-      },
-      params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
-      expectedException = IOException::class.java
-    )
-  }
-
-  @Test
-  fun fetchPage_withHttpException_returnsError() = runTest {
-    testLoadReturnsErrorOnHttpException(
-      pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
-      setupMock = {
-        val exception = mockk<HttpException> { every { message } returns "HTTP Error" }
-        coEvery { mockSearchApiService.search(query, INITIAL_PAGE_INDEX) } throws exception
-      },
-      params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
-      expectedMessage = "HTTP Error"
-    )
-  }
-
-  @Test
-  fun fetchPage_withNullResponseData_returnsError() = runTest {
-    coEvery {
-      mockSearchApiService.search(query, INITIAL_PAGE_INDEX)
-    } returns MultiSearchResponse(results = null)
-    val pagingSource = SearchPagingSource(mockSearchApiService, query)
-
-    val result = pagingSource.load(PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false))
-
-    if (result is PagingSource.LoadResult.Error) {
-      assertThat(result.throwable).isInstanceOf(Exception::class.java)
-      assertThat(result.throwable.message).isEqualTo("Response data is null")
-    } else {
-      fail("Expected LoadResult.Error but got $result")
+  fun fetchPage_withSuccessfulApiCall_returnsCorrectPageData() =
+    runTest {
+      val mediaItems = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
+      testLoadReturnsPage(
+        pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
+        setupMock = {
+          coEvery {
+            mockSearchApiService.search(query, INITIAL_PAGE_INDEX)
+          } returns MultiSearchResponse(results = mediaItems)
+        },
+        params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
+        expectedData = mediaItems,
+        expectedPrevKey = null,
+        expectedNextKey = INITIAL_PAGE_INDEX + 1,
+      )
     }
-  }
 
   @Test
-  fun loadPage_onSubsequentPage_returnPageWithNonNullPrevKey() = runTest {
-    testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
-      pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
-      setupMock = { page ->
-        val mediaItems =
-          listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
-        coEvery {
-          mockSearchApiService.search(query, page)
-        } returns MultiSearchResponse(results = mediaItems)
-      },
-      page = 2,
-      expectedData = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
-    )
-  }
+  fun fetchPage_withIOException_returnsError() =
+    runTest {
+      testLoadReturnsErrorOnException(
+        pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
+        setupMock = {
+          coEvery { mockSearchApiService.search(query, INITIAL_PAGE_INDEX) } throws IOException()
+        },
+        params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
+        expectedException = IOException::class.java,
+      )
+    }
 
   @Test
-  fun loadPage_withEmptyResponse_returnPageWithNullNextKey() = runTest {
-    testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
-      pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
-      setupMock = { page ->
-        coEvery {
-          mockSearchApiService.search(query, page)
-        } returns MultiSearchResponse(results = emptyList())
-      },
-      expectedData = emptyList()
-    )
-  }
+  fun fetchPage_withHttpException_returnsError() =
+    runTest {
+      testLoadReturnsErrorOnHttpException(
+        pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
+        setupMock = {
+          val exception = mockk<HttpException> { every { message } returns "HTTP Error" }
+          coEvery { mockSearchApiService.search(query, INITIAL_PAGE_INDEX) } throws exception
+        },
+        params = PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false),
+        expectedMessage = "HTTP Error",
+      )
+    }
+
+  @Test
+  fun fetchPage_withNullResponseData_returnsError() =
+    runTest {
+      coEvery {
+        mockSearchApiService.search(query, INITIAL_PAGE_INDEX)
+      } returns MultiSearchResponse(results = null)
+      val pagingSource = SearchPagingSource(mockSearchApiService, query)
+
+      val result = pagingSource.load(PagingSource.LoadParams.Refresh(INITIAL_PAGE_INDEX, 2, false))
+
+      if (result is PagingSource.LoadResult.Error) {
+        assertThat(result.throwable).isInstanceOf(Exception::class.java)
+        assertThat(result.throwable.message).isEqualTo("Response data is null")
+      } else {
+        fail("Expected LoadResult.Error but got $result")
+      }
+    }
+
+  @Test
+  fun loadPage_onSubsequentPage_returnPageWithNonNullPrevKey() =
+    runTest {
+      testLoadReturnsPageWithNonNullPrevKeyOnSubsequentPage(
+        pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
+        setupMock = { page ->
+          val mediaItems =
+            listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2"))
+          coEvery {
+            mockSearchApiService.search(query, page)
+          } returns MultiSearchResponse(results = mediaItems)
+        },
+        page = 2,
+        expectedData = listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2")),
+      )
+    }
+
+  @Test
+  fun loadPage_withEmptyResponse_returnPageWithNullNextKey() =
+    runTest {
+      testLoadReturnsPageWithNullNextKeyOnEmptyResponse(
+        pagingSourceFactory = { SearchPagingSource(mockSearchApiService, query) },
+        setupMock = { page ->
+          coEvery {
+            mockSearchApiService.search(query, page)
+          } returns MultiSearchResponse(results = emptyList())
+        },
+        expectedData = emptyList(),
+      )
+    }
 
   @Test
   fun getRefreshKey_whenAnchorInMiddlePage_returnsCorrectKey() {
@@ -123,12 +129,12 @@ class SearchPagingSourceTest {
       pagingSource = SearchPagingSource(mockSearchApiService, query),
       data = listOf(
         listOf(MultiSearchResponseItem("item1"), MultiSearchResponseItem("item2")),
-        listOf(MultiSearchResponseItem("item3"), MultiSearchResponseItem("item4"))
+        listOf(MultiSearchResponseItem("item3"), MultiSearchResponseItem("item4")),
       ),
       prevKeys = listOf(null, 1),
       nextKeys = listOf(2, 3),
       anchorPosition = 2, // Anchor in the middle of the second page
-      expectedRefreshKey = 2 // Expected nextKey of the first page
+      expectedRefreshKey = 2, // Expected nextKey of the first page
     )
   }
 
@@ -140,7 +146,7 @@ class SearchPagingSourceTest {
       anchorPosition = 0,
       prevKey = 1,
       nextKey = 3,
-      expectedRefreshKey = 2 // prevKey + 1
+      expectedRefreshKey = 2, // prevKey + 1
     )
   }
 
@@ -152,7 +158,7 @@ class SearchPagingSourceTest {
       anchorPosition = 0,
       prevKey = null,
       nextKey = 3,
-      expectedRefreshKey = 2 // nextKey - 1
+      expectedRefreshKey = 2, // nextKey - 1
     )
   }
 
@@ -160,7 +166,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenBothKeysAreNull_returnsNull() {
     testRefreshKeyAllKeysNull(
       pagingSource = SearchPagingSource(mockSearchApiService, query),
-      data = listOf(MultiSearchResponseItem("item1"))
+      data = listOf(MultiSearchResponseItem("item1")),
     )
   }
 
@@ -168,7 +174,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenNoAnchorPositionAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(mockSearchApiService, query),
-      anchorPosition = null
+      anchorPosition = null,
     )
   }
 
@@ -176,7 +182,7 @@ class SearchPagingSourceTest {
   fun getRefreshKey_whenAnchorIsZeroAndEmptyPages_returnsNull() {
     testRefreshKeyEmptyList(
       pagingSource = SearchPagingSource(mockSearchApiService, query),
-      anchorPosition = 0
+      anchorPosition = 0,
     )
   }
 }

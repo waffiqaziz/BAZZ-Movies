@@ -13,7 +13,7 @@ class UnconfinedDispatcherRuleTest {
 
   private val description: Description = Description.createTestDescription(
     UnconfinedDispatcherRuleTest::class.java,
-    "test"
+    "test",
   )
 
   private fun UnconfinedDispatcherRule.runWithRule(block: () -> Unit) {
@@ -21,7 +21,7 @@ class UnconfinedDispatcherRuleTest {
       object : Statement() {
         override fun evaluate() = block()
       },
-      description
+      description,
     ).evaluate()
   }
 

@@ -25,17 +25,17 @@ class TestData {
     popularity = 8.9,
     rating = 4.3f,
     isFavorite = true,
-    isWatchlist = false
+    isWatchlist = false,
   )
 
   val favoriteTvList = listOf(
     baseFavorite.copy(id = 1, mediaId = 101, mediaType = "tv", title = "TV Show 1"),
-    baseFavorite.copy(id = 2, mediaId = 102, mediaType = "tv", title = "TV Show 2")
+    baseFavorite.copy(id = 2, mediaId = 102, mediaType = "tv", title = "TV Show 2"),
   )
 
   val favoriteMoviesList = listOf(
     baseFavorite.copy(id = 3, mediaId = 201, mediaType = "movie", title = "Movie 1"),
-    baseFavorite.copy(id = 4, mediaId = 202, mediaType = "movie", title = "Movie 2")
+    baseFavorite.copy(id = 4, mediaId = 202, mediaType = "movie", title = "Movie 2"),
   )
 
   val watchlistTvList = listOf(
@@ -45,7 +45,7 @@ class TestData {
       mediaType = "tv",
       title = "TV Show 3",
       isWatchlist = true,
-      isFavorite = false
+      isFavorite = false,
     ),
     baseFavorite.copy(
       id = 6,
@@ -53,8 +53,8 @@ class TestData {
       mediaType = "tv",
       title = "TV Show 4",
       isWatchlist = true,
-      isFavorite = false
-    )
+      isFavorite = false,
+    ),
   )
 
   val watchlistMovieList = listOf(
@@ -64,7 +64,7 @@ class TestData {
       mediaType = "movie",
       title = "Movie 3",
       isWatchlist = true,
-      isFavorite = false
+      isFavorite = false,
     ),
     baseFavorite.copy(
       id = 8,
@@ -72,7 +72,7 @@ class TestData {
       mediaType = "movie",
       title = "Movie 4",
       isWatchlist = true,
-      isFavorite = false
-    )
+      isFavorite = false,
+    ),
   )
 }

@@ -47,7 +47,7 @@ class DetailPersonTest {
       name = "Your Name",
       id = 12345,
       adult = false,
-      homepage = "https://example.com"
+      homepage = "https://example.com",
     )
 
     // obtain the CREATOR field
@@ -83,7 +83,7 @@ class DetailPersonTest {
       name = null,
       id = null,
       adult = null,
-      homepage = null
+      homepage = null,
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -132,7 +132,7 @@ class DetailPersonTest {
       name = "Your Name",
       id = 12345,
       adult = false,
-      homepage = "https://example.com"
+      homepage = "https://example.com",
     )
 
     val parcel = Parcel.obtain()

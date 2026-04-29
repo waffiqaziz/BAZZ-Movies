@@ -37,7 +37,6 @@ class RecyclerViewLayoutHelperTest {
     }
   }
 
-
   @Test
   fun restoreInstanceState_whenCalled_restoreStateCorrectly() {
     every { recyclerView.layoutManager } returns layoutManager

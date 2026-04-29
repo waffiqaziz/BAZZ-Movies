@@ -54,7 +54,7 @@ class KnownForAdapterTest {
     val oldList = listOf(CastItem(id = 1, name = "Old Cast"))
     val newList = listOf(
       CastItem(id = 2, name = "New Cast"),
-      CastItem(id = 3, name = "No Cast")
+      CastItem(id = 3, name = "No Cast"),
     )
 
     adapter.setCast(oldList)
@@ -77,12 +77,12 @@ class KnownForAdapterTest {
       CastItem(title = "Test Title") to "Test Title",
       CastItem(originalName = "Original Name") to "Original Name",
       CastItem(originalTitle = "Original Title") to "Original Title",
-      CastItem() to "Item"
+      CastItem() to "Item",
     )
 
     val characterCases = listOf(
       CastItem(character = "Bjorn") to "Bjorn",
-      CastItem(character = null) to context.getString(not_available)
+      CastItem(character = null) to context.getString(not_available),
     )
 
     // test name/title/originalName/originalTitle branches
@@ -123,7 +123,7 @@ class KnownForAdapterTest {
     val testCases = listOf(
       CastItem(id = 1, character = "Bjorn", posterPath = "valid_image.jpg") to 1,
       CastItem(id = 2, character = "Bjorn", posterPath = "") to 2,
-      CastItem(id = 3, character = "Bjorn", posterPath = null) to 3
+      CastItem(id = 3, character = "Bjorn", posterPath = null) to 3,
     )
 
     testCases.forEach { (castItem, castId) ->
@@ -149,7 +149,7 @@ class KnownForAdapterTest {
       voteAverage = 7.0f,
       voteCount = 100,
       posterPath = "/test.jpg",
-      backdropPath = "/backdrop.jpg"
+      backdropPath = "/backdrop.jpg",
     )
 
     val inflater = LayoutInflater.from(ApplicationProvider.getApplicationContext())

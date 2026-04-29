@@ -44,7 +44,7 @@ class LoginViewModelTest {
 
   @Before
   fun setup() {
-    viewModel = LoginViewModel(mockAuthTMDbAccountUseCase,mockUserPrefUseCase)
+    viewModel = LoginViewModel(mockAuthTMDbAccountUseCase, mockUserPrefUseCase)
 
     // reset observer lists
     loadingStates.clear()
@@ -59,50 +59,52 @@ class LoginViewModelTest {
   }
 
   @Test
-  fun userLogin_whenUnsuccessful_emitsLoadingAndErrorStates() = runTest {
-    coEvery { mockAuthTMDbAccountUseCase.login(any(), any()) } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Error("Token creation failed"))
+  fun userLogin_whenUnsuccessful_emitsLoadingAndErrorStates() =
+    runTest {
+      coEvery { mockAuthTMDbAccountUseCase.login(any(), any()) } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Error("Token creation failed"))
+      }
+
+      viewModel.userLogin(TEST_USER, TEST_PASS)
+      advanceUntilIdle()
+
+      assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
+      assertThat(errorStates).contains("Token creation failed") // error message captured
+
+      coVerify { mockAuthTMDbAccountUseCase.login(any(), any()) }
     }
-
-    viewModel.userLogin(TEST_USER, TEST_PASS)
-    advanceUntilIdle()
-
-    assertThat(loadingStates).containsExactly(true, false) // loading started, then stopped
-    assertThat(errorStates).contains("Token creation failed") // error message captured
-
-    coVerify { mockAuthTMDbAccountUseCase.login(any(), any()) }
-  }
 
   @Test
-  fun userLogin_whenSuccessful_triggersLoginAndSessionCreation() = runTest {
-    coEvery { mockAuthTMDbAccountUseCase.login(any(), any()) } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Success(Unit))
+  fun userLogin_whenSuccessful_triggersLoginAndSessionCreation() =
+    runTest {
+      coEvery { mockAuthTMDbAccountUseCase.login(any(), any()) } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Success(Unit))
+      }
+
+      viewModel.userLogin(TEST_USER, TEST_PASS)
+      advanceUntilIdle()
+
+      assertEquals(true, loginStates[0])
+
+      coVerify { mockAuthTMDbAccountUseCase.login(any(), any()) }
     }
-
-    viewModel.userLogin(TEST_USER, TEST_PASS)
-    advanceUntilIdle()
-
-    assertEquals(true, loginStates[0])
-
-    coVerify { mockAuthTMDbAccountUseCase.login(any(), any()) }
-  }
-
 
   @Test
-  fun saveGuestUserPref_withCorrectValue_shouldSaveCorrectly() = runTest {
-    viewModel.saveGuestUserPref("name", "username")
-    advanceUntilIdle()
-    coVerify {
-      mockUserPrefUseCase.saveUserPref(
-        match { userModel ->
-          userModel.userId == 0 &&
-            userModel.name == "name" &&
-            userModel.username == "username" &&
-            userModel.isLogin
-        }
-      )
+  fun saveGuestUserPref_withCorrectValue_shouldSaveCorrectly() =
+    runTest {
+      viewModel.saveGuestUserPref("name", "username")
+      advanceUntilIdle()
+      coVerify {
+        mockUserPrefUseCase.saveUserPref(
+          match { userModel ->
+            userModel.userId == 0 &&
+              userModel.name == "name" &&
+              userModel.username == "username" &&
+              userModel.isLogin
+          },
+        )
+      }
     }
-  }
 }

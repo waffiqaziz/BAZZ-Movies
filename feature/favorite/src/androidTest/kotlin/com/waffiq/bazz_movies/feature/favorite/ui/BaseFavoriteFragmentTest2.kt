@@ -70,46 +70,46 @@ class BaseFavoriteFragmentTest2 :
   }
 
   @Test
-  fun loggedUser_noFavorite_showEmptyIllustration() = runTest {
-    mockUserModel.postValue(userModel)
+  fun loggedUser_noFavorite_showEmptyIllustration() =
+    runTest {
+      mockUserModel.postValue(userModel)
 
-    val pager = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)) {
-      object : PagingSource<Int, MediaItem>() {
-        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaItem> {
-          return LoadResult.Page(
-            data = emptyList(),
-            prevKey = null,
-            nextKey = null
-          )
+      val pager = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false)) {
+        object : PagingSource<Int, MediaItem>() {
+          override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MediaItem> =
+            LoadResult.Page(
+              data = emptyList(),
+              prevKey = null,
+              nextKey = null,
+            )
+
+          override fun getRefreshKey(state: PagingState<Int, MediaItem>): Int? = null
         }
-
-        override fun getRefreshKey(state: PagingState<Int, MediaItem>): Int? = null
       }
-    }
 
-    every { mockFavoriteViewModel.getFavoriteData("movie") } returns pager.flow
+      every { mockFavoriteViewModel.getFavoriteData("movie") } returns pager.flow
 
-    // Launch parent fragment
-    launchFragmentInHiltContainer<FavoriteFragment> {
-      // Access the fragment in this block
-      val viewPager = this.requireView().findViewById<ViewPager2>(view_pager)
+      // Launch parent fragment
+      launchFragmentInHiltContainer<FavoriteFragment> {
+        // Access the fragment in this block
+        val viewPager = this.requireView().findViewById<ViewPager2>(view_pager)
 
-      // Force ViewPager to create and show first fragment
-      viewPager.setCurrentItem(0, false)
+        // Force ViewPager to create and show first fragment
+        viewPager.setCurrentItem(0, false)
 
-      // Post to ensure ViewPager has created the fragment
-      viewPager.post {
-        val childFragment = this.childFragmentManager.fragments
-          .firstOrNull { it is FavoriteChildFragment }
-        childFragment?.view?.visibility = View.VISIBLE
+        // Post to ensure ViewPager has created the fragment
+        viewPager.post {
+          val childFragment = this.childFragmentManager.fragments
+            .firstOrNull { it is FavoriteChildFragment }
+          childFragment?.view?.visibility = View.VISIBLE
+        }
       }
+
+      // Wait for ViewPager + debounce + paging load states
+      onView(isRoot()).perform(waitFor(1000))
+
+      // Check empty view is displayed
+      illustration_no_data_view.isDisplayed()
+      progress_bar.isNotDisplayed()
     }
-
-    // Wait for ViewPager + debounce + paging load states
-    onView(isRoot()).perform(waitFor(1000))
-
-    // Check empty view is displayed
-    illustration_no_data_view.isDisplayed()
-    progress_bar.isNotDisplayed()
-  }
 }

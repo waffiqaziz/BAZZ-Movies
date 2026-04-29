@@ -10,8 +10,8 @@ class TvKeywordsResponseTest {
     val tvKeywordsResponse = TvKeywordsResponse(
       id = 1222,
       keywords = listOf(
-        MediaKeywordsResponseItem(id = 456456, name = "war")
-      )
+        MediaKeywordsResponseItem(id = 456456, name = "war"),
+      ),
     )
     assertEquals(1222, tvKeywordsResponse.id)
     assertEquals(456456, tvKeywordsResponse.keywords?.get(0)?.id)

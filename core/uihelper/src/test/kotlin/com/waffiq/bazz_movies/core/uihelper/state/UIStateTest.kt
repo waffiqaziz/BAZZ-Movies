@@ -25,7 +25,6 @@ class UIStateTest {
     assertEquals(expected = expected, actual = tempNumber)
   }
 
-
   @Test
   fun isError_whenMessageProvided_returnsMessageCorrectly() {
     val errorMessage = "Something went wrong"

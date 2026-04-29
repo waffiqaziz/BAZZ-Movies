@@ -24,7 +24,7 @@ class TrendingRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockTrendingRemoteDataSource.getTrendingToday(region) },
       repositoryCall = { trendingRepository.getTrendingToday(region) },
-      verifyDataSourceCall = { verify { mockTrendingRemoteDataSource.getTrendingToday(region) } }
+      verifyDataSourceCall = { verify { mockTrendingRemoteDataSource.getTrendingToday(region) } },
     )
   }
 
@@ -34,7 +34,9 @@ class TrendingRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockTrendingRemoteDataSource.getTrendingThisWeek(region) },
       repositoryCall = { trendingRepository.getTrendingThisWeek(region) },
-      verifyDataSourceCall = { verify { mockTrendingRemoteDataSource.getTrendingThisWeek(region) } }
+      verifyDataSourceCall = {
+        verify { mockTrendingRemoteDataSource.getTrendingThisWeek(region) }
+      },
     )
   }
 }

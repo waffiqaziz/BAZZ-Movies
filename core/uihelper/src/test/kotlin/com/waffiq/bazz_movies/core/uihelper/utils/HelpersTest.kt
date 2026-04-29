@@ -124,7 +124,8 @@ class HelpersTest {
 
   @Test
   fun setupRecyclerViewsWithSnap_withCustomLayoutManager_setsLayoutManagerAndAttachesSnapHelper() {
-    val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
+    val customLayoutManager =
+      LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
 
     setupRecyclerViewsWithSnap(listOf(recyclerView), layoutManager = customLayoutManager)
 
@@ -142,7 +143,7 @@ class HelpersTest {
   }
 
   @Test
-  fun setupRecyclerViewsWithSnapGridLayout_whenSnapHelperAlreadySet_doesNotReplaceOrChangeLayoutManager() {
+  fun setupRecyclerViewsWithSnapGridLayout_whenSnapHelperIsSet_notReplaceOrChangeLayoutManager() {
     // set RecyclerView with SnapHelper
     recyclerView.onFlingListener = CustomSnapHelper()
     val existingLayoutManager =
@@ -155,21 +156,25 @@ class HelpersTest {
     // snapHelper should not be replaced
     assertNotNull(recyclerView.onFlingListener)
 
-    // ensure layoutManager remains unchanged
+    // ensure layout manager remains unchanged
     assertSame(existingLayoutManager, recyclerView.layoutManager)
   }
 
   @Test
-  fun setupRecyclerViewsWithSnapGridLayout_withCustomLayoutManager_setsLayoutManagerAndAttachesSnapHelper() {
-    val customLayoutManager = LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
+  fun setupRecyclerViewsWithSnapGridLayout_withCustomLayoutManager_attachesSnapHelper() {
+    val customLayoutManager =
+      LinearLayoutManager(themedContext, LinearLayoutManager.HORIZONTAL, false)
 
     setupRecyclerViewsWithSnapGridLayout(
       recyclerViews = listOf(recyclerView),
-      layoutManager = customLayoutManager
+      layoutManager = customLayoutManager,
     )
 
+    // changed the layout manager
     assertSame(customLayoutManager, recyclerView.layoutManager)
     assertNotNull(recyclerView.onFlingListener)
+
+    // attaches SnapHelper
     assertTrue(recyclerView.onFlingListener is CustomSnapHelper)
   }
 

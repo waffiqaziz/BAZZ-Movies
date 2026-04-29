@@ -5,9 +5,9 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
@@ -56,7 +56,7 @@ class SearchFragmentLoadStateTest {
     every { mockSearchViewModel.search(any()) } just Runs
     every { mockSnackbar.showSnackbarWarning(any<String>()) } returns mockk(relaxed = true)
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment>()
+    searchFragment = launchFragmentInHiltContainer<SearchFragment>().fragment
     shortDelay()
   }
 
@@ -147,15 +147,15 @@ class SearchFragmentLoadStateTest {
         title = "Test Movie",
         overview = "Test overview",
         posterPath = "/test-poster.jpg",
-        mediaType = "movie"
+        mediaType = "movie",
       ),
       MultiSearchItem(
         id = 2,
         title = "Another Movie",
         overview = "Another overview",
         posterPath = "/another-poster.jpg",
-        mediaType = "movie"
-      )
+        mediaType = "movie",
+      ),
     )
 
     // use PagingData with actual data
@@ -180,17 +180,16 @@ class SearchFragmentLoadStateTest {
     illustration_search_no_result_view.isNotDisplayed()
   }
 
-  private fun setupCombinedLoadStates(states: LoadState): CombinedLoadStates {
-    return CombinedLoadStates(
+  private fun setupCombinedLoadStates(states: LoadState): CombinedLoadStates =
+    CombinedLoadStates(
       refresh = states,
       prepend = LoadState.NotLoading(false),
       append = states, // needs for endOfPaginationReached = true
       source = LoadStates(
         refresh = states,
         prepend = LoadState.NotLoading(false),
-        append = states
+        append = states,
       ),
-      mediator = null
+      mediator = null,
     )
-  }
 }

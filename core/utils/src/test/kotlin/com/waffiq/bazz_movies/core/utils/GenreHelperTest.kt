@@ -61,7 +61,7 @@ class GenreHelperTest {
   fun transformListGenreToJoinString_withNullList_returnCorrectString() {
     val input = listOf(
       GenresItem("Action", 28),
-      GenresItem("Mystery", 9648)
+      GenresItem("Mystery", 9648),
     )
     val expectedOutput = "Action, Mystery"
     val actualOutput = transformListGenreToJoinString(input)
@@ -95,7 +95,7 @@ class GenreHelperTest {
     val input = listOf(
       GenresItem("News", 10763),
       GenresItem("Talk", 10767),
-      GenresItem("Invalid", null)
+      GenresItem("Invalid", null),
     )
     val expectedOutput = listOf(10763, 10767, 0) // IDs, null mapped to 0
     val actualOutput = transformToGenreIDs(input)

@@ -8,9 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import io.mockk.MockKAnnotations
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
@@ -26,29 +24,17 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class SnackbarAlreadyUtilsTest {
 
-  @MockK
-  private lateinit var context: Context
-
-  @MockK
-  private lateinit var mockView: View
-
-  @MockK
-  private lateinit var mockViewGuide: View
-
-  @MockK
-  private lateinit var mockEventMessage: Event<String>
-
-  @MockK
-  private lateinit var mockSnackBar: Snackbar
+  private val context: Context = mockk(relaxed = true)
+  private val mockView: View = mockk(relaxed = true)
+  private val mockViewGuide: View = mockk(relaxed = true)
+  private val mockEventMessage: Event<String> = mockk(relaxed = true)
+  private val mockSnackBar: Snackbar = mockk(relaxed = true)
 
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   fun setup() {
-    MockKAnnotations.init(this, relaxed = true)
-
-    // mock system service for Locale
     every { context.getSystemService(Context.LOCALE_SERVICE) } returns mockk<LocaleManager>()
   }
 
@@ -66,7 +52,7 @@ class SnackbarAlreadyUtilsTest {
       mockView,
       mockViewGuide,
       mockEventMessage,
-      true
+      true,
     )
 
     assertEquals(null, result)
@@ -81,7 +67,7 @@ class SnackbarAlreadyUtilsTest {
       mockView,
       mockViewGuide,
       mockEventMessage,
-      false
+      false,
     )
 
     assertEquals(null, result)
@@ -107,7 +93,7 @@ class SnackbarAlreadyUtilsTest {
       mockView,
       mockViewGuide,
       mockEventMessage,
-      true
+      true,
     )
 
     // verify the snackbar was shown
@@ -142,7 +128,7 @@ class SnackbarAlreadyUtilsTest {
       view,
       viewGuide,
       eventMessage,
-      false
+      false,
     )
 
     // verify the snackbar was shown

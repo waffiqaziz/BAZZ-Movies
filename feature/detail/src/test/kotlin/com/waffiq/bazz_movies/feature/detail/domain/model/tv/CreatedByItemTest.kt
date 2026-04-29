@@ -13,7 +13,7 @@ class CreatedByItemTest {
       creditId = "52fe4284c3a36847f8024f49",
       name = "Vince Gilligan",
       profilePath = "/profile.jpg",
-      id = 66633
+      id = 66633,
     )
 
     assertEquals(1, createdByItem.gender)
@@ -38,7 +38,7 @@ class CreatedByItemTest {
   fun createCreatedByItem_withPartialValues_setsSpecifiedPropertiesOnly() {
     val createdByItem = CreatedByItem(
       name = "David Chase",
-      id = 1234
+      id = 1234,
     )
 
     assertNull(createdByItem.gender)
@@ -52,7 +52,7 @@ class CreatedByItemTest {
   fun createCreatedByItem_withZeroValues_setsZeroValues() {
     val createdByItem = CreatedByItem(
       gender = 0,
-      id = 0
+      id = 0,
     )
 
     assertEquals(0, createdByItem.gender)
@@ -64,7 +64,7 @@ class CreatedByItemTest {
     val createdByItem = CreatedByItem(
       creditId = "",
       name = "",
-      profilePath = ""
+      profilePath = "",
     )
 
     assertEquals("", createdByItem.creditId)
@@ -76,7 +76,7 @@ class CreatedByItemTest {
   fun createCreatedByItem_withNegativeValues_setsNegativeValues() {
     val createdByItem = CreatedByItem(
       gender = -1,
-      id = -100
+      id = -100,
     )
 
     assertEquals(-1, createdByItem.gender)

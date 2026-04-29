@@ -26,9 +26,9 @@ class AgeRatingHelperTest {
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           movieReleaseItem("US", ""),
-          movieReleaseItem("UK", "15")
-        )
-      )
+          movieReleaseItem("UK", "15"),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "15")
   }
@@ -66,12 +66,12 @@ class AgeRatingHelperTest {
             listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(
                 iso6391 = "US",
-                certification = ""
-              )
-            )
-          )
-        )
-      )
+                certification = "",
+              ),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "")
   }
@@ -85,7 +85,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRating_withEmptyListReleaseDatesItem_returnsEmptyString() {
     val data = MovieDetail(
-      releaseDates = ReleaseDates(listReleaseDatesItem = emptyList())
+      releaseDates = ReleaseDates(listReleaseDatesItem = emptyList()),
     )
     checkAgeRatingMovie(data, "US", "")
   }
@@ -97,10 +97,10 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesItemValue = null
-          )
-        )
-      )
+            listReleaseDatesItemValue = null,
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "")
   }
@@ -112,10 +112,10 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesItemValue = emptyList()
-          )
-        )
-      )
+            listReleaseDatesItemValue = emptyList(),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "")
   }
@@ -128,11 +128,11 @@ class AgeRatingHelperTest {
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(certification = null)
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = null),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "")
   }
@@ -147,11 +147,11 @@ class AgeRatingHelperTest {
             listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = ""),
               ReleaseDatesItemValue(certification = "PG-13"),
-              ReleaseDatesItemValue(certification = "R")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "R"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "PG-13")
   }
@@ -162,9 +162,9 @@ class AgeRatingHelperTest {
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           movieReleaseItem("JP", ""),
-          movieReleaseItem("UK", "15")
-        )
-      )
+          movieReleaseItem("UK", "15"),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "JP", "15")
   }
@@ -178,11 +178,11 @@ class AgeRatingHelperTest {
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(certification = "PG-13")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "PG-13"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "PG-13")
   }
@@ -195,11 +195,11 @@ class AgeRatingHelperTest {
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(descriptors = null, certification = "PG-13")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(descriptors = null, certification = "PG-13"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "PG-13")
   }
@@ -213,11 +213,11 @@ class AgeRatingHelperTest {
           ReleaseDatesItem(
             iso31661 = "UK",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(certification = "15")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "15"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "15")
   }
@@ -229,16 +229,16 @@ class AgeRatingHelperTest {
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "UK",
-            listReleaseDatesItemValue = null
+            listReleaseDatesItemValue = null,
           ),
           ReleaseDatesItem(
             iso31661 = "FR",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(certification = "16")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "16"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "UK", "16")
   }
@@ -252,11 +252,11 @@ class AgeRatingHelperTest {
             iso31661 = "UK",
             listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = ""),
-              ReleaseDatesItemValue(certification = "15")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "15"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "15")
   }
@@ -270,11 +270,11 @@ class AgeRatingHelperTest {
             iso31661 = "UK",
             listReleaseDatesItemValue = listOf(
               ReleaseDatesItemValue(certification = null),
-              ReleaseDatesItemValue(certification = "15")
-            )
-          )
-        )
-      )
+              ReleaseDatesItemValue(certification = "15"),
+            ),
+          ),
+        ),
+      ),
     )
     checkAgeRatingMovie(data, "US", "15")
   }
@@ -285,7 +285,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withRegionHavingRating_returnsThatRating() {
     val data = tvWithRatings(
       "JP" to "",
-      "US" to "TV-14"
+      "US" to "TV-14",
     )
     checkAgeRatingTv(data, "US", "TV-14")
   }
@@ -294,7 +294,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withEmptyRatingInRegion_fallbacksToOtherValidRegion() {
     val data = tvWithRatings(
       "JP" to "",
-      "UK" to "15"
+      "UK" to "15",
     )
     checkAgeRatingTv(data, "JP", "15")
   }
@@ -302,7 +302,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRatingTv_withOnlyEmptyRatings_returnsEmptyString() {
     val data = tvWithRatings(
-      "US" to ""
+      "US" to "",
     )
     checkAgeRatingTv(data, "US", "")
   }
@@ -322,7 +322,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRatingTv_withNullContentRatingsItem_returnsEmptyString() {
     val data = TvDetail(
-      contentRatings = ContentRatings(contentRatingsItem = null)
+      contentRatings = ContentRatings(contentRatingsItem = null),
     )
     checkAgeRatingTv(data, "US", "")
   }
@@ -330,7 +330,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRatingTv_withEmptyContentRatingsItem_returnsEmptyString() {
     val data = TvDetail(
-      contentRatings = ContentRatings(contentRatingsItem = emptyList())
+      contentRatings = ContentRatings(contentRatingsItem = emptyList()),
     )
     checkAgeRatingTv(data, "US", "")
   }
@@ -342,10 +342,10 @@ class AgeRatingHelperTest {
         contentRatingsItem = listOf(
           ContentRatingsItem(
             iso31661 = "US",
-            rating = null
-          )
-        )
-      )
+            rating = null,
+          ),
+        ),
+      ),
     )
     checkAgeRatingTv(data, "US", "")
   }
@@ -354,8 +354,8 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withNullListContentRatingsItem_returnsEmptyString() {
     val data = TvDetail(
       contentRatings = ContentRatings(
-        contentRatingsItem = listOf(null)
-      )
+        contentRatingsItem = listOf(null),
+      ),
     )
     checkAgeRatingTv(data, "US", "")
   }
@@ -364,7 +364,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withUserRegionAvailable_returnsUserRegionRating() {
     val data = tvWithRatings(
       "UK" to "15",
-      "US" to "TV-14"
+      "US" to "TV-14",
     )
     checkAgeRatingTv(data, "UK", "15")
   }
@@ -384,7 +384,7 @@ class AgeRatingHelperTest {
     val data = tvWithRatings(
       "UK" to "",
       "US" to "",
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "UK", "16")
   }
@@ -393,7 +393,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withUSAsUserRegion_returnsUSRating() {
     val data = tvWithRatings(
       "UK" to "15",
-      "US" to "TV-14"
+      "US" to "TV-14",
     )
     checkAgeRatingTv(data, "US", "TV-14")
   }
@@ -401,7 +401,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRatingTv_withOnlyUserRegion_returnsUserRegionRating() {
     val data = tvWithRatings(
-      "UK" to "15"
+      "UK" to "15",
     )
     checkAgeRatingTv(data, "UK", "15")
   }
@@ -410,7 +410,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withFalseRegionFallback_returnsAnyValidRating() {
     val data = tvWithRatings(
       "JP" to "",
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "US", "16")
   }
@@ -423,10 +423,10 @@ class AgeRatingHelperTest {
           null,
           ContentRatingsItem(
             iso31661 = "US",
-            rating = "TV-14"
-          )
-        )
-      )
+            rating = "TV-14",
+          ),
+        ),
+      ),
     )
     checkAgeRatingTv(data, "US", "TV-14")
   }
@@ -436,7 +436,7 @@ class AgeRatingHelperTest {
     val data = tvWithRatings(
       "UK" to "",
       "US" to "TV-14",
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "UK", "TV-14")
   }
@@ -446,7 +446,7 @@ class AgeRatingHelperTest {
     val data = tvWithRatings(
       "UK" to "",
       "US" to null,
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "UK", "16")
   }
@@ -456,7 +456,7 @@ class AgeRatingHelperTest {
     val data = tvWithRatings(
       "UK" to null,
       "US" to "TV-14",
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "UK", "TV-14")
   }
@@ -465,7 +465,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withFalseRegionAndNullRating_skipsNull() {
     val data = tvWithRatings(
       "UK" to null,
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "US", "16")
   }
@@ -474,7 +474,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withFalseRegionAndEmptyRating_skipsEmpty() {
     val data = tvWithRatings(
       "UK" to "",
-      "FR" to "16"
+      "FR" to "16",
     )
     checkAgeRatingTv(data, "US", "16")
   }
@@ -483,7 +483,7 @@ class AgeRatingHelperTest {
   fun getAgeRatingTv_withUserRegionNotFound_fallsBackToUS() {
     val data = tvWithRatings(
       "UK" to "15",
-      "US" to "TV-14"
+      "US" to "TV-14",
     )
     checkAgeRatingTv(data, "FR", "TV-14")
   }
@@ -491,7 +491,7 @@ class AgeRatingHelperTest {
   @Test
   fun getAgeRatingTv_withUserRegionNotFoundAndUSNotFound_fallsBackToAny() {
     val data = tvWithRatings(
-      "UK" to "15"
+      "UK" to "15",
     )
     checkAgeRatingTv(data, "FR", "15")
   }
@@ -499,40 +499,51 @@ class AgeRatingHelperTest {
   // endregion
 
   // region Helpers
-  private fun checkAgeRatingMovie(data: MovieDetail?, region: String, expected: String) {
+  private fun checkAgeRatingMovie(
+    data: MovieDetail?,
+    region: String,
+    expected: String,
+  ) {
     val result = getAgeRating(data, region)
     assertEquals(expected, result)
   }
 
-  private fun checkAgeRatingTv(data: TvDetail?, region: String, expected: String) {
+  private fun checkAgeRatingTv(
+    data: TvDetail?,
+    region: String,
+    expected: String,
+  ) {
     val result = getAgeRating(data, region)
     assertEquals(expected, result)
   }
 
-  private fun movieWithRegionCertification(region: String?, certification: String?) = MovieDetail(
-    releaseDates = ReleaseDates(
-      listReleaseDatesItem = listOf(
-        movieReleaseItem(region, certification)
-      )
+  private fun movieWithRegionCertification(region: String?, certification: String?) =
+    MovieDetail(
+      releaseDates = ReleaseDates(
+        listReleaseDatesItem = listOf(
+          movieReleaseItem(region, certification),
+        ),
+      ),
     )
-  )
 
-  private fun movieReleaseItem(region: String?, certification: String?) = ReleaseDatesItem(
-    iso31661 = region,
-    listReleaseDatesItemValue = listOf(
-      ReleaseDatesItemValue(certification = certification)
+  private fun movieReleaseItem(region: String?, certification: String?) =
+    ReleaseDatesItem(
+      iso31661 = region,
+      listReleaseDatesItemValue = listOf(
+        ReleaseDatesItemValue(certification = certification),
+      ),
     )
-  )
 
-  private fun tvWithRatings(vararg regionToRating: Pair<String?, String?>) = TvDetail(
-    contentRatings = ContentRatings(
-      contentRatingsItem = regionToRating.map {
-        ContentRatingsItem(
-          iso31661 = it.first,
-          rating = it.second
-        )
-      }
+  private fun tvWithRatings(vararg regionToRating: Pair<String?, String?>) =
+    TvDetail(
+      contentRatings = ContentRatings(
+        contentRatingsItem = regionToRating.map {
+          ContentRatingsItem(
+            iso31661 = it.first,
+            rating = it.second,
+          )
+        },
+      ),
     )
-  )
   // endregion
 }

@@ -87,9 +87,7 @@ class DefaultPersonActivityTestHelper : PersonActivityTestHelper {
     }
   }
 
-  override fun Context.launchPersonActivity(
-    block: (ActivityScenario<PersonActivity>) -> Unit,
-  ) {
+  override fun Context.launchPersonActivity(block: (ActivityScenario<PersonActivity>) -> Unit) {
     this.launchPersonActivity(testMediaCastItem) { block(it) }
   }
 

@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 object TestHelper {
   suspend inline fun <reified D> Flow<Outcome<*>>.testOutcome(
     expectedData: D,
-    crossinline transform: (Any?) -> D = { it as D }
+    crossinline transform: (Any?) -> D = { it as D },
   ) {
     test {
       val result = awaitItem()
@@ -21,9 +21,7 @@ object TestHelper {
     }
   }
 
-  suspend fun <D> Flow<D>.testResult(
-    expectedData: D
-  ) {
+  suspend fun <D> Flow<D>.testResult(expectedData: D) {
     test {
       val result = awaitItem()
       assertEquals(expectedData, result)

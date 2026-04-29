@@ -13,6 +13,6 @@ object HelperVariableTest {
     token = "sampleToken",
     isLogin = true,
     gravatarHash = "hash123",
-    tmdbAvatar = "avatar.jpg"
+    tmdbAvatar = "avatar.jpg",
   )
 }

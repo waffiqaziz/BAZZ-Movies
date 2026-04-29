@@ -29,42 +29,44 @@ class AccountRepositoryTest {
   }
 
   @Test
-  fun postFavorite_whenSuccessful_returnsCorrectResponse() = runTest {
-    coEvery {
-      mockAccountRemoteDataSource.postFavorite(
-        "sessionId",
-        favoriteParams.toFavoriteRequest(),
-        12345678
-      )
-    } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponseSuccess))
+  fun postFavorite_whenSuccessful_returnsCorrectResponse() =
+    runTest {
+      coEvery {
+        mockAccountRemoteDataSource.postFavorite(
+          "sessionId",
+          favoriteParams.toFavoriteRequest(),
+          12345678,
+        )
+      } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponseSuccess))
 
-    accountRepository.postFavorite("sessionId", favoriteParams, 12345678).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals("Success", result.data.statusMessage)
-      assertEquals(201, result.data.statusCode)
-      awaitComplete()
+      accountRepository.postFavorite("sessionId", favoriteParams, 12345678).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals("Success", result.data.statusMessage)
+        assertEquals(201, result.data.statusCode)
+        awaitComplete()
+      }
     }
-  }
 
   @Test
-  fun postWatchlist_whenSuccessful_returnsCorrectResponse() = runTest {
-    coEvery {
-      mockAccountRemoteDataSource.postWatchlist(
-        "sessionId",
-        watchlistParams.toWatchlistRequest(),
-        666666
-      )
-    } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponseSuccess))
+  fun postWatchlist_whenSuccessful_returnsCorrectResponse() =
+    runTest {
+      coEvery {
+        mockAccountRemoteDataSource.postWatchlist(
+          "sessionId",
+          watchlistParams.toWatchlistRequest(),
+          666666,
+        )
+      } returns flowOf(NetworkResult.Success(postFavoriteWatchlistResponseSuccess))
 
-    accountRepository.postWatchlist("sessionId", watchlistParams, 666666).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals("Success", result.data.statusMessage)
-      assertEquals(201, result.data.statusCode)
-      awaitComplete()
+      accountRepository.postWatchlist("sessionId", watchlistParams, 666666).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals("Success", result.data.statusMessage)
+        assertEquals(201, result.data.statusCode)
+        awaitComplete()
+      }
     }
-  }
 }

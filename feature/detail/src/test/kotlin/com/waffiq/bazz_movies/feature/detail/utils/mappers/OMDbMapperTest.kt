@@ -66,17 +66,17 @@ class OMDbMapperTest {
   fun toOMDbDetails_withMultipleRatings_returnsOMDbDetails() {
     val ratingsItem1 = RatingsItemResponse(
       value = "8.5/10",
-      source = "Internet Movie Database"
+      source = "Internet Movie Database",
     )
 
     val ratingsItem2 = RatingsItemResponse(
       value = "94%",
-      source = "Rotten Tomatoes"
+      source = "Rotten Tomatoes",
     )
 
     val ratingsItem3 = RatingsItemResponse(
       value = "85/100",
-      source = "Metacritic"
+      source = "Metacritic",
     )
 
     val omdbDetailsResponse = omdbDetailsResponse.copy(

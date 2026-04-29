@@ -90,7 +90,7 @@ class AccountMapperTest {
     val response = AuthenticationResponse(
       success = true,
       expireAt = "date_expire",
-      requestToken = "request_token"
+      requestToken = "request_token",
     )
 
     val authentication: Authentication = response.toAuthentication()
@@ -104,7 +104,7 @@ class AccountMapperTest {
     val response = AuthenticationResponse(
       success = true,
       expireAt = null,
-      requestToken = null
+      requestToken = null,
     )
 
     val authentication: Authentication = response.toAuthentication()
@@ -130,7 +130,7 @@ class AccountMapperTest {
       name = "Waffiq",
       avatarItemResponse = AvatarItemResponse(
         gravatarResponse = GravatarResponse(hash = "325987423659432"),
-        avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "347589074283054")
+        avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "347589074283054"),
       ),
       id = 513176325,
       iso6391 = "ID",
@@ -149,7 +149,7 @@ class AccountMapperTest {
 
     assertEquals(
       response.avatarItemResponse?.avatarTMDbResponse?.avatarPath,
-      accountDetails.avatarItem?.avatarTMDb?.avatarPath
+      accountDetails.avatarItem?.avatarTMDb?.avatarPath,
     )
   }
 
@@ -202,7 +202,7 @@ class AccountMapperTest {
   fun toAvatarItem_withValidValues_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
-      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
+      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg"),
     )
 
     val avatarItem: AvatarItem = response.toAvatarItem()
@@ -214,7 +214,7 @@ class AccountMapperTest {
   fun toAvatarItem_withGravatarNull_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = null,
-      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg")
+      avatarTMDbResponse = AvatarTMDbResponse(avatarPath = "/27359679153253.jpg"),
     )
 
     val avatarItem: AvatarItem = response.toAvatarItem()
@@ -227,7 +227,7 @@ class AccountMapperTest {
   fun toAvatarItem_withAvatarNull_returnsAvatarItem() {
     val response = AvatarItemResponse(
       gravatarResponse = GravatarResponse(hash = "/617956749353.jpg"),
-      avatarTMDbResponse = null
+      avatarTMDbResponse = null,
     )
 
     val avatarItem: AvatarItem = response.toAvatarItem()
@@ -266,7 +266,7 @@ class AccountMapperTest {
   fun toCountryIP_withValidValues_returnsCountryIP() {
     val response = CountryIPResponse(
       country = "ID",
-      ip = "ip_country"
+      ip = "ip_country",
     )
 
     val countryIp: CountryIP = response.toCountryIP()

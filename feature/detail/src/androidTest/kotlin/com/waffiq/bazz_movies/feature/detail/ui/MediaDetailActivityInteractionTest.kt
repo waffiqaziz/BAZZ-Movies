@@ -102,16 +102,17 @@ class MediaDetailActivityInteractionTest :
   }
 
   @Test
-  fun errorState_whenErrorOccur_showsTheToast() = runTest {
-    context.launchMediaDetailActivity {
-      launch {
-        errorEvent.emit("Error")
+  fun errorState_whenErrorOccur_showsTheToast() =
+    runTest {
+      context.launchMediaDetailActivity {
+        launch {
+          errorEvent.emit("Error")
+        }
+        advanceUntilIdle()
+        // Hard to test toast in code, so must check it manually
+        // https://github.com/android/android-test/issues/803
       }
-      advanceUntilIdle()
-      // Hard to test toast in code, so must check it manually
-      // https://github.com/android/android-test/issues/803
     }
-  }
 
   @Test
   fun button_whenClicked_showsToast() {
@@ -159,7 +160,7 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun swipeRefreshTv_whenScroll_runsCorrectly() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     ) {
       iv_poster.performSwipeDown()
     }
@@ -168,7 +169,7 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun swipeRefresh_whenUnknownMediaType_runsCorrectly() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = "NAN")
+      data = testMediaItem.copy(mediaType = "NAN"),
     ) {
       iv_poster.performSwipeDown()
     }
@@ -196,7 +197,7 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun dialogRatting_submitRatingSuccessful_showsNewUserRating() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     ) {
       updateState { copy(itemState = testMediaStateRated) }
       setupLoginUser()
@@ -222,7 +223,7 @@ class MediaDetailActivityInteractionTest :
           mediaType = testMediaItem.mediaType,
           title = "",
           id = testMediaItem.listGenreIds?.get(0) ?: 0,
-        )
+        ),
       )
     }
   }
@@ -230,10 +231,10 @@ class MediaDetailActivityInteractionTest :
   @Test
   fun dialogRatting_submitRatingUnsuccessful_notShowsTheRating() {
     context.launchMediaDetailActivity(
-      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+      data = testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     ) {
       updateState { copy(itemState = testMediaStateRated) }
-      errorEvent.tryEmit("error")  // ← tryEmit, not emit
+      errorEvent.tryEmit("error") // ← tryEmit, not emit
       setupLoginUser()
 
       submitRating()
@@ -276,7 +277,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false)
+          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = false),
         )
       }
 
@@ -285,7 +286,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true)
+          UpdateMediaStateResult(isSuccess = true, isFavorite = false, isDelete = true),
         )
       }
 
@@ -296,7 +297,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false)
+          UpdateMediaStateResult(isSuccess = false, isFavorite = false, isDelete = false),
         )
       }
 
@@ -305,7 +306,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false)
+          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = false),
         )
       }
 
@@ -314,7 +315,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true)
+          UpdateMediaStateResult(isSuccess = true, isFavorite = true, isDelete = true),
         )
       }
 
@@ -323,7 +324,7 @@ class MediaDetailActivityInteractionTest :
       updateState {
         copy(
           mediaStateResult =
-            UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false)
+          UpdateMediaStateResult(isSuccess = false, isFavorite = true, isDelete = false),
         )
       }
 

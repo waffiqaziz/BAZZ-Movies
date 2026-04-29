@@ -10,7 +10,7 @@ class AvatarItemResponseTest {
   fun genresItemResponse_withValidValues_setsPropertiesCorrectly() {
     val genresItemResponse = AvatarItemResponse(
       avatarTMDbResponse = AvatarTMDbResponse("/35709850723705.pjg"),
-      gravatarResponse = GravatarResponse("gravatar_hash")
+      gravatarResponse = GravatarResponse("gravatar_hash"),
     )
     assertEquals("/35709850723705.pjg", genresItemResponse.avatarTMDbResponse?.avatarPath)
     assertEquals("gravatar_hash", genresItemResponse.gravatarResponse?.hash)
@@ -26,7 +26,7 @@ class AvatarItemResponseTest {
   @Test
   fun genresItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val genresItemResponse = AvatarItemResponse(
-      gravatarResponse = GravatarResponse("gravatar_hash")
+      gravatarResponse = GravatarResponse("gravatar_hash"),
     )
     assertEquals("gravatar_hash", genresItemResponse.gravatarResponse?.hash)
     assertNull(genresItemResponse.avatarTMDbResponse)

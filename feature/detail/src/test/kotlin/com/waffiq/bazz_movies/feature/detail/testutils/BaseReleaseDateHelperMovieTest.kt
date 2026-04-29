@@ -8,29 +8,28 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import org.junit.Assert.assertEquals
 
-abstract class BaseReleaseDateHelperMovieTest {
+open class BaseReleaseDateHelperMovieTest {
 
   protected fun movieWithRelease(
     releaseRegion: String,
     releaseDate: String?,
     productionCountries: List<String>,
     fallbackDate: String,
-  ): MovieDetail {
-    return MovieDetail(
+  ): MovieDetail =
+    MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = releaseRegion,
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = releaseDate)
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = releaseDate),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = productionCountries.map { ProductionCountriesItem(it) },
-      releaseDate = fallbackDate
+      releaseDate = fallbackDate,
     )
-  }
 
   protected fun checkMovieReleaseDate(
     data: MovieDetail?,

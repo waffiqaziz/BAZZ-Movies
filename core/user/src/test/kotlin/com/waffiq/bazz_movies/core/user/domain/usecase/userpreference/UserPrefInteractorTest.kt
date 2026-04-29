@@ -37,98 +37,104 @@ class UserPrefInteractorTest {
   }
 
   @Test
-  fun getUserPref_whenSuccessful_emitsUserData() = runTest {
-    val userModel = UserModel(
-      userId = 3,
-      name = "Alice",
-      username = "alice123",
-      password = "",
-      region = "UK",
-      token = "token123",
-      isLogin = true,
-      gravatarHash = "hash123",
-      tmdbAvatar = "https://example.com/avatar2.jpg"
-    )
-    val flow = flowOf(userModel)
-    every { mockRepository.getUserPref() } returns flow
+  fun getUserPref_whenSuccessful_emitsUserData() =
+    runTest {
+      val userModel = UserModel(
+        userId = 3,
+        name = "Alice",
+        username = "alice123",
+        password = "",
+        region = "UK",
+        token = "token123",
+        isLogin = true,
+        gravatarHash = "hash123",
+        tmdbAvatar = "https://example.com/avatar2.jpg",
+      )
+      val flow = flowOf(userModel)
+      every { mockRepository.getUserPref() } returns flow
 
-    userPrefInteractor.getUser().test {
-      // assert the first emission is success with correct data
-      val emission = awaitItem()
-      assertEquals(3, emission.userId)
-      assertEquals("Alice", emission.name)
-      assertEquals("alice123", emission.username)
-      assertEquals("UK", emission.region)
-      assertEquals("token123", emission.token)
-      assertTrue("alice123", emission.isLogin)
-      assertEquals("hash123", emission.gravatarHash)
-      assertEquals("https://example.com/avatar2.jpg", emission.tmdbAvatar)
+      userPrefInteractor.getUser().test {
+        // assert the first emission is success with correct data
+        val emission = awaitItem()
+        assertEquals(3, emission.userId)
+        assertEquals("Alice", emission.name)
+        assertEquals("alice123", emission.username)
+        assertEquals("UK", emission.region)
+        assertEquals("token123", emission.token)
+        assertTrue("alice123", emission.isLogin)
+        assertEquals("hash123", emission.gravatarHash)
+        assertEquals("https://example.com/avatar2.jpg", emission.tmdbAvatar)
 
-      // assert no further emissions
-      awaitComplete()
+        // assert no further emissions
+        awaitComplete()
+      }
+
+      // verify repository interaction
+      verify(exactly = 1) { mockRepository.getUserPref() }
+      verify { mockRepository.getUserPref() }
     }
 
-    // verify repository interaction
-    verify(exactly = 1) { mockRepository.getUserPref() }
-    verify { mockRepository.getUserPref() }
-  }
-
   @Test
-  fun getUserRegionPref_whenSuccessful_emitsUserRegion() = runTest {
-    val region = "ID"
-    val flow = flowOf(region)
-    every { mockRepository.getUserRegionPref() } returns flow
-    userPrefInteractor.getUserRegionPref().test {
-      val emission = awaitItem()
-      assertEquals("ID", emission)
-      awaitComplete()
+  fun getUserRegionPref_whenSuccessful_emitsUserRegion() =
+    runTest {
+      val region = "ID"
+      val flow = flowOf(region)
+      every { mockRepository.getUserRegionPref() } returns flow
+      userPrefInteractor.getUserRegionPref().test {
+        val emission = awaitItem()
+        assertEquals("ID", emission)
+        awaitComplete()
+      }
+      verify { mockRepository.getUserRegionPref() }
     }
-    verify { mockRepository.getUserRegionPref() }
-  }
 
   @Test
-  fun getUserToken_whenSuccessful_emitsUserToken() = runTest {
-    val userToken = "user_token"
-    val flow = flowOf(userToken)
-    every { mockRepository.getUserToken() } returns flow
-    userPrefInteractor.getUserToken().test {
-      val emission = awaitItem()
-      assertEquals("user_token", emission)
-      awaitComplete()
+  fun getUserToken_whenSuccessful_emitsUserToken() =
+    runTest {
+      val userToken = "user_token"
+      val flow = flowOf(userToken)
+      every { mockRepository.getUserToken() } returns flow
+      userPrefInteractor.getUserToken().test {
+        val emission = awaitItem()
+        assertEquals("user_token", emission)
+        awaitComplete()
+      }
+      verify { mockRepository.getUserToken() }
     }
-    verify { mockRepository.getUserToken() }
-  }
 
   @Test
-  fun saveRegionPref_whenCalled_callsSaveRegionPrefFromRepository() = runTest {
-    val region = "ID"
-    coEvery { mockRepository.saveRegionPref(region) } just Runs
-    userPrefInteractor.saveRegionPref(region)
-    coVerify { mockRepository.saveRegionPref(region) }
-  }
+  fun saveRegionPref_whenCalled_callsSaveRegionPrefFromRepository() =
+    runTest {
+      val region = "ID"
+      coEvery { mockRepository.saveRegionPref(region) } just Runs
+      userPrefInteractor.saveRegionPref(region)
+      coVerify { mockRepository.saveRegionPref(region) }
+    }
 
   @Test
-  fun saveUserPref_whenSuccessful_savesUserData() = runTest {
-    val userModel = UserModel(
-      userId = 3,
-      name = "Alice",
-      username = "alice123",
-      password = "",
-      region = "UK",
-      token = "token123",
-      isLogin = true,
-      gravatarHash = "hash123",
-      tmdbAvatar = "https://example.com/avatar2.jpg"
-    )
-    coEvery { mockRepository.saveUserPref(userModel) } just Runs
-    userPrefInteractor.saveUserPref(userModel)
-    coVerify { mockRepository.saveUserPref(userModel) }
-  }
+  fun saveUserPref_whenSuccessful_savesUserData() =
+    runTest {
+      val userModel = UserModel(
+        userId = 3,
+        name = "Alice",
+        username = "alice123",
+        password = "",
+        region = "UK",
+        token = "token123",
+        isLogin = true,
+        gravatarHash = "hash123",
+        tmdbAvatar = "https://example.com/avatar2.jpg",
+      )
+      coEvery { mockRepository.saveUserPref(userModel) } just Runs
+      userPrefInteractor.saveUserPref(userModel)
+      coVerify { mockRepository.saveUserPref(userModel) }
+    }
 
   @Test
-  fun removeUserDataPref_whenCalled_callsRemoveUserDataPrefFromRepository() = runTest {
-    coEvery { mockRepository.removeUserDataPref() } just Runs
-    userPrefInteractor.removeUserDataPref()
-    coVerify { mockRepository.removeUserDataPref() }
-  }
+  fun removeUserDataPref_whenCalled_callsRemoveUserDataPrefFromRepository() =
+    runTest {
+      coEvery { mockRepository.removeUserDataPref() } just Runs
+      userPrefInteractor.removeUserDataPref()
+      coVerify { mockRepository.removeUserDataPref() }
+    }
 }

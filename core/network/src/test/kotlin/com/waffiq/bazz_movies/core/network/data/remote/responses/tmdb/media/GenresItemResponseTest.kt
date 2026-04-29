@@ -10,7 +10,7 @@ class GenresItemResponseTest {
   fun genresItemResponse_withValidValues_setsPropertiesCorrectly() {
     val genresItemResponse = GenresResponseItem(
       name = "Action",
-      id = 1
+      id = 1,
     )
     assertEquals("Action", genresItemResponse.name)
     assertEquals(1, genresItemResponse.id)
@@ -27,7 +27,7 @@ class GenresItemResponseTest {
   fun genresItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val genresItemResponse = GenresResponseItem(
       name = null,
-      id = 2
+      id = 2,
     )
     assertNull(genresItemResponse.name)
     assertEquals(2, genresItemResponse.id)

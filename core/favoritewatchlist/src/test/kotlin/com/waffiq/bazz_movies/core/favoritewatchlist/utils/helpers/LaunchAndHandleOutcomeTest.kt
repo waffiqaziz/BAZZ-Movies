@@ -44,53 +44,56 @@ class LaunchAndHandleOutcomeTest {
   }
 
   @Test
-  fun launchAndHandleOutcome_whenSuccessOutcome_invokesOnSuccess() = runTest {
-    val successData = "Test Data"
-    val flow = flowOf(Outcome.Success(successData))
+  fun launchAndHandleOutcome_whenSuccessOutcome_invokesOnSuccess() =
+    runTest {
+      val successData = "Test Data"
+      val flow = flowOf(Outcome.Success(successData))
 
-    viewModel.launchAndHandleOutcome(
-      flow = flow,
-      onSuccess = onSuccess,
-      onError = onError
-    )
-    advanceUntilIdle()
+      viewModel.launchAndHandleOutcome(
+        flow = flow,
+        onSuccess = onSuccess,
+        onError = onError,
+      )
+      advanceUntilIdle()
 
-    verify(exactly = 1) { onSuccess(successData) }
-    verify(exactly = 0) { onError(any()) }
-  }
-
-  @Test
-  fun launchAndHandleOutcome_whenErrorOutcome_invokesOnError() = runTest {
-    val errorMessage = "Error occurred"
-    val flow = flowOf(Outcome.Error(errorMessage))
-
-    viewModel.launchAndHandleOutcome(
-      flow = flow,
-      onSuccess = onSuccess,
-      onError = onError
-    )
-    advanceUntilIdle()
-
-    verify(exactly = 0) { onSuccess(any()) }
-    verify(exactly = 1) { onError(errorMessage) }
-  }
+      verify(exactly = 1) { onSuccess(successData) }
+      verify(exactly = 0) { onError(any()) }
+    }
 
   @Test
-  fun launchAndHandleOutcome_whenLoadingOutcome_invokesOnLoading() = runTest {
-    val flow = flowOf(Outcome.Loading)
+  fun launchAndHandleOutcome_whenErrorOutcome_invokesOnError() =
+    runTest {
+      val errorMessage = "Error occurred"
+      val flow = flowOf(Outcome.Error(errorMessage))
 
-    viewModel.launchAndHandleOutcome(
-      flow = flow,
-      onSuccess = onSuccess,
-      onError = onError,
-      onLoading = onLoading
-    )
-    advanceUntilIdle()
+      viewModel.launchAndHandleOutcome(
+        flow = flow,
+        onSuccess = onSuccess,
+        onError = onError,
+      )
+      advanceUntilIdle()
 
-    verify(exactly = 1) { onLoading() }
-    verify(exactly = 0) { onSuccess(any()) }
-    verify(exactly = 0) { onError(any()) }
-  }
+      verify(exactly = 0) { onSuccess(any()) }
+      verify(exactly = 1) { onError(errorMessage) }
+    }
+
+  @Test
+  fun launchAndHandleOutcome_whenLoadingOutcome_invokesOnLoading() =
+    runTest {
+      val flow = flowOf(Outcome.Loading)
+
+      viewModel.launchAndHandleOutcome(
+        flow = flow,
+        onSuccess = onSuccess,
+        onError = onError,
+        onLoading = onLoading,
+      )
+      advanceUntilIdle()
+
+      verify(exactly = 1) { onLoading() }
+      verify(exactly = 0) { onSuccess(any()) }
+      verify(exactly = 0) { onError(any()) }
+    }
 
   @Test
   fun launchAndHandleOutcome_whenLoadingOutcomeAndOnLoadingIsNull_doesNotThrowException() =
@@ -101,7 +104,7 @@ class LaunchAndHandleOutcomeTest {
         flow = flow,
         onSuccess = onSuccess,
         onError = onError,
-        onLoading = null
+        onLoading = null,
       )
       advanceUntilIdle()
 
@@ -110,47 +113,49 @@ class LaunchAndHandleOutcomeTest {
     }
 
   @Test
-  fun launchAndHandleOutcome_whenMultipleOutcomes_invokesCallbacksInOrder() = runTest {
-    val successData = "Final Data"
-    val errorMessage = "Temporary Error"
-    val flow = flowOf(
-      Outcome.Loading,
-      Outcome.Error(errorMessage),
-      Outcome.Success(successData)
-    )
+  fun launchAndHandleOutcome_whenMultipleOutcomes_invokesCallbacksInOrder() =
+    runTest {
+      val successData = "Final Data"
+      val errorMessage = "Temporary Error"
+      val flow = flowOf(
+        Outcome.Loading,
+        Outcome.Error(errorMessage),
+        Outcome.Success(successData),
+      )
 
-    viewModel.launchAndHandleOutcome(
-      flow = flow,
-      onSuccess = onSuccess,
-      onError = onError,
-      onLoading = onLoading
-    )
-    advanceUntilIdle()
+      viewModel.launchAndHandleOutcome(
+        flow = flow,
+        onSuccess = onSuccess,
+        onError = onError,
+        onLoading = onLoading,
+      )
+      advanceUntilIdle()
 
-    verifySequence {
-      onLoading()
-      onError(errorMessage)
-      onSuccess(successData)
+      verifySequence {
+        onLoading()
+        onError(errorMessage)
+        onSuccess(successData)
+      }
     }
-  }
 
   @Test
-  fun launchAndHandleOutcome_whenComplexDataType_handlesSuccessCorrectly() = runTest {
-    data class User(val id: Int, val name: String)
+  fun launchAndHandleOutcome_whenComplexDataType_handlesSuccessCorrectly() =
+    runTest {
+      data class User(val id: Int, val name: String)
 
-    val userData = User(1, "username")
-    val flow = flowOf(Outcome.Success(userData))
-    val onSuccess = mockk<(User) -> Unit>(relaxed = true)
+      val userData = User(1, "username")
+      val flow = flowOf(Outcome.Success(userData))
+      val onSuccess = mockk<(User) -> Unit>(relaxed = true)
 
-    viewModel.launchAndHandleOutcome(
-      flow = flow,
-      onSuccess = onSuccess,
-      onError = onError
-    )
-    advanceUntilIdle()
+      viewModel.launchAndHandleOutcome(
+        flow = flow,
+        onSuccess = onSuccess,
+        onError = onError,
+      )
+      advanceUntilIdle()
 
-    verify(exactly = 1) { onSuccess(userData) }
-  }
+      verify(exactly = 1) { onSuccess(userData) }
+    }
 
   class TestViewModel : ViewModel()
 }

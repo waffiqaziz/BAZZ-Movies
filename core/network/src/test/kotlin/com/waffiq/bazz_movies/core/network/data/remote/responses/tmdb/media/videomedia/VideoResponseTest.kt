@@ -15,8 +15,8 @@ class VideoResponseTest {
         VideoResponseItem(
           iso6391 = "en",
           name = "Trailer",
-        )
-      )
+        ),
+      ),
     )
     assertEquals(455765, videoResponse.id)
     assertEquals("en", videoResponse.results[0].iso6391)
@@ -30,8 +30,8 @@ class VideoResponseTest {
         VideoResponseItem(
           iso6391 = "id",
           name = "Trailer Film",
-        )
-      )
+        ),
+      ),
     )
     assertNull(videoResponse.id)
     assertNotNull(videoResponse.results)

@@ -17,72 +17,80 @@ import retrofit2.Response
 class TvCreditsRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun getTvCredits_whenSuccessful_returnsExpectedResponse() = runTest {
-    testSuccessResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      mockApiResponse = Response.success(mediaCreditsResponseDump2),
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-      expectedData = mediaCreditsResponseDump2,
-    )
-  }
+  fun getTvCredits_whenSuccessful_returnsExpectedResponse() =
+    runTest {
+      testSuccessResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        mockApiResponse = Response.success(mediaCreditsResponseDump2),
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+        expectedData = mediaCreditsResponseDump2,
+      )
+    }
 
   @Test
-  fun getTvCredits_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
-    testErrorResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      errorResponse = apiMaintenanceErrorResponse,
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-      expectedErrorMessage = apiMaintenanceErrorMessage
-    )
-  }
+  fun getTvCredits_whenServerError_returnsExpectedStatusMessageResponse() =
+    runTest {
+      testErrorResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        errorResponse = apiMaintenanceErrorResponse,
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+        expectedErrorMessage = apiMaintenanceErrorMessage,
+      )
+    }
 
   // region getTvCredits EDGE CASE
   @Test
-  fun getTvCredits_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
-    testError404Response(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenAPIRespondsWith404_returnsExpectedResponse() =
+    runTest {
+      testError404Response(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
 
   @Test
-  fun getTvCredits_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
-    testUnknownHostExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenNetworkErrorOccurs_returnsExpectedResponse() =
+    runTest {
+      testUnknownHostExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
 
   @Test
-  fun getTvCredits_whenTimeoutOccurs_returnsErrorResponse() = runTest {
-    testSocketTimeoutExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenTimeoutOccurs_returnsErrorResponse() =
+    runTest {
+      testSocketTimeoutExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
 
   @Test
-  fun getTvCredits_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
-    testHttpExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenHttpExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testHttpExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
 
   @Test
-  fun getTvCredits_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
-    testIOExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenIOExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testIOExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
 
   @Test
-  fun getTvCredits_whenExceptionOccurs_returnsErrorResponse() = runTest {
-    testGeneralExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvCredits(22222) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
-    )
-  }
+  fun getTvCredits_whenExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testGeneralExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvCredits(22222) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvCredits(22222) },
+      )
+    }
   // endregion getTvCredits EDGE CASE
 }

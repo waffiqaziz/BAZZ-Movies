@@ -10,7 +10,7 @@ class GenresItemTest {
   fun genresItem_withValidValue_returnsCorrectData() {
     val genre = GenresItem(
       name = "Action",
-      id = 28
+      id = 28,
     )
 
     assertEquals("Action", genre.name)

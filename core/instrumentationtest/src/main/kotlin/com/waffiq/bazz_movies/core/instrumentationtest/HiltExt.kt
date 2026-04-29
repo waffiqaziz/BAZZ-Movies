@@ -27,7 +27,7 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
   @StyleRes themeResId: Int = Base_Theme_BAZZ_movies,
   fragmentFactory: FragmentFactory? = null,
   crossinline action: T.() -> Unit = {},
-): T {
+): FragmentLaunchResult<T> {
   lateinit var fragmentInstance: T
 
   val startActivityIntent = Intent.makeMainActivity(
@@ -40,7 +40,9 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     themeResId,
   )
 
-  ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
+  val scenario = ActivityScenario.launch<HiltTestActivity>(startActivityIntent)
+
+  scenario.onActivity { activity ->
     fragmentFactory?.let {
       activity.supportFragmentManager.fragmentFactory = it
     }
@@ -61,5 +63,5 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentInstance = fragment
   }
 
-  return fragmentInstance
+  return FragmentLaunchResult(scenario, fragmentInstance)
 }

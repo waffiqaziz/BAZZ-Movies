@@ -37,7 +37,7 @@ class ApiKeyInterceptorTest {
   private fun testAddsApiKeyQueryParameter(
     interceptor: Interceptor,
     apiKeyParamName: String,
-    apiKey: String
+    apiKey: String,
   ) {
     val client = OkHttpClient.Builder()
       .addInterceptor(interceptor)
@@ -54,7 +54,7 @@ class ApiKeyInterceptorTest {
   private fun testRetainsExistingQueryParameters(
     interceptor: Interceptor,
     apiKeyParamName: String,
-    apiKey: String
+    apiKey: String,
   ) {
     val client = OkHttpClient.Builder()
       .addInterceptor(interceptor)
@@ -72,9 +72,7 @@ class ApiKeyInterceptorTest {
     assertEquals(apiKey, requestUrl?.queryParameter(apiKeyParamName))
   }
 
-  private fun testHandlesEmptyOriginalUrl(
-    interceptor: Interceptor
-  ) {
+  private fun testHandlesEmptyOriginalUrl(interceptor: Interceptor) {
     val client = OkHttpClient.Builder()
       .addInterceptor(interceptor)
       .build()
@@ -85,9 +83,7 @@ class ApiKeyInterceptorTest {
     assertTrue(response.isSuccessful)
   }
 
-  private fun testThrowsExceptionOnInvalidUrl(
-    interceptor: Interceptor
-  ) {
+  private fun testThrowsExceptionOnInvalidUrl(interceptor: Interceptor) {
     val client = OkHttpClient.Builder()
       .addInterceptor(interceptor)
       .build()

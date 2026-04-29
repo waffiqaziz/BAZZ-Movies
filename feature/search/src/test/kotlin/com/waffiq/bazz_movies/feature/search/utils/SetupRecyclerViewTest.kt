@@ -44,7 +44,7 @@ class SetupRecyclerViewTest {
     assertEquals(
       "Orientation should be vertical",
       RecyclerView.VERTICAL,
-      (layoutManager as LinearLayoutManager).orientation
+      (layoutManager as LinearLayoutManager).orientation,
     )
 
     // verify adapter is a ConcatAdapter (also wraps PagingAdapter with footer)
@@ -59,13 +59,13 @@ class SetupRecyclerViewTest {
     val adapters = concatAdapter.adapters
     assertTrue(
       "ConcatAdapter should contain our PagingAdapter",
-      adapters.any { it is PagingDataAdapter<*, *> }
+      adapters.any { it is PagingDataAdapter<*, *> },
     )
 
     // expect LoadStateAdapter in the ConcatAdapter
     assertTrue(
       "ConcatAdapter should contain a LoadStateAdapter",
-      adapters.any { it is LoadStateAdapter<*> }
+      adapters.any { it is LoadStateAdapter<*> },
     )
   }
 
@@ -82,8 +82,7 @@ class SetupRecyclerViewTest {
 
     companion object {
       private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-          oldItem == newItem
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
           oldItem == newItem

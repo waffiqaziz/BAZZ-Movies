@@ -45,7 +45,7 @@ class DetailMovieTest {
     tagline = "Tagline",
     adult = false,
     homepage = "https://example.com",
-    status = "Released"
+    status = "Released",
   )
 
   @Test

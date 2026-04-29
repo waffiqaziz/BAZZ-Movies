@@ -45,8 +45,8 @@ class AboutActivityTest {
     Intents.intended(
       allOf(
         hasAction(Intent.ACTION_VIEW),
-        hasData(TMDB_LINK_MAIN.toUri())
-      )
+        hasData(TMDB_LINK_MAIN.toUri()),
+      ),
     )
   }
 
@@ -56,8 +56,8 @@ class AboutActivityTest {
     Intents.intended(
       allOf(
         hasAction(Intent.ACTION_VIEW),
-        hasData(BAZZ_MOVIES_LINK.toUri())
-      )
+        hasData(BAZZ_MOVIES_LINK.toUri()),
+      ),
     )
   }
 

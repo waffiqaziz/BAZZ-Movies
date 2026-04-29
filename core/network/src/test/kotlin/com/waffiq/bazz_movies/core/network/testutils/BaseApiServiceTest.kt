@@ -10,7 +10,7 @@ import org.junit.Before
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-abstract class BaseApiServiceTest {
+open class BaseApiServiceTest {
 
   protected lateinit var mockWebServer: MockWebServer
   protected lateinit var tvApiService: TvApiService
@@ -31,15 +31,16 @@ abstract class BaseApiServiceTest {
     tvApiService = retrofit.create(TvApiService::class.java)
   }
 
-
   @After
   fun tearDown() {
     mockWebServer.shutdown()
   }
 
-  protected fun mockMediaResponse(){
+  protected fun mockMediaResponse() {
     mockWebServer.enqueue(
-      MockResponse().setBody("""{ "page":1, "results": [], "total_pages" :1, "total_results": 1 }""")
+      MockResponse().setBody(
+        """{ "page":1, "results": [], "total_pages" :1, "total_results": 1 }""",
+      ),
     )
   }
 }

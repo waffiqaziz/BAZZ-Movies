@@ -11,7 +11,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PersonViewModelTest : BasePersonViewModelTest() {
@@ -28,7 +27,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       checkLoading = true,
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      }
+      },
     )
   }
 
@@ -42,7 +41,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       expectError = errorMessage,
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      }
+      },
     )
   }
 
@@ -56,7 +55,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       checkLoading = true,
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getDetailPerson(personId) }
-      }
+      },
     )
   }
 
@@ -71,23 +70,24 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       expectedSuccess = listOf(mockCastItem),
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
-      }
+      },
     )
   }
 
   @Test
-  fun getKnownFor_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns errorFlow
+  fun getKnownFor_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getKnownForPerson(personId) } returns errorFlow
 
-    testViewModel(
-      runBlock = { personViewModel.getKnownFor(personId) },
-      liveData = personViewModel.knownFor,
-      expectError = errorMessage,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
-      }
-    )
-  }
+      testViewModel(
+        runBlock = { personViewModel.getKnownFor(personId) },
+        liveData = personViewModel.knownFor,
+        expectError = errorMessage,
+        verifyBlock = {
+          coVerify { getDetailPersonUseCase.getKnownForPerson(personId) }
+        },
+      )
+    }
 
   @Test
   fun getImagePerson_whenSuccessful_emitsSuccess() {
@@ -100,7 +100,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       expectedSuccess = listOf(mockProfilesItem),
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getImagePerson(personId) }
-      }
+      },
     )
   }
 
@@ -119,7 +119,7 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       expectedSuccess = listOf(),
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getImagePerson(personId) }
-      }
+      },
     )
   }
 
@@ -138,81 +138,86 @@ class PersonViewModelTest : BasePersonViewModelTest() {
       expectedSuccess = emptyList(),
       verifyBlock = {
         coVerify { getDetailPersonUseCase.getImagePerson(personId) }
-      }
+      },
     )
   }
 
   @Test
-  fun getImagePerson_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns errorFlow
+  fun getImagePerson_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getImagePerson(personId) } returns errorFlow
 
-    testViewModel(
-      runBlock = { personViewModel.getImagePerson(personId) },
-      liveData = personViewModel.imagePerson,
-      expectError = errorMessage,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getImagePerson(personId) }
-      }
-    )
-  }
-
-  @Test
-  fun getExternalIDPerson_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns
-      successFlow(mockExternalIDPerson)
-
-    testViewModel(
-      runBlock = { personViewModel.getExternalIDPerson(personId) },
-      liveData = personViewModel.externalIdPerson,
-      expectedSuccess = mockExternalIDPerson,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
-      }
-    )
-  }
+      testViewModel(
+        runBlock = { personViewModel.getImagePerson(personId) },
+        liveData = personViewModel.imagePerson,
+        expectError = errorMessage,
+        verifyBlock = {
+          coVerify { getDetailPersonUseCase.getImagePerson(personId) }
+        },
+      )
+    }
 
   @Test
-  fun getExternalIDPerson_whenUnsuccessful_emitsError() = runTest {
-    coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns errorFlow
+  fun getExternalIDPerson_whenSuccessful_emitsSuccess() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns
+        successFlow(mockExternalIDPerson)
 
-    testViewModel(
-      runBlock = { personViewModel.getExternalIDPerson(personId) },
-      liveData = personViewModel.externalIdPerson,
-      expectError = errorMessage,
-      verifyBlock = {
-        coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
-      }
-    )
-  }
-
-  @Test
-  fun executeUseCase_whenError_shouldUpdateErrorStateAndLoadingState() = runTest {
-    val errorMessage = "Something went wrong"
-    val flow = flowOf(Outcome.Error(errorMessage))
-
-    personViewModel.executeUseCase(
-      flowProvider = { flow },
-      onSuccess = {}
-    )
-    advanceUntilIdle()
-
-    assertFalse(personViewModel.loadingState.value == true)
-    assertEquals(errorMessage, personViewModel.errorState.value?.getContentIfNotHandled())
-  }
+      testViewModel(
+        runBlock = { personViewModel.getExternalIDPerson(personId) },
+        liveData = personViewModel.externalIdPerson,
+        expectedSuccess = mockExternalIDPerson,
+        verifyBlock = {
+          coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
+        },
+      )
+    }
 
   @Test
-  fun executeUseCase_whenLoading_withDefaultOnLoading_shouldDoNothing() = runTest {
-    val flow = flowOf(Outcome.Loading)
+  fun getExternalIDPerson_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { getDetailPersonUseCase.getExternalIDPerson(personId) } returns errorFlow
 
-    // Don't pass onLoading — uses the default
-    personViewModel.executeUseCase(
-      flowProvider = { flow },
-      onSuccess = {}
-      // onLoading not passed intentionally
-    )
+      testViewModel(
+        runBlock = { personViewModel.getExternalIDPerson(personId) },
+        liveData = personViewModel.externalIdPerson,
+        expectError = errorMessage,
+        verifyBlock = {
+          coVerify { getDetailPersonUseCase.getExternalIDPerson(personId) }
+        },
+      )
+    }
 
-    // Just verify nothing crashes and no state changes occurred
-    assertFalse(personViewModel.loadingState.value == true)
-    assertNull(personViewModel.errorState.value)
-  }
+  @Test
+  fun executeUseCase_whenError_shouldUpdateErrorStateAndLoadingState() =
+    runTest {
+      val errorMessage = "Something went wrong"
+      val flow = flowOf(Outcome.Error(errorMessage))
+
+      personViewModel.executeUseCase(
+        flowProvider = { flow },
+        onSuccess = {},
+      )
+      advanceUntilIdle()
+
+      assertFalse(personViewModel.loadingState.value == true)
+      assertEquals(errorMessage, personViewModel.errorState.value?.getContentIfNotHandled())
+    }
+
+  @Test
+  fun executeUseCase_whenLoading_withDefaultOnLoading_shouldDoNothing() =
+    runTest {
+      val flow = flowOf(Outcome.Loading)
+
+      // Don't pass onLoading — uses the default
+      personViewModel.executeUseCase(
+        flowProvider = { flow },
+        onSuccess = {},
+        // onLoading not passed intentionally
+      )
+
+      // Just verify nothing crashes and no state changes occurred
+      assertFalse(personViewModel.loadingState.value == true)
+      assertNull(personViewModel.errorState.value)
+    }
 }

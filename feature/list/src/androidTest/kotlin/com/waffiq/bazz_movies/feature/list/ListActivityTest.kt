@@ -76,7 +76,6 @@ class ListActivityTest : BaseListActivityTest() {
     }
   }
 
-
   @Test
   fun listActivity_withKeywordsType_showsCorrectViews() {
     context.launchListActivity(movieKeywordsArgs) {
@@ -148,7 +147,7 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
-      // should use grid layout on initial 
+      // should use grid layout on initial
       "movie title".doesNotExist()
 
       // switch to linear layout

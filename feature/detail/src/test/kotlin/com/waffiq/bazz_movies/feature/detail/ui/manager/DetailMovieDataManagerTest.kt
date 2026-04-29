@@ -40,7 +40,8 @@ class DetailMovieDataManagerTest {
   fun loadAllData_whenTv_callsMovieDetailFunctions() {
     val regionLiveData = MutableLiveData("US")
     manager = DetailDataManager(
-      detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+      detailViewModel,
+      dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     )
 
     manager.loadAllData()
@@ -62,7 +63,8 @@ class DetailMovieDataManagerTest {
     val tvExternalIdLiveData = MutableLiveData(externalTvID)
 
     manager = DetailDataManager(
-      detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE)
+      detailViewModel,
+      dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     )
 
     manager.loadAllData()
@@ -85,7 +87,8 @@ class DetailMovieDataManagerTest {
     MutableLiveData(externalTvID)
 
     manager = DetailDataManager(
-      detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
+      detailViewModel,
+      dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     )
 
     manager.loadAllData()
@@ -106,7 +109,8 @@ class DetailMovieDataManagerTest {
     val tvExternalIdLiveData = MutableLiveData<TvExternalIds>()
 
     manager = DetailDataManager(
-      detailViewModel, dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
+      detailViewModel,
+      dataMediaItem.copy(mediaType = TV_MEDIA_TYPE),
     )
 
     manager.loadAllData()
@@ -122,7 +126,8 @@ class DetailMovieDataManagerTest {
   fun loadAllData_whenMediaTypePerson_callsMovieDetailFunctions() {
     val regionLiveData = MutableLiveData("US")
     manager = DetailDataManager(
-      detailViewModel, dataMediaItem.copy(mediaType = "person"),
+      detailViewModel,
+      dataMediaItem.copy(mediaType = "person"),
     )
 
     manager.loadAllData()

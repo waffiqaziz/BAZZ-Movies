@@ -16,7 +16,7 @@ object DataDump {
     token = "Test Token",
     isLogin = true,
     gravatarHash = "Gravatar Hast",
-    tmdbAvatar = "TMDB Avatar"
+    tmdbAvatar = "TMDB Avatar",
   )
 
   val favoriteMovie = Favorite(
@@ -32,7 +32,7 @@ object DataDump {
     poster = "poster_path",
     overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal",
     popularity = 9.0,
-    rating = 8.3f
+    rating = 8.3f,
   )
   val favoriteMovie2 = favoriteMovie.copy(id = 551, title = "Fight Club 2")
 
@@ -49,7 +49,7 @@ object DataDump {
     poster = "poster_path",
     overview = "Overview of the TV show",
     popularity = 0.0,
-    rating = 6.0f
+    rating = 6.0f,
   )
 
   val testMediaItem = MediaItem(
@@ -71,6 +71,6 @@ object DataDump {
     voteCount = 1102,
     video = false,
     releaseDate = "2025-07-09",
-    originCountry = null
+    originCountry = null,
   )
 }

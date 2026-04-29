@@ -17,72 +17,80 @@ import retrofit2.Response
 class TvStateRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun getTvState_whenSuccessful_returnsExpectedResponse() = runTest {
-    testSuccessResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      mockApiResponse = Response.success(statedResponseDump2),
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-      expectedData = statedResponseDump2,
-    )
-  }
+  fun getTvState_whenSuccessful_returnsExpectedResponse() =
+    runTest {
+      testSuccessResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        mockApiResponse = Response.success(statedResponseDump2),
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+        expectedData = statedResponseDump2,
+      )
+    }
 
   @Test
-  fun getTvState_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
-    testErrorResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      errorResponse = apiMaintenanceErrorResponse,
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-      expectedErrorMessage = apiMaintenanceErrorMessage
-    )
-  }
+  fun getTvState_whenServerError_returnsExpectedStatusMessageResponse() =
+    runTest {
+      testErrorResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        errorResponse = apiMaintenanceErrorResponse,
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+        expectedErrorMessage = apiMaintenanceErrorMessage,
+      )
+    }
 
   // region getTvState EDGE CASE
   @Test
-  fun getTvState_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
-    testError404Response(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenAPIRespondsWith404_returnsExpectedResponse() =
+    runTest {
+      testError404Response(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
 
   @Test
-  fun getTvState_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
-    testUnknownHostExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenNetworkErrorOccurs_returnsExpectedResponse() =
+    runTest {
+      testUnknownHostExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
 
   @Test
-  fun getTvState_whenTimeoutOccurs_returnsErrorResponse() = runTest {
-    testSocketTimeoutExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenTimeoutOccurs_returnsErrorResponse() =
+    runTest {
+      testSocketTimeoutExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
 
   @Test
-  fun getTvState_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
-    testHttpExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenHttpExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testHttpExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
 
   @Test
-  fun getTvState_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
-    testIOExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenIOExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testIOExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
 
   @Test
-  fun getTvState_whenExceptionOccurs_returnsErrorResponse() = runTest {
-    testGeneralExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
-    )
-  }
+  fun getTvState_whenExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testGeneralExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvState(544321, "session_id") },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvState("session_id", 544321) },
+      )
+    }
   // endregion getTvState EDGE CASE
 }

@@ -15,7 +15,7 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
     val data = MovieDetail(
       releaseDates = null,
       listProductionCountriesItem = listOf(ProductionCountriesItem("CA")),
-      releaseDate = "2023-03-15"
+      releaseDate = "2023-03-15",
     )
     checkMovieReleaseDate(data, "US", "CA", "Mar 15, 2023")
   }
@@ -24,10 +24,10 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
   fun getReleaseDateRegion_withNullReleaseDatesList_returnsEmptyResult() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
-        listReleaseDatesItem = null
+        listReleaseDatesItem = null,
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("")),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "", "")
   }
@@ -36,10 +36,10 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
   fun getReleaseDateRegion_withEmptyReleaseDatesItemList_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
-        listReleaseDatesItem = emptyList()
+        listReleaseDatesItem = emptyList(),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("CA")),
-      releaseDate = "2023-03-15"
+      releaseDate = "2023-03-15",
     )
     checkMovieReleaseDate(data, "US", "CA", "Mar 15, 2023")
   }
@@ -48,10 +48,10 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
   fun getReleaseDateRegion_withNullReleaseItem_usesProductionCountry() {
     val data = MovieDetail(
       releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(null)
+        listReleaseDatesItem = listOf(null),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
@@ -64,13 +64,13 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
           ReleaseDatesItem(
             iso31661 = null,
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
@@ -83,13 +83,13 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = null)
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = null),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
@@ -101,12 +101,12 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesItemValue = null
-          )
-        )
+            listReleaseDatesItemValue = null,
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
@@ -118,12 +118,12 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = "US",
-            listReleaseDatesItemValue = emptyList()
-          )
-        )
+            listReleaseDatesItemValue = emptyList(),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01"
+      releaseDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }

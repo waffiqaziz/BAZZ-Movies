@@ -36,9 +36,11 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R]) // API 30+
-  fun addPaddingWhenNavigationEnabled_whenButtonNavigationEnabledOnAPI30OrHigher_shouldApplyThePadding() {
+  fun addPaddingWhenNavigationEnabled_buttonNavIsEnabledOnAPI30OrHigher_shouldApplyThePadding() {
     mockkConstructor(WindowInsetsControllerCompat::class)
-    every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns 0 // Simulate button navigation
+    every {
+      anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior
+    } returns 0 // Simulate button navigation
 
     activity.addPaddingWhenNavigationEnable(view)
 
@@ -53,7 +55,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R]) // Test on API 30+
-  fun addPaddingWhenNavigationEnabled_whenGestureNavigationEnabledOnAPI30OrHigher_noPadding() {
+  fun addPaddingWhenNavigationEnabled_gestureNavigationEnabledOnAPI30OrHigher_noPadding() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns
       WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -71,7 +73,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R])
-  fun addPaddingWhenNavigationEnable_whenButtonNavigationEnabled_callsSetOnApplyWindowInsetsListener() {
+  fun addPaddingWhenNavigationEnable_buttonNavIsEnabled_callsSetOnApplyWindowInsetsListener() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns 1
 
@@ -84,7 +86,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.R])
-  fun addPaddingWhenNavigationEnable_whenButtonNavigationDisable_notCallsSetOnApplyWindowInsetsListener() {
+  fun addPaddingWhenNavigationEnable_buttonNavIsDisable_doNothing() {
     mockkConstructor(WindowInsetsControllerCompat::class)
     every { anyConstructed<WindowInsetsControllerCompat>().systemBarsBehavior } returns
       WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -119,7 +121,7 @@ class GestureHelperTest {
 
   @Test
   @Config(sdk = [Build.VERSION_CODES.Q])
-  fun addPaddingWhenNavigationEnabled_whenGestureNavigationEnabledOnAPI29OrLower_noPadding() {
+  fun addPaddingWhenNavigationEnabled_gestureNavigationEnabledOnAPI29OrLower_noPadding() {
     // set gesture navigation enabled
     shadowSettingsSecure.setSecureSetting("secure_gesture_navigation", 1)
     activity.addPaddingWhenNavigationEnable(view)

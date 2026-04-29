@@ -57,9 +57,9 @@ class PersonPageHelperTest {
           instagramId = "instagramId",
           facebookId = "facebookId",
           tiktokId = "tiktokId",
-          twitterId = "twitterId"
-        )
-      )
+          twitterId = "twitterId",
+        ),
+      ),
     )
   }
 
@@ -69,7 +69,7 @@ class PersonPageHelperTest {
     // valid birthday, place of birth, and death day
     assertEquals(
       "May 15, 1990\nNew York",
-      context.formatBirthInfo(born90, "New York", "2000-12-12")
+      context.formatBirthInfo(born90, "New York", "2000-12-12"),
     )
 
     // all null
@@ -84,7 +84,7 @@ class PersonPageHelperTest {
     // place null
     assertEquals(
       "May 15, 1990 (35 years old)\n",
-      context.formatBirthInfo(born90, null, null, fixedNow)
+      context.formatBirthInfo(born90, null, null, fixedNow),
     )
 
     // date empty
@@ -93,7 +93,7 @@ class PersonPageHelperTest {
     // place empty
     assertEquals(
       "May 15, 1990 (35 years old)\n",
-      context.formatBirthInfo(born90, "", "", fixedNow)
+      context.formatBirthInfo(born90, "", "", fixedNow),
     )
 
     // date null, place  empty
@@ -104,8 +104,8 @@ class PersonPageHelperTest {
   }
 
   @Test
-  fun getAge_validParameters_returnsAgeCorrectly(){
-    assertEquals(35L, getAge(born90,fixedNow))
+  fun getAge_validParameters_returnsAgeCorrectly() {
+    assertEquals(35L, getAge(born90, fixedNow))
 
     // use default locale to fulfill JaCoCo coverage
     getAge(born90)

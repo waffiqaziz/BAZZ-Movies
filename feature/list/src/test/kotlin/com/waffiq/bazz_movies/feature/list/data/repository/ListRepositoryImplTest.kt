@@ -22,82 +22,83 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 
-class ListRepositoryImplTest : BehaviorSpec({
+class ListRepositoryImplTest :
+  BehaviorSpec({
 
-  lateinit var repository: ListRepositoryImpl
+    lateinit var repository: ListRepositoryImpl
 
-  val mockDiscoverRemoteDataSource: DiscoverRemoteDataSource = mockk(relaxed = true)
+    val mockDiscoverRemoteDataSource: DiscoverRemoteDataSource = mockk(relaxed = true)
 
-  beforeTest {
-    Dispatchers.setMain(UnconfinedTestDispatcher())
-    repository = ListRepositoryImpl(mockDiscoverRemoteDataSource)
-  }
+    beforeTest {
+      Dispatchers.setMain(UnconfinedTestDispatcher())
+      repository = ListRepositoryImpl(mockDiscoverRemoteDataSource)
+    }
 
-  suspend fun BehaviorSpecWhenContainerScope.thenEmitsMappedMediaItems(
-    flowProvider: () -> Flow<PagingData<MediaItem>>,
-    expected: List<MediaItem>,
-  ) {
-    Then("emit paging data with correctly mapped MediaItems") {
-      testPagingFlowAwaitComplete(flowProvider()) { items ->
-        expected.forEachIndexed { index, mediaItem ->
-          items[index] shouldBe mediaItem
+    suspend fun BehaviorSpecWhenContainerScope.thenEmitsMappedMediaItems(
+      flowProvider: () -> Flow<PagingData<MediaItem>>,
+      expected: List<MediaItem>,
+    ) {
+      Then("emit paging data with correctly mapped MediaItems") {
+        testPagingFlowAwaitComplete(flowProvider()) { items ->
+          expected.forEachIndexed { index, mediaItem ->
+            items[index] shouldBe mediaItem
+          }
         }
       }
     }
-  }
 
-  Given("the data source returns paging data successfully") {
+    Given("the data source returns paging data successfully") {
 
-    When("fetching movies by genre") {
-      every { mockDiscoverRemoteDataSource.getMovieByGenres(any(), any()) } returns
-        flowOf(fakeMovieResponsePagingData)
+      When("fetching movies by genre") {
+        every { mockDiscoverRemoteDataSource.getMovieByGenres(any(), any()) } returns
+          flowOf(fakeMovieResponsePagingData)
 
-      thenEmitsMappedMediaItems(
-        flowProvider = { repository.getMovieByGenres("1", "id") },
-        expected = listOf(
-          mediaMovieResponseItem.toMediaItem(),
-          mediaMovieResponseItem2.toMediaItem(),
-        ),
-      )
+        thenEmitsMappedMediaItems(
+          flowProvider = { repository.getMovieByGenres("1", "id") },
+          expected = listOf(
+            mediaMovieResponseItem.toMediaItem(),
+            mediaMovieResponseItem2.toMediaItem(),
+          ),
+        )
+      }
+
+      When("fetching tv shows by genre") {
+        every { mockDiscoverRemoteDataSource.getTvByGenres(any(), any()) } returns
+          flowOf(fakeTvResponsePagingData)
+
+        thenEmitsMappedMediaItems(
+          flowProvider = { repository.getTvByGenres("1", "id") },
+          expected = listOf(
+            mediaTvResponseItem.toMediaItem(),
+            mediaTvResponseItem2.toMediaItem(),
+          ),
+        )
+      }
+
+      When("fetching movies by keyword") {
+        every { mockDiscoverRemoteDataSource.getMovieByKeywords(any()) } returns
+          flowOf(fakeMovieResponsePagingData)
+
+        thenEmitsMappedMediaItems(
+          flowProvider = { repository.getMovieByKeywords("1") },
+          expected = listOf(
+            mediaMovieResponseItem.toMediaItem(),
+            mediaMovieResponseItem2.toMediaItem(),
+          ),
+        )
+      }
+
+      When("fetching tv shows by keyword") {
+        every { mockDiscoverRemoteDataSource.getTvByKeywords(any()) } returns
+          flowOf(fakeTvResponsePagingData)
+
+        thenEmitsMappedMediaItems(
+          flowProvider = { repository.getTvByKeywords("1") },
+          expected = listOf(
+            mediaTvResponseItem.toMediaItem(),
+            mediaTvResponseItem2.toMediaItem(),
+          ),
+        )
+      }
     }
-
-    When("fetching tv shows by genre") {
-      every { mockDiscoverRemoteDataSource.getTvByGenres(any(), any()) } returns
-        flowOf(fakeTvResponsePagingData)
-
-      thenEmitsMappedMediaItems(
-        flowProvider = { repository.getTvByGenres("1", "id") },
-        expected = listOf(
-          mediaTvResponseItem.toMediaItem(),
-          mediaTvResponseItem2.toMediaItem(),
-        ),
-      )
-    }
-
-    When("fetching movies by keyword") {
-      every { mockDiscoverRemoteDataSource.getMovieByKeywords(any()) } returns
-        flowOf(fakeMovieResponsePagingData)
-
-      thenEmitsMappedMediaItems(
-        flowProvider = { repository.getMovieByKeywords("1") },
-        expected = listOf(
-          mediaMovieResponseItem.toMediaItem(),
-          mediaMovieResponseItem2.toMediaItem(),
-        ),
-      )
-    }
-
-    When("fetching tv shows by keyword") {
-      every { mockDiscoverRemoteDataSource.getTvByKeywords(any()) } returns
-        flowOf(fakeTvResponsePagingData)
-
-      thenEmitsMappedMediaItems(
-        flowProvider = { repository.getTvByKeywords("1") },
-        expected = listOf(
-          mediaTvResponseItem.toMediaItem(),
-          mediaTvResponseItem2.toMediaItem(),
-        ),
-      )
-    }
-  }
-})
+  })

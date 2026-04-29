@@ -13,7 +13,7 @@ class MediaStateTest {
       id = 101,
       favorite = true,
       rated = Rated.Value(7.5),
-      watchlist = false
+      watchlist = false,
     )
 
     assertEquals(101, stated.id)
@@ -29,7 +29,7 @@ class MediaStateTest {
       id = 102,
       favorite = false,
       rated = Rated.Unrated,
-      watchlist = true
+      watchlist = true,
     )
 
     assertEquals(102, stated.id)

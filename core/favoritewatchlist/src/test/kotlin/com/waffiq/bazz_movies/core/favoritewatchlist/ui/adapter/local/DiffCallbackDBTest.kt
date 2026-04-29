@@ -34,7 +34,7 @@ class DiffCallbackDBTest {
       popularity = 3124.0,
       rating = 10.0f,
       isFavorite = false,
-      isWatchlist = false
+      isWatchlist = false,
     ) // different content
 
     TestCase.assertFalse(diffCallback.areContentsTheSame(oldItem, newItem))
@@ -47,8 +47,8 @@ class DiffCallbackDBTest {
       Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
       Pair(
         favorite,
-        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie")
-      )
+        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie"),
+      ),
     )
 
     testCases.forEach { (oldItem, newItem) ->
@@ -63,8 +63,8 @@ class DiffCallbackDBTest {
       Pair(favorite, favorite.copy(isWatchlist = !favorite.isWatchlist)),
       Pair(
         favorite,
-        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie")
-      )
+        favorite.copy(mediaType = if (favorite.mediaType == "movie") "tv" else "movie"),
+      ),
     )
 
     testCases.forEach { (oldItem, newItem) ->

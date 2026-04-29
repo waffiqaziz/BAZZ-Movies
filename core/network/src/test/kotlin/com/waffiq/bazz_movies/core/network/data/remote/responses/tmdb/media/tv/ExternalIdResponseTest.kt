@@ -39,7 +39,7 @@ class ExternalIdResponseTest {
   fun externalIdResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val externalIdResponse = ExternalIdResponse(
       imdbId = null,
-      id = 6718354
+      id = 6718354,
     )
     assertNull(externalIdResponse.imdbId)
     assertEquals(6718354, externalIdResponse.id)

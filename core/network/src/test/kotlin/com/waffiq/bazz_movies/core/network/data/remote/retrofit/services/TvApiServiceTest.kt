@@ -12,37 +12,40 @@ class TvApiServiceTest : BaseApiServiceTest() {
   // We test only several api service
 
   @Test
-  fun getTopRatedTv_useDefaultLanguage_returnsEnglish() = runTest {
-    mockMediaResponse()
+  fun getTopRatedTv_useDefaultLanguage_returnsEnglish() =
+    runTest {
+      mockMediaResponse()
 
-    tvApiService.getTopRatedTv(page = 1)
+      tvApiService.getTopRatedTv(page = 1)
 
-    val request = mockWebServer.takeRequest()
-    assertEquals("en-US", request.requestUrl?.queryParameter("language"))
-  }
-
-  @Test
-  fun getTopRatedTv_overrideDefaultLanguage_returnsCorrectLanguage() = runTest {
-    mockMediaResponse()
-
-    tvApiService.getTopRatedTv(page = 1, language = "id-ID")
-
-    val request = mockWebServer.takeRequest()
-
-    assertEquals("id-ID", request.requestUrl?.queryParameter("language"))
-  }
+      val request = mockWebServer.takeRequest()
+      assertEquals("en-US", request.requestUrl?.queryParameter("language"))
+    }
 
   @Test
-  fun getPopularTv_useDefaultLanguage_returnsEnglish() = runTest {
-    mockMediaResponse()
+  fun getTopRatedTv_overrideDefaultLanguage_returnsCorrectLanguage() =
+    runTest {
+      mockMediaResponse()
 
-    tvApiService.getPopularTv(
-      region = "US",
-      dateTime = "2024-01-01",
-      page = 1
-    )
+      tvApiService.getTopRatedTv(page = 1, language = "id-ID")
 
-    val request = mockWebServer.takeRequest()
-    assertThat(request.path).contains("language=en-US")
-  }
+      val request = mockWebServer.takeRequest()
+
+      assertEquals("id-ID", request.requestUrl?.queryParameter("language"))
+    }
+
+  @Test
+  fun getPopularTv_useDefaultLanguage_returnsEnglish() =
+    runTest {
+      mockMediaResponse()
+
+      tvApiService.getPopularTv(
+        region = "US",
+        dateTime = "2024-01-01",
+        page = 1,
+      )
+
+      val request = mockWebServer.takeRequest()
+      assertThat(request.path).contains("language=en-US")
+    }
 }

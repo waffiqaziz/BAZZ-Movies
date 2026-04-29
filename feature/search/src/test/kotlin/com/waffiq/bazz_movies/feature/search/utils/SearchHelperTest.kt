@@ -16,7 +16,7 @@ class SearchHelperTest {
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),
       KnownForItem(title = "Movie 2"),
-      KnownForItem(title = "Movie 3")
+      KnownForItem(title = "Movie 3"),
     )
 
     val result = getKnownFor(knownForItems)
@@ -34,7 +34,7 @@ class SearchHelperTest {
     val knownForItems = listOf(
       KnownForItem(title = "Movie 1"),
       KnownForItem(title = null),
-      KnownForItem(title = "Movie 3")
+      KnownForItem(title = "Movie 3"),
     )
 
     val result = getKnownFor(knownForItems)
@@ -46,7 +46,7 @@ class SearchHelperTest {
     val knownForItems = listOf(
       KnownForItem(name = "Movie 2"),
       KnownForItem(name = null),
-      KnownForItem(name = "Movie 4")
+      KnownForItem(name = "Movie 4"),
     )
 
     val result = getKnownFor(knownForItems)
@@ -58,7 +58,7 @@ class SearchHelperTest {
     val knownForItems = listOf(
       KnownForItem(originalName = "Movie 2"),
       KnownForItem(originalName = null),
-      KnownForItem(originalName = "Movie 4")
+      KnownForItem(originalName = "Movie 4"),
     )
 
     val result = getKnownFor(knownForItems)
@@ -69,7 +69,7 @@ class SearchHelperTest {
   fun profileImageSource_whenProfileIsAvailable_returnsProfileURL() {
     val data = MultiSearchItem(profilePath = "profile", id = 1)
     val result = data.profileImageSource
-    assertEquals(TMDB_IMG_LINK_POSTER_W185+"profile", result)
+    assertEquals(TMDB_IMG_LINK_POSTER_W185 + "profile", result)
   }
 
   @Test

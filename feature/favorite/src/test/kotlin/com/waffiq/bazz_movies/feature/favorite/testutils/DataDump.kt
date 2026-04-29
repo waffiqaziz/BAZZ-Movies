@@ -22,13 +22,13 @@ object DataDump {
 
   val outcomeError = Outcome.Error(ERROR_MESSAGE)
   val outcomeLoading = Outcome.Loading
-  fun <T>outcomeSuccess(data: T) = Outcome.Success(data)
+  fun <T> outcomeSuccess(data: T) = Outcome.Success(data)
 
   val tvStateNotWatchlist = MediaState(
     id = TV_ID,
     watchlist = false,
     favorite = false,
-    rated = Rated.Unrated
+    rated = Rated.Unrated,
   )
   val tvStateInWatchlist = tvStateNotWatchlist.copy(watchlist = true)
 
@@ -36,7 +36,7 @@ object DataDump {
     id = MOVIE_ID,
     watchlist = false,
     favorite = false,
-    rated = Rated.Unrated
+    rated = Rated.Unrated,
   )
   val movieStateInWatchlist = movieStateNotWatchlist.copy(watchlist = true)
 
@@ -49,7 +49,7 @@ object DataDump {
     "token",
     true,
     null,
-    null
+    null,
   )
 
   val mediaMovieResponseItem = MediaResponseItem(
@@ -59,7 +59,7 @@ object DataDump {
     posterPath = "/poster1.jpg",
     mediaType = "movie",
     voteAverage = 8.8f,
-    releaseDate = "2010-07-16"
+    releaseDate = "2010-07-16",
   )
 
   val mediaMovieResponseItem2 = MediaResponseItem(
@@ -69,7 +69,7 @@ object DataDump {
     posterPath = "/poster2.jpg",
     mediaType = "movie",
     voteAverage = 9.0f,
-    releaseDate = "2008-07-18"
+    releaseDate = "2008-07-18",
   )
 
   val mediaTvResponseItem = MediaResponseItem(
@@ -79,7 +79,7 @@ object DataDump {
     posterPath = "/poster3.jpg",
     mediaType = "tv",
     voteAverage = 9.5f,
-    releaseDate = "2008-01-20"
+    releaseDate = "2008-01-20",
   )
 
   val mediaTvResponseItem2 = MediaResponseItem(
@@ -89,7 +89,7 @@ object DataDump {
     posterPath = "/poster4.jpg",
     mediaType = "tv",
     voteAverage = 9.3f,
-    releaseDate = "2011-04-17"
+    releaseDate = "2011-04-17",
   )
 
   val fakeMovieMediaItemPagingData =
@@ -97,7 +97,7 @@ object DataDump {
       listOf(
         mediaMovieResponseItem.toMediaItem(),
         mediaMovieResponseItem2.toMediaItem(),
-      )
+      ),
     )
 
   val fakeTvMediaItemPagingData =
@@ -105,20 +105,20 @@ object DataDump {
       listOf(
         mediaTvResponseItem.toMediaItem(),
         mediaTvResponseItem2.toMediaItem(),
-      )
+      ),
     )
 
   val fakeMovieResponsePagingData = PagingData.from(
     listOf(
       mediaMovieResponseItem,
-      mediaMovieResponseItem2
-    )
+      mediaMovieResponseItem2,
+    ),
   )
 
   val fakeTvResponsePagingData = PagingData.from(
     listOf(
       mediaTvResponseItem,
-      mediaTvResponseItem2
-    )
+      mediaTvResponseItem2,
+    ),
   )
 }

@@ -30,14 +30,16 @@ class CustomSnapHelperTest {
     context = ApplicationProvider.getApplicationContext()
     recyclerView = RecyclerView(context)
     recyclerView.layoutManager = LinearLayoutManager(
-      recyclerView.context, LinearLayoutManager.HORIZONTAL, false
+      recyclerView.context,
+      LinearLayoutManager.HORIZONTAL,
+      false,
     )
     layoutManager = recyclerView.layoutManager as LinearLayoutManager
 
     targetView = TextView(context)
     targetView.layoutParams = RecyclerView.LayoutParams(
       RecyclerView.LayoutParams.MATCH_PARENT,
-      RecyclerView.LayoutParams.MATCH_PARENT
+      RecyclerView.LayoutParams.MATCH_PARENT,
     )
     recyclerView.addView(targetView)
   }
@@ -91,7 +93,7 @@ class CustomSnapHelperTest {
     val lastItem = TextView(context).apply {
       layoutParams = RecyclerView.LayoutParams(
         RecyclerView.LayoutParams.MATCH_PARENT,
-        RecyclerView.LayoutParams.MATCH_PARENT
+        RecyclerView.LayoutParams.MATCH_PARENT,
       )
     }
     recyclerView.addView(lastItem)
@@ -110,7 +112,8 @@ class CustomSnapHelperTest {
   @Test
   fun calculateDistanceToFinalSnap_withEmptyRecyclerView_returnNull() {
     val emptyRecyclerView = RecyclerView(context)
-    emptyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    emptyRecyclerView.layoutManager =
+      LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     val snapHelper = CustomSnapHelper()
     snapHelper.attachToRecyclerView(emptyRecyclerView)

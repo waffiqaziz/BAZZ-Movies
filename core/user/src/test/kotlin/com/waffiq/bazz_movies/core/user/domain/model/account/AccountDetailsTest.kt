@@ -16,7 +16,7 @@ class AccountDetailsTest {
       avatarItem = AvatarItem(avatarTMDb = null, gravatar = null),
       id = 123,
       iso6391 = "en",
-      username = "johndoe"
+      username = "johndoe",
     )
 
     assertEquals(true, accountDetails.includeAdult)
@@ -49,7 +49,7 @@ class AccountDetailsTest {
       avatarItem = null,
       id = null,
       iso6391 = "fr",
-      username = "user123"
+      username = "user123",
     )
     assertEquals(false, accountDetails2.includeAdult)
     assertEquals("FR", accountDetails2.iso31661)

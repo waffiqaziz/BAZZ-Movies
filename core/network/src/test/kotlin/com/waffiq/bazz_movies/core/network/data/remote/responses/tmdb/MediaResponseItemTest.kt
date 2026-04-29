@@ -19,7 +19,7 @@ class MediaResponseItemTest {
         admired by the other inmates -- including an older prisoner named Red -- for his integrity 
         and unquenchable sense of hope.
       """.trimIndent(),
-      mediaResponseItem.overview
+      mediaResponseItem.overview,
     )
     assertEquals(false, mediaResponseItem.video)
     assertEquals("The Shawshank Redemption", mediaResponseItem.originalName)
@@ -33,7 +33,7 @@ class MediaResponseItemTest {
 
   @Test
   fun mediaResponseItem_withNullValues_setsPropertiesWithDefaultValues() {
-    val dataNull  = MediaResponseItem()
+    val dataNull = MediaResponseItem()
     assertNull(dataNull.firstAirDate)
     assertNull(dataNull.overview)
     assertNull(dataNull.originalLanguage)

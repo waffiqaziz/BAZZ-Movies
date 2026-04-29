@@ -46,9 +46,8 @@ class DefaultFragmentTestHelper : SearchFragmentTestHelper {
     val spyAdapter = spyk(SearchAdapter(mockNavigator))
     searchAdapter = spyAdapter
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment> {
-      this.setAdapterForTest(spyAdapter)
-    }
+    searchFragment = launchFragmentInHiltContainer<SearchFragment>().fragment
+    searchFragment.setAdapterForTest(spyAdapter)
   }
 
   override fun setupSnackbarMocks(mockSnackbar: ISnackbar) {

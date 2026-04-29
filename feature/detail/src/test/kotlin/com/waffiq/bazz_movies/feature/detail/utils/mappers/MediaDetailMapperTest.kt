@@ -40,12 +40,12 @@ class MediaDetailMapperTest {
       publishedAt = "2024-01-01T00:00:00Z",
       type = "Trailer",
       iso6391 = "en",
-      key = "abc123"
+      key = "abc123",
     )
 
     val videoResponse = VideoResponse(
       id = 12345678,
-      results = listOf(videoItemResponse)
+      results = listOf(videoItemResponse),
     )
 
     val video: Video = videoResponse.toVideo()
@@ -67,7 +67,7 @@ class MediaDetailMapperTest {
   fun toVideo_withEmptyResults_returnsVideoWithEmptyResults() {
     val videoResponse = VideoResponse(
       id = 12345678,
-      results = emptyList()
+      results = emptyList(),
     )
 
     val video: Video = videoResponse.toVideo()
@@ -85,7 +85,7 @@ class MediaDetailMapperTest {
       id = 456,
       name = "John Doe",
       order = 0,
-      profilePath = "/profile.jpg"
+      profilePath = "/profile.jpg",
     )
 
     val crewItem = MediaCrewResponseItem(
@@ -95,13 +95,13 @@ class MediaDetailMapperTest {
       id = 789,
       job = "Director",
       name = "Jane Smith",
-      profilePath = "/director.jpg"
+      profilePath = "/director.jpg",
     )
 
     val creditsResponse = MediaCreditsResponse(
       cast = listOf(castItem),
       id = 12345,
-      crew = listOf(crewItem)
+      crew = listOf(crewItem),
     )
 
     val credits: MediaCredits = creditsResponse.toMediaCredits()
@@ -120,7 +120,7 @@ class MediaDetailMapperTest {
   fun toGenresItem_withValidValues_returnsGenresItem() {
     val genresItemResponse = GenresResponseItem(
       name = "Action",
-      id = 28
+      id = 28,
     )
 
     val genresItem: GenresItem = genresItemResponse.toGenresItem()
@@ -133,7 +133,7 @@ class MediaDetailMapperTest {
     val spokenLanguagesItemResponse = SpokenLanguagesResponseItem(
       name = "English",
       iso6391 = "en",
-      englishName = "English"
+      englishName = "English",
     )
 
     val spokenLanguagesItem: SpokenLanguagesItem =
@@ -150,7 +150,7 @@ class MediaDetailMapperTest {
       name = "United States",
       type = 1,
       iso6391 = "en",
-      certification = "PG-13"
+      certification = "PG-13",
     )
 
     val productionCountriesItem: ProductionCountriesItem =
@@ -168,7 +168,7 @@ class MediaDetailMapperTest {
       logoPath = "/logo.png",
       name = "Marvel Studios",
       id = 420,
-      originCountry = "US"
+      originCountry = "US",
     )
 
     val productionCompaniesItem: ProductionCompaniesItem =
@@ -185,7 +185,7 @@ class MediaDetailMapperTest {
       logoPath = null,
       name = "Unknown Studio",
       id = 999,
-      originCountry = null
+      originCountry = null,
     )
 
     val productionCompaniesItem: ProductionCompaniesItem =
@@ -201,7 +201,7 @@ class MediaDetailMapperTest {
     val spokenLanguagesItemResponse = SpokenLanguagesResponseItem(
       name = null,
       iso6391 = "xx",
-      englishName = null
+      englishName = null,
     )
 
     val spokenLanguagesItem: SpokenLanguagesItem =

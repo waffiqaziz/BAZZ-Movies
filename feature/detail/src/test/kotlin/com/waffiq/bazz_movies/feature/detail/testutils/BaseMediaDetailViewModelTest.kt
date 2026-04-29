@@ -4,16 +4,16 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
+import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.domain.MediaState
 import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
-import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
-import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase
@@ -46,7 +46,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 
-abstract class BaseMediaDetailViewModelTest {
+open class BaseMediaDetailViewModelTest {
 
   protected lateinit var viewModel: MediaDetailViewModel
 
@@ -72,7 +72,7 @@ abstract class BaseMediaDetailViewModelTest {
     id = 112,
     favorite = false,
     rated = Rated.Unrated,
-    watchlist = false
+    watchlist = false,
   )
   protected val mockMediaCredits = mockk<MediaCredits>()
   protected val mockOmdb = oMDbDetails
@@ -83,14 +83,14 @@ abstract class BaseMediaDetailViewModelTest {
     flatrate = emptyList(),
     free = emptyList(),
     rent = emptyList(),
-    link = String()
+    link = String(),
   )
   protected val mockWatchProviderState = WatchProvidersUiState.Success(
     ads = mockWatchProvider.ads.orEmpty(),
     buy = mockWatchProvider.buy.orEmpty(),
     flatrate = mockWatchProvider.flatrate.orEmpty(),
     free = mockWatchProvider.free.orEmpty(),
-    rent = mockWatchProvider.rent.orEmpty()
+    rent = mockWatchProvider.rent.orEmpty(),
   )
   protected val nullProvider = WatchProvidersItem(
     ads = null,
@@ -98,7 +98,7 @@ abstract class BaseMediaDetailViewModelTest {
     flatrate = null,
     free = null,
     rent = null,
-    link = null
+    link = null,
   )
 
   @get:Rule
@@ -127,8 +127,7 @@ abstract class BaseMediaDetailViewModelTest {
   protected fun <T> successFlow(data: T): Flow<Outcome.Success<T>> =
     flow { emit(Outcome.Success(data)) }
 
-  protected fun <T> successDbResult(data: T): DbResult<T> =
-    DbResult.Success(data)
+  protected fun <T> successDbResult(data: T): DbResult<T> = DbResult.Success(data)
 
   protected val errorDbResult = DbResult.Error(errorMessage)
   protected val loadingFlow = flowOf(Outcome.Loading)
@@ -140,7 +139,6 @@ abstract class BaseMediaDetailViewModelTest {
     differ: AsyncPagingDataDiffer<T> = differ(),
     itemAssertions: (List<T>) -> Unit = { /* do nothing */ },
   ) = runTest {
-
     runBlock()
     advanceUntilIdle()
 
@@ -155,15 +153,15 @@ abstract class BaseMediaDetailViewModelTest {
     job.cancel()
   }
 
+  @Suppress("LongParameterList")
   protected fun <T> testViewModelState(
     runBlock: () -> Unit,
     stateSelector: (MediaDetailUiState) -> T,
     expectedStates: List<T>? = null,
     expectedLoadingStates: List<Boolean>? = null,
     expectedErrors: List<String>? = null,
-    verifyBlock: () -> Unit = {}
+    verifyBlock: () -> Unit = {},
   ) = runTest {
-
     val collectedStates = mutableListOf<T>()
     val collectedLoadingStates = mutableListOf<Boolean>()
     val collectedErrors = mutableListOf<String>()
@@ -219,7 +217,7 @@ abstract class BaseMediaDetailViewModelTest {
     verifyBlock()
   }
 
-  fun setupGetOMDbDetailsMockReturnValue(){
+  fun setupGetOMDbDetailsMockReturnValue() {
     coEvery { mockGetOMDbDetailUseCase.getOMDbDetails(any()) } returns
       successFlow(mockOmdb)
   }

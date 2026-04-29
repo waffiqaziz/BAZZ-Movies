@@ -65,100 +65,109 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun submitData_withPagingData_updatesTheAdapter() = runTest {
-    val pagingData = PagingData.from(
-      listOf(
-        MultiSearchItem(id = 1, title = "Movie 1"),
-        MultiSearchItem(id = 2, title = "Movie 2")
+  fun submitData_withPagingData_updatesTheAdapter() =
+    runTest {
+      val pagingData = PagingData.from(
+        listOf(
+          MultiSearchItem(id = 1, title = "Movie 1"),
+          MultiSearchItem(id = 2, title = "Movie 2"),
+        ),
       )
-    )
 
-    adapter.submitData(pagingData)
-    assertEquals(2, adapter.itemCount)
-  }
-
-  @Test
-  fun onBindViewHolder_whenCalled_bindsCorrectMovieData() = runTest {
-    val movieData = MultiSearchItem(
-      mediaType = "movie",
-      id = 1,
-      title = "Transformers",
-      originalTitle = "Transformers",
-      listGenreIds = listOf(12, 878, 28),
-      releaseDate = "2007-06-27"
-    )
-
-    submitPagingAndWait(movieData)
-
-    assertEquals("Transformers", binding.tvTitle.text.toString())
-    assertEquals("Adventure, Science Fiction, Action", binding.tvGenre.text.toString())
-    assertEquals("2007-06-27", binding.tvYearReleased.text.toString())
-  }
+      adapter.submitData(pagingData)
+      assertEquals(2, adapter.itemCount)
+    }
 
   @Test
-  fun onBindViewHolder_whenCalled_bindsCorrectTvData() = runTest {
-    val tvData = MultiSearchItem(
-      mediaType = "tv",
-      id = 12345,
-      title = "Bleach",
-      originalTitle = "BLEACH",
-      listGenreIds = listOf(10759, 16, 10765),
-      releaseDate = "2004-10-05"
-    )
-
-    submitPagingAndWait(tvData)
-
-    assertEquals("Bleach", binding.tvTitle.text.toString())
-    assertEquals("Action & Adventure, Animation, Sci-Fi & Fantasy", binding.tvGenre.text.toString())
-    assertEquals("2004-10-05", binding.tvYearReleased.text.toString())
-  }
-
-  @Test
-  fun onBindViewHolder_whenCalled_bindsCorrectPersonData() = runTest {
-    val personData = MultiSearchItem(
-      mediaType = "person",
-      id = 134321,
-      name = "Jason Statham",
-      originalName = "Jason Statham",
-      adult = false,
-      knownForDepartment = "Acting",
-      listKnownFor = listOf(
-        KnownForItem(title = "The Meg"),
-        KnownForItem(title = "The Transporter"),
-        KnownForItem(title = "Wrath of Man")
+  fun onBindViewHolder_whenCalled_bindsCorrectMovieData() =
+    runTest {
+      val movieData = MultiSearchItem(
+        mediaType = "movie",
+        id = 1,
+        title = "Transformers",
+        originalTitle = "Transformers",
+        listGenreIds = listOf(12, 878, 28),
+        releaseDate = "2007-06-27",
       )
-    )
 
-    submitPagingAndWait(personData)
+      submitPagingAndWait(movieData)
 
-    assertEquals("Jason Statham", binding.tvTitle.text.toString())
-    assertEquals("The Meg, The Transporter, Wrath of Man", binding.tvGenre.text.toString())
-    assertEquals("Acting", binding.tvYearReleased.text.toString())
-  }
-
-  @Test
-  fun onBindViewHolder_withNullData_doesNotCrash() = runTest {
-    val fakePagingData = PagingData.empty<MultiSearchItem>()
-    adapter.submitData(fakePagingData)
-    advanceUntilIdle()
-
-    assertEquals(0, adapter.itemCount)
-
-    if (adapter.itemCount > 0) adapter.onBindViewHolder(viewHolder, 0)
-  }
+      assertEquals("Transformers", binding.tvTitle.text.toString())
+      assertEquals("Adventure, Science Fiction, Action", binding.tvGenre.text.toString())
+      assertEquals("2007-06-27", binding.tvYearReleased.text.toString())
+    }
 
   @Test
-  fun onBindViewHolder_withValidData_bindsDataCorrectly() = runTest {
-    val dummyData =
-      listOf(MultiSearchItem(id = 1, title = "Title", mediaType = "movie"))
-    val pagingData = PagingData.from(dummyData)
+  fun onBindViewHolder_whenCalled_bindsCorrectTvData() =
+    runTest {
+      val tvData = MultiSearchItem(
+        mediaType = "tv",
+        id = 12345,
+        title = "Bleach",
+        originalTitle = "BLEACH",
+        listGenreIds = listOf(10759, 16, 10765),
+        releaseDate = "2004-10-05",
+      )
 
-    adapter.submitData(pagingData)
-    advanceUntilIdle()
+      submitPagingAndWait(tvData)
 
-    assertEquals(1, adapter.itemCount)
-    adapter.onBindViewHolder(viewHolder, 0)
-  }
+      assertEquals("Bleach", binding.tvTitle.text.toString())
+      assertEquals(
+        "Action & Adventure, Animation, Sci-Fi & Fantasy",
+        binding.tvGenre.text.toString(),
+      )
+      assertEquals("2004-10-05", binding.tvYearReleased.text.toString())
+    }
+
+  @Test
+  fun onBindViewHolder_whenCalled_bindsCorrectPersonData() =
+    runTest {
+      val personData = MultiSearchItem(
+        mediaType = "person",
+        id = 134321,
+        name = "Jason Statham",
+        originalName = "Jason Statham",
+        adult = false,
+        knownForDepartment = "Acting",
+        listKnownFor = listOf(
+          KnownForItem(title = "The Meg"),
+          KnownForItem(title = "The Transporter"),
+          KnownForItem(title = "Wrath of Man"),
+        ),
+      )
+
+      submitPagingAndWait(personData)
+
+      assertEquals("Jason Statham", binding.tvTitle.text.toString())
+      assertEquals("The Meg, The Transporter, Wrath of Man", binding.tvGenre.text.toString())
+      assertEquals("Acting", binding.tvYearReleased.text.toString())
+    }
+
+  @Test
+  fun onBindViewHolder_withNullData_doesNotCrash() =
+    runTest {
+      val fakePagingData = PagingData.empty<MultiSearchItem>()
+      adapter.submitData(fakePagingData)
+      advanceUntilIdle()
+
+      assertEquals(0, adapter.itemCount)
+
+      if (adapter.itemCount > 0) adapter.onBindViewHolder(viewHolder, 0)
+    }
+
+  @Test
+  fun onBindViewHolder_withValidData_bindsDataCorrectly() =
+    runTest {
+      val dummyData =
+        listOf(MultiSearchItem(id = 1, title = "Title", mediaType = "movie"))
+      val pagingData = PagingData.from(dummyData)
+
+      adapter.submitData(pagingData)
+      advanceUntilIdle()
+
+      assertEquals(1, adapter.itemCount)
+      adapter.onBindViewHolder(viewHolder, 0)
+    }
 
   @Test
   fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
@@ -171,82 +180,87 @@ class SearchAdapterTest {
   }
 
   @Test
-  fun movieSearchItem_whenClicked_opensMovieDetails() = runTest {
-    submitPagingAndWait(
-      MultiSearchItem(
+  fun movieSearchItem_whenClicked_opensMovieDetails() =
+    runTest {
+      submitPagingAndWait(
+        MultiSearchItem(
+          id = 1,
+          title = "Test Movie",
+          name = "Test Name",
+          overview = "Test Overview",
+          mediaType = "movie",
+        ),
+      )
+      binding.containerResult.performClick()
+
+      val expectedItem = MediaItem(
         id = 1,
         title = "Test Movie",
-        name = "Test Name",
         overview = "Test Overview",
-        mediaType = "movie"
+        name = "Test Name",
+        mediaType = "movie",
       )
-    )
-    binding.containerResult.performClick()
 
-    val expectedItem = MediaItem(
-      id = 1,
-      title = "Test Movie",
-      overview = "Test Overview",
-      name = "Test Name",
-      mediaType = "movie"
-    )
-
-    verify(navigator).openDetails(eq(context), eq(expectedItem))
-  }
+      verify(navigator).openDetails(eq(context), eq(expectedItem))
+    }
 
   @Test
-  fun personSearchItem_whenClicked_opensPersonDetails() = runTest {
-    val personData = MultiSearchItem(
-      id = 1,
-      mediaType = "person",
-      name = "Actor Name",
-      originalName = "Original Actor Name",
-      profilePath = "/profile/path.jpg"
-    )
-
-    val pagingData = PagingData.from(listOf(personData))
-    adapter.submitData(pagingData)
-    advanceUntilIdle()
-
-    adapter.onBindViewHolder(viewHolder, 0)
-    binding.containerResult.performClick()
-
-    val expectedPerson = MediaCastItem(
-      id = 1,
-      name = "Actor Name",
-      originalName = "Original Actor Name",
-      profilePath = "/profile/path.jpg"
-    )
-
-    verify(navigator).openPersonDetails(eq(context), eq(expectedPerson))
-  }
-
-  @Test
-  fun submitData_wthEmptyPagingData_shouldNotCrash() = runTest {
-    val emptyPagingData = PagingData.from(emptyList<MultiSearchItem>())
-    adapter.submitData(emptyPagingData)
-    assertEquals(0, adapter.itemCount)
-  }
-
-  @Test
-  fun submitData_withMultiplePagingDataItems_shouldUpdateItemCountCorrectly() = runTest {
-    val pagingData = PagingData.from(
-      listOf(
-        MultiSearchItem(id = 1, title = "Movie 1"),
-        MultiSearchItem(id = 2, title = "Movie 2"),
-        MultiSearchItem(id = 3, title = "Movie 3")
+  fun personSearchItem_whenClicked_opensPersonDetails() =
+    runTest {
+      val personData = MultiSearchItem(
+        id = 1,
+        mediaType = "person",
+        name = "Actor Name",
+        originalName = "Original Actor Name",
+        profilePath = "/profile/path.jpg",
       )
-    )
 
-    adapter.submitData(pagingData)
-    assertEquals(3, adapter.itemCount)
-  }
+      val pagingData = PagingData.from(listOf(personData))
+      adapter.submitData(pagingData)
+      advanceUntilIdle()
 
-  private fun submitPagingAndWait(item: MultiSearchItem) = runTest {
-    adapter.submitData(PagingData.from(listOf(item)))
-    advanceUntilIdle()
-    adapter.onBindViewHolder(viewHolder, 0)
-  }
+      adapter.onBindViewHolder(viewHolder, 0)
+      binding.containerResult.performClick()
+
+      val expectedPerson = MediaCastItem(
+        id = 1,
+        name = "Actor Name",
+        originalName = "Original Actor Name",
+        profilePath = "/profile/path.jpg",
+      )
+
+      verify(navigator).openPersonDetails(eq(context), eq(expectedPerson))
+    }
+
+  @Test
+  fun submitData_wthEmptyPagingData_shouldNotCrash() =
+    runTest {
+      val emptyPagingData = PagingData.from(emptyList<MultiSearchItem>())
+      adapter.submitData(emptyPagingData)
+      assertEquals(0, adapter.itemCount)
+    }
+
+  @Test
+  fun submitData_withMultiplePagingDataItems_shouldUpdateItemCountCorrectly() =
+    runTest {
+      val pagingData = PagingData.from(
+        listOf(
+          MultiSearchItem(id = 1, title = "Movie 1"),
+          MultiSearchItem(id = 2, title = "Movie 2"),
+          MultiSearchItem(id = 3, title = "Movie 3"),
+        ),
+      )
+
+      adapter.submitData(pagingData)
+      assertEquals(3, adapter.itemCount)
+    }
+
+  private fun submitPagingAndWait(item: MultiSearchItem) =
+    runTest {
+      adapter.submitData(PagingData.from(listOf(item)))
+      advanceUntilIdle()
+      adapter.onBindViewHolder(viewHolder, 0)
+    }
 
   @Test
   fun diffCallback_whenItemsAreTheSame_returnsTrueForSameIdAndMediaType() {

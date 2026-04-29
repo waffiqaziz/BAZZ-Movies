@@ -40,109 +40,117 @@ class RepositoryTestHelperTest {
   }
 
   @Test
-  fun testSuccessfulCall_whenRepositoryEmitsSuccess_shouldEmitLoadingThenExpectedData() = runTest {
-    dataSourceEmitSuccess()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Success(fakeMappedInt))
-    }
+  fun testSuccessfulCall_whenRepositoryEmitsSuccess_shouldEmitLoadingThenExpectedData() =
+    runTest {
+      dataSourceEmitSuccess()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Success(fakeMappedInt))
+      }
 
-    assertTestSuccessfulCall()
-
-    verify { mockVerify() }
-  }
-
-  @Test
-  fun testSuccessfulCall_whenRepositoryEmitsError_shouldFail() = runTest {
-    dataSourceEmitSuccess()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Error("unexpected error"))
-    }
-
-    assertFailsWith<AssertionError> {
       assertTestSuccessfulCall()
+
+      verify { mockVerify() }
     }
-  }
 
   @Test
-  fun testSuccessfulCall_whenRepositoryEmitsIncorrectData_shouldFail() = runTest {
-    dataSourceEmitSuccess()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Success(999)) // wrong data
-    }
+  fun testSuccessfulCall_whenRepositoryEmitsError_shouldFail() =
+    runTest {
+      dataSourceEmitSuccess()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Error("unexpected error"))
+      }
 
-    assertFailsWith<AssertionError> {
-      // expects 42, gets 999
-      assertTestSuccessfulCall()
+      assertFailsWith<AssertionError> {
+        assertTestSuccessfulCall()
+      }
     }
-  }
 
   @Test
-  fun testUnsuccessfulCall_whenRepositoryEmitsError_shouldEmitLoadingThenErrorMessage() = runTest {
-    dataSourceEmitError()
+  fun testSuccessfulCall_whenRepositoryEmitsIncorrectData_shouldFail() =
+    runTest {
+      dataSourceEmitSuccess()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Success(999)) // wrong data
+      }
 
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Error(RepositoryTestHelper.ERROR_MESSAGE))
+      assertFailsWith<AssertionError> {
+        // expects 42, gets 999
+        assertTestSuccessfulCall()
+      }
     }
-
-    assertTestUnsuccessfulCall()
-
-    verify { mockVerify() }
-  }
 
   @Test
-  fun testUnsuccessfulCall_whenRepositoryEmitsSuccess_shouldFail() = runTest {
-    dataSourceEmitError()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Success(fakeMappedInt)) // wrong, should be Error
-    }
+  fun testUnsuccessfulCall_whenRepositoryEmitsError_shouldEmitLoadingThenErrorMessage() =
+    runTest {
+      dataSourceEmitError()
 
-    assertFailsWith<AssertionError> {
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Error(RepositoryTestHelper.ERROR_MESSAGE))
+      }
+
       assertTestUnsuccessfulCall()
+
+      verify { mockVerify() }
     }
-  }
 
   @Test
-  fun testUnsuccessfulCall_whenErrorMessageDoesNotMatch_shouldFail() = runTest {
-    dataSourceEmitError()
+  fun testUnsuccessfulCall_whenRepositoryEmitsSuccess_shouldFail() =
+    runTest {
+      dataSourceEmitError()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Success(fakeMappedInt)) // wrong, should be Error
+      }
 
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
-      emit(Outcome.Error("some other error")) // wrong message
+      assertFailsWith<AssertionError> {
+        assertTestUnsuccessfulCall()
+      }
     }
-
-    assertFailsWith<AssertionError> {
-      assertTestUnsuccessfulCall()
-    }
-  }
 
   @Test
-  fun testLoadingState_whenRepositoryEmitsLoading_shouldPass() = runTest {
-    dataSourceEmitLoading()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Loading)
+  fun testUnsuccessfulCall_whenErrorMessageDoesNotMatch_shouldFail() =
+    runTest {
+      dataSourceEmitError()
+
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+        emit(Outcome.Error("some other error")) // wrong message
+      }
+
+      assertFailsWith<AssertionError> {
+        assertTestUnsuccessfulCall()
+      }
     }
-
-    assertTestLoadingState()
-
-    verify { mockVerify() }
-  }
 
   @Test
-  fun testLoadingState_whenRepositoryEmitsNonLoading_shouldFail() = runTest {
-    dataSourceEmitLoading()
-    coEvery { mockRepositoryCall() } returns flow {
-      emit(Outcome.Success(fakeMappedInt)) // wrong, should be Loading
-    }
+  fun testLoadingState_whenRepositoryEmitsLoading_shouldPass() =
+    runTest {
+      dataSourceEmitLoading()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Loading)
+      }
 
-    assertFailsWith<AssertionError> {
       assertTestLoadingState()
+
+      verify { mockVerify() }
     }
-  }
+
+  @Test
+  fun testLoadingState_whenRepositoryEmitsNonLoading_shouldFail() =
+    runTest {
+      dataSourceEmitLoading()
+      coEvery { mockRepositoryCall() } returns flow {
+        emit(Outcome.Success(fakeMappedInt)) // wrong, should be Loading
+      }
+
+      assertFailsWith<AssertionError> {
+        assertTestLoadingState()
+      }
+    }
 
   private fun dataSourceEmitSuccess() {
     coEvery { mockDataSourceCall() } returns flow {

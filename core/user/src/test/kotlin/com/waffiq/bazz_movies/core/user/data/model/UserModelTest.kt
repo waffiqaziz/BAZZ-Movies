@@ -21,7 +21,7 @@ class UserModelTest {
       token = "anotherToken",
       isLogin = false,
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
 
     assertNull(user.gravatarHash)
@@ -44,7 +44,7 @@ class UserModelTest {
       token = "token123",
       isLogin = true,
       gravatarHash = "hash123",
-      tmdbAvatar = "https://example.com/avatar2.jpg"
+      tmdbAvatar = "https://example.com/avatar2.jpg",
     )
 
     val user2 = UserModel(
@@ -56,7 +56,7 @@ class UserModelTest {
       token = "token123",
       isLogin = true,
       gravatarHash = "hash123",
-      tmdbAvatar = "https://example.com/avatar2.jpg"
+      tmdbAvatar = "https://example.com/avatar2.jpg",
     )
 
     assertEquals(user1, user2)
@@ -74,7 +74,7 @@ class UserModelTest {
       token = "copyToken",
       isLogin = false,
       gravatarHash = "copyHash",
-      tmdbAvatar = "https://example.com/avatar3.jpg"
+      tmdbAvatar = "https://example.com/avatar3.jpg",
     )
 
     val copiedUser = user.copy(name = "Bob Updated", isLogin = true)
@@ -97,7 +97,7 @@ class UserModelTest {
       token = "securityToken",
       isLogin = true,
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
 
     assertNotNull(user.password)
@@ -117,7 +117,7 @@ class UserModelTest {
       token = "",
       isLogin = false,
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
 
     assertEquals(0, emptyUser.userId)
@@ -140,7 +140,7 @@ class UserModelTest {
       token = "maxToken",
       isLogin = true,
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
 
     assertEquals(Int.MAX_VALUE, largeIdUser.userId)
@@ -157,7 +157,7 @@ class UserModelTest {
       token = "tok#en$123",
       isLogin = true,
       gravatarHash = "!hash*special",
-      tmdbAvatar = "https://example.com/@vatar?special=chars"
+      tmdbAvatar = "https://example.com/@vatar?special=chars",
     )
 
     assertEquals("John@Doe", specialCharUser.name)
@@ -180,7 +180,7 @@ class UserModelTest {
       token = "   ",
       isLogin = false,
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
 
     assertEquals("   ", spaceUser.name)

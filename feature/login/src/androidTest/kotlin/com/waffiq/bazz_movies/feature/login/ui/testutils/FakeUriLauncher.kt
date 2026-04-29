@@ -10,12 +10,11 @@ class FakeUriLauncher @Inject constructor() : UriLauncher {
   val launchedUris = mutableListOf<Uri>()
   var shouldFail = false
 
-  override fun launch(url: String): Result<Unit> {
-    return if (shouldFail) {
+  override fun launch(url: String): Result<Unit> =
+    if (shouldFail) {
       Result.failure(ActivityNotFoundException())
     } else {
       launchedUris.add(url.toUri())
       Result.success(Unit)
     }
-  }
 }

@@ -18,13 +18,17 @@ import kotlin.test.assertFailsWith
 class MainCoroutineRuleTest {
 
   private val description = Description.createTestDescription(
-    MainCoroutineRuleTest::class.java, "test"
+    MainCoroutineRuleTest::class.java,
+    "test",
   )
 
   private fun MainCoroutineRule.runWithRule(block: () -> Unit) {
-    apply(object : Statement() {
-      override fun evaluate() = block()
-    }, description).evaluate()
+    apply(
+      object : Statement() {
+        override fun evaluate() = block()
+      },
+      description,
+    ).evaluate()
   }
 
   @Test

@@ -10,7 +10,7 @@ class MediaDetailTest {
 
   private val releaseDateRegion = ReleaseDateRegion(
     regionRelease = "ID",
-    releaseDate = "1999-06-07"
+    releaseDate = "1999-06-07",
   )
 
   @Test
@@ -38,7 +38,7 @@ class MediaDetailTest {
       imdbId = "tt1234567",
       ageRating = "PG-13",
       tmdbScore = "8.5",
-      releaseDateRegion = releaseDateRegion
+      releaseDateRegion = releaseDateRegion,
     )
 
     assertEquals(456, detail.id)
@@ -56,7 +56,7 @@ class MediaDetailTest {
     val detail = MediaDetail(
       id = 789,
       genreId = emptyList(),
-      releaseDateRegion = releaseDateRegion
+      releaseDateRegion = releaseDateRegion,
     )
 
     assertEquals(789, detail.id)
@@ -74,7 +74,7 @@ class MediaDetailTest {
       imdbId = null,
       ageRating = null,
       tmdbScore = null,
-      releaseDateRegion = releaseDateRegion
+      releaseDateRegion = releaseDateRegion,
     )
 
     assertEquals(999, detail.id)

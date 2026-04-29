@@ -14,66 +14,72 @@ import org.junit.Test
 class DetailWatchProviderRepositoryImplTest : BaseDetailRepositoryImplTest() {
 
   @Test
-  fun getMovieWatchProviders_whenSuccessful_returnsSuccessResult() = runTest {
-    val mockResponse = mockk<WatchProvidersResponse>(relaxed = true)
-    testSuccessfulCall(
-      mockResponse = mockResponse,
-      dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
-      repositoryCall = { repository.getMovieWatchProviders(id) },
-      expectedData = mockResponse.toWatchProviders(),
-      verifyDataSourceCall = {
-        coVerify(atLeast = 1) { mockMovieDataSource.getMovieWatchProviders(id) }
-      }
-    )
-  }
+  fun getMovieWatchProviders_whenSuccessful_returnsSuccessResult() =
+    runTest {
+      val mockResponse = mockk<WatchProvidersResponse>(relaxed = true)
+      testSuccessfulCall(
+        mockResponse = mockResponse,
+        dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
+        repositoryCall = { repository.getMovieWatchProviders(id) },
+        expectedData = mockResponse.toWatchProviders(),
+        verifyDataSourceCall = {
+          coVerify(atLeast = 1) { mockMovieDataSource.getMovieWatchProviders(id) }
+        },
+      )
+    }
 
   @Test
-  fun getMovieWatchProviders_whenUnsuccessful_returnsErrorResult() = runTest {
-    testUnsuccessfulCall(
-      dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
-      repositoryCall = { repository.getMovieWatchProviders(id) },
-      verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieWatchProviders(id) } }
-    )
-  }
+  fun getMovieWatchProviders_whenUnsuccessful_returnsErrorResult() =
+    runTest {
+      testUnsuccessfulCall(
+        dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
+        repositoryCall = { repository.getMovieWatchProviders(id) },
+        verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieWatchProviders(id) } },
+      )
+    }
 
   @Test
-  fun getMovieWatchProviders_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    testLoadingState(
-      dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
-      repositoryCall = { repository.getMovieWatchProviders(id) },
-      verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieWatchProviders(id) } }
-    )
-  }
+  fun getMovieWatchProviders_whenLoadingEmitted_returnsLoadingOutcome() =
+    runTest {
+      testLoadingState(
+        dataSourceCall = { mockMovieDataSource.getMovieWatchProviders(id) },
+        repositoryCall = { repository.getMovieWatchProviders(id) },
+        verifyDataSourceCall = { coVerify { mockMovieDataSource.getMovieWatchProviders(id) } },
+      )
+    }
 
   @Test
-  fun getTvWatchProviders_whenSuccessful_returnsSuccessResult() = runTest {
-    val mockResponse = mockk<WatchProvidersResponse>(relaxed = true)
-    testSuccessfulCall(
-      mockResponse = mockResponse,
-      dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
-      repositoryCall = { repository.getTvWatchProviders(id) },
-      expectedData = mockResponse.toWatchProviders(),
-      verifyDataSourceCall = {
-        coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvWatchProviders(id) }
-      }
-    )
-  }
+  fun getTvWatchProviders_whenSuccessful_returnsSuccessResult() =
+    runTest {
+      val mockResponse = mockk<WatchProvidersResponse>(relaxed = true)
+      testSuccessfulCall(
+        mockResponse = mockResponse,
+        dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
+        repositoryCall = { repository.getTvWatchProviders(id) },
+        expectedData = mockResponse.toWatchProviders(),
+        verifyDataSourceCall = {
+          coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvWatchProviders(id) }
+        },
+      )
+    }
 
   @Test
-  fun getTvWatchProviders_whenUnsuccessful_returnsErrorResult() = runTest {
-    testUnsuccessfulCall(
-      dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
-      repositoryCall = { repository.getTvWatchProviders(id) },
-      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvWatchProviders(id) } }
-    )
-  }
+  fun getTvWatchProviders_whenUnsuccessful_returnsErrorResult() =
+    runTest {
+      testUnsuccessfulCall(
+        dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
+        repositoryCall = { repository.getTvWatchProviders(id) },
+        verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvWatchProviders(id) } },
+      )
+    }
 
   @Test
-  fun getTvWatchProviders_whenLoadingEmitted_returnsLoadingOutcome() = runTest {
-    testLoadingState(
-      dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
-      repositoryCall = { repository.getTvWatchProviders(id) },
-      verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvWatchProviders(id) } }
-    )
-  }
+  fun getTvWatchProviders_whenLoadingEmitted_returnsLoadingOutcome() =
+    runTest {
+      testLoadingState(
+        dataSourceCall = { mockTvRemoteDataSource.getTvWatchProviders(id) },
+        repositoryCall = { repository.getTvWatchProviders(id) },
+        verifyDataSourceCall = { coVerify { mockTvRemoteDataSource.getTvWatchProviders(id) } },
+      )
+    }
 }

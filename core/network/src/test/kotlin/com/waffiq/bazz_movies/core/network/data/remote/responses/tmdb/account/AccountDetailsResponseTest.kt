@@ -15,11 +15,11 @@ class AccountDetailsResponseTest {
     assertEquals("YOUR_NAME", accountDetailsResponse.name)
     assertEquals(
       "gravatar_hash2",
-      accountDetailsResponse.avatarItemResponse?.gravatarResponse?.hash
+      accountDetailsResponse.avatarItemResponse?.gravatarResponse?.hash,
     )
     assertEquals(
       "avatar_path",
-      accountDetailsResponse.avatarItemResponse?.avatarTMDbResponse?.avatarPath
+      accountDetailsResponse.avatarItemResponse?.avatarTMDbResponse?.avatarPath,
     )
     assertEquals(543798538, accountDetailsResponse.id)
     assertEquals("en", accountDetailsResponse.iso6391)
@@ -43,7 +43,7 @@ class AccountDetailsResponseTest {
   fun accountDetailsResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val accountDetailsResponse = AccountDetailsResponse(
       name = null,
-      id = 436456365
+      id = 436456365,
     )
     assertNull(accountDetailsResponse.name)
     assertEquals(436456365, accountDetailsResponse.id)

@@ -77,8 +77,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = testOMDbDetails.copy(
             imdbRating = "",
             metascore = "",
-            ratings = null
-          )
+            ratings = null,
+          ),
         )
       }
       scoreViewIsHidden()
@@ -93,8 +93,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = testOMDbDetails.copy(
             imdbRating = null,
             metascore = null,
-            ratings = null
-          )
+            ratings = null,
+          ),
         )
       }
       scoreViewIsHidden()
@@ -109,8 +109,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = testOMDbDetails.copy(
             imdbRating = null,
             metascore = null,
-            ratings = emptyList()
-          )
+            ratings = emptyList(),
+          ),
         )
       }
       scoreViewIsHidden()
@@ -125,8 +125,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = testOMDbDetails.copy(
             imdbRating = "",
             metascore = "",
-            ratings = listOf(RatingsItem(source = "Rotten Tomatoes", value = "90%"))
-          )
+            ratings = listOf(RatingsItem(source = "Rotten Tomatoes", value = "90%")),
+          ),
         )
       }
       tv_score_rotten_tomatoes.doesHaveText("90%")
@@ -141,8 +141,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = OMDbDetails(
             ratings = listOf(
               RatingsItem(source = "Rotten Tomatoes", value = null),
-            )
-          )
+            ),
+          ),
         )
       }
       rottenTomatoesIsHidden()
@@ -157,8 +157,8 @@ class MediaDetailActivityOMDbScoreTest :
           omdbDetails = OMDbDetails(
             ratings = listOf(
               RatingsItem(source = "Rotten Tomatoes", value = ""),
-            )
-          )
+            ),
+          ),
         )
       }
       rottenTomatoesIsHidden()

@@ -8,10 +8,12 @@ import com.google.android.material.shape.MaterialShapeDrawable
 
 object Helper {
 
-  fun getAppBarColor(appBarLayout: AppBarLayout): Int? {
-    return when (val background = appBarLayout.background) {
+  fun getAppBarColor(appBarLayout: AppBarLayout): Int? =
+    when (val background = appBarLayout.background) {
       is ColorDrawable -> background.color
+
       is MaterialShapeDrawable -> background.fillColor?.defaultColor
+
       is GradientDrawable -> {
         try {
           //  uses reflection because GradientDrawable hides color field
@@ -23,7 +25,7 @@ object Helper {
           null
         }
       }
+
       else -> null
     }
-  }
 }

@@ -1,14 +1,9 @@
 package com.waffiq.bazz_movies.feature.person.testutils
 
-import android.content.Context
-import android.content.Intent
 import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.matcher.BoundedMatcher
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.feature.person.testutils.DataDumpTest.testMediaCastItem
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -26,16 +21,16 @@ object TestHelper {
    *
    * Use this to verify that the loading spinner is visible during swipe-to-refresh.
    */
-  fun isRefreshing(): Matcher<View> {
-    return object : BoundedMatcher<View, SwipeRefreshLayout>(SwipeRefreshLayout::class.java) {
+  fun isRefreshing(): Matcher<View> =
+    object : BoundedMatcher<View, SwipeRefreshLayout>(
+      SwipeRefreshLayout::class.java,
+    ) {
       override fun describeTo(description: Description?) {
         description?.appendText("is refreshing")
       }
 
-      override fun matchesSafely(view: SwipeRefreshLayout?): Boolean =
-        view?.isRefreshing == true
+      override fun matchesSafely(view: SwipeRefreshLayout?): Boolean = view?.isRefreshing == true
     }
-  }
 
   /**
    * Returns a matcher that checks if a [CollapsingToolbarLayout] has the given [expectedTitle].
@@ -45,15 +40,16 @@ object TestHelper {
    * @param expectedTitle The text  expect to see.
    * @return A [Matcher] that matches the [CollapsingToolbarLayout] with that title.
    */
-  fun withCollapsingToolbarTitle(expectedTitle: String?): Matcher<View> {
-    return object :
+  fun withCollapsingToolbarTitle(expectedTitle: String?): Matcher<View> =
+    object :
       BoundedMatcher<View, CollapsingToolbarLayout>(CollapsingToolbarLayout::class.java) {
       override fun describeTo(description: Description) {
-        description.appendText("with CollapsingToolbarLayout title: ${expectedTitle ?: "null title"}")
+        description.appendText(
+          "with CollapsingToolbarLayout title: ${expectedTitle ?: "null title"}",
+        )
       }
 
       override fun matchesSafely(view: CollapsingToolbarLayout): Boolean =
         view.title?.toString() == expectedTitle
     }
-  }
 }

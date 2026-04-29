@@ -22,6 +22,7 @@ object PagingSourceTestHelper {
    * @param expectedPrevKey Expected previous key for pagination
    * @param expectedNextKey Expected next key for pagination
    */
+  @Suppress("LongParameterList")
   fun <T : Any> testLoadReturnsPage(
     pagingSourceFactory: () -> PagingSource<Int, T>,
     setupMock: suspend () -> Unit,
@@ -158,6 +159,7 @@ object PagingSourceTestHelper {
    * @param anchorPosition Position in the combined data that should be used as anchor
    * @param expectedRefreshKey The refresh key that should be returned
    */
+  @Suppress("LongParameterList")
   fun <T : Any> testRefreshKeyWithAnchorInMiddlePage(
     pagingSource: PagingSource<Int, T>,
     data: List<List<T>>, // each inner list represents a page's data
@@ -171,14 +173,14 @@ object PagingSourceTestHelper {
       PagingSource.LoadResult.Page(
         data = pageData,
         prevKey = keys.first,
-        nextKey = keys.second
+        nextKey = keys.second,
       )
     }
     val state = PagingState(
       pages = pages,
       anchorPosition = anchorPosition,
       config = PagingConfig(pageSize = data.firstOrNull()?.size ?: 1),
-      leadingPlaceholderCount = 0
+      leadingPlaceholderCount = 0,
     )
 
     // verify refresh key calculation
@@ -197,6 +199,7 @@ object PagingSourceTestHelper {
    * @param nextKey Next key value for the page
    * @param expectedRefreshKey The refresh key that should be returned
    */
+  @Suppress("LongParameterList")
   fun <T : Any> testRefreshKeyUsesCorrectKey(
     pagingSource: PagingSource<Int, T>,
     data: List<T>,
@@ -211,12 +214,12 @@ object PagingSourceTestHelper {
         PagingSource.LoadResult.Page(
           data = data,
           prevKey = prevKey,
-          nextKey = nextKey
-        )
+          nextKey = nextKey,
+        ),
       ),
       anchorPosition = anchorPosition,
       config = PagingConfig(pageSize = 1),
-      leadingPlaceholderCount = 0
+      leadingPlaceholderCount = 0,
     )
 
     // verify refresh key calculation
@@ -231,22 +234,19 @@ object PagingSourceTestHelper {
    * @param pagingSource The paging source to test
    * @param data The page data
    */
-  fun <T : Any> testRefreshKeyAllKeysNull(
-    pagingSource: PagingSource<Int, T>,
-    data: List<T>,
-  ) {
+  fun <T : Any> testRefreshKeyAllKeysNull(pagingSource: PagingSource<Int, T>, data: List<T>) {
     // create paging state with a page that has null keys
     val state = PagingState(
       pages = listOf(
         PagingSource.LoadResult.Page(
           data = data,
           prevKey = null as Int?, // Explicitly set prevKey to null
-          nextKey = null as Int? // Explicitly set nextKey to null
-        )
+          nextKey = null as Int?, // Explicitly set nextKey to null
+        ),
       ),
       anchorPosition = 0,
       config = PagingConfig(pageSize = 1),
-      leadingPlaceholderCount = 0
+      leadingPlaceholderCount = 0,
     )
 
     // verify refresh key is null
@@ -259,7 +259,7 @@ object PagingSourceTestHelper {
    * when the page list is empty.
    *
    * @param pagingSource The paging source to test
-   * @param anchorPosition Position that should be used as anchor (typically null or 0 for empty list)
+   * @param anchorPosition Position that should be used as anchor
    */
   fun <T : Any> testRefreshKeyEmptyList(
     pagingSource: PagingSource<Int, T>,
@@ -269,7 +269,7 @@ object PagingSourceTestHelper {
       pages = emptyList(),
       anchorPosition = anchorPosition,
       config = PagingConfig(pageSize = 2),
-      leadingPlaceholderCount = 0
+      leadingPlaceholderCount = 0,
     )
 
     // verify refresh key is null for empty list

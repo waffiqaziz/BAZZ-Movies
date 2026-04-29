@@ -14,8 +14,8 @@ import com.waffiq.bazz_movies.feature.login.utils.common.Constants.TMDB_LINK_SIG
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -72,7 +72,7 @@ class UriLauncherImplTest {
     val resolveInfo = mockk<ResolveInfo>()
 
     every { context.packageManager } returns packageManager
-    every { packageManager.resolveActivity(any<Intent>(),any<Int>()) } returns resolveInfo
+    every { packageManager.resolveActivity(any<Intent>(), any<Int>()) } returns resolveInfo
     every { context.startActivity(any()) } throws RuntimeException("boom")
 
     val launcher = UriLauncherImpl(context)
@@ -97,7 +97,7 @@ class UriLauncherImplTest {
         addCategory(Intent.CATEGORY_BROWSABLE)
         addDataScheme("https")
         addDataScheme("http")
-      }
+      },
     )
   }
 }

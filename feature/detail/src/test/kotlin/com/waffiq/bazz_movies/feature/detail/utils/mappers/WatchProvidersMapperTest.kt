@@ -15,7 +15,7 @@ class WatchProvidersMapperTest {
       logoPath = "/logo.png",
       providerId = 1,
       providerName = "Netflix",
-      displayPriority = 10
+      displayPriority = 10,
     )
 
     val countryProviderDataResponse = WatchProvidersResponseItem(
@@ -24,12 +24,12 @@ class WatchProvidersMapperTest {
       buy = listOf(providerResponse),
       flatrate = listOf(providerResponse),
       free = listOf(providerResponse),
-      rent = listOf(providerResponse)
+      rent = listOf(providerResponse),
     )
 
     val response = WatchProvidersResponse(
       id = 100,
-      results = mapOf("US" to countryProviderDataResponse)
+      results = mapOf("US" to countryProviderDataResponse),
     )
 
     val domain = with(WatchProvidersMapper) { response.toWatchProviders() }
@@ -58,12 +58,12 @@ class WatchProvidersMapperTest {
       buy = null,
       flatrate = null,
       free = null,
-      rent = null
+      rent = null,
     )
 
     val response = WatchProvidersResponse(
       id = 101,
-      results = mapOf("ID" to countryProviderDataResponse)
+      results = mapOf("ID" to countryProviderDataResponse),
     )
 
     val domain = with(WatchProvidersMapper) { response.toWatchProviders() }
@@ -82,7 +82,7 @@ class WatchProvidersMapperTest {
   fun toWatchProviders_withNullResults_returnsDomainWithNullResults() {
     val response = WatchProvidersResponse(
       id = 102,
-      results = null
+      results = null,
     )
 
     val domain = with(WatchProvidersMapper) { response.toWatchProviders() }

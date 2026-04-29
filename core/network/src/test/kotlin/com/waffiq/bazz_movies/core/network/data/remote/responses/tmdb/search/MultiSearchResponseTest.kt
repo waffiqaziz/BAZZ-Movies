@@ -13,7 +13,7 @@ class MultiSearchResponseTest {
       page = 1,
       totalPages = 20,
       results = listOf(personDump1),
-      totalResults = 1
+      totalResults = 1,
     )
     assertEquals(1, multiSearchResponse.page)
     assertEquals(1, multiSearchResponse.totalResults)
@@ -34,7 +34,7 @@ class MultiSearchResponseTest {
   fun multiSearchResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val multiSearchResponse = MultiSearchResponse(
       page = 1,
-      totalPages = 1
+      totalPages = 1,
     )
     assertEquals(1, multiSearchResponse.page)
     assertEquals(1, multiSearchResponse.totalPages)

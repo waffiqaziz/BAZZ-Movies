@@ -31,13 +31,14 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun getUserToken_whenSuccessful_emitsUserModel() = runTest {
-    every { userPrefUseCase.getUserToken() } returns flowOf("US")
+  fun getUserToken_whenSuccessful_emitsUserModel() =
+    runTest {
+      every { userPrefUseCase.getUserToken() } returns flowOf("US")
 
-    val observer = mockk<Observer<String>>(relaxed = true)
-    viewModel.getUserToken().observeForever(observer)
-    advanceUntilIdle()
+      val observer = mockk<Observer<String>>(relaxed = true)
+      viewModel.getUserToken().observeForever(observer)
+      advanceUntilIdle()
 
-    coVerify { observer.onChanged("US") }
-  }
+      coVerify { observer.onChanged("US") }
+    }
 }

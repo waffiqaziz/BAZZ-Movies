@@ -56,65 +56,69 @@ class PersonActivityImageDialogTest :
   }
 
   @Test
-  fun imageDialog_whenImageClicked_showsDialog() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        imagePersonLiveData.postValue(
-          listOf(testProfileItem, testProfileItem.copy(filePath = "path"))
-        )
+  fun imageDialog_whenImageClicked_showsDialog() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          imagePersonLiveData.postValue(
+            listOf(testProfileItem, testProfileItem.copy(filePath = "path")),
+          )
+        }
+        performClickListPhotos(0)
       }
-      performClickListPhotos(0)
     }
-  }
 
   @Test
-  fun imageDialog_whenCloseButtonClicked_dismissesDialog() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem))
+  fun imageDialog_whenCloseButtonClicked_dismissesDialog() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem))
+        }
+        performClickListPhotos(0)
+
+        // close dialog
+        btn_close_dialog.performClick()
+        shortDelay()
+
+        // verify dialog is dismissed
+        view_pager_dialog.doesNotExist()
       }
-      performClickListPhotos(0)
-
-      // close dialog
-      btn_close_dialog.performClick()
-      shortDelay()
-
-      // verify dialog is dismissed
-      view_pager_dialog.doesNotExist()
     }
-  }
 
   @Test
-  fun imageDialog_whenMultipleImages_showsCorrectPosition() = runTest {
-    setupMocks()
+  fun imageDialog_whenMultipleImages_showsCorrectPosition() =
+    runTest {
+      setupMocks()
 
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          imagePersonLiveData.postValue(listOf(testProfileItem, testProfileItem, testProfileItem))
+        }
+        performClickListPhotos(1)
+
+        // verify the ViewPager is at the correct position,
+        // but it requires custom matchers or checking the adapter state
       }
-      performClickListPhotos(1)
-
-      // verify the ViewPager is at the correct position,
-      // but it requires custom matchers or checking the adapter state
     }
-  }
 
   @Test
-  fun imageDialog_whenBackPressed_dismissesDialog() = runTest {
-    setupMocks()
+  fun imageDialog_whenBackPressed_dismissesDialog() =
+    runTest {
+      setupMocks()
 
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        imagePersonLiveData.postValue(listOf(testProfileItem))
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          imagePersonLiveData.postValue(listOf(testProfileItem))
+        }
+        performClickListPhotos(0)
+        pressBack()
+        shortDelay()
+
+        // expected dialog is dismissed
+        view_pager_dialog.doesNotExist()
       }
-      performClickListPhotos(0)
-      pressBack()
-      shortDelay()
-
-      // expected dialog is dismissed
-      view_pager_dialog.doesNotExist()
     }
-  }
 
   private fun performClickListPhotos(position: Int) {
     // delay before perform action

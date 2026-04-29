@@ -13,7 +13,7 @@ class AuthenticationTest {
     val authentication = Authentication(
       success = true,
       expireAt = "expire_date",
-      requestToken = "request_token"
+      requestToken = "request_token",
     )
     assertTrue(authentication.success)
     assertEquals("expire_date", authentication.expireAt)
