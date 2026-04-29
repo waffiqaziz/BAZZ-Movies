@@ -209,6 +209,11 @@ coroutines:
     active: false
   InjectDispatcher:
     active: true
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+      - '**/*Test.kt'
+      - '**/*Spec.kt'
     dispatcherNames:
       - 'IO'
       - 'Default'
@@ -329,6 +334,11 @@ exceptions:
     allowedExceptionNameRegex: '_|(ignore|expected).*'
   TooGenericExceptionThrown:
     active: true
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+      - '**/*Test.kt'
+      - '**/*Spec.kt'
     exceptionNames:
       - 'Error'
       - 'Exception'
@@ -499,6 +509,11 @@ potential-bugs:
     active: true
   IgnoredReturnValue:
     active: true
+    excludes:
+      - '**/test/**'
+      - '**/androidTest/**'
+      - '**/*Test.kt'
+      - '**/*Spec.kt'
     restrictToConfig: true
     returnValueAnnotations:
       - 'CheckResult'
@@ -513,7 +528,6 @@ potential-bugs:
       - 'kotlin.sequences.Sequence'
       - 'kotlinx.coroutines.flow.*Flow'
       - 'java.util.stream.*Stream'
-    ignoreFunctionCall: [ ]
   ImplicitDefaultLocale:
     active: true
   ImplicitUnitReturnType:
