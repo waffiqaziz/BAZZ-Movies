@@ -13,7 +13,8 @@ import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 
-open class BaseAdapterPagingTest : BaseAdapterTest<MediaItem, PagingDataAdapter<MediaItem, *>>() {
+abstract class BaseAdapterPagingTest :
+  BaseAdapterTest<MediaItem, PagingDataAdapter<MediaItem, *>>() {
 
   protected lateinit var onDelete: (MediaItem) -> Unit
   protected lateinit var onAddToWatchlist: (MediaItem) -> Unit

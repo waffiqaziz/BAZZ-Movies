@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 
-open class BaseFavoriteInteractorTest : ShouldSpec() {
+abstract class BaseFavoriteInteractorTest : ShouldSpec() {
 
   protected var mockFavoriteRepository: IFavoriteRepository = mockk()
   protected var mockUserRepository: IUserRepository = mockk()

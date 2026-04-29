@@ -22,7 +22,7 @@ import retrofit2.Response
  * Provides shared mock dependencies, error response stubs, and a setup routine
  * for reuse across all user data source test cases.
  */
-open class BaseAuthDataSourceTest {
+abstract class BaseAuthDataSourceTest {
 
   protected val apiInvalidFormatErrorResponse: Response<PostResponse> = Response.error(
     405,

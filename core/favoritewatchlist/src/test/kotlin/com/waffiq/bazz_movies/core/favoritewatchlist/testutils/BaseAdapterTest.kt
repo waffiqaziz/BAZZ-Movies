@@ -17,7 +17,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 
 @RunWith(RobolectricTestRunner::class)
-open class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
+abstract class BaseAdapterTest<T, A : RecyclerView.Adapter<*>> {
 
   protected lateinit var context: Context
   protected lateinit var recyclerView: RecyclerView

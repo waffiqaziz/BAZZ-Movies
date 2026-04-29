@@ -46,7 +46,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 
-open class BaseMediaDetailViewModelTest {
+abstract class BaseMediaDetailViewModelTest {
 
   protected lateinit var viewModel: MediaDetailViewModel
 

@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.feature.detail.domain.model.releasedate.ReleaseDat
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ReleaseDateHelper.getReleaseDateRegion
 import org.junit.Assert.assertEquals
 
-open class BaseReleaseDateHelperMovieTest {
+abstract class BaseReleaseDateHelperMovieTest {
 
   protected fun movieWithRelease(
     releaseRegion: String,

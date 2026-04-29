@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-open class BaseAdapterTest {
+abstract class BaseAdapterTest {
 
   protected lateinit var context: Context
   protected lateinit var parent: FrameLayout

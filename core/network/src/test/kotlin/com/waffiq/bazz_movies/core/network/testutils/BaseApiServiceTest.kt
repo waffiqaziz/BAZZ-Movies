@@ -10,7 +10,7 @@ import org.junit.Before
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-open class BaseApiServiceTest {
+abstract class BaseApiServiceTest {
 
   protected lateinit var mockWebServer: MockWebServer
   protected lateinit var tvApiService: TvApiService

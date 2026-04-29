@@ -22,7 +22,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 
-open class BasePersonViewModelTest {
+abstract class BasePersonViewModelTest {
 
   protected lateinit var personViewModel: PersonViewModel
 

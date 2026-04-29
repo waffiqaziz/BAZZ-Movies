@@ -30,7 +30,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 
-open class BaseInteractorTest {
+abstract class BaseInteractorTest {
 
   private val differ = differ<MediaItem>()
   protected val mockAccountRepository: IAccountRepository = mockk()

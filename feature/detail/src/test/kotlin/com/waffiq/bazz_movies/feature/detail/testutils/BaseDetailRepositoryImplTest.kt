@@ -9,7 +9,7 @@ import io.mockk.mockk
 import org.junit.Rule
 import kotlin.test.BeforeTest
 
-open class BaseDetailRepositoryImplTest {
+abstract class BaseDetailRepositoryImplTest {
 
   protected lateinit var repository: DetailRepositoryImpl
   protected val mockMovieDataSource: MovieRemoteDataSource = mockk()

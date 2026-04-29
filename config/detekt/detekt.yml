@@ -596,6 +596,9 @@ style:
   active: true
   AbstractClassCanBeConcreteClass:
     active: true
+    excludes:
+      - '**/Base*' # exclude base test helper
+      - '**/*Test.kt'
   AbstractClassCanBeInterface:
     active: true
   AlsoCouldBeApply:

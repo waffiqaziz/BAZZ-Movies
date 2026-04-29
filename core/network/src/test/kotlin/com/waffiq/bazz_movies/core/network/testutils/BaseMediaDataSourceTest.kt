@@ -45,7 +45,7 @@ import retrofit2.Response
  * Provides common mock dependencies, error response stubs, and a shared setup routine
  * to be reused across concrete test implementations.
  */
-open class BaseMediaDataSourceTest {
+abstract class BaseMediaDataSourceTest {
 
   protected val apiMaintenanceErrorResponse: Response<PostResponse> = Response.error(
     503,

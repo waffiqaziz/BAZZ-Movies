@@ -7,7 +7,7 @@ import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 
-open class BasePersonRepositoryImplTest {
+abstract class BasePersonRepositoryImplTest {
 
   protected val id = 1
 

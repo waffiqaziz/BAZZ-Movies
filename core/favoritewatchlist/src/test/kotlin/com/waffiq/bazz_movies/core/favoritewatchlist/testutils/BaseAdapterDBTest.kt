@@ -5,7 +5,7 @@ import com.waffiq.bazz_movies.core.domain.Favorite
 import io.mockk.mockk
 import org.junit.Before
 
-open class BaseAdapterDBTest : BaseAdapterTest<Favorite, RecyclerView.Adapter<*>>() {
+abstract class BaseAdapterDBTest : BaseAdapterTest<Favorite, RecyclerView.Adapter<*>>() {
 
   protected lateinit var onDelete: (Favorite, Int) -> Unit
   protected lateinit var onAddToWatchlist: (Favorite, Int) -> Unit
