@@ -3,8 +3,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingSource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import junit.framework.TestCase
@@ -17,8 +18,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getTopRatedMovies_pagingSource_returnsExpectedData() =
     runTest {
       val pagingSource = GenericPagingSource { mockMovieApiService.getTopRatedMovies(1).results }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(
+      testPagingSource(
+        mockResults = defaultMediaResponse(
           listOf(
             DataDumpManager.movieDump1,
             DataDumpManager.movieDump2,
@@ -35,7 +36,7 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getTopRatedMovies_pagingFlow_returnsExpectedData() =
     runTest {
       val expected = listOf(DataDumpManager.movieDump1, DataDumpManager.movieDump2)
-      coEvery { mockMovieApiService.getTopRatedMovies(1) } returns TestHelper.defaultMediaResponse(
+      coEvery { mockMovieApiService.getTopRatedMovies(1) } returns defaultMediaResponse(
         expected,
       )
       movieRemoteDataSource.getTopRatedMovies().testPagingFlow(this, expected)
@@ -46,8 +47,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getPopularMovies_pagingSource_returnsExpectedData() =
     runTest {
       val pagingSource = GenericPagingSource { mockMovieApiService.getPopularMovies(1).results }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump5)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump5)),
         mockApiCall = { mockMovieApiService.getPopularMovies(1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -59,7 +60,7 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getPopularMovies_pagingFlow_returnsExpectedData() =
     runTest {
       val expected = listOf(DataDumpManager.movieDump5)
-      coEvery { mockMovieApiService.getPopularMovies(1) } returns TestHelper.defaultMediaResponse(
+      coEvery { mockMovieApiService.getPopularMovies(1) } returns defaultMediaResponse(
         expected,
       )
       movieRemoteDataSource.getPopularMovies().testPagingFlow(this, expected)
@@ -72,8 +73,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       val pagingSource = GenericPagingSource {
         mockAccountApiService.getFavoriteMovies(userId, sessionId, 1).results
       }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump6)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump6)),
         mockApiCall = { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -87,8 +88,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       val pagingSource = GenericPagingSource {
         mockAccountApiService.getWatchlistMovies(userId, sessionId, 1).results
       }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump2)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump2)),
         mockApiCall = { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -101,8 +102,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val pagingSource =
         GenericPagingSource { mockMovieApiService.getMovieRecommendations(12345678, 1).results }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump3)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump3)),
         mockApiCall = { mockMovieApiService.getMovieRecommendations(12345678, 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -115,7 +116,7 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val expected = listOf(DataDumpManager.movieDump3)
       coEvery { mockMovieApiService.getMovieRecommendations(12345678, 1) } returns
-        TestHelper.defaultMediaResponse(expected)
+        defaultMediaResponse(expected)
       movieRemoteDataSource.getMovieRecommendation(12345678).testPagingFlow(this, expected)
       coVerify { mockMovieApiService.getMovieRecommendations(12345678, 1) }
     }
@@ -125,8 +126,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val pagingSource =
         GenericPagingSource { mockMovieApiService.getUpcomingMovies("cn", 1).results }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump4)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump4)),
         mockApiCall = { mockMovieApiService.getUpcomingMovies("cn", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -143,7 +144,7 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
           "cn",
           1,
         )
-      } returns TestHelper.defaultMediaResponse(expected)
+      } returns defaultMediaResponse(expected)
       movieRemoteDataSource.getUpcomingMovies("cn").testPagingFlow(this, expected)
       coVerify { mockMovieApiService.getUpcomingMovies("cn", 1) }
     }
@@ -153,8 +154,8 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       val pagingSource =
         GenericPagingSource { mockMovieApiService.getNowPlayingMovies("gb", 1).results }
-      TestHelper.testPagingSource(
-        mockResults = TestHelper.defaultMediaResponse(listOf(DataDumpManager.movieDump5)),
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump5)),
         mockApiCall = { mockMovieApiService.getNowPlayingMovies("gb", 1) },
         loader = { pagingSource.toLoadResult() },
       ) { page ->
@@ -171,7 +172,7 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
           "gb",
           1,
         )
-      } returns TestHelper.defaultMediaResponse(expected)
+      } returns defaultMediaResponse(expected)
       movieRemoteDataSource.getPlayingNowMovies("gb").testPagingFlow(this, expected)
       coVerify { mockMovieApiService.getNowPlayingMovies("gb", 1) }
     }
