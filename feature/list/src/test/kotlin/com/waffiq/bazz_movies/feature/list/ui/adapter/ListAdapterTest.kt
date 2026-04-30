@@ -82,26 +82,27 @@ class ListAdapterTest {
   }
 
   @Test
-  fun submitData_withPagingData_bindsCorrectMovieData() = runTest {
-    adapter.submitData(fakeMovieMediaItemPagingData)
-    adapter.onBindViewHolder(gridViewHolder, 0)
-    assertEquals(2, adapter.itemCount)
+  fun submitData_withPagingData_bindsCorrectMovieData() =
+    runTest {
+      adapter.submitData(fakeMovieMediaItemPagingData)
+      adapter.onBindViewHolder(gridViewHolder, 0)
+      assertEquals(2, adapter.itemCount)
 
-    // set media type
-    adapter.setMediaType("tv")
+      // set media type
+      adapter.setMediaType("tv")
 
-    // movie
-    submitPagingAndWait(mediaMovieItem)
-    assertEquals("Inception", itemListBinding.imgPoster.contentDescription.toString())
+      // movie
+      submitPagingAndWait(mediaMovieItem)
+      assertEquals("Inception", itemListBinding.imgPoster.contentDescription.toString())
 
-    // tv
-    submitPagingAndWait(mediaTvResponseItem.toMediaItem())
-    assertEquals("Breaking Bad", itemListBinding.imgPoster.contentDescription.toString())
+      // tv
+      submitPagingAndWait(mediaTvResponseItem.toMediaItem())
+      assertEquals("Breaking Bad", itemListBinding.imgPoster.contentDescription.toString())
 
-    // null & empty poster
-    submitPagingAndWait(mediaMovieItem.copy(posterPath = null))
-    submitPagingAndWait(mediaMovieItem.copy(posterPath = ""))
-  }
+      // null & empty poster
+      submitPagingAndWait(mediaMovieItem.copy(posterPath = null))
+      submitPagingAndWait(mediaMovieItem.copy(posterPath = ""))
+    }
 
   @Test
   fun getItemViewType_returnsGrid_whenGridModeTrue() {
@@ -116,52 +117,56 @@ class ListAdapterTest {
   }
 
   @Test
-  fun setGridMode_withValidData_showsCorrectView() = runTest {
-    // 1. Submit and wait for items to arrive
-    submitPagingAndWait(mediaMovieItem)
-    assertEquals(1, adapter.itemCount)
+  fun setGridMode_withValidData_showsCorrectView() =
+    runTest {
+      // 1. Submit and wait for items to arrive
+      submitPagingAndWait(mediaMovieItem)
+      assertEquals(1, adapter.itemCount)
 
-    adapter.setMediaType("movie")
+      adapter.setMediaType("movie")
 
-    // 2. Switch to grid and verify view type
-    setupGridLayout()
-    assertTrue(adapter.isGridMode())
-    assertEquals(ListAdapter.VIEW_TYPE_GRID, adapter.getItemViewType(0))
+      // 2. Switch to grid and verify view type
+      setupGridLayout()
+      assertTrue(adapter.isGridMode())
+      assertEquals(ListAdapter.VIEW_TYPE_GRID, adapter.getItemViewType(0))
 
-    // 3. Switch to list and verify view type
-    setupListLayout()
-    assertFalse(adapter.isGridMode())
-    assertEquals(ListAdapter.VIEW_TYPE_LIST, adapter.getItemViewType(0))
-  }
-
-  @Test
-  fun setGridMode_doesNotNotify_whenModeUnchanged() = runTest {
-    submitPagingAndWait(mediaMovieItem)
-    adapter.registerAdapterDataObserver(observer) // mock or spy observer
-
-    setupGridLayout() // already true by default, then should no notification
-    verify(observer, never()).onItemRangeChanged(anyInt(), anyInt(), isNull())
-  }
+      // 3. Switch to list and verify view type
+      setupListLayout()
+      assertFalse(adapter.isGridMode())
+      assertEquals(ListAdapter.VIEW_TYPE_LIST, adapter.getItemViewType(0))
+    }
 
   @Test
-  fun setGridMode_notifiesRange_whenModeChanges() = runTest {
-    submitPagingAndWait(mediaMovieItem)
-    adapter.registerAdapterDataObserver(observer)
+  fun setGridMode_doesNotNotify_whenModeUnchanged() =
+    runTest {
+      submitPagingAndWait(mediaMovieItem)
+      adapter.registerAdapterDataObserver(observer) // mock or spy observer
 
-    setupListLayout()
-    verify(observer).onItemRangeChanged(0, adapter.itemCount, null)
-  }
+      setupGridLayout() // already true by default, then should no notification
+      verify(observer, never()).onItemRangeChanged(anyInt(), anyInt(), isNull())
+    }
 
   @Test
-  fun onBindViewHolder_withNullData_doesNotCrash() = runTest {
-    val fakePagingData = PagingData.empty<MediaItem>()
-    adapter.submitData(fakePagingData)
-    advanceUntilIdle()
+  fun setGridMode_notifiesRange_whenModeChanges() =
+    runTest {
+      submitPagingAndWait(mediaMovieItem)
+      adapter.registerAdapterDataObserver(observer)
 
-    assertEquals(0, adapter.itemCount)
+      setupListLayout()
+      verify(observer).onItemRangeChanged(0, adapter.itemCount, null)
+    }
 
-    if (adapter.itemCount > 0) adapter.onBindViewHolder(gridViewHolder, 0)
-  }
+  @Test
+  fun onBindViewHolder_withNullData_doesNotCrash() =
+    runTest {
+      val fakePagingData = PagingData.empty<MediaItem>()
+      adapter.submitData(fakePagingData)
+      advanceUntilIdle()
+
+      assertEquals(0, adapter.itemCount)
+
+      if (adapter.itemCount > 0) adapter.onBindViewHolder(gridViewHolder, 0)
+    }
 
   @Test
   fun onCreateViewHolder_returnsGridViewHolder_whenViewTypeGrid() {
@@ -178,42 +183,44 @@ class ListAdapterTest {
   }
 
   @Test
-  fun gridViewHolder_bind_callsNavigatorOnClick() = runTest {
-    adapter.setMediaType("movie")
-    val media = mediaMovieItem
+  fun gridViewHolder_bind_callsNavigatorOnClick() =
+    runTest {
+      adapter.setMediaType("movie")
+      val media = mediaMovieItem
 
-    gridViewHolder.bind(media)
-    itemListBinding.imgPoster.performClick()
+      gridViewHolder.bind(media)
+      itemListBinding.imgPoster.performClick()
 
-    verify(navigator).openDetails(
-      itemListBinding.imgPoster.context,
-      media.copy(mediaType = "movie")
-    )
-  }
-
-  @Test
-  fun listViewHolder_bind_showsCorrectTitle() = runTest {
-    adapter.setMediaType("movie")
-    setupListLayout()
-
-    listViewHolder.bind(mediaMovieItem)
-
-    val expected = mediaMovieResponseItem.title
-    assertEquals(expected, listViewHolder.binding.tvTitle.text.toString())
-  }
+      verify(navigator).openDetails(
+        itemListBinding.imgPoster.context,
+        media.copy(mediaType = "movie"),
+      )
+    }
 
   @Test
-  fun listViewHolder_bind_callsNavigatorOnClick() = runTest {
-    adapter.setMediaType("movie")
-    listViewHolder.bind(mediaMovieItem)
-    itemResultBInding.containerResult.performClick()
+  fun listViewHolder_bind_showsCorrectTitle() =
+    runTest {
+      adapter.setMediaType("movie")
+      setupListLayout()
 
-    verify(navigator).openDetails(
-      any(),
-      eq(mediaMovieItem.copy(mediaType = "movie"))
-    )
-  }
+      listViewHolder.bind(mediaMovieItem)
 
+      val expected = mediaMovieResponseItem.title
+      assertEquals(expected, listViewHolder.binding.tvTitle.text.toString())
+    }
+
+  @Test
+  fun listViewHolder_bind_callsNavigatorOnClick() =
+    runTest {
+      adapter.setMediaType("movie")
+      listViewHolder.bind(mediaMovieItem)
+      itemResultBInding.containerResult.performClick()
+
+      verify(navigator).openDetails(
+        any(),
+        eq(mediaMovieItem.copy(mediaType = "movie")),
+      )
+    }
 
   @Test
   fun onCreateViewHolder_whenCalled_createsViewHolderCorrectly() {
@@ -226,13 +233,14 @@ class ListAdapterTest {
   }
 
   @Test
-  fun movieSearchItem_whenClicked_opensMovieDetails() = runTest {
-    submitPagingAndWait(mediaMovieItem)
-    itemListBinding.imgPoster.performClick()
+  fun movieSearchItem_whenClicked_opensMovieDetails() =
+    runTest {
+      submitPagingAndWait(mediaMovieItem)
+      itemListBinding.imgPoster.performClick()
 
-    val expectedItem = mediaMovieItem
-    verify(navigator).openDetails(context, expectedItem)
-  }
+      val expectedItem = mediaMovieItem
+      verify(navigator).openDetails(context, expectedItem)
+    }
 
   @Test
   fun areContentsTheSame_whenContentIsSame_returnsTrue() {
@@ -250,43 +258,46 @@ class ListAdapterTest {
     assertFalse(ListAdapter.DIFF_CALLBACK.areContentsTheSame(oldItem, newItem))
   }
 
-  private fun submitPagingAndWait(item: MediaItem) = runTest {
-    adapter.submitData(PagingData.from(listOf(item)))
-    advanceUntilIdle()
-    adapter.onBindViewHolder(gridViewHolder, 0)
-  }
+  private fun submitPagingAndWait(item: MediaItem) =
+    runTest {
+      adapter.submitData(PagingData.from(listOf(item)))
+      advanceUntilIdle()
+      adapter.onBindViewHolder(gridViewHolder, 0)
+    }
 
   @Test
-  fun onBindViewHolder_withGridViewHolder_callsGridBind() = runTest {
-    adapter.setMediaType("movie")
-    setupGridLayout()
-    submitPagingAndWait(mediaMovieItem)
+  fun onBindViewHolder_withGridViewHolder_callsGridBind() =
+    runTest {
+      adapter.setMediaType("movie")
+      setupGridLayout()
+      submitPagingAndWait(mediaMovieItem)
 
-    val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_GRID)
-    adapter.onBindViewHolder(holder, 0)
+      val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_GRID)
+      adapter.onBindViewHolder(holder, 0)
 
-    // trigger click to proves bind() was called
-    val gridHolder = holder as ListAdapter.GridViewHolder
-    gridHolder.itemView.findViewById<View>(itemListBinding.imgPoster.id).performClick()
+      // trigger click to proves bind() was called
+      val gridHolder = holder as ListAdapter.GridViewHolder
+      gridHolder.itemView.findViewById<View>(itemListBinding.imgPoster.id).performClick()
 
-    verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
-  }
+      verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
+    }
 
   @Test
-  fun onBindViewHolder_withListViewHolder_callsListBind() = runTest {
-    adapter.setMediaType("movie")
-    setupListLayout()
-    submitPagingAndWait(mediaMovieItem)
+  fun onBindViewHolder_withListViewHolder_callsListBind() =
+    runTest {
+      adapter.setMediaType("movie")
+      setupListLayout()
+      submitPagingAndWait(mediaMovieItem)
 
-    val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_LIST)
-    adapter.onBindViewHolder(holder, 0)
+      val holder = adapter.onCreateViewHolder(parent, ListAdapter.VIEW_TYPE_LIST)
+      adapter.onBindViewHolder(holder, 0)
 
-    // perform click to check if its list layout
-    val listHolder = holder as ListAdapter.ListViewHolder
-    listHolder.binding.containerResult.performClick()
+      // perform click to check if its list layout
+      val listHolder = holder as ListAdapter.ListViewHolder
+      listHolder.binding.containerResult.performClick()
 
-    verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
-  }
+      verify(navigator).openDetails(any(), eq(mediaMovieItem.copy(mediaType = "movie")))
+    }
 
   private fun setupListLayout() {
     adapter.setGridMode(false)

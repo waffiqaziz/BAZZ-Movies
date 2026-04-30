@@ -16,69 +16,74 @@ import org.junit.Test
 class AccountRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun getFavoriteMovies_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(DataDumpManager.movieDump6)
-    coEvery { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) } returns
-      defaultMediaResponse(expected)
-    accountRemoteDataSource.getFavoriteMovies(userId, sessionId).testPagingFlow(this, expected)
-    coVerify { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) }
-  }
-
-  @Test
-  fun getWatchlistMovies_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(DataDumpManager.movieDump2)
-    coEvery { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) } returns
-      defaultMediaResponse(expected)
-    accountRemoteDataSource.getWatchlistMovies(userId, sessionId).testPagingFlow(this, expected)
-    coVerify { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) }
-  }
-
-
-  @Test
-  fun getFavoriteTv_pagingSource_returnsExpectedData() = runTest {
-    val pagingSource = GenericPagingSource {
-      mockAccountApiService.getFavoriteTv(userId, sessionId, 1).results
+  fun getFavoriteMovies_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(DataDumpManager.movieDump6)
+      coEvery { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) } returns
+        defaultMediaResponse(expected)
+      accountRemoteDataSource.getFavoriteMovies(userId, sessionId).testPagingFlow(this, expected)
+      coVerify { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) }
     }
-    testPagingSource(
-      mockResults = defaultMediaResponse(listOf(tvShowDump2)),
-      mockApiCall = { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) },
-      loader = { pagingSource.toLoadResult() }
-    ) { page ->
-      assertEquals(null, page.prevKey)
-      assertEquals(2, page.nextKey)
-    }
-  }
 
   @Test
-  fun getFavoriteTv_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(tvShowDump2)
-    coEvery { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) } returns
-      defaultMediaResponse(expected)
-    accountRemoteDataSource.getFavoriteTv(userId, sessionId).testPagingFlow(this, expected)
-    coVerify { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) }
-  }
+  fun getWatchlistMovies_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(DataDumpManager.movieDump2)
+      coEvery { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) } returns
+        defaultMediaResponse(expected)
+      accountRemoteDataSource.getWatchlistMovies(userId, sessionId).testPagingFlow(this, expected)
+      coVerify { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) }
+    }
 
   @Test
-  fun getWatchlistTv_pagingSource_returnsExpectedData() = runTest {
-    val pagingSource = GenericPagingSource {
-      mockAccountApiService.getWatchlistTv(userId, sessionId, 1).results
+  fun getFavoriteTv_pagingSource_returnsExpectedData() =
+    runTest {
+      val pagingSource = GenericPagingSource {
+        mockAccountApiService.getFavoriteTv(userId, sessionId, 1).results
+      }
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(tvShowDump2)),
+        mockApiCall = { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) },
+        loader = { pagingSource.toLoadResult() },
+      ) { page ->
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
+      }
     }
-    testPagingSource(
-      mockResults = defaultMediaResponse(listOf(tvShowDump2)),
-      mockApiCall = { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) },
-      loader = { pagingSource.toLoadResult() }
-    ) { page ->
-      assertEquals(null, page.prevKey)
-      assertEquals(2, page.nextKey)
-    }
-  }
 
   @Test
-  fun getWatchlistTv_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(tvShowDump2)
-    coEvery { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) } returns
-      defaultMediaResponse(expected)
-    accountRemoteDataSource.getWatchlistTv(userId, sessionId).testPagingFlow(this, expected)
-    coVerify { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) }
-  }
+  fun getFavoriteTv_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(tvShowDump2)
+      coEvery { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) } returns
+        defaultMediaResponse(expected)
+      accountRemoteDataSource.getFavoriteTv(userId, sessionId).testPagingFlow(this, expected)
+      coVerify { mockAccountApiService.getFavoriteTv(userId, sessionId, 1) }
+    }
+
+  @Test
+  fun getWatchlistTv_pagingSource_returnsExpectedData() =
+    runTest {
+      val pagingSource = GenericPagingSource {
+        mockAccountApiService.getWatchlistTv(userId, sessionId, 1).results
+      }
+      testPagingSource(
+        mockResults = defaultMediaResponse(listOf(tvShowDump2)),
+        mockApiCall = { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) },
+        loader = { pagingSource.toLoadResult() },
+      ) { page ->
+        assertEquals(null, page.prevKey)
+        assertEquals(2, page.nextKey)
+      }
+    }
+
+  @Test
+  fun getWatchlistTv_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(tvShowDump2)
+      coEvery { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) } returns
+        defaultMediaResponse(expected)
+      accountRemoteDataSource.getWatchlistTv(userId, sessionId).testPagingFlow(this, expected)
+      coVerify { mockAccountApiService.getWatchlistTv(userId, sessionId, 1) }
+    }
 }

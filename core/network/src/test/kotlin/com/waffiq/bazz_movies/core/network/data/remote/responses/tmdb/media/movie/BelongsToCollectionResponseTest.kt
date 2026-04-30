@@ -29,7 +29,7 @@ class BelongsToCollectionResponseTest {
   fun belongsToCollectionResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val belongsToCollectionResponse = BelongsToCollectionResponse(
       name = "Transformers Collection",
-      id = 246732
+      id = 246732,
     )
     assertEquals("Transformers Collection", belongsToCollectionResponse.name)
     assertEquals(246732, belongsToCollectionResponse.id)

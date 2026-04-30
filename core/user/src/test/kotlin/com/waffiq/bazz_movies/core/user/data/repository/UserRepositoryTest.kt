@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
+import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testOutcome
 import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testResult
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
@@ -54,18 +55,7 @@ class UserRepositoryTest {
     token = "sampleToken",
     isLogin = true,
     gravatarHash = "hash123",
-    tmdbAvatar = "avatar.jpg"
-  )
-  private val userModelPref = UserModelPref(
-    userId = 123456789,
-    name = "John Doe",
-    username = "johndoe",
-    password = "password123",
-    region = "US",
-    token = "sampleToken",
-    isLogin = true,
-    gravatarHash = "hash123",
-    tmdbAvatar = "avatar.jpg"
+    tmdbAvatar = "avatar.jpg",
   )
 
   private lateinit var userRepository: UserRepositoryImpl
@@ -86,280 +76,294 @@ class UserRepositoryTest {
   }
 
   @Test
-  fun createToken_whenSuccessful_returnsMappedResult() = runTest {
-    val createTokenResponse = AuthenticationResponse(
-      success = true,
-      expireAt = "date_expired",
-      requestToken = "request_token"
-    )
+  fun createToken_whenSuccessful_returnsMappedResult() =
+    runTest {
+      val createTokenResponse = AuthenticationResponse(
+        success = true,
+        expireAt = "date_expired",
+        requestToken = "request_token",
+      )
 
-    // Arrange
-    val flowResult = flowOf(NetworkResult.Success(createTokenResponse))
-    coEvery { mockUserDataSource.createToken() } returns flowResult
+      // Arrange
+      val flowResult = flowOf(NetworkResult.Success(createTokenResponse))
+      coEvery { mockUserDataSource.createToken() } returns flowResult
 
-    // Act
-    val result = userRepository.createToken().first()
+      // Act
+      val result = userRepository.createToken().first()
 
-    // Assert
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals(true, result.data.success)
-    assertEquals("request_token", result.data.requestToken)
-    assertEquals("date_expired", result.data.expireAt)
-    coVerify { mockUserDataSource.createToken() }
+      // Assert
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals(true, result.data.success)
+      assertEquals("request_token", result.data.requestToken)
+      assertEquals("date_expired", result.data.expireAt)
+      coVerify { mockUserDataSource.createToken() }
 
-    // inline test
-    userRepository.createToken().testOutcome(
-      expectedData = createTokenResponse.toAuthentication()
-    )
-  }
-
-  @Test
-  fun login_whenSuccessful_returnsMappedAuthentication() = runTest {
-    val loginResponse = AuthenticationResponse(
-      success = true,
-      expireAt = "date_expired",
-      requestToken = "request_token_verified"
-    )
-
-    val username = "test_user"
-    val password = "password123"
-    val token = "request_token"
-
-    val flowResult = flowOf(NetworkResult.Success(loginResponse))
-    coEvery { mockUserDataSource.login(username, password, token) } returns flowResult
-
-    val result = userRepository.login(username, password, token).first()
-
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals("request_token_verified", result.data.requestToken)
-    coVerify { mockUserDataSource.login(username, password, token) }
-
-    // inline test
-    userRepository.login(username, password, token).testOutcome(
-      expectedData = loginResponse.toAuthentication()
-    )
-  }
+      // inline test
+      userRepository.createToken().testOutcome(
+        expectedData = createTokenResponse.toAuthentication(),
+      )
+    }
 
   @Test
-  fun createSession_whenSuccessful_returnsMappedSession() = runTest {
-    val sessionResponse = CreateSessionResponse(
-      success = true,
-      sessionId = "session_id"
-    )
+  fun login_whenSuccessful_returnsMappedAuthentication() =
+    runTest {
+      val loginResponse = AuthenticationResponse(
+        success = true,
+        expireAt = "date_expired",
+        requestToken = "request_token_verified",
+      )
 
-    val requestToken = "request_token"
+      val username = "test_user"
+      val password = "password123"
+      val token = "request_token"
 
-    val flowResult = flowOf(NetworkResult.Success(sessionResponse))
-    coEvery { mockUserDataSource.createSessionLogin(requestToken) } returns flowResult
+      val flowResult = flowOf(NetworkResult.Success(loginResponse))
+      coEvery { mockUserDataSource.login(username, password, token) } returns flowResult
 
-    val result = userRepository.createSessionLogin(requestToken).first()
+      val result = userRepository.login(username, password, token).first()
 
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertTrue(result.data.success)
-    assertEquals("session_id", result.data.sessionId)
-    coVerify { mockUserDataSource.createSessionLogin(requestToken) }
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals("request_token_verified", result.data.requestToken)
+      coVerify { mockUserDataSource.login(username, password, token) }
 
-    // inline test
-    userRepository.createSessionLogin(requestToken).testOutcome(
-      expectedData = sessionResponse.toCreateSession()
-    )
-  }
-
-  @Test
-  fun deleteSession_whenSuccessful_returnsSuccess() = runTest {
-    val deleteSessionResponse = PostResponse(
-      success = true,
-      statusCode = 200,
-      statusMessage = "Success"
-    )
-
-    val flowResult = flowOf(NetworkResult.Success(deleteSessionResponse))
-    coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
-
-    val result = userRepository.deleteSession(sessionId).first()
-
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals(true, result.data.success)
-    assertEquals(200, result.data.statusCode)
-    assertEquals("Success", result.data.statusMessage)
-    coVerify { mockUserDataSource.deleteSession(sessionId) }
-
-    // inline test
-    userRepository.deleteSession(sessionId).testOutcome(
-      expectedData = deleteSessionResponse.toPostResult()
-    )
-  }
+      // inline test
+      userRepository.login(username, password, token).testOutcome(
+        expectedData = loginResponse.toAuthentication(),
+      )
+    }
 
   @Test
-  fun deleteSession_whenApiFails_returnsSuccessOutcomeWithErrorResponse() = runTest {
-    val failedResponse = PostResponse(
-      success = false,
-      statusCode = 11,
-      statusMessage = "Internal error: Something went wrong, contact TMDb."
-    )
+  fun createSession_whenSuccessful_returnsMappedSession() =
+    runTest {
+      val sessionResponse = CreateSessionResponse(
+        success = true,
+        sessionId = "session_id",
+      )
 
-    val flowResult = flowOf(NetworkResult.Success(failedResponse))
-    coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
+      val requestToken = "request_token"
 
-    val result = userRepository.deleteSession(sessionId).first()
+      val flowResult = flowOf(NetworkResult.Success(sessionResponse))
+      coEvery { mockUserDataSource.createSessionLogin(requestToken) } returns flowResult
 
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals(false, result.data.success)
-    assertEquals(11, result.data.statusCode)
-    assertEquals("Internal error: Something went wrong, contact TMDb.", result.data.statusMessage)
-    coVerify { mockUserDataSource.deleteSession(sessionId) }
-  }
+      val result = userRepository.createSessionLogin(requestToken).first()
+
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertTrue(result.data.success)
+      assertEquals("session_id", result.data.sessionId)
+      coVerify { mockUserDataSource.createSessionLogin(requestToken) }
+
+      // inline test
+      userRepository.createSessionLogin(requestToken).testOutcome(
+        expectedData = sessionResponse.toCreateSession(),
+      )
+    }
 
   @Test
-  fun getAccountDetails_whenSuccessful_returnsMappedUserDetail() = runTest {
-    val accountDetailsResponse = AccountDetailsResponse(
-      includeAdult = false,
-      iso31661 = "en",
-      name = "Waffiq",
-      avatarItemResponse = AvatarItemResponse(
-        gravatarResponse = GravatarResponse(
-          hash = "325987423659432"
+  fun deleteSession_whenSuccessful_returnsSuccess() =
+    runTest {
+      val deleteSessionResponse = PostResponse(
+        success = true,
+        statusCode = 200,
+        statusMessage = "Success",
+      )
+
+      val flowResult = flowOf(NetworkResult.Success(deleteSessionResponse))
+      coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
+
+      val result = userRepository.deleteSession(sessionId).first()
+
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals(true, result.data.success)
+      assertEquals(200, result.data.statusCode)
+      assertEquals("Success", result.data.statusMessage)
+      coVerify { mockUserDataSource.deleteSession(sessionId) }
+
+      // inline test
+      userRepository.deleteSession(sessionId).testOutcome(
+        expectedData = deleteSessionResponse.toPostResult(),
+      )
+    }
+
+  @Test
+  fun deleteSession_whenApiFails_returnsSuccessOutcomeWithErrorResponse() =
+    runTest {
+      val failedResponse = PostResponse(
+        success = false,
+        statusCode = 11,
+        statusMessage = "Internal error: Something went wrong, contact TMDb.",
+      )
+
+      val flowResult = flowOf(NetworkResult.Success(failedResponse))
+      coEvery { mockUserDataSource.deleteSession(sessionId) } returns flowResult
+
+      val result = userRepository.deleteSession(sessionId).first()
+
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals(false, result.data.success)
+      assertEquals(11, result.data.statusCode)
+      assertEquals("Internal error: Something went wrong, contact TMDb.", result.data.statusMessage)
+      coVerify { mockUserDataSource.deleteSession(sessionId) }
+    }
+
+  @Test
+  fun getAccountDetails_whenSuccessful_returnsMappedUserDetail() =
+    runTest {
+      val accountDetailsResponse = AccountDetailsResponse(
+        includeAdult = false,
+        iso31661 = "en",
+        name = "Waffiq",
+        avatarItemResponse = AvatarItemResponse(
+          gravatarResponse = GravatarResponse(
+            hash = "325987423659432",
+          ),
+          avatarTMDbResponse = AvatarTMDbResponse(
+            avatarPath = "347589074283054",
+          ),
         ),
-        avatarTMDbResponse = AvatarTMDbResponse(
-          avatarPath = "347589074283054"
-        )
-      ),
-      id = 513176325,
-      iso6391 = "ID",
-      username = "waffiq1234",
-    )
+        id = 513176325,
+        iso6391 = "ID",
+        username = "waffiq1234",
+      )
 
-    val sessionId = "32154325425662"
+      val sessionId = "32154325425662"
 
-    val flowResult = flowOf(NetworkResult.Success(accountDetailsResponse))
-    coEvery { mockUserDataSource.getAccountDetails(sessionId) } returns flowResult
+      val flowResult = flowOf(NetworkResult.Success(accountDetailsResponse))
+      coEvery { mockUserDataSource.getAccountDetails(sessionId) } returns flowResult
 
-    val result = userRepository.getAccountDetails(sessionId).first()
+      val result = userRepository.getAccountDetails(sessionId).first()
 
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals(513176325, result.data.id)
-    assertEquals("ID", result.data.iso6391)
-    assertEquals("en", result.data.iso31661)
-    assertEquals("Waffiq", result.data.name)
-    assertEquals("waffiq1234", result.data.username)
-    assertEquals("347589074283054", result.data.avatarItem?.avatarTMDb?.avatarPath)
-    assertEquals("325987423659432", result.data.avatarItem?.gravatar?.hash)
-    assertFalse(result.data.includeAdult == true)
-    coVerify { mockUserDataSource.getAccountDetails(sessionId) }
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals(513176325, result.data.id)
+      assertEquals("ID", result.data.iso6391)
+      assertEquals("en", result.data.iso31661)
+      assertEquals("Waffiq", result.data.name)
+      assertEquals("waffiq1234", result.data.username)
+      assertEquals("347589074283054", result.data.avatarItem?.avatarTMDb?.avatarPath)
+      assertEquals("325987423659432", result.data.avatarItem?.gravatar?.hash)
+      assertFalse(result.data.includeAdult == true)
+      coVerify { mockUserDataSource.getAccountDetails(sessionId) }
 
-    // inline test
-    userRepository.getAccountDetails(sessionId).testOutcome(
-      expectedData = accountDetailsResponse.toAccountDetails()
-    )
-  }
+      // inline test
+      userRepository.getAccountDetails(sessionId).testOutcome(
+        expectedData = accountDetailsResponse.toAccountDetails(),
+      )
+    }
 
   @Test
-  fun createToken_whenErrorOccur_returnsErrorMessage() = runTest {
-    val errorMessage = "Network error"
-    val errorFlow = flowOf(NetworkResult.Error(errorMessage))
-    coEvery { mockUserDataSource.createToken() } returns errorFlow
+  fun createToken_whenErrorOccur_returnsErrorMessage() =
+    runTest {
+      val errorMessage = "Network error"
+      val errorFlow = flowOf(NetworkResult.Error(errorMessage))
+      coEvery { mockUserDataSource.createToken() } returns errorFlow
 
-    val result = userRepository.createToken().first()
-    assertTrue(result is Outcome.Error)
-    result as Outcome.Error
-    assertEquals(errorMessage, result.message)
-    coVerify { mockUserDataSource.createToken() }
-  }
-
-  @Test
-  fun saveUserPref_whenCalled_invokesUserPreferenceSaveUser() = runTest {
-    coEvery { mockUserPreference.saveUser(userModelPref) } just Runs
-    userRepository.saveUserPref(user)
-    coVerify { mockUserPreference.saveUser(userModelPref) }
-  }
+      val result = userRepository.createToken().first()
+      assertTrue(result is Outcome.Error)
+      result as Outcome.Error
+      assertEquals(errorMessage, result.message)
+      coVerify { mockUserDataSource.createToken() }
+    }
 
   @Test
-  fun saveRegionPref_whenCalled_invokesUserPreferenceSaveRegion() = runTest {
-    coEvery { mockUserPreference.saveRegion("ID") } just Runs
-    userRepository.saveRegionPref("ID")
-    coVerify { mockUserPreference.saveRegion("ID") }
-  }
+  fun saveUserPref_whenCalled_invokesUserPreferenceSaveUser() =
+    runTest {
+      coEvery { mockUserPreference.saveUser(userModelPref) } just Runs
+      userRepository.saveUserPref(user)
+      coVerify { mockUserPreference.saveUser(userModelPref) }
+    }
 
   @Test
-  fun getUserPref_whenCalled_emitsUserModel() = runTest {
-    val flowResult = flowOf(userModelPref)
-    every { mockUserPreference.getUser() } returns flowResult
-
-    val resultPref = mockUserPreference.getUser().map { it.toUserModel() }.first()
-    val resultRepo = userRepository.getUserPref().first()
-    assertEquals(resultPref, resultRepo)
-
-    val resultsList = userRepository.getUserPref().toList()
-    assertEquals(listOf(userModelPref.toUserModel()), resultsList)
-
-    assertEquals(user, resultPref)
-    verify { mockUserPreference.getUser() }
-
-    // inline test
-    userRepository.getUserPref().testResult(userModelPref.toUserModel())
-    verify { mockUserPreference.getUser() }
-  }
+  fun saveRegionPref_whenCalled_invokesUserPreferenceSaveRegion() =
+    runTest {
+      coEvery { mockUserPreference.saveRegion("ID") } just Runs
+      userRepository.saveRegionPref("ID")
+      coVerify { mockUserPreference.saveRegion("ID") }
+    }
 
   @Test
-  fun getUserToken_whenCalled_emitsUserToken() = runTest {
-    val token = "token"
-    val flowResult = flowOf(token)
-    every { mockUserPreference.getToken() } returns flowResult
+  fun getUserPref_whenCalled_emitsUserModel() =
+    runTest {
+      val flowResult = flowOf(userModelPref)
+      every { mockUserPreference.getUser() } returns flowResult
 
-    val resultToken = userRepository.getUserToken().first()
-    assertEquals(token, resultToken)
-    verify { mockUserPreference.getToken() }
+      val resultPref = mockUserPreference.getUser().map { it.toUserModel() }.first()
+      val resultRepo = userRepository.getUserPref().first()
+      assertEquals(resultPref, resultRepo)
 
-    // inline test
-    userRepository.getUserToken().testResult(expectedData = "token")
-  }
+      val resultsList = userRepository.getUserPref().toList()
+      assertEquals(listOf(userModelPref.toUserModel()), resultsList)
 
-  @Test
-  fun getUserRegionPref_whenCalled_emitsUserRegion() = runTest {
-    val region = "ID"
-    val flowResult = flowOf(region)
-    every { mockUserPreference.getRegion() } returns flowResult
+      assertEquals(user, resultPref)
+      verify { mockUserPreference.getUser() }
 
-    val resultRegion = userRepository.getUserRegionPref().first()
-    assertEquals(region, resultRegion)
-    verify { mockUserPreference.getRegion() }
-
-    // inline test
-    userRepository.getUserRegionPref().testResult(expectedData = "ID")
-  }
+      // inline test
+      userRepository.getUserPref().testResult(userModelPref.toUserModel())
+      verify { mockUserPreference.getUser() }
+    }
 
   @Test
-  fun removeUserDataPref_whenCalled_callsRemoveUserData() = runTest {
-    coEvery { mockUserPreference.removeUserData() } just Runs
-    userRepository.removeUserDataPref()
-    coVerify { mockUserPreference.removeUserData() }
-  }
+  fun getUserToken_whenCalled_emitsUserToken() =
+    runTest {
+      val token = "token"
+      val flowResult = flowOf(token)
+      every { mockUserPreference.getToken() } returns flowResult
+
+      val resultToken = userRepository.getUserToken().first()
+      assertEquals(token, resultToken)
+      verify { mockUserPreference.getToken() }
+
+      // inline test
+      userRepository.getUserToken().testResult(expectedData = "token")
+    }
 
   @Test
-  fun getCountryCode_whenSuccessful_returnsMappedCountryCode() = runTest {
-    val countryIPResponse = CountryIPResponse(
-      country = "ID"
-    )
+  fun getUserRegionPref_whenCalled_emitsUserRegion() =
+    runTest {
+      val region = "ID"
+      val flowResult = flowOf(region)
+      every { mockUserPreference.getRegion() } returns flowResult
 
-    val flowResult = flowOf(NetworkResult.Success(countryIPResponse))
-    coEvery { mockCountryRemoteDataSource.getCountryCode() } returns flowResult
+      val resultRegion = userRepository.getUserRegionPref().first()
+      assertEquals(region, resultRegion)
+      verify { mockUserPreference.getRegion() }
 
-    val result = userRepository.getCountryCode().first()
+      // inline test
+      userRepository.getUserRegionPref().testResult(expectedData = "ID")
+    }
 
-    assertTrue(result is Outcome.Success)
-    result as Outcome.Success
-    assertEquals("ID", result.data.country)
-    coVerify { mockCountryRemoteDataSource.getCountryCode() }
+  @Test
+  fun removeUserDataPref_whenCalled_callsRemoveUserData() =
+    runTest {
+      coEvery { mockUserPreference.removeUserData() } just Runs
+      userRepository.removeUserDataPref()
+      coVerify { mockUserPreference.removeUserData() }
+    }
 
-    // inline test
-    userRepository.getCountryCode().testOutcome(
-      expectedData = countryIPResponse.toCountryIP()
-    )
-  }
+  @Test
+  fun getCountryCode_whenSuccessful_returnsMappedCountryCode() =
+    runTest {
+      val countryIPResponse = CountryIPResponse(
+        country = "ID",
+      )
+
+      val flowResult = flowOf(NetworkResult.Success(countryIPResponse))
+      coEvery { mockCountryRemoteDataSource.getCountryCode() } returns flowResult
+
+      val result = userRepository.getCountryCode().first()
+
+      assertTrue(result is Outcome.Success)
+      result as Outcome.Success
+      assertEquals("ID", result.data.country)
+      coVerify { mockCountryRemoteDataSource.getCountryCode() }
+
+      // inline test
+      userRepository.getCountryCode().testOutcome(
+        expectedData = countryIPResponse.toCountryIP(),
+      )
+    }
 }

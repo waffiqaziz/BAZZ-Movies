@@ -15,22 +15,27 @@ import org.junit.Test
 class SearchRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun search_pagingSource_returnsExpectedData() = runTest {
-    val pagingSource = SearchPagingSource(mockSearchApiService, "john")
-    testPagingSearchSource(
-      mockResults = defaultMultiSearchResponse(listOf(personDump1)),
-      mockApiCall = { mockSearchApiService.search("john", 1) },
-      loader = { pagingSource.toLoadResult() }
-    ) { page ->
-      assertEquals(1, page.data.size)
+  fun search_pagingSource_returnsExpectedData() =
+    runTest {
+      val pagingSource = SearchPagingSource(mockSearchApiService, "john")
+      testPagingSearchSource(
+        mockResults = defaultMultiSearchResponse(listOf(personDump1)),
+        mockApiCall = { mockSearchApiService.search("john", 1) },
+        loader = { pagingSource.toLoadResult() },
+      ) { page ->
+        assertEquals(1, page.data.size)
+      }
     }
-  }
 
   @Test
-  fun search_pagingFlow_returnsExpectedData() = runTest {
-    val expected = listOf(personDump1)
-    coEvery { mockSearchApiService.search("john", 1) } returns defaultMultiSearchResponse(expected)
-    searchRemoteDataSource.search("john").testPagingFlowSearch(this, expected)
-    coVerify { mockSearchApiService.search("john", 1) }
-  }
+  fun search_pagingFlow_returnsExpectedData() =
+    runTest {
+      val expected = listOf(personDump1)
+      coEvery {
+        mockSearchApiService.search("john", 1)
+      } returns defaultMultiSearchResponse(expected)
+
+      searchRemoteDataSource.search("john").testPagingFlowSearch(this, expected)
+      coVerify { mockSearchApiService.search("john", 1) }
+    }
 }

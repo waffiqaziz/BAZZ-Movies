@@ -29,7 +29,7 @@ class MediaItemMapperTest {
       video = true,
       title = "Title",
       releaseDate = "2023-12-01",
-      originCountry = listOf("ID", "MY")
+      originCountry = listOf("ID", "MY"),
     )
 
     val mediaItem = mediaItemResponse.toMediaItem()
@@ -103,7 +103,7 @@ class MediaItemMapperTest {
       video = false,
       title = "",
       releaseDate = "",
-      originCountry = emptyList()
+      originCountry = emptyList(),
     )
 
     val mediaItem = mediaItemResponse.toMediaItem()
@@ -142,7 +142,7 @@ class MediaItemMapperTest {
       name = "  ",
       originalTitle = "  ",
       title = "  ",
-      releaseDate = "  "
+      releaseDate = "  ",
     )
 
     val mediaItem = mediaItemResponse.toMediaItem()
@@ -168,7 +168,7 @@ class MediaItemMapperTest {
       genreIds = null,
       mediaType = null,
       id = null,
-      voteCount = null
+      voteCount = null,
     )
 
     val mediaItem = mediaItemResponse.toMediaItem()

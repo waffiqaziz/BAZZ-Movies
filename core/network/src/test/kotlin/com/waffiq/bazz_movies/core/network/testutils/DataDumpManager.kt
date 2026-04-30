@@ -76,7 +76,7 @@ object DataDumpManager {
     releaseDate = "1994-09-23",
     adult = false,
     originalLanguage = "en",
-    video = false
+    video = false,
   )
 
   val movieDump2 = MediaResponseItem(
@@ -98,7 +98,7 @@ object DataDumpManager {
     releaseDate = "1972-03-14",
     adult = false,
     originalLanguage = "en",
-    video = false
+    video = false,
   )
 
   val movieDump3 = MediaResponseItem(
@@ -119,7 +119,7 @@ object DataDumpManager {
     releaseDate = "1974-12-20",
     adult = false,
     originalLanguage = "en",
-    video = false
+    video = false,
   )
 
   val movieDump4 = MediaResponseItem(
@@ -139,7 +139,7 @@ object DataDumpManager {
     releaseDate = "1993-12-15",
     adult = false,
     originalLanguage = "en",
-    video = false
+    video = false,
   )
 
   val movieDump5 = MediaResponseItem(
@@ -161,7 +161,7 @@ object DataDumpManager {
     releaseDate = "1957-04-10",
     adult = false,
     originalLanguage = "en",
-    video = false
+    video = false,
   )
 
   val movieDump6 = MediaResponseItem(
@@ -181,7 +181,7 @@ object DataDumpManager {
     releaseDate = "2024-01-30",
     video = false,
     voteAverage = 8.4f,
-    voteCount = 558
+    voteCount = 558,
   )
 
   val movieDump7 = MediaResponseItem(
@@ -203,7 +203,7 @@ object DataDumpManager {
     releaseDate = "2024-11-20",
     video = false,
     voteAverage = 7.3f,
-    voteCount = 1071
+    voteCount = 1071,
   )
 
   val tvShowDump1 = MediaResponseItem(
@@ -223,7 +223,7 @@ object DataDumpManager {
     firstAirDate = "2021-09-17",
     voteAverage = 7.842f,
     voteCount = 14755,
-    originCountry = listOf("KR")
+    originCountry = listOf("KR"),
   )
 
   val tvShowDump2 = MediaResponseItem(
@@ -246,7 +246,7 @@ object DataDumpManager {
     popularity = 249.411,
     firstAirDate = "2017-01-30",
     voteAverage = 7.6f,
-    voteCount = 48
+    voteCount = 48,
   )
 
   val tvShowDump3 = MediaResponseItem(
@@ -269,7 +269,7 @@ object DataDumpManager {
     popularity = 1222.313,
     firstAirDate = "2012-06-04",
     voteAverage = 7.8f,
-    voteCount = 38
+    voteCount = 38,
   )
 
   val knownForItemResponseDump1 = KnownForItemResponse(
@@ -292,7 +292,7 @@ object DataDumpManager {
     releaseDate = "2017-12-09",
     video = false,
     voteAverage = 6.823,
-    voteCount = 13648
+    voteCount = 13648,
   )
 
   val knownForItemResponseDump2 = KnownForItemResponse(
@@ -318,7 +318,7 @@ object DataDumpManager {
     name = "Jumanji: The Next Level",
     video = false,
     voteAverage = 6.9,
-    voteCount = 8692
+    voteCount = 8692,
   )
 
   val knownForItemResponseDump3 = KnownForItemResponse(
@@ -339,7 +339,7 @@ object DataDumpManager {
     releaseDate = "2015-05-27",
     video = false,
     voteAverage = 6.2,
-    voteCount = 8557
+    voteCount = 8557,
   )
 
   val personDump1 = MultiSearchResponseItem(
@@ -355,8 +355,8 @@ object DataDumpManager {
     listKnownFor = listOf(
       knownForItemResponseDump1,
       knownForItemResponseDump2,
-      knownForItemResponseDump3
-    )
+      knownForItemResponseDump3,
+    ),
   )
 
   val movieSearchDump = MultiSearchResponseItem(
@@ -394,7 +394,7 @@ object DataDumpManager {
     profilePath = "/39Pk0wdjD2TC4QgnrODxWD8bubH.jpg",
     id = 3771374,
     adult = false,
-    order = 0
+    order = 0,
   )
 
   val mediaCrewItemResponseDump = MediaCrewResponseItem(
@@ -408,7 +408,7 @@ object DataDumpManager {
     id = 3014542,
     adult = false,
     department = "Visual Effects",
-    job = "VFX Supervisor"
+    job = "VFX Supervisor",
   )
 
   val mediaCreditsResponseDump1 = MediaCreditsResponse(
@@ -427,7 +427,7 @@ object DataDumpManager {
         profilePath = "/kx61L8oImUOJjQqwgCmEQ5kC3El.jpg",
         id = 7060,
         adult = false,
-        order = 1
+        order = 1,
       ),
       MediaCastResponseItem(
         castId = 15,
@@ -441,8 +441,8 @@ object DataDumpManager {
         profilePath = "/6kRUvA7N3pMzznG9PdiqCOvxhGQ.jpg",
         id = 209578,
         adult = false,
-        order = 2
-      )
+        order = 2,
+      ),
     ),
     crew = listOf(
       mediaCrewItemResponseDump,
@@ -457,7 +457,7 @@ object DataDumpManager {
         id = 63820,
         adult = false,
         department = "Directing",
-        job = "Director"
+        job = "Director",
       ),
       MediaCrewResponseItem(
         gender = 2,
@@ -470,9 +470,9 @@ object DataDumpManager {
         id = 4930,
         adult = false,
         department = "Production",
-        job = "Producer"
-      )
-    )
+        job = "Producer",
+      ),
+    ),
   )
 
   val mediaCreditsResponseDump2 = MediaCreditsResponse(
@@ -489,7 +489,7 @@ object DataDumpManager {
         profilePath = "/ifHd2Yoovlvu6FFEIxUsXVyrYUf.jpg",
         character = "Aang (voice)",
         creditId = "5253483519c29579400de740",
-        order = 0
+        order = 0,
       ),
       MediaCastResponseItem(
         adult = false,
@@ -502,7 +502,7 @@ object DataDumpManager {
         profilePath = "/oy89WyETM8T3Z4aRJb2EnmqZ7A3.jpg",
         character = "Katara (voice)",
         creditId = "5253483519c29579400de75e",
-        order = 1
+        order = 1,
       ),
       MediaCastResponseItem(
         adult = false,
@@ -515,7 +515,7 @@ object DataDumpManager {
         profilePath = "/i9VlMsPol6XIicnRZRiwmYSyE4P.jpg",
         character = "Sokka (voice)",
         creditId = "5253483719c29579400de85c",
-        order = 2
+        order = 2,
       ),
     ),
     crew = listOf(
@@ -530,7 +530,7 @@ object DataDumpManager {
         profilePath = null,
         creditId = "553fcf2e92514132cb000266",
         department = "Editing",
-        job = "Editorial Manager"
+        job = "Editorial Manager",
       ),
       MediaCrewResponseItem(
         adult = false,
@@ -543,7 +543,7 @@ object DataDumpManager {
         profilePath = null,
         creditId = "5523e3659251416d4a00474b",
         department = "Directing",
-        job = "Layout"
+        job = "Layout",
       ),
       MediaCrewResponseItem(
         adult = false,
@@ -556,9 +556,9 @@ object DataDumpManager {
         profilePath = "/5lPnGvtATjmPakR96dqPW3v4u8q.jpg",
         creditId = "5253483e19c29579400dea3a",
         department = "Production",
-        job = "Executive Producer"
+        job = "Executive Producer",
       ),
-    )
+    ),
   )
 
   val omdbDetailsResponseDump = OMDbDetailsResponse(
@@ -570,16 +570,16 @@ object DataDumpManager {
     ratings = listOf(
       RatingsItemResponse(
         value = "7.5/10",
-        source = "Internet Movie Database"
+        source = "Internet Movie Database",
       ),
       RatingsItemResponse(
         value = "76%",
-        source = "Rotten Tomatoes"
+        source = "Rotten Tomatoes",
       ),
       RatingsItemResponse(
         value = "67/100",
-        source = "Metacritic"
-      )
+        source = "Metacritic",
+      ),
     ),
     runtime = "192 min",
     language = "English",
@@ -603,7 +603,7 @@ object DataDumpManager {
     poster = "https://m.media-amazon.com/images/M/poster@._V1_SX300.jpg",
     country = "United States",
     genre = "Action, Adventure, Fantasy",
-    writer = "James Cameron, Rick Jaffa, Amanda Silver"
+    writer = "James Cameron, Rick Jaffa, Amanda Silver",
   )
 
   val videoItemMovieResponseDump1 = VideoResponseItem(
@@ -616,7 +616,7 @@ object DataDumpManager {
     publishedAt = "2024-04-11T19:00:07.000Z",
     type = "Featurette",
     iso6391 = "en",
-    key = "O_hKC3gRvzw"
+    key = "O_hKC3gRvzw",
   )
 
   val videoItemMovieResponseDump2 = VideoResponseItem(
@@ -629,7 +629,7 @@ object DataDumpManager {
     publishedAt = "2024-04-10T19:00:06.000Z",
     type = "Featurette",
     iso6391 = "en",
-    key = "YkPvQ2hqnMY"
+    key = "YkPvQ2hqnMY",
   )
 
   val videoItemMovieResponseDump3 = VideoResponseItem(
@@ -642,7 +642,7 @@ object DataDumpManager {
     publishedAt = "2024-03-11T17:25:06.000Z",
     type = "Featurette",
     iso6391 = "en",
-    key = "EJdFH02RnFQ"
+    key = "EJdFH02RnFQ",
   )
 
   val videoMovieResponseDump = VideoResponse(
@@ -650,8 +650,8 @@ object DataDumpManager {
     results = listOf(
       videoItemMovieResponseDump1,
       videoItemMovieResponseDump2,
-      videoItemMovieResponseDump3
-    )
+      videoItemMovieResponseDump3,
+    ),
   )
 
   val videoItemTvResponseDump1 = VideoResponseItem(
@@ -664,7 +664,7 @@ object DataDumpManager {
     publishedAt = "2020-11-20T19:00:02.000Z",
     type = "Opening Credits",
     iso6391 = "en",
-    key = "GwaRztMaoY0"
+    key = "GwaRztMaoY0",
   )
 
   val videoItemTvResponseDump2 = VideoResponseItem(
@@ -677,7 +677,7 @@ object DataDumpManager {
     publishedAt = "2020-09-30T07:00:08.000Z",
     type = "Trailer",
     iso6391 = "en",
-    key = "VpO6APNqY1c"
+    key = "VpO6APNqY1c",
   )
 
   val videoItemTvResponseDump3 = VideoResponseItem(
@@ -690,7 +690,7 @@ object DataDumpManager {
     publishedAt = "2020-08-12T16:30:05.000Z",
     type = "Trailer",
     iso6391 = "en",
-    key = "pkKu9hLT-t8"
+    key = "pkKu9hLT-t8",
   )
 
   val watchProviderResponseDump = WatchProvidersResponse(
@@ -703,40 +703,40 @@ object DataDumpManager {
             logoPath = "/logo6.png",
             providerId = 6,
             providerName = "WeTV",
-            displayPriority = 3
-          )
+            displayPriority = 3,
+          ),
         ),
         flatrate = listOf(
           ProviderResponse(
             logoPath = "/logo1.png",
             providerId = 1,
             providerName = "Netflix",
-            displayPriority = 10
+            displayPriority = 10,
           ),
           ProviderResponse(
             logoPath = "/logo2.png",
             providerId = 2,
             providerName = "Disney+",
-            displayPriority = 20
-          )
+            displayPriority = 20,
+          ),
         ),
         rent = listOf(
           ProviderResponse(
             logoPath = "/logo3.png",
             providerId = 3,
             providerName = "Amazon Prime",
-            displayPriority = 15
-          )
+            displayPriority = 15,
+          ),
         ),
         buy = listOf(
           ProviderResponse(
             logoPath = "/logo4.png",
             providerId = 4,
             providerName = "Google Play",
-            displayPriority = 5
-          )
+            displayPriority = 5,
+          ),
         ),
-        free = null
+        free = null,
       ),
       "ID" to WatchProvidersResponseItem(
         link = "https://www.link.com/id/movie/example-movie",
@@ -746,8 +746,8 @@ object DataDumpManager {
             logoPath = "/logo5.png",
             providerId = 5,
             providerName = "Vidio",
-            displayPriority = 8
-          )
+            displayPriority = 8,
+          ),
         ),
         flatrate = null,
         rent = null,
@@ -756,30 +756,30 @@ object DataDumpManager {
             logoPath = "/logo6.png",
             providerId = 6,
             providerName = "WeTV",
-            displayPriority = 12
-          )
-        )
-      )
-    )
+            displayPriority = 12,
+          ),
+        ),
+      ),
+    ),
   )
 
   val videoTvResponseDump = VideoResponse(
     id = 95479,
-    results = listOf(videoItemTvResponseDump1, videoItemTvResponseDump2, videoItemTvResponseDump3)
+    results = listOf(videoItemTvResponseDump1, videoItemTvResponseDump2, videoItemTvResponseDump3),
   )
 
   val belongsToCollectionDeadpoolDump = BelongsToCollectionResponse(
     id = 448150,
     name = "Deadpool Collection",
     posterPath = "/30c5jO7YEXuF8KiWXLg9m28GWDA.jpg",
-    backdropPath = "/dTq7mGyAR5eAydR532feWfjJjzm.jpg"
+    backdropPath = "/dTq7mGyAR5eAydR532feWfjJjzm.jpg",
   )
 
   val productionCompaniesItemResponseDump = ProductionCompaniesResponseItem(
     logoPath = "/hUzeosd33nzE5MCNsZxCGEKTXaQ.png",
     name = "Marvel Studios",
     id = 420,
-    originCountry = "US"
+    originCountry = "US",
   )
 
   val detailMovieResponseDump = DetailMovieResponse(
@@ -792,7 +792,7 @@ object DataDumpManager {
     listGenresItemResponse = listOf(
       GenresResponseItem(id = 28, name = "Action"),
       GenresResponseItem(id = 35, name = "Comedy"),
-      GenresResponseItem(id = 878, name = "Science Fiction")
+      GenresResponseItem(id = 878, name = "Science Fiction"),
     ),
     popularity = 856.096,
     releaseDatesResponse = ReleaseDatesResponse(
@@ -803,20 +803,20 @@ object DataDumpManager {
             ReleaseDatesResponseItemValue(
               releaseDate = "2024-11-12T00:00:00.000Z",
               note = "Disney+",
-              type = 4
-            )
-          )
+              type = 4,
+            ),
+          ),
         ),
         ReleaseDatesResponseItem(
           iso31661 = "AE",
           listReleaseDateResponseItemValue = listOf(
-            ReleaseDatesResponseItemValue(releaseDate = "2024-07-25T00:00:00.000Z")
-          )
-        )
-      )
+            ReleaseDatesResponseItemValue(releaseDate = "2024-07-25T00:00:00.000Z"),
+          ),
+        ),
+      ),
     ),
     listProductionCountriesItemResponse = listOf(
-      ProductionCountriesResponseItem(iso31661 = "US", name = "United States of America")
+      ProductionCountriesResponseItem(iso31661 = "US", name = "United States of America"),
     ),
     id = 533535,
     voteCount = 6283,
@@ -830,7 +830,7 @@ object DataDumpManager {
     runtime = 128,
     posterPath = "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
     listSpokenLanguagesItemResponse = listOf(
-      SpokenLanguagesResponseItem(name = "English", iso6391 = "en", englishName = "English")
+      SpokenLanguagesResponseItem(name = "English", iso6391 = "en", englishName = "English"),
     ),
     listProductionCompaniesItemResponse = listOf(
       productionCompaniesItemResponseDump,
@@ -838,8 +838,8 @@ object DataDumpManager {
         logoPath = "/hx0C1XcSxGgat8N62GpxoJGTkCk.png",
         name = "Maximum Effort",
         id = 104228,
-        originCountry = "US"
-      )
+        originCountry = "US",
+      ),
     ),
     releaseDate = "2024-07-24",
     voteAverage = 7.7,
@@ -847,7 +847,7 @@ object DataDumpManager {
     tagline = "Come together.",
     adult = false,
     homepage = "https://www.marvel.com/movies/deadpool-and-wolverine",
-    status = "Released"
+    status = "Released",
   )
 
   val lastEpisodeToAirResponse1 = LastEpisodeToAirResponse(
@@ -866,7 +866,7 @@ object DataDumpManager {
     runtime = 67,
     seasonNumber = 1,
     showId = 253905,
-    stillPath = "/9gvIN5sjFV3EbAasl1nhfMqwv8Z.jpg"
+    stillPath = "/9gvIN5sjFV3EbAasl1nhfMqwv8Z.jpg",
   )
 
   val createdByItemResponseDump = CreatedByItemResponse(
@@ -874,14 +874,14 @@ object DataDumpManager {
     creditId = "675abc88ccf4df966822ca59",
     name = "Kim Ji-woon",
     profilePath = null,
-    id = 2349392
+    id = 2349392,
   )
 
   val networksItemResponseDump = NetworksItemResponse(
     logoPath = "/pOSCKaZhndUFYtxHXjQOV6xJi1s.png",
     name = "MBC",
     id = 97,
-    originCountry = "KR"
+    originCountry = "KR",
   )
 
   val seasonsItemResponseDump = SeasonsItemResponse(
@@ -891,32 +891,32 @@ object DataDumpManager {
     name = "When the Phone Rings",
     seasonNumber = 1,
     id = 392789,
-    posterPath = "/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg"
+    posterPath = "/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg",
   )
 
   val spokenLanguagesItemResponseDump = SpokenLanguagesResponseItem(
     englishName = "Korean",
     iso6391 = "ko",
-    name = "한국어/조선말"
+    name = "한국어/조선말",
   )
 
   val contentRatingsItemResponseDump = ContentRatingsItemResponse(
     descriptors = listOf("this is description"),
     iso31661 = "SG",
-    rating = "PG13"
+    rating = "PG13",
   )
 
   val contentRatingsResponseDump = ContentRatingsResponse(
     contentRatingsItemResponse = listOf(
       ContentRatingsItemResponse(
         iso31661 = "SG",
-        rating = "PG13"
+        rating = "PG13",
       ),
       ContentRatingsItemResponse(
         iso31661 = "KR",
-        rating = "15"
-      )
-    )
+        rating = "15",
+      ),
+    ),
   )
 
   val detailTvResponseDump = DetailTvResponse(
@@ -927,14 +927,14 @@ object DataDumpManager {
     backdropPath = "/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg",
     genres = listOf(
       GenresResponseItem(name = "Drama", id = 18),
-      GenresResponseItem(name = "Mystery", id = 9648)
+      GenresResponseItem(name = "Mystery", id = 9648),
     ),
     popularity = 394.215,
     productionCountriesResponse = listOf(
       ProductionCountriesResponseItem(
         iso31661 = "KR",
-        name = "South Korea"
-      )
+        name = "South Korea",
+      ),
     ),
     id = 253905,
     numberOfSeasons = 1,
@@ -956,14 +956,14 @@ object DataDumpManager {
         id = 36225,
         logoPath = "/haNfBy6ZS1a1teY9JXNHHkFhZEj.png",
         name = "Bon Factory",
-        originCountry = "KR"
+        originCountry = "KR",
       ),
       ProductionCompaniesResponseItem(
         id = 140692,
         logoPath = "/blHOMOg29qc8GmSaiOWYNsxe0vC.png",
         name = "Baram Pictures",
-        originCountry = "KR"
-      )
+        originCountry = "KR",
+      ),
     ),
     originalName = "지금 거신 전화는",
     voteAverage = 8.4,
@@ -976,7 +976,7 @@ object DataDumpManager {
     inProduction = false,
     lastAirDate = "2025-01-04",
     homepage = "https://program.imbc.com/WhenThePhoneRings",
-    status = "Ended"
+    status = "Ended",
   )
 
   val externalIdResponseDump = ExternalIdResponse(
@@ -988,7 +988,7 @@ object DataDumpManager {
     twitterId = null,
     tvrageId = 2680,
     facebookId = "avatarthelastairbender",
-    instagramId = "avatarthelastairbender"
+    instagramId = "avatarthelastairbender",
   )
 
   val statedResponseDump1 = MediaStateResponse(
@@ -1014,7 +1014,7 @@ object DataDumpManager {
       "هيث ليدجر",
       "ჰიტ ლეჯერი",
       "希斯·莱杰",
-      "Heath Andrew Ledger"
+      "Heath Andrew Ledger",
     ),
     birthday = "1979-04-04",
     gender = 2,
@@ -1040,7 +1040,7 @@ object DataDumpManager {
     name = "Heath Ledger",
     id = 1810,
     adult = false,
-    homepage = null
+    homepage = null,
   )
 
   val profileItemResponseDump = ProfilesItemResponse(
@@ -1050,7 +1050,7 @@ object DataDumpManager {
     voteCount = 8,
     width = 736,
     iso6391 = "en",
-    height = 1104
+    height = 1104,
   )
 
   val imagePersonResponseDump = ImagePersonResponse(
@@ -1064,7 +1064,7 @@ object DataDumpManager {
         voteCount = 1,
         width = 961,
         iso6391 = null,
-        height = 1441
+        height = 1441,
       ),
       ProfilesItemResponse(
         aspectRatio = 0.667,
@@ -1073,7 +1073,7 @@ object DataDumpManager {
         voteCount = 3,
         width = 300,
         iso6391 = null,
-        height = 450
+        height = 450,
       ),
       ProfilesItemResponse(
         aspectRatio = 0.667,
@@ -1082,7 +1082,7 @@ object DataDumpManager {
         voteCount = 5,
         width = 600,
         iso6391 = null,
-        height = 900
+        height = 900,
       ),
       ProfilesItemResponse(
         aspectRatio = 0.667,
@@ -1091,7 +1091,7 @@ object DataDumpManager {
         voteCount = 2,
         width = 900,
         iso6391 = null,
-        height = 1350
+        height = 1350,
       ),
       ProfilesItemResponse(
         aspectRatio = 0.667,
@@ -1100,7 +1100,7 @@ object DataDumpManager {
         voteCount = 5,
         width = 683,
         iso6391 = null,
-        height = 1024
+        height = 1024,
       ),
       ProfilesItemResponse(
         aspectRatio = 0.666,
@@ -1109,9 +1109,9 @@ object DataDumpManager {
         voteCount = 2,
         width = 581,
         iso6391 = null,
-        height = 872
-      )
-    )
+        height = 872,
+      ),
+    ),
   )
 
   val castItemResponseDump = CastItemResponse(
@@ -1141,7 +1141,7 @@ object DataDumpManager {
     creditId = "52fe4213c3a36847f800226b",
     order = 0,
     mediaType = "movie",
-    originalName = "War of the Worlds"
+    originalName = "War of the Worlds",
   )
 
   val crewItemResponseDump = CrewItemResponse(
@@ -1162,7 +1162,7 @@ object DataDumpManager {
     creditId = "52fe425ec3a36847f8018e1f",
     department = "Production",
     job = "Producer",
-    mediaType = "movie"
+    mediaType = "movie",
   )
 
   val combinedCreditResponseDump = CombinedCreditResponse(
@@ -1191,8 +1191,8 @@ object DataDumpManager {
         character = "Chief John Anderton [Pre-Crime]",
         creditId = "52fe4223c3a36847f8006f53",
         order = 0,
-        mediaType = "movie"
-      )
+        mediaType = "movie",
+      ),
     ),
     crew = listOf(
       crewItemResponseDump,
@@ -1219,7 +1219,7 @@ object DataDumpManager {
         creditId = "52fe4320c3a36847f803c339",
         department = "Production",
         job = "Producer",
-        mediaType = "movie"
+        mediaType = "movie",
       ),
       CrewItemResponse(
         adult = false,
@@ -1244,9 +1244,9 @@ object DataDumpManager {
         creditId = "52fe4323c3a36847f803d391",
         department = "Production",
         job = "Executive Producer",
-        mediaType = "movie"
-      )
-    )
+        mediaType = "movie",
+      ),
+    ),
   )
 
   val externalIDPersonResponseDump = ExternalIDPersonResponse(
@@ -1260,12 +1260,12 @@ object DataDumpManager {
     instagramId = null,
     tiktokId = null,
     twitterId = "simonfarnaby",
-    youtubeId = null
+    youtubeId = null,
   )
 
   val postResponseSuccessDump = PostFavoriteWatchlistResponse(
     statusCode = 200,
-    statusMessage = "Success"
+    statusMessage = "Success",
   )
 
   val ratePostResponseSuccessDump = PostResponse(
@@ -1277,14 +1277,14 @@ object DataDumpManager {
   val authenticationResponseDump = AuthenticationResponse(
     success = true,
     expireAt = "expire_date",
-    requestToken = "request_token"
+    requestToken = "request_token",
   )
 
   val postResponseDump = PostResponse(true, 200, "Success")
 
   val createSessionResponseDump = CreateSessionResponse(
     success = true,
-    sessionId = "session_id"
+    sessionId = "session_id",
   )
 
   val accountDetailsResponse = AccountDetailsResponse(
@@ -1293,16 +1293,16 @@ object DataDumpManager {
     name = "YOUR_NAME",
     avatarItemResponse = AvatarItemResponse(
       gravatarResponse = GravatarResponse("gravatar_hash2"),
-      avatarTMDbResponse = AvatarTMDbResponse("avatar_path")
+      avatarTMDbResponse = AvatarTMDbResponse("avatar_path"),
     ),
     id = 543798538,
     iso6391 = "en",
-    username = "USERNAME"
+    username = "USERNAME",
   )
 
   val countryIPResponseDump = CountryIPResponse(
     country = "ID",
-    ip = "103.187.242.255"
+    ip = "103.187.242.255",
   )
 
   val ratedResponse = RatedResponse.Value(5.0)
@@ -1311,14 +1311,14 @@ object DataDumpManager {
     id = 453,
     favorite = true,
     ratedResponse = ratedResponse,
-    watchlist = true
+    watchlist = true,
   )
 
   val providerResponse = ProviderResponse(
     logoPath = "/logo.jpg",
     providerId = 123,
     providerName = "Netflix",
-    displayPriority = 1
+    displayPriority = 1,
   )
 
   val providerResponseItem = WatchProvidersResponseItem(
@@ -1327,30 +1327,30 @@ object DataDumpManager {
     buy = listOf(providerResponse),
     flatrate = listOf(providerResponse, providerResponse),
     free = listOf(providerResponse),
-    rent = listOf(providerResponse)
+    rent = listOf(providerResponse),
   )
 
   val watchProvidersResultsMap = mapOf(
-    "US" to providerResponseItem
+    "US" to providerResponseItem,
   )
 
   val watchProvidersResponse = WatchProvidersResponse(
     id = 456,
-    results = watchProvidersResultsMap
+    results = watchProvidersResultsMap,
   )
 
   val mediaKeywordsResponseItem = MediaKeywordsResponseItem(
     id = 4444,
-    name = "family"
+    name = "family",
   )
 
   val movieKeywordsResponse = MovieKeywordsResponse(
     id = 12345,
-    keywords = listOf(mediaKeywordsResponseItem)
+    keywords = listOf(mediaKeywordsResponseItem),
   )
 
   val tvKeywordsResponse = TvKeywordsResponse(
     id = 1222,
-    keywords = listOf(mediaKeywordsResponseItem)
+    keywords = listOf(mediaKeywordsResponseItem),
   )
 }

@@ -61,7 +61,7 @@ class WatchProvidersResponseTest {
   fun watchProvidersResponse_whenResultsEmpty_shouldHaveEmptyMap() {
     val response = WatchProvidersResponse(
       id = 789,
-      results = emptyMap()
+      results = emptyMap(),
     )
 
     assertEquals(789, response.id)

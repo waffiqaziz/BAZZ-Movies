@@ -23,7 +23,7 @@ object DummyData {
     posterPath = "/poster1.jpg",
     mediaType = "movie",
     voteAverage = 8.8f,
-    releaseDate = "2010-07-16"
+    releaseDate = "2010-07-16",
   )
 
   val mediaMovieResponseItem2 = MediaResponseItem(
@@ -33,7 +33,7 @@ object DummyData {
     posterPath = "/poster2.jpg",
     mediaType = "movie",
     voteAverage = 9.0f,
-    releaseDate = "2008-07-18"
+    releaseDate = "2008-07-18",
   )
 
   val mediaTvResponseItem = MediaResponseItem(
@@ -53,7 +53,7 @@ object DummyData {
     posterPath = "/poster4.jpg",
     mediaType = "tv",
     voteAverage = 9.3f,
-    releaseDate = "2011-04-17"
+    releaseDate = "2011-04-17",
   )
 
   val fakeMovieResponsePagingData =
@@ -61,7 +61,7 @@ object DummyData {
       listOf(
         mediaMovieResponseItem,
         mediaMovieResponseItem2,
-      )
+      ),
     )
 
   val fakeTvResponsePagingData =
@@ -69,7 +69,7 @@ object DummyData {
       listOf(
         mediaTvResponseItem,
         mediaTvResponseItem2,
-      )
+      ),
     )
 
   val fakeMovieMediaItemPagingData =
@@ -77,7 +77,7 @@ object DummyData {
       listOf(
         mediaMovieResponseItem.toMediaItem(),
         mediaMovieResponseItem2.toMediaItem(),
-      )
+      ),
     )
 
   val fakeTvMediaItemPagingData =
@@ -85,7 +85,7 @@ object DummyData {
       listOf(
         mediaTvResponseItem.toMediaItem(),
         mediaTvResponseItem2.toMediaItem(),
-      )
+      ),
     )
 
   val mediaMovieItem = mediaMovieResponseItem.toMediaItem()

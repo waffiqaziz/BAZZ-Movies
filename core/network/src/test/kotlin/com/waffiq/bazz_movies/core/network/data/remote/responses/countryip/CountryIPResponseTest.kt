@@ -25,7 +25,7 @@ class CountryIPResponseTest {
   fun countryIPResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val countryIPResponse = CountryIPResponse(
       country = null,
-      ip = "103.187.242.255"
+      ip = "103.187.242.255",
     )
     assertNull(countryIPResponse.country)
     assertEquals("103.187.242.255", countryIPResponse.ip)

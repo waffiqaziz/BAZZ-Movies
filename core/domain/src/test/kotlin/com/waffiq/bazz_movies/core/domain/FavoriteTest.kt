@@ -24,7 +24,7 @@ class FavoriteTest {
     popularity = 9.0,
     rating = 4.5f,
     isFavorite = true,
-    isWatchlist = false
+    isWatchlist = false,
   )
 
   @Test

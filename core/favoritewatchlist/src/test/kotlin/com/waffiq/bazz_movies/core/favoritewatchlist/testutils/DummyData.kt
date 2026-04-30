@@ -19,6 +19,6 @@ object DummyData {
     popularity = 214.0,
     rating = 9.0f,
     isFavorite = true,
-    isWatchlist = false
+    isWatchlist = false,
   )
 }

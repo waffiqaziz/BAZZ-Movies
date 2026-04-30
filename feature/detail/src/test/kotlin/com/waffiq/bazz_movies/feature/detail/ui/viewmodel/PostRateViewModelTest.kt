@@ -18,7 +18,9 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
+class PostRateViewModelTest :
+  BaseMediaDetailViewModelTest(),
+  PostTestHelper {
 
   private val rate = 9.0f
 
@@ -29,172 +31,182 @@ class PostRateViewModelTest : BaseMediaDetailViewModelTest(), PostTestHelper {
   }
 
   @Test
-  fun postMovieRate_whenSuccessful_emitsSuccess() = runTest {
-    // call to get media state first
-    setupMediaStateSuccessful()
-    testViewModelState(
-      runBlock = {
+  fun postMovieRate_whenSuccessful_emitsSuccess() =
+    runTest {
+      // call to get media state first
+      setupMediaStateSuccessful()
+      testViewModelState(
+        runBlock = {
+          viewModel.getMovieState(movieId)
+          advanceUntilIdle()
+          viewModel.postMovieRate(rate, movieId)
+        },
+        stateSelector = { it.itemState },
+        expectedStates = listOf(
+          mockMediaStated,
+          mockMediaStated.copy(rated = Rated.Value(rate.toDouble())),
+        ),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
+        },
+      )
+    }
+
+  @Test
+  fun toaseEvent_whenPostMovieRateSuccessful_emitsCorrectStringId() =
+    runTest {
+      setupMediaStateSuccessful()
+      viewModel.toastEvent.test {
+        // Trigger AFTER collecting
         viewModel.getMovieState(movieId)
         advanceUntilIdle()
+
         viewModel.postMovieRate(rate, movieId)
-      },
-      stateSelector = { it.itemState },
-      expectedStates = listOf(
-        mockMediaStated,
-        mockMediaStated.copy(rated = Rated.Value(rate.toDouble()))
-      ),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
-      },
-    )
-  }
+
+        val result = awaitItem()
+        assertEquals(rating_added_successfully, result)
+
+        cancelAndIgnoreRemainingEvents()
+      }
+    }
 
   @Test
-  fun toaseEvent_whenPostMovieRateSuccessful_emitsCorrectStringId() = runTest{
-    setupMediaStateSuccessful()
-    viewModel.toastEvent.test {
-      // Trigger AFTER collecting
-      viewModel.getMovieState(movieId)
-      advanceUntilIdle()
+  fun postMovieRate_whenItemStateIsNull_itemStateRemainsNull() =
+    runTest {
+      coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
+        flowSuccessWithLoading(mockPost)
 
       viewModel.postMovieRate(rate, movieId)
+      advanceUntilIdle()
 
-      val result = awaitItem()
-      assertEquals(rating_added_successfully, result)
+      assertNull(viewModel.uiState.value.itemState)
 
-      cancelAndIgnoreRemainingEvents()
-    }
-  }
-
-  @Test
-  fun postMovieRate_whenItemStateIsNull_itemStateRemainsNull() = runTest {
-    coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
-      flowSuccessWithLoading(mockPost)
-
-    viewModel.postMovieRate(rate, movieId)
-    advanceUntilIdle()
-
-    assertNull(viewModel.uiState.value.itemState)
-
-    coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
-  }
-
-  @Test
-  fun postMovieRate_whenUnsuccessful_emitsError() = runTest {
-    coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
-      flowFailedWithLoading
-
-    testViewModelState(
-      runBlock = { viewModel.postMovieRate(rate, movieId) },
-      stateSelector = { it.itemState },
-      expectedErrors = listOf(errorMessage),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
-      }
-    )
-  }
-
-  @Test
-  fun postMovieRate_whenLoading_doesNothing() = runTest {
-    coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
-      loadingFlow
-
-    testViewModelState(
-      runBlock = { viewModel.postMovieRate(rate, movieId) },
-      stateSelector = { it.itemState },
-      expectedLoadingStates = listOf(true),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
-      }
-    )
-  }
-
-  @Test
-  fun postTvRate_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns
-      successFlow(mockMediaStated)
-    coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
-      flowSuccessWithLoading(mockPost)
-
-    testViewModelState(
-      runBlock = {
-        viewModel.getTvState(tvId)
-        advanceUntilIdle()
-        viewModel.postTvRate(rate, tvId)
-      },
-      stateSelector = { it.itemState },
-      expectedStates = listOf(
-        mockMediaStated,
-        mockMediaStated.copy(rated = Rated.Value(rate.toDouble()))
-      ),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
-      },
-    )
-  }
-
-  @Test
-  fun postTvRate_whenItemStateIsNull_itemStateRemainsNull() = runTest {
-    coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
-      flowSuccessWithLoading(mockPost)
-
-    viewModel.postTvRate(rate, tvId)
-    advanceUntilIdle()
-
-    assertNull(viewModel.uiState.value.itemState)
-
-    coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
-  }
-
-  @Test
-  fun postTvRate_whenItemStateIsNull_stillEmitsToast() = runTest {
-    coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
-      flowSuccessWithLoading(mockPost)
-
-    val toastEvents = mutableListOf<Int>()
-    val collectJob = launch {
-      viewModel.toastEvent.collect { toastEvents.add(it) }
+      coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
     }
 
-    viewModel.postTvRate(rate, tvId)
-    advanceUntilIdle()
+  @Test
+  fun postMovieRate_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
+        flowFailedWithLoading
 
-    assertEquals(rating_added_successfully, toastEvents.last())
-
-    collectJob.cancel()
-  }
+      testViewModelState(
+        runBlock = { viewModel.postMovieRate(rate, movieId) },
+        stateSelector = { it.itemState },
+        expectedErrors = listOf(errorMessage),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
+        },
+      )
+    }
 
   @Test
-  fun postTvRate_whenUnsuccessful_emitsError() = runTest {
-    coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
-      flowFailedWithLoading
+  fun postMovieRate_whenLoading_doesNothing() =
+    runTest {
+      coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns
+        loadingFlow
 
-    testViewModelState(
-      runBlock = { viewModel.postTvRate(rate, tvId) },
-      stateSelector = { it.itemState },
-      expectedErrors = listOf(errorMessage),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
-      }
-    )
-  }
+      testViewModelState(
+        runBlock = { viewModel.postMovieRate(rate, movieId) },
+        stateSelector = { it.itemState },
+        expectedLoadingStates = listOf(true),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postMovieRate(rate, movieId) }
+        },
+      )
+    }
 
   @Test
-  fun postTvRate_whenLoading_doesNothing() = runTest {
-    coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
-      loadingFlow
+  fun postTvRate_whenSuccessful_emitsSuccess() =
+    runTest {
+      coEvery { mockMediaStateUseCase.getTvStateWithUser(tvId) } returns
+        successFlow(mockMediaStated)
+      coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
+        flowSuccessWithLoading(mockPost)
 
-    testViewModelState(
-      runBlock = { viewModel.postTvRate(rate, tvId) },
-      stateSelector = { it.itemState },
-      expectedLoadingStates = listOf(true),
-      verifyBlock = {
-        coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
+      testViewModelState(
+        runBlock = {
+          viewModel.getTvState(tvId)
+          advanceUntilIdle()
+          viewModel.postTvRate(rate, tvId)
+        },
+        stateSelector = { it.itemState },
+        expectedStates = listOf(
+          mockMediaStated,
+          mockMediaStated.copy(rated = Rated.Value(rate.toDouble())),
+        ),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
+        },
+      )
+    }
+
+  @Test
+  fun postTvRate_whenItemStateIsNull_itemStateRemainsNull() =
+    runTest {
+      coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
+        flowSuccessWithLoading(mockPost)
+
+      viewModel.postTvRate(rate, tvId)
+      advanceUntilIdle()
+
+      assertNull(viewModel.uiState.value.itemState)
+
+      coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
+    }
+
+  @Test
+  fun postTvRate_whenItemStateIsNull_stillEmitsToast() =
+    runTest {
+      coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
+        flowSuccessWithLoading(mockPost)
+
+      val toastEvents = mutableListOf<Int>()
+      val collectJob = launch {
+        viewModel.toastEvent.collect { toastEvents.add(it) }
       }
-    )
-  }
 
-  private fun setupMediaStateSuccessful(){
+      viewModel.postTvRate(rate, tvId)
+      advanceUntilIdle()
+
+      assertEquals(rating_added_successfully, toastEvents.last())
+
+      collectJob.cancel()
+    }
+
+  @Test
+  fun postTvRate_whenUnsuccessful_emitsError() =
+    runTest {
+      coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
+        flowFailedWithLoading
+
+      testViewModelState(
+        runBlock = { viewModel.postTvRate(rate, tvId) },
+        stateSelector = { it.itemState },
+        expectedErrors = listOf(errorMessage),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
+        },
+      )
+    }
+
+  @Test
+  fun postTvRate_whenLoading_doesNothing() =
+    runTest {
+      coEvery { mockPostRateUseCase.postTvRate(rate, tvId) } returns
+        loadingFlow
+
+      testViewModelState(
+        runBlock = { viewModel.postTvRate(rate, tvId) },
+        stateSelector = { it.itemState },
+        expectedLoadingStates = listOf(true),
+        verifyBlock = {
+          coVerify { mockPostRateUseCase.postTvRate(rate, tvId) }
+        },
+      )
+    }
+
+  private fun setupMediaStateSuccessful() {
     coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
       successFlow(mockMediaStated)
     coEvery { mockPostRateUseCase.postMovieRate(rate, movieId) } returns

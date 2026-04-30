@@ -31,7 +31,7 @@ class UserPreferenceViewModelTest {
     token = "anotherToken",
     isLogin = false,
     gravatarHash = null,
-    tmdbAvatar = null
+    tmdbAvatar = null,
   )
 
   @get:Rule
@@ -46,48 +46,53 @@ class UserPreferenceViewModelTest {
   }
 
   @Test
-  fun getUserPref_whenSuccessful_emitsUserModel() = runTest {
-    every { userPrefUseCase.getUser() } returns flowOf(userModel) // Mocking getUser()
+  fun getUserPref_whenSuccessful_emitsUserModel() =
+    runTest {
+      every { userPrefUseCase.getUser() } returns flowOf(userModel)
 
-    val observer = mockk<Observer<UserModel>>(relaxed = true) // Relaxed mock for observer
-    viewModel.getUserPref().observeForever(observer)
-    advanceUntilIdle() // Ensure all coroutines have completed
+      val observer = mockk<Observer<UserModel>>(relaxed = true)
+      viewModel.getUserPref().observeForever(observer)
+      advanceUntilIdle() // ensure all coroutines have completed
 
-    coVerify { observer.onChanged(userModel) } // Verify observer was called with the expected value
-  }
-
-  @Test
-  fun getUserRegionPref_whenSuccessful_emitsRegionString() = runTest {
-    val region = "US"
-    every { userPrefUseCase.getUserRegionPref() } returns flowOf(region)
-
-    val observer = mockk<Observer<String>>(relaxed = true)
-    viewModel.getUserRegionPref().observeForever(observer)
-    advanceUntilIdle()
-    coVerify { observer.onChanged(region) }
-  }
+      coVerify { observer.onChanged(userModel) }
+    }
 
   @Test
-  fun saveUserPref_whenSuccessful_callsSaveUserPrefFromUseCase() = runTest {
-    coEvery { userPrefUseCase.saveUserPref(userModel) } just Runs
-    viewModel.saveUserPref(userModel)
-    advanceUntilIdle()
-    coVerify { userPrefUseCase.saveUserPref(userModel) }
-  }
+  fun getUserRegionPref_whenSuccessful_emitsRegionString() =
+    runTest {
+      val region = "US"
+      every { userPrefUseCase.getUserRegionPref() } returns flowOf(region)
+
+      val observer = mockk<Observer<String>>(relaxed = true)
+      viewModel.getUserRegionPref().observeForever(observer)
+      advanceUntilIdle()
+      coVerify { observer.onChanged(region) }
+    }
 
   @Test
-  fun saveRegionPref_whenSuccessful_callsSaveRegionPrefFromUseCase() = runTest {
-    val region = "US"
-    viewModel.saveRegionPref(region)
-    advanceUntilIdle()
-    coVerify { userPrefUseCase.saveRegionPref(region) }
-  }
+  fun saveUserPref_whenSuccessful_callsSaveUserPrefFromUseCase() =
+    runTest {
+      coEvery { userPrefUseCase.saveUserPref(userModel) } just Runs
+      viewModel.saveUserPref(userModel)
+      advanceUntilIdle()
+      coVerify { userPrefUseCase.saveUserPref(userModel) }
+    }
 
   @Test
-  fun removeUserDataPref_whenSuccessful_callsRemoveUserDataPrefFromUseCase() = runTest {
-    coEvery { userPrefUseCase.removeUserDataPref() } just Runs
-    viewModel.removeUserDataPref()
-    advanceUntilIdle()
-    coVerify { userPrefUseCase.removeUserDataPref() }
-  }
+  fun saveRegionPref_whenSuccessful_callsSaveRegionPrefFromUseCase() =
+    runTest {
+      val region = "US"
+      viewModel.saveRegionPref(region)
+      advanceUntilIdle()
+      coVerify { userPrefUseCase.saveRegionPref(region) }
+    }
+
+  @Test
+  fun removeUserDataPref_whenSuccessful_callsRemoveUserDataPrefFromUseCase() =
+    runTest {
+      coEvery { userPrefUseCase.removeUserDataPref() } just Runs
+      viewModel.removeUserDataPref()
+      advanceUntilIdle()
+      coVerify { userPrefUseCase.removeUserDataPref() }
+    }
 }

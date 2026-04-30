@@ -13,7 +13,8 @@ import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 
-abstract class BaseAdapterPagingTest : BaseAdapterTest<MediaItem, PagingDataAdapter<MediaItem, *>>() {
+abstract class BaseAdapterPagingTest :
+  BaseAdapterTest<MediaItem, PagingDataAdapter<MediaItem, *>>() {
 
   protected lateinit var onDelete: (MediaItem) -> Unit
   protected lateinit var onAddToWatchlist: (MediaItem) -> Unit
@@ -29,7 +30,7 @@ abstract class BaseAdapterPagingTest : BaseAdapterTest<MediaItem, PagingDataAdap
     releaseDate = TEST_DATE,
     listGenreIds = listOf(12),
     voteAverage = 10f,
-    posterPath = "posterPath.jpg"
+    posterPath = "posterPath.jpg",
   )
   protected val pagingData = PagingData.from(listOf(movieData))
 

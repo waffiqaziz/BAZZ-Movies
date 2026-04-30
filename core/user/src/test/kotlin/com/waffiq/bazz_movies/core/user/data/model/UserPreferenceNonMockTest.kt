@@ -29,66 +29,73 @@ class UserPreferenceNonMockTest {
   val testCoroutineDispatcher = UnconfinedDispatcherRule()
 
   @Before
-  fun setup() = runTest {
-    testContext = ApplicationProvider.getApplicationContext()
-    testDataStore = PreferenceDataStoreFactory.create(
-      produceFile = { testContext.preferencesDataStoreFile(DATASTORE_NAME) }
-    )
-    userPreference = UserPreference(testDataStore)
-  }
+  fun setup() =
+    runTest {
+      testContext = ApplicationProvider.getApplicationContext()
+      testDataStore = PreferenceDataStoreFactory.create(
+        produceFile = { testContext.preferencesDataStoreFile(DATASTORE_NAME) },
+      )
+      userPreference = UserPreference(testDataStore)
+    }
 
   @Test
-  fun saveUserAndGetUser_whenCalled_storesAndReturnsSameData() = runTest {
-    userPreference.saveUser(userModelPref)
+  fun saveUserAndGetUser_whenCalled_storesAndReturnsSameData() =
+    runTest {
+      userPreference.saveUser(userModelPref)
 
-    val savedUser = userPreference.getUser().first()
-    assertEquals(userModelPref, savedUser)
-  }
-
-  @Test
-  fun saveRegion_whenSuccessful_storesCorrectRegion() = runTest {
-    userPreference.saveUser(userModelPref)
-    userPreference.saveRegion("MY")
-
-    val savedUser = userPreference.getUser().first()
-    assertEquals("MY", savedUser.region)
-  }
+      val savedUser = userPreference.getUser().first()
+      assertEquals(userModelPref, savedUser)
+    }
 
   @Test
-  fun saveRegion_withEmptyRegion_storesEmptyRegion() = runTest {
-    userPreference.saveUser(userModelPref)
-    userPreference.saveRegion("")
-    assertEquals("", userPreference.getUser().first().region)
-  }
+  fun saveRegion_whenSuccessful_storesCorrectRegion() =
+    runTest {
+      userPreference.saveUser(userModelPref)
+      userPreference.saveRegion("MY")
+
+      val savedUser = userPreference.getUser().first()
+      assertEquals("MY", savedUser.region)
+    }
 
   @Test
-  fun getToken_whenSuccessful_returnsCorrectToken() = runTest {
-    userPreference.saveUser(userModelPref)
-
-    val userToken = userPreference.getToken().first()
-    assertEquals("sampleToken", userToken)
-  }
-
-  @Test
-  fun getRegion_whenSuccessful_returnsCorrectRegion() = runTest {
-    userPreference.saveUser(userModelPref)
-
-    val userToken = userPreference.getRegion().first()
-    assertEquals("US", userToken)
-  }
+  fun saveRegion_withEmptyRegion_storesEmptyRegion() =
+    runTest {
+      userPreference.saveUser(userModelPref)
+      userPreference.saveRegion("")
+      assertEquals("", userPreference.getUser().first().region)
+    }
 
   @Test
-  fun removeUserData_whenSuccessful_removesAllData() = runTest {
-    userPreference.saveUser(userModelPref)
+  fun getToken_whenSuccessful_returnsCorrectToken() =
+    runTest {
+      userPreference.saveUser(userModelPref)
 
-    // check first if data is valid
-    assertEquals(userModelPref, userPreference.getUser().first())
+      val userToken = userPreference.getToken().first()
+      assertEquals("sampleToken", userToken)
+    }
 
-    // call remove function
-    userPreference.removeUserData()
+  @Test
+  fun getRegion_whenSuccessful_returnsCorrectRegion() =
+    runTest {
+      userPreference.saveUser(userModelPref)
 
-    val updatedDataUser = userPreference.getUser().first()
-    assertEquals(0, updatedDataUser.userId)
-    assertEquals("", updatedDataUser.name)
-  }
+      val userToken = userPreference.getRegion().first()
+      assertEquals("US", userToken)
+    }
+
+  @Test
+  fun removeUserData_whenSuccessful_removesAllData() =
+    runTest {
+      userPreference.saveUser(userModelPref)
+
+      // check first if data is valid
+      assertEquals(userModelPref, userPreference.getUser().first())
+
+      // call remove function
+      userPreference.removeUserData()
+
+      val updatedDataUser = userPreference.getUser().first()
+      assertEquals(0, updatedDataUser.userId)
+      assertEquals("", updatedDataUser.name)
+    }
 }

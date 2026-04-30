@@ -90,7 +90,7 @@ class DetailTvTest {
       name = "Game of Thrones",
       id = 1399,
       adult = true,
-      inProduction = true
+      inProduction = true,
     )
 
     assertEquals("Game of Thrones", detailTv.name)
@@ -110,7 +110,7 @@ class DetailTvTest {
       id = 0,
       numberOfSeasons = 0,
       voteCount = 0,
-      voteAverage = 0.0
+      voteAverage = 0.0,
     )
 
     assertEquals(0, detailTv.numberOfEpisodes)
@@ -128,7 +128,7 @@ class DetailTvTest {
       listGenres = emptyList(),
       listLanguages = emptyList(),
       listOriginCountry = emptyList(),
-      listEpisodeRunTime = emptyList()
+      listEpisodeRunTime = emptyList(),
     )
 
     assertTrue(detailTv.listNetworksItem?.isEmpty() == true)
@@ -143,7 +143,7 @@ class DetailTvTest {
     val detailTv = TvDetail(
       listNetworksItem = listOf(null, null),
       listLanguages = listOf(null, "en", null),
-      listEpisodeRunTime = listOf(null, 45, null)
+      listEpisodeRunTime = listOf(null, 45, null),
     )
 
     assertEquals(2, detailTv.listNetworksItem?.size)
@@ -170,7 +170,7 @@ class DetailTvTest {
       name = "",
       tagline = "",
       homepage = "",
-      status = ""
+      status = "",
     )
 
     assertEquals("", detailTv.originalLanguage)
@@ -190,7 +190,7 @@ class DetailTvTest {
       id = -100,
       numberOfSeasons = -2,
       voteCount = -50,
-      voteAverage = -1.5
+      voteAverage = -1.5,
     )
 
     assertEquals(-1, detailTv.numberOfEpisodes)

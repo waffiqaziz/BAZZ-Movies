@@ -31,15 +31,16 @@ abstract class BaseApiServiceTest {
     tvApiService = retrofit.create(TvApiService::class.java)
   }
 
-
   @After
   fun tearDown() {
     mockWebServer.shutdown()
   }
 
-  protected fun mockMediaResponse(){
+  protected fun mockMediaResponse() {
     mockWebServer.enqueue(
-      MockResponse().setBody("""{ "page":1, "results": [], "total_pages" :1, "total_results": 1 }""")
+      MockResponse().setBody(
+        """{ "page":1, "results": [], "total_pages" :1, "total_results": 1 }""",
+      ),
     )
   }
 }

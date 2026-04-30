@@ -12,7 +12,7 @@ class ProviderTest {
       logoPath = null,
       providerId = null,
       providerName = null,
-      displayPriority = null
+      displayPriority = null,
     )
 
     assertNull(provider.logoPath)
@@ -27,7 +27,7 @@ class ProviderTest {
       logoPath = "/logo.png",
       providerId = 123,
       providerName = "Netflix",
-      displayPriority = 1
+      displayPriority = 1,
     )
 
     assertEquals("/logo.png", provider.logoPath)
@@ -42,7 +42,7 @@ class ProviderTest {
       logoPath = null,
       providerId = null,
       providerName = "Amazon Prime",
-      displayPriority = null
+      displayPriority = null,
     )
 
     assertNull(provider.logoPath)
@@ -57,7 +57,7 @@ class ProviderTest {
       logoPath = "/disney.png",
       providerId = null,
       providerName = "Disney+",
-      displayPriority = 2
+      displayPriority = 2,
     )
 
     assertEquals("/disney.png", provider.logoPath)

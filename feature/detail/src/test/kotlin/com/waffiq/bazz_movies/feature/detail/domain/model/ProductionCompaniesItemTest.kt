@@ -22,7 +22,7 @@ class ProductionCompaniesItemTest {
       logoPath = "/logo.png",
       name = "Warner Bros",
       id = 123,
-      originCountry = "US"
+      originCountry = "US",
     )
 
     assertEquals("/logo.png", productionCompany.logoPath)
@@ -47,7 +47,7 @@ class ProductionCompaniesItemTest {
       logoPath = null,
       name = null,
       id = null,
-      originCountry = null
+      originCountry = null,
     )
 
     assertNull(productionCompany.logoPath)

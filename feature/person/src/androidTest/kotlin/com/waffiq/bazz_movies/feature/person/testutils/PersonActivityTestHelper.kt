@@ -19,9 +19,7 @@ import org.junit.Before
 /**
  * Interface for providing test utilities for PersonActivity.
  *
- * This interface defines methods to set up mock data and dependencies for testing the Person Activity.
- * It includes LiveData objects for person details, known for movies, images, external IDs, error states,
- * and loading states.
+ * Defines methods to set up mock data and dependencies for testing the Person Activity.
  */
 interface PersonActivityTestHelper {
   val detailPersonLiveData: MutableLiveData<DetailPerson>

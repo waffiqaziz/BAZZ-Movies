@@ -39,7 +39,7 @@ class OMDbDetailsResponseTest {
         familiar threat returns to finish what was previously started, Jake must work with Neytiri 
         and the army of the Na'vi race to protect their home.
       """.trimIndent(),
-      omdbDetailsResponseDump.plot
+      omdbDetailsResponseDump.plot,
     )
   }
 
@@ -70,7 +70,7 @@ class OMDbDetailsResponseTest {
     assertEquals("2022", omdbDetailsResponseDump.year)
     assertEquals(
       "https://m.media-amazon.com/images/M/poster@._V1_SX300.jpg",
-      omdbDetailsResponseDump.poster
+      omdbDetailsResponseDump.poster,
     )
   }
 

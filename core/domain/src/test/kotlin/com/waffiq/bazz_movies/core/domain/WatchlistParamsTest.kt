@@ -11,7 +11,7 @@ class WatchlistParamsTest {
     val watchlistParams = WatchlistParams(
       mediaType = "movie",
       mediaId = 123,
-      watchlist = true
+      watchlist = true,
     )
 
     assertEquals("movie", watchlistParams.mediaType)

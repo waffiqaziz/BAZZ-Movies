@@ -10,7 +10,7 @@ class WatchProvidersUiStateTest {
     logoPath = "path",
     providerId = 1234,
     providerName = "Provider Name",
-    displayPriority = 1
+    displayPriority = 1,
   )
   private val providerList = listOf(sampleProvider)
 
@@ -70,8 +70,8 @@ class WatchProvidersUiStateTest {
         buy = emptyList(),
         flatrate = emptyList(),
         free = emptyList(),
-        rent = emptyList()
-      )
+        rent = emptyList(),
+      ),
     )
 
     states.forEach { state ->

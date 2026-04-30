@@ -22,7 +22,7 @@ class BelongsToCollectionTest {
       backdropPath = "/backdrop.jpg",
       name = "Marvel Collection",
       id = 123,
-      posterPath = "/poster.jpg"
+      posterPath = "/poster.jpg",
     )
 
     assertEquals("/backdrop.jpg", collection.backdropPath)
@@ -47,7 +47,7 @@ class BelongsToCollectionTest {
       backdropPath = null,
       name = null,
       id = null,
-      posterPath = null
+      posterPath = null,
     )
 
     assertNull(collection.backdropPath)

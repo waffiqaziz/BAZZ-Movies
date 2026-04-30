@@ -30,7 +30,7 @@ class CreatedByItemResponseTest {
   @Test
   fun createdByItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val createdByItemResponse = CreatedByItemResponse(
-      id = 435625
+      id = 435625,
     )
     assertEquals(435625, createdByItemResponse.id)
     assertNull(createdByItemResponse.name)

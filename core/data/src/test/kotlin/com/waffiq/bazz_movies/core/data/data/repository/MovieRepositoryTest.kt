@@ -35,7 +35,7 @@ class MovieRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockMovieDataSource.getTopRatedMovies() },
       repositoryCall = { movieRepository.getTopRatedMovies() },
-      verifyDataSourceCall = { verify { mockMovieDataSource.getTopRatedMovies() } }
+      verifyDataSourceCall = { verify { mockMovieDataSource.getTopRatedMovies() } },
     )
   }
 
@@ -45,7 +45,7 @@ class MovieRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockMovieDataSource.getPopularMovies() },
       repositoryCall = { movieRepository.getPopularMovies() },
-      verifyDataSourceCall = { verify { mockMovieDataSource.getPopularMovies() } }
+      verifyDataSourceCall = { verify { mockMovieDataSource.getPopularMovies() } },
     )
   }
 
@@ -55,7 +55,7 @@ class MovieRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockMovieDataSource.getUpcomingMovies(region) },
       repositoryCall = { movieRepository.getUpcomingMovies(region) },
-      verifyDataSourceCall = { verify { mockMovieDataSource.getUpcomingMovies(region) } }
+      verifyDataSourceCall = { verify { mockMovieDataSource.getUpcomingMovies(region) } },
     )
   }
 
@@ -65,7 +65,7 @@ class MovieRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockMovieDataSource.getPlayingNowMovies(region) },
       repositoryCall = { movieRepository.getPlayingNowMovies(region) },
-      verifyDataSourceCall = { verify { mockMovieDataSource.getPlayingNowMovies(region) } }
+      verifyDataSourceCall = { verify { mockMovieDataSource.getPlayingNowMovies(region) } },
     )
   }
 
@@ -75,40 +75,40 @@ class MovieRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockMovieDataSource.getMovieRecommendation(id) },
       repositoryCall = { movieRepository.getMovieRecommendation(id) },
-      verifyDataSourceCall = { verify { mockMovieDataSource.getMovieRecommendation(any()) } }
+      verifyDataSourceCall = { verify { mockMovieDataSource.getMovieRecommendation(any()) } },
     )
   }
 
+  @Test
+  fun getStatedMovie_whenSuccessful_returnsMappedStatedMovie() =
+    runTest {
+      coEvery { mockMovieDataSource.getMovieState("sessionId", 1234) } returns
+        flowOf(NetworkResult.Success(mediaStateResponse))
 
+      movieRepository.getMovieState("sessionId", 1234).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals(mediaStateResponse.toMediaState(), result.data)
+        awaitComplete()
+      }
+    }
 
   @Test
-  fun getStatedMovie_whenSuccessful_returnsMappedStatedMovie() = runTest {
-    coEvery { mockMovieDataSource.getMovieState("sessionId", 1234) } returns
-      flowOf(NetworkResult.Success(mediaStateResponse))
+  fun postMovieRate_whenSuccessful_returnsCorrectResponse() =
+    runTest {
+      coEvery {
+        mockMovieDataSource.postMovieRate("sessionId", 9.0f, 7777)
+      } returns flowOf(NetworkResult.Success(postMovieResponseSuccess))
 
-    movieRepository.getMovieState("sessionId", 1234).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals(mediaStateResponse.toMediaState(), result.data)
-      awaitComplete()
+      movieRepository.postMovieRate("sessionId", 9.0f, 7777).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertTrue(result.data.success == true)
+        assertEquals("Success Rating Movie", result.data.statusMessage)
+        assertEquals(201, result.data.statusCode)
+        awaitComplete()
+      }
     }
-  }
-
-  @Test
-  fun postMovieRate_whenSuccessful_returnsCorrectResponse() = runTest {
-    coEvery {
-      mockMovieDataSource.postMovieRate("sessionId", 9.0f, 7777)
-    } returns flowOf(NetworkResult.Success(postMovieResponseSuccess))
-
-    movieRepository.postMovieRate("sessionId", 9.0f, 7777).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertTrue(result.data.success == true)
-      assertEquals("Success Rating Movie", result.data.statusMessage)
-      assertEquals(201, result.data.statusCode)
-      awaitComplete()
-    }
-  }
 }

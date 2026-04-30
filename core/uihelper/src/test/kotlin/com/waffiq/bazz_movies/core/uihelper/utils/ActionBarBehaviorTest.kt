@@ -36,7 +36,7 @@ class ActionBarBehaviorTest {
   fun handleOverHeightAppBar_whenCalled_updateMarginsWithInsets() {
     appBarLayout.layoutParams = ViewGroup.MarginLayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.WRAP_CONTENT
+      ViewGroup.LayoutParams.WRAP_CONTENT,
     )
     appBarLayout.handleOverHeightAppBar()
 

@@ -29,8 +29,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
@@ -38,6 +36,8 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnab
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -179,26 +179,28 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
-  fun signOutStateLogin_allBranches_shouldBeCovered() = runTest {
-    // Hit all branches in the logged-in when statement
-    mockUIState.emit(UIState.Loading)
-    advanceUntilIdle()
-    performSignOutAction()
+  fun signOutStateLogin_allBranches_shouldBeCovered() =
+    runTest {
+      // Hit all branches in the logged-in when statement
+      mockUIState.emit(UIState.Loading)
+      advanceUntilIdle()
+      performSignOutAction()
 
-    mockUIState.emit(UIState.Error("Test error"))
-    advanceUntilIdle()
+      mockUIState.emit(UIState.Error("Test error"))
+      advanceUntilIdle()
 
-    mockUIState.emit(UIState.Success(Unit))
-    advanceUntilIdle()
-  }
+      mockUIState.emit(UIState.Success(Unit))
+      advanceUntilIdle()
+    }
 
   @Test
-  fun signOutStateGuest_allBranches_shouldBeCovered() = runTest {
-    setupGuestUser()
-    performSignOutAction()
-    mockUIState.emit(UIState.Loading)
-    advanceUntilIdle()
-  }
+  fun signOutStateGuest_allBranches_shouldBeCovered() =
+    runTest {
+      setupGuestUser()
+      performSignOutAction()
+      mockUIState.emit(UIState.Loading)
+      advanceUntilIdle()
+    }
 
   @Test
   fun signOut_whenLoggedInUser_shouldShowLoggedInDialog() {
@@ -231,49 +233,53 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
-  fun signOutStateLogin_whenLoading_shouldShowLoadingState() = runTest {
-    performSignOutAction()
-    mockUIState.emit(UIState.Loading)
+  fun signOutStateLogin_whenLoading_shouldShowLoadingState() =
+    runTest {
+      performSignOutAction()
+      mockUIState.emit(UIState.Loading)
 
-    progress_bar.isDisplayed()
-  }
-
-  @Test
-  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() = runTest {
-    setupGuestUser()
-    performSignOutAction()
-    mockUIState.emit(UIState.Success(Unit))
-
-    // manual checking
-  }
+      progress_bar.isDisplayed()
+    }
 
   @Test
-  fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() = runTest {
-    performSignOutAction()
-    mockUIState.emit(UIState.Loading)
-    advanceUntilIdle()
+  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() =
+    runTest {
+      setupGuestUser()
+      performSignOutAction()
+      mockUIState.emit(UIState.Success(Unit))
 
-    onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
-    btn_signout.isNotEnable()
-
-    mockUIState.emit(UIState.Error("Sign out failed"))
-    advanceUntilIdle()
-
-    btn_signout.isEnable()
-    onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
-  }
+      // manual checking
+    }
 
   @Test
-  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() = runTest {
-    setupGuestUser()
+  fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() =
+    runTest {
+      performSignOutAction()
+      mockUIState.emit(UIState.Loading)
+      advanceUntilIdle()
 
-    // emit error result
-    mockUIState.emit(UIState.Error("Database error"))
-    shortDelay()
+      onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
+      btn_signout.isNotEnable()
 
-    progress_bar.isNotDisplayed()
-    verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<String>()) }
-  }
+      mockUIState.emit(UIState.Error("Sign out failed"))
+      advanceUntilIdle()
+
+      btn_signout.isEnable()
+      onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
+    }
+
+  @Test
+  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() =
+    runTest {
+      setupGuestUser()
+
+      // emit error result
+      mockUIState.emit(UIState.Error("Database error"))
+      shortDelay()
+
+      progress_bar.isNotDisplayed()
+      verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<String>()) }
+    }
 
   @Test
   fun regionViewModel_whenCountryCodeProvided_shouldUpdateRegionAndCountryPicker() {
@@ -303,7 +309,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun setData_whenUserHasGravatarHash_shouldDisplayAvatar() {
     val userWithGravatar = userModel.copy(
       gravatarHash = "testHash123",
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
     checkAvatarIsVisible(userWithGravatar, isDisplayed())
   }
@@ -312,7 +318,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun setData_whenUserHasTmdbAvatarButNoGravatar_shouldDisplayAvatar() {
     val userWithTmdb = userModel.copy(
       gravatarHash = null,
-      tmdbAvatar = "tmdbAvatar123"
+      tmdbAvatar = "tmdbAvatar123",
     )
     checkAvatarIsVisible(userWithTmdb, isDisplayed())
   }
@@ -321,7 +327,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun setData_whenUserHasNoAvatars_shouldUseDefaultAvatar() {
     val userWithoutAvatars = userModel.copy(
       gravatarHash = null,
-      tmdbAvatar = null
+      tmdbAvatar = null,
     )
     checkAvatarIsVisible(userWithoutAvatars, isDisplayed())
   }
@@ -330,7 +336,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   fun setData_whenUserHasEmptyAvatars_shouldUseDefaultAvatar() {
     val userWithEmptyAvatars = userModel.copy(
       gravatarHash = "",
-      tmdbAvatar = ""
+      tmdbAvatar = "",
     )
     checkAvatarIsVisible(userWithEmptyAvatars, isDisplayed())
   }

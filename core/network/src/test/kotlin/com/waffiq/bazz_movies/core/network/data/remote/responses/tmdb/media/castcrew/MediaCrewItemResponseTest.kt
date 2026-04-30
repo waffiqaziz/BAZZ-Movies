@@ -43,7 +43,7 @@ class MediaCrewItemResponseTest {
   fun mediaCrewItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val mediaCrewItemResponse = MediaCrewResponseItem(
       name = "Martin Freeman",
-      id = 7060
+      id = 7060,
 
     )
     assertEquals("Martin Freeman", mediaCrewItemResponse.name)

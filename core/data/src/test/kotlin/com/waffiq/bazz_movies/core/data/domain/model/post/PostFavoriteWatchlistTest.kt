@@ -10,7 +10,7 @@ class PostFavoriteWatchlistTest {
   fun postFavoriteWatchlist_whenInitializedWithValues_setsAllProperties() {
     val postFavoriteWatchlist = PostFavoriteWatchlist(
       statusCode = 200,
-      statusMessage = "Success"
+      statusMessage = "Success",
     )
     assertEquals("Success", postFavoriteWatchlist.statusMessage)
     assertEquals(200, postFavoriteWatchlist.statusCode)

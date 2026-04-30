@@ -23,78 +23,79 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 
-class GetListByGenreInteractorTest : BehaviorSpec({
+class GetListByGenreInteractorTest :
+  BehaviorSpec({
 
-  val mockListRepository: IListRepository = mockk()
-  val mockUserRepository: IUserRepository = mockk()
+    val mockListRepository: IListRepository = mockk()
+    val mockUserRepository: IUserRepository = mockk()
 
-  lateinit var interactor: GetListInteractor
+    lateinit var interactor: GetListInteractor
 
-  beforeTest {
-    Dispatchers.setMain(UnconfinedTestDispatcher())
-    interactor = GetListInteractor(mockListRepository, mockUserRepository)
-  }
+    beforeTest {
+      Dispatchers.setMain(UnconfinedTestDispatcher())
+      interactor = GetListInteractor(mockListRepository, mockUserRepository)
+    }
 
-  afterTest {
-    clearMocks(mockListRepository, mockUserRepository)
-  }
+    afterTest {
+      clearMocks(mockListRepository, mockUserRepository)
+    }
 
-  suspend fun BehaviorSpecWhenContainerScope.thenEmitsCorrectItem(
-    flowProvider: () -> Flow<PagingData<MediaItem>>,
-    expected: MediaItem,
-  ) {
-    Then("emit paging data containing the correct media item") {
-      testPagingFlowCancelRemaining(flowProvider()) {
-        it[0] shouldBe expected
+    suspend fun BehaviorSpecWhenContainerScope.thenEmitsCorrectItem(
+      flowProvider: () -> Flow<PagingData<MediaItem>>,
+      expected: MediaItem,
+    ) {
+      Then("emit paging data containing the correct media item") {
+        testPagingFlowCancelRemaining(flowProvider()) {
+          it[0] shouldBe expected
+        }
       }
     }
-  }
 
-  Given("a genre id and a valid user region are provided") {
+    Given("a genre id and a valid user region are provided") {
 
-    When("fetching movies by genre") {
-      coEvery { mockListRepository.getMovieByGenres(any(), any()) } returns
-        flowOf(fakeMovieMediaItemPagingData)
-      every { mockUserRepository.getUserRegionPref() } returns flowOf("US")
+      When("fetching movies by genre") {
+        coEvery { mockListRepository.getMovieByGenres(any(), any()) } returns
+          flowOf(fakeMovieMediaItemPagingData)
+        every { mockUserRepository.getUserRegionPref() } returns flowOf("US")
 
-      thenEmitsCorrectItem(
-        flowProvider = { interactor.getMovieByGenres("1") },
-        expected = mediaMovieResponseItem.toMediaItem(),
-      )
+        thenEmitsCorrectItem(
+          flowProvider = { interactor.getMovieByGenres("1") },
+          expected = mediaMovieResponseItem.toMediaItem(),
+        )
+      }
+
+      When("fetching tv shows by genre") {
+        coEvery { mockListRepository.getTvByGenres(any(), any()) } returns
+          flowOf(fakeTvMediaItemPagingData)
+        every { mockUserRepository.getUserRegionPref() } returns flowOf("ID")
+
+        thenEmitsCorrectItem(
+          flowProvider = { interactor.getTvByGenres("1") },
+          expected = mediaTvResponseItem.toMediaItem(),
+        )
+      }
     }
 
-    When("fetching tv shows by genre") {
-      coEvery { mockListRepository.getTvByGenres(any(), any()) } returns
-        flowOf(fakeTvMediaItemPagingData)
-      every { mockUserRepository.getUserRegionPref() } returns flowOf("ID")
+    Given("a keyword id is provided") {
 
-      thenEmitsCorrectItem(
-        flowProvider = { interactor.getTvByGenres("1") },
-        expected = mediaTvResponseItem.toMediaItem(),
-      )
+      When("fetching movies by keyword") {
+        coEvery { mockListRepository.getMovieByKeywords(any()) } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { interactor.getMovieByKeywords("1") },
+          expected = mediaMovieResponseItem.toMediaItem(),
+        )
+      }
+
+      When("fetching tv shows by keyword") {
+        coEvery { mockListRepository.getTvByKeywords(any()) } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { interactor.getTvByKeywords("1") },
+          expected = mediaTvResponseItem.toMediaItem(),
+        )
+      }
     }
-  }
-
-  Given("a keyword id is provided") {
-
-    When("fetching movies by keyword") {
-      coEvery { mockListRepository.getMovieByKeywords(any()) } returns
-        flowOf(fakeMovieMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { interactor.getMovieByKeywords("1") },
-        expected = mediaMovieResponseItem.toMediaItem(),
-      )
-    }
-
-    When("fetching tv shows by keyword") {
-      coEvery { mockListRepository.getTvByKeywords(any()) } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { interactor.getTvByKeywords("1") },
-        expected = mediaTvResponseItem.toMediaItem(),
-      )
-    }
-  }
-})
+  })

@@ -21,7 +21,7 @@ class DetailPersonResponseTest {
     assertEquals("/AdWKVqyWpkYSfKE5Gb2qn8JzHni.jpg", detailPersonResponse.profilePath)
     assertThat(
       detailPersonResponse.biography,
-      containsString("Heath Andrew Ledger (April 4, 1979 – January 22, 2008)")
+      containsString("Heath Andrew Ledger (April 4, 1979 – January 22, 2008)"),
     )
     assertEquals("2008-01-22", detailPersonResponse.deathday)
     assertEquals("Perth, Western Australia, Australia", detailPersonResponse.placeOfBirth)
@@ -55,7 +55,7 @@ class DetailPersonResponseTest {
   fun detailPersonResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val detailPersonResponse = DetailPersonResponse(
       name = null,
-      id = 2
+      id = 2,
     )
     assertNull(detailPersonResponse.name)
     assertEquals(2, detailPersonResponse.id)

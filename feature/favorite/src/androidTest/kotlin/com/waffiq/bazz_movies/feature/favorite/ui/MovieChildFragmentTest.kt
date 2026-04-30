@@ -42,8 +42,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MovieChildFragmentTest :
-  FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
+class MovieChildFragmentTest : FavoriteFragmentTestHelper by DefaultFavoriteFragmentTestHelper() {
 
   private val snackBarLoginData = SnackBarUserLoginData(
     isSuccess = true,
@@ -62,8 +61,8 @@ class MovieChildFragmentTest :
   @BindValue
   @JvmField
   val mockSnackbar: ISnackbar = object : ISnackbar {
-    override fun showSnackbarWarning(message: String): Snackbar? {
-      return try {
+    override fun showSnackbarWarning(message: String): Snackbar? =
+      try {
         val childFragment = favoriteFragment.childFragmentManager.fragments.first()
         val rootView = childFragment.requireView().findViewById<View>(snackbar_anchor_test)
 
@@ -74,7 +73,6 @@ class MovieChildFragmentTest :
       } catch (_: Exception) {
         null
       }
-    }
 
     override fun showSnackbarWarning(eventMessage: Event<String>): Snackbar? =
       eventMessage.getContentIfNotHandled()?.let { showSnackbarWarning(it) }
@@ -107,95 +105,99 @@ class MovieChildFragmentTest :
   }
 
   @Test
-  fun loggedUser_swipeLeft_showAddedSnackbar() = runTest {
-    val data = snackBarLoginData.copy(
-      watchlistModel = WatchlistParams(
-        mediaType = "movie",
-        mediaId = 1234,
-        watchlist = true
+  fun loggedUser_swipeLeft_showAddedSnackbar() =
+    runTest {
+      val data = snackBarLoginData.copy(
+        watchlistModel = WatchlistParams(
+          mediaType = "movie",
+          mediaId = 1234,
+          watchlist = true,
+        ),
       )
-    )
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
 
-    // swipe left
-    performSwipeAction(0, swipeLeft())
+      // swipe left
+      performSwipeAction(0, swipeLeft())
 
-    mockSnackBarChannel.send(data)
-    onIdle()
+      mockSnackBarChannel.send(data)
+      onIdle()
 
-    val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
-    snackbar_text.doesHaveText("Title $snackbarText")
-    performUndoAction()
-  }
-
-  @Test
-  fun loggedUser_swipeRight_showDeletedSnackbar() = runTest {
-    val data = snackBarLoginData.copy(
-
-      favoriteModel = FavoriteParams(
-        mediaType = "movie",
-        mediaId = 12345,
-        favorite = false
-      ),
-    )
-
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
-
-    // swipe right (isWantToDelete = true)
-    performSwipeAction(1, swipeRight())
-
-    mockSnackBarChannel.send(data)
-    onIdle()
-
-    val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
-    snackbar_text.doesHaveText("Title $snackbarText")
-    performUndoAction()
-  }
+      val snackbarText = getString(favoriteFragment.requireActivity(), added_to_watchlist)
+      snackbar_text.doesHaveText("Title $snackbarText")
+      performUndoAction()
+    }
 
   @Test
-  fun loggedUser_swipeFailedResult_showFailedSnackbar() = runTest {
-    val failedDate = snackBarLoginData.copy(
-      title = "Test Error",
-      isSuccess = false,
-      favoriteModel = FavoriteParams(
-        mediaType = "movie",
-        mediaId = 12345,
-        favorite = false
-      ),
-    )
+  fun loggedUser_swipeRight_showDeletedSnackbar() =
+    runTest {
+      val data = snackBarLoginData.copy(
 
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
+        favoriteModel = FavoriteParams(
+          mediaType = "movie",
+          mediaId = 12345,
+          favorite = false,
+        ),
+      )
 
-    // swipe right (isWantToDelete = true)
-    performSwipeAction(1, swipeRight())
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
 
-    mockSnackBarChannel.send(failedDate)
-    snackbar_text.doesHaveText(failedDate.title)
-    onIdle()
-  }
+      // swipe right (isWantToDelete = true)
+      performSwipeAction(1, swipeRight())
+
+      mockSnackBarChannel.send(data)
+      onIdle()
+
+      val snackbarText = getString(favoriteFragment.requireActivity(), removed_from_favorite)
+      snackbar_text.doesHaveText("Title $snackbarText")
+      performUndoAction()
+    }
 
   @Test
-  fun loggedUser_swipeActionEmptyResult_doNothing() = runTest {
-    val emptyData = snackBarLoginData.copy(
-      title = "Test Empty Data",
-      isSuccess = true,
-      favoriteModel = null,
-      watchlistModel = null
-    )
+  fun loggedUser_swipeFailedResult_showFailedSnackbar() =
+    runTest {
+      val failedDate = snackBarLoginData.copy(
+        title = "Test Error",
+        isSuccess = false,
+        favoriteModel = FavoriteParams(
+          mediaType = "movie",
+          mediaId = 12345,
+          favorite = false,
+        ),
+      )
 
-    loggedUser(mockFavoriteViewModel)
-    launchFragment()
-    mockSnackBarChannel.send(emptyData)
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
 
-    // swipe right (isWantToDelete = true)
-    performSwipeAction(1, swipeRight())
+      // swipe right (isWantToDelete = true)
+      performSwipeAction(1, swipeRight())
 
-    mockSnackBarChannel.send(emptyData)
-    onIdle()
-  }
+      mockSnackBarChannel.send(failedDate)
+      snackbar_text.doesHaveText(failedDate.title)
+      onIdle()
+    }
+
+  @Test
+  fun loggedUser_swipeActionEmptyResult_doNothing() =
+    runTest {
+      val emptyData = snackBarLoginData.copy(
+        title = "Test Empty Data",
+        isSuccess = true,
+        favoriteModel = null,
+        watchlistModel = null,
+      )
+
+      loggedUser(mockFavoriteViewModel)
+      launchFragment()
+      mockSnackBarChannel.send(emptyData)
+
+      // swipe right (isWantToDelete = true)
+      performSwipeAction(1, swipeRight())
+
+      mockSnackBarChannel.send(emptyData)
+      onIdle()
+    }
 
   @Test
   fun guestUser_swipeAction_shouldPassed() {

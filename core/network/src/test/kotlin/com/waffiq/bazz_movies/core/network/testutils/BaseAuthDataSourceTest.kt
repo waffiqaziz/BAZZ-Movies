@@ -27,7 +27,7 @@ abstract class BaseAuthDataSourceTest {
   protected val apiInvalidFormatErrorResponse: Response<PostResponse> = Response.error(
     405,
     """{"status_code": 503, "status_message": "Invalid format: This service doesn't exist in that format."}"""
-      .toResponseBody("application/json".toMediaTypeOrNull())
+      .toResponseBody("application/json".toMediaTypeOrNull()),
   )
 
   protected val errorInvalidFormatMessage =

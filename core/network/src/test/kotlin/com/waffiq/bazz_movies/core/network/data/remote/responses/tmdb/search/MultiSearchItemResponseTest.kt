@@ -15,7 +15,7 @@ class MultiSearchItemResponseTest {
     assertEquals("person", multiSearchResponseItem.mediaType)
     assertEquals(
       "Jumanji: Welcome to the Jungle",
-      multiSearchResponseItem.listKnownFor?.get(0)?.title
+      multiSearchResponseItem.listKnownFor?.get(0)?.title,
     )
     assertEquals("Acting", multiSearchResponseItem.knownForDepartment)
     assertEquals(102.851, multiSearchResponseItem.popularity)
@@ -41,7 +41,7 @@ class MultiSearchItemResponseTest {
         In the 22nd century, a paraplegic Marine is dispatched to the moon Pandora on a unique 
         mission, but becomes torn between following orders and protecting an alien civilization.
       """.trimIndent(),
-      multiSearchResponseItem.overview
+      multiSearchResponseItem.overview,
     )
     assertEquals("en", multiSearchResponseItem.originalLanguage)
     assertEquals("Avatar", multiSearchResponseItem.originalTitle)

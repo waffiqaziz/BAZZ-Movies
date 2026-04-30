@@ -23,7 +23,7 @@ class MediaCastMapperTest {
       profilePath = "/john.jpg",
       id = 101,
       adult = false,
-      order = 0
+      order = 0,
     )
 
     val domain = with(MediaCreditsMapper) { response.toMediaCastItem() }
@@ -54,7 +54,7 @@ class MediaCastMapperTest {
       id = 202,
       adult = true,
       department = "Production",
-      job = "Producer"
+      job = "Producer",
     )
 
     val domain = with(MediaCreditsMapper) { response.toMediaCrewItem() }

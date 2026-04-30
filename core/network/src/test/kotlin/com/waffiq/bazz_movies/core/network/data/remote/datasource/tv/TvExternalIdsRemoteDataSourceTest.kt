@@ -17,72 +17,80 @@ import retrofit2.Response
 class TvExternalIdsRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun getTvExternalIds_whenSuccessful_returnsExpectedResponse() = runTest {
-    testSuccessResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      mockApiResponse = Response.success(externalIdResponseDump),
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-      expectedData = externalIdResponseDump,
-    )
-  }
+  fun getTvExternalIds_whenSuccessful_returnsExpectedResponse() =
+    runTest {
+      testSuccessResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        mockApiResponse = Response.success(externalIdResponseDump),
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+        expectedData = externalIdResponseDump,
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenServerError_returnsExpectedStatusMessageResponse() = runTest {
-    testErrorResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      errorResponse = apiMaintenanceErrorResponse,
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-      expectedErrorMessage = apiMaintenanceErrorMessage
-    )
-  }
+  fun getTvExternalIds_whenServerError_returnsExpectedStatusMessageResponse() =
+    runTest {
+      testErrorResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        errorResponse = apiMaintenanceErrorResponse,
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+        expectedErrorMessage = apiMaintenanceErrorMessage,
+      )
+    }
 
   // region getTvExternalIds EDGE CASE
   @Test
-  fun getTvExternalIds_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
-    testError404Response(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenAPIRespondsWith404_returnsExpectedResponse() =
+    runTest {
+      testError404Response(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
-    testUnknownHostExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenNetworkErrorOccurs_returnsExpectedResponse() =
+    runTest {
+      testUnknownHostExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenTimeoutOccurs_returnsErrorResponse() = runTest {
-    testSocketTimeoutExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenTimeoutOccurs_returnsErrorResponse() =
+    runTest {
+      testSocketTimeoutExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
-    testHttpExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenHttpExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testHttpExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
-    testIOExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenIOExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testIOExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
 
   @Test
-  fun getTvExternalIds_whenExceptionOccurs_returnsErrorResponse() = runTest {
-    testGeneralExceptionResponse(
-      apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
-      dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
-    )
-  }
+  fun getTvExternalIds_whenExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testGeneralExceptionResponse(
+        apiEndpoint = { mockTvApiService.getTvExternalIds(246) },
+        dataSourceEndpointCall = { tvRemoteDataSource.getTvExternalIds(246) },
+      )
+    }
   // endregion getTvExternalIds EDGE CASE
 }

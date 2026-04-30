@@ -13,7 +13,7 @@ class ContentRatingsItemTest {
     val contentRating = ContentRatingsItem(
       descriptors = descriptors,
       iso31661 = "US",
-      rating = "TV-MA"
+      rating = "TV-MA",
     )
 
     assertEquals(descriptors, contentRating.descriptors)
@@ -34,7 +34,7 @@ class ContentRatingsItemTest {
   fun createContentRatingsItem_withPartialValues_setsSpecifiedPropertiesOnly() {
     val contentRating = ContentRatingsItem(
       iso31661 = "GB",
-      rating = "15"
+      rating = "15",
     )
 
     assertNull(contentRating.descriptors)
@@ -45,7 +45,7 @@ class ContentRatingsItemTest {
   @Test
   fun createContentRatingsItem_withEmptyDescriptors_setsEmptyList() {
     val contentRating = ContentRatingsItem(
-      descriptors = emptyList()
+      descriptors = emptyList(),
     )
 
     assertTrue(contentRating.descriptors?.isEmpty() == true)
@@ -55,7 +55,7 @@ class ContentRatingsItemTest {
   fun createContentRatingsItem_withNullDescriptors_setsNullDescriptors() {
     val descriptors = listOf(null, "Violence", null)
     val contentRating = ContentRatingsItem(
-      descriptors = descriptors
+      descriptors = descriptors,
     )
 
     assertEquals(descriptors, contentRating.descriptors)
@@ -69,7 +69,7 @@ class ContentRatingsItemTest {
   fun createContentRatingsItem_withEmptyStrings_setsEmptyStrings() {
     val contentRating = ContentRatingsItem(
       iso31661 = "",
-      rating = ""
+      rating = "",
     )
 
     assertEquals("", contentRating.iso31661)
@@ -80,7 +80,7 @@ class ContentRatingsItemTest {
   fun createContentRatingsItem_withMixedDescriptors_setsMixedDescriptors() {
     val descriptors = listOf("Violence", 123, true, null, "Language")
     val contentRating = ContentRatingsItem(
-      descriptors = descriptors
+      descriptors = descriptors,
     )
 
     assertEquals(descriptors, contentRating.descriptors)

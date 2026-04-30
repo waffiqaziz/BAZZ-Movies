@@ -15,22 +15,21 @@ abstract class BaseReleaseDateHelperMovieTest {
     releaseDate: String?,
     productionCountries: List<String>,
     fallbackDate: String,
-  ): MovieDetail {
-    return MovieDetail(
+  ): MovieDetail =
+    MovieDetail(
       releaseDates = ReleaseDates(
         listReleaseDatesItem = listOf(
           ReleaseDatesItem(
             iso31661 = releaseRegion,
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = releaseDate)
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = releaseDate),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = productionCountries.map { ProductionCountriesItem(it) },
-      releaseDate = fallbackDate
+      releaseDate = fallbackDate,
     )
-  }
 
   protected fun checkMovieReleaseDate(
     data: MovieDetail?,

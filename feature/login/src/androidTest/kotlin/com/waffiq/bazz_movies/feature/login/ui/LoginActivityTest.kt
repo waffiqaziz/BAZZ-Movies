@@ -350,7 +350,7 @@ class LoginActivityTest {
       activity.onConfigurationChanged(
         Configuration().apply {
           orientation = Configuration.ORIENTATION_LANDSCAPE
-        }
+        },
       )
     }
 

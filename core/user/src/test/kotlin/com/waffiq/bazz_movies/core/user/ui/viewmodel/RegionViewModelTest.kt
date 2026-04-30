@@ -38,75 +38,80 @@ class RegionViewModelTest {
   }
 
   @Test
-  fun getCountryCode_whenSuccessful_emitsCountryCode() = runTest {
-    val mockCountryIP = CountryIP(country = "US", ip = "192.168.0.1")
-    val mockResult = Outcome.Success(mockCountryIP)
-    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+  fun getCountryCode_whenSuccessful_emitsCountryCode() =
+    runTest {
+      val mockCountryIP = CountryIP(country = "US", ip = "192.168.0.1")
+      val mockResult = Outcome.Success(mockCountryIP)
+      `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
-    val observer = mock<Observer<String>>()
-    viewModel.countryCode.observeForever(observer)
-    viewModel.getCountryCode()
-    advanceUntilIdle()
+      val observer = mock<Observer<String>>()
+      viewModel.countryCode.observeForever(observer)
+      viewModel.getCountryCode()
+      advanceUntilIdle()
 
-    verify(observer).onChanged("US")
-    viewModel.countryCode.removeObserver(observer)
-  }
-
-  @Test
-  fun getCountryCode_whenUnsuccessful_emitsErrorState() = runTest {
-    val mockResult = Outcome.Error(message = "Network error")
-    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
-
-    val observer = mock<Observer<Event<String>>>()
-    viewModel.errorState.observeForever(observer)
-    viewModel.getCountryCode()
-    advanceUntilIdle()
-
-    verify(observer).onChanged(argThat { event -> event.peekContent() == "Network error" })
-    viewModel.errorState.removeObserver(observer)
-  }
+      verify(observer).onChanged("US")
+      viewModel.countryCode.removeObserver(observer)
+    }
 
   @Test
-  fun getCountryCode_whenLoading_processesLoadingState() = runTest {
-    val mockResult = Outcome.Loading
-    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+  fun getCountryCode_whenUnsuccessful_emitsErrorState() =
+    runTest {
+      val mockResult = Outcome.Error(message = "Network error")
+      `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
-    val observer = mock<Observer<String>>()
-    viewModel.countryCode.observeForever(observer)
-    viewModel.getCountryCode()
-    advanceUntilIdle()
+      val observer = mock<Observer<Event<String>>>()
+      viewModel.errorState.observeForever(observer)
+      viewModel.getCountryCode()
+      advanceUntilIdle()
 
-    // verify that the observer is not called since no value is emitted for loading state
-    verify(observer, never()).onChanged(any())
-    viewModel.countryCode.removeObserver(observer)
-  }
-
-  @Test
-  fun getCountryCode_whenUnsuccessful_setsCountryCodeToEmpty() = runTest {
-    val mockResult = Outcome.Error(message = "Error")
-    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
-
-    val observer = mock<Observer<String>>()
-    viewModel.countryCode.observeForever(observer)
-    viewModel.getCountryCode()
-    advanceUntilIdle()
-
-    verify(observer).onChanged("")
-    viewModel.countryCode.removeObserver(observer)
-  }
+      verify(observer).onChanged(argThat { event -> event.peekContent() == "Network error" })
+      viewModel.errorState.removeObserver(observer)
+    }
 
   @Test
-  fun getCountryCode_whenCountryIsNull_setsCountryCodeToEmpty() = runTest {
-    val mockCountryIP = CountryIP(country = null, ip = "192.168.0.1")
-    val mockResult = Outcome.Success(mockCountryIP)
-    `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+  fun getCountryCode_whenLoading_processesLoadingState() =
+    runTest {
+      val mockResult = Outcome.Loading
+      `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
 
-    val observer = mock<Observer<String>>()
-    viewModel.countryCode.observeForever(observer)
-    viewModel.getCountryCode()
-    advanceUntilIdle()
+      val observer = mock<Observer<String>>()
+      viewModel.countryCode.observeForever(observer)
+      viewModel.getCountryCode()
+      advanceUntilIdle()
 
-    verify(observer).onChanged("")
-    viewModel.countryCode.removeObserver(observer)
-  }
+      // verify that the observer is not called since no value is emitted for loading state
+      verify(observer, never()).onChanged(any())
+      viewModel.countryCode.removeObserver(observer)
+    }
+
+  @Test
+  fun getCountryCode_whenUnsuccessful_setsCountryCodeToEmpty() =
+    runTest {
+      val mockResult = Outcome.Error(message = "Error")
+      `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+
+      val observer = mock<Observer<String>>()
+      viewModel.countryCode.observeForever(observer)
+      viewModel.getCountryCode()
+      advanceUntilIdle()
+
+      verify(observer).onChanged("")
+      viewModel.countryCode.removeObserver(observer)
+    }
+
+  @Test
+  fun getCountryCode_whenCountryIsNull_setsCountryCodeToEmpty() =
+    runTest {
+      val mockCountryIP = CountryIP(country = null, ip = "192.168.0.1")
+      val mockResult = Outcome.Success(mockCountryIP)
+      `when`(getRegionUseCase.getCountryCode()).thenReturn(flow { emit(mockResult) })
+
+      val observer = mock<Observer<String>>()
+      viewModel.countryCode.observeForever(observer)
+      viewModel.getCountryCode()
+      advanceUntilIdle()
+
+      verify(observer).onChanged("")
+      viewModel.countryCode.removeObserver(observer)
+    }
 }

@@ -38,121 +38,134 @@ class LocalDatabaseInteractorTest {
   }
 
   @Test
-  fun favoriteMoviesFromDB_whenSuccessful_returnsListOfFavorites() = runTest {
-    localDatabaseInteractor.favoriteMoviesFromDB.test {
-      val result = awaitItem()
-      assertEquals(1, result.size)
-      assertEquals(favoriteMovie, result[0])
-      cancelAndIgnoreRemainingEvents()
+  fun favoriteMoviesFromDB_whenSuccessful_returnsListOfFavorites() =
+    runTest {
+      localDatabaseInteractor.favoriteMoviesFromDB.test {
+        val result = awaitItem()
+        assertEquals(1, result.size)
+        assertEquals(favoriteMovie, result[0])
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun watchlistMovieFromDB_whenSuccessful_returnsListOfWatchlist() = runTest {
-    localDatabaseInteractor.watchlistMovieFromDB.test {
-      val result = awaitItem()
-      assertEquals(1, result.size)
-      assertEquals(watchlistMovie, result[0])
-      cancelAndIgnoreRemainingEvents()
+  fun watchlistMovieFromDB_whenSuccessful_returnsListOfWatchlist() =
+    runTest {
+      localDatabaseInteractor.watchlistMovieFromDB.test {
+        val result = awaitItem()
+        assertEquals(1, result.size)
+        assertEquals(watchlistMovie, result[0])
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun favoriteTvFromDB_whenSuccessful_returnsListOfFavorites() = runTest {
-    localDatabaseInteractor.favoriteTvFromDB.test {
-      val result = awaitItem()
-      assertEquals(1, result.size)
-      assertEquals(favoriteTv, result[0])
-      cancelAndIgnoreRemainingEvents()
+  fun favoriteTvFromDB_whenSuccessful_returnsListOfFavorites() =
+    runTest {
+      localDatabaseInteractor.favoriteTvFromDB.test {
+        val result = awaitItem()
+        assertEquals(1, result.size)
+        assertEquals(favoriteTv, result[0])
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun watchlistTvFromDB_whenSuccessful_returnListOfTvWatchlist() = runTest {
-    localDatabaseInteractor.watchlistTvFromDB.test {
-      val result = awaitItem()
-      assertEquals(1, result.size)
-      assertEquals(watchlistTv, result[0])
-      cancelAndIgnoreRemainingEvents()
+  fun watchlistTvFromDB_whenSuccessful_returnListOfTvWatchlist() =
+    runTest {
+      localDatabaseInteractor.watchlistTvFromDB.test {
+        val result = awaitItem()
+        assertEquals(1, result.size)
+        assertEquals(watchlistTv, result[0])
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun insertToDB_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.insertToDB(favoriteTv) } returns DbResult.Success(1)
+  fun insertToDB_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery { mockRepository.insertToDB(favoriteTv) } returns DbResult.Success(1)
 
-    val result = localDatabaseInteractor.insertToDB(favoriteTv)
+      val result = localDatabaseInteractor.insertToDB(favoriteTv)
 
-    assertTrue(result is DbResult.Success)
-    assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.insertToDB(favoriteTv) }
-  }
-
-  @Test
-  fun deleteFromDB_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.deleteFromDB(favoriteMovie) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.deleteFromDB(favoriteMovie)
-
-    assertTrue(result is DbResult.Success)
-    assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.deleteFromDB(favoriteMovie) }
-  }
+      assertTrue(result is DbResult.Success)
+      assertEquals(1, (result as DbResult.Success).data)
+      coVerify { mockRepository.insertToDB(favoriteTv) }
+    }
 
   @Test
-  fun deleteAll_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.deleteAll() } returns DbResult.Success(5)
+  fun deleteFromDB_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery { mockRepository.deleteFromDB(favoriteMovie) } returns DbResult.Success(1)
 
-    val result = localDatabaseInteractor.deleteAll()
+      val result = localDatabaseInteractor.deleteFromDB(favoriteMovie)
 
-    assertTrue(result is DbResult.Success)
-    assertEquals(5, (result as DbResult.Success).data)
-    coVerify { mockRepository.deleteAll() }
-  }
-
-  @Test
-  fun isFavoriteDB_returnsSuccess() = runTest {
-    coEvery { mockRepository.isFavoriteDB(101, "movie") } returns DbResult.Success(true)
-
-    val result = localDatabaseInteractor.isFavoriteDB(101, "movie")
-
-    assertTrue(result is DbResult.Success)
-    assertEquals(true, (result as DbResult.Success).data)
-    coVerify { mockRepository.isFavoriteDB(101, "movie") }
-  }
+      assertTrue(result is DbResult.Success)
+      assertEquals(1, (result as DbResult.Success).data)
+      coVerify { mockRepository.deleteFromDB(favoriteMovie) }
+    }
 
   @Test
-  fun isWatchlistDB_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.isWatchlistDB(101, "movie") } returns DbResult.Success(true)
+  fun deleteAll_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery { mockRepository.deleteAll() } returns DbResult.Success(5)
 
-    val result = localDatabaseInteractor.isWatchlistDB(101, "movie")
+      val result = localDatabaseInteractor.deleteAll()
 
-    assertTrue(result is DbResult.Success)
-    assertEquals(true, (result as DbResult.Success).data)
-    coVerify { mockRepository.isWatchlistDB(101, "movie") }
-  }
-
-  @Test
-  fun updateFavoriteItemDB_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.updateFavoriteItemDB(true, favoriteMovie) } returns DbResult.Success(1)
-
-    val result = localDatabaseInteractor.updateFavoriteItemDB(true, favoriteMovie)
-
-    assertTrue(result is DbResult.Success)
-    assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.updateFavoriteItemDB(true, favoriteMovie) }
-  }
+      assertTrue(result is DbResult.Success)
+      assertEquals(5, (result as DbResult.Success).data)
+      coVerify { mockRepository.deleteAll() }
+    }
 
   @Test
-  fun updateWatchlistItemDB_whenSuccessful_returnsSuccess() = runTest {
-    coEvery { mockRepository.updateWatchlistItemDB(false, favoriteMovie) } returns DbResult.Success(
-      1
-    )
+  fun isFavoriteDB_returnsSuccess() =
+    runTest {
+      coEvery { mockRepository.isFavoriteDB(101, "movie") } returns DbResult.Success(true)
 
-    val result = localDatabaseInteractor.updateWatchlistItemDB(false, favoriteMovie)
+      val result = localDatabaseInteractor.isFavoriteDB(101, "movie")
 
-    assertTrue(result is DbResult.Success)
-    assertEquals(1, (result as DbResult.Success).data)
-    coVerify { mockRepository.updateWatchlistItemDB(false, favoriteMovie) }
-  }
+      assertTrue(result is DbResult.Success)
+      assertEquals(true, (result as DbResult.Success).data)
+      coVerify { mockRepository.isFavoriteDB(101, "movie") }
+    }
+
+  @Test
+  fun isWatchlistDB_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery { mockRepository.isWatchlistDB(101, "movie") } returns DbResult.Success(true)
+
+      val result = localDatabaseInteractor.isWatchlistDB(101, "movie")
+
+      assertTrue(result is DbResult.Success)
+      assertEquals(true, (result as DbResult.Success).data)
+      coVerify { mockRepository.isWatchlistDB(101, "movie") }
+    }
+
+  @Test
+  fun updateFavoriteItemDB_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery {
+        mockRepository.updateFavoriteItemDB(true, favoriteMovie)
+      } returns DbResult.Success(1)
+
+      val result = localDatabaseInteractor.updateFavoriteItemDB(true, favoriteMovie)
+
+      assertTrue(result is DbResult.Success)
+      assertEquals(1, (result as DbResult.Success).data)
+      coVerify { mockRepository.updateFavoriteItemDB(true, favoriteMovie) }
+    }
+
+  @Test
+  fun updateWatchlistItemDB_whenSuccessful_returnsSuccess() =
+    runTest {
+      coEvery {
+        mockRepository.updateWatchlistItemDB(false, favoriteMovie)
+      } returns DbResult.Success(1)
+
+      val result = localDatabaseInteractor.updateWatchlistItemDB(false, favoriteMovie)
+
+      assertTrue(result is DbResult.Success)
+      assertEquals(1, (result as DbResult.Success).data)
+      coVerify { mockRepository.updateWatchlistItemDB(false, favoriteMovie) }
+    }
 }

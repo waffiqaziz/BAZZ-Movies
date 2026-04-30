@@ -62,7 +62,7 @@ class MediaHelperTest {
     val crew = listOf(
       MediaCrewItem(job = "Director", name = "John Doe"),
       MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Producer", name = "Bob Wilson") // Not in jobToNamesMap
+      MediaCrewItem(job = "Producer", name = "Bob Wilson"), // Not in jobToNamesMap
     )
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
@@ -76,7 +76,7 @@ class MediaHelperTest {
       MediaCrewItem(job = "Writer", name = null),
       MediaCrewItem(job = "Writer", name = ""),
       MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Writer", name = "Bob Jones")
+      MediaCrewItem(job = "Writer", name = "Bob Jones"),
     )
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
@@ -96,7 +96,7 @@ class MediaHelperTest {
   fun detailCrew_withMultipleNamesSameJob_returnsJoinedNames() {
     val crew = listOf(
       MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Writer", name = "John Doe")
+      MediaCrewItem(job = "Writer", name = "John Doe"),
     )
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
@@ -109,8 +109,8 @@ class MediaHelperTest {
     val video = Video(
       results = listOf(
         VideoItem(official = true, type = "Trailer", name = "Trailer", key = "trailer_key"),
-        VideoItem(official = false, type = "Teaser", name = "Teaser", key = "teaser_key")
-      )
+        VideoItem(official = false, type = "Teaser", name = "Teaser", key = "teaser_key"),
+      ),
     )
     val result = video.toLink()
 
@@ -122,8 +122,8 @@ class MediaHelperTest {
     val video = Video(
       results = listOf(
         VideoItem(official = false, type = "Teaser", name = "Teaser", key = "teaser_key"),
-        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key")
-      )
+        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key"),
+      ),
     )
     val result = video.toLink()
 
@@ -135,8 +135,8 @@ class MediaHelperTest {
     val video = Video(
       results = listOf(
         VideoItem(official = true, type = "Teaser", name = "Teaser", key = "teaser_key"),
-        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key")
-      )
+        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key"),
+      ),
     )
     val result = video.toLink()
 
@@ -157,8 +157,8 @@ class MediaHelperTest {
       results = listOf(
         VideoItem(name = "1", official = false, type = "Trailer", key = "unofficial_trailer"),
         VideoItem(name = "2", official = true, type = "Teaser", key = "official_teaser"),
-        VideoItem(name = "3", official = false, type = "Clip", key = "clip_key")
-      )
+        VideoItem(name = "3", official = false, type = "Clip", key = "clip_key"),
+      ),
     )
     val result = video.toLink()
 
@@ -205,7 +205,6 @@ class MediaHelperTest {
   }
 
   @Test
-
   fun isBackReleased_unknownPress_returnsFalse() {
     assertFalse(isBackReleased(KEYCODE_0, KEYCODE_8))
   }
@@ -266,7 +265,7 @@ class MediaHelperTest {
     val emptyNameItem = MediaKeywordsItem(id = 5, name = "")
 
     val result = getListOfKeywords(
-      listOf(validItem1, nullItem, nullIdItem, nullNameItem, emptyNameItem, validItem2)
+      listOf(validItem1, nullItem, nullIdItem, nullNameItem, emptyNameItem, validItem2),
     )
 
     assertEquals(listOf(validItem1, validItem2), result)

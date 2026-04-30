@@ -148,15 +148,15 @@ class GenericViewPagerAdapterTest {
     val singleAdapter = GenericViewPagerAdapter(
       fragmentManager,
       lifecycle,
-      listOf(singleFragment)
+      listOf(singleFragment),
     )
 
     assertEquals(1, singleAdapter.itemCount)
     assertEquals(singleFragment, singleAdapter.createFragment(0))
     assertTrue(
       singleAdapter.containsItem(
-        "TestFragment1".hashCode().toLong()
-      )
+        "TestFragment1".hashCode().toLong(),
+      ),
     )
   }
 
@@ -188,7 +188,7 @@ class GenericViewPagerAdapterTest {
     val multiAdapter = GenericViewPagerAdapter(
       fragmentManager,
       lifecycle,
-      listOf(fragment1Instance1, fragment1Instance2)
+      listOf(fragment1Instance1, fragment1Instance2),
     )
 
     val id0 = multiAdapter.getItemId(0)

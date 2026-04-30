@@ -45,136 +45,142 @@ class SearchRepositoryImplTest {
   }
 
   @Test
-  fun movieDataSource_whenSearching_returnsCorrectPageData() = runTest {
-    coEvery { mockSearchApiService.search(QUERY, 1) } returns multiSearchResponse
-    val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
+  fun movieDataSource_whenSearching_returnsCorrectPageData() =
+    runTest {
+      coEvery { mockSearchApiService.search(QUERY, 1) } returns multiSearchResponse
+      val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
 
-    val result = pagingSource.load(
-      PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false)
-    )
+      val result = pagingSource.load(
+        PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false),
+      )
 
-    advanceUntilIdle()
-
-    assert(result is LoadResult.Page)
-    val page = result as LoadResult.Page
-    assertEquals(2, page.data.size)
-    assertEquals("Transformers TV-series", page.data[0].title)
-    assertEquals("Transformers 2", page.data[1].title)
-    assertEquals(null, page.prevKey)
-    assertEquals(2, page.nextKey) // expect nextKey to be the next page index
-    coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
-  }
-
-  @Test
-  fun movieDataSource_whenSearchFailsWithIOException_returnsLoadError() = runTest {
-    coEvery { mockSearchApiService.search(QUERY, 1) } throws IOException("Network Error")
-    val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
-
-    val result = pagingSource.load(
-      PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false)
-    )
-
-    advanceUntilIdle()
-
-    assert(result is LoadResult.Error)
-    val error = result as LoadResult.Error
-    assertTrue(error.throwable is IOException)
-    assertEquals("Network Error", error.throwable.message)
-    coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
-  }
-
-  @Test
-  fun search_whenSuccessful_returnsDataCorrectly() = runTest {
-    val fakePagingData =
-      PagingData.from(listOf(multiSearchResponseItem, multiSearchResponseItem2))
-    every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(fakePagingData)
-
-    repository.search(QUERY).test {
-      val pagingData = awaitItem() // collect first item
-      val job = launch { differ.submitData(pagingData) }
       advanceUntilIdle()
 
-      val listMediaItemSearch = differ.snapshot().items
-      assertTrue(listMediaItemSearch.isEmpty().not())
-      job.cancel()
-
-      cancelAndIgnoreRemainingEvents()
+      assert(result is LoadResult.Page)
+      val page = result as LoadResult.Page
+      assertEquals(2, page.data.size)
+      assertEquals("Transformers TV-series", page.data[0].title)
+      assertEquals("Transformers 2", page.data[1].title)
+      assertEquals(null, page.prevKey)
+      assertEquals(2, page.nextKey) // expect nextKey to be the next page index
+      coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
     }
-
-    verify { mockSearchRemoteDataSource.search(QUERY) }
-  }
 
   @Test
-  fun search_whenSuccessful_returnsPagedData() = runTest {
-    val emptyPagingData = PagingData.from(emptyList<MultiSearchResponseItem>())
-    every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(emptyPagingData)
+  fun movieDataSource_whenSearchFailsWithIOException_returnsLoadError() =
+    runTest {
+      coEvery { mockSearchApiService.search(QUERY, 1) } throws IOException("Network Error")
+      val pagingSource = SearchPagingSource(mockSearchApiService, QUERY)
 
-    repository.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
+      val result = pagingSource.load(
+        PagingSource.LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false),
+      )
+
       advanceUntilIdle()
 
-      assertTrue(differ.snapshot().items.isEmpty())
-      job.cancel()
-
-      cancelAndIgnoreRemainingEvents()
+      assert(result is LoadResult.Error)
+      val error = result as LoadResult.Error
+      assertTrue(error.throwable is IOException)
+      assertEquals("Network Error", error.throwable.message)
+      coVerify { mockSearchApiService.search(query = QUERY, page = 1) }
     }
-
-    verify { mockSearchRemoteDataSource.search(QUERY) }
-  }
 
   @Test
-  fun search_whenSearchItemIsNull_returnsNonEmptyPagingData() = runTest {
-    val invalidItem = mockk<MultiSearchResponseItem>(relaxed = true)
-    val pagingDataWithNull = PagingData.from(listOf(invalidItem))
+  fun search_whenSuccessful_returnsDataCorrectly() =
+    runTest {
+      val fakePagingData =
+        PagingData.from(listOf(multiSearchResponseItem, multiSearchResponseItem2))
+      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(fakePagingData)
 
-    every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNull)
+      repository.search(QUERY).test {
+        val pagingData = awaitItem() // collect first item
+        val job = launch { differ.submitData(pagingData) }
+        advanceUntilIdle()
 
-    repository.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
+        val listMediaItemSearch = differ.snapshot().items
+        assertTrue(listMediaItemSearch.isEmpty().not())
+        job.cancel()
 
-      assertTrue(differ.snapshot().items.isEmpty().not())
-      job.cancel()
+        cancelAndIgnoreRemainingEvents()
+      }
 
-      cancelAndIgnoreRemainingEvents()
+      verify { mockSearchRemoteDataSource.search(QUERY) }
     }
-
-    verify { mockSearchRemoteDataSource.search(QUERY) }
-  }
 
   @Test
-  fun search_whenItemHasNulls_setsDefaultValues() = runTest {
-    val responseWithNulls = MultiSearchResponseItem(
-      mediaType = null, // should default to MOVIE_MEDIA_TYPE
-      popularity = null, // should default to 0.0
-      id = null, // should default to 0
-      adult = null, // should default to false
-      video = null, // should default to false
-      voteAverage = null, // should default to 0.0
-      voteCount = null // should default to 0.0
-    )
-    val pagingDataWithNulls = PagingData.from(listOf(responseWithNulls))
-    every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNulls)
+  fun search_whenSuccessful_returnsPagedData() =
+    runTest {
+      val emptyPagingData = PagingData.from(emptyList<MultiSearchResponseItem>())
+      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(emptyPagingData)
 
-    repository.search(QUERY).test {
-      val pagingData = awaitItem()
-      val job = launch { differ.submitData(pagingData) }
-      advanceUntilIdle()
+      repository.search(QUERY).test {
+        val pagingData = awaitItem()
+        val job = launch { differ.submitData(pagingData) }
+        advanceUntilIdle()
 
-      val result = differ.snapshot().items.first()
-      assertEquals("movie", result.mediaType)
-      assertEquals(0.0, result.popularity)
-      assertEquals(0, result.id)
-      assertEquals(false, result.adult)
-      assertEquals(false, result.video)
-      assertEquals(0.0, result.voteAverage)
-      assertEquals(0.0, result.voteCount)
+        assertTrue(differ.snapshot().items.isEmpty())
+        job.cancel()
 
-      job.cancel()
-      cancelAndIgnoreRemainingEvents()
+        cancelAndIgnoreRemainingEvents()
+      }
+
+      verify { mockSearchRemoteDataSource.search(QUERY) }
     }
-    verify { mockSearchRemoteDataSource.search(QUERY) }
-  }
+
+  @Test
+  fun search_whenSearchItemIsNull_returnsNonEmptyPagingData() =
+    runTest {
+      val invalidItem = mockk<MultiSearchResponseItem>(relaxed = true)
+      val pagingDataWithNull = PagingData.from(listOf(invalidItem))
+
+      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNull)
+
+      repository.search(QUERY).test {
+        val pagingData = awaitItem()
+        val job = launch { differ.submitData(pagingData) }
+        advanceUntilIdle()
+
+        assertTrue(differ.snapshot().items.isEmpty().not())
+        job.cancel()
+
+        cancelAndIgnoreRemainingEvents()
+      }
+
+      verify { mockSearchRemoteDataSource.search(QUERY) }
+    }
+
+  @Test
+  fun search_whenItemHasNulls_setsDefaultValues() =
+    runTest {
+      val responseWithNulls = MultiSearchResponseItem(
+        mediaType = null, // should default to MOVIE_MEDIA_TYPE
+        popularity = null, // should default to 0.0
+        id = null, // should default to 0
+        adult = null, // should default to false
+        video = null, // should default to false
+        voteAverage = null, // should default to 0.0
+        voteCount = null, // should default to 0.0
+      )
+      val pagingDataWithNulls = PagingData.from(listOf(responseWithNulls))
+      every { mockSearchRemoteDataSource.search(QUERY) } returns flowOf(pagingDataWithNulls)
+
+      repository.search(QUERY).test {
+        val pagingData = awaitItem()
+        val job = launch { differ.submitData(pagingData) }
+        advanceUntilIdle()
+
+        val result = differ.snapshot().items.first()
+        assertEquals("movie", result.mediaType)
+        assertEquals(0.0, result.popularity)
+        assertEquals(0, result.id)
+        assertEquals(false, result.adult)
+        assertEquals(false, result.video)
+        assertEquals(0.0, result.voteAverage)
+        assertEquals(0.0, result.voteCount)
+
+        job.cancel()
+        cancelAndIgnoreRemainingEvents()
+      }
+      verify { mockSearchRemoteDataSource.search(QUERY) }
+    }
 }

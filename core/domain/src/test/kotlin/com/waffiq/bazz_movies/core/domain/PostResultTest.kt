@@ -12,7 +12,7 @@ class PostResultTest {
     val postResult = PostResult(
       success = true,
       statusCode = 200,
-      statusMessage = "OK"
+      statusMessage = "OK",
     )
 
     assertTrue(postResult.success == true)

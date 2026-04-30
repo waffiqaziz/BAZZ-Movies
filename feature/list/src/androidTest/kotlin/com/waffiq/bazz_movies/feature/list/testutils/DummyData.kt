@@ -13,7 +13,7 @@ object DummyData {
     backdropPath = "/backdrop1.jpg",
     mediaType = "movie",
     voteAverage = 8.8f,
-    releaseDate = "2016-07-16"
+    releaseDate = "2016-07-16",
   )
 
   val fakePagingMediaItem =
@@ -21,6 +21,6 @@ object DummyData {
       listOf(
         mediaItem,
         mediaItem.copy(id = 2, title = "movie title 2"),
-      )
+      ),
     )
 }

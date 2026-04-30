@@ -34,38 +34,40 @@ class PostActionInteractorTest : BaseInteractorTest() {
           token = "token",
           isLogin = true,
           gravatarHash = "hash",
-          tmdbAvatar = "tmdb"
-        )
+          tmdbAvatar = "tmdb",
+        ),
       )
   }
 
   @Test
-  fun postFavorite_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { mockAccountRepository.postFavorite(any(), favoriteParams, any()) } returns
-      flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
+  fun postFavorite_whenSuccessful_emitsSuccess() =
+    runTest {
+      coEvery { mockAccountRepository.postFavorite(any(), favoriteParams, any()) } returns
+        flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
 
-    postActionInteractor.postFavoriteWithAuth(favoriteParams).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals(postFavoriteWatchlistSuccess, result.data)
-      awaitComplete()
+      postActionInteractor.postFavoriteWithAuth(favoriteParams).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals(postFavoriteWatchlistSuccess, result.data)
+        awaitComplete()
+      }
+      coVerify { mockAccountRepository.postFavorite(any(), favoriteParams, any()) }
     }
-    coVerify { mockAccountRepository.postFavorite(any(), favoriteParams, any()) }
-  }
 
   @Test
-  fun postWatchlist_whenSuccessful_emitsSuccess() = runTest {
-    coEvery { mockAccountRepository.postWatchlist(any(), watchlistParams, any()) } returns
-      flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
+  fun postWatchlist_whenSuccessful_emitsSuccess() =
+    runTest {
+      coEvery { mockAccountRepository.postWatchlist(any(), watchlistParams, any()) } returns
+        flowOf(Outcome.Success(postFavoriteWatchlistSuccess))
 
-    postActionInteractor.postWatchlistWithAuth(watchlistParams).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals(postFavoriteWatchlistSuccess, result.data)
-      awaitComplete()
+      postActionInteractor.postWatchlistWithAuth(watchlistParams).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals(postFavoriteWatchlistSuccess, result.data)
+        awaitComplete()
+      }
+      coVerify { mockAccountRepository.postWatchlist(any(), watchlistParams, any()) }
     }
-    coVerify { mockAccountRepository.postWatchlist(any(), watchlistParams, any()) }
-  }
 }

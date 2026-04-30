@@ -12,6 +12,6 @@ object Helper {
     token = "Test Token",
     isLogin = true,
     gravatarHash = "Gravatar Hast",
-    tmdbAvatar = "TMDB Avatar"
+    tmdbAvatar = "TMDB Avatar",
   )
 }

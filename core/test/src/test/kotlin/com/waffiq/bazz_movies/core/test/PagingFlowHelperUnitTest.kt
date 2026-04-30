@@ -29,71 +29,77 @@ class PagingFlowHelperUnitTest {
     flowOf(PagingData.from(items))
 
   @Test
-  fun testPagingFlowAwaitComplete_whenPagingContainsData_shouldReturnAllItems() = runTest {
-    testPagingFlowAwaitComplete(
-      flow = fakePagingFlow(fakeItems),
-    ) { items ->
-      assertEquals(fakeItems.size, items.size)
-      assertEquals(fakeItems, items)
+  fun testPagingFlowAwaitComplete_whenPagingContainsData_shouldReturnAllItems() =
+    runTest {
+      testPagingFlowAwaitComplete(
+        flow = fakePagingFlow(fakeItems),
+      ) { items ->
+        assertEquals(fakeItems.size, items.size)
+        assertEquals(fakeItems, items)
+      }
     }
-  }
 
   @Test
-  fun testPagingFlowAwaitComplete_whenPagingIsEmpty_shouldReturnEmptyList() = runTest {
-    testPagingFlowAwaitComplete(
-      flow = fakePagingFlow(emptyList()),
-    ) { items ->
-      assertTrue(items.isEmpty())
+  fun testPagingFlowAwaitComplete_whenPagingIsEmpty_shouldReturnEmptyList() =
+    runTest {
+      testPagingFlowAwaitComplete(
+        flow = fakePagingFlow(emptyList()),
+      ) { items ->
+        assertTrue(items.isEmpty())
+      }
     }
-  }
 
   @Test
-  fun testPagingFlowAwaitComplete_whenPagingContainsData_shouldPreserveItemOrder() = runTest {
-    val orderedItems = listOf(
-      MediaItem(id = 1, title = "First"),
-      MediaItem(id = 2, title = "Second"),
-      MediaItem(id = 3, title = "Third"),
-    )
+  fun testPagingFlowAwaitComplete_whenPagingContainsData_shouldPreserveItemOrder() =
+    runTest {
+      val orderedItems = listOf(
+        MediaItem(id = 1, title = "First"),
+        MediaItem(id = 2, title = "Second"),
+        MediaItem(id = 3, title = "Third"),
+      )
 
-    testPagingFlowAwaitComplete(
-      flow = fakePagingFlow(orderedItems),
-    ) { items ->
-      assertEquals(orderedItems[0], items[0])
-      assertEquals(orderedItems[1], items[1])
-      assertEquals(orderedItems[2], items[2])
+      testPagingFlowAwaitComplete(
+        flow = fakePagingFlow(orderedItems),
+      ) { items ->
+        assertEquals(orderedItems[0], items[0])
+        assertEquals(orderedItems[1], items[1])
+        assertEquals(orderedItems[2], items[2])
+      }
     }
-  }
 
   @Test
-  fun testPagingFlowAwaitComplete_whenPagingContainsSingleItem_shouldReturnSingleItem() = runTest {
-    val singleItem = listOf(MediaItem(id = 42, title = "Only Movie"))
+  fun testPagingFlowAwaitComplete_whenPagingContainsSingleItem_shouldReturnSingleItem() =
+    runTest {
+      val singleItem = listOf(MediaItem(id = 42, title = "Only Movie"))
 
-    testPagingFlowAwaitComplete(
-      flow = fakePagingFlow(singleItem),
-    ) { items ->
-      assertEquals(1, items.size)
-      assertEquals(42, items.first().id)
+      testPagingFlowAwaitComplete(
+        flow = fakePagingFlow(singleItem),
+      ) { items ->
+        assertEquals(1, items.size)
+        assertEquals(42, items.first().id)
+      }
     }
-  }
-
-  @Test
-  fun testPagingFlowCancelRemaining_whenPagingContainsData_shouldReturnAllItems() = runTest {
-    testPagingFlowCancelRemaining(
-      flow = fakePagingFlow(fakeItems),
-    ) { items ->
-      assertEquals(fakeItems.size, items.size)
-      assertEquals(fakeItems, items)
-    }
-  }
 
   @Test
-  fun testPagingFlowCancelRemaining_whenPagingIsEmpty_shouldReturnEmptyList() = runTest {
-    testPagingFlowCancelRemaining(
-      flow = fakePagingFlow(emptyList()),
-    ) { items ->
-      assertTrue(items.isEmpty())
+  fun testPagingFlowCancelRemaining_whenPagingContainsData_shouldReturnAllItems() =
+    runTest {
+      testPagingFlowCancelRemaining(
+        flow = fakePagingFlow(fakeItems),
+      ) { items ->
+        assertEquals(fakeItems.size, items.size)
+        assertEquals(fakeItems, items)
+      }
     }
-  }
+
+  @Test
+  fun testPagingFlowCancelRemaining_whenPagingIsEmpty_shouldReturnEmptyList() =
+    runTest {
+      testPagingFlowCancelRemaining(
+        flow = fakePagingFlow(emptyList()),
+      ) { items ->
+        assertTrue(items.isEmpty())
+      }
+    }
 
   @Test
   fun testPagingFlowCancelRemaining_whenFlowDoesNotComplete_shouldStillReturnEmittedItems() =
@@ -112,26 +118,27 @@ class PagingFlowHelperUnitTest {
     }
 
   @Test
-  fun testPagingFlowAwaitComplete_whenPagingContainsMediaItem_shouldMapFieldsCorrectly() = runTest {
-    val expected = MediaItem(
-      id = 99,
-      title = "Inception",
-      mediaType = "movie",
-      voteAverage = 8.8f,
-      popularity = 100.0,
-      adult = false,
-    )
+  fun testPagingFlowAwaitComplete_whenPagingContainsMediaItem_shouldMapFieldsCorrectly() =
+    runTest {
+      val expected = MediaItem(
+        id = 99,
+        title = "Inception",
+        mediaType = "movie",
+        voteAverage = 8.8f,
+        popularity = 100.0,
+        adult = false,
+      )
 
-    testPagingFlowAwaitComplete(
-      flow = fakePagingFlow(listOf(expected)),
-    ) { items ->
-      val actual = items.first()
-      assertEquals(expected.id, actual.id)
-      assertEquals(expected.title, actual.title)
-      assertEquals(expected.mediaType, actual.mediaType)
-      assertEquals(expected.voteAverage, actual.voteAverage)
-      assertEquals(expected.popularity, actual.popularity)
-      assertEquals(expected.adult, actual.adult)
+      testPagingFlowAwaitComplete(
+        flow = fakePagingFlow(listOf(expected)),
+      ) { items ->
+        val actual = items.first()
+        assertEquals(expected.id, actual.id)
+        assertEquals(expected.title, actual.title)
+        assertEquals(expected.mediaType, actual.mediaType)
+        assertEquals(expected.voteAverage, actual.voteAverage)
+        assertEquals(expected.popularity, actual.popularity)
+        assertEquals(expected.adult, actual.adult)
+      }
     }
-  }
 }

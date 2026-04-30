@@ -12,7 +12,7 @@ class NetworksItemTest {
       logoPath = "/logo.jpg",
       name = "Netflix",
       id = 213,
-      originCountry = "US"
+      originCountry = "US",
     )
 
     assertEquals("/logo.jpg", networksItem.logoPath)
@@ -35,7 +35,7 @@ class NetworksItemTest {
   fun createNetworksItem_withPartialValues_setsSpecifiedPropertiesOnly() {
     val networksItem = NetworksItem(
       name = "HBO",
-      id = 49
+      id = 49,
     )
 
     assertNull(networksItem.logoPath)
@@ -56,7 +56,7 @@ class NetworksItemTest {
     val networksItem = NetworksItem(
       logoPath = "",
       name = "",
-      originCountry = ""
+      originCountry = "",
     )
 
     assertEquals("", networksItem.logoPath)

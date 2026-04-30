@@ -11,7 +11,7 @@ class FavoriteParamsTest {
     val favoriteParams = FavoriteParams(
       mediaType = "movie",
       mediaId = 100,
-      favorite = true
+      favorite = true,
     )
 
     assertEquals("movie", favoriteParams.mediaType)

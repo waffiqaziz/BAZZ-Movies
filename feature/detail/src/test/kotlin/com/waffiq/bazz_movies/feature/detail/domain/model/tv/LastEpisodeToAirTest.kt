@@ -21,7 +21,7 @@ class LastEpisodeToAirTest {
       runtime = 42,
       id = 456,
       stillPath = "/still.jpg",
-      voteCount = 100
+      voteCount = 100,
     )
 
     assertEquals("PROD001", lastEpisode.productionCode)
@@ -63,7 +63,7 @@ class LastEpisodeToAirTest {
     val lastEpisode = LastEpisodeToAir(
       name = "Final Episode",
       episodeNumber = 10,
-      voteAverage = 9.2
+      voteAverage = 9.2,
     )
 
     assertNull(lastEpisode.productionCode)
@@ -90,7 +90,7 @@ class LastEpisodeToAirTest {
       seasonNumber = 0,
       runtime = 0,
       id = 0,
-      voteCount = 0
+      voteCount = 0,
     )
 
     assertEquals(0, lastEpisode.episodeNumber)
@@ -110,7 +110,7 @@ class LastEpisodeToAirTest {
       overview = "",
       episodeType = "",
       name = "",
-      stillPath = ""
+      stillPath = "",
     )
 
     assertEquals("", lastEpisode.productionCode)
@@ -130,7 +130,7 @@ class LastEpisodeToAirTest {
       seasonNumber = -2,
       runtime = -30,
       id = -100,
-      voteCount = -50
+      voteCount = -50,
     )
 
     assertEquals(-1, lastEpisode.episodeNumber)

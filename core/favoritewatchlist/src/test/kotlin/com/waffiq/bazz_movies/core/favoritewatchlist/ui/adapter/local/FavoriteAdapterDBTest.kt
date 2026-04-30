@@ -11,9 +11,9 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemFavoriteBinding
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterDBTest
-import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
+import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
 import io.mockk.slot
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
@@ -39,7 +39,7 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
     val oldList = listOf(favorite)
     val newList = listOf(
       favorite.copy(id = 2, mediaId = 2, title = INA_MOVIE_TITLE2),
-      favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3")
+      favorite.copy(id = 3, mediaId = 3, title = "Indonesian Movie 3"),
     )
 
     adapter.submitList(oldList)
@@ -97,9 +97,9 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
       favorite.copy(
         backDrop = "N/A",
         poster = "N/A",
-        title = INA_MOVIE_TITLE2
+        title = INA_MOVIE_TITLE2,
       ) to INA_MOVIE_TITLE2,
-      favorite.copy(backDrop = "N/A") to INA_MOVIE_TITLE
+      favorite.copy(backDrop = "N/A") to INA_MOVIE_TITLE,
     )
 
     testCases.forEach { (favorite, favoriteTitle) ->
@@ -152,7 +152,7 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
     viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(reveal_layout_start),
-      100
+      100,
     )
 
     verify { onDelete(favorite, 0) }
@@ -170,7 +170,7 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
     viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(reveal_layout_end),
-      100
+      100,
     )
 
     verify { onAddToWatchlist(favorite, 0) }
@@ -188,14 +188,14 @@ class FavoriteAdapterDBTest : BaseAdapterDBTest() {
     viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_DRAGGING,
       viewHolder.itemView.findViewById(reveal_layout_end),
-      100
+      100,
     )
 
     // simulate swipe wrong item
     viewHolder?.swipeCallback?.onSwipeStateChanged(
       SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION,
       viewHolder.itemView.findViewById(container_result),
-      100
+      100,
     )
   }
 

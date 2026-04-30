@@ -63,7 +63,6 @@ class GenreAdapterTest : BaseAdapterTest() {
     assertSame(parent.context, viewHolder.itemView.context)
   }
 
-
   @Test
   fun onBindViewHolder_whenClicked_callsNavigator() {
     val viewHolder = adapter.ViewHolder(binding)
@@ -74,12 +73,13 @@ class GenreAdapterTest : BaseAdapterTest() {
 
     verify(exactly = 1) {
       navigator.openList(
-        any(), ListArgs(
+        any(),
+        ListArgs(
           listType = ListType.BY_GENRE,
           mediaType = MOVIE_MEDIA_TYPE,
           title = "",
           id = movieGenreIds.first(),
-        )
+        ),
       )
     }
 
@@ -91,17 +91,18 @@ class GenreAdapterTest : BaseAdapterTest() {
 
     verify(exactly = 1) {
       navigator.openList(
-        any(), ListArgs(
+        any(),
+        ListArgs(
           listType = ListType.BY_GENRE,
           mediaType = TV_MEDIA_TYPE,
           title = "",
           id = tvGenreIds.first(),
-        )
+        ),
       )
     }
   }
 
-  private fun performClick(){
+  private fun performClick() {
     binding.chip.performClick()
 
     // wait UI

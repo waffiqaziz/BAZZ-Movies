@@ -28,25 +28,23 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
   components = [SingletonComponent::class],
-  replaces = [DatastoreModule::class, UserRepositoryModule::class]
+  replaces = [DatastoreModule::class, UserRepositoryModule::class],
 )
 object TestUserModule {
 
   @Provides
   @Singleton
-  fun provideTestDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
+  fun provideTestDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
+    PreferenceDataStoreFactory.create(
       produceFile = {
         context.preferencesDataStoreFile("test_user_data_${System.currentTimeMillis()}")
-      }
+      },
     )
-  }
 
   @Provides
   @Singleton
-  fun provideUserPreference(
-    dataStore: DataStore<Preferences>,
-  ): UserPreference = UserPreference(dataStore)
+  fun provideUserPreference(dataStore: DataStore<Preferences>): UserPreference =
+    UserPreference(dataStore)
 
   @Provides
   @Singleton

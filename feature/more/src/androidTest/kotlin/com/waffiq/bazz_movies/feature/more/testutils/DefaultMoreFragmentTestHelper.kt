@@ -26,10 +26,7 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
   override val mockCountryCode = MutableLiveData<String>()
   override val mockUserModel = MutableLiveData<UserModel>()
 
-  override fun setupMocks(
-    mockNavigator: INavigator,
-    mockSnackbar: ISnackbar,
-  ) {
+  override fun setupMocks(mockNavigator: INavigator, mockSnackbar: ISnackbar) {
     every { mockNavigator.openLoginActivity(any()) } just Runs
     every { mockNavigator.openAboutActivity(any()) } just Runs
     every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } returns mockk(relaxed = true)

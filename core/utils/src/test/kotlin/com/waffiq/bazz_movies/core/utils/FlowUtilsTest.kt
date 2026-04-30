@@ -46,180 +46,190 @@ class FlowUtilsTest {
   private val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
 
   @Test
-  fun collectAndSubmitData_whenLifecycleCreated_shouldSubmitPagingData() = runTest {
-    val mockFragment = mockk<Fragment>(relaxed = true) {
-      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+  fun collectAndSubmitData_whenLifecycleCreated_shouldSubmitPagingData() =
+    runTest {
+      val mockFragment = mockk<Fragment>(relaxed = true) {
+        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      }
+
+      collectAndSubmitData(
+        fragment = mockFragment,
+        flowProvider = { pagingDataFlow },
+        adapter = adapter,
+      )
+
+      pagingDataFlow.value = samplePagingData
+      advanceUntilIdle()
+
+      // verify submitData was called with correct data
+      verify(atLeast = 1) { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, any()) }
     }
 
-    collectAndSubmitData(
-      fragment = mockFragment,
-      flowProvider = { pagingDataFlow },
-      adapter = adapter
-    )
-
-    pagingDataFlow.value = samplePagingData
-    advanceUntilIdle()
-
-    // verify submitData was called with correct data
-    verify(atLeast = 1) { adapter.submitData(lifecycleOwnerRule.lifecycleOwner.lifecycle, any()) }
-  }
-
   @Test
-  fun collectAndSubmitData_whenFlowIsEmpty_shouldNotSubmitData() = runTest {
-    val mockFragment = mockk<Fragment>(relaxed = true) {
-      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+  fun collectAndSubmitData_whenFlowIsEmpty_shouldNotSubmitData() =
+    runTest {
+      val mockFragment = mockk<Fragment>(relaxed = true) {
+        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      }
+
+      val emptyFlowProvider: () -> Flow<PagingData<String>> = { emptyFlow() }
+
+      collectAndSubmitData(
+        fragment = mockFragment,
+        flowProvider = emptyFlowProvider,
+        adapter = adapter,
+      )
+      advanceUntilIdle()
+
+      verify(exactly = 0) { adapter.submitData(any(), any()) }
     }
 
-    val emptyFlowProvider: () -> Flow<PagingData<String>> = { emptyFlow() }
-
-    collectAndSubmitData(
-      fragment = mockFragment,
-      flowProvider = emptyFlowProvider,
-      adapter = adapter
-    )
-    advanceUntilIdle()
-
-    verify(exactly = 0) { adapter.submitData(any(), any()) }
-  }
-
   @Test
-  fun collectAndSubmitData_whenRunningSimultaneously_shouldHandleMultipleEmissions() = runTest {
-    val mockFragment = mockk<Fragment>(relaxed = true) {
-      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+  fun collectAndSubmitData_whenRunningSimultaneously_shouldHandleMultipleEmissions() =
+    runTest {
+      val mockFragment = mockk<Fragment>(relaxed = true) {
+        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      }
+
+      val pagingDataFlow = MutableSharedFlow<PagingData<String>>()
+      val flowProvider: () -> Flow<PagingData<String>> = { pagingDataFlow }
+
+      collectAndSubmitData(
+        fragment = mockFragment,
+        flowProvider = flowProvider,
+        adapter = adapter,
+      )
+
+      val firstPagingData = PagingData.from(listOf("Item 1"))
+      pagingDataFlow.emit(firstPagingData)
+
+      val secondPagingData = PagingData.from(listOf("Item 2", "Item 3"))
+      pagingDataFlow.emit(secondPagingData)
+      advanceUntilIdle()
+
+      verify(exactly = 2) { adapter.submitData(any(), any()) }
     }
 
-    val pagingDataFlow = MutableSharedFlow<PagingData<String>>()
-    val flowProvider: () -> Flow<PagingData<String>> = { pagingDataFlow }
-
-    collectAndSubmitData(
-      fragment = mockFragment,
-      flowProvider = flowProvider,
-      adapter = adapter
-    )
-
-    val firstPagingData = PagingData.from(listOf("Item 1"))
-    pagingDataFlow.emit(firstPagingData)
-
-    val secondPagingData = PagingData.from(listOf("Item 2", "Item 3"))
-    pagingDataFlow.emit(secondPagingData)
-    advanceUntilIdle()
-
-    verify(exactly = 2) { adapter.submitData(any(), any()) }
-  }
-
   @Test
-  fun collectAndSubmitData_withLifecycle_shouldSubmitPagingData() = runTest {
-    val mockFragment = mockk<Fragment>(relaxed = true) {
-      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+  fun collectAndSubmitData_withLifecycle_shouldSubmitPagingData() =
+    runTest {
+      val mockFragment = mockk<Fragment>(relaxed = true) {
+        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      }
+
+      collectAndSubmitData(
+        lifecycleOwner = mockFragment.viewLifecycleOwner,
+        flowProvider = { pagingDataFlow },
+        adapter = adapter,
+      )
+
+      pagingDataFlow.value = samplePagingData
+      advanceUntilIdle()
+
+      coVerify(atLeast = 1) { adapter.submitData(any()) }
     }
 
-    collectAndSubmitData(
-      lifecycleOwner = mockFragment.viewLifecycleOwner,
-      flowProvider = { pagingDataFlow },
-      adapter = adapter,
-    )
-
-    pagingDataFlow.value = samplePagingData
-    advanceUntilIdle()
-
-    coVerify(atLeast = 1) { adapter.submitData(any()) }
-  }
-
   @Test
-  fun load_withCorrectActivity_shouldSubmitPagingData() = runTest {
-    val controller = Robolectric.buildActivity(AppCompatActivity::class.java)
-    val activity = controller.get()
+  fun load_withCorrectActivity_shouldSubmitPagingData() =
+    runTest {
+      val controller = Robolectric.buildActivity(AppCompatActivity::class.java)
+      val activity = controller.get()
 
-    activity.setTheme(Base_Theme_BAZZ_movies)
-    controller.setup()
-    activity.load(pagingDataFlow, adapter)
+      activity.setTheme(Base_Theme_BAZZ_movies)
+      controller.setup()
+      activity.load(pagingDataFlow, adapter)
 
-    advanceUntilIdle()
+      advanceUntilIdle()
 
-    coVerify(atLeast = 1) { adapter.submitData(any()) }
-  }
-
-  @Test
-  fun collectAndSubmitData_whenLifecycleCreated_shouldContainExpectedItems() = runTest {
-    Dispatchers.setMain(StandardTestDispatcher(testScheduler))
-
-    val fakeAdapter = FakePagingAdapter()
-
-    val mockFragment = mockk<Fragment>(relaxed = true) {
-      every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      coVerify(atLeast = 1) { adapter.submitData(any()) }
     }
 
-    collectAndSubmitData(
-      fragment = mockFragment,
-      flowProvider = { pagingDataFlow },
-      adapter = fakeAdapter
-    )
-
-    pagingDataFlow.value = PagingData.from(listOf("Item 1", "Item 2"))
-    advanceUntilIdle()
-
-    assertEquals(listOf("Item 1", "Item 2"), fakeAdapter.snapshot().items)
-
-    Dispatchers.resetMain()
-  }
-
   @Test
-  fun collectFlow_withCollectLatestTrue_shouldReceiveLatestEmission() = runTest {
-    val flow = MutableStateFlow("initial")
-    val collected = mutableListOf<String>()
+  fun collectAndSubmitData_whenLifecycleCreated_shouldContainExpectedItems() =
+    runTest {
+      Dispatchers.setMain(StandardTestDispatcher(testScheduler))
 
-    lifecycleOwnerRule.lifecycleOwner.collectFlow(flow) {
-      collected.add(it)
+      val fakeAdapter = FakePagingAdapter()
+
+      val mockFragment = mockk<Fragment>(relaxed = true) {
+        every { viewLifecycleOwner } returns lifecycleOwnerRule.lifecycleOwner
+      }
+
+      collectAndSubmitData(
+        fragment = mockFragment,
+        flowProvider = { pagingDataFlow },
+        adapter = fakeAdapter,
+      )
+
+      pagingDataFlow.value = PagingData.from(listOf("Item 1", "Item 2"))
+      advanceUntilIdle()
+
+      assertEquals(listOf("Item 1", "Item 2"), fakeAdapter.snapshot().items)
+
+      Dispatchers.resetMain()
     }
 
-    flow.value = "updated"
-    advanceUntilIdle()
-
-    assertTrue(collected.contains("updated"))
-  }
-
   @Test
-  fun collectFlow_withCollectLatestFalse_shouldReceiveAllEmissions() = runTest {
-    val flow = MutableSharedFlow<String>()
-    val collected = mutableListOf<String>()
+  fun collectFlow_withCollectLatestTrue_shouldReceiveLatestEmission() =
+    runTest {
+      val flow = MutableStateFlow("initial")
+      val collected = mutableListOf<String>()
 
-    lifecycleOwnerRule.lifecycleOwner.collectFlow(flow, collectLatest = false) {
-      collected.add(it)
+      lifecycleOwnerRule.lifecycleOwner.collectFlow(flow) {
+        collected.add(it)
+      }
+
+      flow.value = "updated"
+      advanceUntilIdle()
+
+      assertTrue(collected.contains("updated"))
     }
 
-    flow.emit("first")
-    flow.emit("second")
-    advanceUntilIdle()
-
-    assertEquals(listOf("first", "second"), collected)
-  }
-
   @Test
-  fun collectPagingData_shouldReceivePagingData() = runTest {
-    val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
-    val received = mutableListOf<PagingData<String>>()
+  fun collectFlow_withCollectLatestFalse_shouldReceiveAllEmissions() =
+    runTest {
+      val flow = MutableSharedFlow<String>()
+      val collected = mutableListOf<String>()
 
-    lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) {
-      received.add(it)
+      lifecycleOwnerRule.lifecycleOwner.collectFlow(flow, collectLatest = false) {
+        collected.add(it)
+      }
+
+      flow.emit("first")
+      flow.emit("second")
+      advanceUntilIdle()
+
+      assertEquals(listOf("first", "second"), collected)
     }
 
-    pagingDataFlow.value = PagingData.from(listOf("A", "B"))
-    advanceUntilIdle()
-
-    assertTrue(received.isNotEmpty())
-  }
-
   @Test
-  fun collectPagingData_withAdapter_shouldSubmitData() = runTest {
-    val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
+  fun collectPagingData_shouldReceivePagingData() =
+    runTest {
+      val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
+      val received = mutableListOf<PagingData<String>>()
 
-    lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) { pagingData ->
-      adapter.submitData(pagingData)
+      lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) {
+        received.add(it)
+      }
+
+      pagingDataFlow.value = PagingData.from(listOf("A", "B"))
+      advanceUntilIdle()
+
+      assertTrue(received.isNotEmpty())
     }
 
-    pagingDataFlow.value = samplePagingData
-    advanceUntilIdle()
+  @Test
+  fun collectPagingData_withAdapter_shouldSubmitData() =
+    runTest {
+      val pagingDataFlow = MutableStateFlow<PagingData<String>>(PagingData.empty())
 
-    coVerify(atLeast = 1) { adapter.submitData(any()) }
-  }
+      lifecycleOwnerRule.lifecycleOwner.collectPagingData(pagingDataFlow) { pagingData ->
+        adapter.submitData(pagingData)
+      }
+
+      pagingDataFlow.value = samplePagingData
+      advanceUntilIdle()
+
+      coVerify(atLeast = 1) { adapter.submitData(any()) }
+    }
 }

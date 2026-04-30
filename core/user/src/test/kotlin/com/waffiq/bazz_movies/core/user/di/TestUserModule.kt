@@ -11,7 +11,7 @@ import io.mockk.mockk
 
 @TestInstallIn(
   components = [ViewModelComponent::class],
-  replaces = [UserModule::class]
+  replaces = [UserModule::class],
 )
 @Module
 object TestUserModule {

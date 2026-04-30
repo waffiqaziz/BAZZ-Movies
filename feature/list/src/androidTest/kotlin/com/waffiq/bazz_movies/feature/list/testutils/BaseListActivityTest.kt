@@ -21,7 +21,7 @@ import io.mockk.just
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-open class BaseListActivityTest {
+abstract class BaseListActivityTest {
 
   protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
   protected val movieGenreArgs = ListArgs(
@@ -48,22 +48,27 @@ open class BaseListActivityTest {
   protected val movieTopRatedArgs = movieNowPlayingArgs.copy(listType = ListType.TOP_RATED)
   protected val movieUpcomingArgs = movieNowPlayingArgs.copy(listType = ListType.UPCOMING)
   protected val tvPopularArgs = movieNowPlayingArgs.copy(
-    listType = ListType.POPULAR, mediaType = TV_MEDIA_TYPE
+    listType = ListType.POPULAR,
+    mediaType = TV_MEDIA_TYPE,
   )
   protected val tvTopRatedArgs = movieNowPlayingArgs.copy(
-    listType = ListType.TOP_RATED, mediaType = TV_MEDIA_TYPE
+    listType = ListType.TOP_RATED,
+    mediaType = TV_MEDIA_TYPE,
   )
   protected val tvAiringThisWeekArgs = movieNowPlayingArgs.copy(
-    listType = ListType.AIRING_THIS_WEEK, mediaType = TV_MEDIA_TYPE
+    listType = ListType.AIRING_THIS_WEEK,
+    mediaType = TV_MEDIA_TYPE,
   )
   protected val movieRecommendationArgs = movieNowPlayingArgs.copy(
-    listType = ListType.RECOMMENDATION, title = "Movie Title", id = 12344
+    listType = ListType.RECOMMENDATION,
+    title = "Movie Title",
+    id = 12344,
   )
   protected val tvRecommendationArgs = movieNowPlayingArgs.copy(
     listType = ListType.RECOMMENDATION,
     mediaType = TV_MEDIA_TYPE,
     title = "Tv Title",
-    id = 12344
+    id = 12344,
   )
 
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
@@ -78,9 +83,7 @@ open class BaseListActivityTest {
     every { navigator.openDetails(any(), any()) } just Runs
   }
 
-  protected fun Context.launchListActivity(
-    block: (ActivityScenario<ListActivity>) -> Unit,
-  ) {
+  protected fun Context.launchListActivity(block: (ActivityScenario<ListActivity>) -> Unit) {
     this.launchListActivity(movieGenreArgs) { block(it) }
   }
 

@@ -26,7 +26,7 @@ class CombinedCreditResponseTest {
   @Test
   fun combinedCreditResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val combinedCreditResponse = CombinedCreditResponse(
-      id = 83754
+      id = 83754,
     )
     assertEquals(83754, combinedCreditResponse.id)
     assertNull(combinedCreditResponse.cast)

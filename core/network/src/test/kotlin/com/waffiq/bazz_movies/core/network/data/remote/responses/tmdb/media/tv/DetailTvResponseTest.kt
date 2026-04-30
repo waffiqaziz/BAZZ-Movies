@@ -42,7 +42,10 @@ class DetailTvResponseTest {
   fun detailTvResponse_withValidValues_setsMediaAssetsCorrectly() {
     assertEquals("/2vtI9xzD6qpDzY9m8kV67QY0qfM.jpg", detailTvResponse.backdropPath)
     assertEquals("/glWP5Y7CVeqrOjJpLckQjuLFjQJ.jpg", detailTvResponse.posterPath)
-    assertEquals("/pOSCKaZhndUFYtxHXjQOV6xJi1s.png", detailTvResponse.networksResponse?.get(0)?.logoPath)
+    assertEquals(
+      "/pOSCKaZhndUFYtxHXjQOV6xJi1s.png",
+      detailTvResponse.networksResponse?.get(0)?.logoPath,
+    )
   }
 
   @Test
@@ -61,7 +64,7 @@ class DetailTvResponseTest {
     assertEquals("KR", detailTvResponse.originCountry?.get(0))
     assertEquals(
       "KR",
-      detailTvResponse.contentRatingsResponse?.contentRatingsItemResponse?.get(1)?.iso31661
+      detailTvResponse.contentRatingsResponse?.contentRatingsItemResponse?.get(1)?.iso31661,
     )
   }
 
@@ -72,11 +75,11 @@ class DetailTvResponseTest {
         A rising politician and his mute wife's tense marriage begins to unravel after a call from a 
         kidnapper turns their lives upside down.
       """.trimIndent(),
-      detailTvResponse.overview
+      detailTvResponse.overview,
     )
     assertEquals(
       "Their love hangs by a thread... until a stranger picks up the phone.",
-      detailTvResponse.tagline
+      detailTvResponse.tagline,
     )
     assertTrue(detailTvResponse.inProduction == false)
   }
@@ -153,7 +156,7 @@ class DetailTvResponseTest {
       inProduction = false,
       lastAirDate = "last_air_date",
       homepage = "home_page",
-      status = "status"
+      status = "status",
 
     )
     assertNull(detailTvResponse.productionCountriesResponse?.get(0)?.name)

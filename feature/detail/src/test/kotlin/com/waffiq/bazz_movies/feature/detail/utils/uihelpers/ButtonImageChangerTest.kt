@@ -38,7 +38,7 @@ class ButtonImageChangerTest {
       button = imageButton,
       isActivated = false,
       iconActive = ic_hearth_selected,
-      iconInactive = ic_hearth
+      iconInactive = ic_hearth,
     )
     shadowOf(getMainLooper()).idle() // to trigger onAnimationEnd
     checkImageButtonTagAndDrawable(ic_hearth)
@@ -52,7 +52,7 @@ class ButtonImageChangerTest {
       button = imageButton,
       isActivated = true,
       iconActive = ic_hearth_selected,
-      iconInactive = ic_hearth
+      iconInactive = ic_hearth,
     )
     shadowOf(getMainLooper()).idle()
     checkImageButtonTagAndDrawable(ic_hearth_selected)
@@ -66,7 +66,7 @@ class ButtonImageChangerTest {
       button = imageButton,
       isActivated = true,
       iconActive = ic_hearth_selected,
-      iconInactive = ic_hearth
+      iconInactive = ic_hearth,
     )
     assertEquals(ic_hearth_selected, imageButton.tag)
   }
@@ -79,7 +79,7 @@ class ButtonImageChangerTest {
       button = imageButton,
       isActivated = true,
       iconActive = ic_hearth_selected,
-      iconInactive = ic_hearth
+      iconInactive = ic_hearth,
     )
     shadowOf(getMainLooper()).idle()
     checkImageButtonTagAndDrawable(ic_hearth_selected)

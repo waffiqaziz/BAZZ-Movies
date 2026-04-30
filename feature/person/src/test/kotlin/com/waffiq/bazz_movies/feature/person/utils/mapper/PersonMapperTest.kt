@@ -21,16 +21,16 @@ class PersonMapperTest {
   fun toCombinedCredit_withValidValue_returnsCombinedCredit() {
     val listOfCastItemResponse = listOf(
       CastItemResponse(id = 1, name = "John", voteCount = 12345),
-      CastItemResponse(id = 2, name = "Rex", voteCount = 2345)
+      CastItemResponse(id = 2, name = "Rex", voteCount = 2345),
     )
     val listOfCrewItemResponse = listOf(
       CrewItemResponse(id = 1, job = "cameraman", title = "what"),
-      CrewItemResponse(id = 2, job = "director", title = "why")
+      CrewItemResponse(id = 2, job = "director", title = "why"),
     )
     val response = CombinedCreditResponse(
       id = 345,
       cast = listOfCastItemResponse,
-      crew = listOfCrewItemResponse
+      crew = listOfCrewItemResponse,
     )
 
     val combinedCredit = response.toCombinedCredit()
@@ -50,7 +50,7 @@ class PersonMapperTest {
     val response = CombinedCreditResponse(
       id = 4376,
       cast = null,
-      crew = null
+      crew = null,
     )
 
     val combinedCredit = response.toCombinedCredit()
@@ -84,12 +84,12 @@ class PersonMapperTest {
       video = false,
       title = "title",
       releaseDate = "releaseDate",
-      order = 3
+      order = 3,
     )
     val combinedCreditResponse = CombinedCreditResponse(
       id = 4376,
       cast = listOf(castItemResponse),
-      crew = null
+      crew = null,
     )
 
     val combinedCredit = combinedCreditResponse.toCombinedCredit()
@@ -118,14 +118,14 @@ class PersonMapperTest {
         width = 300,
         height = 450,
         filePath = "/file_path.jpg",
-        voteCount = 98765
+        voteCount = 98765,
       ),
       ProfilesItemResponse(
         width = 300,
         height = 450,
         filePath = "/file_path2.jpg",
-        voteCount = 9999
-      )
+        voteCount = 9999,
+      ),
     )
     val response = ImagePersonResponse(profiles = listOfProfilesItemResponse, id = 1)
     val imagePerson = response.toImagePerson()
@@ -153,7 +153,7 @@ class PersonMapperTest {
     val response = ExternalIDPersonResponse(
       imdbId = "nm12345",
       instagramId = "instagram_id",
-      twitterId = "twitter_id"
+      twitterId = "twitter_id",
     )
     val externalID = response.toExternalIDPerson()
     assertEquals("nm12345", externalID.imdbId)

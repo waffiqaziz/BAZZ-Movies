@@ -19,8 +19,8 @@ class UIStateMapperTest {
       source = LoadStates(
         refresh = LoadState.Loading,
         prepend = LoadState.NotLoading(endOfPaginationReached = false),
-        append = LoadState.NotLoading(endOfPaginationReached = false)
-      )
+        append = LoadState.NotLoading(endOfPaginationReached = false),
+      ),
     )
 
     val result = loadStates.toUiState()
@@ -36,8 +36,8 @@ class UIStateMapperTest {
       source = LoadStates(
         refresh = LoadState.NotLoading(endOfPaginationReached = false),
         prepend = LoadState.NotLoading(endOfPaginationReached = false),
-        append = LoadState.NotLoading(endOfPaginationReached = false)
-      )
+        append = LoadState.NotLoading(endOfPaginationReached = false),
+      ),
     )
 
     val result = loadStates.toUiState()
@@ -54,8 +54,8 @@ class UIStateMapperTest {
       source = LoadStates(
         refresh = LoadState.Error(Throwable(errorMessage)),
         prepend = LoadState.NotLoading(endOfPaginationReached = false),
-        append = LoadState.NotLoading(endOfPaginationReached = false)
-      )
+        append = LoadState.NotLoading(endOfPaginationReached = false),
+      ),
     )
 
     val result = loadStates.toUiState()
@@ -71,8 +71,8 @@ class UIStateMapperTest {
       source = LoadStates(
         refresh = LoadState.Error(Throwable()),
         prepend = LoadState.NotLoading(endOfPaginationReached = false),
-        append = LoadState.NotLoading(endOfPaginationReached = false)
-      )
+        append = LoadState.NotLoading(endOfPaginationReached = false),
+      ),
     )
 
     val result = loadStates.toUiState()

@@ -17,72 +17,80 @@ import retrofit2.Response
 class AccountPostFavoriteRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
-  fun postFavorite_whenSuccessful_returnsExpectedResponse() = runTest {
-    testSuccessResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      mockApiResponse = Response.success(postResponseSuccessDump),
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-      expectedData = postResponseSuccessDump,
-    )
-  }
+  fun postFavorite_whenSuccessful_returnsExpectedResponse() =
+    runTest {
+      testSuccessResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        mockApiResponse = Response.success(postResponseSuccessDump),
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+        expectedData = postResponseSuccessDump,
+      )
+    }
 
   @Test
-  fun postFavorite_whenErrorOccurs_returnsExpectedStatusMessageResponse() = runTest {
-    testErrorResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      errorResponse = invalidServiceErrorResponse,
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-      expectedErrorMessage = "Invalid service: this service does not exist."
-    )
-  }
+  fun postFavorite_whenErrorOccurs_returnsExpectedStatusMessageResponse() =
+    runTest {
+      testErrorResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        errorResponse = invalidServiceErrorResponse,
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+        expectedErrorMessage = "Invalid service: this service does not exist.",
+      )
+    }
 
   // region postFavorite EDGE CASE
   @Test
-  fun postFavorite_whenAPIRespondsWith404_returnsExpectedResponse() = runTest {
-    testError404Response(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenAPIRespondsWith404_returnsExpectedResponse() =
+    runTest {
+      testError404Response(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
 
   @Test
-  fun postFavorite_whenNetworkErrorOccurs_returnsExpectedResponse() = runTest {
-    testUnknownHostExceptionResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenNetworkErrorOccurs_returnsExpectedResponse() =
+    runTest {
+      testUnknownHostExceptionResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
 
   @Test
-  fun postFavorite_whenTimeoutOccurs_returnsErrorResponse() = runTest {
-    testSocketTimeoutExceptionResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenTimeoutOccurs_returnsErrorResponse() =
+    runTest {
+      testSocketTimeoutExceptionResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
 
   @Test
-  fun postFavorite_whenHttpExceptionOccurs_returnsErrorResponse() = runTest {
-    testHttpExceptionResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenHttpExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testHttpExceptionResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
 
   @Test
-  fun postFavorite_whenIOExceptionOccurs_returnsErrorResponse() = runTest {
-    testIOExceptionResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenIOExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testIOExceptionResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
 
   @Test
-  fun postFavorite_whenExceptionOccurs_returnsErrorResponse() = runTest {
-    testGeneralExceptionResponse(
-      apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-      dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
-    )
-  }
+  fun postFavorite_whenExceptionOccurs_returnsErrorResponse() =
+    runTest {
+      testGeneralExceptionResponse(
+        apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
+        dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
+      )
+    }
   // endregion postFavorite EDGE CASE
 }

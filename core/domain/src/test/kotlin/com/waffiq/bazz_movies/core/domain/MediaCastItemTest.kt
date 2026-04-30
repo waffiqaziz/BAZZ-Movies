@@ -24,7 +24,7 @@ class MediaCastItemTest {
     profilePath = "/profile.jpg",
     id = 200,
     adult = false,
-    order = 1
+    order = 1,
   )
   private val mediaCastItemNull = MediaCastItem()
 

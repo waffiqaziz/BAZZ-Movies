@@ -16,11 +16,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.waffiq.bazz_movies.MainActivity
 import com.waffiq.bazz_movies.R.id.bottom_navigation
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
+import com.waffiq.bazz_movies.R.id.navigation_favorite
 import com.waffiq.bazz_movies.R.id.navigation_home
 import com.waffiq.bazz_movies.R.id.navigation_more
-import com.waffiq.bazz_movies.R.id.navigation_favorite
-import com.waffiq.bazz_movies.R.id.navigation_watchlist
 import com.waffiq.bazz_movies.R.id.navigation_search
+import com.waffiq.bazz_movies.R.id.navigation_watchlist
 import com.waffiq.bazz_movies.feature.favorite.R.id.fragment_favorite
 import com.waffiq.bazz_movies.feature.home.R.id.fragment_featured
 import com.waffiq.bazz_movies.feature.more.R.id.fragment_more
@@ -58,7 +58,9 @@ class MainActivityTest {
   fun testActivityInitialization() {
     activityRule.scenario.onActivity { activity ->
       assertNotNull(activity.findViewById<BottomNavigationView>(bottom_navigation))
-      assertNotNull(activity.supportFragmentManager.findFragmentById(nav_host_fragment_activity_home))
+      assertNotNull(
+        activity.supportFragmentManager.findFragmentById(nav_host_fragment_activity_home),
+      )
     }
   }
 
@@ -141,8 +143,7 @@ class MainActivityTest {
       override fun getConstraints(): Matcher<View> =
         isAssignableFrom(BottomNavigationView::class.java)
 
-      override fun getDescription(): String =
-        "Click on menu item with id $menuItemId"
+      override fun getDescription(): String = "Click on menu item with id $menuItemId"
 
       override fun perform(uiController: UiController, view: View) {
         val bottomNavigationView = view as BottomNavigationView

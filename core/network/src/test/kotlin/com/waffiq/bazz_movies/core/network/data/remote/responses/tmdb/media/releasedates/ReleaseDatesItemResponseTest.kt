@@ -11,8 +11,8 @@ class ReleaseDatesItemResponseTest {
     val releaseDatesItemResponse = ReleaseDatesResponseItem(
       iso31661 = "ID",
       listReleaseDateResponseItemValue = listOf(
-        ReleaseDatesResponseItemValue(note = "Disney+")
-      )
+        ReleaseDatesResponseItemValue(note = "Disney+"),
+      ),
     )
     assertEquals("ID", releaseDatesItemResponse.iso31661)
     assertEquals("Disney+", releaseDatesItemResponse.listReleaseDateResponseItemValue?.get(0)?.note)

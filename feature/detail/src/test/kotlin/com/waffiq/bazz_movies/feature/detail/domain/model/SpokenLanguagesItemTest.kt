@@ -20,7 +20,7 @@ class SpokenLanguagesItemTest {
     val spokenLanguage = SpokenLanguagesItem(
       name = "Español",
       iso6391 = "es",
-      englishName = "Spanish"
+      englishName = "Spanish",
     )
 
     assertEquals("Español", spokenLanguage.name)
@@ -42,7 +42,7 @@ class SpokenLanguagesItemTest {
     val spokenLanguage = SpokenLanguagesItem(
       name = null,
       iso6391 = null,
-      englishName = null
+      englishName = null,
     )
 
     assertNull(spokenLanguage.name)

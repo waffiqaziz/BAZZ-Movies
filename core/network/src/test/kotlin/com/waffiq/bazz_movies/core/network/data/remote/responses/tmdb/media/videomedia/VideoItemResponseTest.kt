@@ -14,7 +14,7 @@ class VideoItemResponseTest {
     val videoItemResponse = videoItemMovieResponseDump1
     assertEquals(
       "'Oppenheimer' Wins Best Cinematography | 96th Oscars (2024)",
-      videoItemResponse.name
+      videoItemResponse.name,
     )
     assertEquals("YouTube", videoItemResponse.site)
     assertEquals(1080, videoItemResponse.size)

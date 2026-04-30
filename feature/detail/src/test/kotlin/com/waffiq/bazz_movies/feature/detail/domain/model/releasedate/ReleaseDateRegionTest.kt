@@ -12,7 +12,7 @@ class ReleaseDateRegionTest {
 
     val item = ReleaseDateRegion(
       regionRelease = regionRelease,
-      releaseDate = releaseDate
+      releaseDate = releaseDate,
     )
 
     assertEquals(regionRelease, item.regionRelease)

@@ -87,9 +87,9 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
         PagingData.from(
           listOf(
             testMediaItem,
-            testMediaItem.copy(id = 1234)
-          )
-        )
+            testMediaItem.copy(id = 1234),
+          ),
+        ),
       )
 
     every { favoriteViewModel.getFavoriteData("tv") } returns
@@ -97,9 +97,9 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
         PagingData.from(
           listOf(
             testMediaItem.copy(mediaType = TV_MEDIA_TYPE),
-            testMediaItem.copy(mediaType = TV_MEDIA_TYPE, id = 1234)
-          )
-        )
+            testMediaItem.copy(mediaType = TV_MEDIA_TYPE, id = 1234),
+          ),
+        ),
       )
   }
 
@@ -115,7 +115,7 @@ class DefaultFavoriteFragmentTestHelper : FavoriteFragmentTestHelper {
   }
 
   override fun launchFragment() {
-    favoriteFragment = launchFragmentInHiltContainer<FavoriteFragment>()
+    favoriteFragment = launchFragmentInHiltContainer<FavoriteFragment>().fragment
     shortDelay()
   }
 

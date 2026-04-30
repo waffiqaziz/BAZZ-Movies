@@ -18,11 +18,11 @@ class MediaKeywordsMapperTest {
 
   @Test
   fun toMediaKeywords_withValidValues_returnsMediaKeywords() {
-    val movieMediaKeywords : MediaKeywords = movieKeywordsResponse.toMediaKeywords()
+    val movieMediaKeywords: MediaKeywords = movieKeywordsResponse.toMediaKeywords()
     assertEquals(44444, movieMediaKeywords.id)
     assertEquals("crime", movieMediaKeywords.keywords?.get(0)?.name)
 
-    val tvMediaKeywords : MediaKeywords = tvKeywordsResponse.toMediaKeywords()
+    val tvMediaKeywords: MediaKeywords = tvKeywordsResponse.toMediaKeywords()
     assertEquals(66666, tvMediaKeywords.id)
     assertEquals("crime", tvMediaKeywords.keywords?.get(0)?.name)
   }
@@ -37,9 +37,10 @@ class MediaKeywordsMapperTest {
 
     val input: List<MediaKeywordsResponseItem>? = null
     val movieMediaKeywords2 = MovieKeywordsResponse(id = 890, keywords = input).toMediaKeywords()
-    assertEquals(null,movieMediaKeywords2.keywords)
+    assertEquals(null, movieMediaKeywords2.keywords)
 
-    val movieWithNullItem = MovieKeywordsResponse(id = 222, keywords = listOf(null)).toMediaKeywords()
+    val movieWithNullItem =
+      MovieKeywordsResponse(id = 222, keywords = listOf(null)).toMediaKeywords()
     assertEquals(222, movieWithNullItem.id)
     assertEquals(listOf(null), movieWithNullItem.keywords)
 
@@ -55,20 +56,20 @@ class MediaKeywordsMapperTest {
   }
 
   @Test
-  fun toValidKeywordOrNull_withValidKeywords_returnsKeywordsDataCorrectly(){
+  fun toValidKeywordOrNull_withValidKeywords_returnsKeywordsDataCorrectly() {
     val result = mediaKeywordsItem1.toValidKeywordOrNull()
     assertEquals(result?.id, mediaKeywordsItem1.id)
     assertEquals(result?.name, mediaKeywordsItem1.name)
   }
 
   @Test
-  fun toValidKeywordOrNull_withNullKeywords_returnNull(){
+  fun toValidKeywordOrNull_withNullKeywords_returnNull() {
     val result = MediaKeywordsItem().toValidKeywordOrNull()
     assertNull(result)
   }
 
   @Test
-  fun toValidKeywordOrNull_oneOfParametersIsNull_returnsNull(){
+  fun toValidKeywordOrNull_oneOfParametersIsNull_returnsNull() {
     val result = MediaKeywordsItem(id = 10).toValidKeywordOrNull()
     assertNull(result)
 

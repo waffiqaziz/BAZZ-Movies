@@ -33,8 +33,7 @@ import org.junit.Test
  * Instrumented test for [MediaDetailActivity] side sheet functionality.
  */
 @HiltAndroidTest
-class MediaDetailSideSheetTest :
-  MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
+class MediaDetailSideSheetTest : MediaDetailActivityTestSetup by MediaDetailActivityTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -105,7 +104,7 @@ class MediaDetailSideSheetTest :
             mediaType = testMediaItem.mediaType,
             title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
             id = testMediaDetail.keywords?.get(0)?.id ?: 0,
-          )
+          ),
         )
       }
     }
@@ -125,7 +124,7 @@ class MediaDetailSideSheetTest :
             mediaType = testMediaItem.mediaType,
             title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
             id = testMediaDetail.keywords?.get(0)?.id ?: 0,
-          )
+          ),
         )
       }
     }

@@ -44,66 +44,70 @@ class PagingDataHelperUnitTest {
   private val mockVerify: () -> Unit = mockk(relaxed = true)
 
   @Test
-  fun testSuccessfulPagingData_whenRepositoryReturnsMappedData_shouldPass() = runTest {
-    val mockPagingData = PagingData.from(fakeResponseItems)
+  fun testSuccessfulPagingData_whenRepositoryReturnsMappedData_shouldPass() =
+    runTest {
+      val mockPagingData = PagingData.from(fakeResponseItems)
 
-    coEvery { mockDataSourceCall() } returns flowOf(mockPagingData)
-    coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(fakeMappedItems))
+      coEvery { mockDataSourceCall() } returns flowOf(mockPagingData)
+      coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(fakeMappedItems))
 
-    testSuccessfulPagingData(
-      mockPagingData = mockPagingData,
-      dataSourceCall = mockDataSourceCall,
-      repositoryCall = mockRepositoryCall,
-      verifyDataSourceCall = mockVerify,
-    )
-
-    verify { mockVerify() }
-  }
-
-  @Test
-  fun testSuccessfulPagingData_whenRepositoryReturnsEmptyData_shouldFail() = runTest {
-    val mockPagingData = PagingData.from(fakeResponseItems)
-
-    coEvery { mockDataSourceCall() } returns flowOf(mockPagingData)
-    coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(emptyList()))
-
-    assertFailsWith<AssertionError> {
       testSuccessfulPagingData(
         mockPagingData = mockPagingData,
         dataSourceCall = mockDataSourceCall,
         repositoryCall = mockRepositoryCall,
         verifyDataSourceCall = mockVerify,
       )
+
+      verify { mockVerify() }
     }
-  }
 
   @Test
-  fun testEmptyPagingData_whenRepositoryReturnsEmptyData_shouldPass() = runTest {
-    coEvery { mockDataSourceCall() } returns flowOf(PagingData.from(emptyList()))
-    coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(emptyList()))
+  fun testSuccessfulPagingData_whenRepositoryReturnsEmptyData_shouldFail() =
+    runTest {
+      val mockPagingData = PagingData.from(fakeResponseItems)
 
-    testEmptyPagingData(
-      dataSourceCall = mockDataSourceCall,
-      repositoryCall = mockRepositoryCall,
-      verifyDataSourceCall = mockVerify,
-    )
+      coEvery { mockDataSourceCall() } returns flowOf(mockPagingData)
+      coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(emptyList()))
 
-    verify { mockVerify() }
-  }
+      assertFailsWith<AssertionError> {
+        testSuccessfulPagingData(
+          mockPagingData = mockPagingData,
+          dataSourceCall = mockDataSourceCall,
+          repositoryCall = mockRepositoryCall,
+          verifyDataSourceCall = mockVerify,
+        )
+      }
+    }
 
   @Test
-  fun testEmptyPagingData_whenRepositoryReturnsNonEmptyData_shouldFail() = runTest {
-    coEvery { mockDataSourceCall() } returns flowOf(PagingData.from(emptyList()))
-    coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(fakeMappedItems))
+  fun testEmptyPagingData_whenRepositoryReturnsEmptyData_shouldPass() =
+    runTest {
+      coEvery { mockDataSourceCall() } returns flowOf(PagingData.from(emptyList()))
+      coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(emptyList()))
 
-    assertFailsWith<AssertionError> {
       testEmptyPagingData(
         dataSourceCall = mockDataSourceCall,
         repositoryCall = mockRepositoryCall,
         verifyDataSourceCall = mockVerify,
       )
+
+      verify { mockVerify() }
     }
-  }
+
+  @Test
+  fun testEmptyPagingData_whenRepositoryReturnsNonEmptyData_shouldFail() =
+    runTest {
+      coEvery { mockDataSourceCall() } returns flowOf(PagingData.from(emptyList()))
+      coEvery { mockRepositoryCall() } returns flowOf(PagingData.from(fakeMappedItems))
+
+      assertFailsWith<AssertionError> {
+        testEmptyPagingData(
+          dataSourceCall = mockDataSourceCall,
+          repositoryCall = mockRepositoryCall,
+          verifyDataSourceCall = mockVerify,
+        )
+      }
+    }
 
   @Test
   fun areItemsTheSame_whenItemsAreIdentical_shouldReturnTrue() {
@@ -146,19 +150,21 @@ class PagingDataHelperUnitTest {
   }
 
   @Test
-  fun differ_whenInitialized_shouldHaveEmptySnapshot() = runTest {
-    val differ = differ<MediaItem>()
-    assertTrue(differ.snapshot().items.isEmpty())
-  }
+  fun differ_whenInitialized_shouldHaveEmptySnapshot() =
+    runTest {
+      val differ = differ<MediaItem>()
+      assertTrue(differ.snapshot().items.isEmpty())
+    }
 
   @Test
-  fun differ_whenSubmittingPagingData_shouldContainSubmittedItems() = runTest {
-    val differ = differ<MediaItem>()
+  fun differ_whenSubmittingPagingData_shouldContainSubmittedItems() =
+    runTest {
+      val differ = differ<MediaItem>()
 
-    val job = launch { differ.submitData(PagingData.from(fakeMappedItems)) }
-    advanceUntilIdle()
+      val job = launch { differ.submitData(PagingData.from(fakeMappedItems)) }
+      advanceUntilIdle()
 
-    assertEquals(fakeMappedItems, differ.snapshot().items)
-    job.cancel()
-  }
+      assertEquals(fakeMappedItems, differ.snapshot().items)
+      job.cancel()
+    }
 }

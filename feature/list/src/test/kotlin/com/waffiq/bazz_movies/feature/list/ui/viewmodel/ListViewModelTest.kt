@@ -22,198 +22,195 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
-class ListViewModelTest : BehaviorSpec({
+class ListViewModelTest :
+  BehaviorSpec({
 
-  val id = 1234512
+    val id = 1234512
 
-  val movieMediaType = MOVIE_MEDIA_TYPE
-  val tvMediaType = TV_MEDIA_TYPE
+    val movieMediaType = MOVIE_MEDIA_TYPE
+    val tvMediaType = TV_MEDIA_TYPE
 
-  val testDispatcher = UnconfinedTestDispatcher()
+    val testDispatcher = UnconfinedTestDispatcher()
 
-  val mockGetListUseCase: GetListUseCase = mockk()
-  val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
-  val mockGetListTvUseCase: GetListTvUseCase = mockk()
+    val mockGetListUseCase: GetListUseCase = mockk()
+    val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
+    val mockGetListTvUseCase: GetListTvUseCase = mockk()
 
-  lateinit var viewModel: ListViewModel
+    lateinit var viewModel: ListViewModel
 
-  beforeTest {
-    Dispatchers.setMain(testDispatcher)
-    viewModel = ListViewModel(mockGetListUseCase, mockGetListMoviesUseCase, mockGetListTvUseCase)
-  }
+    beforeTest {
+      Dispatchers.setMain(testDispatcher)
+      viewModel = ListViewModel(mockGetListUseCase, mockGetListMoviesUseCase, mockGetListTvUseCase)
+    }
 
-  afterTest {
-    Dispatchers.resetMain()
-  }
+    afterTest {
+      Dispatchers.resetMain()
+    }
 
-  data class MediaItemExpectation(
-    val id: Int,
-    val title: String,
-    val overview: String,
-  )
+    data class MediaItemExpectation(val id: Int, val title: String, val overview: String)
 
-  val expectedMovie = MediaItemExpectation(1, "Inception", "A mind-bending thriller")
-  val expectedTv = MediaItemExpectation(
-    id = 1,
-    title = "Breaking Bad",
-    overview = "A high school chemistry teacher turned methamphetamine producer",
-  )
+    val expectedMovie = MediaItemExpectation(1, "Inception", "A mind-bending thriller")
+    val expectedTv = MediaItemExpectation(
+      id = 1,
+      title = "Breaking Bad",
+      overview = "A high school chemistry teacher turned methamphetamine producer",
+    )
 
-  suspend fun BehaviorSpecWhenContainerScope.thenEmitsCorrectItem(
-    flowProvider: () -> Flow<PagingData<MediaItem>>,
-    expected: MediaItemExpectation = expectedTv, // default use tv as expected
-  ) {
-    Then("emit paging data with id=${expected.id}, title='${expected.title}'") {
-      testPagingFlowCancelRemaining(flowProvider()) {
-        it[0].id shouldBe expected.id
-        it[0].title shouldBe expected.title
-        it[0].overview shouldBe expected.overview
+    suspend fun BehaviorSpecWhenContainerScope.thenEmitsCorrectItem(
+      flowProvider: () -> Flow<PagingData<MediaItem>>,
+      expected: MediaItemExpectation = expectedTv, // default use tv as expected
+    ) {
+      Then("emit paging data with id=${expected.id}, title='${expected.title}'") {
+        testPagingFlowCancelRemaining(flowProvider()) {
+          it[0].id shouldBe expected.id
+          it[0].title shouldBe expected.title
+          it[0].overview shouldBe expected.overview
+        }
       }
     }
-  }
 
-  Given("a genre id is provided") {
+    Given("a genre id is provided") {
 
-    When("fetching movies by genre") {
-      coEvery { mockGetListUseCase.getMovieByGenres(any()) } returns
-        flowOf(fakeMovieMediaItemPagingData)
+      When("fetching movies by genre") {
+        coEvery { mockGetListUseCase.getMovieByGenres(any()) } returns
+          flowOf(fakeMovieMediaItemPagingData)
 
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getByGenre(movieMediaType, "1") },
-        expected = expectedMovie,
-      )
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getByGenre(movieMediaType, "1") },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching tv shows by genre") {
+        coEvery { mockGetListUseCase.getTvByGenres(any()) } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getByGenre(tvMediaType, "1") },
+        )
+      }
     }
 
-    When("fetching tv shows by genre") {
-      coEvery { mockGetListUseCase.getTvByGenres(any()) } returns
-        flowOf(fakeTvMediaItemPagingData)
+    Given("a keyword id is provided") {
 
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getByGenre(tvMediaType, "1") },
-      )
-    }
-  }
+      When("fetching movies by keyword") {
+        coEvery { mockGetListUseCase.getMovieByKeywords(any()) } returns
+          flowOf(fakeMovieMediaItemPagingData)
 
-  Given("a keyword id is provided") {
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getByKeyword(movieMediaType, "1") },
+          expected = expectedMovie,
+        )
+      }
 
-    When("fetching movies by keyword") {
-      coEvery { mockGetListUseCase.getMovieByKeywords(any()) } returns
-        flowOf(fakeMovieMediaItemPagingData)
+      When("fetching tv shows by keyword") {
+        coEvery { mockGetListUseCase.getTvByKeywords(any()) } returns
+          flowOf(fakeTvMediaItemPagingData)
 
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getByKeyword(movieMediaType, "1") },
-        expected = expectedMovie,
-      )
-    }
-
-    When("fetching tv shows by keyword") {
-      coEvery { mockGetListUseCase.getTvByKeywords(any()) } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getByKeyword(tvMediaType, "1") },
-      )
-    }
-  }
-
-  Given("movies list is requested") {
-
-    When("fetching upcoming movies") {
-      coEvery { mockGetListMoviesUseCase.getUpcomingMovies() } returns
-        flowOf(fakeMovieMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getUpcomingMovies() },
-        expected = expectedMovie,
-      )
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getByKeyword(tvMediaType, "1") },
+        )
+      }
     }
 
-    When("fetching now playing movies") {
-      coEvery { mockGetListMoviesUseCase.getPlayingNowMovies() } returns
-        flowOf(fakeMovieMediaItemPagingData)
+    Given("movies list is requested") {
 
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getNowPlaying(movieMediaType) },
-        expected = expectedMovie,
-      )
+      When("fetching upcoming movies") {
+        coEvery { mockGetListMoviesUseCase.getUpcomingMovies() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getUpcomingMovies() },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching now playing movies") {
+        coEvery { mockGetListMoviesUseCase.getPlayingNowMovies() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getNowPlaying(movieMediaType) },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching popular movies") {
+        coEvery { mockGetListMoviesUseCase.getPopularMovies() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getPopular(movieMediaType) },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching top rated movies") {
+        coEvery { mockGetListMoviesUseCase.getTopRatedMovies() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getTopRated(movieMediaType) },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching movie recommendation") {
+        coEvery { mockGetListMoviesUseCase.getMovieRecommendation(any()) } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getRecommendation(movieMediaType, id) },
+          expected = expectedMovie,
+        )
+      }
     }
 
-    When("fetching popular movies") {
-      coEvery { mockGetListMoviesUseCase.getPopularMovies() } returns
-        flowOf(fakeMovieMediaItemPagingData)
+    Given("tv shows list is requested") {
 
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getPopular(movieMediaType) },
-        expected = expectedMovie,
-      )
+      When("fetching popular tv shows") {
+        coEvery { mockGetListTvUseCase.getPopularTv() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getPopular(tvMediaType) },
+        )
+      }
+
+      When("fetching top rated tv shows") {
+        coEvery { mockGetListTvUseCase.getTopRatedTv() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getTopRated(tvMediaType) },
+        )
+      }
+
+      When("fetching tv shows airing this week") {
+        coEvery { mockGetListTvUseCase.getAiringThisWeekTv() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAiringThisWeekTv() },
+        )
+      }
+
+      When("fetching tv shows airing today") {
+        coEvery { mockGetListTvUseCase.getAiringTodayTv() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getNowPlaying(tvMediaType) },
+        )
+      }
+
+      When("fetching tv recommendation") {
+        coEvery { mockGetListTvUseCase.getTvRecommendation(any()) } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getRecommendation(tvMediaType, id) },
+        )
+      }
     }
-
-    When("fetching top rated movies") {
-      coEvery { mockGetListMoviesUseCase.getTopRatedMovies() } returns
-        flowOf(fakeMovieMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTopRated(movieMediaType) },
-        expected = expectedMovie,
-      )
-    }
-
-    When("fetching movie recommendation") {
-      coEvery { mockGetListMoviesUseCase.getMovieRecommendation(any()) } returns
-        flowOf(fakeMovieMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getRecommendation(movieMediaType, id) },
-        expected = expectedMovie,
-      )
-    }
-  }
-
-  Given("tv shows list is requested") {
-
-    When("fetching popular tv shows") {
-      coEvery { mockGetListTvUseCase.getPopularTv() } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getPopular(tvMediaType) },
-      )
-    }
-
-    When("fetching top rated tv shows") {
-      coEvery { mockGetListTvUseCase.getTopRatedTv() } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getTopRated(tvMediaType) },
-      )
-    }
-
-    When("fetching tv shows airing this week") {
-      coEvery { mockGetListTvUseCase.getAiringThisWeekTv() } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getAiringThisWeekTv() },
-      )
-    }
-
-    When("fetching tv shows airing today") {
-      coEvery { mockGetListTvUseCase.getAiringTodayTv() } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getNowPlaying(tvMediaType) },
-      )
-    }
-
-    When("fetching tv recommendation") {
-      coEvery { mockGetListTvUseCase.getTvRecommendation(any()) } returns
-        flowOf(fakeTvMediaItemPagingData)
-
-      thenEmitsCorrectItem(
-        flowProvider = { viewModel.getRecommendation(tvMediaType, id) },
-      )
-    }
-  }
-})
+  })

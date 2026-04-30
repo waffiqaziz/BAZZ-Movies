@@ -17,7 +17,7 @@ class LastEpisodeToAirResponseTest {
         Sa-eon abandons everything he's worked for, leaving Hee-joo completely alone. But after a clue 
         arrives, she embarks on a journey to reunite with him.
       """.trimIndent(),
-      lastEpisodeToAirResponse.overview
+      lastEpisodeToAirResponse.overview,
     )
     assertEquals(0.0, lastEpisodeToAirResponse.voteAverage)
     assertEquals(0, lastEpisodeToAirResponse.voteCount)
@@ -53,7 +53,7 @@ class LastEpisodeToAirResponseTest {
   fun lastEpisodeToAirResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val lastEpisodeToAirResponse = LastEpisodeToAirResponse(
       name = "Episode 12",
-      id = 2
+      id = 2,
     )
     assertEquals("Episode 12", lastEpisodeToAirResponse.name)
     assertNull(lastEpisodeToAirResponse.voteCount)

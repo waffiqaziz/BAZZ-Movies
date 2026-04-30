@@ -54,8 +54,8 @@ class RoutingActivityTest {
         token = "token_testing",
         isLogin = true,
         gravatarHash = null,
-        tmdbAvatar = null
-      )
+        tmdbAvatar = null,
+      ),
     )
 
     // launch activity
@@ -82,8 +82,8 @@ class RoutingActivityTest {
         token = "not_logged",
         isLogin = false,
         gravatarHash = null,
-        tmdbAvatar = null
-      )
+        tmdbAvatar = null,
+      ),
     )
 
     val scenario = ActivityScenario.launch(RoutingActivity::class.java)

@@ -12,7 +12,7 @@ class GetFavoriteMovieInteractorTest : BaseFavoriteInteractorTest() {
     should("return favorite movies") {
       val interactor = GetFavoriteMovieInteractor(mockFavoriteRepository, mockUserRepository)
       every { mockFavoriteRepository.getFavoriteMovies(any(), any()) } returns flowOf(
-        fakeMovieMediaItemPagingData
+        fakeMovieMediaItemPagingData,
       )
 
       testPagingFlow(interactor.getFavoriteMovies()) { list ->

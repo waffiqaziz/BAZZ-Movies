@@ -34,7 +34,7 @@ abstract class BasePersonViewModelTest {
   protected val mockDetailPerson = DetailPerson(
     id = personId,
     name = "John Doe",
-    biography = "Sample biography"
+    biography = "Sample biography",
   )
   protected val mockCastItem = CastItem(
     name = "name_person",
@@ -54,7 +54,7 @@ abstract class BasePersonViewModelTest {
   )
   protected val mockExternalIDPerson = ExternalIDPerson(
     id = 3254153,
-    instagramId = "instagram_id"
+    instagramId = "instagram_id",
   )
 
   @get:Rule
@@ -75,11 +75,13 @@ abstract class BasePersonViewModelTest {
       emit(Outcome.Success(data))
     }
 
-  fun <T : Any> flowSuccessWithLoading(data: T) = flow {
-    emit(Outcome.Loading)
-    emit(Outcome.Success(data))
-  }
+  fun <T : Any> flowSuccessWithLoading(data: T) =
+    flow {
+      emit(Outcome.Loading)
+      emit(Outcome.Success(data))
+    }
 
+  @Suppress("LongParameterList")
   protected fun <T : Any> testViewModel(
     runBlock: () -> Unit,
     liveData: LiveData<T>,

@@ -41,30 +41,32 @@ class MoreLocalViewModelTest {
   }
 
   @Test
-  fun deleteAllPosts_whenSuccessful_emitsSuccessResult() = runTest {
-    coEvery { localDatabaseUseCase.deleteAll() } returns DbResult.Success(1)
+  fun deleteAllPosts_whenSuccessful_emitsSuccessResult() =
+    runTest {
+      coEvery { localDatabaseUseCase.deleteAll() } returns DbResult.Success(1)
 
-    viewModel.deleteAll()
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Loading, awaitItem())
-      assertEquals(UIState.Success(Unit), awaitItem())
-      cancelAndIgnoreRemainingEvents()
+      viewModel.deleteAll()
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        assertEquals(UIState.Loading, awaitItem())
+        assertEquals(UIState.Success(Unit), awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun deleteAllPosts_whenUnsuccessful_errorResult() = runTest {
-    val errorMessage = "Delete failed"
-    val expectedError = DbResult.Error(errorMessage)
-    coEvery { localDatabaseUseCase.deleteAll() } returns expectedError
+  fun deleteAllPosts_whenUnsuccessful_errorResult() =
+    runTest {
+      val errorMessage = "Delete failed"
+      val expectedError = DbResult.Error(errorMessage)
+      coEvery { localDatabaseUseCase.deleteAll() } returns expectedError
 
-    viewModel.deleteAll()
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Loading, awaitItem())
-      assertEquals(UIState.Error(errorMessage), awaitItem())
-      cancelAndIgnoreRemainingEvents()
+      viewModel.deleteAll()
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        assertEquals(UIState.Loading, awaitItem())
+        assertEquals(UIState.Error(errorMessage), awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 }

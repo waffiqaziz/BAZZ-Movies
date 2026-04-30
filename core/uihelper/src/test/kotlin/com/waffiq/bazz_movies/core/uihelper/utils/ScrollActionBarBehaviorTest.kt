@@ -61,13 +61,13 @@ class ScrollActionBarBehaviorTest {
     nestedScrollView = NestedScrollView(context).apply {
       layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
-        1000 // set a fixed height for the scroll view
+        1000, // set a fixed height for the scroll view
       )
     }
     childView = View(context).apply {
       layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
-        2000 // make the child view taller than the scroll view
+        2000, // make the child view taller than the scroll view
       )
       setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
     }
@@ -79,14 +79,14 @@ class ScrollActionBarBehaviorTest {
     // measure and layout the NestedScrollView
     nestedScrollView.measure(
       View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY), // width: match_parent
-      View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY) // height: 1000
+      View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY), // height: 1000
     )
     nestedScrollView.layout(0, 0, 1080, 1000)
 
     // manually measure and layout the child view
     childView.measure(
       View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
-      View.MeasureSpec.makeMeasureSpec(2000, View.MeasureSpec.EXACTLY)
+      View.MeasureSpec.makeMeasureSpec(2000, View.MeasureSpec.EXACTLY),
     )
     childView.layout(0, 0, 1080, 2000)
   }
@@ -134,7 +134,7 @@ class ScrollActionBarBehaviorTest {
     val shorterChild = View(context).apply {
       layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
-        500 // shorter than the 1000px scroll view
+        500, // shorter than the 1000px scroll view
       )
       setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
     }
@@ -143,13 +143,13 @@ class ScrollActionBarBehaviorTest {
     // force measure and layout
     nestedScrollView.measure(
       View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
-      View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY)
+      View.MeasureSpec.makeMeasureSpec(1000, View.MeasureSpec.EXACTLY),
     )
     nestedScrollView.layout(0, 0, 1080, 1000)
 
     shorterChild.measure(
       View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
-      View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY)
+      View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY),
     )
     shorterChild.layout(0, 0, 1080, 500)
 
@@ -178,12 +178,12 @@ class ScrollActionBarBehaviorTest {
     assertEquals(
       "Status bar color should not change when maxScroll <= 0",
       initialStatusBarColor,
-      currentStatusBarColor
+      currentStatusBarColor,
     )
     assertEquals(
       "AppBar color should not change when maxScroll <= 0",
       initialAppBarColor,
-      currentAppBarColor
+      currentAppBarColor,
     )
   }
 
@@ -220,13 +220,14 @@ class ScrollActionBarBehaviorTest {
     val maxScroll = mockChildView.height - mockScrollView.height
     assertTrue("maxScroll should be <= 0", maxScroll <= 0)
 
-    // when maxScroll <= 0, percentage should be 0, so the background is set to `fromColor` (transparent)
+    // when maxScroll <= 0, percentage should be 0
+    // so the background is set to `fromColor` (transparent)
     val backgroundDrawable = getAppBarColor(spyAppBarLayout)
     assertNotNull("AppBarLayout should have a ColorDrawable background", backgroundDrawable)
     assertEquals(
       "AppBarLayout color should be the fromColor when maxScroll <= 0",
       fromColor,
-      backgroundDrawable
+      backgroundDrawable,
     )
   }
 
@@ -235,7 +236,9 @@ class ScrollActionBarBehaviorTest {
   fun scrollActionBarBehavior_onApi35_usesModernApproach() {
     mockkConstructor(WindowInsetsControllerCompat::class)
 
-    every { anyConstructed<WindowInsetsControllerCompat>().isAppearanceLightStatusBars } returns true
+    every {
+      anyConstructed<WindowInsetsControllerCompat>().isAppearanceLightStatusBars
+    } returns true
     every {
       anyConstructed<WindowInsetsControllerCompat>().isAppearanceLightStatusBars = any()
     } just runs
@@ -290,7 +293,7 @@ class ScrollActionBarBehaviorTest {
     assertNotEquals(
       "Background should be replaced with a new color",
       Color.RED,
-      backgroundDrawable.color
+      backgroundDrawable.color,
     )
   }
 }

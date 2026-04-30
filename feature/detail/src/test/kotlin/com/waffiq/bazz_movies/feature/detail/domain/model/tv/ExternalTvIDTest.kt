@@ -17,7 +17,7 @@ class ExternalTvIDTest {
       twitterId = "BreakingBad_AMC",
       tvrageId = 18164,
       facebookId = "BreakingBad",
-      instagramId = "breakingbad"
+      instagramId = "breakingbad",
     )
 
     assertEquals("tt0903747", externalTvID.imdbId)
@@ -51,7 +51,7 @@ class ExternalTvIDTest {
     val externalTvID = TvExternalIds(
       imdbId = "tt1234567",
       id = 5678,
-      twitterId = "SomeShow"
+      twitterId = "SomeShow",
     )
 
     assertEquals("tt1234567", externalTvID.imdbId)
@@ -70,7 +70,7 @@ class ExternalTvIDTest {
     val externalTvID = TvExternalIds(
       tvdbId = 0,
       id = 0,
-      tvrageId = 0
+      tvrageId = 0,
     )
 
     assertEquals(0, externalTvID.tvdbId)
@@ -86,7 +86,7 @@ class ExternalTvIDTest {
       freebaseId = "",
       twitterId = "",
       facebookId = "",
-      instagramId = ""
+      instagramId = "",
     )
 
     assertEquals("", externalTvID.imdbId)
@@ -102,7 +102,7 @@ class ExternalTvIDTest {
     val externalTvID = TvExternalIds(
       tvdbId = -1,
       id = -100,
-      tvrageId = -50
+      tvrageId = -50,
     )
 
     assertEquals(-1, externalTvID.tvdbId)

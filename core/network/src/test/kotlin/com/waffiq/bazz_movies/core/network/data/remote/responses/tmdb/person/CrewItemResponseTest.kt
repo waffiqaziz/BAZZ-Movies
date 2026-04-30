@@ -19,7 +19,7 @@ class CrewItemResponseTest {
     assertEquals("The Last Samurai", crewItemResponse.originalTitle)
     assertEquals(
       "Nathan Algren is an American hired",
-      crewItemResponse.overview
+      crewItemResponse.overview,
     )
     assertEquals(44.954f, crewItemResponse.popularity)
     assertEquals("/lsasOSgYI85EHygtT5SvcxtZVYT.jpg", crewItemResponse.posterPath)
@@ -60,7 +60,7 @@ class CrewItemResponseTest {
   @Test
   fun crewItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val crewItemResponse = CrewItemResponse(
-      id = 345784867
+      id = 345784867,
     )
     assertEquals(345784867, crewItemResponse.id)
     assertNull(crewItemResponse.adult)

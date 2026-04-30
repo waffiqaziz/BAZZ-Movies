@@ -96,7 +96,7 @@ class TvMapperTest {
       productionCompaniesResponse = emptyList(),
       episodeRunTime = emptyList(),
       contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = emptyList()
+        contentRatingsItemResponse = emptyList(),
       ),
     )
 
@@ -129,7 +129,7 @@ class TvMapperTest {
       productionCompaniesResponse = listOf(null),
       episodeRunTime = listOf(60),
       contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = listOf(null)
+        contentRatingsItemResponse = listOf(null),
       ),
       nextEpisodeToAir = null,
     )
@@ -156,7 +156,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withProductionCountriesResponseItemNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      productionCountriesResponse = listOf(ProductionCountriesResponseItem())
+      productionCountriesResponse = listOf(ProductionCountriesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }
@@ -165,8 +165,8 @@ class TvMapperTest {
   fun toTvDetail_withContentRatingsItemResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
       contentRatingsResponse = ContentRatingsResponse(
-        contentRatingsItemResponse = null
-      )
+        contentRatingsItemResponse = null,
+      ),
     )
     detailTvResponse.toTvDetail()
   }
@@ -174,7 +174,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withSpokenLanguagesResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      spokenLanguagesResponse = listOf(SpokenLanguagesResponseItem())
+      spokenLanguagesResponse = listOf(SpokenLanguagesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }
@@ -182,7 +182,7 @@ class TvMapperTest {
   @Test
   fun toTvDetail_withProductionCompaniesResponseNull_returnsTvDetail() {
     val detailTvResponse = DetailTvResponse(
-      productionCompaniesResponse = listOf(ProductionCompaniesResponseItem())
+      productionCompaniesResponse = listOf(ProductionCompaniesResponseItem()),
     )
     detailTvResponse.toTvDetail()
   }
@@ -198,7 +198,7 @@ class TvMapperTest {
       twitterId = "test_twitter",
       tvrageId = 54321,
       facebookId = "test_facebook",
-      instagramId = "test_instagram"
+      instagramId = "test_instagram",
     )
 
     val externalTvID: TvExternalIds = externalIdResponse.toExternalTvID()
@@ -225,7 +225,7 @@ class TvMapperTest {
       twitterId = null,
       tvrageId = null,
       facebookId = null,
-      instagramId = null
+      instagramId = null,
     )
 
     val externalTvID: TvExternalIds = externalIdResponse.toExternalTvID()
@@ -252,7 +252,7 @@ class TvMapperTest {
       twitterId = "",
       tvrageId = 0,
       facebookId = "",
-      instagramId = ""
+      instagramId = "",
     )
 
     val externalTvID: TvExternalIds = externalIdResponse.toExternalTvID()

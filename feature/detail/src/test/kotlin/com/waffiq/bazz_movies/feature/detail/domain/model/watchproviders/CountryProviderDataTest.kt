@@ -15,7 +15,7 @@ class CountryProviderDataTest {
       buy = null,
       flatrate = null,
       free = null,
-      rent = null
+      rent = null,
     )
 
     assertNull(providerData.link)
@@ -32,7 +32,7 @@ class CountryProviderDataTest {
       logoPath = "/logo.png",
       providerId = 1,
       providerName = "Netflix",
-      displayPriority = 1
+      displayPriority = 1,
     )
     val providerData = WatchProvidersItem(
       link = "https://example.com",
@@ -40,7 +40,7 @@ class CountryProviderDataTest {
       buy = listOf(provider),
       flatrate = listOf(provider),
       free = listOf(provider),
-      rent = listOf(provider)
+      rent = listOf(provider),
     )
 
     assertEquals("https://example.com", providerData.link)
@@ -59,7 +59,7 @@ class CountryProviderDataTest {
       buy = emptyList(),
       flatrate = emptyList(),
       free = emptyList(),
-      rent = emptyList()
+      rent = emptyList(),
     )
 
     assertEquals("https://example.com", providerData.link)
@@ -78,7 +78,7 @@ class CountryProviderDataTest {
       buy = null,
       flatrate = null,
       free = null,
-      rent = null
+      rent = null,
     )
 
     assertEquals("https://tmdb.org", providerData.link)

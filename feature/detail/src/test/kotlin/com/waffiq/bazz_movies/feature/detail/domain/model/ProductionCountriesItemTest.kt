@@ -24,7 +24,7 @@ class ProductionCountriesItemTest {
       name = "United States",
       type = 1,
       iso6391 = "en",
-      certification = "PG-13"
+      certification = "PG-13",
     )
 
     assertEquals("US", productionCountry.iso31661)
@@ -52,7 +52,7 @@ class ProductionCountriesItemTest {
       name = null,
       type = null,
       iso6391 = null,
-      certification = null
+      certification = null,
     )
 
     assertNull(productionCountry.iso31661)

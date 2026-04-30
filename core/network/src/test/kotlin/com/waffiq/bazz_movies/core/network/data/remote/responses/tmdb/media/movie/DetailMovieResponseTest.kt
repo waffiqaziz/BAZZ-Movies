@@ -19,7 +19,7 @@ class DetailMovieResponseTest {
     assertEquals("Action", detailMovieResponse.listGenresItemResponse?.get(0)?.name)
     assertEquals(
       "https://www.marvel.com/movies/deadpool-and-wolverine",
-      detailMovieResponse.homepage
+      detailMovieResponse.homepage,
     )
     assertEquals(false, detailMovieResponse.adult)
   }
@@ -30,7 +30,7 @@ class DetailMovieResponseTest {
     assertEquals("Released", detailMovieResponse.status)
     assertEquals(
       "AD",
-      detailMovieResponse.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661
+      detailMovieResponse.releaseDatesResponse?.listReleaseDatesResponseItem?.get(0)?.iso31661,
     )
   }
 
@@ -49,11 +49,11 @@ class DetailMovieResponseTest {
   fun detailMovieResponse_withValidValues_setsCompanyAndProductionCorrectly() {
     assertEquals(
       "United States of America",
-      detailMovieResponse.listProductionCountriesItemResponse?.get(0)?.name
+      detailMovieResponse.listProductionCountriesItemResponse?.get(0)?.name,
     )
     assertEquals(
       "Marvel Studios",
-      detailMovieResponse.listProductionCompaniesItemResponse?.get(0)?.name
+      detailMovieResponse.listProductionCompaniesItemResponse?.get(0)?.name,
     )
     assertEquals("Deadpool Collection", detailMovieResponse.belongsToCollectionResponse?.name)
   }
@@ -73,7 +73,7 @@ class DetailMovieResponseTest {
         mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade 
         must reluctantly suit-up again with an even more reluctant Wolverine.
       """.trimIndent(),
-      detailMovieResponse.overview
+      detailMovieResponse.overview,
     )
     assertEquals("Come together.", detailMovieResponse.tagline)
   }
@@ -113,7 +113,7 @@ class DetailMovieResponseTest {
   fun detailMovieResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val detailMovieResponse = DetailMovieResponse(
       title = "Surga Yang Tak Dirindukan",
-      id = 2
+      id = 2,
     )
     assertEquals("Surga Yang Tak Dirindukan", detailMovieResponse.title)
     assertEquals(2, detailMovieResponse.id)

@@ -20,7 +20,7 @@ class UserModelTest {
     token = "abcd1234token",
     isLogin = true,
     gravatarHash = "123abcHash",
-    tmdbAvatar = "/avatar.jpg"
+    tmdbAvatar = "/avatar.jpg",
   )
 
   private val userModelGravatarHashNull = userModelValid.copy(gravatarHash = null)

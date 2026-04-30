@@ -16,7 +16,7 @@ class MediaStateMapperTest {
       id = 123,
       favorite = true,
       ratedResponse = RatedResponse.Value(5.0),
-      watchlist = false
+      watchlist = false,
     )
 
     val stated = statedResponse.toMediaState()
@@ -33,7 +33,7 @@ class MediaStateMapperTest {
       id = 456,
       favorite = false,
       ratedResponse = RatedResponse.Unrated,
-      watchlist = true
+      watchlist = true,
     )
 
     val stated = statedResponse.toMediaState()
@@ -50,7 +50,7 @@ class MediaStateMapperTest {
       id = 789,
       favorite = true,
       ratedResponse = RatedResponse.Value(10.0),
-      watchlist = false
+      watchlist = false,
     )
 
     val stated = statedResponse.toMediaState()
@@ -68,7 +68,7 @@ class MediaStateMapperTest {
       id = 321,
       favorite = false,
       ratedResponse = complexRated,
-      watchlist = true
+      watchlist = true,
     )
 
     val stated = statedResponse.toMediaState()
@@ -85,7 +85,7 @@ class MediaStateMapperTest {
       id = Int.MAX_VALUE,
       favorite = true,
       ratedResponse = RatedResponse.Value(10.0),
-      watchlist = false
+      watchlist = false,
     )
 
     val stated = statedResponse.toMediaState()
@@ -102,7 +102,7 @@ class MediaStateMapperTest {
       id = 0,
       favorite = false,
       ratedResponse = RatedResponse.Unrated,
-      watchlist = true
+      watchlist = true,
     )
 
     val stated = statedResponse.toMediaState()
@@ -119,7 +119,7 @@ class MediaStateMapperTest {
       id = 111,
       favorite = true,
       ratedResponse = RatedResponse.Unrated,
-      watchlist = false
+      watchlist = false,
     )
 
     val stated = statedResponse.toMediaState()
@@ -136,7 +136,7 @@ class MediaStateMapperTest {
       id = 999,
       favorite = true,
       ratedResponse = RatedResponse.Unrated,
-      watchlist = true
+      watchlist = true,
     )
 
     val stated = statedResponse.toMediaState()

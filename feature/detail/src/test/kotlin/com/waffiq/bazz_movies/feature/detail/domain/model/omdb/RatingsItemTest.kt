@@ -21,7 +21,7 @@ class RatingsItemTest {
 
     val item = RatingsItem(
       value = value,
-      source = source
+      source = source,
     )
 
     assertEquals(value, item.value)

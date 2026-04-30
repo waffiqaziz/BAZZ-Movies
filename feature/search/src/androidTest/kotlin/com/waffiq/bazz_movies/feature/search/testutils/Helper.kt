@@ -10,8 +10,8 @@ import org.hamcrest.Matcher
 
 object Helper {
 
-  fun triggerSwipeRefresh(): ViewAction {
-    return object : ViewAction {
+  fun triggerSwipeRefresh(): ViewAction =
+    object : ViewAction {
       override fun getConstraints(): Matcher<View> =
         ViewMatchers.isAssignableFrom(SwipeRefreshLayout::class.java)
 
@@ -26,7 +26,9 @@ object Helper {
           try {
             val listenerField = SwipeRefreshLayout::class.java.getDeclaredField("mListener")
             listenerField.isAccessible = true
-            val listener = listenerField.get(swipeRefreshLayout) as? SwipeRefreshLayout.OnRefreshListener
+
+            val listener =
+              listenerField.get(swipeRefreshLayout) as? SwipeRefreshLayout.OnRefreshListener
             listener?.onRefresh()
           } catch (e: Exception) {
             // set isRefreshing, trigger UI updates
@@ -38,5 +40,4 @@ object Helper {
         uiController.loopMainThreadUntilIdle()
       }
     }
-  }
 }

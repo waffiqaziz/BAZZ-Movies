@@ -45,7 +45,7 @@ class MediaCastItemResponseTest {
   @Test
   fun mediaCastItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val mediaCastItemResponse = MediaCastResponseItem(
-      name = "Martin Freeman"
+      name = "Martin Freeman",
     )
     assertEquals("Martin Freeman", mediaCastItemResponse.name)
     assertNull(mediaCastItemResponse.originalName)

@@ -19,7 +19,7 @@ class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
       releaseRegion = "US",
       releaseDate = "2023-10-20T00:00:00.000Z",
       productionCountries = listOf("GB"),
-      fallbackDate = "2022-01-01"
+      fallbackDate = "2022-01-01",
     )
     checkMovieReleaseDate(data, "US", "US", "Oct 20, 2023")
   }
@@ -30,7 +30,7 @@ class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
       releaseRegion = "FR",
       releaseDate = null,
       productionCountries = listOf("DE"),
-      fallbackDate = "2022-05-01"
+      fallbackDate = "2022-05-01",
     )
     checkMovieReleaseDate(data, "US", "DE", "May 01, 2022")
   }
@@ -41,7 +41,7 @@ class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
       releaseRegion = "US",
       releaseDate = "",
       productionCountries = listOf("GB"),
-      fallbackDate = "2022-07-01"
+      fallbackDate = "2022-07-01",
     )
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
@@ -52,7 +52,7 @@ class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
       releaseRegion = "JP",
       releaseDate = "2021-08-15T00:00:00.000Z",
       productionCountries = emptyList(),
-      fallbackDate = ""
+      fallbackDate = "",
     )
     checkMovieReleaseDate(data, "IT", "JP", "Aug 15, 2021")
   }
@@ -70,13 +70,13 @@ class ReleaseDateHelperMovieBasicTest : BaseReleaseDateHelperMovieTest() {
           ReleaseDatesItem(
             iso31661 = "US",
             listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "")
-            )
-          )
-        )
+              ReleaseDatesItemValue(releaseDate = ""),
+            ),
+          ),
+        ),
       ),
       listProductionCountriesItem = listOf(ProductionCountriesItem("")),
-      releaseDate = ""
+      releaseDate = "",
     )
     checkMovieReleaseDate(data, "US", "", "")
   }

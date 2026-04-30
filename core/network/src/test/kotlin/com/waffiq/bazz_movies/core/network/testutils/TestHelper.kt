@@ -141,14 +141,14 @@ object TestHelper {
   ) {
     val error404Response: Response<MediaCreditsResponse> = Response.error(
       404,
-      "Not Found".toResponseBody("application/json".toMediaTypeOrNull())
+      "Not Found".toResponseBody("application/json".toMediaTypeOrNull()),
     )
 
     testErrorResponse(
       apiEndpoint = { apiEndpoint() },
       errorResponse = error404Response,
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      expectedErrorMessage = "Invalid request (400)"
+      expectedErrorMessage = "Invalid request (400)",
     )
   }
 
@@ -164,7 +164,7 @@ object TestHelper {
       apiEndpoint = { apiEndpoint() },
       exception = UnknownHostException("Unable to resolve host"),
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      "Unable to resolve server hostname. Please check your internet connection."
+      "Unable to resolve server hostname. Please check your internet connection.",
     )
   }
 
@@ -179,7 +179,7 @@ object TestHelper {
       apiEndpoint = { apiEndpoint() },
       exception = SocketTimeoutException("Timeout"),
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      "Connection timed out. Please try again."
+      "Connection timed out. Please try again.",
     )
   }
 
@@ -197,7 +197,7 @@ object TestHelper {
       apiEndpoint = { apiEndpoint() },
       exception = httpException,
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      "Something went wrong"
+      "Something went wrong",
     )
   }
 
@@ -212,7 +212,7 @@ object TestHelper {
       apiEndpoint = { apiEndpoint() },
       exception = IOException("Network error"),
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      "Please check your network connection"
+      "Please check your network connection",
     )
   }
 
@@ -227,7 +227,7 @@ object TestHelper {
       apiEndpoint = { apiEndpoint() },
       exception = Exception("Unexpected error"),
       dataSourceEndpointCall = { dataSourceEndpointCall() },
-      "An unknown error occurred"
+      "An unknown error occurred",
     )
   }
 
@@ -286,22 +286,24 @@ object TestHelper {
   /**
    * Builds a default [MediaResponse] from a list of items.
    */
-  fun defaultMediaResponse(list: List<MediaResponseItem>) = MediaResponse(
-    page = 1,
-    results = list,
-    totalResults = 2,
-    totalPages = 3
-  )
+  fun defaultMediaResponse(list: List<MediaResponseItem>) =
+    MediaResponse(
+      page = 1,
+      results = list,
+      totalResults = 2,
+      totalPages = 3,
+    )
 
   /**
    * Builds a default [MultiSearchResponse] from a list of items.
    */
-  fun defaultMultiSearchResponse(list: List<MultiSearchResponseItem>) = MultiSearchResponse(
-    page = 1,
-    results = list,
-    totalResults = 3,
-    totalPages = 3
-  )
+  fun defaultMultiSearchResponse(list: List<MultiSearchResponseItem>) =
+    MultiSearchResponse(
+      page = 1,
+      results = list,
+      totalResults = 3,
+      totalPages = 3,
+    )
 
   /**
    * Collects and verifies a [PagingData] flow for [MediaResponseItem].

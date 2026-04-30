@@ -63,8 +63,11 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
 
-      - name: Run Detekt
+      - name: Run Detekt on main sources
         run: ./gradlew detekt
+
+      - name: Run Detekt on test sources
+        run: ./gradlew detektTest
 
   unit_test:
     name: Unit Tests

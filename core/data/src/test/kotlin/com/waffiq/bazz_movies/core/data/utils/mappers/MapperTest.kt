@@ -11,7 +11,7 @@ class MapperTest {
   fun toPostFavoriteWatchlist_withValidValues_returnsMappedModel() {
     val postFavoriteWatchlistResponse = PostFavoriteWatchlistResponse(
       statusCode = 200,
-      statusMessage = "success"
+      statusMessage = "success",
     )
     val postFavoriteWatchlist = postFavoriteWatchlistResponse.toPostFavoriteWatchlist()
     assertEquals(postFavoriteWatchlist.statusCode, 200)

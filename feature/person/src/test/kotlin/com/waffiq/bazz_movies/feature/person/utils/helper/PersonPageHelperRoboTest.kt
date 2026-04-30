@@ -82,7 +82,7 @@ class PersonPageHelperRoboTest {
     context.setupSocialLink(
       socialId = null,
       iconButton = iconButton,
-      baseUrl = "https://social.com/"
+      baseUrl = "https://social.com/",
     )
     verify { iconButton.visibility = View.GONE } // verify visibility is set to GONE
     verify(exactly = 0) { iconButton.setOnClickListener(any()) } // verify no click listener is set

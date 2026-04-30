@@ -50,107 +50,112 @@ class UserPreferenceMockkTest {
   }
 
   @Test
-  fun getUser_whenSuccessful_returnsCorrectUserModel() = runTest {
-    every { mockDataStore.data } returns flowOf(mockPreferences)
+  fun getUser_whenSuccessful_returnsCorrectUserModel() =
+    runTest {
+      every { mockDataStore.data } returns flowOf(mockPreferences)
 
-    val user = userPreference.getUser().first()
+      val user = userPreference.getUser().first()
 
-    assertEquals(123, user.userId)
-    assertEquals("John Doe", user.name)
-    assertEquals("johndoe", user.username)
-    assertEquals("password123", user.password)
-    assertEquals("US", user.region)
-    assertEquals("sampleToken", user.token)
-    assertTrue(user.isLogin)
-    assertEquals("hash123", user.gravatarHash)
-    assertEquals("avatar.jpg", user.tmdbAvatar)
+      assertEquals(123, user.userId)
+      assertEquals("John Doe", user.name)
+      assertEquals("johndoe", user.username)
+      assertEquals("password123", user.password)
+      assertEquals("US", user.region)
+      assertEquals("sampleToken", user.token)
+      assertTrue(user.isLogin)
+      assertEquals("hash123", user.gravatarHash)
+      assertEquals("avatar.jpg", user.tmdbAvatar)
 
-    // inline test
-    userPreference.getUser().test {
-      val result = awaitItem()
-      assertEquals(123, result.userId)
-      cancelAndIgnoreRemainingEvents()
+      // inline test
+      userPreference.getUser().test {
+        val result = awaitItem()
+        assertEquals(123, result.userId)
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun getToken_whenSuccessful_returnsCorrectToken() = runTest {
-    every { mockDataStore.data } returns flowOf(mockPreferences)
+  fun getToken_whenSuccessful_returnsCorrectToken() =
+    runTest {
+      every { mockDataStore.data } returns flowOf(mockPreferences)
 
-    val token = userPreference.getToken().first()
-    assertEquals("sampleToken", token)
-    verify(exactly = 1) { mockDataStore.data }
+      val token = userPreference.getToken().first()
+      assertEquals("sampleToken", token)
+      verify(exactly = 1) { mockDataStore.data }
 
-    val listOfToken = userPreference.getToken().toList()
+      val listOfToken = userPreference.getToken().toList()
 
-    assertEquals(listOf("sampleToken"), listOfToken)
+      assertEquals(listOf("sampleToken"), listOfToken)
 
-    // inline test
-    userPreference.getToken().test {
-      val resultToken = awaitItem()
-      assertEquals("sampleToken", resultToken)
-      cancelAndIgnoreRemainingEvents()
+      // inline test
+      userPreference.getToken().test {
+        val resultToken = awaitItem()
+        assertEquals("sampleToken", resultToken)
+        cancelAndIgnoreRemainingEvents()
+      }
+      verify(exactly = 3) { mockDataStore.data }
     }
-    verify(exactly = 3) { mockDataStore.data }
-  }
 
   @Test
-  fun getRegion_whenSuccessful_returnsCorrectRegion() = runTest {
-    every { mockDataStore.data } returns flowOf(mockPreferences)
+  fun getRegion_whenSuccessful_returnsCorrectRegion() =
+    runTest {
+      every { mockDataStore.data } returns flowOf(mockPreferences)
 
-    val region = userPreference.getRegion().first().uppercase()
-    assertEquals("US", region)
+      val region = userPreference.getRegion().first().uppercase()
+      assertEquals("US", region)
 
-    // inline test
-    userPreference.getRegion().test {
-      val resultRegion = awaitItem()
-      assertEquals("US", resultRegion)
-      cancelAndIgnoreRemainingEvents()
+      // inline test
+      userPreference.getRegion().test {
+        val resultRegion = awaitItem()
+        assertEquals("US", resultRegion)
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun getRegion_whenSuccessful_handlesNullRegion() = runTest {
-    every { mockDataStore.data } returns flowOf(mockPreferences) // explicitly mock preferences object
+  fun getRegion_whenSuccessful_handlesNullRegion() =
+    runTest {
+      every { mockDataStore.data } returns flowOf(mockPreferences)
 
-    // Inline test with Turbine
-    userPreference.getRegion().test {
-      val result = awaitItem()
-      assertEquals("US", result)
-      cancelAndIgnoreRemainingEvents()
+      // Inline test with Turbine
+      userPreference.getRegion().test {
+        val result = awaitItem()
+        assertEquals("US", result)
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun saveRegion_whenCalled_shouldCallEdit() = runTest {
-    // Capture the transform function passed to updateData
-    val transformSlot = slot<suspend (Preferences) -> Preferences>()
+  fun saveRegion_whenCalled_shouldCallEdit() =
+    runTest {
+      // Capture the transform function passed to updateData
+      val transformSlot = slot<suspend (Preferences) -> Preferences>()
 
-    // Mock the preferences that will be passed to the transform function
-    val testPrefs = mockk<Preferences>()
-    val mutablePrefs = mockk<MutablePreferences>()
+      // Mock the preferences that will be passed to the transform function
+      val testPrefs = mockk<Preferences>()
+      val mutablePrefs = mockk<MutablePreferences>()
 
-    // Set up the mocks for the transform function
-    every { testPrefs.toMutablePreferences() } returns mutablePrefs
-    every { mutablePrefs[UserPreference.REGION_KEY] = "US" } just Runs
+      // Set up the mocks for the transform function
+      every { testPrefs.toMutablePreferences() } returns mutablePrefs
+      every { mutablePrefs[UserPreference.REGION_KEY] = "US" } just Runs
 
-    // Mock the updateData function to capture the transform
-    coEvery {
-      mockDataStore.updateData(capture(transformSlot))
-    } coAnswers {
-      // Execute the transform function with our test preferences
-      transformSlot.captured.invoke(testPrefs)
-      mockPreferences
+      // Mock the updateData function to capture the transform
+      coEvery {
+        mockDataStore.updateData(capture(transformSlot))
+      } coAnswers {
+        // Execute the transform function with our test preferences
+        transformSlot.captured.invoke(testPrefs)
+        mockPreferences
+      }
+
+      // Call the method under test
+      userPreference.saveRegion("US")
+      advanceUntilIdle()
+
+      // Verify updateData was called
+      coVerify { mockDataStore.updateData(any()) }
+
+      // Verify the correct value was set in preferences
+      verify { mutablePrefs[UserPreference.REGION_KEY] = "US" }
     }
-
-    // Call the method under test
-    userPreference.saveRegion("US")
-    advanceUntilIdle()
-
-    // Verify updateData was called
-    coVerify { mockDataStore.updateData(any()) }
-
-    // Verify the correct value was set in preferences
-    verify { mutablePrefs[UserPreference.REGION_KEY] = "US" }
-  }
 }

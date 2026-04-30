@@ -16,7 +16,7 @@ class KnownForItemResponseTest {
         they expect. The players will have to brave parts unknown and unexplored in order to escape 
         the world’s most dangerous game.
       """.trimIndent(),
-      knownForItemResponse.overview
+      knownForItemResponse.overview,
     )
     assertEquals("en", knownForItemResponse.originalLanguage)
     assertEquals("Jumanji: The Next Level", knownForItemResponse.originalTitle)

@@ -39,7 +39,7 @@ class GenreHelperRoboTest {
 
   @Test
   fun getGenre_whenGenreIsAvailable_returnsFallback() {
-    val result = context.getGenre(listOf(28,12))
+    val result = context.getGenre(listOf(28, 12))
     assertEquals("Action, Adventure", result)
   }
 }

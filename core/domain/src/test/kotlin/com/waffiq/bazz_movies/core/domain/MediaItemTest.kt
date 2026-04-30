@@ -32,7 +32,7 @@ class MediaItemTest {
     video = true,
     title = "Test Title",
     releaseDate = "2023-01-01",
-    originCountry = listOf("US", "CA")
+    originCountry = listOf("US", "CA"),
   )
   private val mediaItemNull = MediaItem()
 

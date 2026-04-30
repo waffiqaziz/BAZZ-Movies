@@ -14,17 +14,17 @@ class ReleaseDatesResponseTest {
           iso31661 = "ID",
           listReleaseDateResponseItemValue = listOf(
             ReleaseDatesResponseItemValue(
-              note = "Lembaga Sensor Film (LSF)"
-            )
-          )
-        )
-      )
+              note = "Lembaga Sensor Film (LSF)",
+            ),
+          ),
+        ),
+      ),
     )
     assertEquals("ID", releaseDatesResponse.listReleaseDatesResponseItem?.get(0)?.iso31661)
     assertEquals(
       "Lembaga Sensor Film (LSF)",
       releaseDatesResponse
-        .listReleaseDatesResponseItem?.get(0)?.listReleaseDateResponseItemValue?.get(0)?.note
+        .listReleaseDatesResponseItem?.get(0)?.listReleaseDateResponseItemValue?.get(0)?.note,
     )
   }
 

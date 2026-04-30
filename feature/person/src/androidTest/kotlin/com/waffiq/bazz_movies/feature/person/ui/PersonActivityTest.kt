@@ -110,336 +110,361 @@ class PersonActivityTest : PersonActivityTestHelper by DefaultPersonActivityTest
   }
 
   @Test
-  fun personScreen_whenAllDataProvided_showsAllViews() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(true)
-        detailPersonLiveData.postValue(testDetailPerson)
-        knownForLiveData.postValue(listOf(testCastItem))
-        imagePersonLiveData.postValue(listOf(testProfileItem))
-        externalIdPersonLiveData.postValue(testExternalIDPerson)
-        loadingStateLiveData.postValue(false)
+  fun personScreen_whenAllDataProvided_showsAllViews() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          loadingStateLiveData.postValue(true)
+          detailPersonLiveData.postValue(testDetailPerson)
+          knownForLiveData.postValue(listOf(testCastItem))
+          imagePersonLiveData.postValue(listOf(testProfileItem))
+          externalIdPersonLiveData.postValue(testExternalIDPerson)
+          loadingStateLiveData.postValue(false)
+        }
+        shortDelay()
+
+        iv_picture.hasContentDescription("with_profile")
+        collapse.isDisplayed()
+        rv_photos.performScrollTo()
+        tv_biography.doesHaveText(testDetailPerson.biography.orEmpty())
+        rv_known_for.isDisplayed()
+
+        rv_photos.performScrollTo()
+        tv_born.isDisplayed()
+        tv_death.isNotDisplayed()
+        rv_photos.isDisplayed()
+
+        verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
+        verify { mockPersonViewModel.getKnownFor(any<Int>()) }
+        verify { mockPersonViewModel.getImagePerson(any<Int>()) }
+        verify { mockPersonViewModel.getExternalIDPerson(any<Int>()) }
       }
-      shortDelay()
-
-      iv_picture.hasContentDescription("with_profile")
-      collapse.isDisplayed()
-      rv_photos.performScrollTo()
-      tv_biography.doesHaveText(testDetailPerson.biography ?: "")
-      rv_known_for.isDisplayed()
-
-      rv_photos.performScrollTo()
-      tv_born.isDisplayed()
-      tv_death.isNotDisplayed()
-      rv_photos.isDisplayed()
-
-      verify { mockPersonViewModel.getDetailPerson(any<Int>()) }
-      verify { mockPersonViewModel.getKnownFor(any<Int>()) }
-      verify { mockPersonViewModel.getImagePerson(any<Int>()) }
-      verify { mockPersonViewModel.getExternalIDPerson(any<Int>()) }
     }
-  }
 
   @Test
-  fun launchPersonActivity_whenPersonIdIsNull_closesTheActivity() = runTest {
-    context.launchNullPersonActivity() { scenario ->
-      InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+  fun launchPersonActivity_whenPersonIdIsNull_closesTheActivity() =
+    runTest {
+      context.launchNullPersonActivity { scenario ->
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 
-      val resumedActivities = mutableListOf<Activity>()
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        val activities = ActivityLifecycleMonitorRegistry.getInstance()
-          .getActivitiesInStage(Stage.RESUMED)
-        resumedActivities.addAll(activities)
+        val resumedActivities = mutableListOf<Activity>()
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          val activities = ActivityLifecycleMonitorRegistry.getInstance()
+            .getActivitiesInStage(Stage.RESUMED)
+          resumedActivities.addAll(activities)
+        }
+
+        // assert that PersonActivity is NOT resumed (means it was finished)
+        assertTrue(resumedActivities.none { it is PersonActivity })
+        assertEquals(scenario.state, Lifecycle.State.DESTROYED)
       }
-
-      // assert that PersonActivity is NOT resumed (means it was finished)
-      assertTrue(resumedActivities.none { it is PersonActivity })
-      assertEquals(scenario.state, Lifecycle.State.DESTROYED)
-    }
-  }
-
-  @Test
-  fun personScreen_whenNavigateUpPressed_finishesActivity() = runTest {
-    val monitor = InstrumentationRegistry.getInstrumentation()
-      .addMonitor(PersonActivity::class.java.name, null, false)
-
-    context.launchPersonActivity { scenario ->
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
-      }
-      shortDelay()
-
-      btn_back.performClick()
-      scenario.waitForActivityToBeDestroyed()
     }
 
-    InstrumentationRegistry.getInstrumentation().removeMonitor(monitor)
-  }
-
   @Test
-  fun collapseTitle_withName_showsCorrectly() = runTest {
-    val data = testMediaCastItem.copy(
-      name = "Test Name 1",
-      originalName = null
-    )
+  fun personScreen_whenNavigateUpPressed_finishesActivity() =
+    runTest {
+      val monitor = InstrumentationRegistry.getInstrumentation()
+        .addMonitor(PersonActivity::class.java.name, null, false)
 
-    context.launchPersonActivity(data) {
-      checkCollapseTitle(data.name)
-    }
-  }
+      context.launchPersonActivity { scenario ->
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          loadingStateLiveData.postValue(false)
+        }
+        shortDelay()
 
-  @Test
-  fun collapseTitle_withOriginalName_showsCorrectly() = runTest {
-    val data = testMediaCastItem.copy(
-      name = null,
-      originalName = "Original Name 1"
-    )
-
-    context.launchPersonActivity(data) {
-      checkCollapseTitle(data.originalName)
-    }
-  }
-
-  @Test
-  fun collapseTitle_noName_showsNotAvailable() = runTest {
-    val data = testMediaCastItem.copy(
-      name = null,
-      originalName = null
-    )
-
-    context.launchPersonActivity(data) {
-      checkCollapseTitle(context.getString(not_available))
-    }
-  }
-
-  @Test
-  fun dataPerson_whenNoId_shouldNoProblem() = runTest {
-    context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
-      verify(exactly = 0) { mockPersonViewModel.getKnownFor(any()) }
-      verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
-      verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
-      verify(exactly = 0) { mockPersonViewModel.getExternalIDPerson(any()) }
-    }
-  }
-
-  @Test
-  fun personScreen_whenLoading_showsProgressBar() = runTest {
-    context.launchPersonActivity {
-      loadingStateLiveData.postValue(true)
-
-      progress_bar.isDisplayed()
-      background_dim_person.isDisplayed()
-
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        loadingStateLiveData.postValue(false)
+        btn_back.performClick()
+        scenario.waitForActivityToBeDestroyed()
       }
 
-      progress_bar.isNotDisplayed()
-      background_dim_person.isNotDisplayed()
+      InstrumentationRegistry.getInstrumentation().removeMonitor(monitor)
     }
-  }
 
   @Test
-  fun errorState_whenErrorOccurs_displaysSnackbar() = runTest {
-    val errorMessage = "Network error occurred"
-
-    context.launchPersonActivity { scenario ->
-      scenario.onActivity {
-        errorStateLiveData.postValue(Event(errorMessage))
-      }
-
-      errorMessage.isDisplayed()
-    }
-  }
-
-  @Test
-  fun buttonBack_whenPressed_closesPersonActivity() = runTest {
-    context.launchPersonActivity { scenario ->
-      btn_back.performClick()
-
-      scenario.moveToState(Lifecycle.State.DESTROYED)
-      assertEquals(Lifecycle.State.DESTROYED, scenario.state)
-    }
-  }
-
-  @Test
-  fun photoProfile_whenNull_showsNoProfile() = runTest {
-    context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
-      iv_picture.hasContentDescription("no_profile")
-    }
-  }
-
-  @Test
-  fun photoProfile_whenEmpty_showsNoProfile() = runTest {
-    context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
-      iv_picture.hasContentDescription("no_profile")
-    }
-  }
-
-  @Test
-  fun swipeRefresh_whenScroll_runsCorrectly() = runTest {
-    context.launchPersonActivity {
-      rv_known_for.performScrollTo()
-      rv_known_for.performSwipeDown()
-      onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
-    }
-  }
-
-  @Test
-  fun homePageLink_withUrlWhenClicked_opensBrowser() = runTest {
-    val testDetailPersonWithHomepage = testDetailPerson.copy(
-      homepage = "https://example.com",
-      imdbId = "nm1234567"
-    )
-
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPersonWithHomepage)
-      }
-      shortDelay()
-
-      rv_photos.performScrollTo()
-      checkHomePageLink(isDisplayed())
-      btn_link.performClick()
-
-      intended(
-        allOf(
-          hasAction(Intent.ACTION_VIEW),
-          hasData(testDetailPersonWithHomepage.homepage)
-        )
+  fun collapseTitle_withName_showsCorrectly() =
+    runTest {
+      val data = testMediaCastItem.copy(
+        name = "Test Name 1",
+        originalName = null,
       )
-    }
-  }
 
-  @Test
-  fun homePageLink_withNullUrl_hidesLink() = runTest {
-    context.launchPersonActivity {
-      detailPersonLiveData.postValue(testDetailPerson.copy(homepage = null))
-      checkHomePageLink(not(isDisplayed()))
-    }
-  }
-
-  @Test
-  fun homePageLink_withEmptyUrl_hidesLink() = runTest {
-    context.launchPersonActivity {
-      detailPersonLiveData.postValue(testDetailPerson.copy(homepage = ""))
-      checkHomePageLink(not(isDisplayed()))
-    }
-  }
-
-  @Test
-  fun socialMediaLinks_withValidIds_shouldVisible() = runTest {
-    val testExternalIds = testExternalIDPerson.copy(
-      instagramId = "test_instagram",
-      twitterId = "test_twitter",
-      facebookId = "test_facebook"
-    )
-
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        externalIdPersonLiveData.postValue(testExternalIds)
+      context.launchPersonActivity(data) {
+        checkCollapseTitle(data.name)
       }
-      view_group_social_media.isDisplayed()
-      btn_instagram.isDisplayed()
-      btn_x.isDisplayed()
-      btn_facebook.isDisplayed()
     }
-  }
 
   @Test
-  fun socialMediaLinks_withoutIds_shouldHidden() = runTest {
-    val testExternalIds = testExternalIDPerson.copy(
-      instagramId = null,
-      twitterId = null,
-      facebookId = null,
-      tiktokId = null,
-      youtubeId = null,
-    )
+  fun collapseTitle_withOriginalName_showsCorrectly() =
+    runTest {
+      val data = testMediaCastItem.copy(
+        name = null,
+        originalName = "Original Name 1",
+      )
 
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        externalIdPersonLiveData.postValue(testExternalIds)
+      context.launchPersonActivity(data) {
+        checkCollapseTitle(data.originalName)
+      }
+    }
+
+  @Test
+  fun collapseTitle_noName_showsNotAvailable() =
+    runTest {
+      val data = testMediaCastItem.copy(
+        name = null,
+        originalName = null,
+      )
+
+      context.launchPersonActivity(data) {
+        checkCollapseTitle(context.getString(not_available))
+      }
+    }
+
+  @Test
+  fun dataPerson_whenNoId_shouldNoProblem() =
+    runTest {
+      context.launchPersonActivity(testMediaCastItem.copy(id = null)) {
+        verify(exactly = 0) { mockPersonViewModel.getKnownFor(any()) }
+        verify(exactly = 0) { mockPersonViewModel.getImagePerson(any()) }
+        verify(exactly = 0) { mockPersonViewModel.getDetailPerson(any()) }
+        verify(exactly = 0) { mockPersonViewModel.getExternalIDPerson(any()) }
+      }
+    }
+
+  @Test
+  fun personScreen_whenLoading_showsProgressBar() =
+    runTest {
+      context.launchPersonActivity {
+        loadingStateLiveData.postValue(true)
+
+        progress_bar.isDisplayed()
+        background_dim_person.isDisplayed()
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          loadingStateLiveData.postValue(false)
+        }
+
+        progress_bar.isNotDisplayed()
+        background_dim_person.isNotDisplayed()
+      }
+    }
+
+  @Test
+  fun errorState_whenErrorOccurs_displaysSnackbar() =
+    runTest {
+      val errorMessage = "Network error occurred"
+
+      context.launchPersonActivity { scenario ->
+        scenario.onActivity {
+          errorStateLiveData.postValue(Event(errorMessage))
+        }
+
+        errorMessage.isDisplayed()
+      }
+    }
+
+  @Test
+  fun buttonBack_whenPressed_closesPersonActivity() =
+    runTest {
+      context.launchPersonActivity { scenario ->
+        btn_back.performClick()
+
+        scenario.moveToState(Lifecycle.State.DESTROYED)
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+      }
+    }
+
+  @Test
+  fun photoProfile_whenNull_showsNoProfile() =
+    runTest {
+      context.launchPersonActivity(testMediaCastItem.copy(profilePath = null)) {
+        iv_picture.hasContentDescription("no_profile")
+      }
+    }
+
+  @Test
+  fun photoProfile_whenEmpty_showsNoProfile() =
+    runTest {
+      context.launchPersonActivity(testMediaCastItem.copy(profilePath = "")) {
+        iv_picture.hasContentDescription("no_profile")
+      }
+    }
+
+  @Test
+  fun swipeRefresh_whenScroll_runsCorrectly() =
+    runTest {
+      context.launchPersonActivity {
+        rv_known_for.performScrollTo()
+        rv_known_for.performSwipeDown()
+        onView(withId(swipe_refresh)).check(matches(not(isRefreshing())))
+      }
+    }
+
+  @Test
+  fun homePageLink_withUrlWhenClicked_opensBrowser() =
+    runTest {
+      val testDetailPersonWithHomepage = testDetailPerson.copy(
+        homepage = "https://example.com",
+        imdbId = "nm1234567",
+      )
+
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPersonWithHomepage)
+        }
+        shortDelay()
+
+        rv_photos.performScrollTo()
+        checkHomePageLink(isDisplayed())
+        btn_link.performClick()
+
+        intended(
+          allOf(
+            hasAction(Intent.ACTION_VIEW),
+            hasData(testDetailPersonWithHomepage.homepage),
+          ),
+        )
+      }
+    }
+
+  @Test
+  fun homePageLink_withNullUrl_hidesLink() =
+    runTest {
+      context.launchPersonActivity {
+        detailPersonLiveData.postValue(testDetailPerson.copy(homepage = null))
+        checkHomePageLink(not(isDisplayed()))
+      }
+    }
+
+  @Test
+  fun homePageLink_withEmptyUrl_hidesLink() =
+    runTest {
+      context.launchPersonActivity {
+        detailPersonLiveData.postValue(testDetailPerson.copy(homepage = ""))
+        checkHomePageLink(not(isDisplayed()))
+      }
+    }
+
+  @Test
+  fun socialMediaLinks_withValidIds_shouldVisible() =
+    runTest {
+      val testExternalIds = testExternalIDPerson.copy(
+        instagramId = "test_instagram",
+        twitterId = "test_twitter",
+        facebookId = "test_facebook",
+      )
+
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          externalIdPersonLiveData.postValue(testExternalIds)
+        }
+        view_group_social_media.isDisplayed()
+        btn_instagram.isDisplayed()
+        btn_x.isDisplayed()
+        btn_facebook.isDisplayed()
+      }
+    }
+
+  @Test
+  fun socialMediaLinks_withoutIds_shouldHidden() =
+    runTest {
+      val testExternalIds = testExternalIDPerson.copy(
+        instagramId = null,
+        twitterId = null,
+        facebookId = null,
+        tiktokId = null,
+        youtubeId = null,
+      )
+
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          externalIdPersonLiveData.postValue(testExternalIds)
+        }
+
+        view_group_social_media.isGone()
+      }
+    }
+
+  @Test
+  fun birthInfo_whenEmpty_showsNoData() =
+    runTest {
+      mockkObject(PersonPageHelper)
+      every { any<Context>().formatBirthInfo(any(), any(), any()) } returns ""
+
+      context.launchPersonActivity {
+        verify { any<Context>().formatBirthInfo(any(), any(), any()) }
+        tv_born.performScrollTo()
+        tv_born.doesHaveText(context.getString(no_data))
       }
 
-      view_group_social_media.isGone()
-    }
-  }
-
-  @Test
-  fun birthInfo_whenEmpty_showsNoData() = runTest {
-    mockkObject(PersonPageHelper)
-    every { any<Context>().formatBirthInfo(any(), any(), any()) } returns ""
-
-    context.launchPersonActivity {
-      verify { any<Context>().formatBirthInfo(any(), any(), any()) }
-      tv_born.performScrollTo()
-      tv_born.doesHaveText(context.getString(no_data))
+      unmockkObject(PersonPageHelper)
     }
 
-    unmockkObject(PersonPageHelper)
-  }
-
   @Test
-  fun deathInfo_withDeathday_shouldVisible() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = "2023-01-01"))
+  fun deathInfo_withDeathday_shouldVisible() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(deathday = "2023-01-01"))
+        }
+        tv_death.performScrollTo()
+        checkDeathInfo(isDisplayed())
       }
-      tv_death.performScrollTo()
-      checkDeathInfo(isDisplayed())
     }
-  }
 
   @Test
-  fun deathInfo_whenNull_shouldHidden() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = null))
+  fun deathInfo_whenNull_shouldHidden() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(deathday = null))
+        }
+        checkDeathInfo(not(isDisplayed()))
       }
-      checkDeathInfo(not(isDisplayed()))
     }
-  }
 
   @Test
-  fun deathInfo_whenEmpty_shouldHidden() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson.copy(deathday = ""))
+  fun deathInfo_whenEmpty_shouldHidden() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(deathday = ""))
+        }
+        checkDeathInfo(not(isDisplayed()))
       }
-      checkDeathInfo(not(isDisplayed()))
     }
-  }
 
   @Test
-  fun biography_whenEmpty_displaysNoBiography() = runTest {
-    context.launchPersonActivity {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson.copy(biography = ""))
+  fun biography_whenEmpty_displaysNoBiography() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(biography = ""))
+        }
+        noBiography()
       }
-      noBiography()
     }
-  }
 
   @Test
-  fun biography_whenNull_displaysNoBiography() = runTest {
-    context.launchPersonActivity() {
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        detailPersonLiveData.postValue(testDetailPerson.copy(biography = null))
+  fun biography_whenNull_displaysNoBiography() =
+    runTest {
+      context.launchPersonActivity {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+          detailPersonLiveData.postValue(testDetailPerson.copy(biography = null))
+        }
+        noBiography()
       }
-      noBiography()
     }
-  }
 
   @Test
-  fun personScreen_whenInitialized_showsAllViews() = runTest {
-    val intent = Intent(context, PersonActivity::class.java).apply {
-      putExtra(PersonActivity.EXTRA_PERSON, testMediaCastItem)
-    }
+  fun personScreen_whenInitialized_showsAllViews() =
+    runTest {
+      val intent = Intent(context, PersonActivity::class.java).apply {
+        putExtra(PersonActivity.EXTRA_PERSON, testMediaCastItem)
+      }
 
-    ActivityScenario.launch<PersonActivity>(intent).use { _ ->
-      iv_picture.isDisplayed()
+      ActivityScenario.launch<PersonActivity>(intent).use { _ ->
+        iv_picture.isDisplayed()
+      }
     }
-  }
 
   // helper action
   private fun noBiography() {

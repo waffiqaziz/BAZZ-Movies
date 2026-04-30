@@ -26,7 +26,7 @@ class SearchRepositoryImplTestTwo {
   private val testDispatcher = StandardTestDispatcher()
   private lateinit var searchRepository: SearchRepositoryImpl
 
-  private var mockSearchRemoteDataSource: SearchRemoteDataSource = mockk()
+  private val mockSearchRemoteDataSource: SearchRemoteDataSource = mockk()
 
   @Before
   fun setup() {
@@ -40,32 +40,33 @@ class SearchRepositoryImplTestTwo {
   }
 
   @Test
-  fun search_whenSearching_shouldTransformDataCorrectly() = runTest {
-    val query = "Avengers"
+  fun search_whenSearching_shouldTransformDataCorrectly() =
+    runTest {
+      val query = "Avengers"
 
-    val responseItem1 = MultiSearchResponseItem(id = 1, title = "Mock Movie 1")
-    val responseItem2 = MultiSearchResponseItem(id = 2, title = "Mock Movie 2")
+      val responseItem1 = MultiSearchResponseItem(id = 1, title = "Mock Movie 1")
+      val responseItem2 = MultiSearchResponseItem(id = 2, title = "Mock Movie 2")
 
-    val mockPagingData = PagingData.from(listOf(responseItem1, responseItem2))
+      val mockPagingData = PagingData.from(listOf(responseItem1, responseItem2))
 
-    val expectedItem1 = MultiSearchItem(id = 1, title = "Mock Movie 1")
-    val expectedItem2 = MultiSearchItem(id = 2, title = "Mock Movie 2")
+      val expectedItem1 = MultiSearchItem(id = 1, title = "Mock Movie 1")
+      val expectedItem2 = MultiSearchItem(id = 2, title = "Mock Movie 2")
 
-    every { mockSearchRemoteDataSource.search(query) } returns flowOf(mockPagingData)
-    val resultPagingData = searchRepository.search(query).first()
+      every { mockSearchRemoteDataSource.search(query) } returns flowOf(mockPagingData)
+      val resultPagingData = searchRepository.search(query).first()
 
-    // Use AsyncPagingDataDiffer to extract the actual items
-    differ.submitData(resultPagingData)
-    testDispatcher.scheduler.advanceUntilIdle() // Wait for async operations
+      // Use AsyncPagingDataDiffer to extract the actual items
+      differ.submitData(resultPagingData)
+      testDispatcher.scheduler.advanceUntilIdle() // Wait for async operations
 
-    // Verify the transformed items
-    val mediaItems = differ.snapshot().items
-    assertEquals(2, mediaItems.size)
-    assertEquals(expectedItem1, mediaItems[0])
-    assertEquals(expectedItem2, mediaItems[1])
+      // Verify the transformed items
+      val mediaItems = differ.snapshot().items
+      assertEquals(2, mediaItems.size)
+      assertEquals(expectedItem1, mediaItems[0])
+      assertEquals(expectedItem2, mediaItems[1])
 
-    // Verify method was called
-    verify(exactly = 1) { mockSearchRemoteDataSource.search(query) }
-    confirmVerified(mockSearchRemoteDataSource)
-  }
+      // Verify method was called
+      verify(exactly = 1) { mockSearchRemoteDataSource.search(query) }
+      confirmVerified(mockSearchRemoteDataSource)
+    }
 }

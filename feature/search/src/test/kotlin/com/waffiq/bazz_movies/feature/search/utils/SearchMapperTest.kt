@@ -16,7 +16,7 @@ class SearchMapperTest {
       mediaType = "movie",
       listKnownFor = listOf(
         KnownForItemResponse(title = "Known Movie 1"),
-        KnownForItemResponse(title = "Known Movie 2")
+        KnownForItemResponse(title = "Known Movie 2"),
       ),
       knownForDepartment = "Acting",
       popularity = 8.5,
@@ -37,7 +37,7 @@ class SearchMapperTest {
       voteCount = 1500.0,
       firstAirDate = "2023-12-01",
       listOriginCountry = listOf("US"),
-      originalName = "Original Movie Name"
+      originalName = "Original Movie Name",
     )
 
     val result = response.toMultiSearchItem()

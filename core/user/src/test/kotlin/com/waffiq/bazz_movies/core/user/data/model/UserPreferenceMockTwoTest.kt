@@ -23,43 +23,50 @@ class UserPreferenceMockTwoTest {
   private lateinit var mockPreferences: Preferences
 
   @Before
-  fun setup() = runTest {
-    mockDataStore = mock<DataStore<Preferences>>()
-    mockPreferences = mock<Preferences>()
+  fun setup() =
+    runTest {
+      mockDataStore = mock<DataStore<Preferences>>()
+      mockPreferences = mock<Preferences>()
 
-    // mock dataStore.data to emit an initial preference (region is "US")
-    val initialPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US"))
-    `when`(mockDataStore.data).thenReturn(initialPreferencesFlow)
+      // mock dataStore.data to emit an initial preference (region is "US")
+      val initialPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US"))
+      `when`(mockDataStore.data).thenReturn(initialPreferencesFlow)
 
-    userPreference = UserPreference(mockDataStore)
-  }
-
-  @Test
-  fun saveRegion_whenSuccessful_savesCorrectRegion() = runTest {
-    userPreference.saveRegion("ID")
-
-    val updatedPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID"))
-    `when`(mockDataStore.data).thenReturn(updatedPreferencesFlow)
-
-    val savedRegion = userPreference.getRegion().first() // This should return "ID"
-    assertEquals("ID", savedRegion)
-
-    verify(mockDataStore).edit(any())
-  }
+      userPreference = UserPreference(mockDataStore)
+    }
 
   @Test
-  fun saveRegion_whenSuccessful_updatesRegionWhenKeyExists() = runTest {
-    userPreference.saveRegion("US")
-    `when`(mockDataStore.data).thenReturn(flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US")))
-    val firstRegion = userPreference.getRegion().first()
-    assertEquals("US", firstRegion)
+  fun saveRegion_whenSuccessful_savesCorrectRegion() =
+    runTest {
+      userPreference.saveRegion("ID")
 
-    userPreference.saveRegion("ID")
-    `when`(mockDataStore.data).thenReturn(flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID")))
+      val updatedPreferencesFlow = flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID"))
+      `when`(mockDataStore.data).thenReturn(updatedPreferencesFlow)
 
-    verify(mockDataStore, times(2)).edit(any())
+      val savedRegion = userPreference.getRegion().first() // This should return "ID"
+      assertEquals("ID", savedRegion)
 
-    val updatedRegion = userPreference.getRegion().first()
-    assertEquals("ID", updatedRegion)
-  }
+      verify(mockDataStore).edit(any())
+    }
+
+  @Test
+  fun saveRegion_whenSuccessful_updatesRegionWhenKeyExists() =
+    runTest {
+      userPreference.saveRegion("US")
+      `when`(mockDataStore.data).thenReturn(
+        flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "US")),
+      )
+      val firstRegion = userPreference.getRegion().first()
+      assertEquals("US", firstRegion)
+
+      userPreference.saveRegion("ID")
+      `when`(mockDataStore.data).thenReturn(
+        flowOf(mutablePreferencesOf(UserPreference.REGION_KEY to "ID")),
+      )
+
+      verify(mockDataStore, times(2)).edit(any())
+
+      val updatedRegion = userPreference.getRegion().first()
+      assertEquals("ID", updatedRegion)
+    }
 }

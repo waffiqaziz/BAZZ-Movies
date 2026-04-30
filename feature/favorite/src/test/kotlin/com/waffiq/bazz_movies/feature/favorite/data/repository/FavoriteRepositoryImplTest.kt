@@ -18,104 +18,105 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 
-class FavoriteRepositoryImplTest : BehaviorSpec({
+class FavoriteRepositoryImplTest :
+  BehaviorSpec({
 
-  lateinit var repository: FavoriteRepositoryImpl
-  val mockAccountRemoteDataSource: AccountRemoteDataSource = mockk(relaxed = true)
+    lateinit var repository: FavoriteRepositoryImpl
+    val mockAccountRemoteDataSource: AccountRemoteDataSource = mockk(relaxed = true)
 
-  beforeTest {
-    Dispatchers.setMain(UnconfinedTestDispatcher())
-    repository = FavoriteRepositoryImpl(mockAccountRemoteDataSource)
-  }
+    beforeTest {
+      Dispatchers.setMain(UnconfinedTestDispatcher())
+      repository = FavoriteRepositoryImpl(mockAccountRemoteDataSource)
+    }
 
-  Given("FavoriteRepositoryImpl") {
+    Given("FavoriteRepositoryImpl") {
 
-    When("getFavoriteMovies is called") {
+      When("getFavoriteMovies is called") {
+        every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
+          flowOf(fakeMovieResponsePagingData)
+        Then("it should return mapped MediaItem list") {
+          testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
+            it[0].title shouldBe "Inception"
+            it[1].title shouldBe "The Dark Knight"
+          }
+        }
+      }
+
+      When("getFavoriteTv is called") {
+        every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
+          flowOf(fakeTvResponsePagingData)
+        Then("it should return mapped MediaItem list") {
+          testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
+            it[0].title shouldBe "Breaking Bad"
+            it[1].title shouldBe "Game of Thrones"
+          }
+        }
+      }
+
+      When("getFavoriteMovies is called with empty data") {
+        every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
+          flowOf(PagingData.empty())
+        Then("it should return empty MediaItem list") {
+          testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
+            it shouldBe emptyList()
+          }
+        }
+      }
+
+      When("getFavoriteTv is called with empty data") {
+        every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
+          flowOf(PagingData.empty())
+        Then("it should return empty MediaItem list") {
+          testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
+            it shouldBe emptyList()
+          }
+        }
+      }
+    }
+
+    Given("multiple paging data emissions") {
       every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
-        flowOf(fakeMovieResponsePagingData)
-      Then("it should return mapped MediaItem list") {
-        testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
-          it[0].title shouldBe "Inception"
-          it[1].title shouldBe "The Dark Knight"
+        flowOf(
+          fakeMovieResponsePagingData,
+          PagingData.empty(),
+          fakeMovieResponsePagingData,
+        )
+
+      When("getFavoriteMovies is called") {
+        // collect multiple emissions
+        val emissions = mutableListOf<PagingData<MediaItem>>()
+        repository.getFavoriteMovies(USER_ID, SESSION_ID).test {
+          repeat(3) {
+            emissions.add(awaitItem())
+          }
+          awaitComplete()
+        }
+
+        Then("it should emit exactly 3 instances") {
+          emissions.size shouldBe 3
+        }
+
+        And("first emission should contain movie data") {
+          testPagingFlowAwaitComplete(flowOf(emissions[0])) { items ->
+            items.size shouldBe 2
+            items[0].title shouldBe "Inception"
+            items[1].title shouldBe "The Dark Knight"
+          }
+        }
+
+        And("second emission should be empty") {
+          testPagingFlowAwaitComplete(flowOf(emissions[1])) { items ->
+            items shouldBe emptyList()
+          }
+        }
+
+        And("third emission should contain movie data again") {
+          testPagingFlowAwaitComplete(flowOf(emissions[2])) { items ->
+            items.size shouldBe 2
+            items[0].title shouldBe "Inception"
+            items[1].title shouldBe "The Dark Knight"
+          }
         }
       }
     }
-
-    When("getFavoriteTv is called") {
-      every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
-        flowOf(fakeTvResponsePagingData)
-      Then("it should return mapped MediaItem list") {
-        testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
-          it[0].title shouldBe "Breaking Bad"
-          it[1].title shouldBe "Game of Thrones"
-        }
-      }
-    }
-
-    When("getFavoriteMovies is called with empty data") {
-      every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
-        flowOf(PagingData.empty())
-      Then("it should return empty MediaItem list") {
-        testPagingFlowAwaitComplete(repository.getFavoriteMovies(USER_ID, SESSION_ID)) {
-          it shouldBe emptyList()
-        }
-      }
-    }
-
-    When("getFavoriteTv is called with empty data") {
-      every { mockAccountRemoteDataSource.getFavoriteTv(USER_ID, SESSION_ID) } returns
-        flowOf(PagingData.empty())
-      Then("it should return empty MediaItem list") {
-        testPagingFlowAwaitComplete(repository.getFavoriteTv(USER_ID, SESSION_ID)) {
-          it shouldBe emptyList()
-        }
-      }
-    }
-  }
-
-  Given("multiple paging data emissions") {
-    every { mockAccountRemoteDataSource.getFavoriteMovies(USER_ID, SESSION_ID) } returns
-      flowOf(
-        fakeMovieResponsePagingData,
-        PagingData.empty(),
-        fakeMovieResponsePagingData
-      )
-
-    When("getFavoriteMovies is called") {
-      // collect multiple emissions
-      val emissions = mutableListOf<PagingData<MediaItem>>()
-      repository.getFavoriteMovies(USER_ID, SESSION_ID).test {
-        repeat(3) {
-          emissions.add(awaitItem())
-        }
-        awaitComplete()
-      }
-
-      Then("it should emit exactly 3 instances") {
-        emissions.size shouldBe 3
-      }
-
-      And("first emission should contain movie data") {
-        testPagingFlowAwaitComplete(flowOf(emissions[0])) { items ->
-          items.size shouldBe 2
-          items[0].title shouldBe "Inception"
-          items[1].title shouldBe "The Dark Knight"
-        }
-      }
-
-      And("second emission should be empty") {
-        testPagingFlowAwaitComplete(flowOf(emissions[1])) { items ->
-          items shouldBe emptyList()
-        }
-      }
-
-      And("third emission should contain movie data again") {
-        testPagingFlowAwaitComplete(flowOf(emissions[2])) { items ->
-          items.size shouldBe 2
-          items[0].title shouldBe "Inception"
-          items[1].title shouldBe "The Dark Knight"
-        }
-      }
-    }
-  }
-})
+  })

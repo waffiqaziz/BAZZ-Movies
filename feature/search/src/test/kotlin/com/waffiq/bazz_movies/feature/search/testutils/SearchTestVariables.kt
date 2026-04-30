@@ -15,20 +15,20 @@ object SearchTestVariables {
     title = "Transformers TV-series",
     id = 12345,
     adult = false,
-    voteCount = 2222.0
+    voteCount = 2222.0,
   )
   val multiSearchResponseItem2 = MultiSearchResponseItem(
     mediaType = MOVIE_MEDIA_TYPE,
     title = "Transformers 2",
     id = 333111,
     adult = false,
-    voteCount = 3333.0
+    voteCount = 3333.0,
   )
   val multiSearchResponse = MultiSearchResponse(
     page = 1,
     results = listOf(multiSearchResponseItem, multiSearchResponseItem2),
     totalPages = 1,
-    totalResults = 2
+    totalResults = 2,
   )
   val differ = differ<MultiSearchItem>()
 }

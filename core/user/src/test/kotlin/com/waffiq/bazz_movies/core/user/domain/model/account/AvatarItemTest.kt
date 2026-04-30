@@ -10,7 +10,7 @@ class AvatarItemTest {
   fun avatarItem_withValidValues_setsPropertiesCorrectly() {
     val avatarItem = AvatarItem(
       avatarTMDb = AvatarTMDb("/2578003545.jpg"),
-      gravatar = Gravatar("/235098640315743905.jpg")
+      gravatar = Gravatar("/235098640315743905.jpg"),
     )
     assertEquals("/2578003545.jpg", avatarItem.avatarTMDb?.avatarPath)
     assertEquals("/235098640315743905.jpg", avatarItem.gravatar?.hash)
@@ -27,7 +27,7 @@ class AvatarItemTest {
   fun avatarItem_withSomeNullValues_setsPropertiesCorrectly() {
     val avatarItem = AvatarItem(
       avatarTMDb = null,
-      gravatar = Gravatar("/257803475803425.jpg")
+      gravatar = Gravatar("/257803475803425.jpg"),
     )
     assertNull(avatarItem.avatarTMDb?.avatarPath)
     assertEquals("/257803475803425.jpg", avatarItem.gravatar?.hash)

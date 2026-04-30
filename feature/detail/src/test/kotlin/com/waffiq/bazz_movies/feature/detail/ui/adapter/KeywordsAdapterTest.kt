@@ -39,7 +39,7 @@ class KeywordsAdapterTest : BaseAdapterTest() {
     val oldList = listOf(MediaKeywordsItem(id = 1, name = "family"))
     val newList = listOf(
       MediaKeywordsItem(id = 2, name = "war"),
-      MediaKeywordsItem(id = 3, name = "superhero")
+      MediaKeywordsItem(id = 3, name = "superhero"),
     )
 
     adapter.submitList(oldList) {

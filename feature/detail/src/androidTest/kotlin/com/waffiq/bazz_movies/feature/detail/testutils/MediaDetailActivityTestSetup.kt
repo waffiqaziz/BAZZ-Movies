@@ -40,13 +40,11 @@ interface MediaDetailActivityTestSetup {
   fun setupNavigatorMocks(mockNavigator: INavigator)
   fun initializeTest(context: Context)
 
-  fun Context.launchMediaDetailActivity(
-    block: (ActivityScenario<MediaDetailActivity>) -> Unit
-  )
+  fun Context.launchMediaDetailActivity(block: (ActivityScenario<MediaDetailActivity>) -> Unit)
 
   fun Context.launchMediaDetailActivity(
     data: MediaItem,
-    block: (ActivityScenario<MediaDetailActivity>) -> Unit
+    block: (ActivityScenario<MediaDetailActivity>) -> Unit,
   )
 
   fun Context.launchNullMediaDetailActivity(

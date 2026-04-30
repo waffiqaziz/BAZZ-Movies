@@ -33,8 +33,8 @@ abstract class BaseFavoriteInteractorTest : ShouldSpec() {
           token = "token",
           isLogin = true,
           gravatarHash = "url",
-          tmdbAvatar = "url"
-        )
+          tmdbAvatar = "url",
+        ),
       )
     }
   }

@@ -33,7 +33,7 @@ class ReleaseDatesItemValueTest {
       type = type,
       iso6391 = iso6391,
       certification = certification,
-      releaseDate = releaseDate
+      releaseDate = releaseDate,
     )
 
     assertEquals(descriptors, item.descriptors)
@@ -110,7 +110,7 @@ class ReleaseDatesItemValueTest {
       type = 2,
       iso6391 = null,
       certification = "R",
-      releaseDate = null
+      releaseDate = null,
     )
 
     assertEquals(descriptors, item.descriptors)

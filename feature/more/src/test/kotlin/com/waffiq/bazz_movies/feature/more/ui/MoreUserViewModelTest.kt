@@ -46,51 +46,55 @@ class MoreUserViewModelTest {
   }
 
   @Test
-  fun deleteSession_whenSuccessful_returnsSuccess() = testScope.runTest {
-    val expectedResult = Outcome.Success(PostResult(success = true))
-    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedResult)
+  fun deleteSession_whenSuccessful_returnsSuccess() =
+    testScope.runTest {
+      val expectedResult = Outcome.Success(PostResult(success = true))
+      coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedResult)
 
-    viewModel.deleteSession(sessionId)
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Success(Unit), awaitItem())
-      cancelAndIgnoreRemainingEvents()
+      viewModel.deleteSession(sessionId)
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        assertEquals(UIState.Success(Unit), awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun deleteSession_whenUnsuccessful_returnsError() = testScope.runTest {
-    val errorMessage = "Error deleting session"
-    val expectedError = Outcome.Error(errorMessage)
-    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedError)
+  fun deleteSession_whenUnsuccessful_returnsError() =
+    testScope.runTest {
+      val errorMessage = "Error deleting session"
+      val expectedError = Outcome.Error(errorMessage)
+      coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedError)
 
-    viewModel.deleteSession(sessionId)
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Error(errorMessage), awaitItem())
-      cancelAndIgnoreRemainingEvents()
+      viewModel.deleteSession(sessionId)
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        assertEquals(UIState.Error(errorMessage), awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun deleteSession_whenLoading_returnsLoading() = testScope.runTest {
-    val expectedLoading = Outcome.Loading
-    coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedLoading)
+  fun deleteSession_whenLoading_returnsLoading() =
+    testScope.runTest {
+      val expectedLoading = Outcome.Loading
+      coEvery { authTMDbAccountUseCase.deleteSession(sessionId) } returns flowOf(expectedLoading)
 
-    viewModel.deleteSession(sessionId)
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      assertEquals(UIState.Loading, awaitItem())
-      cancelAndIgnoreRemainingEvents()
+      viewModel.deleteSession(sessionId)
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        assertEquals(UIState.Loading, awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 
   @Test
-  fun removeState_whenCalled_updatesSignOutStateToLoading() = testScope.runTest {
-    viewModel.removeState()
-    viewModel.state.test {
-      assertEquals(UIState.Idle, awaitItem())
-      cancelAndIgnoreRemainingEvents()
+  fun removeState_whenCalled_updatesSignOutStateToLoading() =
+    testScope.runTest {
+      viewModel.removeState()
+      viewModel.state.test {
+        assertEquals(UIState.Idle, awaitItem())
+        cancelAndIgnoreRemainingEvents()
+      }
     }
-  }
 }

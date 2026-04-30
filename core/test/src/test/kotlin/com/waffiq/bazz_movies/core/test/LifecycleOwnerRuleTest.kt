@@ -17,13 +17,17 @@ class LifecycleOwnerRuleTest {
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   private val description = Description.createTestDescription(
-    LifecycleOwnerRuleTest::class.java, "test"
+    LifecycleOwnerRuleTest::class.java,
+    "test",
   )
 
   private fun LifecycleOwnerRule.runWithRule(block: LifecycleOwnerRule.() -> Unit) {
-    apply(object : Statement() {
-      override fun evaluate() = block()
-    }, description).evaluate()
+    apply(
+      object : Statement() {
+        override fun evaluate() = block()
+      },
+      description,
+    ).evaluate()
   }
 
   @Test
@@ -60,7 +64,7 @@ class LifecycleOwnerRuleTest {
 
     rule.runWithRule {
       lifecycleOwner.lifecycle.addObserver(
-        LifecycleEventObserver { _, event -> events.add(event) }
+        LifecycleEventObserver { _, event -> events.add(event) },
       )
     }
 
@@ -74,7 +78,7 @@ class LifecycleOwnerRuleTest {
 
     // Add observer before rule runs so it captures all events
     rule.lifecycleRegistry.addObserver(
-      LifecycleEventObserver { _, event -> events.add(event) }
+      LifecycleEventObserver { _, event -> events.add(event) },
     )
 
     rule.runWithRule { }

@@ -28,39 +28,41 @@ class GetRegionInteractorTest {
   }
 
   @Test
-  fun getCountryCode_whenSuccessful_emitsSuccess() = runTest {
-    val expectedCountryIP = CountryIP(country = "US")
-    val flow = flowOf(Outcome.Success(expectedCountryIP))
-    coEvery { mockRepository.getCountryCode() } returns flow
+  fun getCountryCode_whenSuccessful_emitsSuccess() =
+    runTest {
+      val expectedCountryIP = CountryIP(country = "US")
+      val flow = flowOf(Outcome.Success(expectedCountryIP))
+      coEvery { mockRepository.getCountryCode() } returns flow
 
-    getRegionInteractor.getCountryCode().test {
-      // assert the first emission is success with correct data
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Success)
-      assertEquals("US", (emission as Outcome.Success).data.country)
+      getRegionInteractor.getCountryCode().test {
+        // assert the first emission is success with correct data
+        val emission = awaitItem()
+        assertTrue(emission is Outcome.Success)
+        assertEquals("US", (emission as Outcome.Success).data.country)
 
-      // assert no further emissions
-      awaitComplete()
+        // assert no further emissions
+        awaitComplete()
+      }
+
+      // verify repository interaction
+      coVerify(exactly = 1) { mockRepository.getCountryCode() }
+      coVerify { mockRepository.getCountryCode() }
     }
-
-    // verify repository interaction
-    coVerify(exactly = 1) { mockRepository.getCountryCode() }
-    coVerify { mockRepository.getCountryCode() }
-  }
 
   @Test
-  fun getCountryCode_whenUnsuccessful_emitsError() = runTest {
-    val errorMessage = "Network error"
-    val flow = flowOf(Outcome.Error(message = errorMessage))
-    coEvery { mockRepository.getCountryCode() } returns flow
+  fun getCountryCode_whenUnsuccessful_emitsError() =
+    runTest {
+      val errorMessage = "Network error"
+      val flow = flowOf(Outcome.Error(message = errorMessage))
+      coEvery { mockRepository.getCountryCode() } returns flow
 
-    getRegionInteractor.getCountryCode().test {
-      val emission = awaitItem()
-      assertTrue(emission is Outcome.Error)
-      emission as Outcome.Error
-      assertEquals(errorMessage, emission.message)
-      awaitComplete()
+      getRegionInteractor.getCountryCode().test {
+        val emission = awaitItem()
+        assertTrue(emission is Outcome.Error)
+        emission as Outcome.Error
+        assertEquals(errorMessage, emission.message)
+        awaitComplete()
+      }
+      coVerify { mockRepository.getCountryCode() }
     }
-    coVerify { mockRepository.getCountryCode() }
-  }
 }

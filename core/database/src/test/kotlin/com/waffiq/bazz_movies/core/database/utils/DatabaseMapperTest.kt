@@ -33,7 +33,7 @@ class DatabaseMapperTest {
     video = false,
     title = "title",
     releaseDate = "releaseDate",
-    originCountry = listOf("indonesian")
+    originCountry = listOf("indonesian"),
   )
 
   @Test
@@ -60,7 +60,7 @@ class DatabaseMapperTest {
       originalName = "originalName",
       firstAirDate = "firstAirDate",
       voteAverage = null,
-      popularity = null
+      popularity = null,
     )
     val favorite2 = mediaItem2.toFavorite(isFavorite = false, isWatchlist = false)
     assertEquals(favorite2.title, "originalName")
@@ -123,7 +123,7 @@ class DatabaseMapperTest {
       popularity = 1234.0,
       rating = 90.0f,
       isFavorite = false,
-      isWatchlist = true
+      isWatchlist = true,
     )
     val favoriteEntity = favorite.toFavoriteEntity()
     assertEquals(favoriteEntity.id, 1)
@@ -156,7 +156,7 @@ class DatabaseMapperTest {
       popularity = 65534.0,
       rating = 50.0f,
       isFavorite = true,
-      isWatchlist = false
+      isWatchlist = false,
     )
     val favorite = favoriteEntity.toFavorite()
     assertEquals(favorite.id, 2)

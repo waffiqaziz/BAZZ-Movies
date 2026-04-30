@@ -36,7 +36,7 @@ class MediaCrewItemTest {
       id = 123,
       adult = false,
       department = "Directing",
-      job = "Director"
+      job = "Director",
     )
 
     assertEquals(1, crewItem.gender)
@@ -82,7 +82,7 @@ class MediaCrewItemTest {
       id = null,
       adult = null,
       department = null,
-      job = null
+      job = null,
     )
 
     assertNull(crewItem.gender)

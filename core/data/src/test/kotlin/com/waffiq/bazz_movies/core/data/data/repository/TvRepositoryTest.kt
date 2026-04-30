@@ -39,7 +39,7 @@ class TvRepositoryTest : BaseRepositoryTest() {
       repositoryCall = { tvRepositoryImpl.getPopularTv(region) },
       verifyDataSourceCall = {
         verify { mockTvRemoteDataSource.getPopularTv(region, getDateTwoWeeksFromToday()) }
-      }
+      },
     )
   }
 
@@ -55,7 +55,7 @@ class TvRepositoryTest : BaseRepositoryTest() {
         verify {
           mockTvRemoteDataSource.getAiringTv(region, getDateTwoWeeksFromToday(), getDateToday())
         }
-      }
+      },
     )
   }
 
@@ -67,13 +67,13 @@ class TvRepositoryTest : BaseRepositoryTest() {
         mockTvRemoteDataSource.getAiringTv(
           region,
           getDateToday(),
-          getDateToday()
+          getDateToday(),
         )
       },
       repositoryCall = { tvRepositoryImpl.getAiringTodayTv(region) },
       verifyDataSourceCall = {
         verify { mockTvRemoteDataSource.getAiringTv(region, getDateToday(), getDateToday()) }
-      }
+      },
     )
   }
 
@@ -83,7 +83,7 @@ class TvRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockTvRemoteDataSource.getTopRatedTv() },
       repositoryCall = { tvRepositoryImpl.getTopRatedTv() },
-      verifyDataSourceCall = { verify { mockTvRemoteDataSource.getTopRatedTv() } }
+      verifyDataSourceCall = { verify { mockTvRemoteDataSource.getTopRatedTv() } },
     )
   }
 
@@ -93,38 +93,40 @@ class TvRepositoryTest : BaseRepositoryTest() {
       mockPagingData = fakePagingData,
       dataSourceCall = { mockTvRemoteDataSource.getTvRecommendation(id) },
       repositoryCall = { tvRepositoryImpl.getTvRecommendation(id) },
-      verifyDataSourceCall = { verify { mockTvRemoteDataSource.getTvRecommendation(any()) } }
+      verifyDataSourceCall = { verify { mockTvRemoteDataSource.getTvRecommendation(any()) } },
     )
   }
 
   @Test
-  fun getStatedTv_whenSuccessful_returnsMappedStatedTv() = runTest {
-    coEvery { mockTvRemoteDataSource.getTvState("sessionId", 8888) } returns
-      flowOf(NetworkResult.Success(mediaStateResponse))
+  fun getStatedTv_whenSuccessful_returnsMappedStatedTv() =
+    runTest {
+      coEvery { mockTvRemoteDataSource.getTvState("sessionId", 8888) } returns
+        flowOf(NetworkResult.Success(mediaStateResponse))
 
-    tvRepositoryImpl.getTvState("sessionId", 8888).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertEquals(mediaStateResponse.toMediaState(), result.data)
-      awaitComplete()
+      tvRepositoryImpl.getTvState("sessionId", 8888).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertEquals(mediaStateResponse.toMediaState(), result.data)
+        awaitComplete()
+      }
     }
-  }
 
   @Test
-  fun postTvRate_whenSuccessful_returnsCorrectResponse() = runTest {
-    coEvery {
-      mockTvRemoteDataSource.postTvRate("sessionId", 9.0f, 7777)
-    } returns flowOf(NetworkResult.Success(postTvRateResponseSuccess))
+  fun postTvRate_whenSuccessful_returnsCorrectResponse() =
+    runTest {
+      coEvery {
+        mockTvRemoteDataSource.postTvRate("sessionId", 9.0f, 7777)
+      } returns flowOf(NetworkResult.Success(postTvRateResponseSuccess))
 
-    tvRepositoryImpl.postTvRate("sessionId", 9.0f, 7777).test {
-      val result = awaitItem()
-      assertTrue(result is Outcome.Success)
-      result as Outcome.Success
-      assertTrue(result.data.success == true)
-      assertEquals("Success Rating Tv", result.data.statusMessage)
-      assertEquals(201, result.data.statusCode)
-      awaitComplete()
+      tvRepositoryImpl.postTvRate("sessionId", 9.0f, 7777).test {
+        val result = awaitItem()
+        assertTrue(result is Outcome.Success)
+        result as Outcome.Success
+        assertTrue(result.data.success == true)
+        assertEquals("Success Rating Tv", result.data.statusMessage)
+        assertEquals(201, result.data.statusCode)
+        awaitComplete()
+      }
     }
-  }
 }

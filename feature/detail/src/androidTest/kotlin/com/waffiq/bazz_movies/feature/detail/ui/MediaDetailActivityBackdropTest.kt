@@ -77,7 +77,7 @@ class MediaDetailActivityBackdropTest :
         releaseDate = null,
         firstAirDate = null,
         overview = null,
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -94,7 +94,7 @@ class MediaDetailActivityBackdropTest :
         releaseDate = "",
         firstAirDate = "",
         overview = "",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -111,7 +111,7 @@ class MediaDetailActivityBackdropTest :
         releaseDate = null,
         firstAirDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -127,7 +127,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = null,
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -143,7 +143,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = NOT_AVAILABLE,
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -157,7 +157,7 @@ class MediaDetailActivityBackdropTest :
         mediaType = TV_MEDIA_TYPE,
         backdropPath = null,
         posterPath = "",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -168,7 +168,7 @@ class MediaDetailActivityBackdropTest :
         mediaType = TV_MEDIA_TYPE,
         backdropPath = "",
         posterPath = null,
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -184,7 +184,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = NOT_AVAILABLE,
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -200,7 +200,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = "/valid_poster_path.jpg",
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -216,7 +216,7 @@ class MediaDetailActivityBackdropTest :
         posterPath = null,
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
@@ -232,13 +232,13 @@ class MediaDetailActivityBackdropTest :
         posterPath = "",
         releaseDate = "2025-07-09",
         overview = "overview",
-      )
+      ),
     ) {
       backdropIsDisplayed()
     }
   }
 
-  private fun backdropIsDisplayed(){
+  private fun backdropIsDisplayed() {
     iv_picture_backdrop.isDisplayed()
   }
 }

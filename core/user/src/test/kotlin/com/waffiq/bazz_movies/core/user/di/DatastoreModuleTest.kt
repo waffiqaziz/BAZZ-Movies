@@ -17,21 +17,23 @@ class DatastoreModuleTest {
   private val datastoreModule: DatastoreModule = DatastoreModule()
 
   @Test
-  fun provideDataStore_whenProvided_returnsDataStoreInstance() = runTest {
-    val actualDatastore = datastoreModule.provideDataStore(mockContext)
-    val expectedDatastore = PreferenceDataStoreFactory.create(produceFile = {
-      mockContext.preferencesDataStoreFile(DATASTORE_NAME)
-    })
+  fun provideDataStore_whenProvided_returnsDataStoreInstance() =
+    runTest {
+      val actualDatastore = datastoreModule.provideDataStore(mockContext)
+      val expectedDatastore = PreferenceDataStoreFactory.create(produceFile = {
+        mockContext.preferencesDataStoreFile(DATASTORE_NAME)
+      })
 
-    assertNotNull(actualDatastore.data)
-    assertNotNull(expectedDatastore.data)
-  }
+      assertNotNull(actualDatastore.data)
+      assertNotNull(expectedDatastore.data)
+    }
 
   @Test
-  fun provideUserPreference_whenProvided_returnsUserPreferenceInstance() = runTest {
-    val dataStore: DataStore<Preferences> = datastoreModule.provideDataStore(mockContext)
-    val userPreference = datastoreModule.provideUserPreference(dataStore)
+  fun provideUserPreference_whenProvided_returnsUserPreferenceInstance() =
+    runTest {
+      val dataStore: DataStore<Preferences> = datastoreModule.provideDataStore(mockContext)
+      val userPreference = datastoreModule.provideUserPreference(dataStore)
 
-    assertNotNull(userPreference)
-  }
+      assertNotNull(userPreference)
+    }
 }

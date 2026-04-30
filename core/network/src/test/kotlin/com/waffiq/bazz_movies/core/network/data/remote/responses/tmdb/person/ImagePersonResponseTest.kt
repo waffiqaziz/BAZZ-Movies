@@ -25,7 +25,7 @@ class ImagePersonResponseTest {
   fun imagePersonResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val imagePersonResponse = ImagePersonResponse(
       profiles = null,
-      id = 3267
+      id = 3267,
     )
     assertNull(imagePersonResponse.profiles)
     assertEquals(3267, imagePersonResponse.id)

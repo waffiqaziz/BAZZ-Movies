@@ -34,7 +34,7 @@ class ProfilesItemResponseTest {
   @Test
   fun profilesItemResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val profilesItemResponse = ProfilesItemResponse(
-      iso6391 = "id"
+      iso6391 = "id",
     )
     assertEquals("id", profilesItemResponse.iso6391)
     assertNull(profilesItemResponse.aspectRatio)

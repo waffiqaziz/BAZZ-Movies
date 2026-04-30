@@ -37,7 +37,7 @@ class ProductionCountriesItemResponseTest {
     val productionCountriesItemResponse = ProductionCountriesResponseItem(
       iso31661 = "GB",
       name = "United Kingdom",
-      type = 2
+      type = 2,
     )
     assertEquals("United Kingdom", productionCountriesItemResponse.name)
     assertEquals("GB", productionCountriesItemResponse.iso31661)

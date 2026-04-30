@@ -42,7 +42,7 @@ class ExternalIDPersonResponseTest {
   @Test
   fun externalIDPersonResponse_withSomeNullValues_setsPropertiesCorrectly() {
     val externalIDPersonResponse = ExternalIDPersonResponse(
-      id = 6542654
+      id = 6542654,
     )
     assertEquals(6542654, externalIDPersonResponse.id)
     assertNull(externalIDPersonResponse.imdbId)

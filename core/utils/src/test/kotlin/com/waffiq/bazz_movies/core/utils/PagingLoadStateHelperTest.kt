@@ -27,7 +27,7 @@ class PagingLoadStateHelperTest {
     val result = PagingLoadStateHelper.pagingErrorHandling(exception)
     assertEquals(
       "Unable to resolve server hostname. Please check your internet connection.",
-      result
+      result,
     )
   }
 
