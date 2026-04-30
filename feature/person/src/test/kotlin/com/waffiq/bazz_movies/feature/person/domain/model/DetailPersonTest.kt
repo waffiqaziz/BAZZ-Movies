@@ -11,6 +11,23 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class DetailPersonTest {
 
+  private val detailPersonFull = DetailPerson(
+    alsoKnownAs = listOf("Name1", "Name2"),
+    birthday = "1990-01-01",
+    gender = 1,
+    imdbId = "tt1234567",
+    knownForDepartment = "Acting",
+    profilePath = "/path/to/profile.jpg",
+    biography = "biography",
+    deathday = "2023-10-01",
+    placeOfBirth = "Los Angeles",
+    popularity = 85.6f,
+    name = "Your Name",
+    id = 12345,
+    adult = false,
+    homepage = "https://example.com",
+  )
+
   @Test
   fun detailPerson_whenInstantiatedWithNoData_returnsAllFieldsNull() {
     val detailPerson = DetailPerson()
@@ -33,22 +50,7 @@ class DetailPersonTest {
 
   @Test
   fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
-    val original = DetailPerson(
-      alsoKnownAs = listOf("Name1", "Name2"),
-      birthday = "1990-01-01",
-      gender = 1,
-      imdbId = "tt1234567",
-      knownForDepartment = "Acting",
-      profilePath = "/path/to/profile.jpg",
-      biography = "biography",
-      deathday = "2023-10-01",
-      placeOfBirth = "Los Angeles",
-      popularity = 85.6f,
-      name = "Your Name",
-      id = 12345,
-      adult = false,
-      homepage = "https://example.com",
-    )
+    val original = detailPersonFull
 
     // obtain the CREATOR field
     @Suppress("UNCHECKED_CAST")
@@ -118,22 +120,7 @@ class DetailPersonTest {
 
   @Test
   fun writeToParcel_whenCalled_performsWriteWithoutCrash() {
-    val detailPerson = DetailPerson(
-      alsoKnownAs = listOf("Name1", "Name2"),
-      birthday = "1990-01-01",
-      gender = 1,
-      imdbId = "tt1234567",
-      knownForDepartment = "Acting",
-      profilePath = "/path/to/profile.jpg",
-      biography = "biography",
-      deathday = "2023-10-01",
-      placeOfBirth = "Los Angeles",
-      popularity = 85.6f,
-      name = "Your Name",
-      id = 12345,
-      adult = false,
-      homepage = "https://example.com",
-    )
+    val detailPerson = detailPersonFull
 
     val parcel = Parcel.obtain()
     detailPerson.writeToParcel(parcel, 0)

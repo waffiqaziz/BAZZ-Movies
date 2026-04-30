@@ -26,8 +26,8 @@ class UserPreferenceMockTest {
 
   @Before
   fun setup() {
-    mockDataStore = mock() // Mock DataStore
-    userPreference = UserPreference(mockDataStore) // Inject mock DataStore
+    mockDataStore = mock()
+    userPreference = UserPreference(mockDataStore)
 
     mockPreferences = mock<Preferences>()
     `when`(mockPreferences[UserPreference.USERID_KEY]).thenReturn(123)
@@ -58,7 +58,6 @@ class UserPreferenceMockTest {
       assertEquals("hash123", user.gravatarHash)
       assertEquals("avatar.jpg", user.tmdbAvatar)
 
-      // inline test
       userPreference.getUser().test {
         val result = awaitItem()
         assertEquals(123, result.userId)
@@ -79,7 +78,6 @@ class UserPreferenceMockTest {
 
       assertEquals(listOf("sampleToken"), listOfToken)
 
-      // inline test
       userPreference.getToken().test {
         val resultToken = awaitItem()
         assertEquals("sampleToken", resultToken)
@@ -96,25 +94,16 @@ class UserPreferenceMockTest {
       val region = userPreference.getRegion().first().uppercase()
       assertEquals("US", region)
 
-      // inline test
-      userPreference.getRegion().test {
-        val resultRegion = awaitItem()
-        assertEquals("US", resultRegion)
-        cancelAndIgnoreRemainingEvents()
-      }
+      assertGetRegion("US")
     }
 
   @Test
   fun getRegion_whenSuccessful_handlesNullRegion() =
     runTest {
+      `when`(mockPreferences[UserPreference.REGION_KEY]).thenReturn(null)
       `when`(mockDataStore.data).thenReturn(flowOf(mockPreferences))
 
-      // Inline test with Turbine
-      userPreference.getRegion().test {
-        val result = awaitItem()
-        assertEquals("US", result)
-        cancelAndIgnoreRemainingEvents()
-      }
+      assertGetRegion("")
     }
 
   @Test
@@ -126,8 +115,15 @@ class UserPreferenceMockTest {
         return@thenAnswer Unit
       }
 
-      // Inline test with Turbine
       userPreference.saveRegion("US")
       verify(mockDataStore).edit(any())
     }
+
+  private suspend fun assertGetRegion(expectedRegion: String) {
+    userPreference.getRegion().test {
+      val result = awaitItem()
+      assertEquals(expectedRegion, result)
+      cancelAndIgnoreRemainingEvents()
+    }
+  }
 }

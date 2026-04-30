@@ -27,7 +27,7 @@ class UserPreferenceMemTest {
   }
 
   @Test
-  fun saveUser_withAllDataAvailable_storesCorrectData() =
+  fun saveUser_withPartialDataAvailable_storesCorrectData() =
     runTest {
       val severalData = UserModelPref(
         userId = 123456789,
@@ -55,7 +55,7 @@ class UserPreferenceMemTest {
     }
 
   @Test
-  fun saveUser_withPartialDataAvailable_storesCorrectData() =
+  fun saveUser_withAllDataIsAvailable_storesCorrectData() =
     runTest {
       userPreference.saveUser(userModelPref)
 

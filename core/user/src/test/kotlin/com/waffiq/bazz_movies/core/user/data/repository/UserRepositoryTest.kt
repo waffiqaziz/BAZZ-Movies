@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
+import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testOutcome
 import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testResult
 import com.waffiq.bazz_movies.core.user.utils.mappers.AccountMapper.toAccountDetails
@@ -46,17 +47,6 @@ import org.junit.Test
 class UserRepositoryTest {
   private val sessionId = "session_id"
   private val user = UserModel(
-    userId = 123456789,
-    name = "John Doe",
-    username = "johndoe",
-    password = "password123",
-    region = "US",
-    token = "sampleToken",
-    isLogin = true,
-    gravatarHash = "hash123",
-    tmdbAvatar = "avatar.jpg",
-  )
-  private val userModelPref = UserModelPref(
     userId = 123456789,
     name = "John Doe",
     username = "johndoe",

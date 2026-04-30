@@ -34,6 +34,46 @@ class CheckAndAddToWatchlistInteractorTest :
     val movieId = 1234
     val tvId = 5678
 
+    val movieDefaultStateSuccess = Outcome.Success(
+      MediaState(
+        id = movieId,
+        favorite = false,
+        rated = Rated.Unrated,
+        watchlist = false,
+      ),
+    )
+
+    val tvDefaultStateSuccess = Outcome.Success(
+      MediaState(
+        id = tvId,
+        favorite = false,
+        rated = Rated.Unrated,
+        watchlist = false,
+      ),
+    )
+
+    val postFavoriteWatchlistSuccess = Outcome.Success(
+      PostFavoriteWatchlist(
+        statusCode = 201,
+        statusMessage = "Success",
+      ),
+    )
+
+    fun stubSuccessGetMovieStateWithUser() {
+      coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
+        flowOf(movieDefaultStateSuccess)
+    }
+
+    fun stubSuccessGetTvStateWithUser() {
+      coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
+        flowOf(tvDefaultStateSuccess)
+    }
+
+    fun stubSuccessPostWatchlistWithAuth() {
+      coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
+        flowOf(postFavoriteWatchlistSuccess)
+    }
+
     beforeTest {
       Dispatchers.setMain(UnconfinedTestDispatcher())
 
@@ -55,26 +95,8 @@ class CheckAndAddToWatchlistInteractorTest :
       When("adding a movie to watchlist") {
 
         And("movie is not in watchlist") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-          val postResponse = Outcome.Success(
-            PostFavoriteWatchlist(
-              statusCode = 201,
-              statusMessage = "Success",
-            ),
-          )
-
-          coEvery {
-            mockMediaStateUseCase.getMovieStateWithUser(any())
-          } returns flowOf(stateResponse)
-          coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
-            flowOf(postResponse)
+          stubSuccessGetMovieStateWithUser()
+          stubSuccessPostWatchlistWithAuth()
 
           Then("should emit Loading then Added") {
             checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
@@ -93,17 +115,12 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("movie is already in watchlist") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = true,
-            ),
+          val movieWatchlistedStateSuccess = Outcome.Success(
+            movieDefaultStateSuccess.data.copy(watchlist = true)
           )
 
           coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
-            flowOf(stateResponse)
+            flowOf(movieWatchlistedStateSuccess)
 
           Then("should emit Loading then AlreadyInWatchlist") {
             checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
@@ -137,19 +154,10 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("getting movie state emits loading state") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
           coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
             flow {
               emit(Outcome.Loading)
-              emit(stateResponse)
+              emit(movieDefaultStateSuccess)
             }
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flowOf(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
@@ -165,18 +173,9 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("posting to watchlist fails") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
           val errorMessage = "Failed to add to watchlist"
 
-          coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetMovieStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flowOf(Outcome.Error(errorMessage))
 
@@ -193,17 +192,7 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("posting to watchlist emits loading state") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
-          coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetMovieStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flow {
               emit(Outcome.Loading)
@@ -221,17 +210,7 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("multiple emissions from post action") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = movieId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
-          coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetMovieStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flow {
               emit(Outcome.Loading)
@@ -254,25 +233,8 @@ class CheckAndAddToWatchlistInteractorTest :
       When("adding a TV show to watchlist") {
 
         And("TV show is not in watchlist") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-          val postResponse = Outcome.Success(
-            PostFavoriteWatchlist(
-              statusCode = 201,
-              statusMessage = "Success",
-            ),
-          )
-
-          coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(stateResponse)
-          coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
-            flowOf(postResponse)
+          stubSuccessGetTvStateWithUser()
+          stubSuccessPostWatchlistWithAuth()
 
           Then("should emit Loading then Added") {
             checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
@@ -291,17 +253,12 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("TV show is already in watchlist") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = true,
-            ),
+          val tvWatchlistedStateSuccess = Outcome.Success(
+            tvDefaultStateSuccess.data.copy(watchlist = true)
           )
 
           coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(stateResponse)
+            flowOf(tvWatchlistedStateSuccess)
 
           Then("should emit Loading then AlreadyInWatchlist") {
             checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
@@ -333,22 +290,12 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("getting TV state emits loading state") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
           coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
             flow {
               emit(Outcome.Loading)
-              emit(stateResponse)
+              emit(tvDefaultStateSuccess)
             }
-          coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
-            flowOf(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
+          stubSuccessPostWatchlistWithAuth()
 
           Then("should emit all loading states and final result") {
             checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
@@ -361,18 +308,9 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("posting to watchlist fails") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
           val errorMessage = "Failed to add to watchlist"
 
-          coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetTvStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flowOf(Outcome.Error(errorMessage))
 
@@ -389,17 +327,7 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("posting to watchlist emits loading state") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
-          coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetTvStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flow {
               emit(Outcome.Loading)
@@ -417,17 +345,7 @@ class CheckAndAddToWatchlistInteractorTest :
         }
 
         And("multiple emissions from post action") {
-          val stateResponse = Outcome.Success(
-            MediaState(
-              id = tvId,
-              favorite = false,
-              rated = Rated.Unrated,
-              watchlist = false,
-            ),
-          )
-
-          coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(stateResponse)
+          stubSuccessGetTvStateWithUser()
           coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
             flow {
               emit(Outcome.Loading)

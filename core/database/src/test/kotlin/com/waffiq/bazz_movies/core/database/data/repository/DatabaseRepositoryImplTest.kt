@@ -224,30 +224,13 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateFavoriteItemDB_whenSuccessful_handlesAddCaseCorrectly() =
     runTest {
-      coEvery {
-        localDataSource.update(
-          isFavorite = true,
-          isWatchlist = true,
-          id = 101,
-          mediaType = MOVIE_MEDIA_TYPE,
-        )
-      } returns DbResult.Success(1)
+      stubSuccessResult()
 
       val result = repository.updateFavoriteItemDB(
         isDelete = false,
         fav = favoriteMovie.copy(isFavorite = true, isWatchlist = true),
       )
-
-      assertTrue(result is DbResult.Success)
-      assertEquals(1, (result as DbResult.Success).data)
-      coVerify {
-        localDataSource.update(
-          isFavorite = true,
-          isWatchlist = true,
-          id = 101,
-          mediaType = MOVIE_MEDIA_TYPE,
-        )
-      }
+      assertResultSuccess(result)
     }
 
   @Test
@@ -279,26 +262,33 @@ class DatabaseRepositoryImplTest {
   @Test
   fun updateWatchlistItemDB_whenSuccessful_handlesAddCaseCorrectly() =
     runTest {
-      coEvery {
-        localDataSource.update(
-          isFavorite = true,
-          isWatchlist = true,
-          id = 101,
-          mediaType = MOVIE_MEDIA_TYPE,
-        )
-      } returns DbResult.Success(1)
+      stubSuccessResult()
 
       val result = repository.updateWatchlistItemDB(isDelete = false, fav = favoriteMovie)
-
-      assertTrue(result is DbResult.Success)
-      assertEquals(1, (result as DbResult.Success).data)
-      coVerify {
-        localDataSource.update(
-          isFavorite = true,
-          isWatchlist = true,
-          id = 101,
-          mediaType = MOVIE_MEDIA_TYPE,
-        )
-      }
+      assertResultSuccess(result)
     }
+
+  private fun stubSuccessResult(){
+    coEvery {
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = true,
+        id = 101,
+        mediaType = MOVIE_MEDIA_TYPE,
+      )
+    } returns DbResult.Success(1)
+  }
+
+  private fun assertResultSuccess(result: DbResult<Int>){
+    assertTrue(result is DbResult.Success)
+    assertEquals(1, (result as DbResult.Success).data)
+    coVerify {
+      localDataSource.update(
+        isFavorite = true,
+        isWatchlist = true,
+        id = 101,
+        mediaType = MOVIE_MEDIA_TYPE,
+      )
+    }
+  }
 }
