@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.backdropSource
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.rating
+import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.year
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class ItemWIdeAdapter(private val navigator: INavigator) :
@@ -48,9 +50,8 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
 
       binding.tvTitle.text = itemView.context.titleHandler(data)
       binding.tvGenre.text = itemView.context.getGenre(data.listGenreIds)
-      binding.tvYear.text =
-        data.releaseDate?.take(n = 4) ?: data.firstAirDate?.take(n = 4).toString()
-      binding.ratingBar.rating = (data.voteAverage ?: 0F) / 2
+      binding.tvYear.text = data.year
+      binding.ratingBar.rating = data.voteAverage.rating
 
       // image OnClickListener
       itemView.setOnClickListener {
@@ -61,13 +62,7 @@ class ItemWIdeAdapter(private val navigator: INavigator) :
     private fun setImage(ivBackdrop: ImageView, data: MediaItem) {
       ivBackdrop.contentDescription = titleHandler(data)
       Glide.with(ivBackdrop)
-        .load(
-          if (!data.backdropPath.isNullOrEmpty()) {
-            TMDB_IMG_LINK_BACKDROP_W780 + data.backdropPath
-          } else {
-            ic_backdrop_error_filled
-          },
-        )
+        .load(data.backdropSource)
         .placeholder(ic_bazz_placeholder_search)
         .transform(CenterCrop())
         .transition(withCrossFade())

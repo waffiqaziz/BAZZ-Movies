@@ -9,7 +9,7 @@ android {
 
   testOptions {
     unitTests.apply {
-      isIncludeAndroidResources = false
+      isIncludeAndroidResources = true
     }
   }
 }
@@ -28,4 +28,19 @@ dependencies {
 
   implementation(libs.google.material)
   implementation(libs.facebook.shimmer)
+
+  testImplementation(libs.androidx.lifecycle.runtime.testing)
+  testImplementation(libs.androidx.paging.common)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockito.android.kotlin)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockk)
+  testImplementation(libs.robolectric)
+
+  androidTestImplementation(libs.androidx.core.testing)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.kotlinx.coroutines.test)
+  androidTestImplementation(libs.mockk.android)
+  androidTestImplementation(libs.truth)
 }

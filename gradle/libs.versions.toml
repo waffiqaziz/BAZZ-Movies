@@ -162,6 +162,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso" }
 androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso" }
 androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "fragmentKtx" }
+androidx-lifecycle-runtime-testing = { group = "androidx.lifecycle", name = "lifecycle-runtime-testing", version.ref = "lifecycle" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
 androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTest" }

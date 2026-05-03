@@ -84,27 +84,24 @@ object HomeFragmentHelper {
   }
 
   fun RecyclerView.setupLoadState(pagingDataAdapter: PagingDataAdapter<*, *>) {
-    this.apply {
-      itemAnimator = DefaultItemAnimator()
-      adapter = pagingDataAdapter.withLoadStateFooter(
-        footer = LoadingStateAdapter {
-          pagingDataAdapter.retry()
-        },
-      )
-    }
+    itemAnimator = DefaultItemAnimator()
+    adapter = pagingDataAdapter.withLoadStateFooter(
+      footer = LoadingStateAdapter {
+        pagingDataAdapter.retry()
+      },
+    )
   }
 
   fun LifecycleOwner.observeLoadState(
     loadStateFlow: Flow<CombinedLoadStates>,
     onLoading: () -> Unit,
     onSuccess: () -> Unit,
-    onError: (Event<String>?) -> Unit,
+    onError: (Event<String>) -> Unit,
   ) {
     lifecycleScope.launch {
       loadStateFlow.debounce(DEBOUNCE_VERY_LONG).distinctUntilChanged().collectLatest { loadState ->
         when {
-          (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) &&
-            loadState.append.endOfPaginationReached -> {
+          (loadState.refresh is LoadState.Loading || loadState.append is LoadState.Loading) -> {
             onLoading()
           }
 

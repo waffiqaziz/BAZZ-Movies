@@ -116,7 +116,7 @@ class CheckAndAddToWatchlistInteractorTest :
 
         And("movie is already in watchlist") {
           val movieWatchlistedStateSuccess = Outcome.Success(
-            movieDefaultStateSuccess.data.copy(watchlist = true)
+            movieDefaultStateSuccess.data.copy(watchlist = true),
           )
 
           coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
@@ -254,7 +254,7 @@ class CheckAndAddToWatchlistInteractorTest :
 
         And("TV show is already in watchlist") {
           val tvWatchlistedStateSuccess = Outcome.Success(
-            tvDefaultStateSuccess.data.copy(watchlist = true)
+            tvDefaultStateSuccess.data.copy(watchlist = true),
           )
 
           coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns

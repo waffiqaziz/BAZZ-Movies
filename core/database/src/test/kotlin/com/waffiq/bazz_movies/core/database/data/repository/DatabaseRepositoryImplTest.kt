@@ -268,7 +268,7 @@ class DatabaseRepositoryImplTest {
       assertResultSuccess(result)
     }
 
-  private fun stubSuccessResult(){
+  private fun stubSuccessResult() {
     coEvery {
       localDataSource.update(
         isFavorite = true,
@@ -279,7 +279,7 @@ class DatabaseRepositoryImplTest {
     } returns DbResult.Success(1)
   }
 
-  private fun assertResultSuccess(result: DbResult<Int>){
+  private fun assertResultSuccess(result: DbResult<Int>) {
     assertTrue(result is DbResult.Success)
     assertEquals(1, (result as DbResult.Success).data)
     coVerify {

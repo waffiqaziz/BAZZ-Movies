@@ -8,6 +8,7 @@ import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomAssertions.waitFor
 import org.hamcrest.Matcher
 
@@ -61,6 +62,7 @@ object Helper {
 
     while (System.currentTimeMillis() < endTime) {
       try {
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         onView(matcher).check(matches(isDisplayed()))
         return
       } catch (_: Throwable) {
