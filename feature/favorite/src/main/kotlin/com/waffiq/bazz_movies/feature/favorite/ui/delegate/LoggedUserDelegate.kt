@@ -157,11 +157,9 @@ class LoggedUserDelegate(
       errorView = binding.illustrationError.root,
       emptyView = binding.illustrationNoDataView.root,
       onError = { error ->
-        error?.let {
-          if (baseViewModel.isSnackbarShown.value == false) {
-            showWarningSnackbar(it)
-            baseViewModel.markSnackbarShown()
-          }
+        if (baseViewModel.isSnackbarShown.value == false) {
+          showWarningSnackbar(error)
+          baseViewModel.markSnackbarShown()
         }
       },
     )
