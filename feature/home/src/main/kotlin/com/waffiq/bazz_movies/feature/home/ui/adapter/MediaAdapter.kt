@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
@@ -19,8 +18,8 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.navigation.INavigator
 
-class MovieHomeAdapter(private val navigator: INavigator) :
-  PagingDataAdapter<MediaItem, MovieHomeAdapter.ViewHolder>(DIFF_CALLBACK) {
+class MediaAdapter(private val navigator: INavigator, private val source: MediaSource) :
+  PagingDataAdapter<MediaItem, MediaAdapter.ViewHolder>(DIFF_CALLBACK) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     val binding = ItemPosterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,11 +39,11 @@ class MovieHomeAdapter(private val navigator: INavigator) :
   inner class ViewHolder(private var binding: ItemPosterBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movie: MediaItem) {
-      binding.imgPoster.contentDescription = titleHandler(movie)
+    fun bind(mediaItem: MediaItem) {
+      binding.imgPoster.contentDescription = titleHandler(mediaItem)
 
       Glide.with(binding.imgPoster)
-        .load(movie.posterSource)
+        .load(mediaItem.posterSource)
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
@@ -53,7 +52,11 @@ class MovieHomeAdapter(private val navigator: INavigator) :
 
       // image OnClickListener
       binding.imgPoster.setOnClickListener {
-        navigator.openDetails(itemView.context, movie.copy(mediaType = MOVIE_MEDIA_TYPE))
+        val item = when (source) {
+          is MediaSource.Trending -> mediaItem
+          is MediaSource.Typed -> mediaItem.copy(mediaType = source.mediaType)
+        }
+        navigator.openDetails(itemView.context, item)
       }
     }
   }

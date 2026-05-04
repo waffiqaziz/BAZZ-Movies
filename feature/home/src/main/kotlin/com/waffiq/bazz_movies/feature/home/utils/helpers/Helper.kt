@@ -1,14 +1,21 @@
 package com.waffiq.bazz_movies.feature.home.utils.helpers
 
-import android.os.Build
-import java.util.Locale
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
+import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
+import com.waffiq.bazz_movies.core.domain.Dateable
+import com.waffiq.bazz_movies.core.domain.Imageble
 
 object Helper {
-  fun getCountryDisplayName(region: String): String =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
-      Locale.of("", region).displayCountry
-    } else {
-      @Suppress("DEPRECATION")
-      Locale("", region).displayCountry
+
+  val Dateable.year: String
+    get() = releaseDate?.take(n = 4) ?: firstAirDate?.take(n = 4) ?: "N/A"
+
+  val Float?.rating: Float
+    get() = (this ?: 0F) / 2
+
+  val Imageble.backdropSource: Any
+    get() = when {
+      !backdropPath.isNullOrEmpty() -> TMDB_IMG_LINK_BACKDROP_W780 + backdropPath
+      else -> ic_backdrop_error_filled
     }
 }

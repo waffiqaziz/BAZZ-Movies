@@ -19,10 +19,10 @@ class MovieViewModel @Inject constructor(private val getListMoviesUseCase: GetLi
   fun getPopularMovies(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getPopularMovies().cachedIn(viewModelScope)
 
-  fun getTrendingWeek(): Flow<PagingData<MediaItem>> =
+  fun getTrendingThisWeek(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getTrendingThisWeek().cachedIn(viewModelScope)
 
-  fun getTrendingDay(): Flow<PagingData<MediaItem>> =
+  fun getTrendingToday(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getTrendingToday().cachedIn(viewModelScope)
 
   fun getUpcomingMovies(): Flow<PagingData<MediaItem>> =

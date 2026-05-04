@@ -15,7 +15,6 @@ import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.account.Gr
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
-import com.waffiq.bazz_movies.core.user.data.model.UserModelPref
 import com.waffiq.bazz_movies.core.user.data.model.UserPreference
 import com.waffiq.bazz_movies.core.user.testutils.HelperVariableTest.userModelPref
 import com.waffiq.bazz_movies.core.user.testutils.TestHelper.testOutcome

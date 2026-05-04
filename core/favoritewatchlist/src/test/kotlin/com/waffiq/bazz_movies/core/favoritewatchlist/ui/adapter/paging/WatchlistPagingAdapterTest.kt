@@ -25,7 +25,6 @@ class WatchlistPagingAdapterTest : BaseAdapterPagingTest() {
   private lateinit var binding: ItemPagingWatchlistBinding
   private lateinit var viewHolder: WatchlistPagingAdapter.ViewHolder
 
-
   @Before
   fun setup() {
     super.setUp()
@@ -56,7 +55,6 @@ class WatchlistPagingAdapterTest : BaseAdapterPagingTest() {
       100,
     )
   }
-
 
   @Test
   fun submitData_withPagingData_updateAdapter() =

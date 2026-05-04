@@ -62,7 +62,7 @@ object FavWatchlistHelper {
     progressBar: LoadingIndicator,
     errorView: View,
     emptyView: View,
-    onError: (Event<String>?) -> Unit, // A callback for when there’s an error
+    onError: (Event<String>) -> Unit, // A callback for when there’s an error
   ) {
     lifecycleScope.launch {
       loadStateFlow.debounce(DEBOUNCE_SHORT).distinctUntilChanged().collectLatest { loadState ->

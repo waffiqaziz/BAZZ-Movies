@@ -28,12 +28,12 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
-import com.waffiq.bazz_movies.feature.home.ui.adapter.MovieHomeAdapter
-import com.waffiq.bazz_movies.feature.home.ui.adapter.TrendingAdapter
+import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
+import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
 import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
+import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
-import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
@@ -57,9 +57,9 @@ class FeaturedFragment : Fragment() {
   lateinit var snackbar: ISnackbar
 
   // Initialize adapters
-  private lateinit var adapterTrending: TrendingAdapter
-  private lateinit var adapterUpcoming: MovieHomeAdapter
-  private lateinit var adapterPlayingNow: MovieHomeAdapter
+  private lateinit var adapterTrending: MediaAdapter
+  private lateinit var adapterUpcoming: MediaAdapter
+  private lateinit var adapterPlayingNow: MediaAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var _binding: FragmentFeaturedBinding? = null
@@ -74,9 +74,9 @@ class FeaturedFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    adapterTrending = TrendingAdapter(navigator)
-    adapterUpcoming = MovieHomeAdapter(navigator)
-    adapterPlayingNow = MovieHomeAdapter(navigator)
+    adapterTrending = MediaAdapter(navigator, MediaSource.Trending)
+    adapterUpcoming = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
+    adapterPlayingNow = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
     shimmerAdapter = ShimmerAdapter()
   }
 
@@ -93,7 +93,11 @@ class FeaturedFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
 
     setupRecyclerViewsWithSnap(
-      listOf(binding.rvUpcoming, binding.rvPlayingNow, binding.rvTrending),
+      listOf(
+        binding.rvUpcomingMovieFeatured,
+        binding.rvMoviePlayingNowFeatured,
+        binding.rvTrending,
+      ),
     )
 
     showShimmer()
@@ -105,17 +109,23 @@ class FeaturedFragment : Fragment() {
 
   private fun showShimmer() {
     binding.apply {
-      if (rvUpcoming.adapter != shimmerAdapter) rvUpcoming.adapter = shimmerAdapter
-      if (rvPlayingNow.adapter != shimmerAdapter) rvPlayingNow.adapter = shimmerAdapter
-      if (rvTrending.adapter != shimmerAdapter) rvTrending.adapter = shimmerAdapter
+      if (rvUpcomingMovieFeatured.adapter != shimmerAdapter) {
+        rvUpcomingMovieFeatured.adapter = shimmerAdapter
+      }
+      if (rvMoviePlayingNowFeatured.adapter != shimmerAdapter) {
+        rvMoviePlayingNowFeatured.adapter = shimmerAdapter
+      }
+      if (rvTrending.adapter != shimmerAdapter) {
+        rvTrending.adapter = shimmerAdapter
+      }
     }
   }
 
   private fun showActualData() {
     binding.apply {
-      if (rvUpcoming.adapter != adapterUpcoming) rvUpcoming.setupLoadState(adapterUpcoming)
-      if (rvPlayingNow.adapter != adapterPlayingNow) rvPlayingNow.setupLoadState(adapterPlayingNow)
-      if (rvTrending.adapter != adapterTrending) rvTrending.setupLoadState(adapterTrending)
+      rvUpcomingMovieFeatured.setupLoadState(adapterUpcoming)
+      rvMoviePlayingNowFeatured.setupLoadState(adapterPlayingNow)
+      rvTrending.setupLoadState(adapterTrending)
     }
   }
 
@@ -153,7 +163,7 @@ class FeaturedFragment : Fragment() {
       loadStateFlow = adapterTrending.loadStateFlow,
       onLoading = { if (adapterTrending.itemCount <= 0) showShimmer() },
       onSuccess = {
-        binding.illustrationError.apply {
+        binding.illustrationErrorFeatured.apply {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
@@ -161,15 +171,13 @@ class FeaturedFragment : Fragment() {
         showView(true)
       },
       onError = { error ->
-        binding.illustrationError.apply {
+        binding.illustrationErrorFeatured.apply {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        error?.let {
-          showActualData()
-          showView(adapterTrending.itemCount > 0)
-          mSnackbar = snackbar.showSnackbarWarning(error)
-        }
+        showActualData()
+        showView(adapterTrending.itemCount > 0)
+        mSnackbar = snackbar.showSnackbarWarning(error)
       },
     )
 
@@ -180,16 +188,16 @@ class FeaturedFragment : Fragment() {
 
     // Set up swipe-to-refresh
     setupSwipeRefresh(
-      binding.swipeRefresh,
+      binding.swipeRefreshFeatured,
       adapterTrending,
       adapterPlayingNow,
       adapterUpcoming,
     )
-    binding.illustrationError
+    binding.illustrationErrorFeatured
 
     // Set up retry button
     setupRetryButton(
-      binding.illustrationError,
+      binding.illustrationErrorFeatured,
       adapterTrending,
       adapterPlayingNow,
       adapterUpcoming,
@@ -201,15 +209,15 @@ class FeaturedFragment : Fragment() {
       adapterPlayingNow,
       getString(no_movies_currently_playing, getCountryDisplayName(region)),
       binding.layoutNoPlaying,
-      binding.rvPlayingNow,
-      binding.btnMorePlayingNow.root,
+      binding.rvMoviePlayingNowFeatured,
+      binding.btnMoreMoviePlayingNowFeatured.root,
     )
     viewLifecycleOwner.handleLoadState(
       adapterUpcoming,
       getString(no_upcoming_movies, getCountryDisplayName(region)),
       binding.layoutNoUpcoming,
-      binding.rvUpcoming,
-      binding.btnMoreUpcomingMovie.root,
+      binding.rvUpcomingMovieFeatured,
+      binding.btnMoreUpcomingMovieFeatured.root,
     )
     viewLifecycleOwner.handleLoadState(
       adapterTrending,
@@ -219,21 +227,21 @@ class FeaturedFragment : Fragment() {
     )
   }
 
-  private fun observeTrendingMovies(adapter: TrendingAdapter) {
-    collectAndSubmitData(this, { movieViewModel.getTrendingWeek() }, adapter)
-    binding.btnToday.setOnClickListener {
-      binding.btnToday.isChecked = true
-      binding.btnWeek.isChecked = false
+  private fun observeTrendingMovies(adapter: MediaAdapter) {
+    collectAndSubmitData(this, { movieViewModel.getTrendingThisWeek() }, adapter)
+    binding.btnTrendingToday.setOnClickListener {
+      binding.btnTrendingToday.isChecked = true
+      binding.btnTrendingThisWeek.isChecked = false
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingDay() }, adapter)
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingToday() }, adapter)
     }
-    binding.btnWeek.setOnClickListener {
-      binding.btnToday.isChecked = false
-      binding.btnWeek.isChecked = true
+    binding.btnTrendingThisWeek.setOnClickListener {
+      binding.btnTrendingToday.isChecked = false
+      binding.btnTrendingThisWeek.isChecked = true
       currentJob?.cancel() // Cancel the previous job if it exists
       currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingWeek() }, adapter)
+        collectAndSubmitDataJob(this, { movieViewModel.getTrendingThisWeek() }, adapter)
     }
   }
 
@@ -241,25 +249,24 @@ class FeaturedFragment : Fragment() {
     // Toggle visibility based on the flag
     binding.apply {
       imgMainFeatured.isVisible = isVisible
-      tvTrending.isVisible = isVisible
-      buttonGroup.isVisible = isVisible
+      filterScroll.isVisible = isVisible
       rvTrending.isVisible = isVisible
-      layoutUpcoming.isVisible = isVisible
-      rvUpcoming.isVisible = isVisible
-      rvPlayingNow.isVisible = isVisible
-      layoutPlayingNow.isVisible = isVisible
-      illustrationError.root.isVisible = !isVisible
+      layoutHeaderUpcomingMovieFeatured.isVisible = isVisible
+      rvUpcomingMovieFeatured.isVisible = isVisible
+      layoutHeaderMoviePlayingNowFeatured.isVisible = isVisible
+      rvMoviePlayingNowFeatured.isVisible = isVisible
+      illustrationErrorFeatured.root.isVisible = !isVisible
     }
   }
 
   private fun moreButtonAction() {
-    binding.btnMorePlayingNow.button.setOnClickListener {
+    binding.btnMoreMoviePlayingNowFeatured.button.setOnClickListener {
       navigator.openList(
         requireContext(),
         ListArgs(listType = ListType.NOW_PLAYING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
       )
     }
-    binding.btnMoreUpcomingMovie.button.setOnClickListener {
+    binding.btnMoreUpcomingMovieFeatured.button.setOnClickListener {
       navigator.openList(
         requireContext(),
         ListArgs(listType = ListType.UPCOMING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
@@ -287,8 +294,8 @@ class FeaturedFragment : Fragment() {
 
     // Detach RecyclerViews programmatically
     binding.apply {
-      rvUpcoming.detachRecyclerView()
-      rvPlayingNow.detachRecyclerView()
+      rvUpcomingMovieFeatured.detachRecyclerView()
+      rvMoviePlayingNowFeatured.detachRecyclerView()
       rvTrending.detachRecyclerView()
     }
 

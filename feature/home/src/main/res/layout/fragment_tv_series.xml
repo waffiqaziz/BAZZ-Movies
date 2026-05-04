@@ -9,7 +9,7 @@
 
   <!-- TV list -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipe_refresh"
+    android:id="@+id/swipe_refresh_tv_series"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,12 +30,11 @@
 
         <!-- Popular -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-          android:id="@+id/layout_popular"
+          android:id="@+id/layout_header_popular_tv_series"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="@dimen/default_margin_parent_20">
 
           <TextView
-            android:id="@+id/tv_popular"
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +42,7 @@
             android:text="@string/popular" />
 
           <include
-            android:id="@+id/btn_more_popular"
+            android:id="@+id/btn_more_popular_tv_series"
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,13 +52,13 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
-          android:id="@+id/layout_no_popular"
+          android:id="@+id/layout_no_popular_tv_series"
           layout="@layout/no_found_layout"
           android:visibility="gone"
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_popular"
+          android:id="@+id/rv_popular_tv_series"
           style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
@@ -67,12 +66,11 @@
 
         <!-- Airing today -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-          android:id="@+id/layout_airing_today"
+          android:id="@+id/layout_header_tv_series_airing_today"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 
           <TextView
-            android:id="@+id/tv_airing_today"
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +78,7 @@
             android:text="@string/airing_today" />
 
           <include
-            android:id="@+id/btn_more_airing_today"
+            android:id="@+id/btn_more_tv_series_airing_today"
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,13 +88,13 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
-          android:id="@+id/layout_no_airing_today"
+          android:id="@+id/layout_no_tv_series_airing_today"
           layout="@layout/no_found_layout"
           android:visibility="gone"
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_airing_today"
+          android:id="@+id/rv_tv_series_airing_today"
           style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
@@ -104,12 +102,11 @@
 
         <!-- Air this week -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-          android:id="@+id/layout_airing_this_week"
+          android:id="@+id/layout_header_tv_series_airing_this_week"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 
           <TextView
-            android:id="@+id/tv_airing_this_week"
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +114,7 @@
             android:text="@string/airing_this_week" />
 
           <include
-            android:id="@+id/btn_more_airing_this_week"
+            android:id="@+id/btn_more_tv_series_airing_this_week"
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,13 +124,13 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
-          android:id="@+id/layout_no_airing_this_week"
+          android:id="@+id/layout_no_tv_series_airing_this_week"
           layout="@layout/no_found_layout"
           android:visibility="gone"
           tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_airing_this_week"
+          android:id="@+id/rv_tv_series_airing_this_week"
           style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
           tools:layout_height="330dp"
@@ -142,12 +139,11 @@
 
         <!-- Top-rated -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-          android:id="@+id/layout_top_rated"
+          android:id="@+id/layout_header_top_rated_tv_series"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">
 
           <TextView
-            android:id="@+id/tv_top_rated"
             style="@style/TextHeader2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +151,7 @@
             android:text="@string/top_rated" />
 
           <include
-            android:id="@+id/btn_more_top_rated"
+            android:id="@+id/btn_more_top_rated_tv_series"
             layout="@layout/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -165,7 +161,7 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_top_rated"
+          android:id="@+id/rv_top_rated_tv_series"
           style="@style/HomeRecyclerView"
           tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           tools:layout_height="150dp"
@@ -176,7 +172,7 @@
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
-    android:id="@+id/illustration_error"
+    android:id="@+id/illustration_error_tv_series"
     layout="@layout/illustration_error"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
