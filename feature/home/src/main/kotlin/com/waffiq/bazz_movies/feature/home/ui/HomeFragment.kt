@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
     val adapter = GenericViewPagerAdapter(
       childFragmentManager,
-      lifecycle,
+      viewLifecycleOwner.lifecycle,
       listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment()),
     )
     binding.viewPager.adapter = adapter

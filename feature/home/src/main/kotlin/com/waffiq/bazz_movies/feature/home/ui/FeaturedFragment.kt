@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -30,7 +31,6 @@ import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
-import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
@@ -60,13 +60,12 @@ class FeaturedFragment : Fragment() {
   private lateinit var adapterTrending: MediaAdapter
   private lateinit var adapterUpcoming: MediaAdapter
   private lateinit var adapterPlayingNow: MediaAdapter
-  private lateinit var shimmerAdapter: ShimmerAdapter
 
   private var _binding: FragmentFeaturedBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val movieViewModel: MovieViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by activityViewModels()
   private val regionViewModel: RegionViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -77,7 +76,6 @@ class FeaturedFragment : Fragment() {
     adapterTrending = MediaAdapter(navigator, MediaSource.Trending)
     adapterUpcoming = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
     adapterPlayingNow = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
-    shimmerAdapter = ShimmerAdapter()
   }
 
   override fun onCreateView(
@@ -100,33 +98,43 @@ class FeaturedFragment : Fragment() {
       ),
     )
 
-    showShimmer()
+    showShimmer(true)
     setRegion()
     setData()
+    setupAdapter()
     showMainPicture()
+    refreshHandle()
     moreButtonAction()
   }
 
-  private fun showShimmer() {
-    binding.apply {
-      if (rvUpcomingMovieFeatured.adapter != shimmerAdapter) {
-        rvUpcomingMovieFeatured.adapter = shimmerAdapter
-      }
-      if (rvMoviePlayingNowFeatured.adapter != shimmerAdapter) {
-        rvMoviePlayingNowFeatured.adapter = shimmerAdapter
-      }
-      if (rvTrending.adapter != shimmerAdapter) {
-        rvTrending.adapter = shimmerAdapter
-      }
-    }
+  private fun showShimmer(isVisible: Boolean) {
+    binding.shimmer.shimmerFeatured.isVisible = isVisible
   }
 
-  private fun showActualData() {
+  private fun setupAdapter() {
     binding.apply {
       rvUpcomingMovieFeatured.setupLoadState(adapterUpcoming)
       rvMoviePlayingNowFeatured.setupLoadState(adapterPlayingNow)
       rvTrending.setupLoadState(adapterTrending)
     }
+  }
+
+  private fun refreshHandle() {
+    // Set up swipe-to-refresh
+    setupSwipeRefresh(
+      binding.swipeRefreshFeatured,
+      adapterTrending,
+      adapterPlayingNow,
+      adapterUpcoming,
+    )
+
+    // Set up retry button
+    setupRetryButton(
+      binding.illustrationErrorFeatured,
+      adapterTrending,
+      adapterPlayingNow,
+      adapterUpcoming,
+    )
   }
 
   private fun showMainPicture() {
@@ -161,13 +169,13 @@ class FeaturedFragment : Fragment() {
   private fun setData() {
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = adapterTrending.loadStateFlow,
-      onLoading = { if (adapterTrending.itemCount <= 0) showShimmer() },
+      onLoading = { if (adapterTrending.itemCount <= 0) showShimmer(true) },
       onSuccess = {
         binding.illustrationErrorFeatured.apply {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(true)
       },
       onError = { error ->
@@ -175,7 +183,7 @@ class FeaturedFragment : Fragment() {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(adapterTrending.itemCount > 0)
         mSnackbar = snackbar.showSnackbarWarning(error)
       },
@@ -185,23 +193,6 @@ class FeaturedFragment : Fragment() {
     observeTrendingMovies(adapterTrending)
     collectAndSubmitData(this, { movieViewModel.getUpcomingMovies() }, adapterUpcoming)
     collectAndSubmitData(this, { movieViewModel.getPlayingNowMovies() }, adapterPlayingNow)
-
-    // Set up swipe-to-refresh
-    setupSwipeRefresh(
-      binding.swipeRefreshFeatured,
-      adapterTrending,
-      adapterPlayingNow,
-      adapterUpcoming,
-    )
-    binding.illustrationErrorFeatured
-
-    // Set up retry button
-    setupRetryButton(
-      binding.illustrationErrorFeatured,
-      adapterTrending,
-      adapterPlayingNow,
-      adapterUpcoming,
-    )
   }
 
   private fun handleLoadState(region: String) {
