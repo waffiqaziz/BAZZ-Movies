@@ -2,8 +2,6 @@ package com.waffiq.bazz_movies.feature.home.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -12,6 +10,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -36,12 +35,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,72 +77,30 @@ class MovieFragmentTest : BaseHomeFragmentTest() {
   }
 
   @Test
-  fun setData_successThenError_shouldShowTheError() =
-    runTest {
-      val testDispatcher = StandardTestDispatcher(testScheduler)
-      Dispatchers.setMain(testDispatcher)
-
-      // Override only topRated since that's what drives the error illustration
-      every { mockMovieViewModel.getTopRatedMovies() } returns createSuccessThenErrorFlow()
-
-      launchMovieFragment()
-//    advanceUntilIdle()
-//    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-
-//    waitUntilVisible(withId(rv_popular_movie))
-//    illustration_error_movie.isNotDisplayed()
-//
-//    // Trigger refresh → SuccessThenErrorPagingSource loadCount becomes 2 → LoadResult.Error
-//    swipe_refresh_movie.performSwipeDown()
-//
-//    advanceTimeBy(DEBOUNCE_VERY_LONG + 500L)
-//    advanceUntilIdle()
-//    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-//
-//    waitUntilVisible(withId(illustration_error_movie))
-//
-      Dispatchers.resetMain()
-    }
+  fun setData_whenLoadSuccess_shouldShowContentAndHideError() {
+    launchMovieFragment()
+    waitUntilVisible(withId(rv_popular_movie))
+    illustration_error_movie.isNotDisplayed()
+  }
 
   @Test
-  fun setData_whenLoadErrorNoItems_shouldShowErrorIllustration() =
-    runTest {
-      val testDispatcher = StandardTestDispatcher(testScheduler)
-      Dispatchers.setMain(testDispatcher)
+  fun setData_whenLoadErrorNoItems_shouldShowErrorIllustration() {
+    every { mockMovieViewModel.getTopRatedMovies() } returns createErrorPagingFlow()
 
-      every { mockMovieViewModel.getTopRatedMovies() } returns createErrorPagingFlow()
+    launchMovieFragment()
+    shortDelay(2000)
 
-      launchMovieFragment()
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        advanceTimeBy(DEBOUNCE_VERY_LONG + 1000L)
-        testScheduler.runCurrent()
-      }
-
-      waitUntilVisible(withId(illustration_error_movie))
-      layout_header_popular_movie.isNotDisplayed()
-
-      Dispatchers.resetMain()
-    }
+    waitUntilVisible(withId(illustration_error_movie))
+    layout_header_popular_movie.isNotDisplayed()
+  }
 
   @Test
-  fun setData_whenLoading_shouldShowShimmer() =
-    runTest {
-      val testDispatcher = StandardTestDispatcher(testScheduler)
-      Dispatchers.setMain(testDispatcher)
+  fun setData_whenLoading_shouldShowShimmer() {
+    every { mockMovieViewModel.getTopRatedMovies() } returns createStuckLoadingFlow()
 
-      every { mockMovieViewModel.getTopRatedMovies() } returns createStuckLoadingFlow()
-
-      launchMovieFragment()
-
-      InstrumentationRegistry.getInstrumentation().runOnMainSync {
-        advanceTimeBy(DEBOUNCE_VERY_LONG + 1000L)
-        testScheduler.runCurrent()
-      }
-
-      rv_popular_movie.isVisible()
-
-      Dispatchers.resetMain()
-    }
+    launchMovieFragment()
+    rv_popular_movie.isVisible()
+  }
 
   @Test
   fun moreButton_whenClicked_shouldOpenListActivity() {
@@ -175,6 +126,7 @@ class MovieFragmentTest : BaseHomeFragmentTest() {
   @Test
   fun swipeScroll_whenRefresh_refreshData() {
     launchMovieFragment()
+    shortDelay(1000)
     swipe_refresh_movie.performSwipeDown()
   }
 
@@ -194,6 +146,7 @@ class MovieFragmentTest : BaseHomeFragmentTest() {
 
   private fun launchMovieFragment() {
     launchFragment()
+    shortDelay()
     waitUntilVisible(withId(tabs))
     movies.performTextClick()
   }
