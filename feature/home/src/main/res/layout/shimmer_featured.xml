@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/shimmer_featured"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/gray_1000">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:contentDescription="@string/featured"
+          android:scaleType="centerCrop"
+          android:src="@color/gray_700"
+          app:layout_constraintDimensionRatio="16:9"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:ignore="UnusedAttribute" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="-20dp"
+      android:orientation="horizontal"
+      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      tools:ignore="NegativeMargin">
+
+      <TextView
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="10dp"
+        android:text="@string/trending" />
+
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        style="@style/FilterButtonGroupStyle">
+
+        <com.google.android.material.button.MaterialButton
+          style="@style/FilterToggleOverlay"
+          android:text="@string/today" />
+
+        <com.google.android.material.button.MaterialButton
+          style="@style/FilterToggleOverlay"
+          android:checked="true"
+          android:text="@string/this_week" />
+
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
+
+    <include
+      layout="@layout/shimmer_item_horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp" />
+
+    <TextView
+      style="@style/TextHeader2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/default_margin_parent_20"
+      android:layout_marginTop="22dp"
+      android:text="@string/upcoming_movies" />
+
+    <include
+      layout="@layout/shimmer_item_horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp" />
+
+    <TextView
+      style="@style/TextHeader2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/default_margin_parent_20"
+      android:layout_marginTop="22dp"
+      android:text="@string/playing_now_on_theater" />
+
+    <include
+      layout="@layout/shimmer_item_horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"/>
+
+  </LinearLayout>
+</FrameLayout>

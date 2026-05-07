@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.home.ui
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -11,7 +10,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -38,12 +37,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -88,7 +81,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   @Test
   fun setData_whenLoadSuccess_shouldShowContentAndHideError() {
     launchFragment()
-    rv_trending.isDisplayed()
+    waitUntilVisible(withId(rv_trending))
     img_main_featured.isDisplayed()
     filter_scroll.isDisplayed()
     button_group.isDisplayed()
@@ -106,21 +99,14 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   }
 
   @Test
-  fun setData_whenLoading_shouldShowShimmer() =
-    runTest {
-      val testDispatcher = StandardTestDispatcher(testScheduler)
-      Dispatchers.setMain(testDispatcher)
+  fun setData_whenLoading_shouldShowShimmer() {
+    every { mockMovieViewModel.getTrendingThisWeek() } returns createStuckLoadingFlow()
 
-      every { mockMovieViewModel.getTrendingThisWeek() } returns createStuckLoadingFlow()
+    launchFragment()
+    shortDelay(1000)
 
-      launchFragment()
-      advanceTimeBy(DEBOUNCE_VERY_LONG + 1000L)
-      testDispatcher.scheduler.runCurrent()
-
-      rv_trending.isVisible()
-
-      Dispatchers.resetMain()
-    }
+    rv_trending.isNotDisplayed()
+  }
 
   @Test
   fun setRegion_whenUserHasNoRegion_shouldFetchFromCountryApi() {
@@ -155,6 +141,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   @Test
   fun btnTrending_whenClickedMultipleTimes_shouldCancelPreviousJob() {
     launchFragment()
+    shortDelay(1000)
     btn_trending_today.performClick()
     btn_trending_today.performClick()
     coVerify(atLeast = 2) { mockMovieViewModel.getTrendingToday() }
@@ -163,6 +150,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   @Test
   fun btnWeek_whenClickedMultipleTimes_shouldCancelPreviousJob() {
     launchFragment()
+    shortDelay(1000)
     btn_trending_this_week.performClick()
     btn_trending_this_week.performClick()
     coVerify(atLeast = 2) { mockMovieViewModel.getTrendingThisWeek() }

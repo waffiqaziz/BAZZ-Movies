@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
@@ -23,8 +24,6 @@ import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
-import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
-import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -53,14 +52,12 @@ class MovieFragment : Fragment() {
   private lateinit var nowPlayingAdapter: MediaAdapter
   private lateinit var upComingAdapter: MediaAdapter
   private lateinit var topRatedAdapter: MediaAdapter
-  private lateinit var shimmerAdapter: ShimmerAdapter
-  private lateinit var shimmerWideAdapter: ShimmerItemWideAdapter
 
   private var _binding: FragmentMovieBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val movieViewModel: MovieViewModel by viewModels()
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by activityViewModels()
 
   private var mSnackbar: Snackbar? = null
 
@@ -70,8 +67,6 @@ class MovieFragment : Fragment() {
     nowPlayingAdapter = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
     upComingAdapter = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
     topRatedAdapter = MediaAdapter(navigator, MediaSource.Typed(MOVIE_MEDIA_TYPE))
-    shimmerAdapter = ShimmerAdapter()
-    shimmerWideAdapter = ShimmerItemWideAdapter()
   }
 
   override fun onCreateView(
@@ -86,29 +81,26 @@ class MovieFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    showShimmer(true)
+    setupAdapter()
+    setData()
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
+      handleLoadState(it)
+    }
+    refreshHandle()
+    moreButtonAction()
+  }
+
+  private fun showShimmer(isVisible: Boolean) {
+    binding.shimmer.shimmerMovie.isVisible = isVisible
+  }
+
+  private fun setupAdapter() {
     // Set up RecyclerViews
     setupRecyclerViewsWithSnap(listOf(binding.rvUpcomingMovie, binding.rvTopRatedMovie))
     setupRecyclerWideItem(binding.rvPopularMovie)
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvMovieAiringToday))
 
-    showShimmer()
-    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
-      handleLoadState(it)
-    }
-    setData()
-    moreButtonAction()
-  }
-
-  private fun showShimmer() {
-    binding.apply {
-      if (rvPopularMovie.adapter != shimmerWideAdapter) rvPopularMovie.adapter = shimmerWideAdapter
-      if (rvMovieAiringToday.adapter != shimmerAdapter) rvMovieAiringToday.adapter = shimmerAdapter
-      if (rvUpcomingMovie.adapter != shimmerAdapter) rvUpcomingMovie.adapter = shimmerAdapter
-      if (rvTopRatedMovie.adapter != shimmerAdapter) rvTopRatedMovie.adapter = shimmerAdapter
-    }
-  }
-
-  private fun showActualData() {
     binding.apply {
       rvPopularMovie.setupLoadState(popularAdapter)
       rvMovieAiringToday.setupLoadState(nowPlayingAdapter)
@@ -118,16 +110,15 @@ class MovieFragment : Fragment() {
   }
 
   private fun setData() {
-    refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
-      onLoading = { showShimmer() },
+      onLoading = { showShimmer(true) },
       onSuccess = {
         binding.illustrationErrorMovie.apply {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(true)
       },
       onError = { error ->
@@ -135,7 +126,7 @@ class MovieFragment : Fragment() {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(topRatedAdapter.itemCount > 0)
         mSnackbar = snackbar.showSnackbarWarning(error)
       },

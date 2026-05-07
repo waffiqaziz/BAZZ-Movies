@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
@@ -24,8 +25,6 @@ import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
-import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerAdapter
-import com.waffiq.bazz_movies.feature.home.ui.shimmer.ShimmerItemWideAdapter
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -54,13 +53,11 @@ class TvSeriesFragment : Fragment() {
   private lateinit var airingTodayAdapter: MediaAdapter
   private lateinit var airingThisWeekAdapter: MediaAdapter
   private lateinit var topRatedAdapter: MediaAdapter
-  private lateinit var shimmerAdapter: ShimmerAdapter
-  private lateinit var shimmerWideAdapter: ShimmerItemWideAdapter
 
   private var _binding: FragmentTvSeriesBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
-  private val userPreferenceViewModel: UserPreferenceViewModel by viewModels()
+  private val userPreferenceViewModel: UserPreferenceViewModel by activityViewModels()
   private val tvSeriesViewModel: TvSeriesViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
@@ -71,8 +68,6 @@ class TvSeriesFragment : Fragment() {
     airingTodayAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
     airingThisWeekAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
     topRatedAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
-    shimmerAdapter = ShimmerAdapter()
-    shimmerWideAdapter = ShimmerItemWideAdapter()
   }
 
   override fun onCreateView(
@@ -84,43 +79,29 @@ class TvSeriesFragment : Fragment() {
     return binding.root
   }
 
-  override fun onStart() {
-    super.onStart()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
+    showShimmer(true)
+    setData()
+    setupAdapter()
+    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
+      handleLoadState(it)
+    }
+    refreshHandle()
+    moreButtonAction()
+  }
+
+  private fun showShimmer(isVisible: Boolean) {
+    binding.shimmer.shimmerTvSeries.isVisible = isVisible
+  }
+
+  private fun setupAdapter() {
     // Set up RecyclerViews
     setupRecyclerViewsWithSnap(listOf(binding.rvTvSeriesAiringToday, binding.rvTopRatedTvSeries))
     setupRecyclerWideItem(binding.rvPopularTvSeries)
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvTvSeriesAiringThisWeek))
-  }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    showShimmer()
-    setData()
-    userPreferenceViewModel.getUserRegionPref().observe(viewLifecycleOwner) {
-      handleLoadState(it)
-    }
-    moreButtonAction()
-  }
-
-  private fun showShimmer() {
-    binding.apply {
-      if (rvPopularTvSeries.adapter != shimmerWideAdapter) {
-        rvPopularTvSeries.adapter = shimmerWideAdapter
-      }
-      if (rvTvSeriesAiringToday.adapter != shimmerAdapter) {
-        rvTvSeriesAiringToday.adapter = shimmerAdapter
-      }
-      if (rvTvSeriesAiringThisWeek.adapter != shimmerAdapter) {
-        rvTvSeriesAiringThisWeek.adapter = shimmerAdapter
-      }
-      if (rvTopRatedTvSeries.adapter != shimmerAdapter) {
-        rvTopRatedTvSeries.adapter = shimmerAdapter
-      }
-    }
-  }
-
-  private fun showActualData() {
     binding.apply {
       rvPopularTvSeries.setupLoadState(popularAdapter)
       rvTvSeriesAiringToday.setupLoadState(airingTodayAdapter)
@@ -130,16 +111,15 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setData() {
-    refreshHandle()
     viewLifecycleOwner.observeLoadState(
       loadStateFlow = topRatedAdapter.loadStateFlow,
-      onLoading = { showShimmer() },
+      onLoading = { showShimmer(true) },
       onSuccess = {
         binding.illustrationErrorTvSeries.apply {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(true)
       },
       onError = { error ->
@@ -147,7 +127,7 @@ class TvSeriesFragment : Fragment() {
           progressCircular.isVisible = false
           btnTryAgain.isVisible = true
         }
-        showActualData()
+        showShimmer(false)
         showView(topRatedAdapter.itemCount > 0)
         mSnackbar = snackbar.showSnackbarWarning(error)
       },

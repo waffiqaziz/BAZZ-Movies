@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/shimmer_tv_series"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@color/gray_1000"
+  android:orientation="vertical">
+
+  <TextView
+    style="@style/TextHeader2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin_parent_20"
+    android:layout_marginTop="30dp"
+    android:text="@string/popular" />
+
+  <include
+    layout="@layout/shimmer_item_wide"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin_parent_20"
+    android:layout_marginTop="22dp" />
+
+  <TextView
+    style="@style/TextHeader2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin_parent_20"
+    android:layout_marginTop="22dp"
+    android:text="@string/airing_today" />
+
+  <include
+    layout="@layout/shimmer_item_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp" />
+
+  <TextView
+    style="@style/TextHeader2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin_parent_20"
+    android:layout_marginTop="22dp"
+    android:text="@string/airing_this_week" />
+
+  <include
+    layout="@layout/shimmer_item_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp" />
+
+  <include
+    layout="@layout/shimmer_item_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp" />
+
+  <TextView
+    style="@style/TextHeader2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin_parent_20"
+    android:layout_marginTop="22dp"
+    android:text="@string/top_rated" />
+
+  <include
+    layout="@layout/shimmer_item_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp" />
+
+</LinearLayout>

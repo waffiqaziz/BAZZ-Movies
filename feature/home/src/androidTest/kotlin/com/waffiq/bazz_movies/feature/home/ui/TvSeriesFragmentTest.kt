@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.home.ui
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_VERY_LONG
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -13,6 +12,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.perform
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -37,12 +37,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -88,7 +82,8 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
   fun setData_whenLoadSuccess_shouldShowContentAndHideError() {
     launchTvSeriesFragment()
 
-    rv_popular_tv_series.isDisplayed()
+    shortDelay(1000)
+    waitUntilVisible(withId(rv_popular_tv_series))
     rv_tv_series_airing_today.isDisplayed()
     layout_header_popular_tv_series.isDisplayed()
     illustration_error_tv_series.isNotDisplayed()
@@ -99,27 +94,19 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
     every { mockTvSeriesViewModel.getTopRatedTv() } returns createErrorPagingFlow()
 
     launchTvSeriesFragment()
+    shortDelay(2000)
 
     waitUntilVisible(withId(illustration_error_tv_series))
     layout_header_popular_tv_series.isNotDisplayed()
   }
 
   @Test
-  fun setData_whenLoading_shouldShowShimmer() =
-    runTest {
-      val testDispatcher = StandardTestDispatcher(testScheduler)
-      Dispatchers.setMain(testDispatcher)
+  fun setData_whenLoading_shouldShowShimmer() {
+    every { mockTvSeriesViewModel.getTopRatedTv() } returns createStuckLoadingFlow()
 
-      every { mockTvSeriesViewModel.getTopRatedTv() } returns createStuckLoadingFlow()
-
-      launchTvSeriesFragment()
-      advanceTimeBy(DEBOUNCE_VERY_LONG + 1000L)
-      testDispatcher.scheduler.runCurrent()
-
-      rv_popular_tv_series.isVisible()
-
-      Dispatchers.resetMain()
-    }
+    launchTvSeriesFragment()
+    rv_popular_tv_series.isVisible()
+  }
 
   @Test
   fun moreButton_whenClicked_shouldOpenListActivity() {
@@ -145,10 +132,9 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
   @Test
   fun swipeScroll_whenRefresh_refreshData() {
     launchTvSeriesFragment()
-
+    shortDelay(1000)
+    waitUntilVisible(withId(swipe_refresh_tv_series))
     swipe_refresh_tv_series.performSwipeDown()
-    rv_popular_tv_series.performSwipeDown()
-    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
   }
 
   @Test
@@ -165,6 +151,8 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
 
   private fun launchTvSeriesFragment() {
     launchFragment()
+    shortDelay()
     tv_series.performTextClick()
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
   }
 }

@@ -7,7 +7,6 @@
   android:layout_height="match_parent"
   tools:context=".ui.MovieFragment">
 
-  <!-- Movie list-->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh_movie"
     android:layout_width="match_parent"
@@ -164,6 +163,13 @@
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  <include
+    android:id="@+id/shimmer"
+    layout="@layout/shimmer_movie"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
 
   <include
     android:id="@+id/illustration_error_movie"

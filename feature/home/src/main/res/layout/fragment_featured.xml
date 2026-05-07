@@ -27,7 +27,6 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/bottom_nav_min_height">
 
-        <!-- Fixed backdrop -->
         <ImageView
           android:id="@+id/img_main_featured"
           android:layout_width="match_parent"
@@ -182,13 +181,11 @@
     android:visibility="gone"
     tools:visibility="invisible" />
 
-  <!-- Background overlay on start -->
-  <View
-    android:id="@+id/background_dim_movie"
-    style="@style/MyDimStyleMatchParent"
-    android:layout_gravity="center"
-    android:fitsSystemWindows="true"
-    android:visibility="gone"
-    tools:visibility="gone" />
+  <include
+    android:id="@+id/shimmer"
+    layout="@layout/shimmer_featured"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,39 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="wrap_content"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:paddingEnd="10dp"
-  android:paddingBottom="6dp">
+  android:layout_marginRight="12dp"
+  android:orientation="vertical">
 
-  <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+  <com.facebook.shimmer.ShimmerFrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-      android:id="@+id/iv_backdrop"
-      android:layout_width="350dp"
-      android:layout_height="197dp"
-      android:src="@color/gray_700"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-      android:layout_width="100dp"
-      android:layout_height="18dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="9dp"
-      android:src="@color/gray_700"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+      <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/featured"
+        android:scaleType="centerCrop"
+        android:src="@color/gray_700"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+        tools:ignore="UnusedAttribute" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-      android:layout_width="280dp"
-      android:layout_height="18dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="9dp"
-      android:src="@color/gray_700"
-      app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </com.facebook.shimmer.ShimmerFrameLayout>
 
-  </LinearLayout>
-</com.facebook.shimmer.ShimmerFrameLayout>
+  <com.facebook.shimmer.ShimmerFrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="100dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:src="@color/gray_700"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:src="@color/gray_700"
+        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+
+    </LinearLayout>
+  </com.facebook.shimmer.ShimmerFrameLayout>
+</LinearLayout>
 
