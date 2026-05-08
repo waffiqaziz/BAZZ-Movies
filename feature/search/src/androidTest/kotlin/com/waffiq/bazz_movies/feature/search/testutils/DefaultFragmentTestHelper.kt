@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.testutils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingData
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
@@ -47,7 +48,9 @@ class DefaultFragmentTestHelper : SearchFragmentTestHelper {
     searchAdapter = spyAdapter
 
     searchFragment = launchFragmentInHiltContainer<SearchFragment>().fragment
-    searchFragment.setAdapterForTest(spyAdapter)
+    InstrumentationRegistry.getInstrumentation().runOnMainSync {
+      searchFragment.setAdapterForTest(spyAdapter)
+    }
   }
 
   override fun setupSnackbarMocks(mockSnackbar: ISnackbar) {
