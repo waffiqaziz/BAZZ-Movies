@@ -12,6 +12,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.ui.HomeFragment
+import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -22,6 +23,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.verify
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
 import org.junit.Rule
 
@@ -79,6 +81,8 @@ abstract class BaseHomeFragmentTest {
       pagingSourceFactory = { NeverLoadingPagingSource() },
     ).flow
 
+  private val trendingPeriodFlow = MutableStateFlow(TrendingPeriod.WEEK)
+
   protected fun setupMock(
     movieViewModel: MovieViewModel,
     tvSeriesViewModel: TvSeriesViewModel,
@@ -86,10 +90,11 @@ abstract class BaseHomeFragmentTest {
   ) {
     every { movieViewModel.getTopRatedMovies() } returns createPagingFlow()
     every { movieViewModel.getPopularMovies() } returns createPagingFlow()
-    every { movieViewModel.getTrendingThisWeek() } returns createPagingFlow()
-    every { movieViewModel.getTrendingToday() } returns createPagingFlow()
+    every { movieViewModel.trendingPeriod } returns trendingPeriodFlow
+    every { movieViewModel.trending } returns createPagingFlow()
     every { movieViewModel.getUpcomingMovies() } returns createPagingFlow()
     every { movieViewModel.getPlayingNowMovies() } returns createPagingFlow()
+    every { movieViewModel.setTrendingPeriod(any()) } just Runs
     every { tvSeriesViewModel.getPopularTv() } returns createPagingFlow()
     every { tvSeriesViewModel.getAiringThisWeekTv() } returns createPagingFlow()
     every { tvSeriesViewModel.getAiringTodayTv() } returns createPagingFlow()
