@@ -42,7 +42,7 @@ swiperefreshlayout = "1.2.0"
 viewpager2 = "1.1.0"
 
 # Kotlin Coroutines
-kotlinxCoroutines = "1.10.2"
+kotlinxCoroutines = "1.11.0"
 
 # Lifecycle Libraries
 lifecycle = "2.10.0"
