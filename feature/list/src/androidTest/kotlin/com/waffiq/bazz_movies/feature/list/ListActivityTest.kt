@@ -145,6 +145,20 @@ class ListActivityTest : BaseListActivityTest() {
   }
 
   @Test
+  fun listActivity_withTrendingTodayType_showsCorrectViews() {
+    context.launchListActivity(trendingTodayArgs) {
+      shouldShowTrending()
+    }
+  }
+
+  @Test
+  fun listActivity_withTrendingThisWeekType_showsCorrectViews() {
+    context.launchListActivity(trendingThisWeekArgs) {
+      shouldShowTrending()
+    }
+  }
+
+  @Test
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial

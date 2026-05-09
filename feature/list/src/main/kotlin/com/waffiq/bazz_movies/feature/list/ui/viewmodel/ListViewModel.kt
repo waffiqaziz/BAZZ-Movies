@@ -75,13 +75,14 @@ class ListViewModel @Inject constructor(
       }
       ).cachedIn(viewModelScope)
 
-  fun getTrending(listType: ListType) = (
-    if (listType == ListType.TRENDING_TODAY) {
-      getListMoviesUseCase.getTrendingToday()
-    } else {
-      getListMoviesUseCase.getTrendingThisWeek()
-    }
-    ).cachedIn(viewModelScope)
+  fun getTrending(listType: ListType) =
+    (
+      if (listType == ListType.TRENDING_TODAY) {
+        getListMoviesUseCase.getTrendingToday()
+      } else {
+        getListMoviesUseCase.getTrendingThisWeek()
+      }
+      ).cachedIn(viewModelScope)
 
   fun getUpcomingMovies(): Flow<PagingData<MediaItem>> =
     getListMoviesUseCase.getUpcomingMovies().cachedIn(viewModelScope)
