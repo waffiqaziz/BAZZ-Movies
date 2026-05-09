@@ -10,6 +10,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.snackbar.Snackbar
@@ -31,9 +34,9 @@ import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
+import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
-import com.waffiq.bazz_movies.feature.home.utils.helpers.FlowJobHelper.collectAndSubmitDataJob
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
@@ -44,7 +47,7 @@ import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -69,7 +72,6 @@ class FeaturedFragment : Fragment() {
   private val regionViewModel: RegionViewModel by viewModels()
 
   private var mSnackbar: Snackbar? = null
-  private var currentJob: Job? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -219,20 +221,23 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun observeTrendingMovies(adapter: MediaAdapter) {
-    collectAndSubmitData(this, { movieViewModel.getTrendingThisWeek() }, adapter)
+    // Collect the single trending flow — ViewModel handles switching
+    collectAndSubmitData(this, { movieViewModel.trending }, adapter)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        movieViewModel.trendingPeriod.collect { period ->
+          binding.btnTrendingToday.isChecked = period == TrendingPeriod.TODAY
+          binding.btnTrendingThisWeek.isChecked = period == TrendingPeriod.WEEK
+        }
+      }
+    }
+
     binding.btnTrendingToday.setOnClickListener {
-      binding.btnTrendingToday.isChecked = true
-      binding.btnTrendingThisWeek.isChecked = false
-      currentJob?.cancel() // Cancel the previous job if it exists
-      currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingToday() }, adapter)
+      movieViewModel.setTrendingPeriod(TrendingPeriod.TODAY)
     }
     binding.btnTrendingThisWeek.setOnClickListener {
-      binding.btnTrendingToday.isChecked = false
-      binding.btnTrendingThisWeek.isChecked = true
-      currentJob?.cancel() // Cancel the previous job if it exists
-      currentJob =
-        collectAndSubmitDataJob(this, { movieViewModel.getTrendingThisWeek() }, adapter)
+      movieViewModel.setTrendingPeriod(TrendingPeriod.WEEK)
     }
   }
 
@@ -268,7 +273,6 @@ class FeaturedFragment : Fragment() {
   override fun onPause() {
     super.onPause()
     mSnackbar?.dismiss()
-    currentJob?.cancel()
   }
 
   override fun onStop() {

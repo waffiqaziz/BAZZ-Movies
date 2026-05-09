@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.home.ui
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
@@ -26,6 +27,7 @@ import com.waffiq.bazz_movies.feature.home.R.id.img_main_featured
 import com.waffiq.bazz_movies.feature.home.R.id.rv_trending
 import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_featured
 import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
+import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -37,6 +39,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -90,7 +93,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
 
   @Test
   fun setData_whenLoadErrorNoItems_shouldShowErrorIllustration() {
-    every { mockMovieViewModel.getTrendingThisWeek() } returns createErrorPagingFlow()
+    every { mockMovieViewModel.trending } returns createErrorPagingFlow()
 
     launchFragment()
 
@@ -100,7 +103,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
 
   @Test
   fun setData_whenLoading_shouldShowShimmer() {
-    every { mockMovieViewModel.getTrendingThisWeek() } returns createStuckLoadingFlow()
+    every { mockMovieViewModel.trending } returns createStuckLoadingFlow()
 
     launchFragment()
     shortDelay(1000)
@@ -139,21 +142,24 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   }
 
   @Test
-  fun btnTrending_whenClickedMultipleTimes_shouldCancelPreviousJob() {
+  fun btnTrending_whenClicked_shouldCallsCorrectFunction() {
     launchFragment()
     shortDelay(1000)
     btn_trending_today.performClick()
-    btn_trending_today.performClick()
-    coVerify(atLeast = 2) { mockMovieViewModel.getTrendingToday() }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    btn_trending_this_week.performClick()
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.TODAY) }
+    verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.WEEK) }
   }
 
   @Test
-  fun btnWeek_whenClickedMultipleTimes_shouldCancelPreviousJob() {
+  fun btnTrending_whenClicked_shouldCallsCorrectFunction1() {
     launchFragment()
     shortDelay(1000)
     btn_trending_this_week.performClick()
-    btn_trending_this_week.performClick()
-    coVerify(atLeast = 2) { mockMovieViewModel.getTrendingThisWeek() }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.WEEK) }
   }
 
   @Test

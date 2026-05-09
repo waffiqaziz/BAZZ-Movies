@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.home.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.feature.home.testutils.BaseViewModelTest
+import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -37,15 +38,17 @@ class MovieViewModelTest : BaseViewModelTest() {
   @Test
   fun getTrendingThisWeek_whenSuccessful_emitsCorrectValue() =
     runTest {
+      viewModel.setTrendingPeriod(TrendingPeriod.WEEK)
       coEvery { mockGetListMoviesUseCase.getTrendingThisWeek() } returns expectedFlow
-      thenEmitsCorrectItem({ viewModel.getTrendingThisWeek() })
+      thenEmitsCorrectItem({ viewModel.trending })
     }
 
   @Test
   fun getTrendingToday_whenSuccessful_emitsCorrectValue() =
     runTest {
+      viewModel.setTrendingPeriod(TrendingPeriod.TODAY)
       coEvery { mockGetListMoviesUseCase.getTrendingToday() } returns expectedFlow
-      thenEmitsCorrectItem({ viewModel.getTrendingToday() })
+      thenEmitsCorrectItem({ viewModel.trending })
     }
 
   @Test
