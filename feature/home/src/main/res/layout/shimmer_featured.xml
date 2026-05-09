@@ -38,23 +38,35 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <LinearLayout
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="-20dp"
-      android:orientation="horizontal"
-      android:paddingHorizontal="@dimen/default_margin_parent_20"
+      android:orientation="vertical"
       tools:ignore="NegativeMargin">
 
-      <TextView
-        style="@style/TextHeader2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="10dp"
-        android:text="@string/trending" />
+      <androidx.coordinatorlayout.widget.CoordinatorLayout
+        style="@style/LayoutHeaderTheme">
+
+        <TextView
+          style="@style/TextHeader2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:text="@string/trending" />
+
+        <include
+          layout="@layout/button_more"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center"
+          android:layout_marginEnd="-4dp" />
+
+      </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
       <com.google.android.material.button.MaterialButtonToggleGroup
-        style="@style/FilterButtonGroupStyle">
+        style="@style/FilterButtonGroupStyle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="@dimen/default_margin_parent_20">
 
         <com.google.android.material.button.MaterialButton
           style="@style/FilterToggleOverlay"

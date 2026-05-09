@@ -37,47 +37,53 @@
           tools:layout_height="250dp"
           tools:src="@color/red_matte" />
 
-        <HorizontalScrollView
-          android:id="@+id/filter_scroll"
+        <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="-20dp">
+          android:layout_marginTop="-20dp"
+          android:orientation="vertical"
+          tools:ignore="NegativeMargin">
 
-          <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/default_margin_parent_20"
-            tools:ignore="NegativeMargin">
+          <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/layout_header_trending_featured"
+            style="@style/LayoutHeaderTheme">
 
-            <!-- Trending -->
             <TextView
               style="@style/TextHeader2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center_vertical"
-              android:layout_marginEnd="10dp"
               android:text="@string/trending" />
 
-            <!-- Trending filter button -->
-            <com.google.android.material.button.MaterialButtonToggleGroup
-              android:id="@+id/button_group"
-              style="@style/FilterButtonGroupStyle">
+            <include
+              android:id="@+id/btn_more_trending_featured"
+              layout="@layout/button_more"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end|center"
+              android:layout_marginEnd="-4dp" />
 
-              <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_trending_today"
-                style="@style/FilterToggleOverlay"
-                android:text="@string/today" />
+          </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-              <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_trending_this_week"
-                style="@style/FilterToggleOverlay"
-                android:checked="true"
-                android:text="@string/this_week" />
+          <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/button_group"
+            style="@style/FilterButtonGroupStyle"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="@dimen/default_margin_parent_20">
 
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-          </LinearLayout>
-        </HorizontalScrollView>
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btn_trending_today"
+              style="@style/FilterToggleOverlay"
+              android:text="@string/today" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btn_trending_this_week"
+              style="@style/FilterToggleOverlay"
+              android:checked="true"
+              android:text="@string/this_week" />
+
+          </com.google.android.material.button.MaterialButtonToggleGroup>
+        </LinearLayout>
 
         <include
           android:id="@+id/layout_no_trending"

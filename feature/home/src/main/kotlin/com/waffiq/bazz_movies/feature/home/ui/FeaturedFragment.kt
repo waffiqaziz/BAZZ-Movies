@@ -245,7 +245,7 @@ class FeaturedFragment : Fragment() {
     // Toggle visibility based on the flag
     binding.apply {
       imgMainFeatured.isVisible = isVisible
-      filterScroll.isVisible = isVisible
+      buttonGroup.isVisible = isVisible
       rvTrending.isVisible = isVisible
       layoutHeaderUpcomingMovieFeatured.isVisible = isVisible
       rvUpcomingMovieFeatured.isVisible = isVisible
@@ -256,6 +256,21 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun moreButtonAction() {
+    binding.btnMoreTrendingFeatured.button.setOnClickListener {
+      navigator.openList(
+        requireContext(),
+        ListArgs(
+          listType =
+          if (movieViewModel.trendingPeriod.value == TrendingPeriod.WEEK) {
+            ListType.TRENDING_WEEK
+          } else {
+            ListType.TRENDING_TODAY
+          },
+          mediaType = "",
+          title = "",
+        ),
+      )
+    }
     binding.btnMoreMoviePlayingNowFeatured.button.setOnClickListener {
       navigator.openList(
         requireContext(),

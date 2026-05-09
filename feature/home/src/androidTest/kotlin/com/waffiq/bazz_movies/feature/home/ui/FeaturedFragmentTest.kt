@@ -17,11 +17,11 @@ import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_movie_playing_now_featured
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_trending_featured
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_upcoming_movie_featured
 import com.waffiq.bazz_movies.feature.home.R.id.btn_trending_this_week
 import com.waffiq.bazz_movies.feature.home.R.id.btn_trending_today
 import com.waffiq.bazz_movies.feature.home.R.id.button_group
-import com.waffiq.bazz_movies.feature.home.R.id.filter_scroll
 import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_featured
 import com.waffiq.bazz_movies.feature.home.R.id.img_main_featured
 import com.waffiq.bazz_movies.feature.home.R.id.rv_trending
@@ -40,6 +40,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -86,7 +87,6 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     launchFragment()
     waitUntilVisible(withId(rv_trending))
     img_main_featured.isDisplayed()
-    filter_scroll.isDisplayed()
     button_group.isDisplayed()
     illustration_error_featured.isNotDisplayed()
   }
@@ -145,12 +145,27 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
   fun btnTrending_whenClicked_shouldCallsCorrectFunction() {
     launchFragment()
     shortDelay(1000)
+
     btn_trending_today.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.TODAY) }
+
+    every { mockMovieViewModel.trendingPeriod } returns MutableStateFlow(TrendingPeriod.TODAY)
+    btn_more_trending_featured.performClick()
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(listType = ListType.TRENDING_TODAY, title = "", mediaType = ""),
+    )
+
     btn_trending_this_week.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.TODAY) }
     verify { mockMovieViewModel.setTrendingPeriod(TrendingPeriod.WEEK) }
+
+    every { mockMovieViewModel.trendingPeriod } returns MutableStateFlow(TrendingPeriod.WEEK)
+    btn_more_trending_featured.performClick()
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    verifyOpenList(mockNavigator, ListArgs(ListType.TRENDING_WEEK, title = "", mediaType = ""))
   }
 
   @Test
