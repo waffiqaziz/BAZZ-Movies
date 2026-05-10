@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUs
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
+import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -71,6 +72,15 @@ class ListViewModel @Inject constructor(
         getListMoviesUseCase.getMovieRecommendation(id)
       } else {
         getListTvUseCase.getTvRecommendation(id)
+      }
+      ).cachedIn(viewModelScope)
+
+  fun getTrending(listType: ListType) =
+    (
+      if (listType == ListType.TRENDING_TODAY) {
+        getListMoviesUseCase.getTrendingToday()
+      } else {
+        getListMoviesUseCase.getTrendingThisWeek()
       }
       ).cachedIn(viewModelScope)
 

@@ -70,6 +70,16 @@ abstract class BaseListActivityTest {
     title = "Tv Title",
     id = 12344,
   )
+  protected val trendingTodayArgs = movieNowPlayingArgs.copy(
+    listType = ListType.TRENDING_TODAY,
+    mediaType = "",
+    title = "",
+  )
+  protected val trendingThisWeekArgs = movieNowPlayingArgs.copy(
+    listType = ListType.TRENDING_WEEK,
+    mediaType = "",
+    title = "",
+  )
 
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
     every { viewModel.getAiringThisWeekTv() } returns listResultsFlow
@@ -116,6 +126,10 @@ abstract class BaseListActivityTest {
 
   protected fun shouldShowTv() {
     "TV".isVisible()
+  }
+
+  protected fun shouldShowTrending() {
+    "Trending".isVisible()
   }
 
   protected fun shouldShowMovie() {

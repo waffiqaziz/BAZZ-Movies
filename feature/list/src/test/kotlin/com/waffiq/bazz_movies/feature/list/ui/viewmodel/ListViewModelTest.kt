@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCance
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieMediaItemPagingData
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeTvMediaItemPagingData
+import com.waffiq.bazz_movies.navigation.ListType
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerScope
 import io.kotest.matchers.shouldBe
@@ -210,6 +211,29 @@ class ListViewModelTest :
 
         thenEmitsCorrectItem(
           flowProvider = { viewModel.getRecommendation(tvMediaType, id) },
+        )
+      }
+    }
+
+    Given("trending list is requested") {
+
+      When("fetching trending today") {
+        coEvery { mockGetListMoviesUseCase.getTrendingToday() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getTrending(ListType.TRENDING_TODAY) },
+          expected = expectedMovie,
+        )
+      }
+
+      When("fetching trending this week") {
+        coEvery { mockGetListMoviesUseCase.getTrendingThisWeek() } returns
+          flowOf(fakeMovieMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getTrending(ListType.TRENDING_WEEK) },
+          expected = expectedMovie,
         )
       }
     }

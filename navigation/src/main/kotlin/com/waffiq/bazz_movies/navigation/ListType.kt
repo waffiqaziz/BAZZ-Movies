@@ -8,7 +8,8 @@ enum class ListType {
   POPULAR,
   RECOMMENDATION,
   TOP_RATED,
-  TRENDING,
+  TRENDING_WEEK,
+  TRENDING_TODAY,
   UPCOMING,
   ;
 

@@ -21,6 +21,7 @@ dependencies {
 
   implementation(libs.androidx.fragment.ktx)
   implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.swiperefreshlayout)
 
   implementation(libs.androidx.paging.runtime)

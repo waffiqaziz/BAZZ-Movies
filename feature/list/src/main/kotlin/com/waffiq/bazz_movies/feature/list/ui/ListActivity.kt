@@ -27,9 +27,12 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
 import com.waffiq.bazz_movies.core.designsystem.R.string.recommendation
+import com.waffiq.bazz_movies.core.designsystem.R.string.this_week
+import com.waffiq.bazz_movies.core.designsystem.R.string.today
 import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_grid_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_list_layout
 import com.waffiq.bazz_movies.core.designsystem.R.string.top_rated
+import com.waffiq.bazz_movies.core.designsystem.R.string.trending
 import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
@@ -106,6 +109,8 @@ class ListActivity : AppCompatActivity() {
     ListType.UPCOMING to { showUpcomingMovies() },
     ListType.AIRING_THIS_WEEK to { showTvAiringThisWeek() },
     ListType.RECOMMENDATION to ::showRecommendation,
+    ListType.TRENDING_TODAY to ::showTrendingToday,
+    ListType.TRENDING_WEEK to ::showTrendingThisWeek,
   )
 
   private fun handleListType(args: ListArgs) {
@@ -134,6 +139,7 @@ class ListActivity : AppCompatActivity() {
     binding.illustrationError.btnTryAgain.isVisible = state is UIState.Error
   }
 
+  // region SHOW BASED LIST TYPE
   private fun showListBasedGenre(args: ListArgs) {
     showBackdrop(getBackdrop(args.mediaType, args.id))
     binding.toolbar.title = getGenreName(args.id)
@@ -174,10 +180,23 @@ class ListActivity : AppCompatActivity() {
 
   private fun showRecommendation(args: ListArgs) {
     setToolbarTitle(args.title)
-    binding.toolbar.subtitle = getString(recommendation)
+    setToolbarSubTitle(recommendation)
     showBackdrop(args.backdrop)
     load(viewModel.getRecommendation(args.mediaType, args.id), adapter)
   }
+
+  private fun showTrendingToday(args: ListArgs) {
+    setToolbarTitle(trending)
+    setToolbarSubTitle(today)
+    load(viewModel.getTrending(args.listType), adapter)
+  }
+
+  private fun showTrendingThisWeek(args: ListArgs) {
+    setToolbarTitle(trending)
+    setToolbarSubTitle(this_week)
+    load(viewModel.getTrending(args.listType), adapter)
+  }
+  // endregion SHOW BASED LIST TYPE
 
   private fun setToolbarTitle(@StringRes res: Int) {
     binding.toolbar.title = getString(res)
@@ -185,6 +204,10 @@ class ListActivity : AppCompatActivity() {
 
   private fun setToolbarTitle(text: String) {
     binding.toolbar.title = text
+  }
+
+  private fun setToolbarSubTitle(@StringRes res: Int) {
+    binding.toolbar.subtitle = getString(res)
   }
 
   @VisibleForTesting
