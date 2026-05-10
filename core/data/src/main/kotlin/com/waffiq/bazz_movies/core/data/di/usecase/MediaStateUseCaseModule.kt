@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.data.di
+package com.waffiq.bazz_movies.core.data.di.usecase
 
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateInteractor
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase

@@ -260,8 +260,7 @@ class FeaturedFragment : Fragment() {
       navigator.openList(
         requireContext(),
         ListArgs(
-          listType =
-          if (movieViewModel.trendingPeriod.value == TrendingPeriod.WEEK) {
+          listType = if (movieViewModel.trendingPeriod.value == TrendingPeriod.WEEK) {
             ListType.TRENDING_WEEK
           } else {
             ListType.TRENDING_TODAY

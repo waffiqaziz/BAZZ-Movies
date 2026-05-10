@@ -34,20 +34,33 @@
   <string name="try_again">Try Again</string>
 
   <!-- FEATURED -->
-  <string name="movies">Movies</string>
-  <string name="tv_series">TV Series</string>
+  <string name="featured">Featured</string>
   <string name="trending">Trending</string>
   <string name="today">Today</string>
-  <string name="this_week">Week</string>
-  <string name="featured">Featured</string>
+  <string name="this_week">This Week</string>
   <string name="upcoming_movies">Upcoming Movies</string>
+  <string name="playing_now_on_theater">Playing now on Theater</string>
+
+  <!-- MOVIES -->
+  <string name="movies">Movies</string>
   <string name="popular">Popular</string>
-  <string name="top_rated">Top Rated</string>
   <string name="now_playing">Now Playing</string>
   <string name="upcoming">Upcoming</string>
-  <string name="playing_now_on_theater">Playing now on Theater</string>
+  <string name="top_rated">Top Rated</string>
+
+  <!-- TV SERIES -->
   <string name="airing_today">Airing Today</string>
   <string name="airing_this_week">Airing This Week</string>
+  <string name="tv_series">TV Series</string>
+
+  <!-- ASIAN -->
+  <string name="asian">Asian</string>
+  <string name="anime">Anime</string>
+  <string name="this_season">This Season</string>
+  <string name="all_time">All Time</string>
+  <string name="costume_drama">Costume Drama</string>
+  <string name="donghua">Donghua</string>
+  <string name="romance_drama">Romance Drama</string>
 
   <!-- NO LIST -->
   <string name="no_trending">It seems there are no trending movies or series available in %1$s right now. Try selecting a different country to explore more options.</string>

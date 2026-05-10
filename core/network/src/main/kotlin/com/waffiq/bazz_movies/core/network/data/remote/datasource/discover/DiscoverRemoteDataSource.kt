@@ -20,21 +20,35 @@ class DiscoverRemoteDataSource @Inject constructor(
     region: String,
   ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getMovieByGenres(genres, region, page).results
+      discoverApiService.discoverMovie(
+        genres = genres,
+        region = region,
+        page = page,
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getTvByGenres(genres, region, page).results
+      discoverApiService.discoverTv(
+        genres = genres,
+        region = region,
+        page = page,
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getMovieByKeywords(keywords, page).results
+      discoverApiService.discoverMovie(
+        keywords = keywords,
+        page = page,
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getTvByKeywords(keywords, page).results
+      discoverApiService.discoverTv(
+        keywords = keywords,
+        page = page,
+      ).results
     }.flow.flowOn(ioDispatcher)
 }

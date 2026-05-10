@@ -12,7 +12,9 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.ui.HomeFragment
+import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
+import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
@@ -83,10 +85,9 @@ abstract class BaseHomeFragmentTest {
 
   private val trendingPeriodFlow = MutableStateFlow(TrendingPeriod.WEEK)
 
-  protected fun setupMock(
+  protected fun setupMockViewModel(
     movieViewModel: MovieViewModel,
     tvSeriesViewModel: TvSeriesViewModel,
-    navigator: INavigator,
   ) {
     every { movieViewModel.getTopRatedMovies() } returns createPagingFlow()
     every { movieViewModel.getPopularMovies() } returns createPagingFlow()
@@ -99,10 +100,23 @@ abstract class BaseHomeFragmentTest {
     every { tvSeriesViewModel.getAiringThisWeekTv() } returns createPagingFlow()
     every { tvSeriesViewModel.getAiringTodayTv() } returns createPagingFlow()
     every { tvSeriesViewModel.getTopRatedTv() } returns createPagingFlow()
+  }
+
+  private val animePeriodFlow = MutableStateFlow(AnimePeriod.THIS_SEASON)
+
+  protected fun setupMockAnimeViewModel(asianViewModel: AsianViewModel) {
+    every { asianViewModel.animePeriod } returns animePeriodFlow
+    every { asianViewModel.anime } returns createPagingFlow()
+    every { asianViewModel.getAsianRomance() } returns createPagingFlow()
+    every { asianViewModel.getCostumeDrama() } returns createPagingFlow()
+    every { asianViewModel.getDonghua() } returns createPagingFlow()
+  }
+
+  protected fun setupMockNavigator(navigator: INavigator) {
     every { navigator.openList(any(), any()) } just Runs
   }
 
-  protected fun setupRegionMock(
+  protected fun setupMockRegion(
     userPreferenceViewModel: UserPreferenceViewModel,
     regionViewModel: RegionViewModel,
     region: String = "US",

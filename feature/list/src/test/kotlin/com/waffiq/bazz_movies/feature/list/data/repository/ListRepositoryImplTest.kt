@@ -27,11 +27,11 @@ class ListRepositoryImplTest :
 
     lateinit var repository: ListRepositoryImpl
 
-    val mockDiscoverRemoteDataSource: DiscoverRemoteDataSource = mockk(relaxed = true)
+    val mockAsianRemoteDataSource: DiscoverRemoteDataSource = mockk(relaxed = true)
 
     beforeTest {
       Dispatchers.setMain(UnconfinedTestDispatcher())
-      repository = ListRepositoryImpl(mockDiscoverRemoteDataSource)
+      repository = ListRepositoryImpl(mockAsianRemoteDataSource)
     }
 
     suspend fun BehaviorSpecWhenContainerScope.thenEmitsMappedMediaItems(
@@ -50,7 +50,7 @@ class ListRepositoryImplTest :
     Given("the data source returns paging data successfully") {
 
       When("fetching movies by genre") {
-        every { mockDiscoverRemoteDataSource.getMovieByGenres(any(), any()) } returns
+        every { mockAsianRemoteDataSource.getMovieByGenres(any(), any()) } returns
           flowOf(fakeMovieResponsePagingData)
 
         thenEmitsMappedMediaItems(
@@ -63,7 +63,7 @@ class ListRepositoryImplTest :
       }
 
       When("fetching tv shows by genre") {
-        every { mockDiscoverRemoteDataSource.getTvByGenres(any(), any()) } returns
+        every { mockAsianRemoteDataSource.getTvByGenres(any(), any()) } returns
           flowOf(fakeTvResponsePagingData)
 
         thenEmitsMappedMediaItems(
@@ -76,7 +76,7 @@ class ListRepositoryImplTest :
       }
 
       When("fetching movies by keyword") {
-        every { mockDiscoverRemoteDataSource.getMovieByKeywords(any()) } returns
+        every { mockAsianRemoteDataSource.getMovieByKeywords(any()) } returns
           flowOf(fakeMovieResponsePagingData)
 
         thenEmitsMappedMediaItems(
@@ -89,7 +89,7 @@ class ListRepositoryImplTest :
       }
 
       When("fetching tv shows by keyword") {
-        every { mockDiscoverRemoteDataSource.getTvByKeywords(any()) } returns
+        every { mockAsianRemoteDataSource.getTvByKeywords(any()) } returns
           flowOf(fakeTvResponsePagingData)
 
         thenEmitsMappedMediaItems(

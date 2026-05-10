@@ -43,7 +43,8 @@ class HomeFragmentTest : BaseHomeFragmentTest() {
   @Before
   fun setUp() {
     hiltRule.inject()
-    setupMock(mockMovieViewModel, mockTvSeriesViewModel, mockNavigator)
+    setupMockNavigator(mockNavigator)
+    setupMockViewModel(mockMovieViewModel, mockTvSeriesViewModel)
     launchFragment()
   }
 

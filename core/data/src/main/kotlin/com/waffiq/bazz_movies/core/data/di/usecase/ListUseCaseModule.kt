@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.core.data.di
+package com.waffiq.bazz_movies.core.data.di.usecase
 
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesInteractor
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase

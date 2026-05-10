@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.list.ui.viewmodel
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.asian.GetAsianMediaUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -36,12 +37,18 @@ class ListViewModelTest :
     val mockGetListUseCase: GetListUseCase = mockk()
     val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
     val mockGetListTvUseCase: GetListTvUseCase = mockk()
+    val mockGetAsianMediaUseCase: GetAsianMediaUseCase = mockk()
 
     lateinit var viewModel: ListViewModel
 
     beforeTest {
       Dispatchers.setMain(testDispatcher)
-      viewModel = ListViewModel(mockGetListUseCase, mockGetListMoviesUseCase, mockGetListTvUseCase)
+      viewModel = ListViewModel(
+        mockGetListUseCase,
+        mockGetListMoviesUseCase,
+        mockGetListTvUseCase,
+        mockGetAsianMediaUseCase,
+      )
     }
 
     afterTest {

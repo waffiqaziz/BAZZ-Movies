@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.asian.GetAsianMediaUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -19,6 +20,7 @@ class ListViewModel @Inject constructor(
   private val getListUseCase: GetListUseCase,
   private val getListMoviesUseCase: GetListMoviesUseCase,
   private val getListTvUseCase: GetListTvUseCase,
+  private val discoverUseCase: GetAsianMediaUseCase,
 ) : ViewModel() {
 
   fun getByGenre(mediaType: String, id: String) =
@@ -89,4 +91,19 @@ class ListViewModel @Inject constructor(
 
   fun getAiringThisWeekTv(): Flow<PagingData<MediaItem>> =
     getListTvUseCase.getAiringThisWeekTv().cachedIn(viewModelScope)
+
+  fun getAnime(listType: ListType) =
+    (
+      if (listType == ListType.ANIME_ALL_TIME) {
+        discoverUseCase.getAnimeAllTime()
+      } else {
+        discoverUseCase.getAnimeThisSeason()
+      }
+      ).cachedIn(viewModelScope)
+
+  fun getCostumeDrama(): Flow<PagingData<MediaItem>> = discoverUseCase.getCostumeDrama()
+
+  fun getAsianRomance(): Flow<PagingData<MediaItem>> = discoverUseCase.getAsianRomance()
+
+  fun getDonghua(): Flow<PagingData<MediaItem>> = discoverUseCase.getDonghua()
 }

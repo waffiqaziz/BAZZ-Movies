@@ -4,6 +4,7 @@ package com.waffiq.bazz_movies.core.network.testutils
 
 import androidx.paging.PagingSource.LoadParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
+import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.country.CountryRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.discover.DiscoverRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
@@ -124,6 +125,7 @@ abstract class BaseMediaDataSourceTest {
   val mainDispatcherRule = MainDispatcherRule()
 
   protected lateinit var accountRemoteDataSource: AccountRemoteDataSource
+  protected lateinit var asianRemoteDataSource: AsianRemoteDataSource
   protected lateinit var countryRemoteDataSource: CountryRemoteDataSource
   protected lateinit var discoverRemoteDataSource: DiscoverRemoteDataSource
   protected lateinit var movieRemoteDataSource: MovieRemoteDataSource
@@ -139,6 +141,7 @@ abstract class BaseMediaDataSourceTest {
     MockKAnnotations.init(this, relaxed = true)
 
     accountRemoteDataSource = AccountRemoteDataSource(mockAccountApiService, testDispatcher.IO)
+    asianRemoteDataSource = AsianRemoteDataSource(mockDiscoverApiService, testDispatcher.IO)
     countryRemoteDataSource = CountryRemoteDataSource(mockCountryIPApiService, testDispatcher.IO)
     discoverRemoteDataSource = DiscoverRemoteDataSource(mockDiscoverApiService, testDispatcher.IO)
     movieRemoteDataSource = MovieRemoteDataSource(mockMovieApiService, testDispatcher.IO)
