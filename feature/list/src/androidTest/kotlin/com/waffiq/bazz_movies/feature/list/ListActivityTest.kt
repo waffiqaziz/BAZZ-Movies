@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
+import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
@@ -55,7 +56,9 @@ class ListActivityTest : BaseListActivityTest() {
   fun setup() {
     hiltRule.inject()
     Intents.init()
-    context = ApplicationProvider.getApplicationContext()
+    context = ApplicationProvider.getApplicationContext<Context>().apply {
+      setTheme(Base_Theme_BAZZ_movies) // set the theme
+    }
     setupMock(mockListViewModel, mockNavigator)
   }
 

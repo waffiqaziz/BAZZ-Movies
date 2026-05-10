@@ -76,7 +76,7 @@ abstract class BaseListActivityTest {
     title = "",
   )
   protected val trendingThisWeekArgs = movieNowPlayingArgs.copy(
-    listType = ListType.RECOMMENDATION,
+    listType = ListType.TRENDING_WEEK,
     mediaType = "",
     title = "",
   )
