@@ -6,7 +6,7 @@ import com.waffiq.bazz_movies.core.data.testutils.TestVariables.SESSION_ID
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.TV_ID
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.movieMediaState
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaState
-import com.waffiq.bazz_movies.core.domain.MediaState
+import com.waffiq.bazz_movies.core.models.MediaState
 import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

@@ -11,11 +11,11 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.MediaState
-import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaState
+import com.waffiq.bazz_movies.core.models.Rated
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails

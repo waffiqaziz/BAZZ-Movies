@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.models.UserModel
 
 // Placeholder for data dump or test data related utilities
 object DataDump {

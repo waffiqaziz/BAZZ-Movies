@@ -9,11 +9,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.listitem.ListItemCardView
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingFavoriteBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.SwipeCallbackFactory.createSwipeCallback
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.DIFF_CALLBACK
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindImagePoster
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.MediaAdapterPagingHelper.bindMetadata
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.navigation.INavigator
 
 class FavoritePagingAdapter(

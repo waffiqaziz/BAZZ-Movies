@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local
 
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
+import com.waffiq.bazz_movies.core.models.Favorite
 import junit.framework.TestCase
 import org.junit.Test
 

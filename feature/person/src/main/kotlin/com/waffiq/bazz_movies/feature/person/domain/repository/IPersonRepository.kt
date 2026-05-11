@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.domain.repository
 
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CombinedCreditPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson

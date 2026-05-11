@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

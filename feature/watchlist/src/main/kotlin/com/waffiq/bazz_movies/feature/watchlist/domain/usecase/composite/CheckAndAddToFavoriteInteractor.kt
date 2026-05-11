@@ -5,9 +5,9 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.MediaState
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.FavoriteParams
+import com.waffiq.bazz_movies.core.models.MediaState
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.watchlist.domain.model.FavoriteActionResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat

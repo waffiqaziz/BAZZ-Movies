@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import android.content.Intent
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity.Companion.EXTRA_MOVIE
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ParcelableHelper.extractMediaItemFromIntent
 import org.junit.Assert.assertEquals

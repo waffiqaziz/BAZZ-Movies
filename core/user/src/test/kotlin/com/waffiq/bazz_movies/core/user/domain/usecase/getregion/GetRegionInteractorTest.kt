@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.domain.usecase.getregion
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import io.mockk.coEvery

@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.ui.state.WatchProvidersUiState
 import io.mockk.coEvery

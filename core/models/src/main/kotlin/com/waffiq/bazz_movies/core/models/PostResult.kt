@@ -1,0 +1,10 @@
+package com.waffiq.bazz_movies.core.models
+
+/**
+ * Used as return value from general POST method
+ */
+data class PostResult(
+  val success: Boolean? = null,
+  val statusCode: Int? = null,
+  val statusMessage: String? = null,
+)

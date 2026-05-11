@@ -29,8 +29,8 @@ android {
 }
 
 dependencies {
-  implementation(project(":core:domain"))
   implementation(project(":core:coroutines"))
+  implementation(project(":core:models"))
 
   implementation(libs.androidx.paging.common)
   implementation(libs.kotlinx.coroutines.core)

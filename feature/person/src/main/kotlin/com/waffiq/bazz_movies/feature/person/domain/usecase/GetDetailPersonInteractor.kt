@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.domain.usecase
 
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem
 import com.waffiq.bazz_movies.feature.person.domain.model.DetailPerson
 import com.waffiq.bazz_movies.feature.person.domain.model.ExternalIDPerson

@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView

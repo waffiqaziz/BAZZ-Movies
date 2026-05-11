@@ -465,14 +465,14 @@ jobs:
           name: core-database-coverage
         continue-on-error: true
 
-      - name: Upload coverage with core-domain flag
+      - name: Upload coverage with core-models flag
         if: steps.check_coverage.outputs.coverage_exists == 'true'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           files: ${{ github.workspace }}/**/build/reports/jacoco/createDebugCombinedCoverageReport/createDebugCombinedCoverageReport.xml
-          flags: core-domain
+          flags: core-models
           token: ${{ secrets.CODECOV_TOKEN }}
-          name: core-domain-coverage
+          name: core-models-coverage
         continue-on-error: true
 
       - name: Upload coverage with core-favoritewatchlist flag

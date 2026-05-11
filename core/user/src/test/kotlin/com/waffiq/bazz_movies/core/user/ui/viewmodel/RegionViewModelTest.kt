@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.user.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainCoroutineRule
 import com.waffiq.bazz_movies.core.user.domain.model.account.CountryIP
 import com.waffiq.bazz_movies.core.user.domain.usecase.getregion.GetRegionUseCase

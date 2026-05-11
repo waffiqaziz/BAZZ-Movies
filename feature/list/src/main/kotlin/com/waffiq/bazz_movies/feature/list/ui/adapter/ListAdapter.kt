@@ -16,7 +16,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_s
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemListBinding
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.dateOf
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.imageSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource

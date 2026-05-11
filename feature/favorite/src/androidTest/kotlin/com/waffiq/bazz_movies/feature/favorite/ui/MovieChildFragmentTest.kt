@@ -16,11 +16,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.red_matte
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.already_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_favorite
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
+import com.waffiq.bazz_movies.core.models.FavoriteParams
+import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.R.id.snackbar_anchor_test

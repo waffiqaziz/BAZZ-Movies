@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.database.testdummy
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 
 object DummyData {
   val favoriteTvEntity = FavoriteEntity(

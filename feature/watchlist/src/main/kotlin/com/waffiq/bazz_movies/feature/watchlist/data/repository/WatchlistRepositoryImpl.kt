@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.watchlist.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.feature.watchlist.domain.repository.IWatchlistRepository
 import kotlinx.coroutines.flow.Flow

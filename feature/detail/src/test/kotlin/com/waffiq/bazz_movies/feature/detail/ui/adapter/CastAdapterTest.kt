@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemCastBinding
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.detail.databinding.ItemCreditsPersonBinding
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.testMediaCastItem

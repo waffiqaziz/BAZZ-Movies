@@ -11,8 +11,8 @@ import com.waffiq.bazz_movies.core.data.testutils.TestVariables.ERROR_MESSAGE
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.USER_REGION
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.movieMediaItem
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
-import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import com.waffiq.bazz_movies.core.test.UnconfinedDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository

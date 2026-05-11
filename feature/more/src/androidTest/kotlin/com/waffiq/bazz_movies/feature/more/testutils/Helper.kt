@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.more.testutils
 
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.UserModel
 
 object Helper {
   val userModel = UserModel(

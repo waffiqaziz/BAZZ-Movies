@@ -58,9 +58,9 @@ flag_management:
         - core/database/
       carryforward: true
         
-    - name: core-domain
+    - name: core-models
       paths:
-        - core/domain/
+        - core/models/
       carryforward: true
         
     - name: core-favoritewatchlist

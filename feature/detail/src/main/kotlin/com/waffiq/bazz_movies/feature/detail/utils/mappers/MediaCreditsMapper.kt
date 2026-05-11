@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCastResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCrewResponseItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem

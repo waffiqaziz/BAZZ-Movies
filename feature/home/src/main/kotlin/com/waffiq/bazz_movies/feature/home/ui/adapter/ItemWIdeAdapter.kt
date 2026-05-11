@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.feature.home.databinding.ItemWideBinding

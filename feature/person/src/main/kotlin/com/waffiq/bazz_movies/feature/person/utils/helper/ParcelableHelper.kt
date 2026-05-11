@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.person.utils.helper
 
 import android.content.Intent
 import android.os.Build
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.feature.person.ui.PersonActivity.Companion.EXTRA_PERSON
 
 object ParcelableHelper {

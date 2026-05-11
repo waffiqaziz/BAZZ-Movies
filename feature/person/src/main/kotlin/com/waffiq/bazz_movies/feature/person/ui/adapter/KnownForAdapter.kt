@@ -14,7 +14,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_p
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPlayForBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.feature.person.domain.model.CastItem

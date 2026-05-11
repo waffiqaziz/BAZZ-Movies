@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
-import com.waffiq.bazz_movies.core.domain.MediaItem
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.MediaItem
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.feature.detail.ui.MediaDetailActivity
 import com.waffiq.bazz_movies.feature.detail.ui.state.MediaDetailUiState
 import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.DetailUserPrefViewModel

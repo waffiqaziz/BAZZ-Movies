@@ -3,8 +3,8 @@ package com.waffiq.bazz_movies.core.data.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.trending.TrendingRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

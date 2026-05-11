@@ -32,7 +32,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_no_profile
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_biography
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_data
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView

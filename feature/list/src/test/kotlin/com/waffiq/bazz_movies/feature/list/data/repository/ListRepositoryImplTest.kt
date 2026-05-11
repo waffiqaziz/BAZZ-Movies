@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.feature.list.data.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.discover.DiscoverRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakeMovieResponsePagingData

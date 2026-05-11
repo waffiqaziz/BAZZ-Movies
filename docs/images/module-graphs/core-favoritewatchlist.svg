@@ -32,15 +32,15 @@
 <path fill="none" stroke="black" d="M541.28,-79.21C467.33,-69.7 354.42,-54.09 257.1,-36 252.17,-35.08 247.07,-34.07 241.96,-33.01"/>
 <polygon fill="black" stroke="black" points="242.8,-29.61 232.28,-30.94 241.33,-36.45 242.8,-29.61"/>
 </g>
-<!-- :core:domain -->
+<!-- :core:models -->
 <g id="node4" class="node">
-<title>:core:domain</title>
+<title>:core:models</title>
 <ellipse fill="none" stroke="black" cx="328.1" cy="-18" rx="61.99" ry="18"/>
-<text xml:space="preserve" text-anchor="middle" x="328.1" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<text xml:space="preserve" text-anchor="middle" x="328.1" y="-13.8" font-family="Times,serif" font-size="14.00">:core:models</text>
 </g>
-<!-- :core:favoritewatchlist&#45;&gt;:core:domain -->
+<!-- :core:favoritewatchlist&#45;&gt;:core:models -->
 <g id="edge3" class="edge">
-<title>:core:favoritewatchlist-&gt;:core:domain</title>
+<title>:core:favoritewatchlist-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M563.14,-75.17C518.34,-64.48 454.79,-49.31 399.1,-36 394.79,-34.97 390.33,-33.9 385.84,-32.83"/>
 <polygon fill="black" stroke="black" points="386.71,-29.44 376.17,-30.51 385.08,-36.24 386.71,-29.44"/>
 </g>

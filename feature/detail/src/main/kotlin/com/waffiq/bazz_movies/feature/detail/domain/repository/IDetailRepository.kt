@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.repository
 
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCredits
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.movie.MovieDetail

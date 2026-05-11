@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.mappers
 
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

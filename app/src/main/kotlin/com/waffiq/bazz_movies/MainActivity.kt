@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setupNavigation() {
-    // get NavHostFragment
     val navHostFragment =
       supportFragmentManager.findFragmentById(nav_host_fragment_activity_home) as NavHostFragment
+    val navController = navHostFragment.navController
 
     // set up the BottomNavigationView with NavController
     navHostFragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
@@ -70,11 +70,11 @@ class MainActivity : AppCompatActivity() {
       }
     })
 
-    binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
-      if (menuItem.itemId == navigation_search) {
-        animateSearchIcon(menuItem)
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+      if (destination.id == navigation_search) {
+        val menuItem = binding.bottomNavigation.menu.findItem(navigation_search)
+        menuItem?.let { animateSearchIcon(it) }
       }
-      NavigationUI.onNavDestinationSelected(menuItem, navHostFragment.navController)
     }
 
     // handle search button

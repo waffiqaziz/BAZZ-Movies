@@ -7,8 +7,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.home.ui.HomeFragment

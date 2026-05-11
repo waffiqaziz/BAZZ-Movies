@@ -1,8 +1,8 @@
 package com.waffiq.bazz_movies.navigation
 
 import android.content.Context
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 
 interface INavigator {
   fun openPersonDetails(context: Context, cast: MediaCastItem)

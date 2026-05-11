@@ -5,7 +5,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W185
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
-import com.waffiq.bazz_movies.core.domain.ProfileImageable
+import com.waffiq.bazz_movies.core.models.ProfileImageable
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVertical
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem

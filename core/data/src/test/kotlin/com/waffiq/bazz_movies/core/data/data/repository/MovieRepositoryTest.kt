@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.testutils.BaseRepositoryTest
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.mediaStateResponse
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postMovieResponseSuccess
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.movie.MovieRemoteDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData

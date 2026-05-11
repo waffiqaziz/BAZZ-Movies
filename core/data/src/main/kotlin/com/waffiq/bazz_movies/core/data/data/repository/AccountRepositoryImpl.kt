@@ -3,10 +3,10 @@ package com.waffiq.bazz_movies.core.data.data.repository
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.repository.IAccountRepository
 import com.waffiq.bazz_movies.core.data.utils.mappers.Mapper.toPostFavoriteWatchlist
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.mappers.NetworkResultMapper.toOutcome
+import com.waffiq.bazz_movies.core.models.FavoriteParams
+import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest

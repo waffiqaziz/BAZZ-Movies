@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.database.domain.repository
 
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 import kotlinx.coroutines.flow.Flow
 
 interface IDatabaseRepository {

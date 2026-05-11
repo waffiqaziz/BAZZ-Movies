@@ -10,8 +10,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.imageview.ShapeableImageView
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.ratingHandler
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.releaseDateHandler
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler

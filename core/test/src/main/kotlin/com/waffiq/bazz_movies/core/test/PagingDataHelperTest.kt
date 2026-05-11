@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import io.mockk.coEvery
 import kotlinx.coroutines.Dispatchers

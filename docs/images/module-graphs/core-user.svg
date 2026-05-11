@@ -8,15 +8,15 @@
 <ellipse fill="none" stroke="black" cx="280.99" cy="-90" rx="49.11" ry="18"/>
 <text text-anchor="middle" x="280.99" y="-85.8" font-family="Times,serif" font-size="14.00">:core:user</text>
 </g>
-<!-- :core:domain -->
+<!-- :core:models -->
 <g id="node2" class="node">
-<title>:core:domain</title>
+<title>:core:models</title>
 <ellipse fill="none" stroke="black" cx="61.99" cy="-18" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="61.99" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<text text-anchor="middle" x="61.99" y="-13.8" font-family="Times,serif" font-size="14.00">:core:models</text>
 </g>
-<!-- :core:user&#45;&gt;:core:domain -->
+<!-- :core:user&#45;&gt;:core:models -->
 <g id="edge1" class="edge">
-<title>:core:user-&gt;:core:domain</title>
+<title>:core:user-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M244.82,-77.44C209.06,-66.01 154,-48.41 113.64,-35.51"/>
 <polygon fill="black" stroke="black" points="114.7,-32.18 104.11,-32.47 112.57,-38.84 114.7,-32.18"/>
 </g>

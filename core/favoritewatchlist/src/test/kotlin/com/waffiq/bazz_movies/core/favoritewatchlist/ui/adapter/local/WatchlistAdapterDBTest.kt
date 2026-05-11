@@ -9,11 +9,11 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemWatchlistBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterDBTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.INA_MOVIE_TITLE2
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.DummyData.favorite
+import com.waffiq.bazz_movies.core.models.MediaItem
 import io.mockk.slot
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals

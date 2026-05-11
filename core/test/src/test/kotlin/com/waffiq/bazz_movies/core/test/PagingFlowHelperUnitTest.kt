@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.test
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowCancelRemaining
 import kotlinx.coroutines.delay

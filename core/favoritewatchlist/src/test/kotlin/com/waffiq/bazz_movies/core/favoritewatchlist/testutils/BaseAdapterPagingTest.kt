@@ -3,11 +3,11 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 import android.view.LayoutInflater
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_NAME
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.mockk
 import org.junit.Before

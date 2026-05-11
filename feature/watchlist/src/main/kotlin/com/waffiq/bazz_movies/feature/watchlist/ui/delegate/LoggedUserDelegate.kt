@@ -12,13 +12,13 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.WatchlistParams
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.paging.WatchlistPagingAdapter
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.FavWatchlistHelper.handlePagingLoadState
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils.snackBarAlready
+import com.waffiq.bazz_movies.core.models.FavoriteParams
+import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage

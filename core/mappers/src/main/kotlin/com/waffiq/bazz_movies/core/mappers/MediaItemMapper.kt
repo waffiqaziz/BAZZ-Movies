@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.mappers
 
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 
 object MediaItemMapper {

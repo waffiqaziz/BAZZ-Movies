@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.dataMediaItem
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.postModelAddFavoriteStateSuccess

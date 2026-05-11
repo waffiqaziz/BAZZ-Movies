@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemResultBinding
-import com.waffiq.bazz_movies.core.domain.MediaCastItem
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaCastItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.search.domain.model.KnownForItem
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem

@@ -36,7 +36,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_m
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading

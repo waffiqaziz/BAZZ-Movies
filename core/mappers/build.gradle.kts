@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.waffiq.bazz_movies.core.mappers"
 dependencies {
-  implementation(project(":core:domain"))
+  implementation(project(":core:models"))
   implementation(project(":core:network"))
 
   implementation(libs.kotlinx.coroutines.core)

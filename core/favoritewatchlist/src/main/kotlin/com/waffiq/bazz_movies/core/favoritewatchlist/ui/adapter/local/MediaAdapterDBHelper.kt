@@ -11,8 +11,8 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
-import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.utils.DateFormatter.dateFormatterStandard
 import com.waffiq.bazz_movies.navigation.INavigator
 

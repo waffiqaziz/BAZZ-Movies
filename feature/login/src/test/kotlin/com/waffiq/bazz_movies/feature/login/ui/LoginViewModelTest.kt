@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.login.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import com.waffiq.bazz_movies.core.user.domain.usecase.userpreference.UserPrefUseCase

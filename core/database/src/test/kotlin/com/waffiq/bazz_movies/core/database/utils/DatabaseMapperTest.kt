@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlis
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavorite
 import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.toFavoriteEntity
-import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.MediaItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

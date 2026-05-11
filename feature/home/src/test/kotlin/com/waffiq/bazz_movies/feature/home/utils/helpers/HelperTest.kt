@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.home.utils.helpers
 
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_W780
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.backdropSource
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.rating
 import com.waffiq.bazz_movies.feature.home.utils.helpers.Helper.year

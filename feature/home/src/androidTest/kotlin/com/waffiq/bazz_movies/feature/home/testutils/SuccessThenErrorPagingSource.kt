@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.home.testutils
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 
 class SuccessThenErrorPagingSource(private val items: List<MediaItem>) :
   PagingSource<Int, MediaItem>() {

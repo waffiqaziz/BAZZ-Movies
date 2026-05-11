@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.person.ui
 
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.person.domain.model.ImagePerson
 import com.waffiq.bazz_movies.feature.person.testutils.BasePersonViewModelTest
 import io.mockk.coEvery

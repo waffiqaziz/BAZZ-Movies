@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.mappers
 
-import com.waffiq.bazz_movies.core.domain.Rated
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
+import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.MediaStateResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.state.RatedResponse
 import junit.framework.TestCase.assertEquals
