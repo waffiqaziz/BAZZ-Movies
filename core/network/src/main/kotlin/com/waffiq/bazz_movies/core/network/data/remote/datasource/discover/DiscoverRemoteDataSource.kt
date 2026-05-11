@@ -2,6 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.discover
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverMovieParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.DiscoverApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.PageHelper.createPager
@@ -20,21 +23,43 @@ class DiscoverRemoteDataSource @Inject constructor(
     region: String,
   ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getMovieByGenres(genres, region, page).results
+      discoverApiService.discoverMovie(
+        DiscoverMovieParams(
+          genre = genres,
+          watchRegion = region,
+          page = page,
+        ).toQueryMap(),
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getTvByGenres(genres, region, page).results
+      discoverApiService.discoverTv(
+        DiscoverTvParams(
+          genre = genres,
+          watchRegion = region,
+          page = page,
+        ).toQueryMap(),
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getMovieByKeywords(keywords, page).results
+      discoverApiService.discoverMovie(
+        DiscoverMovieParams(
+          keyword = keywords,
+          page = page,
+        ).toQueryMap(),
+      ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
-      discoverApiService.getTvByKeywords(keywords, page).results
+      discoverApiService.discoverTv(
+        DiscoverTvParams(
+          keyword = keywords,
+          page = page,
+        ).toQueryMap(),
+      ).results
     }.flow.flowOn(ioDispatcher)
 }

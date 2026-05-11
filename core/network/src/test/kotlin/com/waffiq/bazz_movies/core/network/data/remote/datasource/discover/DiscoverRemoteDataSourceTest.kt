@@ -1,8 +1,10 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.discover
 
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverMovieParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump1
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import io.mockk.coEvery
@@ -12,51 +14,58 @@ import org.junit.Test
 
 class DiscoverRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
+  private val expectedMovie = listOf(DataDumpManager.movieDump1)
+  private val expectedTv = listOf(DataDumpManager.tvShowDump1)
+
   @Test
   fun getMovieByGenres_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DataDumpManager.movieDump5)
+      coEvery {
+        mockDiscoverApiService.discoverMovie(
+          DiscoverMovieParams(genre = "1", watchRegion = "id", page = 1).toQueryMap(),
+        )
+      } returns defaultMediaResponse(expectedMovie)
 
-      coEvery { mockDiscoverApiService.getMovieByGenres("1", "id", 1) } returns
-        defaultMediaResponse(expected)
-
-      discoverRemoteDataSource.getMovieByGenres("1", "id").testPagingFlow(this, expected)
-      coVerify { mockDiscoverApiService.getMovieByGenres("1", "id", 1) }
+      discoverRemoteDataSource.getMovieByGenres("1", "id").testPagingFlow(this, expectedMovie)
+      coVerify {
+        mockDiscoverApiService.discoverMovie(
+          DiscoverMovieParams(genre = "1", watchRegion = "id", page = 1).toQueryMap(),
+        )
+      }
     }
 
   @Test
   fun getMovieByKeywords_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(DataDumpManager.movieDump2)
+      val query = DiscoverMovieParams(keyword = "1", page = 1).toQueryMap()
 
-      coEvery { mockDiscoverApiService.getMovieByKeywords("1", 1) } returns
-        defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.discoverMovie(query) } returns
+        defaultMediaResponse(expectedMovie)
 
-      discoverRemoteDataSource.getMovieByKeywords("1").testPagingFlow(this, expected)
-      coVerify { mockDiscoverApiService.getMovieByKeywords("1", 1) }
+      discoverRemoteDataSource.getMovieByKeywords("1").testPagingFlow(this, expectedMovie)
+      coVerify { mockDiscoverApiService.discoverMovie(query) }
     }
 
   @Test
   fun getTvByGenre_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump1)
+      val query = DiscoverTvParams(genre = "1", watchRegion = "id", page = 1).toQueryMap()
 
-      coEvery { mockDiscoverApiService.getTvByGenres("1", "id", 1) } returns
-        defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.discoverTv(query) } returns defaultMediaResponse(expectedTv)
 
-      discoverRemoteDataSource.getTvByGenres("1", "id").testPagingFlow(this, expected)
-      coVerify { mockDiscoverApiService.getTvByGenres("1", "id", 1) }
+      discoverRemoteDataSource.getTvByGenres("1", "id").testPagingFlow(this, expectedTv)
+      coVerify { mockDiscoverApiService.discoverTv(query) }
     }
 
   @Test
   fun getTvByKeywords_pagingFlow_returnsExpectedData() =
     runTest {
-      val expected = listOf(tvShowDump1)
+      val query = DiscoverTvParams(keyword = "1", page = 1).toQueryMap()
 
-      coEvery { mockDiscoverApiService.getTvByKeywords("1", 1) } returns
-        defaultMediaResponse(expected)
+      coEvery { mockDiscoverApiService.discoverTv(query) } returns
+        defaultMediaResponse(expectedTv)
 
-      discoverRemoteDataSource.getTvByKeywords("1").testPagingFlow(this, expected)
-      coVerify { mockDiscoverApiService.getTvByKeywords("1", 1) }
+      discoverRemoteDataSource.getTvByKeywords("1").testPagingFlow(this, expectedTv)
+      coVerify { mockDiscoverApiService.discoverTv(query) }
     }
 }

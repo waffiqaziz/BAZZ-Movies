@@ -6,6 +6,7 @@ import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -64,4 +65,11 @@ class MovieViewModelTest : BaseViewModelTest() {
       coEvery { mockGetListMoviesUseCase.getPlayingNowMovies() } returns expectedFlow
       thenEmitsCorrectItem({ viewModel.getPlayingNowMovies() })
     }
+
+  @Test
+  fun setTrendingPeriod_whenCalled_shouldUpdateTrendingPeriod() {
+    assertEquals(TrendingPeriod.WEEK, viewModel.trendingPeriod.value)
+    viewModel.setTrendingPeriod(TrendingPeriod.TODAY)
+    assertEquals(TrendingPeriod.TODAY, viewModel.trendingPeriod.value)
+  }
 }

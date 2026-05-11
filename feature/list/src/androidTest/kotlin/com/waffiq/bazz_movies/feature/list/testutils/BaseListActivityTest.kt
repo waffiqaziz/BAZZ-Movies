@@ -6,7 +6,9 @@ import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.designsystem.R.string.trending
 import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.feature.list.testutils.DummyData.fakePagingMediaItem
 import com.waffiq.bazz_movies.feature.list.ui.ListActivity
@@ -80,6 +82,31 @@ abstract class BaseListActivityTest {
     mediaType = "",
     title = "",
   )
+  protected val animeAllTimeArgs = movieNowPlayingArgs.copy(
+    listType = ListType.ANIME_ALL_TIME,
+    mediaType = TV_MEDIA_TYPE,
+    title = "",
+  )
+  protected val animeThisSeasonArgs = movieNowPlayingArgs.copy(
+    listType = ListType.ANIME_THIS_SEASON,
+    mediaType = TV_MEDIA_TYPE,
+    title = "",
+  )
+  protected val costumeDramaArgs = movieNowPlayingArgs.copy(
+    listType = ListType.COSTUME_DRAMA,
+    mediaType = TV_MEDIA_TYPE,
+    title = "",
+  )
+  protected val donghuaArgs = movieNowPlayingArgs.copy(
+    listType = ListType.DONGHUA,
+    mediaType = TV_MEDIA_TYPE,
+    title = "",
+  )
+  protected val romanceDramaArgs = movieNowPlayingArgs.copy(
+    listType = ListType.ROMANCE_DRAMA,
+    mediaType = TV_MEDIA_TYPE,
+    title = "",
+  )
 
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
     every { viewModel.getAiringThisWeekTv() } returns listResultsFlow
@@ -129,7 +156,7 @@ abstract class BaseListActivityTest {
   }
 
   protected fun shouldShowTrending() {
-    "Trending".isVisible()
+    trending.isTextVisible()
   }
 
   protected fun shouldShowMovie() {

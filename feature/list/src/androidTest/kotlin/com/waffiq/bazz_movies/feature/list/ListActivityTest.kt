@@ -6,12 +6,18 @@ import androidx.paging.PagingData
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.intent.Intents
 import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
+import com.waffiq.bazz_movies.core.designsystem.R.string.all_time
+import com.waffiq.bazz_movies.core.designsystem.R.string.costume_drama
+import com.waffiq.bazz_movies.core.designsystem.R.string.donghua
+import com.waffiq.bazz_movies.core.designsystem.R.string.romance_drama
+import com.waffiq.bazz_movies.core.designsystem.R.string.this_season
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
+import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_close
@@ -158,6 +164,41 @@ class ListActivityTest : BaseListActivityTest() {
   fun listActivity_withTrendingThisWeekType_showsCorrectViews() {
     context.launchListActivity(trendingThisWeekArgs) {
       shouldShowTrending()
+    }
+  }
+
+  @Test
+  fun listActivity_withAnimeAllTimeType_showsCorrectViews() {
+    context.launchListActivity(animeAllTimeArgs) {
+      all_time.isTextVisible()
+    }
+  }
+
+  @Test
+  fun listActivity_withAnimeThisSeasonType_showsCorrectViews() {
+    context.launchListActivity(animeThisSeasonArgs) {
+      this_season.isTextVisible()
+    }
+  }
+
+  @Test
+  fun listActivity_withCostumeDramaType_showsCorrectViews() {
+    context.launchListActivity(costumeDramaArgs) {
+      costume_drama.isTextVisible()
+    }
+  }
+
+  @Test
+  fun listActivity_withDonghuaType_showsCorrectViews() {
+    context.launchListActivity(donghuaArgs) {
+      donghua.isTextVisible()
+    }
+  }
+
+  @Test
+  fun listActivity_withRomanceDramaType_showsCorrectViews() {
+    context.launchListActivity(romanceDramaArgs) {
+      romance_drama.isTextVisible()
     }
   }
 

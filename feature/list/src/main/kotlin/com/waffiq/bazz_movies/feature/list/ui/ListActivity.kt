@@ -24,9 +24,16 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_grid
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_list
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.airing_today
+import com.waffiq.bazz_movies.core.designsystem.R.string.all_time
+import com.waffiq.bazz_movies.core.designsystem.R.string.anime
+import com.waffiq.bazz_movies.core.designsystem.R.string.asian
+import com.waffiq.bazz_movies.core.designsystem.R.string.costume_drama
+import com.waffiq.bazz_movies.core.designsystem.R.string.donghua
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
 import com.waffiq.bazz_movies.core.designsystem.R.string.recommendation
+import com.waffiq.bazz_movies.core.designsystem.R.string.romance_drama
+import com.waffiq.bazz_movies.core.designsystem.R.string.this_season
 import com.waffiq.bazz_movies.core.designsystem.R.string.this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.today
 import com.waffiq.bazz_movies.core.designsystem.R.string.toggle_grid_layout
@@ -55,6 +62,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @AndroidEntryPoint
 class ListActivity : AppCompatActivity() {
 
@@ -111,6 +119,11 @@ class ListActivity : AppCompatActivity() {
     ListType.RECOMMENDATION to ::showRecommendation,
     ListType.TRENDING_TODAY to ::showTrendingToday,
     ListType.TRENDING_WEEK to ::showTrendingThisWeek,
+    ListType.ANIME_ALL_TIME to ::showAnimeAllTime,
+    ListType.ANIME_THIS_SEASON to ::showAnimeThisSeason,
+    ListType.COSTUME_DRAMA to { showCostumeDrama() },
+    ListType.DONGHUA to { showDonghua() },
+    ListType.ROMANCE_DRAMA to { showRomanceDrama() },
   )
 
   private fun handleListType(args: ListArgs) {
@@ -195,6 +208,36 @@ class ListActivity : AppCompatActivity() {
     setToolbarTitle(trending)
     setToolbarSubTitle(this_week)
     load(viewModel.getTrending(args.listType), adapter)
+  }
+
+  private fun showAnimeAllTime(args: ListArgs) {
+    setToolbarTitle(anime)
+    setToolbarSubTitle(all_time)
+    load(viewModel.getAnime(args.listType), adapter)
+  }
+
+  private fun showAnimeThisSeason(args: ListArgs) {
+    setToolbarTitle(anime)
+    setToolbarSubTitle(this_season)
+    load(viewModel.getAnime(args.listType), adapter)
+  }
+
+  private fun showCostumeDrama() {
+    setToolbarTitle(asian)
+    setToolbarSubTitle(costume_drama)
+    load(viewModel.getCostumeDrama(), adapter)
+  }
+
+  private fun showRomanceDrama() {
+    setToolbarTitle(asian)
+    setToolbarSubTitle(romance_drama)
+    load(viewModel.getAsianRomance(), adapter)
+  }
+
+  private fun showDonghua() {
+    setToolbarTitle(asian)
+    setToolbarSubTitle(donghua)
+    load(viewModel.getDonghua(), adapter)
   }
   // endregion SHOW BASED LIST TYPE
 

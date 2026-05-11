@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.data.testutils
 import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.domain.repository.IAccountRepository
+import com.waffiq.bazz_movies.core.data.domain.repository.IAsianRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITvRepository
@@ -38,6 +39,7 @@ abstract class BaseInteractorTest {
   protected val mockTvRepository: ITvRepository = mockk()
   protected val mockUserRepository: IUserRepository = mockk()
   protected val mockTrendingRepository: ITrendingRepository = mockk()
+  protected val mockAsianRepository: IAsianRepository = mockk()
 
   protected val fakeMoviePagingData =
     PagingData.from(listOf(movieMediaItem, movieMediaItem, movieMediaItem))

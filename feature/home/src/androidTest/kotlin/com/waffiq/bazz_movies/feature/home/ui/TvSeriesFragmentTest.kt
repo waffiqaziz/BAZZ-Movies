@@ -74,8 +74,9 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
   @Before
   fun setUp() {
     hiltRule.inject()
-    setupMock(mockMovieViewModel, mockTvSeriesViewModel, mockNavigator)
-    setupRegionMock(mockUserPreferenceViewModel, mockRegionViewModel)
+    setupMockNavigator(mockNavigator)
+    setupMockRegion(mockUserPreferenceViewModel, mockRegionViewModel)
+    setupMockViewModel(mockMovieViewModel, mockTvSeriesViewModel)
   }
 
   @Test

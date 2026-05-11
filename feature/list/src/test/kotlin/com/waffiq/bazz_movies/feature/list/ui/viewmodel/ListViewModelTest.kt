@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.feature.list.ui.viewmodel
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.data.domain.usecase.asian.GetAsianMediaUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
 import com.waffiq.bazz_movies.core.domain.MediaItem
@@ -36,12 +37,18 @@ class ListViewModelTest :
     val mockGetListUseCase: GetListUseCase = mockk()
     val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
     val mockGetListTvUseCase: GetListTvUseCase = mockk()
+    val mockGetAsianMediaUseCase: GetAsianMediaUseCase = mockk()
 
     lateinit var viewModel: ListViewModel
 
     beforeTest {
       Dispatchers.setMain(testDispatcher)
-      viewModel = ListViewModel(mockGetListUseCase, mockGetListMoviesUseCase, mockGetListTvUseCase)
+      viewModel = ListViewModel(
+        mockGetListUseCase,
+        mockGetListMoviesUseCase,
+        mockGetListTvUseCase,
+        mockGetAsianMediaUseCase,
+      )
     }
 
     afterTest {
@@ -234,6 +241,59 @@ class ListViewModelTest :
         thenEmitsCorrectItem(
           flowProvider = { viewModel.getTrending(ListType.TRENDING_WEEK) },
           expected = expectedMovie,
+        )
+      }
+    }
+
+    Given("anime list is requested") {
+
+      When("fetching anime this season") {
+        coEvery { mockGetAsianMediaUseCase.getAnimeThisSeason() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAnime(ListType.ANIME_THIS_SEASON) },
+          expected = expectedTv,
+        )
+      }
+
+      When("fetching anime all time") {
+        coEvery { mockGetAsianMediaUseCase.getAnimeAllTime() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAnime(ListType.ANIME_ALL_TIME) },
+          expected = expectedTv,
+        )
+      }
+    }
+
+    Given("asian content is requested") {
+
+      When("fetching romance drama") {
+        coEvery { mockGetAsianMediaUseCase.getAsianRomance() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAsianRomance() },
+        )
+      }
+
+      When("fetching costume drama") {
+        coEvery { mockGetAsianMediaUseCase.getCostumeDrama() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getCostumeDrama() },
+        )
+      }
+
+      When("fetching donghua") {
+        coEvery { mockGetAsianMediaUseCase.getDonghua() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getDonghua() },
         )
       }
     }

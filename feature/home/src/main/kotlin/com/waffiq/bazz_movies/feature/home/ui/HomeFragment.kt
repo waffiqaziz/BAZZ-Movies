@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
     val adapter = GenericViewPagerAdapter(
       childFragmentManager,
       viewLifecycleOwner.lifecycle,
-      listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment()),
+      listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment(), AsianFragment()),
     )
     binding.viewPager.adapter = adapter
 

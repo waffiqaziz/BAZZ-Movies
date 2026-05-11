@@ -1,0 +1,23 @@
+package com.waffiq.bazz_movies.core.network.data.remote.query
+
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region
+import com.waffiq.bazz_movies.core.network.data.remote.constants.SortBy
+
+data class DiscoverTvParams(
+  val page: Int = 1,
+  val genres: List<Genre>? = null,
+  val genre: String? = null,
+  val keywords: List<Keyword>? = null,
+  val keyword: String? = null,
+  val firstAirDateGte: String? = null,
+  val firstAirDateLte: String? = null,
+  val originCountry: List<Region>? = null,
+  val watchRegion: String? = null,
+  val withoutGenres: List<Genre>? = null,
+  val withoutKeywords: List<Keyword>? = null,
+  val sortBy: String = SortBy.POPULARITY_DESC,
+  val includeAdult: Boolean = false,
+  val language: String = "en-US",
+)

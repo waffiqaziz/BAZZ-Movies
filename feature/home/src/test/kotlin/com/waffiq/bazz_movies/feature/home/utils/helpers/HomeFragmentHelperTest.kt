@@ -378,6 +378,33 @@ class HomeFragmentHelperTest {
     }
 
   @Test
+  fun observeLoadState_whenAppendIsError_doesNotCallOnSuccessOrOnError() =
+    runTest {
+      var successCalled = false
+      var errorEvent: Event<String>? = null
+
+      val loadStateFlow = MutableStateFlow(
+        buildCombinedLoadStates(
+          refresh = LoadState.NotLoading(false),
+          prepend = LoadState.NotLoading(false),
+          append = LoadState.Error(RuntimeException("append error")), // append is NOT NotLoading
+        ),
+      )
+
+      lifecycleOwner.observeLoadState(
+        loadStateFlow = loadStateFlow,
+        onLoading = {},
+        onSuccess = { successCalled = true },
+        onError = { errorEvent = it },
+      )
+
+      advanceUntilIdle()
+
+      assert(!successCalled) // check if not success
+      assert(errorEvent == null)
+    }
+
+  @Test
   fun setupRecyclerWideItem_invokeCalls_attachesSnapHelperAndSetsHorizontalLinearLayoutManager() {
     val recyclerView = RecyclerView(context)
 
