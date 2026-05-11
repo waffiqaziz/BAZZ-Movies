@@ -1,5 +1,8 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.discover
 
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverMovieParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
 import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
@@ -18,40 +21,51 @@ class DiscoverRemoteDataSourceTest : BaseMediaDataSourceTest() {
   fun getMovieByGenres_pagingFlow_returnsExpectedData() =
     runTest {
       coEvery {
-        mockDiscoverApiService.discoverMovie(genres = "1", region = "id", page = 1)
+        mockDiscoverApiService.discoverMovie(
+          DiscoverMovieParams(genre = "1", watchRegion = "id", page = 1).toQueryMap(),
+        )
       } returns defaultMediaResponse(expectedMovie)
 
       discoverRemoteDataSource.getMovieByGenres("1", "id").testPagingFlow(this, expectedMovie)
-      coVerify { mockDiscoverApiService.discoverMovie(genres = "1", region = "id", page = 1) }
+      coVerify {
+        mockDiscoverApiService.discoverMovie(
+          DiscoverMovieParams(genre = "1", watchRegion = "id", page = 1).toQueryMap(),
+        )
+      }
     }
 
   @Test
   fun getMovieByKeywords_pagingFlow_returnsExpectedData() =
     runTest {
-      coEvery { mockDiscoverApiService.discoverMovie(keywords = "1", page = 1) } returns
+      val query = DiscoverMovieParams(keyword = "1", page = 1).toQueryMap()
+
+      coEvery { mockDiscoverApiService.discoverMovie(query) } returns
         defaultMediaResponse(expectedMovie)
 
       discoverRemoteDataSource.getMovieByKeywords("1").testPagingFlow(this, expectedMovie)
-      coVerify { mockDiscoverApiService.discoverMovie(keywords = "1", page = 1) }
+      coVerify { mockDiscoverApiService.discoverMovie(query) }
     }
 
   @Test
   fun getTvByGenre_pagingFlow_returnsExpectedData() =
     runTest {
-      coEvery { mockDiscoverApiService.discoverTv(genres = "1", region = "id", page = 1) } returns
-        defaultMediaResponse(expectedTv)
+      val query = DiscoverTvParams(genre = "1", watchRegion = "id", page = 1).toQueryMap()
+
+      coEvery { mockDiscoverApiService.discoverTv(query) } returns defaultMediaResponse(expectedTv)
 
       discoverRemoteDataSource.getTvByGenres("1", "id").testPagingFlow(this, expectedTv)
-      coVerify { mockDiscoverApiService.discoverTv(genres = "1", region = "id", page = 1) }
+      coVerify { mockDiscoverApiService.discoverTv(query) }
     }
 
   @Test
   fun getTvByKeywords_pagingFlow_returnsExpectedData() =
     runTest {
-      coEvery { mockDiscoverApiService.discoverTv(keywords = "1", page = 1) } returns
+      val query = DiscoverTvParams(keyword = "1", page = 1).toQueryMap()
+
+      coEvery { mockDiscoverApiService.discoverTv(query) } returns
         defaultMediaResponse(expectedTv)
 
       discoverRemoteDataSource.getTvByKeywords("1").testPagingFlow(this, expectedTv)
-      coVerify { mockDiscoverApiService.discoverTv(keywords = "1", page = 1) }
+      coVerify { mockDiscoverApiService.discoverTv(query) }
     }
 }

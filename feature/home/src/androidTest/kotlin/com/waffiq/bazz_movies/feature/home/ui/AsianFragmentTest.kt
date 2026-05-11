@@ -25,8 +25,8 @@ import com.waffiq.bazz_movies.feature.home.R.id.btn_more_romance_drama
 import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_asian
 import com.waffiq.bazz_movies.feature.home.R.id.layout_header_anime
 import com.waffiq.bazz_movies.feature.home.R.id.rv_anime
-import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_asian
 import com.waffiq.bazz_movies.feature.home.R.id.shimmer_layout_asian
+import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_asian
 import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
@@ -143,7 +143,8 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
     btn_more_anime.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     verifyOpenList(
-      mockNavigator, ListArgs(ListType.ANIME_THIS_SEASON, title = "", mediaType = TV_MEDIA_TYPE)
+      mockNavigator,
+      ListArgs(ListType.ANIME_THIS_SEASON, title = "", mediaType = TV_MEDIA_TYPE),
     )
   }
 

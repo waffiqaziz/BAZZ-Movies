@@ -2,6 +2,9 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.discover
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverMovieParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.DiscoverApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.PageHelper.createPager
@@ -21,34 +24,42 @@ class DiscoverRemoteDataSource @Inject constructor(
   ): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverMovie(
-        genres = genres,
-        region = region,
-        page = page,
+        DiscoverMovieParams(
+          genre = genres,
+          watchRegion = region,
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByGenres(genres: String, region: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        genres = genres,
-        region = region,
-        page = page,
+        DiscoverTvParams(
+          genre = genres,
+          watchRegion = region,
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getMovieByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverMovie(
-        keywords = keywords,
-        page = page,
+        DiscoverMovieParams(
+          keyword = keywords,
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getTvByKeywords(keywords: String): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        keywords = keywords,
-        page = page,
+        DiscoverTvParams(
+          keyword = keywords,
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 }

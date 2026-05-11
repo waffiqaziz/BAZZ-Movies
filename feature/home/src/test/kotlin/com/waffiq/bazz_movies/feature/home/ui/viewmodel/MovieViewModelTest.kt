@@ -67,7 +67,7 @@ class MovieViewModelTest : BaseViewModelTest() {
     }
 
   @Test
-  fun setTrendingPeriod_whenCalled_shouldUpdateTrendingPeriod(){
+  fun setTrendingPeriod_whenCalled_shouldUpdateTrendingPeriod() {
     assertEquals(TrendingPeriod.WEEK, viewModel.trendingPeriod.value)
     viewModel.setTrendingPeriod(TrendingPeriod.TODAY)
     assertEquals(TrendingPeriod.TODAY, viewModel.trendingPeriod.value)

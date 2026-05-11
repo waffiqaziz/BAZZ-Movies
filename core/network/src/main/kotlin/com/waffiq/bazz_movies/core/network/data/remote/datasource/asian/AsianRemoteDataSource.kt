@@ -2,6 +2,31 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.asian
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.coroutines.IoDispatcher
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.ANIMATION
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Genre.REALITY
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.BISEXUAL_MAN
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.BOYS_LOVE
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.COSTUME_DRAMA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.DONGHUA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.ECCHI
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.EROTIC
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GAY_RELATIONSHIP
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GAY_ROMANCE
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.GIRLS_LOVE
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.HENTAI
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.LESBIAN
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.LESBIAN_RELATIONSHIP
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.ROMANCE
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Keyword.SOFTCORE
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.CHINA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.INDONESIA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.JAPAN
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.KOREA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.MALAYSIA
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.TAIWAN
+import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.THAILAND
+import com.waffiq.bazz_movies.core.network.data.remote.query.DiscoverTvParams
+import com.waffiq.bazz_movies.core.network.data.remote.query.toQueryMap
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.DiscoverApiService
 import com.waffiq.bazz_movies.core.network.utils.helpers.DateHelper.monthsAgo
@@ -20,57 +45,79 @@ class AsianRemoteDataSource @Inject constructor(
   override fun getAnimeAllTime(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        genres = "16",
-        country = "JP",
-        page = page,
-        withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        DiscoverTvParams(
+          genres = listOf(ANIMATION),
+          originCountry = listOf(JAPAN),
+          page = page,
+          withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getAnimeThisSeason(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        genres = "16",
-        country = "JP",
-        page = page,
-        firstAirDateGte = THREE_MONTHS.monthsAgo,
-        firstAirDateLte = ONE_MONTH.monthsLater,
-        withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        DiscoverTvParams(
+          genres = listOf(ANIMATION),
+          originCountry = listOf(JAPAN),
+          page = page,
+          firstAirDateGte = THREE_MONTHS.monthsAgo,
+          firstAirDateLte = ONE_MONTH.monthsLater,
+          withoutKeywords = ANIME_WITHOUT_KEYWORDS,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getDonghua(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        keywords = "315535",
-        page = page,
+        DiscoverTvParams(
+          keywords = listOf(DONGHUA),
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getAsianRomance(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        keywords = "9840",
-        country = ASIAN_REGION,
-        page = page,
-        withoutGenres = "16|10764",
-        withoutKeywords = "168812|240305|265777|258533|289844",
+        DiscoverTvParams(
+          keywords = listOf(ROMANCE),
+          originCountry = ASIAN_REGION,
+          page = page,
+          withoutGenres = ROMANCE_DRAMA_WITHOUT_GENRES,
+          withoutKeywords = ROMANCE_DRAMA_WITHOUT_KEYWORDS,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   override fun getCostumeDrama(): Flow<PagingData<MediaResponseItem>> =
     createPager { page ->
       discoverApiService.discoverTv(
-        keywords = "195013",
-        country = ASIAN_REGION,
-        page = page,
+        DiscoverTvParams(
+          keywords = listOf(COSTUME_DRAMA),
+          originCountry = ASIAN_REGION,
+          page = page,
+        ).toQueryMap(),
       ).results
     }.flow.flowOn(ioDispatcher)
 
   companion object {
     const val THREE_MONTHS = 3L
     const val ONE_MONTH = 1L
-    const val ASIAN_REGION = "CN|TW|KR|TH|ID|MY|JP"
-    const val ANIME_WITHOUT_KEYWORDS = "195669|198385|256466|155477"
+    val ASIAN_REGION = listOf(CHINA, INDONESIA, JAPAN, KOREA, MALAYSIA, TAIWAN, THAILAND)
+
+    val ANIME_WITHOUT_KEYWORDS = listOf(ECCHI, EROTIC, HENTAI, SOFTCORE)
+
+    val ROMANCE_DRAMA_WITHOUT_GENRES = listOf(ANIMATION, REALITY)
+    val ROMANCE_DRAMA_WITHOUT_KEYWORDS = listOf(
+      BISEXUAL_MAN,
+      GAY_ROMANCE,
+      GAY_RELATIONSHIP,
+      BOYS_LOVE,
+      GIRLS_LOVE,
+      LESBIAN,
+      LESBIAN_RELATIONSHIP,
+    )
   }
 }
