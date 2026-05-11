@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers
 
-import com.waffiq.bazz_movies.core.domain.FavoriteParams
-import com.waffiq.bazz_movies.core.domain.WatchlistParams
+import com.waffiq.bazz_movies.core.models.FavoriteParams
+import com.waffiq.bazz_movies.core.models.WatchlistParams
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull

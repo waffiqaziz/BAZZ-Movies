@@ -6,8 +6,8 @@ import com.waffiq.bazz_movies.core.data.testutils.TestVariables.mediaStateRespon
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postTvRateResponseSuccess
 import com.waffiq.bazz_movies.core.data.utils.Helper.getDateToday
 import com.waffiq.bazz_movies.core.data.utils.Helper.getDateTwoWeeksFromToday
-import com.waffiq.bazz_movies.core.domain.Outcome
 import com.waffiq.bazz_movies.core.mappers.MediaStateMapper.toMediaState
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.tv.TvRemoteDataSource
 import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.testSuccessfulPagingData

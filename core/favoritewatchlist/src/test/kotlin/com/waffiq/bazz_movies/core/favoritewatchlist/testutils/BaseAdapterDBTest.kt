@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
 import androidx.recyclerview.widget.RecyclerView
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 import io.mockk.mockk
 import org.junit.Before
 

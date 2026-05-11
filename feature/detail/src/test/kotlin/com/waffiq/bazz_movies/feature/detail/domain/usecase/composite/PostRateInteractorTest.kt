@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
-import com.waffiq.bazz_movies.core.domain.PostResult
+import com.waffiq.bazz_movies.core.models.PostResult
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.MOVIE_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID

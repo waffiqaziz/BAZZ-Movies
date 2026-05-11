@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaState
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.Rated
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
+import com.waffiq.bazz_movies.core.models.MediaState
+import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.models.Rated
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 
 /**

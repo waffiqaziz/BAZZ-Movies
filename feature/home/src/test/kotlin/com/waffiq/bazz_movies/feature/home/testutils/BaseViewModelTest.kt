@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.home.testutils
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

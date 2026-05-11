@@ -16,24 +16,26 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
       apply(plugin = "com.android.library")
       apply(plugin = "bazzmovies.detekt")
 
-      extensions.configure<LibraryExtension> {
-        configureKotlinAndroid(this)
-        configureCommonAndroidSettings(this)
-        configureMockitoAgent()
-        defaultConfig.consumerProguardFiles("consumer-rules.pro")
-        testOptions.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
-        // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // The resource prefix is derived from the module name,
-        // so resources inside ":core:module1" must be prefixed with "core_module1_"
-        resourcePrefix =
-          path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
-            .lowercase() + "_"
-      }
+      pluginManager.withPlugin("com.android.library") {
+        extensions.configure<LibraryExtension> {
+          configureKotlinAndroid(this)
+          configureCommonAndroidSettings(this)
+          configureMockitoAgent()
+          defaultConfig.consumerProguardFiles("consumer-rules.pro")
+          testOptions.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+          // defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+          // The resource prefix is derived from the module name,
+          // so resources inside ":core:module1" must be prefixed with "core_module1_"
+          resourcePrefix =
+            path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
+              .lowercase() + "_"
+        }
 
-      dependencies {
-        add("testImplementation", libs.findLibrary("junit").get())
-        add("testImplementation", libs.findLibrary("kotlin.test.junit").get())
-        add("testImplementation", kotlin("test"))
+        dependencies {
+          add("testImplementation", libs.findLibrary("junit").get())
+          add("testImplementation", libs.findLibrary("kotlin.test.junit").get())
+          add("testImplementation", kotlin("test"))
+        }
       }
     }
   }

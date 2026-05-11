@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.more.testutils
 
 import androidx.lifecycle.MutableLiveData
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.domain.UserModel
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel

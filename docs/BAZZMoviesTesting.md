@@ -99,7 +99,7 @@ Below you can find a list of BAZZ Movies modules.
 | [`:core:data`][core-data-link]                               | [![Coverage][core-data-coverage-badge]][core-data-coverage-link]                               |
 | [`:core:database`][core-database-link]                       | [![Coverage][core-database-coverage-badge]][core-database-coverage-link]                       |
 | [`:core:designsystem`][core-designsystem-link]               | [![Coverage][core-designsystem-coverage-badge]][core-designsystem-coverage-link]               |
-| [`:core:domain`][core-domain-link]                           | [![Coverage][core-domain-coverage-badge]][core-domain-coverage-link]                           |
+| [`:core:models`][core-domain-link]                           | [![Coverage][core-domain-coverage-badge]][core-domain-coverage-link]                           |
 | [`:core:favoritewatchlist`][core-favoritewatchlist-link]     | [![Coverage][core-favoritewatchlist-coverage-badge]][core-favoritewatchlist-coverage-link]     |
 | [`:core:instrumentationtest`][core-instrumentationtest-link] | [![Coverage][core-instrumentationtest-coverage-badge]][core-instrumentationtest-coverage-link] |
 | [`:core:mappers`][core-mappers-link]                         | [![Coverage][core-mappers-coverage-badge]][core-mappers-coverage-link]                         |

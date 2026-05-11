@@ -2,8 +2,8 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
-import com.waffiq.bazz_movies.core.domain.PostResult
+import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.models.PostResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.domain.usecase.authtmdbaccount.AuthTMDbAccountUseCase
 import io.mockk.coEvery

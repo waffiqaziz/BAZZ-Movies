@@ -26,7 +26,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
 import com.waffiq.bazz_movies.core.designsystem.R.string.yes
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
@@ -38,6 +37,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotE
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel

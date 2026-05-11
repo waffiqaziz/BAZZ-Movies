@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.model
 
-import com.waffiq.bazz_movies.core.domain.Nameable
-import com.waffiq.bazz_movies.core.domain.Profilable
+import com.waffiq.bazz_movies.core.models.Nameable
+import com.waffiq.bazz_movies.core.models.Profilable
 
 data class MediaCrewItem(
   override val name: String? = null,

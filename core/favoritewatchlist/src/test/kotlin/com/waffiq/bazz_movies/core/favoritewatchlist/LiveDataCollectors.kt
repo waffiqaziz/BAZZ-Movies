@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist
 
 import com.google.common.truth.Truth.assertThat
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
+import com.waffiq.bazz_movies.core.models.Favorite
 
 /**
  * Collects LiveData from the [SharedDBViewModel] for testing purposes.

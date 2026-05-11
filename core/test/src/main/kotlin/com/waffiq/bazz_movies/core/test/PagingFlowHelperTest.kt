@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.test
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.PagingDataHelperTest.differ
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

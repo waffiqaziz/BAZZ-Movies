@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.viewmodel
 
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
-import com.waffiq.bazz_movies.core.domain.Rated
+import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseMediaDetailViewModelTest
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.SESSION_ID
 import com.waffiq.bazz_movies.feature.detail.testutils.PostTestHelper

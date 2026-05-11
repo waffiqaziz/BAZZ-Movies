@@ -12,6 +12,7 @@ internal fun Project.configureMockitoAgent() {
 
   // add Mockito dependency to the agent configuration
   dependencies {
+    "testImplementation"(libs.findLibrary("mockito-core").get())
     "mockitoAgent"(libs.findLibrary("mockito-core").get()) {
       isTransitive = false
     }

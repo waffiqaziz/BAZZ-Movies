@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.home.testutils
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.delay
 import kotlin.coroutines.cancellation.CancellationException
 

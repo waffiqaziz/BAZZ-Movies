@@ -5,9 +5,9 @@ import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.LiveDataCollectors
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
+import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify

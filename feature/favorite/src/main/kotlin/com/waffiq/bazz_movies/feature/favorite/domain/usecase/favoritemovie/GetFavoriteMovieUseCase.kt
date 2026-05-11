@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.favorite.domain.usecase.favoritemovie
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 fun interface GetFavoriteMovieUseCase {

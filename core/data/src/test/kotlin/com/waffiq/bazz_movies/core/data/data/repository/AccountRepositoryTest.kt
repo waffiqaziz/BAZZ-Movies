@@ -4,7 +4,7 @@ import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.favoriteParams
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.postFavoriteWatchlistResponseSuccess
 import com.waffiq.bazz_movies.core.data.testutils.TestVariables.watchlistParams
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toFavoriteRequest
 import com.waffiq.bazz_movies.core.network.utils.mappers.NetworkMapper.toWatchlistRequest

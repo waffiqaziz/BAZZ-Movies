@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.data.domain.repository.IMoviesRepository
 import com.waffiq.bazz_movies.core.data.domain.repository.ITrendingRepository
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.user.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

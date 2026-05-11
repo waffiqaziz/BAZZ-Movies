@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.detail.ui.adapter
 
 import androidx.paging.PagingData
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import io.mockk.verify

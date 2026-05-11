@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.ViewAction
 import com.waffiq.bazz_movies.core.common.utils.Event
 import com.waffiq.bazz_movies.core.database.utils.DbResult
-import com.waffiq.bazz_movies.core.domain.Favorite
-import com.waffiq.bazz_movies.core.domain.UserModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackBarUserLoginData
+import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.favorite.ui.fragment.FavoriteFragment
 import com.waffiq.bazz_movies.feature.favorite.ui.viewmodel.FavoriteViewModel

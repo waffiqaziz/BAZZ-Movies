@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.usecase.asian.GetAsianMediaUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.feature.list.domain.usecase.GetListUseCase
 import com.waffiq.bazz_movies.navigation.ListType
 import dagger.hilt.android.lifecycle.HiltViewModel

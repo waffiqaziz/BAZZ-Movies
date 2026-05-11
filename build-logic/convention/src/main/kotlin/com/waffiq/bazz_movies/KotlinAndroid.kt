@@ -70,7 +70,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
     allWarningsAsErrors = warningsAsErrors
 
     // Directly adding to the freeCompilerArgs list
-    if (project.path != ":core:domain" &&
+    if (project.path != ":core:models" &&
       project.path != ":core:common" &&
       project.path != ":core:mappers"
     ) {

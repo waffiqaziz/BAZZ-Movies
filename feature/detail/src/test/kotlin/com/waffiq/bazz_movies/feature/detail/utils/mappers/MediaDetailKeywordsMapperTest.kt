@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.mappers
 
-import com.waffiq.bazz_movies.core.domain.GenresItem
+import com.waffiq.bazz_movies.core.models.GenresItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullMovieDetail
 import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.fullTvDetail

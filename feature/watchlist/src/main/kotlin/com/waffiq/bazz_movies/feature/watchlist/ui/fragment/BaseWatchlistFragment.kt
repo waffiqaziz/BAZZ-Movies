@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.waffiq.bazz_movies.core.common.utils.Constants
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.BaseViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.core.utils.GeneralHelper
@@ -52,6 +52,7 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     setupRecyclerView()
     observeUserState()
+    observeRefresh()
   }
 
   private fun setupRecyclerView() {
@@ -67,6 +68,14 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
         setupLoggedUser()
       } else {
         setupGuestUser()
+      }
+    }
+  }
+
+  private fun observeRefresh() {
+    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
+      if (user.token != Constants.NAN) {
+        loggedUserDelegate?.refresh()
       }
     }
   }
@@ -106,17 +115,6 @@ abstract class BaseWatchlistFragment<T : Any> : Fragment() {
   override fun onResume() {
     super.onResume()
     baseViewModel.resetSnackbarShown()
-    userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != Constants.NAN) {
-        loggedUserDelegate?.refresh()
-      }
-    }
-  }
-
-  override fun onPause() {
-    super.onPause()
-    loggedUserDelegate?.cleanup()
-    guestUserDelegate?.cleanup()
   }
 
   override fun onDestroyView() {

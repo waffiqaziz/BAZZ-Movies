@@ -12,10 +12,10 @@ import com.waffiq.bazz_movies.core.designsystem.R.color.yellow_700
 import com.waffiq.bazz_movies.core.designsystem.R.string.added_to_favorite
 import com.waffiq.bazz_movies.core.designsystem.R.string.removed_from_watchlist
 import com.waffiq.bazz_movies.core.designsystem.R.string.undo
-import com.waffiq.bazz_movies.core.domain.Favorite
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.adapter.local.WatchlistAdapterDB
 import com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel.SharedDBViewModel
 import com.waffiq.bazz_movies.core.favoritewatchlist.utils.helpers.SnackbarAlreadyUtils
+import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.uihelper.utils.SpannableUtils.buildActionMessage
 import com.waffiq.bazz_movies.feature.watchlist.databinding.FragmentWatchlistChildBinding

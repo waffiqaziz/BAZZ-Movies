@@ -33,7 +33,9 @@ private val coverageExclusions = listOf(
   "**/Hilt_*.class",
   "**/*Dagger.*",
   "**/*_MembersInjector.*",
+  "**/*_GeneratedInjector*",
   "**/*_HiltModules.*",
+  "**/*_HiltComponents*",
   "**/Hilt_*.*",
   "dagger/hilt/**",
   "**/hilt_aggregated_deps/**",
@@ -52,16 +54,16 @@ private val coverageExclusions = listOf(
   "**/io/github/**/*.class",
 
   // Flow/coroutine synthetic classes
-  "**/*\$invokeSuspend\$*.class",
+//  "**/*\$invokeSuspend\$*.class",
 
   // Interactor/UseCase flow builders
-  "**/*Interactor\$get*\$*.class",
-  "**/*UseCase\$get*\$*.class",
+//  "**/*Interactor\$get*\$*.class",
+//  "**/*UseCase\$get*\$*.class",
 
-  "**/*\$DefaultImpls.*",
-  "**/*\$WhenMappings.*",
-  "**/*\$EnumSwitchMapping*.*",
-  "**/*\$context_receiver*.*",
+//  "**/*\$DefaultImpls.*",
+//  "**/*\$WhenMappings.*",
+//  "**/*\$EnumSwitchMapping*.*",
+//  "**/*\$context_receiver*.*",
 
   // Room
   //  "**/*_Impl*.*",
@@ -73,13 +75,13 @@ private val coverageExclusions = listOf(
   "**/InstantTaskExecutor*",
 
   // Generated Kotlin files
-  "**/*\$\$serializer.*",
-  "**/*\$inlined*.*",
-  "**/*\$inlined\$*.*",
-  "**/*\$special\$*.*",
-  "**/*\$lambda$*.*",
-
-  "**/*\$*\$1\$1*" // excludes all double-nested lambdas (coroutine state machines)
+//  "**/*\$\$serializer.*",
+//  "**/*\$inlined*.*",
+//  "**/*\$inlined\$*.*",
+//  "**/*\$special\$*.*",
+//  "**/*\$lambda$*.*",
+//
+//  "**/*\$*\$1\$1*" // excludes all double-nested lambdas (coroutine state machines)
 )
 
 private fun String.capitalize() = replaceFirstChar {

@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.core.user.testutils
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import kotlinx.coroutines.flow.Flow
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

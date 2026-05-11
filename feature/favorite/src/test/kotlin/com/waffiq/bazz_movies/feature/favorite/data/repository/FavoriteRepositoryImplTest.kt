@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.favorite.data.repository
 
 import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.test.PagingFlowHelperTest.testPagingFlowAwaitComplete
 import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.SESSION_ID

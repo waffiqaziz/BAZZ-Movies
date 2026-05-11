@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.composite
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywords
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds

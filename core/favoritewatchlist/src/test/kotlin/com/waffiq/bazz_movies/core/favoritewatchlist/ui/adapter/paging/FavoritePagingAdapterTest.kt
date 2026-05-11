@@ -8,13 +8,13 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.container_result
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_end
 import com.waffiq.bazz_movies.core.designsystem.R.id.reveal_layout_start
 import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPagingFavoriteBinding
-import com.waffiq.bazz_movies.core.domain.MediaItem
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.BaseAdapterPagingTest
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_NAME
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_ORIGINAL_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.MOVIE_TITLE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.Constants.TEST_DATE_FORMATTED
+import com.waffiq.bazz_movies.core.models.MediaItem
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull

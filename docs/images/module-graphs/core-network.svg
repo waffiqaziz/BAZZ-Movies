@@ -8,15 +8,15 @@
 <ellipse fill="none" stroke="black" cx="234.4" cy="-90" rx="64.66" ry="18"/>
 <text xml:space="preserve" text-anchor="middle" x="234.4" y="-85.8" font-family="Times,serif" font-size="14.00">:core:network</text>
 </g>
-<!-- :core:domain -->
+<!-- :core:models -->
 <g id="node2" class="node">
-<title>:core:domain</title>
+<title>:core:models</title>
 <ellipse fill="none" stroke="black" cx="234.4" cy="-18" rx="61.99" ry="18"/>
-<text xml:space="preserve" text-anchor="middle" x="234.4" y="-13.8" font-family="Times,serif" font-size="14.00">:core:domain</text>
+<text xml:space="preserve" text-anchor="middle" x="234.4" y="-13.8" font-family="Times,serif" font-size="14.00">:core:models</text>
 </g>
-<!-- :core:network&#45;&gt;:core:domain -->
+<!-- :core:network&#45;&gt;:core:models -->
 <g id="edge1" class="edge">
-<title>:core:network-&gt;:core:domain</title>
+<title>:core:network-&gt;:core:models</title>
 <path fill="none" stroke="red" stroke-width="2" d="M234.4,-71.7C234.4,-64.41 234.4,-55.73 234.4,-47.54"/>
 <polygon fill="red" stroke="red" stroke-width="2" points="237.9,-49.13 234.4,-39.13 230.9,-49.13 237.9,-49.13"/>
 </g>
@@ -44,9 +44,9 @@
 <path fill="none" stroke="red" stroke-width="2" d="M263.96,-144.05C259.62,-136.26 254.36,-126.82 249.49,-118.08"/>
 <polygon fill="red" stroke="red" stroke-width="2" points="253.42,-117.95 245.5,-110.92 247.31,-121.36 253.42,-117.95"/>
 </g>
-<!-- :core:mappers&#45;&gt;:core:domain -->
+<!-- :core:mappers&#45;&gt;:core:models -->
 <g id="edge3" class="edge">
-<title>:core:mappers-&gt;:core:domain</title>
+<title>:core:mappers-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M288.53,-144.16C302.98,-125.93 320.84,-96.22 308.4,-72 301.44,-58.45 289.22,-47.59 276.7,-39.31"/>
 <polygon fill="black" stroke="black" points="278.79,-36.49 268.43,-34.27 275.15,-42.47 278.79,-36.49"/>
 </g>
@@ -62,9 +62,9 @@
 <path fill="none" stroke="black" d="M187.16,-215.7C187.45,-197.34 189.47,-167.75 198.4,-144 201.91,-134.67 207.37,-125.39 212.99,-117.25"/>
 <polygon fill="black" stroke="black" points="215.81,-119.33 218.9,-109.19 210.16,-115.18 215.81,-119.33"/>
 </g>
-<!-- :core:data&#45;&gt;:core:domain -->
+<!-- :core:data&#45;&gt;:core:models -->
 <g id="edge6" class="edge">
-<title>:core:data-&gt;:core:domain</title>
+<title>:core:data-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M178.04,-215.96C162.58,-185.38 135.79,-119.9 160.4,-72 167.36,-58.45 179.58,-47.59 192.1,-39.31"/>
 <polygon fill="black" stroke="black" points="193.65,-42.47 200.37,-34.27 190.01,-36.49 193.65,-42.47"/>
 </g>
@@ -104,9 +104,9 @@
 <ellipse fill="none" stroke="black" cx="424.4" cy="-234" rx="66.26" ry="18"/>
 <text xml:space="preserve" text-anchor="middle" x="424.4" y="-229.8" font-family="Times,serif" font-size="14.00">:core:database</text>
 </g>
-<!-- :core:database&#45;&gt;:core:domain -->
+<!-- :core:database&#45;&gt;:core:models -->
 <g id="edge10" class="edge">
-<title>:core:database-&gt;:core:domain</title>
+<title>:core:database-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M458.79,-218.29C474.5,-209.62 491.55,-196.97 500.4,-180 507.8,-165.81 508.98,-157.51 500.4,-144 456.54,-74.92 363.24,-43.34 299.66,-29.38"/>
 <polygon fill="black" stroke="black" points="300.53,-25.98 290.03,-27.36 299.1,-32.84 300.53,-25.98"/>
 </g>
@@ -140,9 +140,9 @@
 <ellipse fill="none" stroke="black" cx="424.4" cy="-306" rx="97.91" ry="18"/>
 <text xml:space="preserve" text-anchor="middle" x="424.4" y="-301.8" font-family="Times,serif" font-size="14.00">:core:favoritewatchlist</text>
 </g>
-<!-- :core:favoritewatchlist&#45;&gt;:core:domain -->
+<!-- :core:favoritewatchlist&#45;&gt;:core:models -->
 <g id="edge16" class="edge">
-<title>:core:favoritewatchlist-&gt;:core:domain</title>
+<title>:core:favoritewatchlist-&gt;:core:models</title>
 <path fill="none" stroke="black" d="M326.79,-303.67C257.65,-299.43 164.27,-286.86 89.4,-252 45.13,-231.39 26.68,-224.43 6.4,-180 -29.63,-101.06 96.32,-53.78 175.26,-32.49"/>
 <polygon fill="black" stroke="black" points="175.81,-35.96 184.6,-30.04 174.04,-29.19 175.81,-35.96"/>
 </g>

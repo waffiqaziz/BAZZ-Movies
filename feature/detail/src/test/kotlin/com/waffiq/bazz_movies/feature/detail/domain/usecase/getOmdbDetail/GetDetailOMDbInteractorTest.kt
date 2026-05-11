@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.detail.domain.usecase.getOmdbDetail
 
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.domain.Outcome
+import com.waffiq.bazz_movies.core.models.Outcome
 import com.waffiq.bazz_movies.feature.detail.domain.model.omdb.OMDbDetails
 import com.waffiq.bazz_movies.feature.detail.domain.model.tv.TvExternalIds
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseInteractorTest

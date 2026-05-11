@@ -1,6 +1,6 @@
 package com.waffiq.bazz_movies.core.favoritewatchlist.testutils
 
-import com.waffiq.bazz_movies.core.domain.Favorite
+import com.waffiq.bazz_movies.core.models.Favorite
 
 object DummyData {
 

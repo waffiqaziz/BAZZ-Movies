@@ -1,7 +1,7 @@
 package com.waffiq.bazz_movies.feature.list.domain.repository
 
 import androidx.paging.PagingData
-import com.waffiq.bazz_movies.core.domain.MediaItem
+import com.waffiq.bazz_movies.core.models.MediaItem
 import kotlinx.coroutines.flow.Flow
 
 interface IListRepository {

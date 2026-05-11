@@ -18,8 +18,8 @@ ksp {
 }
 
 dependencies {
-  api(project(":core:domain"))
   api(project(":core:common"))
+  api(project(":core:models"))
   implementation(project(":core:coroutines"))
   implementation(project(":core:utils"))
 

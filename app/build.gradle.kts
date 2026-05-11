@@ -10,7 +10,7 @@ plugins {
 
 dependencies {
   implementation(project(":core:designsystem"))
-  implementation(project(":core:domain"))
+  implementation(project(":core:models"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:user"))
   implementation(project(":feature:about"))
