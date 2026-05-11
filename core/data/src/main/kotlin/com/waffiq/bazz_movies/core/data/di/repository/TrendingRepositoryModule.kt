@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 @Suppress("Unused")
 @Module
 @InstallIn(SingletonComponent::class)
-interface TrendingRepositoryModule {
+fun interface TrendingRepositoryModule {
 
   @Binds
   fun bindTrendingRepository(trendingRepositoryImpl: TrendingRepositoryImpl): ITrendingRepository
