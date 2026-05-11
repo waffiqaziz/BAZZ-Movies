@@ -244,4 +244,57 @@ class ListViewModelTest :
         )
       }
     }
+
+    Given("anime list is requested") {
+
+      When("fetching anime this season") {
+        coEvery { mockGetAsianMediaUseCase.getAnimeThisSeason() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAnime(ListType.ANIME_THIS_SEASON) },
+          expected = expectedTv,
+        )
+      }
+
+      When("fetching anime all time") {
+        coEvery { mockGetAsianMediaUseCase.getAnimeAllTime() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAnime(ListType.ANIME_ALL_TIME) },
+          expected = expectedTv,
+        )
+      }
+    }
+
+    Given("asian content is requested") {
+
+      When("fetching romance drama") {
+        coEvery { mockGetAsianMediaUseCase.getAsianRomance() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getAsianRomance() },
+        )
+      }
+
+      When("fetching costume drama") {
+        coEvery { mockGetAsianMediaUseCase.getCostumeDrama() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getCostumeDrama() },
+        )
+      }
+
+      When("fetching donghua") {
+        coEvery { mockGetAsianMediaUseCase.getDonghua() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getDonghua() },
+        )
+      }
+    }
   })
