@@ -238,10 +238,10 @@ class MovieFragment : Fragment() {
 
     // Detach RecyclerViews programmatically
     binding.apply {
-      binding.rvPopularMovie.detachRecyclerView()
-      binding.rvMovieAiringToday.detachRecyclerView()
-      binding.rvUpcomingMovie.detachRecyclerView()
-      binding.rvTopRatedMovie.detachRecyclerView()
+      rvPopularMovie.detachRecyclerView()
+      rvMovieAiringToday.detachRecyclerView()
+      rvUpcomingMovie.detachRecyclerView()
+      rvTopRatedMovie.detachRecyclerView()
     }
 
     mSnackbar = null
