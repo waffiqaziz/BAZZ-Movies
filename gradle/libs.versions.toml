@@ -57,7 +57,7 @@ room = "2.8.4"
 paging = "3.5.0"
 
 # UI components
-material = "1.14.0-rc01"
+material = "1.14.0"
 flexbox = "3.0.0"
 
 # Networking
