@@ -15,25 +15,20 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  * @param fragmentManager The `FragmentManager` used to interact with fragments.
  * @param lifecycle The `Lifecycle` of the parent component, typically the activity or fragment,
  *                  to manage the lifecycle of the fragments.
- * @param fragments A list of `Fragment` objects that will be displayed within the `ViewPager2`.
  */
 class GenericViewPagerAdapter(
   fragmentManager: FragmentManager,
   lifecycle: Lifecycle,
-  private val fragments: List<Fragment>,
+  private val fragmentFactories: List<Pair<Class<out Fragment>, () -> Fragment>>,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-  override fun getItemCount(): Int = fragments.size
+  override fun getItemCount() = fragmentFactories.size
 
-  override fun createFragment(position: Int): Fragment = fragments[position]
+  override fun createFragment(position: Int) = fragmentFactories[position].second()
 
   override fun getItemId(position: Int): Long =
-    fragments[position].javaClass.simpleName.hashCode().toLong()
+    fragmentFactories[position].first.name.hashCode().toLong()
 
   override fun containsItem(itemId: Long): Boolean =
-    fragments.any { it.javaClass.simpleName.hashCode().toLong() == itemId }
-
-  override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-    super.onDetachedFromRecyclerView(recyclerView)
-  }
+    fragmentFactories.any { it.first.name.hashCode().toLong() == itemId }
 }

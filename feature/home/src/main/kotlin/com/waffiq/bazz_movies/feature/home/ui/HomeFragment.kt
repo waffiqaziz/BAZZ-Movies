@@ -20,6 +20,8 @@ class HomeFragment : Fragment() {
   private var _binding: FragmentHomeBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
 
+  private var tabLayoutMediator: TabLayoutMediator? = null
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -40,18 +42,25 @@ class HomeFragment : Fragment() {
     val adapter = GenericViewPagerAdapter(
       childFragmentManager,
       viewLifecycleOwner.lifecycle,
-      listOf(FeaturedFragment(), MovieFragment(), TvSeriesFragment(), AsianFragment()),
+      listOf(
+        FeaturedFragment::class.java to { FeaturedFragment() },
+        MovieFragment::class.java    to { MovieFragment() },
+        TvSeriesFragment::class.java to { TvSeriesFragment() },
+        AsianFragment::class.java    to { AsianFragment() },
+      ),
     )
     binding.viewPager.adapter = adapter
 
-    TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+    tabLayoutMediator = TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
       tab.text = requireActivity().getString(tabHomeHeadingArray[position])
-    }.attach()
+    }.also { it.attach() }
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
 
+    tabLayoutMediator?.detach()
+    tabLayoutMediator = null
     binding.viewPager.adapter = null
     _binding = null
   }
