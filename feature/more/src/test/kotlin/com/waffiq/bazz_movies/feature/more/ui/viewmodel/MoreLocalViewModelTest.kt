@@ -1,14 +1,17 @@
-package com.waffiq.bazz_movies.feature.more.ui
+package com.waffiq.bazz_movies.feature.more.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -20,7 +23,9 @@ import kotlin.test.assertEquals
 
 class MoreLocalViewModelTest {
 
-  private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
+  private val mockLocalDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
+  private val mockSearchHistoryLocalDatabaseUseCase: SearchHistoryLocalDatabaseUseCase = mockk()
+
   private lateinit var viewModel: MoreLocalViewModel
   private val testDispatcher = StandardTestDispatcher()
 
@@ -29,21 +34,19 @@ class MoreLocalViewModelTest {
 
   @Before
   fun setUp() {
-    // Set the Main dispatcher to TestCoroutineDispatcher
     Dispatchers.setMain(testDispatcher)
-    viewModel = MoreLocalViewModel(localDatabaseUseCase)
+    viewModel = MoreLocalViewModel(mockLocalDatabaseUseCase, mockSearchHistoryLocalDatabaseUseCase)
   }
 
   @After
   fun tearDown() {
-    // Reset the Main dispatcher
     Dispatchers.resetMain()
   }
 
   @Test
   fun deleteAllPosts_whenSuccessful_emitsSuccessResult() =
     runTest {
-      coEvery { localDatabaseUseCase.deleteAll() } returns DbResult.Success(1)
+      coEvery { mockLocalDatabaseUseCase.deleteAll() } returns DbResult.Success(1)
 
       viewModel.deleteAll()
       viewModel.state.test {
@@ -59,7 +62,7 @@ class MoreLocalViewModelTest {
     runTest {
       val errorMessage = "Delete failed"
       val expectedError = DbResult.Error(errorMessage)
-      coEvery { localDatabaseUseCase.deleteAll() } returns expectedError
+      coEvery { mockLocalDatabaseUseCase.deleteAll() } returns expectedError
 
       viewModel.deleteAll()
       viewModel.state.test {
@@ -68,5 +71,16 @@ class MoreLocalViewModelTest {
         assertEquals(UIState.Error(errorMessage), awaitItem())
         cancelAndIgnoreRemainingEvents()
       }
+    }
+
+  @Test
+  fun deleteAllSearchHistory_whenCalled_callsCorrectFunction() =
+    runTest {
+      coEvery { mockSearchHistoryLocalDatabaseUseCase.deleteAll() } returns 1
+
+      viewModel.deleteAllSearchHistory()
+      advanceUntilIdle()
+
+      coVerify { mockSearchHistoryLocalDatabaseUseCase.deleteAll() }
     }
 }

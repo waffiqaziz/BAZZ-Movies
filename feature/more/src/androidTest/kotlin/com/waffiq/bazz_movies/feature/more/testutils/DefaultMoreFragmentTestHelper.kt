@@ -9,8 +9,8 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
 import com.waffiq.bazz_movies.feature.more.ui.MoreFragment
-import com.waffiq.bazz_movies.feature.more.ui.MoreLocalViewModel
-import com.waffiq.bazz_movies.feature.more.ui.MoreUserViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import io.mockk.Runs
 import io.mockk.every
@@ -42,6 +42,7 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
 
     every { mockMoreLocalViewModel.state } returns mockUIState
     every { mockMoreLocalViewModel.deleteAll() } just Runs
+    every { mockMoreLocalViewModel.deleteAllSearchHistory() } just Runs
     every { mockUserViewModel.state } returns mockUIState
     every { mockUserViewModel.deleteSession(any()) } just Runs
     every { mockUserViewModel.removeState() } just Runs

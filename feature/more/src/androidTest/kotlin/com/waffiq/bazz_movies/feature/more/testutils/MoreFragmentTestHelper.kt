@@ -10,8 +10,8 @@ import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.ui.MoreFragment
-import com.waffiq.bazz_movies.feature.more.ui.MoreLocalViewModel
-import com.waffiq.bazz_movies.feature.more.ui.MoreUserViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After

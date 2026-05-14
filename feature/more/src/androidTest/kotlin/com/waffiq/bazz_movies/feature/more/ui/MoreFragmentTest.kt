@@ -57,6 +57,8 @@ import com.waffiq.bazz_movies.feature.more.R.id.tv_username
 import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
 import com.waffiq.bazz_movies.feature.more.testutils.MoreFragmentTestHelper
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -392,6 +394,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   private fun performSignOutAction() {
     btn_signout.performClick()
     yes.performTextClick()
+
+    verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {

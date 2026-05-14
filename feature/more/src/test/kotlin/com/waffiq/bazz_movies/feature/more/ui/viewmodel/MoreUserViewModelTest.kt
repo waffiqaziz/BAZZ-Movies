@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.more.ui
+package com.waffiq.bazz_movies.feature.more.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test

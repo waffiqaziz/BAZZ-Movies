@@ -1,8 +1,9 @@
-package com.waffiq.bazz_movies.feature.more.ui
+package com.waffiq.bazz_movies.feature.more.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MoreLocalViewModel @Inject constructor(
   private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase,
+  private val searchHistoryLocalDatabaseUseCase: SearchHistoryLocalDatabaseUseCase,
 ) : ViewModel() {
 
   private val _state = MutableStateFlow<UIState<Unit>>(UIState.Idle)
@@ -29,6 +31,12 @@ class MoreLocalViewModel @Inject constructor(
         is DbResult.Success -> _state.value = UIState.Success(Unit)
         is DbResult.Error -> _state.value = UIState.Error(result.errorMessage)
       }
+    }
+  }
+
+  fun deleteAllSearchHistory() {
+    viewModelScope.launch {
+      searchHistoryLocalDatabaseUseCase.deleteAll()
     }
   }
 }

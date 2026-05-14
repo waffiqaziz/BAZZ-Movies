@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.more.ui
+package com.waffiq.bazz_movies.feature.more.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
