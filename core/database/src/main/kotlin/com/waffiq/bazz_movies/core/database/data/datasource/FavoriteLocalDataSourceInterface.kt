@@ -1,9 +1,6 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteDiskIOException
 import android.database.sqlite.SQLiteException
-import android.database.sqlite.SQLiteFullException
 import android.util.Log
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.utils.DbResult

@@ -38,7 +38,7 @@ class FavoriteDatabaseModuleUnitTest {
    * This test verifies:
    * 1. The database can be created successfully
    * 2. The database provides functioning DAO objects
-   * 3. (Optional) The database version is at least 1, indicating initialization worked
+   * 3. The database version is at least 1, indicating initialization worked
    */
   @Test
   fun provideDatabase_withMigration_returnsValidDatabaseAndDao() {
@@ -52,11 +52,11 @@ class FavoriteDatabaseModuleUnitTest {
       // verify the database was successfully created
       assertNotNull("Database should not be null", database)
 
-      // expect get a valid DAO object from the database
+      // expect valid DAO
       val dao = database.favoriteDao()
       assertNotNull("DAO should not be null", dao)
 
-      // Force Room to create/open the database
+      // perform open database
       database.openHelper.writableDatabase
 
       // get the path where the database should be stored
@@ -86,7 +86,7 @@ class FavoriteDatabaseModuleUnitTest {
   }
 
   @Test
-  fun provideDatabase_whenSuccessful_returnsValidDao() {
+  fun provideFavoriteDao_whenSuccessful_returnsValidDao() {
     val favoriteDatabaseModule = FavoriteDatabaseModule()
     val database = Room.databaseBuilder(
       context,
