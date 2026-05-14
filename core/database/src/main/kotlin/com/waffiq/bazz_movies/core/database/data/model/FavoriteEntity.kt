@@ -3,12 +3,12 @@ package com.waffiq.bazz_movies.core.database.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.waffiq.bazz_movies.core.database.utils.Constants.TABLE_NAME
+import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
 
 /**
  * Model table for favorite and watchlist
  */
-@Entity(tableName = TABLE_NAME)
+@Entity(tableName = FAVORITE_TABLE_NAME)
 data class FavoriteEntity(
 
   @PrimaryKey(autoGenerate = true)

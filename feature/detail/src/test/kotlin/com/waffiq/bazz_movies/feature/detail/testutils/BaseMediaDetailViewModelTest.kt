@@ -8,7 +8,7 @@ import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCa
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
-import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
@@ -52,7 +52,7 @@ abstract class BaseMediaDetailViewModelTest {
 
   protected val mockGetListMoviesUseCase: GetListMoviesUseCase = mockk()
   protected val mockGetListTvUseCase: GetListTvUseCase = mockk()
-  protected val mockLocalDatabaseUseCase: LocalDatabaseUseCase = mockk()
+  protected val mockLocalDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
   protected val mockPostRateUseCase: PostRateUseCase = mockk()
   protected val mockPostActionUseCase: PostActionUseCase = mockk()
   protected val mockGetOMDbDetailUseCase: GetOMDbDetailUseCase = mockk()

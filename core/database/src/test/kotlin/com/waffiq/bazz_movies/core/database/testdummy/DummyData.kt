@@ -3,11 +3,13 @@ package com.waffiq.bazz_movies.core.database.testdummy
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
+import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
 import com.waffiq.bazz_movies.core.models.Favorite
+import com.waffiq.bazz_movies.core.models.SearchHistory
+import kotlinx.coroutines.flow.flowOf
 
 object DummyData {
   val favoriteTvEntity = FavoriteEntity(
-    id = 12345,
     mediaId = 103,
     mediaType = TV_MEDIA_TYPE,
     genre = "Drama",
@@ -24,7 +26,6 @@ object DummyData {
   val watchlistTvEntity = favoriteTvEntity.copy(isWatchlist = true)
 
   val favoriteMovieEntity = FavoriteEntity(
-    id = 1,
     mediaId = 101,
     mediaType = MOVIE_MEDIA_TYPE,
     genre = "Action",
@@ -60,4 +61,14 @@ object DummyData {
   val favoriteTv = favoriteMovie.copy(mediaType = TV_MEDIA_TYPE)
 
   val watchlistTv = favoriteMovie.copy(mediaType = TV_MEDIA_TYPE, isWatchlist = true)
+
+  val searchHistory = SearchHistory(id = 1, query = "query", createdAt = 100)
+
+  val searchHistoryEntity = SearchHistoryEntity(id = 1, query = "query", createdAt = 100)
+
+  val listSearchHistory = listOf(searchHistory)
+
+  val listSearchHistoryFlow = flowOf(listSearchHistory)
+
+  val listSearchHistoryEntityFlow = flowOf(listOf(searchHistoryEntity))
 }

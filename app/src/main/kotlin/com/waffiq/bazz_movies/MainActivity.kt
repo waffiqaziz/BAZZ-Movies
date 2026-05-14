@@ -16,7 +16,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.waffiq.bazz_movies.R.id.nav_host_fragment_activity_home
 import com.waffiq.bazz_movies.R.id.navigation_search

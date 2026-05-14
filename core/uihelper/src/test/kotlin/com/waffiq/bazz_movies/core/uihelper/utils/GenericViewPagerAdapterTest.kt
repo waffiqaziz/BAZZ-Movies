@@ -118,7 +118,8 @@ class GenericViewPagerAdapterTest {
   @Test
   fun adapter_whenCalled_shouldHandlesSingleFragment() {
     val singleAdapter = GenericViewPagerAdapter(
-      fragmentManager, lifecycle,
+      fragmentManager,
+      lifecycle,
       listOf(Pair(TestFragment1::class.java) { TestFragment1() }),
     )
 
@@ -137,7 +138,8 @@ class GenericViewPagerAdapterTest {
   @Test
   fun genericViewPagerAdapter_withSameClassTwice_haveSameItemId() {
     val multiAdapter = GenericViewPagerAdapter(
-      fragmentManager, lifecycle,
+      fragmentManager,
+      lifecycle,
       listOf(
         Pair(TestFragment1::class.java) { TestFragment1() },
         Pair(TestFragment1::class.java) { TestFragment1() },

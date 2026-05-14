@@ -8,31 +8,29 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_error
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_no_result_view
 import com.waffiq.bazz_movies.feature.search.R.id.illustration_search_view
 import com.waffiq.bazz_movies.feature.search.R.id.rv_search
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
+import com.waffiq.bazz_movies.feature.search.testutils.DefaultFragmentTestHelper
+import com.waffiq.bazz_movies.feature.search.testutils.SearchFragmentTestHelper
+import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
+import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.spyk
-import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class SearchFragmentLoadStateTest {
-
-  private lateinit var searchFragment: SearchFragment
+class SearchFragmentLoadStateTest : SearchFragmentTestHelper by DefaultFragmentTestHelper() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -52,12 +50,11 @@ class SearchFragmentLoadStateTest {
   @Before
   fun setUp() {
     hiltRule.inject()
-    every { mockSearchViewModel.searchResults } returns flowOf()
-    every { mockSearchViewModel.search(any()) } just Runs
-    every { mockSnackbar.showSnackbarWarning(any<String>()) } returns mockk(relaxed = true)
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment>().fragment
-    shortDelay()
+    setupViewModelMocks(mockSearchViewModel)
+    setupSnackbarMocks(mockSnackbar)
+    setupFragment(mockNavigator)
+    setupToolbar()
   }
 
   @Test

@@ -465,6 +465,10 @@
     <item name="colorOnContainer">@color/gray_400</item>
   </style>
 
+  <style name="ThemeOverlay.App.Button.Transparent" parent="ThemeOverlay.Material3.Button">
+    <item name="colorContainer">@android:color/transparent</item>
+  </style>
+
   <style name="LayoutHeaderTheme">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>

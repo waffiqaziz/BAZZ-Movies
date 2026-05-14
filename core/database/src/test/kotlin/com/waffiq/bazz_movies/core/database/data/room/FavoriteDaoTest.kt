@@ -3,6 +3,7 @@ package com.waffiq.bazz_movies.core.database.data.room
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import app.cash.turbine.test
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.database.testdummy.DummyData.favoriteMovieEntity
@@ -12,8 +13,10 @@ import com.waffiq.bazz_movies.core.database.testdummy.DummyData.watchlistTvEntit
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,8 +50,7 @@ class FavoriteDaoTest {
   @Test
   fun insertAndGetFavoriteTv_whenSuccessful_returnTvDataCorrectly() =
     runTest {
-      val insertResult = favoriteDao.insert(favoriteTvEntity)
-      assertEquals(favoriteTvEntity.id.toLong(), insertResult)
+      favoriteDao.insert(favoriteTvEntity)
 
       val favorites = favoriteDao.getFavoriteTv().first()
       assertEquals(1, favorites.size)
@@ -67,22 +69,51 @@ class FavoriteDaoTest {
 
   @Test
   fun getWatchlistMovies_whenSuccessful_returnDataCorrectly() =
-    runTest {
+    runTest(UnconfinedTestDispatcher()) {
       favoriteDao.insert(watchlistMovieEntity)
 
-      val watchlist = favoriteDao.getWatchlistMovies().first()
-      assertEquals(1, watchlist.size)
-      assertEquals(watchlistMovieEntity.mediaId, watchlist[0].mediaId)
+      favoriteDao.getWatchlistMovies().test {
+        val firstEmission = awaitItem()
+        assertEquals(1, firstEmission.size)
+        assertEquals(watchlistMovieEntity.mediaId, firstEmission[0].mediaId)
+
+        // check multiple insert
+        favoriteDao.insert(
+          watchlistMovieEntity.copy(
+            mediaId = 2345,
+            isWatchlist = true,
+            isFavorite = false,
+          ),
+        )
+
+        val secondEmission = awaitItem()
+        assertEquals(2, secondEmission.size)
+        assertEquals(2345, secondEmission[1].mediaId)
+      }
     }
 
   @Test
   fun getWatchlistTv_whenSuccessful_returnDataCorrectly() =
-    runTest {
+    runTest(UnconfinedTestDispatcher()) {
       favoriteDao.insert(watchlistTvEntity)
 
-      val watchlist = favoriteDao.getWatchlistTv().first()
-      assertEquals(1, watchlist.size)
-      assertEquals(watchlistTvEntity.mediaId, watchlist[0].mediaId)
+      favoriteDao.getWatchlistTv().test {
+        val firstEmission = awaitItem()
+        assertEquals(1, firstEmission.size)
+        assertEquals(watchlistTvEntity.mediaId, firstEmission[0].mediaId)
+
+        favoriteDao.insert(
+          favoriteTvEntity.copy(
+            mediaId = 444,
+            isFavorite = false,
+            isWatchlist = true,
+          ),
+        )
+
+        val secondEmission = awaitItem()
+        assertEquals(2, secondEmission.size)
+        assertEquals(444, secondEmission[1].mediaId)
+      }
     }
 
   @Test
@@ -155,10 +186,29 @@ class FavoriteDaoTest {
     }
 
   @Test
+  fun update_differentValue_changesValues() =
+    runTest {
+      favoriteDao.insert(favoriteTvEntity.copy(isFavorite = false, isWatchlist = true))
+
+      val updateCount = favoriteDao.update(
+        isFavorite = false,
+        isWatchlist = false,
+        id = 103,
+        mediaType = TV_MEDIA_TYPE,
+      )
+
+      assertEquals(1, updateCount)
+      val isFavorite = favoriteDao.isFavorite(favoriteTvEntity.mediaId, TV_MEDIA_TYPE)
+      val isWatchlist = favoriteDao.isWatchlist(favoriteTvEntity.mediaId, TV_MEDIA_TYPE)
+      assertFalse(isFavorite)
+      assertFalse(isWatchlist)
+    }
+
+  @Test
   fun insert_whenSuccessful_ignoresOnConflict() =
     runTest {
-      val original = favoriteMovieEntity.copy(title = "Original Title")
-      val duplicate = favoriteMovieEntity.copy(title = "Updated Title")
+      val original = favoriteMovieEntity.copy(id = 1, title = "Original Title")
+      val duplicate = favoriteMovieEntity.copy(id = 1, title = "Updated Title")
 
       val firstInsert = favoriteDao.insert(original)
       val secondInsert = favoriteDao.insert(duplicate) // Should be ignored

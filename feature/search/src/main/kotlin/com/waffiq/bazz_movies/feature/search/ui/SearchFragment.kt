@@ -17,12 +17,15 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.withStarted
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.R.id.open_search_view_clear_button
 import com.google.android.material.R.id.open_search_view_toolbar
 import com.google.android.material.appbar.AppBarLayout
@@ -40,9 +43,14 @@ import com.waffiq.bazz_movies.core.utils.GeneralHelper.initLinearLayoutManagerVe
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorHandling
 import com.waffiq.bazz_movies.core.utils.PagingLoadStateHelper.pagingErrorState
 import com.waffiq.bazz_movies.feature.search.databinding.FragmentSearchBinding
+import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchAdapter
+import com.waffiq.bazz_movies.feature.search.ui.adapter.SearchHistoryAdapter
+import com.waffiq.bazz_movies.feature.search.ui.adapter.ShimmerAdapter
+import com.waffiq.bazz_movies.feature.search.ui.viewmodel.SearchViewModel
 import com.waffiq.bazz_movies.feature.search.utils.SearchHelper.setupRecyclerView
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -64,15 +72,31 @@ class SearchFragment : Fragment() {
   private val searchViewModel: SearchViewModel by viewModels()
   private lateinit var searchAdapter: SearchAdapter
   private lateinit var shimmerAdapter: ShimmerAdapter
+  private lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
   private var lastQuery: String? = null
   private var mSnackbar: Snackbar? = null
   private var lastRefreshErrorMessage: String? = null
 
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  internal var loadStateFlowProvider: Flow<CombinedLoadStates>? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     searchAdapter = SearchAdapter(navigator)
     shimmerAdapter = ShimmerAdapter()
+    searchHistoryAdapter = SearchHistoryAdapter(
+      onItemClick = { query ->
+        // click history item will run search
+        binding.searchView.editText.setText(query)
+        binding.searchView.hide()
+        if (query != lastQuery) performSearch(query)
+        binding.searchBar.setText(query)
+      },
+      onDeleteClick = { item ->
+        searchViewModel.deleteHistory(item)
+      },
+    )
   }
 
   override fun onCreateView(
@@ -94,6 +118,8 @@ class SearchFragment : Fragment() {
     setupMaterialSearchView()
     adapterLoadStateListener()
     setSearchBarScrollable(false)
+    setupSearchHistoryRecyclerView()
+    observeSearchHistory()
 
     // Set up fragment result listener
     requireActivity().supportFragmentManager.setFragmentResultListener(
@@ -137,6 +163,28 @@ class SearchFragment : Fragment() {
     binding.searchBar.layoutParams = params
     if (!scrollable) {
       binding.appBarLayout.setExpanded(true, true)
+    }
+  }
+
+  private fun setupSearchHistoryRecyclerView() {
+    binding.rvSearchHistory.layoutManager = LinearLayoutManager(requireContext())
+    binding.rvSearchHistory.adapter = searchHistoryAdapter
+
+    binding.btnClearAll.setOnClickListener {
+      searchViewModel.deleteAllHistory()
+    }
+  }
+
+  private fun observeSearchHistory() {
+    viewLifecycleOwner.lifecycleScope.launch {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        searchViewModel.searchHistory.collect { history ->
+          searchHistoryAdapter.submitList(history)
+
+          // show/hide header based on whether there is any history
+          binding.historyHeader.isVisible = history.isNotEmpty()
+        }
+      }
     }
   }
 
@@ -191,18 +239,22 @@ class SearchFragment : Fragment() {
     showShimmer()
   }
 
-  private fun adapterLoadStateListener() {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun adapterLoadStateListener() {
     lifecycleScope.launch {
-      searchAdapter.loadStateFlow
+      (loadStateFlowProvider ?: searchAdapter.loadStateFlow)
         .debounce(DEBOUNCE_SHORT)
         .collectLatest { loadState ->
           val currentRefresh = loadState.source.refresh
-          val errorMessage = (currentRefresh as? LoadState.Error)?.error?.message
-          val isNewError =
-            currentRefresh is LoadState.Error && errorMessage != lastRefreshErrorMessage
 
-          if (currentRefresh !is LoadState.Error || isNewError) {
-            lastRefreshErrorMessage = errorMessage
+          if (currentRefresh is LoadState.Error) {
+            val errorMessage = currentRefresh.error.message
+            if (errorMessage != lastRefreshErrorMessage) {
+              lastRefreshErrorMessage = errorMessage
+              handleRefreshState(loadState, currentRefresh)
+            }
+          } else {
+            lastRefreshErrorMessage = null
             handleRefreshState(loadState, currentRefresh)
           }
         }
@@ -324,7 +376,7 @@ class SearchFragment : Fragment() {
     binding.appBarLayout.setExpanded(true)
   }
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  @VisibleForTesting(otherwise = VisibleForTesting.NONE)
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter

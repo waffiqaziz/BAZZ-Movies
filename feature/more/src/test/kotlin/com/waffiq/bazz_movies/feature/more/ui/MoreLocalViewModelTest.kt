@@ -2,7 +2,7 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
-import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import io.mockk.coEvery
@@ -20,7 +20,7 @@ import kotlin.test.assertEquals
 
 class MoreLocalViewModelTest {
 
-  private val localDatabaseUseCase: LocalDatabaseUseCase = mockk()
+  private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
   private lateinit var viewModel: MoreLocalViewModel
   private val testDispatcher = StandardTestDispatcher()
 

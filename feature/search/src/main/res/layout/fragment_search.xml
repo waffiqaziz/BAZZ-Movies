@@ -98,7 +98,60 @@
     app:animateNavigationIcon="false"
     app:layout_anchor="@id/search_bar">
 
-    <!-- TODO: search suggestion/history use RecyclerView -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_marginTop="8dp"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:id="@+id/history_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:visibility="gone">
+
+        <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/recent_searches"
+          android:textAllCaps="true"
+          android:textColor="@color/gray_400"
+          android:textSize="12sp" />
+
+        <Button
+          android:id="@+id/btn_clear_all"
+          style="?attr/materialIconButtonFilledStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:insetLeft="0dp"
+          android:insetTop="0dp"
+          android:insetRight="0dp"
+          android:insetBottom="0dp"
+          android:minWidth="0dp"
+          android:minHeight="0dp"
+          android:paddingVertical="8dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="14dp"
+          android:text="@string/clear_all"
+          android:textColor="@color/yellow"
+          android:textSize="12sp"
+          android:theme="@style/ThemeOverlay.App.Button.Transparent" />
+
+      </LinearLayout>
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
+
+    </LinearLayout>
 
   </com.google.android.material.search.SearchView>
 
