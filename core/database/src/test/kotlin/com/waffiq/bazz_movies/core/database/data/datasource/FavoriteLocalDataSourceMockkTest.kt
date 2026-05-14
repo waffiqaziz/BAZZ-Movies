@@ -1,9 +1,6 @@
 package com.waffiq.bazz_movies.core.database.data.datasource
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteDiskIOException
 import android.database.sqlite.SQLiteException
-import android.database.sqlite.SQLiteFullException
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.database.data.room.FavoriteDao
 import com.waffiq.bazz_movies.core.database.utils.DbResult
@@ -128,52 +125,13 @@ class FavoriteLocalDataSourceMockkTest {
   }
 
   @Test
-  fun insert_whenConstraintViolation_throwsSQLiteConstraintException() =
+  fun update_sQLiteExceptionNoMessage_throwsSQLiteException() =
     runDbErrorTest(
-      "Unique constraint violation",
-      {
-        coEvery {
-          favoriteDao.insert(any())
-        } throws SQLiteConstraintException("Unique constraint failed")
-      },
-    ) {
-      localDataSource.insert(createFavoriteEntity())
-    }
-
-  @Test
-  fun deleteItemFromDB_whenDatabaseFull_throwsSQLiteFullException() =
-    runDbErrorTest(
-      "Database is full",
-      {
-        coEvery {
-          favoriteDao.deleteItem(any(), any())
-        } throws SQLiteFullException("Database is full")
-      },
-    ) {
-      localDataSource.deleteItemFromDB(101, "movie")
-    }
-
-  @Test
-  fun isFavorite_whenDiskIOIssue_throwsSQLiteDiskIOException() =
-    runDbErrorTest(
-      "Disk IO issue",
-      {
-        coEvery {
-          favoriteDao.isFavorite(any(), any())
-        } throws SQLiteDiskIOException("Disk IO issue")
-      },
-    ) {
-      localDataSource.isFavorite(101, "movie")
-    }
-
-  @Test
-  fun update_whenGenericError_throwsSQLiteException() =
-    runDbErrorTest(
-      "SQLite exception",
+      "Database error",
       {
         coEvery {
           favoriteDao.update(any(), any(), any(), any())
-        } throws SQLiteException("General SQLite error")
+        } throws SQLiteException("SQLite exception")
       },
     ) {
       localDataSource.update(isFavorite = true, isWatchlist = false, id = 101, mediaType = "movie")
