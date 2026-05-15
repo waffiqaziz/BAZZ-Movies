@@ -46,6 +46,8 @@ import com.waffiq.bazz_movies.core.uihelper.utils.SnackBarManager.toastShort
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -175,6 +177,7 @@ class MoreFragment : Fragment() {
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
+        moreLocalViewModel.deleteAllSearchHistory()
         moreUserViewModel.deleteSession(sessionId) // revoke session for login user
         dialog.dismiss()
       }
@@ -197,6 +200,7 @@ class MoreFragment : Fragment() {
       }
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+        moreLocalViewModel.deleteAllSearchHistory()
         moreLocalViewModel.deleteAll()
         dialog.dismiss()
       }

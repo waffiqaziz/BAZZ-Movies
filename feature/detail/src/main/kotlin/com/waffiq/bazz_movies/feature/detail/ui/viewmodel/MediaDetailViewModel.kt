@@ -9,11 +9,11 @@ import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCa
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listmovie.GetListMoviesUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.listtv.GetListTvUseCase
-import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
-import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favFalseWatchlistTrue
-import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistFalse
-import com.waffiq.bazz_movies.core.database.utils.DatabaseMapper.favTrueWatchlistTrue
+import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favFalseWatchlistTrue
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistFalse
+import com.waffiq.bazz_movies.core.database.utils.FavoriteMapper.favTrueWatchlistTrue
 import com.waffiq.bazz_movies.core.designsystem.R.string.rating_added_successfully
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.FavoriteParams
@@ -47,7 +47,7 @@ import javax.inject.Inject
 class MediaDetailViewModel @Inject constructor(
   private val getListMoviesUseCase: GetListMoviesUseCase,
   private val getListTvUseCase: GetListTvUseCase,
-  private val localDatabaseUseCase: LocalDatabaseUseCase,
+  private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase,
   private val postRateUseCase: PostRateUseCase,
   private val postActionUseCase: PostActionUseCase,
   private val getOMDbDetailUseCase: GetOMDbDetailUseCase,

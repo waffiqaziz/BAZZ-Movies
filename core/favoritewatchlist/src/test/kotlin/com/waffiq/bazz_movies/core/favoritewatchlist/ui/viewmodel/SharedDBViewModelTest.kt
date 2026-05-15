@@ -3,7 +3,7 @@ package com.waffiq.bazz_movies.core.favoritewatchlist.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.favoritewatchlist.LiveDataCollectors
 import com.waffiq.bazz_movies.core.favoritewatchlist.testutils.TestData
@@ -27,7 +27,7 @@ import org.junit.Test
 class SharedDBViewModelTest {
 
   private lateinit var viewModel: SharedDBViewModel
-  private val localDatabaseUseCase: LocalDatabaseUseCase = mockk()
+  private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase = mockk()
 
   // test data collections
   private val testData = TestData()

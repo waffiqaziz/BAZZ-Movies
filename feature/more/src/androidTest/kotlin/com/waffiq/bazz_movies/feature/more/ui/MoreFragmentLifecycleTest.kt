@@ -6,6 +6,8 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
 import com.waffiq.bazz_movies.feature.more.testutils.MoreFragmentTestHelper
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
+import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

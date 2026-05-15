@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.waffiq.bazz_movies.core.common.utils.Event
-import com.waffiq.bazz_movies.core.database.domain.usecase.localdatabase.LocalDatabaseUseCase
+import com.waffiq.bazz_movies.core.database.domain.usecase.FavoriteLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.database.utils.DbResult
 import com.waffiq.bazz_movies.core.models.Favorite
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedDBViewModel @Inject constructor(
-  private val localDatabaseUseCase: LocalDatabaseUseCase,
+  private val localDatabaseUseCase: FavoriteLocalDatabaseUseCase,
 ) : ViewModel() {
 
   private val _dbResult = MutableLiveData<Event<DbResult<Int>>>()

@@ -44,9 +44,9 @@ class HomeFragment : Fragment() {
       viewLifecycleOwner.lifecycle,
       listOf(
         FeaturedFragment::class.java to { FeaturedFragment() },
-        MovieFragment::class.java    to { MovieFragment() },
+        MovieFragment::class.java to { MovieFragment() },
         TvSeriesFragment::class.java to { TvSeriesFragment() },
-        AsianFragment::class.java    to { AsianFragment() },
+        AsianFragment::class.java to { AsianFragment() },
       ),
     )
     binding.viewPager.adapter = adapter

@@ -11,12 +11,14 @@ android.namespace = "com.waffiq.bazz_movies.feature.search"
 
 dependencies {
   implementation(project(":core:common"))
+  implementation(project(":core:database"))
   implementation(project(":core:models"))
   implementation(project(":core:network"))
   implementation(project(":core:uihelper"))
   implementation(project(":core:utils"))
 
   implementation(libs.androidx.fragment.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
   implementation(libs.androidx.swiperefreshlayout)
   implementation(libs.androidx.paging.runtime)
   implementation(libs.google.material)
@@ -32,6 +34,7 @@ dependencies {
   testImplementation(libs.turbine)
 
   androidTestImplementation(libs.androidx.core.testing)
+  androidTestImplementation(libs.androidx.espresso.contrib)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.kotlinx.coroutines.test)
   androidTestImplementation(libs.mockk.android)

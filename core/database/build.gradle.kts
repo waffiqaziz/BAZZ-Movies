@@ -24,6 +24,7 @@ dependencies {
   implementation(project(":core:utils"))
 
   testImplementation(project(":core:test"))
+  testImplementation(libs.androidx.core.testing)
   testImplementation(libs.androidx.room.testing)
   testImplementation(libs.androidx.test.core)
   testImplementation(libs.kotlinx.coroutines.test)

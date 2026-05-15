@@ -5,29 +5,29 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
-import com.waffiq.bazz_movies.core.database.utils.Constants.TABLE_NAME
+import com.waffiq.bazz_movies.core.database.utils.Constants.FAVORITE_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'tv'")
+  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_favorited = 1 and mediaType = 'tv'")
   fun getFavoriteTv(): Flow<List<FavoriteEntity>>
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_favorited = 1 and mediaType = 'movie'")
+  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_favorited = 1 and mediaType = 'movie'")
   fun getFavoriteMovies(): Flow<List<FavoriteEntity>>
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'movie'")
+  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'movie'")
   fun getWatchlistMovies(): Flow<List<FavoriteEntity>>
 
-  @Query("SELECT * FROM $TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
+  @Query("SELECT * FROM $FAVORITE_TABLE_NAME WHERE is_watchlist = 1 and mediaType = 'tv'")
   fun getWatchlistTv(): Flow<List<FavoriteEntity>>
 
   @Query(
     """
         SELECT EXISTS(
         SELECT *
-        FROM $TABLE_NAME
+        FROM $FAVORITE_TABLE_NAME
         WHERE mediaId = :id
         AND is_favorited = 1
         AND mediaType = :mediaType)
@@ -39,7 +39,7 @@ interface FavoriteDao {
     """
         SELECT EXISTS(
         SELECT *
-        FROM $TABLE_NAME
+        FROM $FAVORITE_TABLE_NAME
         WHERE mediaId = :id
         AND is_watchlist = 1
         AND mediaType = :mediaType)
@@ -47,10 +47,10 @@ interface FavoriteDao {
   )
   suspend fun isWatchlist(id: Int, mediaType: String): Boolean
 
-  @Query("DELETE FROM $TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
+  @Query("DELETE FROM $FAVORITE_TABLE_NAME WHERE mediaId = :mediaId and mediaType = :mediaType")
   suspend fun deleteItem(mediaId: Int, mediaType: String): Int // delete from table
 
-  @Query("DELETE FROM $TABLE_NAME")
+  @Query("DELETE FROM $FAVORITE_TABLE_NAME")
   suspend fun deleteALl(): Int
 
   // used while a conflict occurs, returns -1, indicating the insertion was ignored.
@@ -59,7 +59,7 @@ interface FavoriteDao {
 
   @Query(
     """
-        UPDATE $TABLE_NAME
+        UPDATE $FAVORITE_TABLE_NAME
         SET is_favorited = :isFavorite, is_watchlist = :isWatchlist
         WHERE mediaType = :mediaType
         AND mediaId = :id

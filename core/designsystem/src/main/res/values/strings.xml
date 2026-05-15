@@ -97,6 +97,10 @@
   <!-- SEARCH -->
   <string name="search_results">Search results</string>
   <string name="search_any">Search any Movies</string>
+  <string name="clear_all">Clear All</string>
+  <string name="history_search">History search</string>
+  <string name="recent_searches">Recent searches</string>
+  <string name="delete_search_history">delete this search history</string>
   <string name="explore_our_libraries">Explore TMDB libraries and start typing a movie, series or actor as you like</string>
   <string name="sorry_no_result">Sorry no result!</string>
   <string name="no_result_explanation">We cannot find item you are searching for, maybe a little mistake?</string>
@@ -145,8 +149,6 @@
   <string name="keywords">Keywords</string>
   <string name="revenue">Revenue</string>
   <string name="budget">Budget</string>
-
-
 
   <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>
