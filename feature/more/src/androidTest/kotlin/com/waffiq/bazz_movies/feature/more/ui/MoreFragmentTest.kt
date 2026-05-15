@@ -232,6 +232,10 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun signOutStateLogin_whenSuccess_shouldShowSuccessToastAndNavigateToLogin() {
     performSignOutAction()
+
+    mockUIState.value = UIState.Success(Unit) // success
+
+    verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
   }
 
   @Test
@@ -241,6 +245,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
       mockUIState.emit(UIState.Loading)
 
       progress_bar.isDisplayed()
+
+      verify(exactly = 0) { mockMoreLocalViewModel.deleteAllSearchHistory() }
     }
 
   @Test
@@ -250,7 +256,7 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
       performSignOutAction()
       mockUIState.emit(UIState.Success(Unit))
 
-      // manual checking
+      verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
     }
 
   @Test
@@ -268,6 +274,9 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
       btn_signout.isEnable()
       onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
+
+
+      verify(exactly = 0) { mockMoreLocalViewModel.deleteAllSearchHistory() }
     }
 
   @Test
@@ -394,8 +403,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   private fun performSignOutAction() {
     btn_signout.performClick()
     yes.performTextClick()
-
-    verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {
