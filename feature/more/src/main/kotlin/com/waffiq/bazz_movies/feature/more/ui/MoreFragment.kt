@@ -101,6 +101,7 @@ class MoreFragment : Fragment() {
 
           when (it) {
             is UIState.Success -> {
+              moreLocalViewModel.deleteAllSearchHistory()
               requireContext().toastShort(getString(sign_out_success))
               openLoginActivity()
             }
@@ -109,7 +110,7 @@ class MoreFragment : Fragment() {
 
             is UIState.Loading -> Unit
 
-            is UIState.Idle -> Unit
+            else -> Unit // idle do nothing
           }
         }
       }
@@ -128,7 +129,7 @@ class MoreFragment : Fragment() {
 
             is UIState.Idle -> Unit
 
-            is UIState.Loading -> Unit
+            else -> Unit // idle do nothing
           }
         }
       }
@@ -177,7 +178,6 @@ class MoreFragment : Fragment() {
       setPositiveButton(resources.getString(yes)) { dialog, _ ->
         fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
         btnSignOutIsEnable(false)
-        moreLocalViewModel.deleteAllSearchHistory()
         moreUserViewModel.deleteSession(sessionId) // revoke session for login user
         dialog.dismiss()
       }
