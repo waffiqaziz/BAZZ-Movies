@@ -3,12 +3,14 @@ package com.waffiq.bazz_movies.feature.search.ui
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
@@ -136,6 +138,18 @@ class SearchFragmentTest : SearchFragmentTestHelper by DefaultFragmentTestHelper
 
     // only perform search once
     verify(exactly = 1) { mockSearchViewModel.search(testQuery) }
+  }
+
+  @Test
+  fun setupKeyboardScroll_whenSoftKeyboardIsShow_shouldNotCrash() {
+    search_bar.performClick()
+    pressBack()
+  }
+
+  @Test
+  fun setupKeyboardScroll_whenSoftKeyboardNotShowing_shouldNotCrash() {
+    shortDelay()
+    scenario.moveToState(Lifecycle.State.DESTROYED)
   }
 
   @Test

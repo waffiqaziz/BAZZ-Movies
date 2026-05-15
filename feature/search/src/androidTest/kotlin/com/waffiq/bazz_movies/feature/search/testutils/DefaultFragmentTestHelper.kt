@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.testutils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.SearchHistory
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.flowOf
  */
 class DefaultFragmentTestHelper : SearchFragmentTestHelper {
 
+  override lateinit var scenario: ActivityScenario<*>
   override lateinit var searchFragment: SearchFragment
   override lateinit var activity: AppCompatActivity
   override lateinit var searchAdapter: SearchAdapter
@@ -57,7 +59,10 @@ class DefaultFragmentTestHelper : SearchFragmentTestHelper {
     val spyAdapter = spyk(SearchAdapter(navigator))
     searchAdapter = spyAdapter
 
-    searchFragment = launchFragmentInHiltContainer<SearchFragment>().fragment
+    val result = launchFragmentInHiltContainer<SearchFragment>()
+    searchFragment = result.fragment
+    scenario = result.scenario
+
     InstrumentationRegistry.getInstrumentation().runOnMainSync {
       searchFragment.setAdapterForTest(spyAdapter)
     }

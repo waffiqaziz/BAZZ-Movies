@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageButton
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
@@ -78,6 +79,8 @@ class SearchFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
   private var lastRefreshErrorMessage: String? = null
 
+  private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   internal var loadStateFlowProvider: Flow<CombinedLoadStates>? = null
 
@@ -114,6 +117,7 @@ class SearchFragment : Fragment() {
     binding.searchView.hide()
     binding.rvSearch.layoutManager = initLinearLayoutManagerVertical(requireContext())
 
+    setupKeyboardScroll()
     setupAction()
     setupMaterialSearchView()
     adapterLoadStateListener()
@@ -149,6 +153,25 @@ class SearchFragment : Fragment() {
 
   private fun showShimmer() {
     binding.rvSearch.adapter = shimmerAdapter
+  }
+
+  private fun setupKeyboardScroll() {
+    val rootView = requireActivity().window.decorView.rootView
+
+    globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+      val rect = android.graphics.Rect()
+      rootView.getWindowVisibleDisplayFrame(rect)
+      val screenHeight = rootView.height
+      val keyboardHeight = screenHeight - rect.bottom
+
+      if (keyboardHeight > screenHeight * SOFT_KEYBOARD_PERCENTAGE) {
+        binding.rvSearchHistory.setPadding(0, 0, 0, keyboardHeight)
+      } else {
+        binding.rvSearchHistory.setPadding(0, 0, 0, ADDITION_PADDING)
+      }
+    }
+
+    rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
   }
 
   private fun setSearchBarScrollable(scrollable: Boolean) {
@@ -356,6 +379,10 @@ class SearchFragment : Fragment() {
 
   override fun onDestroyView() {
     super.onDestroyView()
+    requireActivity().window.decorView.rootView
+      .viewTreeObserver
+      .removeOnGlobalLayoutListener(globalLayoutListener)
+    globalLayoutListener = null
     mSnackbar = null
     lastQuery = null
     _binding = null
@@ -380,5 +407,10 @@ class SearchFragment : Fragment() {
   fun setAdapterForTest(adapter: SearchAdapter) {
     this.searchAdapter = adapter
     binding.rvSearch.adapter = adapter
+  }
+
+  companion object {
+    private const val ADDITION_PADDING = 246
+    private const val SOFT_KEYBOARD_PERCENTAGE = 0.15
   }
 }

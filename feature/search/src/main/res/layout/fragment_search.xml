@@ -14,7 +14,7 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/gray_1000">
+    android:backgroundTint="@color/gray_1000" >
 
     <com.google.android.material.search.SearchBar
       android:id="@+id/search_bar"
@@ -100,8 +100,8 @@
 
     <LinearLayout
       android:layout_width="match_parent"
-      android:layout_marginTop="8dp"
       android:layout_height="match_parent"
+      android:layout_marginTop="8dp"
       android:orientation="vertical">
 
       <LinearLayout
@@ -147,9 +147,10 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_search_history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="@dimen/margin_to_centered" />
 
     </LinearLayout>
 

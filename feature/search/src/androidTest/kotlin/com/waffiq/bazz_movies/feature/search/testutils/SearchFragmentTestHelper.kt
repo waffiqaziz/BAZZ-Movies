@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.feature.search.testutils
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingData
+import androidx.test.core.app.ActivityScenario
 import com.waffiq.bazz_movies.core.models.SearchHistory
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
@@ -16,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * Interface to help with setting up the SearchFragment for testing purposes.
  * */
 interface SearchFragmentTestHelper {
+
+  var scenario: ActivityScenario<*>
   var searchFragment: SearchFragment
   var activity: AppCompatActivity
   var searchAdapter: SearchAdapter
