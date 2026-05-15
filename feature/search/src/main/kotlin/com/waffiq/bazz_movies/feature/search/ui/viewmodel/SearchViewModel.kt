@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_SHORT
 import com.waffiq.bazz_movies.core.database.domain.usecase.SearchHistoryLocalDatabaseUseCase
 import com.waffiq.bazz_movies.core.models.SearchHistory
 import com.waffiq.bazz_movies.feature.search.domain.model.MultiSearchItem
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +32,7 @@ class SearchViewModel @Inject constructor(
     _searchResults.cachedIn(viewModelScope)
 
   val searchHistory: StateFlow<List<SearchHistory>> =
-    searchHistoryUseCase.getSearchHistory()
+    searchHistoryUseCase.getSearchHistory().debounce(DEBOUNCE_SHORT)
       .stateIn(viewModelScope, SharingStarted.WhileSubscribed(TIMEOUT), emptyList())
 
   fun search(query: String) {
