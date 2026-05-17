@@ -86,6 +86,11 @@ class ListAdapterTest {
     listViewHolder = adapter.ListViewHolder(itemResultBInding)
   }
 
+  private fun performClick(expectedItem: MediaItem) {
+    itemListBinding.imgPoster.performClick()
+    verify(navigator).openDetails(context, expectedItem)
+  }
+
   @Test
   fun submitMovieData_withPagingData_bindsCorrectData() =
     runTest {
@@ -215,10 +220,17 @@ class ListAdapterTest {
       setupAdapter()
 
       submitPagingAndWait(mediaMovieItem)
-      itemListBinding.imgPoster.performClick()
+      performClick(mediaMovieItem)
+    }
 
-      val expectedItem = mediaMovieItem
-      verify(navigator).openDetails(context, expectedItem)
+
+  @Test
+  fun trendingData_performClick_shouldUseMediATypeItem() =
+    runTest {
+      setupAdapter(MediaSource.Trending)
+      submitPagingAndWait(mediaTvResponseItem.toMediaItem())
+
+      performClick(mediaTvResponseItem.toMediaItem())
     }
 
   @Test
