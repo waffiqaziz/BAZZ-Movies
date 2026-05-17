@@ -11,7 +11,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltConta
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.home.ui.HomeFragment
+import com.waffiq.bazz_movies.feature.home.ui.fragment.HomeFragment
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel

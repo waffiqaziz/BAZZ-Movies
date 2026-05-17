@@ -1,15 +1,13 @@
-package com.waffiq.bazz_movies.feature.home.ui
+package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
-import com.waffiq.bazz_movies.core.designsystem.R.string.tv_series
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performSwipeDown
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
@@ -17,15 +15,15 @@ import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntilVisible
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
-import com.waffiq.bazz_movies.feature.home.R.id.btn_more_popular_tv_series
-import com.waffiq.bazz_movies.feature.home.R.id.btn_more_top_rated_tv_series
-import com.waffiq.bazz_movies.feature.home.R.id.btn_more_tv_series_airing_this_week
-import com.waffiq.bazz_movies.feature.home.R.id.btn_more_tv_series_airing_today
-import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_tv_series
-import com.waffiq.bazz_movies.feature.home.R.id.layout_header_popular_tv_series
-import com.waffiq.bazz_movies.feature.home.R.id.rv_popular_tv_series
-import com.waffiq.bazz_movies.feature.home.R.id.rv_tv_series_airing_today
-import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_tv_series
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_movie_airing_today
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_popular_movie
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_top_rated_movie
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_upcoming_movie
+import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_movie
+import com.waffiq.bazz_movies.feature.home.R.id.layout_header_popular_movie
+import com.waffiq.bazz_movies.feature.home.R.id.rv_popular_movie
+import com.waffiq.bazz_movies.feature.home.R.id.swipe_refresh_movie
+import com.waffiq.bazz_movies.feature.home.R.id.tabs
 import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
@@ -43,7 +41,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class TvSeriesFragmentTest : BaseHomeFragmentTest() {
+class MovieFragmentTest : BaseHomeFragmentTest() {
 
   @get:Rule
   var hiltRule = HiltAndroidRule(this)
@@ -82,88 +80,88 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
 
   @Test
   fun setData_whenLoadSuccess_shouldShowContentAndHideError() {
-    launchTvSeriesFragment()
-
-    shortDelay(1000)
-    waitUntilVisible(withId(rv_popular_tv_series))
-    rv_tv_series_airing_today.isDisplayed()
-    layout_header_popular_tv_series.isDisplayed()
-    illustration_error_tv_series.isNotDisplayed()
+    launchMovieFragment()
+    waitUntilVisible(withId(rv_popular_movie))
+    illustration_error_movie.isNotDisplayed()
   }
 
   @Test
   fun setData_whenLoadErrorNoItems_shouldShowErrorIllustration() {
-    every { mockTvSeriesViewModel.getTopRatedTv() } returns createErrorPagingFlow()
+    every { mockMovieViewModel.getTopRatedMovies() } returns createErrorPagingFlow()
 
-    launchTvSeriesFragment()
+    launchMovieFragment()
     shortDelay(2000)
 
-    waitUntilVisible(withId(illustration_error_tv_series))
-    layout_header_popular_tv_series.isNotDisplayed()
+    waitUntilVisible(withId(illustration_error_movie))
+    layout_header_popular_movie.isNotDisplayed()
   }
 
   @Test
   fun setData_whenLoading_shouldShowShimmer() {
-    every { mockTvSeriesViewModel.getTopRatedTv() } returns createStuckLoadingFlow()
+    every { mockMovieViewModel.getTopRatedMovies() } returns createStuckLoadingFlow()
 
-    launchTvSeriesFragment()
-    rv_popular_tv_series.isVisible()
+    launchMovieFragment()
+    rv_popular_movie.isVisible()
   }
 
   @Test
   fun moreButton_whenClicked_shouldOpenListActivity() {
-    launchTvSeriesFragment()
+    launchMovieFragment()
 
-    btn_more_popular_tv_series.performScrollTo()
-    btn_more_popular_tv_series.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.POPULAR, MediaSource.Typed(TV_MEDIA_TYPE), ""))
-
-    btn_more_tv_series_airing_today.performScrollTo()
-    btn_more_tv_series_airing_today.performClick()
+    btn_more_popular_movie.performScrollTo()
+    btn_more_popular_movie.performClick()
     verifyOpenList(
       mockNavigator,
-      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+      ListArgs(ListType.POPULAR, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
     )
 
-    btn_more_tv_series_airing_this_week.performScrollTo()
-    btn_more_tv_series_airing_this_week.performClick()
+    btn_more_movie_airing_today.performScrollTo()
+    btn_more_movie_airing_today.performClick()
     verifyOpenList(
       mockNavigator,
-      ListArgs(ListType.AIRING_THIS_WEEK, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
     )
 
-    btn_more_top_rated_tv_series.performScrollTo()
-    btn_more_top_rated_tv_series.performClick()
+    btn_more_upcoming_movie.performScrollTo()
+    btn_more_upcoming_movie.performClick()
     verifyOpenList(
       mockNavigator,
-      ListArgs(ListType.TOP_RATED, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+      ListArgs(ListType.UPCOMING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
+    )
+
+    btn_more_top_rated_movie.performScrollTo()
+    btn_more_top_rated_movie.performClick()
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.TOP_RATED, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
     )
   }
 
   @Test
   fun swipeScroll_whenRefresh_refreshData() {
-    launchTvSeriesFragment()
+    launchMovieFragment()
     shortDelay(1000)
-    waitUntilVisible(withId(swipe_refresh_tv_series))
-    swipe_refresh_tv_series.performSwipeDown()
+    swipe_refresh_movie.performSwipeDown()
   }
 
   @Test
-  fun onPause_whenSnackbarAndJobAreNull_shouldNotCrash() {
-    launchTvSeriesFragment()
+  fun onPause_whenSnackbarIsNull_shouldNotCrash() {
+    // no error, so snack bar is null
+    launchMovieFragment()
     scenario.moveToState(Lifecycle.State.CREATED)
   }
 
   @Test
-  fun onDestroy_whenSnackbarAndJobAreNull_shouldNotCrash() {
-    launchTvSeriesFragment()
+  fun onDestroy_whenSnackbarIsNull_shouldNotCrash() {
+    // no error, so snack bar is null
+    launchMovieFragment()
     scenario.moveToState(Lifecycle.State.DESTROYED)
   }
 
-  private fun launchTvSeriesFragment() {
+  private fun launchMovieFragment() {
     launchFragment()
     shortDelay()
-    tv_series.performTextClick()
-    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+    waitUntilVisible(withId(tabs))
+    movies.performTextClick()
   }
 }
