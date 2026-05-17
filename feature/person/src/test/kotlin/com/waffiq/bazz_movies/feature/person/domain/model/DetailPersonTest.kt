@@ -1,7 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import android.os.Parcel
-import android.os.Parcelable
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import org.junit.Test
@@ -10,23 +8,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class DetailPersonTest {
-
-  private val detailPersonFull = DetailPerson(
-    alsoKnownAs = listOf("Name1", "Name2"),
-    birthday = "1990-01-01",
-    gender = 1,
-    imdbId = "tt1234567",
-    knownForDepartment = "Acting",
-    profilePath = "/path/to/profile.jpg",
-    biography = "biography",
-    deathday = "2023-10-01",
-    placeOfBirth = "Los Angeles",
-    popularity = 85.6f,
-    name = "Your Name",
-    id = 12345,
-    adult = false,
-    homepage = "https://example.com",
-  )
 
   @Test
   fun detailPerson_whenInstantiatedWithNoData_returnsAllFieldsNull() {
@@ -49,91 +30,37 @@ class DetailPersonTest {
   }
 
   @Test
-  fun parcelable_whenAllFieldsAreValid_readsAndWritesCorrectly() {
-    val original = detailPersonFull
-
-    // obtain the CREATOR field
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      DetailPerson::class.java.getField("CREATOR").get(null) as Parcelable.Creator<DetailPerson>
-    val parcel = Parcel.obtain()
-    original.writeToParcel(parcel, 0)
-
-    // reset the parcel for reading
-    parcel.setDataPosition(0)
-
-    // create the object from the parcel
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(original, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun parcelable_whenAllFieldsAreNull_readsAndWritesCorrectly() {
-    val original = DetailPerson(
-      alsoKnownAs = null,
-      birthday = null,
-      gender = null,
-      imdbId = null,
-      knownForDepartment = null,
-      profilePath = null,
-      biography = null,
-      deathday = null,
-      placeOfBirth = null,
-      popularity = null,
-      name = null,
-      id = null,
-      adult = null,
-      homepage = null,
+  fun detailPerson_withValidData_returnsAllFieldsCorrectly() {
+    val detailPerson = DetailPerson(
+      alsoKnownAs = listOf("Name1", "Name2"),
+      birthday = "1990-01-01",
+      gender = 1,
+      imdbId = "tt1234567",
+      knownForDepartment = "Acting",
+      profilePath = "/path/to/profile.jpg",
+      biography = "biography",
+      deathday = "2023-10-01",
+      placeOfBirth = "Los Angeles",
+      popularity = 85.6f,
+      name = "Your Name",
+      id = 12345,
+      adult = false,
+      homepage = "https://example.com",
     )
 
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      DetailPerson::class.java.getField("CREATOR").get(null) as Parcelable.Creator<DetailPerson>
-    val parcel = Parcel.obtain()
-    original.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(original, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun parcelable_whenAlsoKnownAsIsEmpty_readsAndWritesCorrectly() {
-    val original = DetailPerson(alsoKnownAs = listOf())
-
-    @Suppress("UNCHECKED_CAST")
-    val creator =
-      DetailPerson::class.java.getField("CREATOR").get(null) as Parcelable.Creator<DetailPerson>
-    val parcel = Parcel.obtain()
-    original.writeToParcel(parcel, 0)
-
-    parcel.setDataPosition(0)
-    val fromParcel = creator.createFromParcel(parcel)
-
-    assertEquals(original, fromParcel)
-    parcel.recycle()
-  }
-
-  @Test
-  fun writeToParcel_whenCalled_performsWriteWithoutCrash() {
-    val detailPerson = detailPersonFull
-
-    val parcel = Parcel.obtain()
-    detailPerson.writeToParcel(parcel, 0)
-    parcel.recycle()
-  }
-
-  @Test
-  fun describeContents_whenCalled_returnsZero() {
-    val detailPerson = DetailPerson()
-
-    val contentsValue = detailPerson.describeContents()
-
-    // assert the typical return value for describeContents
-    assertEquals(0, contentsValue)
+    assertEquals(listOf("Name1", "Name2"), detailPerson.alsoKnownAs)
+    assertEquals("1990-01-01", detailPerson.birthday)
+    assertEquals(1, detailPerson.gender)
+    assertEquals("tt1234567", detailPerson.imdbId)
+    assertEquals("Acting", detailPerson.knownForDepartment)
+    assertEquals("/path/to/profile.jpg", detailPerson.profilePath)
+    assertEquals("biography", detailPerson.biography)
+    assertEquals("2023-10-01", detailPerson.deathday)
+    assertEquals("Los Angeles", detailPerson.placeOfBirth)
+    assertEquals(85.6f, detailPerson.popularity)
+    assertEquals("Your Name", detailPerson.name)
+    assertEquals(12345, detailPerson.id)
+    assertEquals(false, detailPerson.adult)
+    assertEquals("https://example.com", detailPerson.homepage)
   }
 }

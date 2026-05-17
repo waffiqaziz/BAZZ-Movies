@@ -1,9 +1,5 @@
 package com.waffiq.bazz_movies.feature.person.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class DetailPerson(
   val alsoKnownAs: List<String?>? = null,
   val birthday: String? = null,
@@ -19,4 +15,4 @@ data class DetailPerson(
   val id: Int? = null,
   val adult: Boolean? = null,
   val homepage: String? = null,
-) : Parcelable
+)

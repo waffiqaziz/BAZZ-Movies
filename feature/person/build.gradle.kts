@@ -4,7 +4,6 @@ import org.gradle.kotlin.dsl.libs
 plugins {
   alias(libs.plugins.bazzmovies.android.feature)
   alias(libs.plugins.bazzmovies.glide)
-  id("kotlin-parcelize")
 }
 
 android.namespace = "com.waffiq.bazz_movies.feature.person"
