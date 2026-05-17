@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ListArgs(
   val listType: ListType,
-  val mediaType: String,
+  val mediaType: MediaSource,
   val title: String,
   val id: Int = -1, // used for genre, keywords, and recommendation id
   val backdrop: String = "",

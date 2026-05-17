@@ -22,7 +22,6 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentAsianBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
-import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -34,6 +33,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -171,37 +171,35 @@ class AsianFragment : Fragment() {
 
   private fun moreButtonAction() {
     binding.btnMoreAnime.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(
-          listType = if (asianViewModel.animePeriod.value == AnimePeriod.THIS_SEASON) {
-            ListType.ANIME_THIS_SEASON
-          } else {
-            ListType.ANIME_ALL_TIME
-          },
-          mediaType = TV_MEDIA_TYPE,
-          title = "",
-        ),
+      openList(
+        listType =
+        if (asianViewModel.animePeriod.value == AnimePeriod.THIS_SEASON) {
+          ListType.ANIME_THIS_SEASON
+        } else {
+          ListType.ANIME_ALL_TIME
+        },
       )
     }
     binding.btnMoreCostumeDrama.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.COSTUME_DRAMA, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.COSTUME_DRAMA)
     }
     binding.btnMoreRomanceDrama.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.ROMANCE_DRAMA, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.ROMANCE_DRAMA)
     }
     binding.btnMoreDonghua.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.DONGHUA, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.DONGHUA)
     }
+  }
+
+  private fun openList(listType: ListType) {
+    navigator.openList(
+      requireContext(),
+      ListArgs(
+        listType = listType,
+        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
+        title = "",
+      ),
+    )
   }
 
   private fun observeAnime() {

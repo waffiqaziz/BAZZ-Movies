@@ -35,6 +35,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -132,7 +133,11 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     verifyOpenList(
       mockNavigator,
-      ListArgs(listType = ListType.ANIME_ALL_TIME, title = "", mediaType = TV_MEDIA_TYPE),
+      ListArgs(
+        listType = ListType.ANIME_ALL_TIME,
+        title = "",
+        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
+      ),
     )
 
     btn_anime_this_season.performClick()
@@ -144,7 +149,11 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     verifyOpenList(
       mockNavigator,
-      ListArgs(ListType.ANIME_THIS_SEASON, title = "", mediaType = TV_MEDIA_TYPE),
+      ListArgs(
+        listType = ListType.ANIME_THIS_SEASON,
+        title = "",
+        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
+      ),
     )
   }
 
@@ -163,15 +172,24 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
 
     btn_more_costume_drama.performScrollTo()
     btn_more_costume_drama.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.COSTUME_DRAMA, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.COSTUME_DRAMA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
 
     btn_more_donghua.performScrollTo()
     btn_more_donghua.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.DONGHUA, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.DONGHUA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
 
     btn_more_romance_drama.performScrollTo()
     btn_more_romance_drama.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.ROMANCE_DRAMA, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.ROMANCE_DRAMA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
   }
 
   @Test

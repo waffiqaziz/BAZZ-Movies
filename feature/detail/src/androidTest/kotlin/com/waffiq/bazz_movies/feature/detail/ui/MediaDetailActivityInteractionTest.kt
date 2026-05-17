@@ -43,6 +43,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -220,7 +221,7 @@ class MediaDetailActivityInteractionTest :
         context = any(),
         args = ListArgs(
           listType = BY_GENRE,
-          mediaType = testMediaItem.mediaType,
+          mediaType = MediaSource.Typed(testMediaItem.mediaType),
           title = "",
           id = testMediaItem.listGenreIds?.get(0) ?: 0,
         ),

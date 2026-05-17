@@ -8,6 +8,7 @@ import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseAdapterTest
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
@@ -76,7 +77,7 @@ class GenreAdapterTest : BaseAdapterTest() {
         any(),
         ListArgs(
           listType = ListType.BY_GENRE,
-          mediaType = MOVIE_MEDIA_TYPE,
+          mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
           title = "",
           id = movieGenreIds.first(),
         ),
@@ -94,7 +95,7 @@ class GenreAdapterTest : BaseAdapterTest() {
         any(),
         ListArgs(
           listType = ListType.BY_GENRE,
-          mediaType = TV_MEDIA_TYPE,
+          mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
           title = "",
           id = tvGenreIds.first(),
         ),

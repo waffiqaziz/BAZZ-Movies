@@ -6,12 +6,13 @@ import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 
 object DummyData {
 
   val movieKeywordsArgs = ListArgs(
     listType = ListType.BY_KEYWORD,
-    mediaType = MOVIE_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
     title = "name keywords",
     id = 12345,
   )

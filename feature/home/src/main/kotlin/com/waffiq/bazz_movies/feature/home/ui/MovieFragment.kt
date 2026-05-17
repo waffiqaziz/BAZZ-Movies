@@ -23,7 +23,6 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentMovieBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
-import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -36,6 +35,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -193,29 +193,28 @@ class MovieFragment : Fragment() {
 
   private fun moreButtonAction() {
     binding.btnMorePopularMovie.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.POPULAR, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.POPULAR)
     }
     binding.btnMoreMovieAiringToday.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.NOW_PLAYING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.NOW_PLAYING)
     }
     binding.btnMoreUpcomingMovie.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.UPCOMING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.UPCOMING)
     }
     binding.btnMoreTopRatedMovie.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.TOP_RATED, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.TOP_RATED)
     }
+  }
+
+  private fun openList(listType: ListType) {
+    navigator.openList(
+      requireContext(),
+      ListArgs(
+        listType = listType,
+        mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
+        title = "",
+      ),
+    )
   }
 
   override fun onPause() {

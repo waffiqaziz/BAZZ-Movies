@@ -32,6 +32,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -115,19 +116,28 @@ class TvSeriesFragmentTest : BaseHomeFragmentTest() {
 
     btn_more_popular_tv_series.performScrollTo()
     btn_more_popular_tv_series.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.POPULAR, TV_MEDIA_TYPE, ""))
+    verifyOpenList(mockNavigator, ListArgs(ListType.POPULAR, MediaSource.Typed(TV_MEDIA_TYPE), ""))
 
     btn_more_tv_series_airing_today.performScrollTo()
     btn_more_tv_series_airing_today.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.NOW_PLAYING, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
 
     btn_more_tv_series_airing_this_week.performScrollTo()
     btn_more_tv_series_airing_this_week.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.AIRING_THIS_WEEK, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.AIRING_THIS_WEEK, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
 
     btn_more_top_rated_tv_series.performScrollTo()
     btn_more_top_rated_tv_series.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.TOP_RATED, TV_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.TOP_RATED, MediaSource.Typed(TV_MEDIA_TYPE), ""),
+    )
   }
 
   @Test

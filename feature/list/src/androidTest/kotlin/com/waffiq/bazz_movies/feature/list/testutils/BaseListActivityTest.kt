@@ -17,6 +17,7 @@ import com.waffiq.bazz_movies.feature.list.ui.viewmodel.ListViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
@@ -28,38 +29,40 @@ abstract class BaseListActivityTest {
   protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
   protected val movieGenreArgs = ListArgs(
     listType = ListType.BY_GENRE,
-    mediaType = MOVIE_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
     title = "title",
     id = 878,
   )
-  protected val tvGenreArgs = movieGenreArgs.copy(mediaType = TV_MEDIA_TYPE)
+  protected val tvGenreArgs = movieGenreArgs.copy(mediaType = MediaSource.Typed(TV_MEDIA_TYPE))
   protected val movieKeywordsArgs = ListArgs(
     listType = ListType.BY_KEYWORD,
-    mediaType = MOVIE_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
     title = "post apocalyptic",
     id = 134,
   )
-  protected val tvKeywordsArgs = movieKeywordsArgs.copy(mediaType = TV_MEDIA_TYPE)
+  protected val tvKeywordsArgs =
+    movieKeywordsArgs.copy(mediaType = MediaSource.Typed(TV_MEDIA_TYPE))
   protected val movieNowPlayingArgs = ListArgs(
     listType = ListType.NOW_PLAYING,
-    mediaType = MOVIE_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
     title = "",
   )
-  protected val tvNowPlayingArgs = movieNowPlayingArgs.copy(mediaType = TV_MEDIA_TYPE)
+  protected val tvNowPlayingArgs =
+    movieNowPlayingArgs.copy(mediaType = MediaSource.Typed(TV_MEDIA_TYPE))
   protected val moviePopularArgs = movieNowPlayingArgs.copy(listType = ListType.POPULAR)
   protected val movieTopRatedArgs = movieNowPlayingArgs.copy(listType = ListType.TOP_RATED)
   protected val movieUpcomingArgs = movieNowPlayingArgs.copy(listType = ListType.UPCOMING)
   protected val tvPopularArgs = movieNowPlayingArgs.copy(
     listType = ListType.POPULAR,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
   )
   protected val tvTopRatedArgs = movieNowPlayingArgs.copy(
     listType = ListType.TOP_RATED,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
   )
   protected val tvAiringThisWeekArgs = movieNowPlayingArgs.copy(
     listType = ListType.AIRING_THIS_WEEK,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
   )
   protected val movieRecommendationArgs = movieNowPlayingArgs.copy(
     listType = ListType.RECOMMENDATION,
@@ -68,43 +71,43 @@ abstract class BaseListActivityTest {
   )
   protected val tvRecommendationArgs = movieNowPlayingArgs.copy(
     listType = ListType.RECOMMENDATION,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "Tv Title",
     id = 12344,
   )
   protected val trendingTodayArgs = movieNowPlayingArgs.copy(
     listType = ListType.TRENDING_TODAY,
-    mediaType = "",
+    mediaType = MediaSource.Trending,
     title = "",
   )
   protected val trendingThisWeekArgs = movieNowPlayingArgs.copy(
     listType = ListType.TRENDING_WEEK,
-    mediaType = "",
+    mediaType = MediaSource.Trending,
     title = "",
   )
   protected val animeAllTimeArgs = movieNowPlayingArgs.copy(
     listType = ListType.ANIME_ALL_TIME,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "",
   )
   protected val animeThisSeasonArgs = movieNowPlayingArgs.copy(
     listType = ListType.ANIME_THIS_SEASON,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "",
   )
   protected val costumeDramaArgs = movieNowPlayingArgs.copy(
     listType = ListType.COSTUME_DRAMA,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "",
   )
   protected val donghuaArgs = movieNowPlayingArgs.copy(
     listType = ListType.DONGHUA,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "",
   )
   protected val romanceDramaArgs = movieNowPlayingArgs.copy(
     listType = ListType.ROMANCE_DRAMA,
-    mediaType = TV_MEDIA_TYPE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
     title = "",
   )
 
