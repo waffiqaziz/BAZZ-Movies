@@ -13,6 +13,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.t
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_KEYWORD
+import com.waffiq.bazz_movies.navigation.MediaSource
 
 class KeywordsAdapter(private val navigator: INavigator) :
   ListAdapter<MediaKeywordsItem, KeywordsAdapter.ViewHolder>(CastDiffCallback()) {
@@ -48,7 +49,7 @@ class KeywordsAdapter(private val navigator: INavigator) :
           context = itemView.context,
           args = ListArgs(
             listType = BY_KEYWORD,
-            mediaType = mediaType,
+            mediaType = MediaSource.Typed(mediaType),
             title = keyword.name,
             id = keyword.id,
           ),

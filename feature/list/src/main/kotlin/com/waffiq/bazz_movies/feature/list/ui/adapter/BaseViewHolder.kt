@@ -5,5 +5,5 @@ import androidx.recyclerview.widget.RecyclerView
 import com.waffiq.bazz_movies.core.models.MediaItem
 
 sealed class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-  abstract fun bind(media: MediaItem)
+  abstract fun bind(mediaItem: MediaItem)
 }

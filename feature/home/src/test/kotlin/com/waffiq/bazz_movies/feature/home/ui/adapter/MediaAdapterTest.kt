@@ -7,6 +7,7 @@ import com.waffiq.bazz_movies.core.designsystem.databinding.ItemPosterBinding
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import com.waffiq.bazz_movies.feature.home.testutils.BaseAdapterTest
+import com.waffiq.bazz_movies.navigation.MediaSource
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

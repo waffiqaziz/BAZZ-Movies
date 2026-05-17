@@ -33,6 +33,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -156,7 +157,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
     verifyOpenList(
       mockNavigator,
-      ListArgs(listType = ListType.TRENDING_TODAY, title = "", mediaType = ""),
+      ListArgs(listType = ListType.TRENDING_TODAY, title = "", mediaType = MediaSource.Trending),
     )
 
     btn_trending_this_week.performClick()
@@ -166,7 +167,10 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     every { mockMovieViewModel.trendingPeriod } returns MutableStateFlow(TrendingPeriod.WEEK)
     btn_more_trending_featured.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verifyOpenList(mockNavigator, ListArgs(ListType.TRENDING_WEEK, title = "", mediaType = ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.TRENDING_WEEK, title = "", mediaType = MediaSource.Trending),
+    )
   }
 
   @Test
@@ -183,11 +187,17 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     launchFragment()
     btn_more_movie_playing_now_featured.performScrollTo()
     btn_more_movie_playing_now_featured.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.NOW_PLAYING, MOVIE_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
+    )
 
     btn_more_upcoming_movie_featured.performScrollTo()
     btn_more_upcoming_movie_featured.performClick()
-    verifyOpenList(mockNavigator, ListArgs(ListType.UPCOMING, MOVIE_MEDIA_TYPE, ""))
+    verifyOpenList(
+      mockNavigator,
+      ListArgs(ListType.UPCOMING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
+    )
   }
 
   @Test

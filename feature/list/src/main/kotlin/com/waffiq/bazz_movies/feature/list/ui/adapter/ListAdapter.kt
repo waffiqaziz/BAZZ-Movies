@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.list.ui.adapter
 
 import android.R.anim.fade_in
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_search
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
@@ -23,16 +23,12 @@ import com.waffiq.bazz_movies.core.utils.DetailDataUtils.posterSource
 import com.waffiq.bazz_movies.core.utils.DetailDataUtils.titleHandler
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenre
 import com.waffiq.bazz_movies.navigation.INavigator
+import com.waffiq.bazz_movies.navigation.MediaSource
 
-class ListAdapter(private val navigator: INavigator) :
+class ListAdapter(private val navigator: INavigator, private val source: MediaSource) :
   PagingDataAdapter<MediaItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-  private var mediaType = MOVIE_MEDIA_TYPE
   private var isGridMode = true
-
-  fun setMediaType(type: String) {
-    mediaType = type
-  }
 
   fun setGridMode(isGrid: Boolean) {
     if (isGridMode != isGrid) {
@@ -58,13 +54,21 @@ class ListAdapter(private val navigator: INavigator) :
     (holder as BaseViewHolder).bind(data)
   }
 
+  private fun Context.openDetails(mediaItem: MediaItem) {
+    val item = when (source) {
+      is MediaSource.Trending -> mediaItem
+      is MediaSource.Typed -> mediaItem.copy(mediaType = source.mediaType)
+    }
+    navigator.openDetails(this, item)
+  }
+
   inner class GridViewHolder(private val binding: ItemListBinding) :
     BaseViewHolder(binding.root) {
 
-    override fun bind(media: MediaItem) {
-      binding.imgPoster.contentDescription = titleHandler(media)
+    override fun bind(mediaItem: MediaItem) {
+      binding.imgPoster.contentDescription = titleHandler(mediaItem)
       Glide.with(binding.imgPoster)
-        .load(media.posterSource)
+        .load(mediaItem.posterSource)
         .placeholder(ic_bazz_placeholder_poster)
         .transform(CenterCrop())
         .transition(withCrossFade())
@@ -72,7 +76,7 @@ class ListAdapter(private val navigator: INavigator) :
         .into(binding.imgPoster)
 
       binding.imgPoster.setOnClickListener {
-        navigator.openDetails(itemView.context, media.copy(mediaType = mediaType))
+        itemView.context.openDetails(mediaItem)
       }
     }
   }
@@ -80,22 +84,22 @@ class ListAdapter(private val navigator: INavigator) :
   inner class ListViewHolder(internal val binding: ItemResultBinding) :
     BaseViewHolder(binding.root) {
 
-    override fun bind(media: MediaItem) {
-      binding.ivPicture.contentDescription = titleHandler(media)
+    override fun bind(mediaItem: MediaItem) {
+      binding.ivPicture.contentDescription = titleHandler(mediaItem)
       Glide.with(binding.ivPicture)
-        .load(media.imageSource)
+        .load(mediaItem.imageSource)
         .placeholder(ic_bazz_placeholder_search)
         .transform(CenterCrop())
         .transition(withCrossFade())
         .error(ic_poster_error)
         .into(binding.ivPicture)
 
-      binding.tvTitle.text = titleHandler(media)
-      binding.tvYearReleased.text = itemView.context.dateOf(media)
-      binding.tvGenre.text = itemView.context.getGenre(media.listGenreIds)
+      binding.tvTitle.text = titleHandler(mediaItem)
+      binding.tvYearReleased.text = itemView.context.dateOf(mediaItem)
+      binding.tvGenre.text = itemView.context.getGenre(mediaItem.listGenreIds)
 
       binding.containerResult.setOnClickListener {
-        navigator.openDetails(itemView.context, media.copy(mediaType = mediaType))
+        itemView.context.openDetails(mediaItem)
       }
     }
   }

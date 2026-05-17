@@ -29,21 +29,16 @@ class DetailDataManager(
    *   depending on whether the item is a movie or TV show.
    */
   fun loadAllData() {
-    loadRecommendations()
-
     when (dataExtra.mediaType) {
-      MOVIE_MEDIA_TYPE -> loadMovieData()
-      TV_MEDIA_TYPE -> loadTvData()
-    }
-  }
+      MOVIE_MEDIA_TYPE -> {
+        detailViewModel.getMovieRecommendation(dataExtra.id)
+        loadMovieData()
+      }
 
-  /**
-   * Loads movie or TV show recommendations based on the media type.
-   */
-  fun loadRecommendations() {
-    when (dataExtra.mediaType) {
-      MOVIE_MEDIA_TYPE -> detailViewModel.getMovieRecommendation(dataExtra.id)
-      TV_MEDIA_TYPE -> detailViewModel.getTvRecommendation(dataExtra.id)
+      TV_MEDIA_TYPE -> {
+        detailViewModel.getTvRecommendation(dataExtra.id)
+        loadTvData()
+      }
     }
   }
 

@@ -57,6 +57,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackRel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.RECOMMENDATION
+import com.waffiq.bazz_movies.navigation.MediaSource
 
 /**
  * Manages the UI presentation logic for the Detail Movie screen.
@@ -383,7 +384,7 @@ class DetailUIManager(
       activity,
       ListArgs(
         listType = RECOMMENDATION,
-        mediaType = mediaType,
+        mediaType = MediaSource.Typed(mediaType),
         title = title,
         id = mediaId,
         backdrop = backdrop,

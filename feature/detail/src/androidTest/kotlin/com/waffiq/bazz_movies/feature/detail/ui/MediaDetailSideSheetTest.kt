@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.feature.detail.ui.viewmodel.MediaDetailViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_KEYWORD
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -101,27 +102,7 @@ class MediaDetailSideSheetTest : MediaDetailActivityTestSetup by MediaDetailActi
           context = any(),
           args = ListArgs(
             listType = BY_KEYWORD,
-            mediaType = testMediaItem.mediaType,
-            title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
-            id = testMediaDetail.keywords?.get(0)?.id ?: 0,
-          ),
-        )
-      }
-    }
-  }
-
-  @Test
-  fun sideSheet_whenNullKeywords_doesnShowsTheKeywords() {
-    context.launchMediaDetailActivity {
-      btn_sidebar.performClick()
-      rv_keywords.clickItemAt(0)
-
-      verify {
-        mockNavigator.openList(
-          context = any(),
-          args = ListArgs(
-            listType = BY_KEYWORD,
-            mediaType = testMediaItem.mediaType,
+            mediaType = MediaSource.Typed(testMediaItem.mediaType),
             title = testMediaDetail.keywords?.get(0)?.name.orEmpty(),
             id = testMediaDetail.keywords?.get(0)?.id ?: 0,
           ),

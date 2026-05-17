@@ -10,6 +10,7 @@ import com.waffiq.bazz_movies.feature.detail.databinding.ChipGenreBinding
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType.BY_GENRE
+import com.waffiq.bazz_movies.navigation.MediaSource
 
 class GenreAdapter(private val navigator: INavigator) :
   RecyclerView.Adapter<GenreAdapter.ViewHolder>() {
@@ -49,7 +50,7 @@ class GenreAdapter(private val navigator: INavigator) :
           context = itemView.context,
           args = ListArgs(
             listType = BY_GENRE,
-            mediaType = mediaType,
+            mediaType = MediaSource.Typed(mediaType),
             title = "", // empty for genre
             id = id,
           ),

@@ -57,6 +57,7 @@ import com.waffiq.bazz_movies.feature.list.utils.RecyclerViewLayoutHelper.saveIn
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
@@ -90,7 +91,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     buttonAction()
-    setupRecyclerView()
+    setupRecyclerView(args.mediaType)
     setupList(args)
     observeLoadState()
   }
@@ -100,8 +101,7 @@ class ListActivity : AppCompatActivity() {
   private var shouldUpdateBackdropFromItems = false
 
   private fun setupList(args: ListArgs) {
-    adapter.setMediaType(args.mediaType)
-    binding.toolbar.subtitle = args.mediaType.uppercase()
+    binding.toolbar.subtitle = args.mediaType.typeName.uppercase()
 
     shouldUpdateBackdropFromItems = args.listType.shouldUpdateBackdrop()
 
@@ -154,14 +154,14 @@ class ListActivity : AppCompatActivity() {
 
   // region SHOW BASED LIST TYPE
   private fun showListBasedGenre(args: ListArgs) {
-    showBackdrop(getBackdrop(args.mediaType, args.id))
+    showBackdrop(getBackdrop(args.mediaType.typeName, args.id))
     binding.toolbar.title = getGenreName(args.id)
-    load(viewModel.getByGenre(args.mediaType, args.id.toString()), adapter)
+    load(viewModel.getByGenre(args.mediaType.typeName, args.id.toString()), adapter)
   }
 
   private fun showListBasedKeywords(args: ListArgs) {
     setToolbarTitle(args.title.capitaliseEachWord())
-    load(viewModel.getByKeyword(args.mediaType, args.id.toString()), adapter)
+    load(viewModel.getByKeyword(args.mediaType.typeName, args.id.toString()), adapter)
   }
 
   private fun showUpcomingMovies() {
@@ -176,26 +176,30 @@ class ListActivity : AppCompatActivity() {
 
   private fun showNowPlaying(args: ListArgs) {
     setToolbarTitle(
-      if (args.mediaType == MOVIE_MEDIA_TYPE) getString(now_playing) else getString(airing_today),
+      if (args.mediaType.typeName == MOVIE_MEDIA_TYPE) {
+        getString(now_playing)
+      } else {
+        getString(airing_today)
+      },
     )
-    load(viewModel.getNowPlaying(args.mediaType), adapter)
+    load(viewModel.getNowPlaying(args.mediaType.typeName), adapter)
   }
 
   private fun showTopRated(args: ListArgs) {
     setToolbarTitle(top_rated)
-    load(viewModel.getTopRated(args.mediaType), adapter)
+    load(viewModel.getTopRated(args.mediaType.typeName), adapter)
   }
 
   private fun showPopular(args: ListArgs) {
     setToolbarTitle(popular)
-    load(viewModel.getPopular(args.mediaType), adapter)
+    load(viewModel.getPopular(args.mediaType.typeName), adapter)
   }
 
   private fun showRecommendation(args: ListArgs) {
     setToolbarTitle(args.title)
     setToolbarSubTitle(recommendation)
     showBackdrop(args.backdrop)
-    load(viewModel.getRecommendation(args.mediaType, args.id), adapter)
+    load(viewModel.getRecommendation(args.mediaType.typeName, args.id), adapter)
   }
 
   private fun showTrendingToday(args: ListArgs) {
@@ -269,8 +273,8 @@ class ListActivity : AppCompatActivity() {
       .into(binding.ivPicture)
   }
 
-  private fun setupRecyclerView() {
-    adapter = ListAdapter(navigator)
+  private fun setupRecyclerView(mediaSource: MediaSource) {
+    adapter = ListAdapter(navigator, mediaSource)
     binding.rvList.layoutManager = GridLayoutManager(
       this,
       calculateSpanCount(),

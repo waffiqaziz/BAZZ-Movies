@@ -33,7 +33,6 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.core.utils.GetRegionHelper.getLocation
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentFeaturedBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
-import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
 import com.waffiq.bazz_movies.feature.home.ui.domain.TrendingPeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
@@ -46,6 +45,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -265,23 +265,28 @@ class FeaturedFragment : Fragment() {
           } else {
             ListType.TRENDING_TODAY
           },
-          mediaType = "",
+          mediaType = MediaSource.Trending,
           title = "",
         ),
       )
     }
     binding.btnMoreMoviePlayingNowFeatured.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.NOW_PLAYING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.NOW_PLAYING)
     }
     binding.btnMoreUpcomingMovieFeatured.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.UPCOMING, mediaType = MOVIE_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.UPCOMING)
     }
+  }
+
+  private fun openList(listType: ListType) {
+    navigator.openList(
+      requireContext(),
+      ListArgs(
+        listType = listType,
+        mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
+        title = "",
+      ),
+    )
   }
 
   override fun onPause() {

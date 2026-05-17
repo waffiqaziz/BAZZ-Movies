@@ -24,7 +24,6 @@ import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
 import com.waffiq.bazz_movies.feature.home.databinding.FragmentTvSeriesBinding
 import com.waffiq.bazz_movies.feature.home.ui.adapter.ItemWIdeAdapter
 import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
-import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaSource
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
@@ -37,6 +36,7 @@ import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setu
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -198,29 +198,28 @@ class TvSeriesFragment : Fragment() {
 
   private fun moreButtonAction() {
     binding.btnMorePopularTvSeries.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.POPULAR, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.POPULAR)
     }
     binding.btnMoreTvSeriesAiringToday.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.NOW_PLAYING, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.NOW_PLAYING)
     }
     binding.btnMoreTvSeriesAiringThisWeek.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.AIRING_THIS_WEEK, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.AIRING_THIS_WEEK)
     }
     binding.btnMoreTopRatedTvSeries.button.setOnClickListener {
-      navigator.openList(
-        requireContext(),
-        ListArgs(listType = ListType.TOP_RATED, mediaType = TV_MEDIA_TYPE, title = ""),
-      )
+      openList(ListType.TOP_RATED)
     }
+  }
+
+  private fun openList(listType: ListType) {
+    navigator.openList(
+      requireContext(),
+      ListArgs(
+        listType = listType,
+        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
+        title = "",
+      ),
+    )
   }
 
   override fun onPause() {
