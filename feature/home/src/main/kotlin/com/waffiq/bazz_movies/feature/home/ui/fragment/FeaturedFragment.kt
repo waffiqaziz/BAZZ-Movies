@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
@@ -25,7 +23,6 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_movies_currently_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_trending
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_upcoming_movies
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -38,26 +35,17 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class FeaturedFragment : Fragment() {
-
-  @Inject
-  lateinit var navigator: INavigator
-
-  @Inject
-  lateinit var snackbar: ISnackbar
+class FeaturedFragment : BaseHomeFragment() {
 
   // Initialize adapters
   private lateinit var adapterTrending: MediaAdapter
@@ -70,8 +58,6 @@ class FeaturedFragment : Fragment() {
   private val movieViewModel: MovieViewModel by viewModels()
   private val userPreferenceViewModel: UserPreferenceViewModel by activityViewModels()
   private val regionViewModel: RegionViewModel by viewModels()
-
-  private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -109,7 +95,7 @@ class FeaturedFragment : Fragment() {
     moreButtonAction()
   }
 
-  private fun showShimmer(isVisible: Boolean) {
+  override fun showShimmer(isVisible: Boolean) {
     binding.shimmer.shimmerFeatured.isVisible = isVisible
   }
 
@@ -169,26 +155,10 @@ class FeaturedFragment : Fragment() {
   }
 
   private fun setData() {
-    viewLifecycleOwner.observeLoadState(
-      loadStateFlow = adapterTrending.loadStateFlow,
-      onLoading = { if (adapterTrending.itemCount <= 0) showShimmer(true) },
-      onSuccess = {
-        binding.illustrationErrorFeatured.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(true)
-      },
-      onError = { error ->
-        binding.illustrationErrorFeatured.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(adapterTrending.itemCount > 0)
-        mSnackbar = snackbar.showSnackbarWarning(error)
-      },
+    observePrimaryLoadState(
+      adapterTrending.loadStateFlow,
+      { adapterTrending.itemCount },
+      binding.illustrationErrorFeatured,
     )
 
     // Observe ViewModel data and submit to adapters
@@ -241,7 +211,7 @@ class FeaturedFragment : Fragment() {
     }
   }
 
-  private fun showView(isVisible: Boolean) {
+  override fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
       imgMainFeatured.isVisible = isVisible
@@ -271,37 +241,14 @@ class FeaturedFragment : Fragment() {
       )
     }
     binding.btnMoreMoviePlayingNowFeatured.button.setOnClickListener {
-      openList(ListType.NOW_PLAYING)
+      openList(ListType.NOW_PLAYING, MOVIE_MEDIA_TYPE)
     }
     binding.btnMoreUpcomingMovieFeatured.button.setOnClickListener {
-      openList(ListType.UPCOMING)
+      openList(ListType.UPCOMING, MOVIE_MEDIA_TYPE)
     }
   }
 
-  private fun openList(listType: ListType) {
-    navigator.openList(
-      requireContext(),
-      ListArgs(
-        listType = listType,
-        mediaType = MediaSource.Typed(MOVIE_MEDIA_TYPE),
-        title = "",
-      ),
-    )
-  }
-
-  override fun onPause() {
-    super.onPause()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-
+  override fun onClearBinding() {
     adapterUpcoming.removeLoadStateListener { }
     adapterPlayingNow.removeLoadStateListener { }
     adapterTrending.removeLoadStateListener { }
@@ -313,7 +260,6 @@ class FeaturedFragment : Fragment() {
       rvTrending.detachRecyclerView()
     }
 
-    mSnackbar = null
     _binding = null
   }
 }

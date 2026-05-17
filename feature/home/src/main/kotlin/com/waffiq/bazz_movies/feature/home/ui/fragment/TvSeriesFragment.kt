@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_popular_series
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_this_week
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_series_airing_today
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
@@ -28,26 +25,16 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.CountryNameHelper.getCountryDisplayName
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.handleLoadState
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerWideItem
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class TvSeriesFragment : Fragment() {
-
-  @Inject
-  lateinit var navigator: INavigator
-
-  @Inject
-  lateinit var snackbar: ISnackbar
+class TvSeriesFragment : BaseHomeFragment() {
 
   private lateinit var popularAdapter: ItemWIdeAdapter
   private lateinit var airingTodayAdapter: MediaAdapter
@@ -59,8 +46,6 @@ class TvSeriesFragment : Fragment() {
 
   private val userPreferenceViewModel: UserPreferenceViewModel by activityViewModels()
   private val tvSeriesViewModel: TvSeriesViewModel by viewModels()
-
-  private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -92,7 +77,7 @@ class TvSeriesFragment : Fragment() {
     moreButtonAction()
   }
 
-  private fun showShimmer(isVisible: Boolean) {
+  override fun showShimmer(isVisible: Boolean) {
     binding.shimmer.shimmerTvSeries.isVisible = isVisible
   }
 
@@ -111,26 +96,10 @@ class TvSeriesFragment : Fragment() {
   }
 
   private fun setData() {
-    viewLifecycleOwner.observeLoadState(
-      loadStateFlow = topRatedAdapter.loadStateFlow,
-      onLoading = { showShimmer(true) },
-      onSuccess = {
-        binding.illustrationErrorTvSeries.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(true)
-      },
-      onError = { error ->
-        binding.illustrationErrorTvSeries.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(topRatedAdapter.itemCount > 0)
-        mSnackbar = snackbar.showSnackbarWarning(error)
-      },
+    observePrimaryLoadState(
+      topRatedAdapter.loadStateFlow,
+      { topRatedAdapter.itemCount },
+      binding.illustrationErrorTvSeries,
     )
 
     // Observe ViewModel data and submit to adapters
@@ -181,7 +150,7 @@ class TvSeriesFragment : Fragment() {
     )
   }
 
-  private fun showView(isVisible: Boolean) {
+  override fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
       layoutHeaderPopularTvSeries.isVisible = isVisible
@@ -198,43 +167,20 @@ class TvSeriesFragment : Fragment() {
 
   private fun moreButtonAction() {
     binding.btnMorePopularTvSeries.button.setOnClickListener {
-      openList(ListType.POPULAR)
+      openList(ListType.POPULAR, TV_MEDIA_TYPE)
     }
     binding.btnMoreTvSeriesAiringToday.button.setOnClickListener {
-      openList(ListType.NOW_PLAYING)
+      openList(ListType.NOW_PLAYING, TV_MEDIA_TYPE)
     }
     binding.btnMoreTvSeriesAiringThisWeek.button.setOnClickListener {
-      openList(ListType.AIRING_THIS_WEEK)
+      openList(ListType.AIRING_THIS_WEEK, TV_MEDIA_TYPE)
     }
     binding.btnMoreTopRatedTvSeries.button.setOnClickListener {
-      openList(ListType.TOP_RATED)
+      openList(ListType.TOP_RATED, TV_MEDIA_TYPE)
     }
   }
 
-  private fun openList(listType: ListType) {
-    navigator.openList(
-      requireContext(),
-      ListArgs(
-        listType = listType,
-        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-        title = "",
-      ),
-    )
-  }
-
-  override fun onPause() {
-    super.onPause()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-
+  override fun onClearBinding() {
     popularAdapter.removeLoadStateListener { }
     airingTodayAdapter.removeLoadStateListener { }
     airingThisWeekAdapter.removeLoadStateListener { }
@@ -248,7 +194,6 @@ class TvSeriesFragment : Fragment() {
       rvTopRatedTvSeries.detachRecyclerView()
     }
 
-    mSnackbar = null
     _binding = null
   }
 }

@@ -7,15 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
-import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectAndSubmitData
@@ -25,27 +22,17 @@ import com.waffiq.bazz_movies.feature.home.ui.adapter.MediaAdapter
 import com.waffiq.bazz_movies.feature.home.ui.domain.AnimePeriod
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.detachRecyclerView
-import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.observeLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupLoadState
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRecyclerWideItem
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupRetryButton
 import com.waffiq.bazz_movies.feature.home.utils.helpers.HomeFragmentHelper.setupSwipeRefresh
-import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
 import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class AsianFragment : Fragment() {
-
-  @Inject
-  lateinit var navigator: INavigator
-
-  @Inject
-  lateinit var snackbar: ISnackbar
+class AsianFragment : BaseHomeFragment() {
 
   private lateinit var animeAdapter: ItemWIdeAdapter
   private lateinit var costumeDramaAdapter: MediaAdapter
@@ -56,8 +43,6 @@ class AsianFragment : Fragment() {
   private val binding get() = _binding ?: error(getString(binding_error))
 
   private val asianViewModel: AsianViewModel by viewModels()
-
-  private var mSnackbar: Snackbar? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -86,7 +71,7 @@ class AsianFragment : Fragment() {
     moreButtonAction()
   }
 
-  private fun showShimmer(isVisible: Boolean) {
+  override fun showShimmer(isVisible: Boolean) {
     binding.shimmerLayoutAsian.shimmerAsian.isVisible = isVisible
   }
 
@@ -105,26 +90,10 @@ class AsianFragment : Fragment() {
   }
 
   private fun setData() {
-    viewLifecycleOwner.observeLoadState(
-      loadStateFlow = donghuaAdapter.loadStateFlow,
-      onLoading = { showShimmer(true) },
-      onSuccess = {
-        binding.illustrationErrorAsian.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(true)
-      },
-      onError = { error ->
-        binding.illustrationErrorAsian.apply {
-          progressCircular.isVisible = false
-          btnTryAgain.isVisible = true
-        }
-        showShimmer(false)
-        showView(donghuaAdapter.itemCount > 0)
-        mSnackbar = snackbar.showSnackbarWarning(error)
-      },
+    observePrimaryLoadState(
+      donghuaAdapter.loadStateFlow,
+      { donghuaAdapter.itemCount },
+      binding.illustrationErrorAsian,
     )
 
     // Observe ViewModel data and submit to adapters
@@ -154,7 +123,7 @@ class AsianFragment : Fragment() {
     )
   }
 
-  private fun showView(isVisible: Boolean) {
+  override fun showView(isVisible: Boolean) {
     // Toggle visibility based on the flag
     binding.apply {
       layoutHeaderAnime.isVisible = isVisible
@@ -172,34 +141,23 @@ class AsianFragment : Fragment() {
   private fun moreButtonAction() {
     binding.btnMoreAnime.button.setOnClickListener {
       openList(
-        listType =
         if (asianViewModel.animePeriod.value == AnimePeriod.THIS_SEASON) {
           ListType.ANIME_THIS_SEASON
         } else {
           ListType.ANIME_ALL_TIME
         },
+        TV_MEDIA_TYPE,
       )
     }
     binding.btnMoreCostumeDrama.button.setOnClickListener {
-      openList(ListType.COSTUME_DRAMA)
+      openList(ListType.COSTUME_DRAMA, TV_MEDIA_TYPE)
     }
     binding.btnMoreRomanceDrama.button.setOnClickListener {
-      openList(ListType.ROMANCE_DRAMA)
+      openList(ListType.ROMANCE_DRAMA, TV_MEDIA_TYPE)
     }
     binding.btnMoreDonghua.button.setOnClickListener {
-      openList(ListType.DONGHUA)
+      openList(ListType.DONGHUA, TV_MEDIA_TYPE)
     }
-  }
-
-  private fun openList(listType: ListType) {
-    navigator.openList(
-      requireContext(),
-      ListArgs(
-        listType = listType,
-        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-        title = "",
-      ),
-    )
   }
 
   private fun observeAnime() {
@@ -222,19 +180,7 @@ class AsianFragment : Fragment() {
     }
   }
 
-  override fun onPause() {
-    super.onPause()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onStop() {
-    super.onStop()
-    mSnackbar?.dismiss()
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-
+  override fun onClearBinding() {
     animeAdapter.removeLoadStateListener { }
     costumeDramaAdapter.removeLoadStateListener { }
     asianRomanceAdapter.removeLoadStateListener { }
@@ -248,7 +194,6 @@ class AsianFragment : Fragment() {
       rvDonghua.detachRecyclerView()
     }
 
-    mSnackbar = null
     _binding = null
   }
 }
