@@ -230,13 +230,13 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
-  fun signOutStateLogin_whenSuccess_shouldShowSuccessToastAndNavigateToLogin() {
-    performSignOutAction()
+  fun signOutStateLogin_whenSuccess_shouldShowSuccessToastAndNavigateToLogin() =
+    runTest {
+      performSignOutAction()
+      mockUIState.emit(UIState.Success(Unit))
 
-    mockUIState.value = UIState.Success(Unit) // success
-
-    verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
-  }
+      verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
+    }
 
   @Test
   fun signOutStateLogin_whenLoading_shouldShowLoadingState() =
@@ -274,7 +274,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
       btn_signout.isEnable()
       onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
-
 
       verify(exactly = 0) { mockMoreLocalViewModel.deleteAllSearchHistory() }
     }
