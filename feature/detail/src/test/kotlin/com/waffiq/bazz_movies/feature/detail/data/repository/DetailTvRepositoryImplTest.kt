@@ -108,6 +108,10 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(id.toString()) },
       repositoryCall = { repository.getTvKeywords(id.toString()) },
       expectedData = { it.toMediaKeywords() },
-      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvKeywords(id.toString()) } },
+      verifyCall = {
+        coVerify(atLeast = 1) {
+          mockTvRemoteDataSource.getTvKeywords(id.toString())
+        }
+      },
     )
 }
