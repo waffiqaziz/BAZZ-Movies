@@ -1,6 +1,7 @@
 package com.waffiq.bazz_movies.feature.favorite.testutils
 
 import androidx.paging.PagingData
+import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.mappers.MediaItemMapper.toMediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Outcome
@@ -119,6 +120,17 @@ object DataDump {
     listOf(
       mediaTvResponseItem,
       mediaTvResponseItem2,
+    ),
+  )
+
+  val movieDefaultStateSuccess = Outcome.Success(movieStateNotWatchlist)
+
+  val tvDefaultStateSuccess = Outcome.Success(tvStateNotWatchlist)
+
+  val postFavoriteWatchlistSuccess = Outcome.Success(
+    PostFavoriteWatchlist(
+      statusCode = 201,
+      statusMessage = "Success",
     ),
   )
 }

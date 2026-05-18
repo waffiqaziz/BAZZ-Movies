@@ -1,5 +1,6 @@
 package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
+import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_BACKDROP_ORIGINAL
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W300
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_IMG_LINK_POSTER_W500
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
@@ -60,6 +61,12 @@ class ImageHelperTest {
     // backdrop blank
     val data7 = MediaItem(backdropPath = " ", posterPath = "poster")
     assertEquals("poster", data7.backdropPathSource)
+  }
+
+  @Test
+  fun backdropOriginalSource_whenBackdropIsValid_returnsCorrectValue() {
+    val data = MediaItem(backdropPath = "valid backdrop", posterPath = "poster")
+    assertEquals(TMDB_IMG_LINK_BACKDROP_ORIGINAL + "valid backdrop", data.backdropOriginalSource)
   }
 
   @Test

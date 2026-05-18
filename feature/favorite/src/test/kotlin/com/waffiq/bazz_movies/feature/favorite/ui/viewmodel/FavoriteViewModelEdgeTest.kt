@@ -31,6 +31,7 @@ class FavoriteViewModelEdgeTest :
   BehaviorSpec({
 
     extensions(KotestInstantExecutorExtension)
+
     val testDispatcher = UnconfinedTestDispatcher()
 
     val movieId = 12345
@@ -55,11 +56,12 @@ class FavoriteViewModelEdgeTest :
 
     beforeTest {
       Dispatchers.setMain(testDispatcher)
+
       viewModel = FavoriteViewModel(
         getFavoriteMovieUseCase,
         getFavoriteTvUseCase,
         mockPostActionUseCase,
-        checkAndAddToWatchlistUseCase, // Real implementation!
+        checkAndAddToWatchlistUseCase,
       )
     }
 
@@ -67,50 +69,66 @@ class FavoriteViewModelEdgeTest :
       Dispatchers.resetMain()
     }
 
-    Given("checks movie state before posting to watchlist") {
-      When("the movie is not in watchlist") {
-        coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
-          flowOf(
-            outcomeSuccess(
-              MediaState(
-                id = 102,
-                favorite = false,
-                rated = Rated.Unrated,
-                watchlist = false,
-              ),
+    fun mockMovieState(watchlist: Boolean) {
+      coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
+        flowOf(
+          outcomeSuccess(
+            MediaState(
+              id = 102,
+              favorite = false,
+              rated = Rated.Unrated,
+              watchlist = watchlist,
             ),
-          )
+          ),
+        )
+    }
 
-        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
-          flowOf(outcomeSuccess(response))
+    fun mockPostWatchlistSuccess() {
+      coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
+        flowOf(outcomeSuccess(response))
+    }
+
+    fun verifySnackBarAdded(expected: SnackBarUserLoginData?) {
+      testViewModelFlow(
+        runBlock = { viewModel.addMovieToWatchlist(movieId, title) },
+        flow = viewModel.snackBarAdded,
+        expected = expected,
+        verifyBlock = { },
+      )
+    }
+
+    fun verifyErrorSnackBar() {
+      verifySnackBarAdded(
+        SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
+      )
+    }
+
+    Given("checks movie state before posting to watchlist") {
+
+      When("the movie is not in watchlist") {
+
+        beforeTest {
+          mockMovieState(watchlist = false)
+          mockPostWatchlistSuccess()
+        }
 
         Then("it should add to watchlist") {
-          testViewModelFlow(
-            runBlock = { viewModel.addMovieToWatchlist(movieId, title) },
-            flow = viewModel.snackBarAdded,
+          verifySnackBarAdded(
             expected = SnackBarUserLoginData(
               true,
               title,
               null,
               WatchlistParams("movie", movieId, true),
             ),
-            verifyBlock = { },
           )
         }
       }
 
       When("the movie is already in watchlist") {
-        coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
-          flowOf(
-            outcomeSuccess(
-              MediaState(
-                id = 102,
-                favorite = false,
-                rated = Rated.Unrated,
-                watchlist = true, // ALREADY IN WATCHLIST
-              ),
-            ),
-          )
+
+        beforeTest {
+          mockMovieState(watchlist = true)
+        }
 
         Then("it should show already in watchlist message") {
           testViewModelLiveDataEvent(
@@ -123,56 +141,43 @@ class FavoriteViewModelEdgeTest :
       }
 
       When("getting movie state fails") {
-        coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
-          flowOf(outcomeError)
+
+        beforeTest {
+          coEvery {
+            mockMediaStateUseCase.getMovieStateWithUser(movieId)
+          } returns flowOf(outcomeError)
+        }
 
         Then("it should show error message") {
-          testViewModelFlow(
-            runBlock = { viewModel.addMovieToWatchlist(movieId, title) },
-            flow = viewModel.snackBarAdded,
-            expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
-            verifyBlock = { },
-          )
+          verifyErrorSnackBar()
         }
       }
 
       When("getting movie state is loading") {
-        coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
-          flowOf(outcomeLoading)
+
+        beforeTest {
+          coEvery {
+            mockMediaStateUseCase.getMovieStateWithUser(movieId)
+          } returns flowOf(outcomeLoading)
+        }
 
         Then("it should do nothing") {
-          testViewModelFlow(
-            runBlock = { viewModel.addMovieToWatchlist(movieId, title) },
-            flow = viewModel.snackBarAdded,
-            expected = null,
-            verifyBlock = { },
-          )
+          verifySnackBarAdded(expected = null)
         }
       }
 
       When("posting to watchlist fails after state check") {
-        coEvery { mockMediaStateUseCase.getMovieStateWithUser(movieId) } returns
-          flowOf(
-            outcomeSuccess(
-              MediaState(
-                id = 102,
-                favorite = false,
-                rated = Rated.Unrated,
-                watchlist = false,
-              ),
-            ),
-          )
 
-        coEvery { mockPostActionUseCase.postWatchlistWithAuth(any()) } returns
-          flowOf(outcomeError)
+        beforeTest {
+          mockMovieState(watchlist = false)
+
+          coEvery {
+            mockPostActionUseCase.postWatchlistWithAuth(any())
+          } returns flowOf(outcomeError)
+        }
 
         Then("it should show error message") {
-          testViewModelFlow(
-            runBlock = { viewModel.addMovieToWatchlist(movieId, title) },
-            flow = viewModel.snackBarAdded,
-            expected = SnackBarUserLoginData(false, ERROR_MESSAGE, null, null),
-            verifyBlock = { },
-          )
+          verifyErrorSnackBar()
         }
       }
     }
