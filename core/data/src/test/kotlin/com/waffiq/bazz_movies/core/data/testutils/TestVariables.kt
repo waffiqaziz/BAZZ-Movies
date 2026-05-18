@@ -7,7 +7,6 @@ import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.models.FavoriteParams
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
-import com.waffiq.bazz_movies.core.models.PostResult
 import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
@@ -57,12 +56,6 @@ object TestVariables {
     mediaType = "tv",
     mediaId = 4444,
     watchlist = true,
-  )
-
-  val postResult = PostResult(
-    success = true,
-    statusCode = 201,
-    statusMessage = "Success",
   )
 
   val postMovieResponseSuccess = PostResponse(

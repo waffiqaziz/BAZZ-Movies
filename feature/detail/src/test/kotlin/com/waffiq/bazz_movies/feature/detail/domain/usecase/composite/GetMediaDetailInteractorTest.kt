@@ -25,6 +25,7 @@ import io.mockk.every
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -48,8 +49,8 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieDetailWithUserRegion_whenSuccessful_emitsSuccess() =
     runTest {
-      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-        flowOf(Outcome.Success(mediaKeywords))
+      stubGetMovieKeywordsSuccessful()
+
       testSuccessScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         mockResponse = detailMovie,
@@ -57,14 +58,14 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       ) { emission ->
         val mediaDetail = assertIs<MediaDetail>(emission.data)
         assertEquals(MOVIE_ID, mediaDetail.id)
+        assertNotNull(mediaDetail.keywords)
       }
     }
 
   @Test
   fun getMovieDetailWithUserRegion_whenUnsuccessful_emitsError() =
     runTest {
-      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-        flowOf(Outcome.Error("error"))
+      stubGetMovieKeywordsError()
       testErrorScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
@@ -74,9 +75,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieDetailWithUserRegion_whenDetailSuccessButKeywordsError_emitsSuccessNullKeywords() =
     runTest {
-      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-        flowOf(Outcome.Error("keywords error"))
-
+      stubGetMovieKeywordsError()
       testSuccessScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         mockResponse = detailMovie,
@@ -106,8 +105,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieDetailWithUserRegion_whenLoading_emitsLoading() =
     runTest {
-      every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
-        flowOf(Outcome.Success(mediaKeywords))
+      stubGetMovieKeywordsSuccessful()
       testLoadingScenario(
         mockCall = { mockDetailRepository.getMovieDetail(MOVIE_ID) },
         interactorCall = { interactor.getMovieDetailWithUserRegion(MOVIE_ID) },
@@ -130,9 +128,11 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getMovieWatchProvidersWithUserRegion_whenNoDataForCountry_emitsError() =
     runTest {
-      val flow = flowOf(Outcome.Success(WatchProviders(results = emptyMap(), id = MOVIE_ID)))
+      val watchProvidersFlow = flowOf(
+        Outcome.Success(WatchProviders(results = emptyMap(), id = MOVIE_ID)),
+      )
 
-      coEvery { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) } returns flow
+      coEvery { mockDetailRepository.getMovieWatchProviders(MOVIE_ID) } returns watchProvidersFlow
 
       interactor.getMovieWatchProvidersWithUserRegion(MOVIE_ID).test {
         val emission = awaitItem()
@@ -309,8 +309,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     runTest {
       every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
         flowOf(Outcome.Error("keywords error"))
-      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-        flowOf(Outcome.Success(TvExternalIds()))
+      stubGetTvExternalIdsSuccessWithEmptyData()
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -327,8 +326,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
     runTest {
       every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
         flowOf(Outcome.Loading)
-      every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
-        flowOf(Outcome.Success(TvExternalIds()))
+      stubGetTvExternalIdsSuccessWithEmptyData()
 
       testSuccessScenario(
         mockCall = { mockDetailRepository.getTvDetail(TV_ID) },
@@ -343,8 +341,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvDetailWithUserRegion_whenExternalIdsError_emitsSuccessWithNullKeywords() =
     runTest {
-      every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
-        flowOf(Outcome.Success(MediaKeywords()))
+      stubGetTvKeywordsSuccessWithEmptyData()
       every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
         flowOf(Outcome.Error("Error"))
 
@@ -361,8 +358,7 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
   @Test
   fun getTvDetailWithUserRegion_whenExternalIdsLoading_emitsSuccessWithNullKeywords() =
     runTest {
-      every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
-        flowOf(Outcome.Success(MediaKeywords()))
+      stubGetTvKeywordsSuccessWithEmptyData()
       every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
         flowOf(Outcome.Loading)
 
@@ -432,5 +428,25 @@ class GetMediaDetailInteractorTest : BaseInteractorTest() {
       flowOf(Outcome.Success(mediaKeywords))
     every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
       flowOf(Outcome.Success(tvExternalIds))
+  }
+
+  private fun stubGetTvKeywordsSuccessWithEmptyData() {
+    every { mockDetailRepository.getTvKeywords(TV_ID.toString()) } returns
+      flowOf(Outcome.Success(MediaKeywords()))
+  }
+
+  private fun stubGetTvExternalIdsSuccessWithEmptyData() {
+    every { mockDetailRepository.getTvExternalIds(TV_ID) } returns
+      flowOf(Outcome.Success(TvExternalIds()))
+  }
+
+  private fun stubGetMovieKeywordsSuccessful() {
+    every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+      flowOf(Outcome.Success(mediaKeywords))
+  }
+
+  private fun stubGetMovieKeywordsError() {
+    every { mockDetailRepository.getMovieKeywords(MOVIE_ID.toString()) } returns
+      flowOf(Outcome.Error("keywords error"))
   }
 }

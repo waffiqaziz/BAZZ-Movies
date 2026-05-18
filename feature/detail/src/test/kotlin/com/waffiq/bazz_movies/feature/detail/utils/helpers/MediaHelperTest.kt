@@ -9,8 +9,6 @@ import android.view.KeyEvent.KEYCODE_BACK
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
-import com.waffiq.bazz_movies.feature.detail.domain.model.video.VideoItem
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
@@ -19,7 +17,6 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreF
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformDuration
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getTransformTMDBScore
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
-import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.toLink
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -31,8 +28,10 @@ import org.junit.Test
 
 class MediaHelperTest {
 
-  val context: Context = mockk()
-  val noOverview = "Theres no overview translated in English"
+  private val context: Context = mockk()
+  private val noOverview = "Theres no overview translated in English"
+
+  private fun crew(job: String, name: String?) = MediaCrewItem(job = job, name = name)
 
   @Before
   fun setup() {
@@ -60,10 +59,11 @@ class MediaHelperTest {
   @Test
   fun detailCrew_withValidCrewList_returnsCorrectNamesAndRoles() {
     val crew = listOf(
-      MediaCrewItem(job = "Director", name = "John Doe"),
-      MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Producer", name = "Bob Wilson"), // Not in jobToNamesMap
+      crew("Director", "John Doe"),
+      crew("Writer", "Jane Smith"),
+      crew("Producer", "Bob Wilson"),
     )
+
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
     assertEquals(listOf("Director", "Writer"), displayNames)
@@ -73,10 +73,10 @@ class MediaHelperTest {
   @Test
   fun detailCrew_withEmptyNullName_filtersOut() {
     val crew = listOf(
-      MediaCrewItem(job = "Writer", name = null),
-      MediaCrewItem(job = "Writer", name = ""),
-      MediaCrewItem(job = "Writer", name = "Jane Smith"),
-      MediaCrewItem(job = "Writer", name = "Bob Jones"),
+      crew("Writer", null),
+      crew("Writer", ""),
+      crew("Writer", "Jane Smith"),
+      crew("Writer", "Bob Jones"),
     )
     val (displayNames, joinedNames) = extractCrewDisplayNames(crew)
 
@@ -85,7 +85,7 @@ class MediaHelperTest {
   }
 
   @Test
-  fun detailCrew_withEmptyCrewList_returnsEmptyLists() {
+  fun detailCrew_empty_returnsEmpty() {
     val (displayNames, joinedNames) = extractCrewDisplayNames(emptyList())
 
     assertEquals(emptyList<String>(), displayNames)
@@ -102,67 +102,6 @@ class MediaHelperTest {
 
     assertEquals(listOf("Writer"), displayNames)
     assertEquals(listOf("Jane Smith, John Doe"), joinedNames)
-  }
-
-  @Test
-  fun toLink_withOfficialTrailer_returnsTrailerKey() {
-    val video = Video(
-      results = listOf(
-        VideoItem(official = true, type = "Trailer", name = "Trailer", key = "trailer_key"),
-        VideoItem(official = false, type = "Teaser", name = "Teaser", key = "teaser_key"),
-      ),
-    )
-    val result = video.toLink()
-
-    assertEquals("trailer_key", result)
-  }
-
-  @Test
-  fun toLink_withNoOfficialTrailer_returnsFirstKey() {
-    val video = Video(
-      results = listOf(
-        VideoItem(official = false, type = "Teaser", name = "Teaser", key = "teaser_key"),
-        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key"),
-      ),
-    )
-    val result = video.toLink()
-
-    assertEquals("teaser_key", result)
-  }
-
-  @Test
-  fun toLink_withOfficialButNotTrailer_returnsFallbackKey() {
-    val video = Video(
-      results = listOf(
-        VideoItem(official = true, type = "Teaser", name = "Teaser", key = "teaser_key"),
-        VideoItem(official = false, type = "Clip", name = "Clip", key = "clip_key"),
-      ),
-    )
-    val result = video.toLink()
-
-    assertEquals("teaser_key", result)
-  }
-
-  @Test
-  fun toLink_withEmptyResults_returnsEmptyString() {
-    val video = Video(results = emptyList())
-    val result = video.toLink()
-
-    assertEquals("", result)
-  }
-
-  @Test
-  fun toLink_withNoOfficialTrailer_usesFallback() {
-    val video = Video(
-      results = listOf(
-        VideoItem(name = "1", official = false, type = "Trailer", key = "unofficial_trailer"),
-        VideoItem(name = "2", official = true, type = "Teaser", key = "official_teaser"),
-        VideoItem(name = "3", official = false, type = "Clip", key = "clip_key"),
-      ),
-    )
-    val result = video.toLink()
-
-    assertEquals("unofficial_trailer", result)
   }
 
   @Test

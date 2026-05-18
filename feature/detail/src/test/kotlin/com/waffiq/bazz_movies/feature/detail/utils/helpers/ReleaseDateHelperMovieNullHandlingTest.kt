@@ -12,23 +12,23 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
 
   @Test
   fun getReleaseDateRegion_withNullReleaseDates_usesProductionCountry() {
-    val data = MovieDetail(
+    val data = movie(
       releaseDates = null,
-      listProductionCountriesItem = listOf(ProductionCountriesItem("CA")),
-      releaseDate = "2023-03-15",
+      productionCountries = listOf("CA"),
+      fallback = "2023-03-15",
     )
+
     checkMovieReleaseDate(data, "US", "CA", "Mar 15, 2023")
   }
 
   @Test
   fun getReleaseDateRegion_withNullReleaseDatesList_returnsEmptyResult() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = null,
-      ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("")),
-      releaseDate = "",
+    val data = movie(
+      releaseDates = ReleaseDates(listReleaseDatesItem = null),
+      productionCountries = listOf(""),
+      fallback = "",
     )
+
     checkMovieReleaseDate(data, "US", "", "")
   }
 
@@ -46,85 +46,81 @@ class ReleaseDateHelperMovieNullHandlingTest : BaseReleaseDateHelperMovieTest() 
 
   @Test
   fun getReleaseDateRegion_withNullReleaseItem_usesProductionCountry() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(null),
-      ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01",
+    val data = movie(
+      releaseDatesList = listOf(null),
+      productionCountries = listOf("GB"),
+      fallback = "2022-07-01",
     )
+
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
   @Test
   fun getReleaseDateRegion_withNullIso31661InReleaseItem_usesProductionCountry() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(
-          ReleaseDatesItem(
-            iso31661 = null,
-            listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
-            ),
+    val data = movie(
+      releaseDatesList = listOf(
+        ReleaseDatesItem(
+          iso31661 = null,
+          listReleaseDatesItemValue = listOf(
+            ReleaseDatesItemValue(releaseDate = "2023-12-01T00:00:00.000Z"),
           ),
         ),
       ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01",
+      productionCountries = listOf("GB"),
+      fallback = "2022-07-01",
     )
+
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
   @Test
   fun getReleaseDateRegion_withNullReleaseDate_usesProductionCountry() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(
-          ReleaseDatesItem(
-            iso31661 = "US",
-            listReleaseDatesItemValue = listOf(
-              ReleaseDatesItemValue(releaseDate = null),
-            ),
+    val data = movie(
+      releaseDatesList = listOf(
+        ReleaseDatesItem(
+          iso31661 = "US",
+          listReleaseDatesItemValue = listOf(
+            ReleaseDatesItemValue(releaseDate = null),
           ),
         ),
       ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01",
+
+      productionCountries = listOf("GB"),
+      fallback = "2022-07-01",
     )
+
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
   @Test
   fun getReleaseDateRegion_withMatchingRegionButNullReleaseValuesList_usesProductionCountry() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(
-          ReleaseDatesItem(
-            iso31661 = "US",
-            listReleaseDatesItemValue = null,
-          ),
+    val data = movie(
+      releaseDatesList = listOf(
+        ReleaseDatesItem(
+          iso31661 = "US",
+          listReleaseDatesItemValue = null,
         ),
       ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01",
+      productionCountries = listOf("GB"),
+      fallback = "2022-07-01",
     )
+
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 
   @Test
   fun getReleaseDateRegion_withMatchingRegionButEmptyReleaseValuesList_usesProductionCountry() {
-    val data = MovieDetail(
-      releaseDates = ReleaseDates(
-        listReleaseDatesItem = listOf(
-          ReleaseDatesItem(
-            iso31661 = "US",
-            listReleaseDatesItemValue = emptyList(),
-          ),
+    val data = movie(
+      releaseDatesList = listOf(
+        ReleaseDatesItem(
+          iso31661 = "US",
+          listReleaseDatesItemValue = emptyList(),
         ),
       ),
-      listProductionCountriesItem = listOf(ProductionCountriesItem("GB")),
-      releaseDate = "2022-07-01",
+      productionCountries = listOf("GB"),
+      fallback = "2022-07-01",
     )
+
     checkMovieReleaseDate(data, "US", "GB", "Jul 01, 2022")
   }
 }

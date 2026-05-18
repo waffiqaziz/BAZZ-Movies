@@ -6,11 +6,16 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.data.domain.model.post.PostFavoriteWatchlist
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.MediaStateUseCase
 import com.waffiq.bazz_movies.core.data.domain.usecase.composite.PostActionUseCase
-import com.waffiq.bazz_movies.core.models.MediaState
 import com.waffiq.bazz_movies.core.models.Outcome
-import com.waffiq.bazz_movies.core.models.Rated
 import com.waffiq.bazz_movies.core.models.WatchlistParams
 import com.waffiq.bazz_movies.feature.favorite.domain.model.WatchlistActionResult
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.MOVIE_ID
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.TV_ID
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.movieDefaultStateSuccess
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.movieStateInWatchlist
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.postFavoriteWatchlistSuccess
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.tvDefaultStateSuccess
+import com.waffiq.bazz_movies.feature.favorite.testutils.DataDump.tvStateInWatchlist
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.clearMocks
@@ -30,34 +35,6 @@ class CheckAndAddToWatchlistInteractorTest :
     val mockPostActionUseCase: PostActionUseCase = mockk()
 
     lateinit var checkAndAddToWatchlistInteractor: CheckAndAddToWatchlistInteractor
-
-    val movieId = 1234
-    val tvId = 5678
-
-    val movieDefaultStateSuccess = Outcome.Success(
-      MediaState(
-        id = movieId,
-        favorite = false,
-        rated = Rated.Unrated,
-        watchlist = false,
-      ),
-    )
-
-    val tvDefaultStateSuccess = Outcome.Success(
-      MediaState(
-        id = tvId,
-        favorite = false,
-        rated = Rated.Unrated,
-        watchlist = false,
-      ),
-    )
-
-    val postFavoriteWatchlistSuccess = Outcome.Success(
-      PostFavoriteWatchlist(
-        statusCode = 201,
-        statusMessage = "Success",
-      ),
-    )
 
     fun stubSuccessGetMovieStateWithUser() {
       coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
@@ -99,7 +76,7 @@ class CheckAndAddToWatchlistInteractorTest :
           stubSuccessPostWatchlistWithAuth()
 
           Then("should emit Loading then Added") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
               awaitComplete()
@@ -108,22 +85,18 @@ class CheckAndAddToWatchlistInteractorTest :
             coVerify { mockMediaStateUseCase.getMovieStateWithUser(any()) }
             coVerify {
               mockPostActionUseCase.postWatchlistWithAuth(
-                WatchlistParams(MOVIE_MEDIA_TYPE, movieId, true),
+                WatchlistParams(MOVIE_MEDIA_TYPE, MOVIE_ID, true),
               )
             }
           }
         }
 
         And("movie is already in watchlist") {
-          val movieWatchlistedStateSuccess = Outcome.Success(
-            movieDefaultStateSuccess.data.copy(watchlist = true),
-          )
-
           coEvery { mockMediaStateUseCase.getMovieStateWithUser(any()) } returns
-            flowOf(movieWatchlistedStateSuccess)
+            flowOf(Outcome.Success(movieStateInWatchlist))
 
           Then("should emit Loading then AlreadyInWatchlist") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.AlreadyInWatchlist)
               awaitComplete()
@@ -140,16 +113,14 @@ class CheckAndAddToWatchlistInteractorTest :
             flowOf(Outcome.Error(errorMessage))
 
           Then("should emit Loading then Error") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Error(errorMessage)
               cancelAndIgnoreRemainingEvents()
             }
 
             coVerify { mockMediaStateUseCase.getMovieStateWithUser(any()) }
-            coVerify(exactly = 0) {
-              mockPostActionUseCase.postWatchlistWithAuth(any())
-            } // this error its called
+            coVerify(exactly = 0) { mockPostActionUseCase.postWatchlistWithAuth(any()) }
           }
         }
 
@@ -163,7 +134,7 @@ class CheckAndAddToWatchlistInteractorTest :
             flowOf(Outcome.Success(PostFavoriteWatchlist(201, "Success")))
 
           Then("should emit all loading states and final result") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading // Initial
               awaitItem() shouldBe Outcome.Loading // From getMovieState
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
@@ -180,7 +151,7 @@ class CheckAndAddToWatchlistInteractorTest :
             flowOf(Outcome.Error(errorMessage))
 
           Then("should emit Loading then Error") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Error(errorMessage)
               awaitComplete()
@@ -200,7 +171,7 @@ class CheckAndAddToWatchlistInteractorTest :
             }
 
           Then("should emit all loading states and final result") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading // Initial
               awaitItem() shouldBe Outcome.Loading // From postWatchlist
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
@@ -219,7 +190,7 @@ class CheckAndAddToWatchlistInteractorTest :
             }
 
           Then("should emit all states in order") {
-            checkAndAddToWatchlistInteractor.addMovieToWatchlist(movieId).test {
+            checkAndAddToWatchlistInteractor.addMovieToWatchlist(MOVIE_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Loading
@@ -237,7 +208,7 @@ class CheckAndAddToWatchlistInteractorTest :
           stubSuccessPostWatchlistWithAuth()
 
           Then("should emit Loading then Added") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
               awaitComplete()
@@ -246,22 +217,18 @@ class CheckAndAddToWatchlistInteractorTest :
             coVerify { mockMediaStateUseCase.getTvStateWithUser(any()) }
             coVerify {
               mockPostActionUseCase.postWatchlistWithAuth(
-                WatchlistParams(TV_MEDIA_TYPE, tvId, true),
+                WatchlistParams(TV_MEDIA_TYPE, TV_ID, true),
               )
             }
           }
         }
 
         And("TV show is already in watchlist") {
-          val tvWatchlistedStateSuccess = Outcome.Success(
-            tvDefaultStateSuccess.data.copy(watchlist = true),
-          )
-
           coEvery { mockMediaStateUseCase.getTvStateWithUser(any()) } returns
-            flowOf(tvWatchlistedStateSuccess)
+            flowOf(Outcome.Success(tvStateInWatchlist))
 
           Then("should emit Loading then AlreadyInWatchlist") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.AlreadyInWatchlist)
               awaitComplete()
@@ -278,7 +245,7 @@ class CheckAndAddToWatchlistInteractorTest :
             flowOf(Outcome.Error(errorMessage))
 
           Then("should emit Loading then Error") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Error(errorMessage)
               awaitComplete()
@@ -298,7 +265,7 @@ class CheckAndAddToWatchlistInteractorTest :
           stubSuccessPostWatchlistWithAuth()
 
           Then("should emit all loading states and final result") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading // Initial
               awaitItem() shouldBe Outcome.Loading // From getTvState
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
@@ -315,7 +282,7 @@ class CheckAndAddToWatchlistInteractorTest :
             flowOf(Outcome.Error(errorMessage))
 
           Then("should emit Loading then Error") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Error(errorMessage)
               awaitComplete()
@@ -335,7 +302,7 @@ class CheckAndAddToWatchlistInteractorTest :
             }
 
           Then("should emit all loading states and final result") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading // Initial
               awaitItem() shouldBe Outcome.Loading // From postWatchlist
               awaitItem() shouldBe Outcome.Success(WatchlistActionResult.Added)
@@ -354,7 +321,7 @@ class CheckAndAddToWatchlistInteractorTest :
             }
 
           Then("should emit all states in order") {
-            checkAndAddToWatchlistInteractor.addTvToWatchlist(tvId).test {
+            checkAndAddToWatchlistInteractor.addTvToWatchlist(TV_ID).test {
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Loading
               awaitItem() shouldBe Outcome.Loading
