@@ -223,7 +223,6 @@ class ListAdapterTest {
       performClick(mediaMovieItem)
     }
 
-
   @Test
   fun trendingData_performClick_shouldUseMediATypeItem() =
     runTest {
