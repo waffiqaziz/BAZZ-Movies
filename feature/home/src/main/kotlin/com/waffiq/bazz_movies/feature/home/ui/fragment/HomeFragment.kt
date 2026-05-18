@@ -1,6 +1,6 @@
 @file:Suppress("BackingPropertyNaming")
 
-package com.waffiq.bazz_movies.feature.home.ui
+package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

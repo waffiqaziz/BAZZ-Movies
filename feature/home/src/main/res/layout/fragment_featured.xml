@@ -5,7 +5,7 @@
   android:id="@+id/fragment_featured"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.FeaturedFragment">
+  tools:context=".ui.fragment.FeaturedFragment">
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:id="@+id/swipe_refresh_featured"

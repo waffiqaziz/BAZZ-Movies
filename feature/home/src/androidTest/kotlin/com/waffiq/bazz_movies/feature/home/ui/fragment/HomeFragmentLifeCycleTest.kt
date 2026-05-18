@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.home.ui
+package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import androidx.lifecycle.Lifecycle
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar

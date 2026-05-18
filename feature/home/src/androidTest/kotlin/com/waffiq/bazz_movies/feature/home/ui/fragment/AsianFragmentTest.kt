@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.home.ui
+package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId

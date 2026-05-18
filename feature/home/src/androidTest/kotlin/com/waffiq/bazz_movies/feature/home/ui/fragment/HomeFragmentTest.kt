@@ -1,4 +1,4 @@
-package com.waffiq.bazz_movies.feature.home.ui
+package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
