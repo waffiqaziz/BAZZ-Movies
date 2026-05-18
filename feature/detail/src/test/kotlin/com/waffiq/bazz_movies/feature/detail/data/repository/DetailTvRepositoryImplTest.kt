@@ -1,19 +1,18 @@
 package com.waffiq.bazz_movies.feature.detail.data.repository
 
-import com.waffiq.bazz_movies.core.models.Outcome
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.castcrew.MediaCreditsResponse
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.keywords.TvKeywordsResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.DetailTvResponse
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.tv.ExternalIdResponse
-import com.waffiq.bazz_movies.core.network.utils.result.NetworkResult
-import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testLoadingState
-import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testSuccessfulCall
-import com.waffiq.bazz_movies.core.test.RepositoryTestHelper.testUnsuccessfulCall
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.media.videomedia.VideoResponse
 import com.waffiq.bazz_movies.feature.detail.testutils.BaseDetailRepositoryImplTest
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toMediaCredits
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaDetailMapper.toVideo
+import com.waffiq.bazz_movies.feature.detail.utils.mappers.MediaKeywordsMapper.toMediaKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toExternalTvID
 import com.waffiq.bazz_movies.feature.detail.utils.mappers.TvMapper.toTvDetail
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
@@ -82,43 +81,33 @@ class DetailTvRepositoryImplTest : BaseDetailRepositoryImplTest() {
       },
     )
 
-  private fun <R> runErrorTest(
-    dataSourceCall: suspend () -> Flow<NetworkResult<*>>,
-    repositoryCall: suspend () -> Flow<Outcome<R>>,
-    verifyCall: () -> Unit,
-  ) = runTest {
-    testUnsuccessfulCall(
-      dataSourceCall = dataSourceCall,
-      repositoryCall = repositoryCall,
-      verifyDataSourceCall = verifyCall,
+  @Test
+  fun getTvTrailerLink_whenSuccessful_returnsSuccessResult() =
+    runSuccessTest(
+      mockResponse = mockk<VideoResponse>(relaxed = true),
+      dataSourceCall = { mockTvRemoteDataSource.getTvVideo(id) },
+      repositoryCall = { repository.getTvTrailerLink(id) },
+      expectedData = { it.toVideo() },
+      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvVideo(id) } },
     )
-  }
 
-  private fun <R> runLoadingTest(
-    dataSourceCall: suspend () -> Flow<NetworkResult<*>>,
-    repositoryCall: suspend () -> Flow<Outcome<R>>,
-    verifyCall: () -> Unit,
-  ) = runTest {
-    testLoadingState(
-      dataSourceCall = dataSourceCall,
-      repositoryCall = repositoryCall,
-      verifyDataSourceCall = verifyCall,
+  @Test
+  fun getTvCredits_whenSuccessful_returnsSuccessResult() =
+    runSuccessTest(
+      mockResponse = mockk<MediaCreditsResponse>(relaxed = true),
+      dataSourceCall = { mockTvRemoteDataSource.getTvCredits(id) },
+      repositoryCall = { repository.getTvCredits(id) },
+      expectedData = { it.toMediaCredits() },
+      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvCredits(id) } },
     )
-  }
 
-  private inline fun <Response, Expected> runSuccessTest(
-    mockResponse: Response,
-    noinline dataSourceCall: suspend () -> Flow<NetworkResult<Response>>,
-    noinline repositoryCall: suspend () -> Flow<Outcome<Expected>>,
-    crossinline expectedData: (Response) -> Expected,
-    noinline verifyCall: () -> Unit,
-  ) = runTest {
-    testSuccessfulCall(
-      mockResponse = mockResponse,
-      dataSourceCall = dataSourceCall,
-      repositoryCall = repositoryCall,
-      expectedData = expectedData(mockResponse),
-      verifyDataSourceCall = verifyCall,
+  @Test
+  fun getTvKeywords_whenSuccessful_returnsSuccessResult() =
+    runSuccessTest(
+      mockResponse = mockk<TvKeywordsResponse>(relaxed = true),
+      dataSourceCall = { mockTvRemoteDataSource.getTvKeywords(id.toString()) },
+      repositoryCall = { repository.getTvKeywords(id.toString()) },
+      expectedData = { it.toMediaKeywords() },
+      verifyCall = { coVerify(atLeast = 1) { mockTvRemoteDataSource.getTvKeywords(id.toString()) } },
     )
-  }
 }
