@@ -12,7 +12,7 @@ import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
+class MovieRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getTopRatedMovies_pagingSource_returnsExpectedData() =
@@ -65,36 +65,6 @@ class MoviePagingRemoteDataSourceTest : BaseMediaDataSourceTest() {
       )
       movieRemoteDataSource.getPopularMovies().testPagingFlow(this, expected)
       coVerify { mockMovieApiService.getPopularMovies(1) }
-    }
-
-  @Test
-  fun getFavoriteMovies_pagingSource_returnsExpectedData() =
-    runTest {
-      val pagingSource = GenericPagingSource {
-        mockAccountApiService.getFavoriteMovies(userId, sessionId, 1).results
-      }
-      testPagingSource(
-        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump6)),
-        mockApiCall = { mockAccountApiService.getFavoriteMovies(userId, sessionId, 1) },
-        loader = { pagingSource.toLoadResult() },
-      ) { page ->
-        TestCase.assertEquals(1, page.data.size)
-      }
-    }
-
-  @Test
-  fun getWatchlistMovies_pagingSource_returnsExpectedData() =
-    runTest {
-      val pagingSource = GenericPagingSource {
-        mockAccountApiService.getWatchlistMovies(userId, sessionId, 1).results
-      }
-      testPagingSource(
-        mockResults = defaultMediaResponse(listOf(DataDumpManager.movieDump2)),
-        mockApiCall = { mockAccountApiService.getWatchlistMovies(userId, sessionId, 1) },
-        loader = { pagingSource.toLoadResult() },
-      ) { page ->
-        TestCase.assertEquals(1, page.data.size)
-      }
     }
 
   @Test
