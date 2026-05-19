@@ -4,7 +4,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -155,10 +154,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     every { mockMovieViewModel.trendingPeriod } returns MutableStateFlow(TrendingPeriod.TODAY)
     btn_more_trending_featured.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(listType = ListType.TRENDING_TODAY, title = "", mediaType = MediaSource.Trending),
-    )
+    verifyOpenList(mockNavigator, trendingArgs(ListType.TRENDING_TODAY))
 
     btn_trending_this_week.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -167,10 +163,7 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     every { mockMovieViewModel.trendingPeriod } returns MutableStateFlow(TrendingPeriod.WEEK)
     btn_more_trending_featured.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.TRENDING_WEEK, title = "", mediaType = MediaSource.Trending),
-    )
+    verifyOpenList(mockNavigator, trendingArgs(ListType.TRENDING_WEEK))
   }
 
   @Test
@@ -187,17 +180,11 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     launchFragment()
     btn_more_movie_playing_now_featured.performScrollTo()
     btn_more_movie_playing_now_featured.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.NOW_PLAYING))
 
     btn_more_upcoming_movie_featured.performScrollTo()
     btn_more_upcoming_movie_featured.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.UPCOMING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.UPCOMING))
   }
 
   @Test
@@ -219,4 +206,6 @@ class FeaturedFragmentTest : BaseHomeFragmentTest() {
     launchFragment()
     scenario.moveToState(Lifecycle.State.DESTROYED)
   }
+
+  private fun trendingArgs(listType: ListType) = ListArgs(listType, MediaSource.Trending, "")
 }

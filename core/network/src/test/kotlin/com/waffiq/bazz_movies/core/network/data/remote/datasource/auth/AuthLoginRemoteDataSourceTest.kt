@@ -1,29 +1,38 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.auth
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseAuthDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.authenticationResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.createSessionResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.postResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
 
   @Test
   fun createToken_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
-        mockApiResponse = Response.success(DataDumpManager.authenticationResponseDump),
+        mockApiResponse = success(authenticationResponseDump),
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
-        expectedData = DataDumpManager.authenticationResponseDump,
+        expectedData = authenticationResponseDump,
       )
     }
 
   @Test
   fun createToken_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         errorResponse = apiInvalidFormatErrorResponse,
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
@@ -35,7 +44,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -44,7 +53,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -53,7 +62,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -62,7 +71,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -71,7 +80,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -80,7 +89,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createToken_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockAuthApiService.createToken() },
         dataSourceEndpointCall = { authRemoteDataSource.createToken() },
       )
@@ -90,18 +99,18 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
-        mockApiResponse = Response.success(DataDumpManager.postResponseDump),
+        mockApiResponse = success(postResponseDump),
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
-        expectedData = DataDumpManager.postResponseDump,
+        expectedData = postResponseDump,
       )
     }
 
   @Test
   fun deleteSession_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         errorResponse = apiInvalidFormatErrorResponse,
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
@@ -113,7 +122,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -122,7 +131,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -131,7 +140,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -140,7 +149,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -149,7 +158,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -158,7 +167,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun deleteSession_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockAuthApiService.deleteSession("session_id") },
         dataSourceEndpointCall = { authRemoteDataSource.deleteSession("session_id") },
       )
@@ -168,18 +177,18 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
-        mockApiResponse = Response.success(DataDumpManager.createSessionResponseDump),
+        mockApiResponse = success(createSessionResponseDump),
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
-        expectedData = DataDumpManager.createSessionResponseDump,
+        expectedData = createSessionResponseDump,
       )
     }
 
   @Test
   fun createSessionLogin_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         errorResponse = apiInvalidFormatErrorResponse,
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
@@ -191,7 +200,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -200,7 +209,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -209,7 +218,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -218,7 +227,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -227,7 +236,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -236,7 +245,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun createSessionLogin_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockAuthApiService.createSessionLogin("request_token") },
         dataSourceEndpointCall = { authRemoteDataSource.createSessionLogin("request_token") },
       )
@@ -246,20 +255,20 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
-        mockApiResponse = Response.success(DataDumpManager.authenticationResponseDump),
+        mockApiResponse = success(authenticationResponseDump),
         dataSourceEndpointCall = {
           authRemoteDataSource.login("username", "password", "session_id")
         },
-        expectedData = DataDumpManager.authenticationResponseDump,
+        expectedData = authenticationResponseDump,
       )
     }
 
   @Test
   fun login_whenApiInvalidFormat_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         errorResponse = apiInvalidFormatErrorResponse,
         dataSourceEndpointCall = {
@@ -277,7 +286,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(
@@ -292,7 +301,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(
@@ -307,7 +316,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(
@@ -322,7 +331,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(
@@ -337,7 +346,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(
@@ -352,7 +361,7 @@ class AuthLoginRemoteDataSourceTest : BaseAuthDataSourceTest() {
   @Test
   fun login_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockAuthApiService.login("username", "password", "session_id") },
         dataSourceEndpointCall = {
           authRemoteDataSource.login(

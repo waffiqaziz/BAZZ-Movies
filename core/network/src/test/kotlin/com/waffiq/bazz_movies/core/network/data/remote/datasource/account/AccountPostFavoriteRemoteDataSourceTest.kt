@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessRespo
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class AccountPostFavoriteRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
@@ -21,7 +21,7 @@ class AccountPostFavoriteRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockAccountApiService.postFavoriteTMDB(userId, sessionId, fav) },
-        mockApiResponse = Response.success(postResponseSuccessDump),
+        mockApiResponse = success(postResponseSuccessDump),
         dataSourceEndpointCall = { accountRemoteDataSource.postFavorite(sessionId, fav, userId) },
         expectedData = postResponseSuccessDump,
       )

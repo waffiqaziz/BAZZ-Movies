@@ -19,4 +19,6 @@ class GetAsianMediaInteractor @Inject constructor(private val asianRepository: I
   override fun getAsianRomance(): Flow<PagingData<MediaItem>> = asianRepository.getAsianRomance()
 
   override fun getCostumeDrama(): Flow<PagingData<MediaItem>> = asianRepository.getCostumeDrama()
+
+  override fun getRealityShow(): Flow<PagingData<MediaItem>> = asianRepository.getRealityShow()
 }

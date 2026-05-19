@@ -142,6 +142,35 @@
           tools:spanCount="2" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+          android:id="@+id/layout_header_reality_show"
+          style="@style/LayoutHeaderTheme"
+          android:layout_marginTop="12dp">
+
+          <TextView
+            style="@style/TextHeader2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="@string/reality_show" />
+
+          <include
+            android:id="@+id/btn_more_reality_show"
+            layout="@layout/button_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="-4dp" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_reality_show"
+          style="@style/HomeRecyclerView"
+          tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:layout_height="150dp"
+          tools:listitem="@layout/item_poster" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
           android:id="@+id/layout_header_donghua"
           style="@style/LayoutHeaderTheme"
           android:layout_marginTop="12dp">

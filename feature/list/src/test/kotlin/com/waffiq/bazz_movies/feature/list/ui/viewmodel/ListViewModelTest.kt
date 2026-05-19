@@ -288,6 +288,15 @@ class ListViewModelTest :
         )
       }
 
+      When("fetching reality show") {
+        coEvery { mockGetAsianMediaUseCase.getRealityShow() } returns
+          flowOf(fakeTvMediaItemPagingData)
+
+        thenEmitsCorrectItem(
+          flowProvider = { viewModel.getRealityShow() },
+        )
+      }
+
       When("fetching donghua") {
         coEvery { mockGetAsianMediaUseCase.getDonghua() } returns
           flowOf(fakeTvMediaItemPagingData)

@@ -7,6 +7,7 @@ object QueryParams {
   const val SORT_BY = "sort_by"
   const val WITH_GENRES = "with_genres"
   const val WITH_KEYWORDS = "with_keywords"
+  const val WITH_TYPE = "with_type"
   const val WITHOUT_GENRES = "without_genres"
   const val WITHOUT_KEYWORDS = "without_keywords"
   const val RELEASE_DATE_GTE = "release_date.gte"

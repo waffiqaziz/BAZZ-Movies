@@ -105,5 +105,7 @@ class ListViewModel @Inject constructor(
 
   fun getAsianRomance(): Flow<PagingData<MediaItem>> = discoverUseCase.getAsianRomance()
 
+  fun getRealityShow(): Flow<PagingData<MediaItem>> = discoverUseCase.getRealityShow()
+
   fun getDonghua(): Flow<PagingData<MediaItem>> = discoverUseCase.getDonghua()
 }

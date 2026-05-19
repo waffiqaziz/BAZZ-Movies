@@ -31,6 +31,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.costume_drama
 import com.waffiq.bazz_movies.core.designsystem.R.string.donghua
 import com.waffiq.bazz_movies.core.designsystem.R.string.now_playing
 import com.waffiq.bazz_movies.core.designsystem.R.string.popular
+import com.waffiq.bazz_movies.core.designsystem.R.string.reality_show
 import com.waffiq.bazz_movies.core.designsystem.R.string.recommendation
 import com.waffiq.bazz_movies.core.designsystem.R.string.romance_drama
 import com.waffiq.bazz_movies.core.designsystem.R.string.this_season
@@ -124,6 +125,7 @@ class ListActivity : AppCompatActivity() {
     ListType.COSTUME_DRAMA to { showCostumeDrama() },
     ListType.DONGHUA to { showDonghua() },
     ListType.ROMANCE_DRAMA to { showRomanceDrama() },
+    ListType.REALITY_SHOW to { showRealityShow() },
   )
 
   private fun handleListType(args: ListArgs) {
@@ -236,6 +238,12 @@ class ListActivity : AppCompatActivity() {
     setToolbarTitle(asian)
     setToolbarSubTitle(romance_drama)
     load(viewModel.getAsianRomance(), adapter)
+  }
+
+  private fun showRealityShow() {
+    setToolbarTitle(asian)
+    setToolbarSubTitle(reality_show)
+    load(viewModel.getRealityShow(), adapter)
   }
 
   private fun showDonghua() {

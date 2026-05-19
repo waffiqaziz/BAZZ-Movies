@@ -7,6 +7,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
+import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.instrumentationtest.launchFragmentInHiltContainer
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
@@ -19,6 +21,8 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
 import com.waffiq.bazz_movies.navigation.ListArgs
+import com.waffiq.bazz_movies.navigation.ListType
+import com.waffiq.bazz_movies.navigation.MediaSource
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -136,6 +140,12 @@ abstract class BaseHomeFragmentTest {
   protected fun verifyOpenList(mockNavigator: INavigator, listArgs: ListArgs) {
     verify { mockNavigator.openList(any(), listArgs) }
   }
+
+  protected fun tvArgs(listType: ListType) =
+    ListArgs(listType, MediaSource.Typed(TV_MEDIA_TYPE), "")
+
+  protected fun movieArgs(listType: ListType) =
+    ListArgs(listType, MediaSource.Typed(MOVIE_MEDIA_TYPE), "")
 
   @After
   fun tearDown() {

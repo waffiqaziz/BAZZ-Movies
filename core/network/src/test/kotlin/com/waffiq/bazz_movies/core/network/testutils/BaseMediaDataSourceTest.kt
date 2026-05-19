@@ -2,6 +2,7 @@
 
 package com.waffiq.bazz_movies.core.network.testutils
 
+import androidx.paging.PagingData
 import androidx.paging.PagingSource.LoadParams
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.account.AccountRemoteDataSource
 import com.waffiq.bazz_movies.core.network.data.remote.datasource.asian.AsianRemoteDataSource
@@ -17,6 +18,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.models.FavoriteRequest
 import com.waffiq.bazz_movies.core.network.data.remote.models.WatchlistRequest
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.GenericPagingSource
 import com.waffiq.bazz_movies.core.network.data.remote.pagingsources.SearchPagingSource
+import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.MediaResponseItem
 import com.waffiq.bazz_movies.core.network.data.remote.responses.tmdb.post.PostResponse
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.AccountApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.AuthApiService
@@ -28,11 +30,18 @@ import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.PersonA
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.SearchApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TrendingApiService
 import com.waffiq.bazz_movies.core.network.data.remote.retrofit.services.TvApiService
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.tvShowDump1
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.defaultMediaResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testPagingFlow
 import com.waffiq.bazz_movies.core.test.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import io.mockk.clearMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.TestScope
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
@@ -47,6 +56,8 @@ import retrofit2.Response
  * to be reused across concrete test implementations.
  */
 abstract class BaseMediaDataSourceTest {
+
+  protected val mediaResponse = listOf(tvShowDump1)
 
   protected val apiMaintenanceErrorResponse: Response<PostResponse> = Response.error(
     503,
@@ -174,4 +185,26 @@ abstract class BaseMediaDataSourceTest {
 
   protected suspend fun SearchPagingSource.toLoadResult() =
     this.load(LoadParams.Refresh(key = 1, loadSize = 2, placeholdersEnabled = false))
+
+  protected suspend fun TestScope.verifyTvDiscovery(
+    provider: Flow<PagingData<MediaResponseItem>>,
+    query: Map<String, String>,
+  ) {
+    coEvery { mockDiscoverApiService.discoverTv(query) } returns
+      defaultMediaResponse(mediaResponse)
+
+    provider.testPagingFlow(this, mediaResponse)
+    coVerify { mockDiscoverApiService.discoverTv(query) }
+  }
+
+  protected suspend fun TestScope.verifyMovieDiscovery(
+    provider: Flow<PagingData<MediaResponseItem>>,
+    query: Map<String, String>,
+  ) {
+    coEvery { mockDiscoverApiService.discoverMovie(query) } returns
+      defaultMediaResponse(mediaResponse)
+
+    provider.testPagingFlow(this, mediaResponse)
+    coVerify { mockDiscoverApiService.discoverMovie(query) }
+  }
 }
