@@ -86,7 +86,7 @@ object MediaHelper {
     ((rating.toFloat() * DIGIT_NUMBER_INTEGER).roundToInt() / DIGIT_NUMBER_DOUBLE).toString()
 
   fun Context.getEpisodesFormatted(details: MediaDetail) =
-    if (details.totalEpisodes == null) {
+    if (details.totalEpisodes == null || details.totalSeasons == null) {
       "-"
     } else {
       "${details.totalEpisodes} " +

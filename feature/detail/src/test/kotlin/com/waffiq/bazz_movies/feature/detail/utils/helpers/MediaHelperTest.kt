@@ -245,6 +245,30 @@ class MediaHelperTest {
       context.getEpisodesFormatted(MediaDetail(1, releaseDateRegion = releaseDateRegion))
     )
 
+    // one of episode/seasons are null
+    assertEquals(
+      "-",
+      context.getEpisodesFormatted(
+        MediaDetail(
+          1,
+          releaseDateRegion = releaseDateRegion,
+          totalEpisodes = 16,
+          totalSeasons = null
+        )
+      )
+    )
+    assertEquals(
+      "-",
+      context.getEpisodesFormatted(
+        MediaDetail(
+          1,
+          releaseDateRegion = releaseDateRegion,
+          totalEpisodes = null,
+          totalSeasons = 1
+        )
+      )
+    )
+
     // valid episodes
     assertEquals(
       "10 Episodes (1 Seasons)",
