@@ -102,9 +102,22 @@ class AsianRemoteDataSource @Inject constructor(
       ).results
     }.flow.flowOn(ioDispatcher)
 
+  override fun getRealityShow(): Flow<PagingData<MediaResponseItem>> =
+    createPager { page ->
+      discoverApiService.discoverTv(
+        DiscoverTvParams(
+          originCountry = ASIAN_REGION,
+          type = REALITY_SHOW_TYPE,
+          page = page,
+        ).toQueryMap(),
+      ).results
+    }.flow.flowOn(ioDispatcher)
+
   companion object {
     const val THREE_MONTHS = 3L
     const val ONE_MONTH = 1L
+    const val REALITY_SHOW_TYPE = "3"
+
     val ASIAN_REGION = listOf(CHINA, INDONESIA, JAPAN, KOREA, MALAYSIA, TAIWAN, THAILAND)
 
     val ANIME_WITHOUT_KEYWORDS = listOf(ECCHI, EROTIC, HENTAI, SOFTCORE)

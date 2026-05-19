@@ -1,29 +1,36 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailMovieResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getMovieDetail_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
-        mockApiResponse = Response.success(DataDumpManager.detailMovieResponseDump),
+        mockApiResponse = success(detailMovieResponseDump),
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
-        expectedData = DataDumpManager.detailMovieResponseDump,
+        expectedData = detailMovieResponseDump,
       )
     }
 
   @Test
   fun getMovieDetail_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         errorResponse = apiMaintenanceErrorResponse,
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
@@ -35,7 +42,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )
@@ -44,7 +51,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )
@@ -53,7 +60,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )
@@ -62,7 +69,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )
@@ -71,7 +78,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )
@@ -80,7 +87,7 @@ class MovieDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieDetail_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieDetail(333333) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieDetail(333333) },
       )

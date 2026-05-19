@@ -10,4 +10,5 @@ interface GetAsianMediaUseCase {
   fun getDonghua(): Flow<PagingData<MediaItem>>
   fun getAsianRomance(): Flow<PagingData<MediaItem>>
   fun getCostumeDrama(): Flow<PagingData<MediaItem>>
+  fun getRealityShow(): Flow<PagingData<MediaItem>>
 }

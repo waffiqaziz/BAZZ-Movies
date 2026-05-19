@@ -60,6 +60,13 @@ class AsianViewModelTest : BaseViewModelTest() {
     }
 
   @Test
+  fun getRealityShow_whenSuccessful_emitsCorrectValue() =
+    runTest {
+      coEvery { mockAsianMediaUseCase.getRealityShow() } returns expectedFlow
+      thenEmitsCorrectItem({ viewModel.getRealityShow() })
+    }
+
+  @Test
   fun setAnimePeriod_whenCalled_shouldUpdateTrendingPeriod() {
     assertEquals(AnimePeriod.THIS_SEASON, viewModel.animePeriod.value)
     viewModel.setAnimePeriod(AnimePeriod.ALL_TIME)

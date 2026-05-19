@@ -1,11 +1,11 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.tv
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.detailTvResponseDump
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class TvDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
@@ -14,9 +14,9 @@ class TvDetailRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       TestHelper.testSuccessResponse(
         apiEndpoint = { mockTvApiService.getTvDetail(253905) },
-        mockApiResponse = Response.success(DataDumpManager.detailTvResponseDump),
+        mockApiResponse = success(detailTvResponseDump),
         dataSourceEndpointCall = { tvRemoteDataSource.getTvDetail(253905) },
-        expectedData = DataDumpManager.detailTvResponseDump,
+        expectedData = detailTvResponseDump,
       )
     }
 

@@ -294,7 +294,7 @@ class DetailUIManager(
         tvBudgetHeader.text = tvBudget.context.getString(total_episodes)
         tvBudget.text = tvBudget.context.getEpisodesFormatted(
           details.totalEpisodes,
-          details.totalSeasons
+          details.totalSeasons,
         )
         tvRevenue.isVisible = false
         tvRevenueHeader.isVisible = false

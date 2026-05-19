@@ -2,7 +2,6 @@ package com.waffiq.bazz_movies.feature.home.ui.fragment
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.movies
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -28,9 +27,7 @@ import com.waffiq.bazz_movies.feature.home.testutils.BaseHomeFragmentTest
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
-import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -110,31 +107,19 @@ class MovieFragmentTest : BaseHomeFragmentTest() {
 
     btn_more_popular_movie.performScrollTo()
     btn_more_popular_movie.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.POPULAR, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.POPULAR))
 
     btn_more_movie_airing_today.performScrollTo()
     btn_more_movie_airing_today.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.NOW_PLAYING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.NOW_PLAYING))
 
     btn_more_upcoming_movie.performScrollTo()
     btn_more_upcoming_movie.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.UPCOMING, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.UPCOMING))
 
     btn_more_top_rated_movie.performScrollTo()
     btn_more_top_rated_movie.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.TOP_RATED, MediaSource.Typed(MOVIE_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, movieArgs(ListType.TOP_RATED))
   }
 
   @Test

@@ -1,29 +1,36 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.watchProviderResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getMovieWatchProviders_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
-        mockApiResponse = Response.success(DataDumpManager.watchProviderResponseDump),
+        mockApiResponse = success(watchProviderResponseDump),
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
-        expectedData = DataDumpManager.watchProviderResponseDump,
+        expectedData = watchProviderResponseDump,
       )
     }
 
   @Test
   fun getMovieWatchProviders_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         errorResponse = apiMaintenanceErrorResponse,
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
@@ -35,7 +42,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )
@@ -44,7 +51,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )
@@ -53,7 +60,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )
@@ -62,7 +69,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )
@@ -71,7 +78,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )
@@ -80,7 +87,7 @@ class MovieWatchProvidersRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getMovieWatchProviders_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockMovieApiService.getMovieWatchProviders(1234567890) },
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieWatchProviders(1234567890) },
       )

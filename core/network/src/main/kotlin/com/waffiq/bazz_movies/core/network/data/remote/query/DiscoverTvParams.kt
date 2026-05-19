@@ -15,6 +15,7 @@ data class DiscoverTvParams(
   val firstAirDateLte: String? = null,
   val originCountry: List<Region>? = null,
   val watchRegion: String? = null,
+  val type: String? = null,
   val withoutGenres: List<Genre>? = null,
   val withoutKeywords: List<Keyword>? = null,
   val sortBy: String = SortBy.POPULARITY_DESC,

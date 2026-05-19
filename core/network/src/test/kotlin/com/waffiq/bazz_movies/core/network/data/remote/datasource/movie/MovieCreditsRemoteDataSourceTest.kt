@@ -12,7 +12,7 @@ import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessRespo
 import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class MovieCreditsRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
@@ -21,7 +21,7 @@ class MovieCreditsRemoteDataSourceTest : BaseMediaDataSourceTest() {
     runTest {
       testSuccessResponse(
         apiEndpoint = { mockMovieApiService.getMovieCredits(11111) },
-        mockApiResponse = Response.success(mediaCreditsResponseDump1),
+        mockApiResponse = success(mediaCreditsResponseDump1),
         dataSourceEndpointCall = { movieRemoteDataSource.getMovieCredits(11111) },
         expectedData = mediaCreditsResponseDump1,
       )
