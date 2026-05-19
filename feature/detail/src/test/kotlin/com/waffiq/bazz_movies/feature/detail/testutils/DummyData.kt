@@ -433,6 +433,8 @@ object DummyData {
     listOriginCountry = listOf("US"),
     firstAirDate = "2020-01-01",
     lastAirDate = "2023-06-01",
+    numberOfSeasons = 4,
+    numberOfEpisodes = 96,
   )
   // endregion TV
 

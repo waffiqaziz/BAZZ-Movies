@@ -54,10 +54,10 @@ object MediaKeywordsMapper {
       tmdbScore = getTransformTMDBScore(voteAverage),
       releaseDateRegion = getReleaseDateRegion(this),
       status = status,
-      budget = "-",
-      revenue = "-",
       language = getLanguageName(originalLanguage),
       keywords = mediaKeywords?.keywords,
+      totalEpisodes = numberOfEpisodes,
+      totalSeasons = numberOfSeasons,
     )
 
   fun MovieDetail.toMediaDetail(

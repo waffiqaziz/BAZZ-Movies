@@ -2,8 +2,11 @@ package com.waffiq.bazz_movies.feature.detail.utils.helpers
 
 import android.content.Context
 import android.view.KeyEvent
+import com.waffiq.bazz_movies.core.designsystem.R.string.episodes
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
+import com.waffiq.bazz_movies.core.designsystem.R.string.seasons
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
 import com.waffiq.bazz_movies.feature.detail.domain.model.video.Video
 import kotlin.math.roundToInt
@@ -81,4 +84,14 @@ object MediaHelper {
 
   fun formatRating(rating: Number): String =
     ((rating.toFloat() * DIGIT_NUMBER_INTEGER).roundToInt() / DIGIT_NUMBER_DOUBLE).toString()
+
+  fun Context.getEpisodesFormatted(details: MediaDetail) =
+    if (details.totalEpisodes == null) {
+      "-"
+    } else {
+      "${details.totalEpisodes} " +
+        "${getString(episodes)} " +
+        "(${details.totalSeasons} " +
+        "${getString(seasons)})"
+    }
 }

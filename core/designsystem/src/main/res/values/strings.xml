@@ -149,6 +149,9 @@
   <string name="keywords">Keywords</string>
   <string name="revenue">Revenue</string>
   <string name="budget">Budget</string>
+  <string name="total_episodes">Total Episodes</string>
+  <string name="episodes">Episodes</string>
+  <string name="seasons">Seasons</string>
 
   <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>

@@ -6,11 +6,16 @@ import android.view.KeyEvent.ACTION_UP
 import android.view.KeyEvent.KEYCODE_0
 import android.view.KeyEvent.KEYCODE_8
 import android.view.KeyEvent.KEYCODE_BACK
+import com.waffiq.bazz_movies.core.designsystem.R.string.episodes
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
+import com.waffiq.bazz_movies.core.designsystem.R.string.seasons
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
+import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
+import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getListOfKeywords
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
@@ -36,6 +41,8 @@ class MediaHelperTest {
   @Before
   fun setup() {
     every { context.getString(no_overview) } returns noOverview
+    every { context.getString(episodes) } returns "Episodes"
+    every { context.getString(seasons) } returns "Seasons"
   }
 
   @Test
@@ -228,5 +235,27 @@ class MediaHelperTest {
     assertEquals("10.0", formatRating(10.0f))
     assertEquals("10.0", formatRating(10))
     assertEquals("0.0", formatRating(0))
+  }
+
+  @Test
+  fun getEpisodesFormatted_mixedValue_returnsValueCorrectly() {
+    // when null
+    assertEquals(
+      "-",
+      context.getEpisodesFormatted(MediaDetail(1, releaseDateRegion = releaseDateRegion))
+    )
+
+    // valid episodes
+    assertEquals(
+      "10 Episodes (1 Seasons)",
+      context.getEpisodesFormatted(
+        MediaDetail(
+          1,
+          releaseDateRegion = releaseDateRegion,
+          totalEpisodes = 10,
+          totalSeasons = 1,
+        )
+      )
+    )
   }
 }

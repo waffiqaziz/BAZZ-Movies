@@ -13,8 +13,14 @@ data class MediaDetail(
   val tmdbScore: String? = null,
   val releaseDateRegion: ReleaseDateRegion,
   val status: String? = null,
-  val budget: String? = null,
-  val revenue: String? = null,
   val language: String? = null,
   val keywords: List<MediaKeywordsItem?>? = null,
+
+  // movie
+  val budget: String? = null,
+  val revenue: String? = null,
+
+  // tv
+  val totalEpisodes: Int? = null,
+  val totalSeasons: Int? = null,
 )
