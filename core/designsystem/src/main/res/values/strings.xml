@@ -150,8 +150,15 @@
   <string name="revenue">Revenue</string>
   <string name="budget">Budget</string>
   <string name="total_episodes">Total Episodes</string>
-  <string name="episodes">Episodes</string>
-  <string name="seasons">Seasons</string>
+  <plurals name="episodes">
+    <item quantity="one">%d episode</item>
+    <item quantity="other">%d episodes</item>
+  </plurals>
+
+  <plurals name="seasons">
+    <item quantity="one">%d season</item>
+    <item quantity="other">%d seasons</item>
+  </plurals>
 
   <!-- FAVORITE/WATCHLIST -->
   <string name="undo">Undo</string>

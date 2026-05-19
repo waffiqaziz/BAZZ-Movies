@@ -292,7 +292,10 @@ class DetailUIManager(
         tvRevenue.text = details.revenue
       } else {
         tvBudgetHeader.text = tvBudget.context.getString(total_episodes)
-        tvBudget.text = tvBudget.context.getEpisodesFormatted(details)
+        tvBudget.text = tvBudget.context.getEpisodesFormatted(
+          details.totalEpisodes,
+          details.totalSeasons
+        )
         tvRevenue.isVisible = false
         tvRevenueHeader.isVisible = false
       }

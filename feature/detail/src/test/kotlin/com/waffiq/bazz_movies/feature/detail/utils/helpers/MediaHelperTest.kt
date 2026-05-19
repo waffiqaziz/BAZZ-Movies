@@ -6,13 +6,11 @@ import android.view.KeyEvent.ACTION_UP
 import android.view.KeyEvent.KEYCODE_0
 import android.view.KeyEvent.KEYCODE_8
 import android.view.KeyEvent.KEYCODE_BACK
-import com.waffiq.bazz_movies.core.designsystem.R.string.episodes
+import androidx.annotation.PluralsRes
+import com.waffiq.bazz_movies.core.designsystem.R.plurals
 import com.waffiq.bazz_movies.core.designsystem.R.string.no_overview
-import com.waffiq.bazz_movies.core.designsystem.R.string.seasons
 import com.waffiq.bazz_movies.feature.detail.domain.model.MediaCrewItem
-import com.waffiq.bazz_movies.feature.detail.domain.model.MediaDetail
 import com.waffiq.bazz_movies.feature.detail.domain.model.keywords.MediaKeywordsItem
-import com.waffiq.bazz_movies.feature.detail.testutils.DummyData.releaseDateRegion
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
@@ -38,11 +36,21 @@ class MediaHelperTest {
 
   private fun crew(job: String, name: String?) = MediaCrewItem(job = job, name = name)
 
+  private fun mockPlural(
+    @PluralsRes resId: Int,
+    quantity: Int,
+    value: String,
+  ) {
+    every { context.resources.getQuantityString(resId, quantity, quantity) } returns value
+  }
+
   @Before
   fun setup() {
     every { context.getString(no_overview) } returns noOverview
-    every { context.getString(episodes) } returns "Episodes"
-    every { context.getString(seasons) } returns "Seasons"
+    mockPlural(plurals.episodes, 1, "1 episode")
+    mockPlural(plurals.episodes, 36, "36 episodes")
+    mockPlural(plurals.seasons, 1, "1 season")
+    mockPlural(plurals.seasons, 3, "3 seasons")
   }
 
   @Test
@@ -240,46 +248,16 @@ class MediaHelperTest {
   @Test
   fun getEpisodesFormatted_mixedValue_returnsValueCorrectly() {
     // when null
-    assertEquals(
-      "-",
-      context.getEpisodesFormatted(MediaDetail(1, releaseDateRegion = releaseDateRegion))
-    )
+    assertEquals("-", context.getEpisodesFormatted(null, null))
 
     // one of episode/seasons are null
-    assertEquals(
-      "-",
-      context.getEpisodesFormatted(
-        MediaDetail(
-          1,
-          releaseDateRegion = releaseDateRegion,
-          totalEpisodes = 16,
-          totalSeasons = null
-        )
-      )
-    )
-    assertEquals(
-      "-",
-      context.getEpisodesFormatted(
-        MediaDetail(
-          1,
-          releaseDateRegion = releaseDateRegion,
-          totalEpisodes = null,
-          totalSeasons = 1
-        )
-      )
-    )
+    assertEquals("-", context.getEpisodesFormatted(16, null))
+    assertEquals("-", context.getEpisodesFormatted(null, 1))
 
-    // valid episodes
-    assertEquals(
-      "10 Episodes (1 Seasons)",
-      context.getEpisodesFormatted(
-        MediaDetail(
-          1,
-          releaseDateRegion = releaseDateRegion,
-          totalEpisodes = 10,
-          totalSeasons = 1,
-        )
-      )
-    )
+    // valid episodes singular
+    assertEquals("1 episode (1 season)", context.getEpisodesFormatted(1, 1))
+
+    // valid episodes plural
+    assertEquals("36 episodes (3 seasons)", context.getEpisodesFormatted(36, 3))
   }
 }
