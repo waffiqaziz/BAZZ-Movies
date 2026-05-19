@@ -38,6 +38,8 @@ class MediaDetailTest {
       imdbId = "tt1234567",
       ageRating = "PG-13",
       tmdbScore = "8.5",
+      totalSeasons = 2,
+      totalEpisodes = 24,
       releaseDateRegion = releaseDateRegion,
     )
 
@@ -48,6 +50,8 @@ class MediaDetailTest {
     assertEquals("tt1234567", detail.imdbId)
     assertEquals("PG-13", detail.ageRating)
     assertEquals("8.5", detail.tmdbScore)
+    assertEquals(24, detail.totalEpisodes)
+    assertEquals(2, detail.totalSeasons)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
   }
 
@@ -74,6 +78,8 @@ class MediaDetailTest {
       imdbId = null,
       ageRating = null,
       tmdbScore = null,
+      totalEpisodes = null,
+      totalSeasons = null,
       releaseDateRegion = releaseDateRegion,
     )
 
@@ -84,6 +90,8 @@ class MediaDetailTest {
     assertNull(detail.imdbId)
     assertNull(detail.ageRating)
     assertNull(detail.tmdbScore)
+    assertNull(detail.totalEpisodes)
+    assertNull(detail.totalSeasons)
     assertEquals(releaseDateRegion, detail.releaseDateRegion)
   }
 }

@@ -3,7 +3,6 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/Widget.Material3.SideSheet.Modal"
-  tools:layout_width="300dp"
   android:layout_width="wrap_content"
   android:layout_height="match_parent"
   android:layout_gravity="end"
@@ -13,7 +12,8 @@
   android:padding="24dp"
   app:behavior_draggable="true"
   app:layout_behavior="com.google.android.material.sidesheet.SideSheetBehavior"
-  app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+  app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+  tools:layout_width="300dp">
 
   <TextView
     android:id="@+id/tv_title"
@@ -56,6 +56,7 @@
     tools:text="English" />
 
   <TextView
+    android:id="@+id/tv_budget_header"
     style="@style/TextHeader2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -71,6 +72,7 @@
     tools:text="$150,000,000.00" />
 
   <TextView
+    android:id="@+id/tv_revenue_header"
     style="@style/TextHeader2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

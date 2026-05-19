@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
@@ -141,7 +142,7 @@ class MediaDetailActivity : AppCompatActivity() {
     uiManager.showLoadingDim(state.isLoading)
 
     state.detail?.let { detail ->
-      uiManager.updateDetailUI(detail, dataExtra.mediaType)
+      uiManager.updateDetailUI(detail, dataExtra.mediaType == MOVIE_MEDIA_TYPE)
       dataExtra = dataExtra.copy(listGenreIds = detail.genreId)
     }
     watchProvidersManager.handleWatchProvidersState(state.watchProviders)

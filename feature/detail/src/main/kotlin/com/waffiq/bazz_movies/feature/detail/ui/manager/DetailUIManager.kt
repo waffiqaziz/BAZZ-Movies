@@ -20,12 +20,12 @@ import com.google.android.material.sidesheet.SideSheetBehavior
 import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.DEBOUNCE_LONG
-import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_backdrop_error_filled
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_backdrops
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_placeholder_poster
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_poster_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.not_available
+import com.waffiq.bazz_movies.core.designsystem.R.string.total_episodes
 import com.waffiq.bazz_movies.core.designsystem.R.string.yt_not_installed
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.uihelper.ui.adapter.LoadingStateAdapter
@@ -51,6 +51,7 @@ import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.isBackdro
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.ImageHelper.posterDetailSource
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.extractCrewDisplayNames
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.formatRating
+import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getEpisodesFormatted
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getOverview
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.getScoreFromOMDB
 import com.waffiq.bazz_movies.feature.detail.utils.helpers.MediaHelper.isBackReleased
@@ -88,8 +89,8 @@ class DetailUIManager(
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   lateinit var adapterRecommendation: RecommendationAdapter
 
-  lateinit var sideSheetDialog: SideSheetDialog
-  lateinit var sideSheetBinding: SideSheetContentBinding
+  private lateinit var sideSheetDialog: SideSheetDialog
+  private lateinit var sideSheetBinding: SideSheetContentBinding
 
   private var mSnackbar: Snackbar? = null
   private var toast: Toast? = null
@@ -247,7 +248,7 @@ class DetailUIManager(
   /**
    * Updates the UI with detailed metadata
    */
-  fun updateDetailUI(details: MediaDetail, mediaType: String) {
+  fun updateDetailUI(details: MediaDetail, isMovie: Boolean) {
     binding.apply {
       if (details.genreId != null) adapterGenre.setGenre(details.genreId)
       if (details.tmdbScore.isNullOrEmpty()) {
@@ -258,31 +259,47 @@ class DetailUIManager(
       }
 
       // set duration for movie and status for tv-series
-      tvDuration.text = when (mediaType) {
-        MOVIE_MEDIA_TYPE -> details.duration ?: activity.getString(not_available)
-
-        else -> {
-          if (details.status.isNullOrEmpty()) {
-            activity.getString(not_available)
-          } else {
-            details.status
-          }
+      tvDuration.text = if (isMovie) {
+        details.duration ?: activity.getString(not_available)
+      } else {
+        if (details.status.isNullOrEmpty()) {
+          activity.getString(not_available)
+        } else {
+          details.status
         }
       }
-
-      // side sheet detailed metadata
-      adapterKeywords.submitList(details.keywords)
-      sideSheetBinding.apply {
-        tvBudget.text = details.budget
-        tvRevenue.text = details.revenue
-        tvStatus.text = details.status
-        tvLanguage.text = details.language
-      }
     }
+
+    updateSideSheetInfo(details, isMovie)
 
     updateAgeRating(details.ageRating)
     updateReleaseInfo(details.releaseDateRegion)
     showLoadingDim(false)
+  }
+
+  /**
+   * Updates side sheet media information
+   */
+  private fun updateSideSheetInfo(details: MediaDetail, isMovie: Boolean) {
+    // side sheet detailed metadata
+    adapterKeywords.submitList(details.keywords)
+    sideSheetBinding.apply {
+      tvStatus.text = details.status
+      tvLanguage.text = details.language
+
+      if (isMovie) {
+        tvBudget.text = details.budget
+        tvRevenue.text = details.revenue
+      } else {
+        tvBudgetHeader.text = tvBudget.context.getString(total_episodes)
+        tvBudget.text = tvBudget.context.getEpisodesFormatted(
+          details.totalEpisodes,
+          details.totalSeasons
+        )
+        tvRevenue.isVisible = false
+        tvRevenueHeader.isVisible = false
+      }
+    }
   }
 
   /**
