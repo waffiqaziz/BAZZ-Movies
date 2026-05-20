@@ -475,4 +475,49 @@
     <item name="android:layout_marginEnd">@dimen/default_margin_parent_20</item>
     <item name="android:layout_marginStart">@dimen/default_margin_parent_20</item>
   </style>
+
+  <style name="More" />
+
+  <style name="More.ListItemCardView" parent="Widget.Material3.ListItemCardView.Segmented">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:duplicateParentState">true</item>
+    <item name="android:clickable">true</item>
+    <item name="android:focusable">true</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="cardBackgroundColor">@color/gray_900_light</item>
+    <item name="rippleColor">@color/gray_800</item>
+  </style>
+
+  <style name="More.ListItemLayout">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:focusable">true</item>
+    <item name="android:clickable">true</item>
+  </style>
+
+  <style name="More.CardLayout">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="More.LeadingIcon">
+    <item name="android:layout_width">20dp</item>
+    <item name="android:layout_height">20dp</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="iconTint">@color/white</item>
+  </style>
+
+
+  <style name="More.TrailingIcon">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="contentDescription">@null</item>
+    <item name="srcCompat">@drawable/ic_chevron_right</item>
+    <item name="iconTint">@color/yellow</item>
+  </style>
+
 </resources>
