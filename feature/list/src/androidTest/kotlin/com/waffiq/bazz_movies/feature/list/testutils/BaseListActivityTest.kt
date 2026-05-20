@@ -29,7 +29,7 @@ abstract class BaseListActivityTest {
   private val tvArgs = ListArgs(
     listType = ListType.BY_GENRE,
     mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = ""
+    title = "",
   )
 
   protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)

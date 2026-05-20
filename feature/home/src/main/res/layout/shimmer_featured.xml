@@ -5,7 +5,7 @@
   android:id="@+id/shimmer_featured"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/gray_1000">
+  android:background="@color/gray_900">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -44,8 +44,7 @@
       android:orientation="vertical"
       tools:ignore="NegativeMargin">
 
-      <androidx.coordinatorlayout.widget.CoordinatorLayout
-        style="@style/LayoutHeaderTheme">
+      <androidx.coordinatorlayout.widget.CoordinatorLayout style="@style/LayoutHeaderTheme">
 
         <TextView
           style="@style/TextHeader2"
@@ -65,8 +64,8 @@
 
       <com.google.android.material.button.MaterialButtonToggleGroup
         style="@style/FilterButtonGroupStyle"
-        android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="@dimen/default_margin_parent_20">
+        android:layout_marginHorizontal="@dimen/default_margin_parent_20"
+        android:layout_marginBottom="8dp">
 
         <com.google.android.material.button.MaterialButton
           style="@style/FilterToggleOverlay"
@@ -112,7 +111,7 @@
       layout="@layout/shimmer_item_horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"/>
+      android:layout_marginTop="20dp" />
 
   </LinearLayout>
 </FrameLayout>

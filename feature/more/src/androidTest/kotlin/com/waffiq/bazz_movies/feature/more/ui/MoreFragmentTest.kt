@@ -45,14 +45,14 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
 import com.waffiq.bazz_movies.feature.more.R.id.btn_country_picker
 import com.waffiq.bazz_movies.feature.more.R.id.btn_faq
+import com.waffiq.bazz_movies.feature.more.R.id.btn_privacy_policy
 import com.waffiq.bazz_movies.feature.more.R.id.btn_region
 import com.waffiq.bazz_movies.feature.more.R.id.btn_signout
 import com.waffiq.bazz_movies.feature.more.R.id.btn_suggestion
+import com.waffiq.bazz_movies.feature.more.R.id.btn_terms_condition
 import com.waffiq.bazz_movies.feature.more.R.id.img_avatar
 import com.waffiq.bazz_movies.feature.more.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.more.R.id.tv_fullName
-import com.waffiq.bazz_movies.feature.more.R.id.tv_privacy_policy
-import com.waffiq.bazz_movies.feature.more.R.id.tv_terms_condition
 import com.waffiq.bazz_movies.feature.more.R.id.tv_username
 import com.waffiq.bazz_movies.feature.more.testutils.DefaultMoreFragmentTestHelper
 import com.waffiq.bazz_movies.feature.more.testutils.Helper.userModel
@@ -133,13 +133,13 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
 
   @Test
   fun buttonPrivacyPolicy_whenClicked_shouldOpenPrivacyPolicyLink() {
-    tv_privacy_policy.performClick()
+    btn_privacy_policy.performClick()
     checkIntentData(PRIVACY_POLICY_LINK)
   }
 
   @Test
   fun buttonTermsCondition_whenClicked_shouldOpenTermsConditionsLink() {
-    tv_terms_condition.performClick()
+    btn_terms_condition.performClick()
     checkIntentData(TERMS_CONDITIONS_LINK)
   }
 
@@ -373,8 +373,8 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   @Test
   fun allButtons_shouldBeDisplayed() {
     btn_faq.isDisplayed()
-    tv_privacy_policy.isDisplayed()
-    tv_terms_condition.isDisplayed()
+    btn_privacy_policy.isDisplayed()
+    btn_terms_condition.isDisplayed()
     btn_suggestion.isDisplayed()
     btn_about_us.isDisplayed()
     btn_signout.isDisplayed()

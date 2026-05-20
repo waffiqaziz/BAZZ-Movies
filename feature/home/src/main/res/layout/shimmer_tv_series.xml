@@ -3,7 +3,7 @@
   android:id="@+id/shimmer_tv_series"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="@color/gray_1000"
+  android:background="@color/gray_900"
   android:orientation="vertical">
 
   <TextView
