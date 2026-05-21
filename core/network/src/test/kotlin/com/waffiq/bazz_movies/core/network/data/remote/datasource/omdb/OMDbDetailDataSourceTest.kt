@@ -1,29 +1,36 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.omdb
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.omdbDetailsResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getOMDbDetails_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
-        mockApiResponse = Response.success(DataDumpManager.omdbDetailsResponseDump),
+        mockApiResponse = success(omdbDetailsResponseDump),
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
-        expectedData = DataDumpManager.omdbDetailsResponseDump,
+        expectedData = omdbDetailsResponseDump,
       )
     }
 
   @Test
   fun getOMDbDetails_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         errorResponse = apiMaintenanceErrorResponse,
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
@@ -35,7 +42,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )
@@ -44,7 +51,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )
@@ -53,7 +60,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )
@@ -62,7 +69,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )
@@ -71,7 +78,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )
@@ -80,7 +87,7 @@ class OMDbDetailDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getOMDbDetails_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockOmdbApiService.getOMDbDetails("tt1630029") },
         dataSourceEndpointCall = { omdbRemoteDataSource.getOMDbDetails("tt1630029") },
       )

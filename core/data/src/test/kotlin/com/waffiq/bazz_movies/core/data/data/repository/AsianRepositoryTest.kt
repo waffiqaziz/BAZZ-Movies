@@ -67,4 +67,14 @@ class AsianRepositoryTest : BaseRepositoryTest() {
       verifyDataSourceCall = { verify { mockAsianRemoteDataSource.getCostumeDrama() } },
     )
   }
+
+  @Test
+  fun getRealityShow_whenSuccessful_returnsDataCorrectly() {
+    testSuccessfulPagingData(
+      mockPagingData = fakePagingData,
+      dataSourceCall = { mockAsianRemoteDataSource.getRealityShow() },
+      repositoryCall = { asianRepository.getRealityShow() },
+      verifyDataSourceCall = { verify { mockAsianRemoteDataSource.getRealityShow() } },
+    )
+  }
 }

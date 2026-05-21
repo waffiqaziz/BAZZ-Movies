@@ -2,6 +2,7 @@
 
 package com.waffiq.bazz_movies.feature.more.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.listitem.ListItemLayout
 import com.google.android.material.snackbar.Snackbar
 import com.waffiq.bazz_movies.core.common.utils.Constants.ANIM_DURATION
 import com.waffiq.bazz_movies.core.common.utils.Constants.FAQ_LINK
@@ -82,6 +84,7 @@ class MoreFragment : Fragment() {
       setData(user)
       btnAction(user)
     }
+    updateListItemAppearance()
   }
 
   override fun onCreateView(
@@ -136,21 +139,44 @@ class MoreFragment : Fragment() {
     }
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private fun btnAction(user: UserModel) {
-    binding.btnFaq.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, FAQ_LINK.toUri()))
-    }
-    binding.tvPrivacyPolicy.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_LINK.toUri()))
-    }
-    binding.tvTermsCondition.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, TERMS_CONDITIONS_LINK.toUri()))
-    }
-    binding.btnSuggestion.setOnClickListener {
-      startActivity(Intent(Intent.ACTION_VIEW, FORM_HELPER.toUri()))
-    }
-    binding.btnAboutUs.setOnClickListener {
-      navigator.openAboutActivity(requireContext())
+    binding.apply {
+      btnFaq.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, FAQ_LINK.toUri())) }
+      btnFaq.setOnTouchListener { _, event ->
+        cardFaq.onTouchEvent(event)
+        false
+      }
+
+      btnPrivacyPolicy.setOnClickListener {
+        startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_LINK.toUri()))
+      }
+      btnPrivacyPolicy.setOnTouchListener { _, event ->
+        cardPrivacyPolicy.onTouchEvent(event)
+        false
+      }
+
+      btnTermsCondition.setOnClickListener {
+        startActivity(Intent(Intent.ACTION_VIEW, TERMS_CONDITIONS_LINK.toUri()))
+      }
+      btnTermsCondition.setOnTouchListener { _, event ->
+        cardTermsCondition.onTouchEvent(event)
+        false
+      }
+
+      btnSuggestion.setOnClickListener {
+        startActivity(Intent(Intent.ACTION_VIEW, FORM_HELPER.toUri()))
+      }
+      btnSuggestion.setOnTouchListener { _, event ->
+        cardSuggestion.onTouchEvent(event)
+        false
+      }
+
+      btnAboutUs.setOnClickListener { navigator.openAboutActivity(requireContext()) }
+      btnAboutUs.setOnTouchListener { _, event ->
+        cardAboutUs.onTouchEvent(event)
+        false
+      }
     }
 
     binding.btnSignout.setOnClickListener {
@@ -165,6 +191,18 @@ class MoreFragment : Fragment() {
       userPreferenceViewModel.saveRegionPref(
         binding.btnCountryPicker.selectedCountryCode.isoCode,
       )
+    }
+  }
+
+  private fun updateListItemAppearance() {
+    binding.apply {
+      itemRegion.updateAppearance(ListItemLayout.POSITION_FIRST)
+      itemFaq.updateAppearance(ListItemLayout.POSITION_MIDDLE)
+      itemSuggestion.updateAppearance(ListItemLayout.POSITION_MIDDLE)
+      itemAboutUs.updateAppearance(ListItemLayout.POSITION_LAST)
+
+      itemTermsCondition.updateAppearance(ListItemLayout.POSITION_FIRST)
+      itemPrivacyPolicy.updateAppearance(ListItemLayout.POSITION_LAST)
     }
   }
 

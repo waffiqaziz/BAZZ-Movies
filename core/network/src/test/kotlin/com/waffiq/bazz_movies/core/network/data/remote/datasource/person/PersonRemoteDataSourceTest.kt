@@ -1,29 +1,39 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.person
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.combinedCreditResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.externalIDPersonResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.imagePersonResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.personResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getPersonDetails_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
-        mockApiResponse = Response.success(DataDumpManager.personResponseDump),
+        mockApiResponse = success(personResponseDump),
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
-        expectedData = DataDumpManager.personResponseDump,
+        expectedData = personResponseDump,
       )
     }
 
   @Test
   fun getPersonDetails_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         errorResponse = backendErrorResponse,
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
@@ -35,7 +45,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -44,7 +54,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -53,7 +63,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -62,7 +72,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -71,7 +81,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -80,7 +90,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonDetails_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonDetails(1810) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonDetails(1810) },
       )
@@ -90,18 +100,18 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
-        mockApiResponse = Response.success(DataDumpManager.imagePersonResponseDump),
+        mockApiResponse = success(imagePersonResponseDump),
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
-        expectedData = DataDumpManager.imagePersonResponseDump,
+        expectedData = imagePersonResponseDump,
       )
     }
 
   @Test
   fun getPersonImages_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         errorResponse = backendErrorResponse,
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
@@ -113,7 +123,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -122,7 +132,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -131,7 +141,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -140,7 +150,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -149,7 +159,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -158,7 +168,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonImages_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonImages(1878952) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonImages(1878952) },
       )
@@ -168,18 +178,18 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
-        mockApiResponse = Response.success(DataDumpManager.combinedCreditResponseDump),
+        mockApiResponse = success(combinedCreditResponseDump),
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
-        expectedData = DataDumpManager.combinedCreditResponseDump,
+        expectedData = combinedCreditResponseDump,
       )
     }
 
   @Test
   fun getPersonCredits_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         errorResponse = backendErrorResponse,
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
@@ -191,7 +201,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -200,7 +210,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -209,7 +219,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -218,7 +228,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -227,7 +237,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -236,7 +246,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonCredits_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonCredits(500) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonCredits(500) },
       )
@@ -246,18 +256,18 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
-        mockApiResponse = Response.success(DataDumpManager.externalIDPersonResponseDump),
+        mockApiResponse = success(externalIDPersonResponseDump),
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
-        expectedData = DataDumpManager.externalIDPersonResponseDump,
+        expectedData = externalIDPersonResponseDump,
       )
     }
 
   @Test
   fun getPersonExternalIds_whenServerError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         errorResponse = backendErrorResponse,
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
@@ -269,7 +279,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )
@@ -278,7 +288,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )
@@ -287,7 +297,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )
@@ -296,7 +306,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )
@@ -305,7 +315,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )
@@ -314,7 +324,7 @@ class PersonRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getPersonExternalIds_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockPersonApiService.getPersonExternalIds(114253) },
         dataSourceEndpointCall = { personRemoteDataSource.getPersonExternalIds(114253) },
       )

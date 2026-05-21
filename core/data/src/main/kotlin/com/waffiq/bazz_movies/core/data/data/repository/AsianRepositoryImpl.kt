@@ -41,4 +41,9 @@ class AsianRepositoryImpl @Inject constructor(
     asianRemoteDataSource.getCostumeDrama().map { pagingData ->
       pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
     }
+
+  override fun getRealityShow(): Flow<PagingData<MediaItem>> =
+    asianRemoteDataSource.getRealityShow().map { pagingData ->
+      pagingData.map { it.toMediaItem().copy(mediaType = TV_MEDIA_TYPE) }
+    }
 }

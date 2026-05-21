@@ -155,7 +155,6 @@ class MediaDetailKeywordsMapperTest {
     assertEquals(null, validTvDetail.revenue)
   }
 
-
   // status passthrough
 
   @Test

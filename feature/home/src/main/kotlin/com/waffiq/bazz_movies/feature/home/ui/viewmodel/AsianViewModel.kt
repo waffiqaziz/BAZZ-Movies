@@ -43,4 +43,7 @@ class AsianViewModel @Inject constructor(private val getAsianMediaUseCase: GetAs
 
   fun getCostumeDrama(): Flow<PagingData<MediaItem>> =
     getAsianMediaUseCase.getCostumeDrama().cachedIn(viewModelScope)
+
+  fun getRealityShow(): Flow<PagingData<MediaItem>> =
+    getAsianMediaUseCase.getRealityShow().cachedIn(viewModelScope)
 }

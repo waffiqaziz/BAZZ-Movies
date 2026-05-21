@@ -3,7 +3,6 @@ package com.waffiq.bazz_movies.feature.home.ui.fragment
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import com.waffiq.bazz_movies.core.common.utils.Constants.TV_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.designsystem.R.string.asian
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performScrollTo
@@ -21,6 +20,7 @@ import com.waffiq.bazz_movies.feature.home.R.id.btn_anime_this_season
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_anime
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_costume_drama
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_donghua
+import com.waffiq.bazz_movies.feature.home.R.id.btn_more_reality_show
 import com.waffiq.bazz_movies.feature.home.R.id.btn_more_romance_drama
 import com.waffiq.bazz_movies.feature.home.R.id.illustration_error_asian
 import com.waffiq.bazz_movies.feature.home.R.id.layout_header_anime
@@ -33,9 +33,7 @@ import com.waffiq.bazz_movies.feature.home.ui.viewmodel.AsianViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.MovieViewModel
 import com.waffiq.bazz_movies.feature.home.ui.viewmodel.TvSeriesViewModel
 import com.waffiq.bazz_movies.navigation.INavigator
-import com.waffiq.bazz_movies.navigation.ListArgs
 import com.waffiq.bazz_movies.navigation.ListType
-import com.waffiq.bazz_movies.navigation.MediaSource
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -131,14 +129,7 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
     every { mockAsianViewModel.animePeriod } returns MutableStateFlow(AnimePeriod.ALL_TIME)
     btn_more_anime.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(
-        listType = ListType.ANIME_ALL_TIME,
-        title = "",
-        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-      ),
-    )
+    verifyOpenList(mockNavigator, tvArgs(ListType.ANIME_ALL_TIME))
 
     btn_anime_this_season.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
@@ -147,14 +138,7 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
     every { mockAsianViewModel.animePeriod } returns MutableStateFlow(AnimePeriod.THIS_SEASON)
     btn_more_anime.performClick()
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(
-        listType = ListType.ANIME_THIS_SEASON,
-        title = "",
-        mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-      ),
-    )
+    verifyOpenList(mockNavigator, tvArgs(ListType.ANIME_THIS_SEASON))
   }
 
   @Test
@@ -172,24 +156,19 @@ class AsianFragmentTest : BaseHomeFragmentTest() {
 
     btn_more_costume_drama.performScrollTo()
     btn_more_costume_drama.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.COSTUME_DRAMA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, tvArgs(ListType.COSTUME_DRAMA))
 
     btn_more_donghua.performScrollTo()
     btn_more_donghua.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.DONGHUA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, tvArgs(ListType.DONGHUA))
 
     btn_more_romance_drama.performScrollTo()
     btn_more_romance_drama.performClick()
-    verifyOpenList(
-      mockNavigator,
-      ListArgs(ListType.ROMANCE_DRAMA, MediaSource.Typed(TV_MEDIA_TYPE), ""),
-    )
+    verifyOpenList(mockNavigator, tvArgs(ListType.ROMANCE_DRAMA))
+
+    btn_more_reality_show.performScrollTo()
+    btn_more_reality_show.performClick()
+    verifyOpenList(mockNavigator, tvArgs(ListType.REALITY_SHOW))
   }
 
   @Test

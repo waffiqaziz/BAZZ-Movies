@@ -2,37 +2,40 @@ package com.waffiq.bazz_movies.core.network.data.remote.datasource.movie
 
 import com.waffiq.bazz_movies.core.network.data.remote.models.RatingRequest
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.ratePostResponseSuccessDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun postMovieRateSuccess_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = {
-          mockMovieApiService.postMovieRate(
-            movieId,
-            sessionId,
-            RatingRequest(rating),
-          )
+          mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
-        mockApiResponse = Response.success(DataDumpManager.ratePostResponseSuccessDump),
+        mockApiResponse = success(ratePostResponseSuccessDump),
         dataSourceEndpointCall = {
           movieRemoteDataSource.postMovieRate(sessionId, rating, movieId)
         },
-        expectedData = DataDumpManager.ratePostResponseSuccessDump,
+        expectedData = ratePostResponseSuccessDump,
       )
     }
 
   @Test
   fun postMovieRate_whenErrorOccurs_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -48,7 +51,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -61,7 +64,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -74,7 +77,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -87,7 +90,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -100,7 +103,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },
@@ -113,7 +116,7 @@ class MoviePostRateRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun postMovieRate_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = {
           mockMovieApiService.postMovieRate(movieId, sessionId, RatingRequest(rating))
         },

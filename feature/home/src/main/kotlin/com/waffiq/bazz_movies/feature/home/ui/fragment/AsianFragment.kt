@@ -38,6 +38,7 @@ class AsianFragment : BaseHomeFragment() {
   private lateinit var costumeDramaAdapter: MediaAdapter
   private lateinit var asianRomanceAdapter: MediaAdapter
   private lateinit var donghuaAdapter: MediaAdapter
+  private lateinit var realityShowAdapter: MediaAdapter
 
   private var _binding: FragmentAsianBinding? = null
   private val binding get() = _binding ?: error(getString(binding_error))
@@ -50,6 +51,7 @@ class AsianFragment : BaseHomeFragment() {
     costumeDramaAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
     asianRomanceAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
     donghuaAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
+    realityShowAdapter = MediaAdapter(navigator, MediaSource.Typed(TV_MEDIA_TYPE))
   }
 
   override fun onCreateView(
@@ -78,7 +80,9 @@ class AsianFragment : BaseHomeFragment() {
   private fun setupAdapter() {
     // Set up RecyclerViews
     setupRecyclerWideItem(binding.rvAnime)
-    setupRecyclerViewsWithSnap(listOf(binding.rvCostumeDrama, binding.rvDonghua))
+    setupRecyclerViewsWithSnap(
+      listOf(binding.rvCostumeDrama, binding.rvDonghua, binding.rvRealityShow),
+    )
     setupRecyclerViewsWithSnapGridLayout(recyclerViews = listOf(binding.rvRomanceDrama))
 
     binding.apply {
@@ -86,6 +90,7 @@ class AsianFragment : BaseHomeFragment() {
       rvCostumeDrama.setupLoadState(costumeDramaAdapter)
       rvRomanceDrama.setupLoadState(asianRomanceAdapter)
       rvDonghua.setupLoadState(donghuaAdapter)
+      rvRealityShow.setupLoadState(realityShowAdapter)
     }
   }
 
@@ -100,6 +105,7 @@ class AsianFragment : BaseHomeFragment() {
     observeAnime()
     collectAndSubmitData(this, { asianViewModel.getCostumeDrama() }, costumeDramaAdapter)
     collectAndSubmitData(this, { asianViewModel.getAsianRomance() }, asianRomanceAdapter)
+    collectAndSubmitData(this, { asianViewModel.getRealityShow() }, realityShowAdapter)
     collectAndSubmitData(this, { asianViewModel.getDonghua() }, donghuaAdapter)
   }
 
@@ -111,6 +117,7 @@ class AsianFragment : BaseHomeFragment() {
       donghuaAdapter,
       costumeDramaAdapter,
       asianRomanceAdapter,
+      realityShowAdapter,
     )
 
     // Set up retry button
@@ -120,6 +127,7 @@ class AsianFragment : BaseHomeFragment() {
       donghuaAdapter,
       costumeDramaAdapter,
       asianRomanceAdapter,
+      realityShowAdapter,
     )
   }
 
@@ -134,29 +142,36 @@ class AsianFragment : BaseHomeFragment() {
       rvRomanceDrama.isVisible = isVisible
       layoutHeaderDonghua.isVisible = isVisible
       rvDonghua.isVisible = isVisible
+      layoutHeaderRealityShow.isVisible = isVisible
+      rvRealityShow.isVisible = isVisible
       illustrationErrorAsian.root.isVisible = !isVisible
     }
   }
 
   private fun moreButtonAction() {
-    binding.btnMoreAnime.button.setOnClickListener {
-      openList(
-        if (asianViewModel.animePeriod.value == AnimePeriod.THIS_SEASON) {
-          ListType.ANIME_THIS_SEASON
-        } else {
-          ListType.ANIME_ALL_TIME
-        },
-        TV_MEDIA_TYPE,
-      )
-    }
-    binding.btnMoreCostumeDrama.button.setOnClickListener {
-      openList(ListType.COSTUME_DRAMA, TV_MEDIA_TYPE)
-    }
-    binding.btnMoreRomanceDrama.button.setOnClickListener {
-      openList(ListType.ROMANCE_DRAMA, TV_MEDIA_TYPE)
-    }
-    binding.btnMoreDonghua.button.setOnClickListener {
-      openList(ListType.DONGHUA, TV_MEDIA_TYPE)
+    binding.apply {
+      btnMoreAnime.button.setOnClickListener {
+        openList(
+          if (asianViewModel.animePeriod.value == AnimePeriod.THIS_SEASON) {
+            ListType.ANIME_THIS_SEASON
+          } else {
+            ListType.ANIME_ALL_TIME
+          },
+          TV_MEDIA_TYPE,
+        )
+      }
+      btnMoreCostumeDrama.button.setOnClickListener {
+        openList(ListType.COSTUME_DRAMA, TV_MEDIA_TYPE)
+      }
+      btnMoreRomanceDrama.button.setOnClickListener {
+        openList(ListType.ROMANCE_DRAMA, TV_MEDIA_TYPE)
+      }
+      btnMoreDonghua.button.setOnClickListener {
+        openList(ListType.DONGHUA, TV_MEDIA_TYPE)
+      }
+      btnMoreRealityShow.button.setOnClickListener {
+        openList(ListType.REALITY_SHOW, TV_MEDIA_TYPE)
+      }
     }
   }
 
@@ -185,6 +200,7 @@ class AsianFragment : BaseHomeFragment() {
     costumeDramaAdapter.removeLoadStateListener { }
     asianRomanceAdapter.removeLoadStateListener { }
     donghuaAdapter.removeLoadStateListener { }
+    realityShowAdapter.removeLoadStateListener { }
 
     // Detach RecyclerViews programmatically
     binding.apply {
@@ -192,6 +208,7 @@ class AsianFragment : BaseHomeFragment() {
       rvCostumeDrama.detachRecyclerView()
       rvRomanceDrama.detachRecyclerView()
       rvDonghua.detachRecyclerView()
+      rvRealityShow.detachRecyclerView()
     }
 
     _binding = null

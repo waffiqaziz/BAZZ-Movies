@@ -9,6 +9,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.id.btn_try_again
 import com.waffiq.bazz_movies.core.designsystem.R.string.all_time
 import com.waffiq.bazz_movies.core.designsystem.R.string.costume_drama
 import com.waffiq.bazz_movies.core.designsystem.R.string.donghua
+import com.waffiq.bazz_movies.core.designsystem.R.string.reality_show
 import com.waffiq.bazz_movies.core.designsystem.R.string.romance_drama
 import com.waffiq.bazz_movies.core.designsystem.R.string.this_season
 import com.waffiq.bazz_movies.core.designsystem.R.style.Base_Theme_BAZZ_movies
@@ -199,6 +200,13 @@ class ListActivityTest : BaseListActivityTest() {
   fun listActivity_withRomanceDramaType_showsCorrectViews() {
     context.launchListActivity(romanceDramaArgs) {
       romance_drama.isTextVisible()
+    }
+  }
+
+  @Test
+  fun listActivity_withRealityShowType_showsCorrectViews() {
+    context.launchListActivity(realityShow) {
+      reality_show.isTextVisible()
     }
   }
 

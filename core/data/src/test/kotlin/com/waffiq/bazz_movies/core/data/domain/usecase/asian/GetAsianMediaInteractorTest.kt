@@ -1,9 +1,9 @@
 package com.waffiq.bazz_movies.core.data.domain.usecase.asian
 
 import com.waffiq.bazz_movies.core.data.testutils.BaseInteractorTest
-import com.waffiq.bazz_movies.core.data.testutils.TestVariables.movieMediaItem
+import com.waffiq.bazz_movies.core.data.testutils.TestVariables.tvMediaItem
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -22,10 +22,10 @@ class GetAsianMediaInteractorTest : BaseInteractorTest() {
     runTest {
       testPagingData(
         mockCall = { mockAsianRepository.getAnimeAllTime() },
-        pagingData = fakeMoviePagingData,
+        pagingData = fakeTvPagingData,
         interactorCall = { discoverInteractor.getAnimeAllTime() },
       ) { pagingList ->
-        Assert.assertEquals(movieMediaItem, pagingList[0])
+        assertEquals(tvMediaItem, pagingList[0])
       }
     }
 
@@ -34,10 +34,10 @@ class GetAsianMediaInteractorTest : BaseInteractorTest() {
     runTest {
       testPagingData(
         mockCall = { mockAsianRepository.getAnimeThisSeason() },
-        pagingData = fakeMoviePagingData,
+        pagingData = fakeTvPagingData,
         interactorCall = { discoverInteractor.getAnimeThisSeason() },
       ) { pagingList ->
-        Assert.assertEquals(movieMediaItem, pagingList[0])
+        assertEquals(tvMediaItem, pagingList[0])
       }
     }
 
@@ -46,10 +46,10 @@ class GetAsianMediaInteractorTest : BaseInteractorTest() {
     runTest {
       testPagingData(
         mockCall = { mockAsianRepository.getDonghua() },
-        pagingData = fakeMoviePagingData,
+        pagingData = fakeTvPagingData,
         interactorCall = { discoverInteractor.getDonghua() },
       ) { pagingList ->
-        Assert.assertEquals(movieMediaItem, pagingList[0])
+        assertEquals(tvMediaItem, pagingList[0])
       }
     }
 
@@ -58,10 +58,10 @@ class GetAsianMediaInteractorTest : BaseInteractorTest() {
     runTest {
       testPagingData(
         mockCall = { mockAsianRepository.getAsianRomance() },
-        pagingData = fakeMoviePagingData,
+        pagingData = fakeTvPagingData,
         interactorCall = { discoverInteractor.getAsianRomance() },
       ) { pagingList ->
-        Assert.assertEquals(movieMediaItem, pagingList[0])
+        assertEquals(tvMediaItem, pagingList[0])
       }
     }
 
@@ -70,10 +70,22 @@ class GetAsianMediaInteractorTest : BaseInteractorTest() {
     runTest {
       testPagingData(
         mockCall = { mockAsianRepository.getCostumeDrama() },
-        pagingData = fakeMoviePagingData,
+        pagingData = fakeTvPagingData,
         interactorCall = { discoverInteractor.getCostumeDrama() },
       ) { pagingList ->
-        Assert.assertEquals(movieMediaItem, pagingList[0])
+        assertEquals(tvMediaItem, pagingList[0])
+      }
+    }
+
+  @Test
+  fun getRealityShow_whenValueIsValid_returnsDataCorrectly() =
+    runTest {
+      testPagingData(
+        mockCall = { mockAsianRepository.getRealityShow() },
+        pagingData = fakeTvPagingData,
+        interactorCall = { discoverInteractor.getRealityShow() },
+      ) { pagingList ->
+        assertEquals(tvMediaItem, pagingList[0])
       }
     }
 }

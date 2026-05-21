@@ -1,29 +1,36 @@
 package com.waffiq.bazz_movies.core.network.data.remote.datasource.country
 
 import com.waffiq.bazz_movies.core.network.testutils.BaseMediaDataSourceTest
-import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager
-import com.waffiq.bazz_movies.core.network.testutils.TestHelper
+import com.waffiq.bazz_movies.core.network.testutils.DataDumpManager.countryIPResponseDump
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testError404Response
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testErrorResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testGeneralExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testHttpExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testIOExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSocketTimeoutExceptionResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testSuccessResponse
+import com.waffiq.bazz_movies.core.network.testutils.TestHelper.testUnknownHostExceptionResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import retrofit2.Response
+import retrofit2.Response.success
 
 class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
 
   @Test
   fun getCountryCode_whenSuccessful_returnsExpectedResponse() =
     runTest {
-      TestHelper.testSuccessResponse(
+      testSuccessResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
-        mockApiResponse = Response.success(DataDumpManager.countryIPResponseDump),
+        mockApiResponse = success(countryIPResponseDump),
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
-        expectedData = DataDumpManager.countryIPResponseDump,
+        expectedData = countryIPResponseDump,
       )
     }
 
   @Test
   fun getCountryCode_whenError_returnsExpectedStatusMessageResponse() =
     runTest {
-      TestHelper.testErrorResponse(
+      testErrorResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         errorResponse = apiMaintenanceErrorResponse,
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
@@ -35,7 +42,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenAPIRespondsWith404_returnsExpectedResponse() =
     runTest {
-      TestHelper.testError404Response(
+      testError404Response(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )
@@ -44,7 +51,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenNetworkErrorOccurs_returnsExpectedResponse() =
     runTest {
-      TestHelper.testUnknownHostExceptionResponse(
+      testUnknownHostExceptionResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )
@@ -53,7 +60,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenTimeoutOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testSocketTimeoutExceptionResponse(
+      testSocketTimeoutExceptionResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )
@@ -62,7 +69,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenHttpExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testHttpExceptionResponse(
+      testHttpExceptionResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )
@@ -71,7 +78,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenIOExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testIOExceptionResponse(
+      testIOExceptionResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )
@@ -80,7 +87,7 @@ class CountryRemoteDataSourceTest : BaseMediaDataSourceTest() {
   @Test
   fun getCountryCode_whenExceptionOccurs_returnsErrorResponse() =
     runTest {
-      TestHelper.testGeneralExceptionResponse(
+      testGeneralExceptionResponse(
         apiEndpoint = { mockCountryIPApiService.getIP() },
         dataSourceEndpointCall = { countryRemoteDataSource.getCountryCode() },
       )

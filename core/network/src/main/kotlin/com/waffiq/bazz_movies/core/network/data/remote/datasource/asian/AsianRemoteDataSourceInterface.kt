@@ -10,4 +10,5 @@ interface AsianRemoteDataSourceInterface {
   fun getDonghua(): Flow<PagingData<MediaResponseItem>>
   fun getAsianRomance(): Flow<PagingData<MediaResponseItem>>
   fun getCostumeDrama(): Flow<PagingData<MediaResponseItem>>
+  fun getRealityShow(): Flow<PagingData<MediaResponseItem>>
 }

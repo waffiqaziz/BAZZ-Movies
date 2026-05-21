@@ -16,6 +16,7 @@ import com.waffiq.bazz_movies.core.network.data.remote.constants.QueryParams.WIT
 import com.waffiq.bazz_movies.core.network.data.remote.constants.QueryParams.WITHOUT_KEYWORDS
 import com.waffiq.bazz_movies.core.network.data.remote.constants.QueryParams.WITH_GENRES
 import com.waffiq.bazz_movies.core.network.data.remote.constants.QueryParams.WITH_KEYWORDS
+import com.waffiq.bazz_movies.core.network.data.remote.constants.QueryParams.WITH_TYPE
 import com.waffiq.bazz_movies.core.network.data.remote.constants.Region.Companion.toRegionQuery
 
 fun DiscoverMovieParams.toQueryMap(): Map<String, String> =
@@ -46,6 +47,7 @@ fun DiscoverTvParams.toQueryMap(): Map<String, String> =
     genre?.let { put(WITH_GENRES, it) }
     keywords?.let { put(WITH_KEYWORDS, it.toKeywordQuery()) }
     keyword?.let { put(WITH_KEYWORDS, it) }
+    type?.let { put(WITH_TYPE, it) }
 
     originCountry?.let { put(ORIGIN_COUNTRY, it.toRegionQuery()) }
     withoutGenres?.let { put(WITHOUT_GENRES, it.toGenreQuery()) }

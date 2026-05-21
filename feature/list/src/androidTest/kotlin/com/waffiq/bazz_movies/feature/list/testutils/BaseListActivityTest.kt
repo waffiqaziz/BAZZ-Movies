@@ -26,6 +26,12 @@ import kotlinx.coroutines.flow.flowOf
 
 abstract class BaseListActivityTest {
 
+  private val tvArgs = ListArgs(
+    listType = ListType.BY_GENRE,
+    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
+    title = "",
+  )
+
   protected val listResultsFlow: Flow<PagingData<MediaItem>> = flowOf(fakePagingMediaItem)
   protected val movieGenreArgs = ListArgs(
     listType = ListType.BY_GENRE,
@@ -52,27 +58,9 @@ abstract class BaseListActivityTest {
   protected val moviePopularArgs = movieNowPlayingArgs.copy(listType = ListType.POPULAR)
   protected val movieTopRatedArgs = movieNowPlayingArgs.copy(listType = ListType.TOP_RATED)
   protected val movieUpcomingArgs = movieNowPlayingArgs.copy(listType = ListType.UPCOMING)
-  protected val tvPopularArgs = movieNowPlayingArgs.copy(
-    listType = ListType.POPULAR,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-  )
-  protected val tvTopRatedArgs = movieNowPlayingArgs.copy(
-    listType = ListType.TOP_RATED,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-  )
-  protected val tvAiringThisWeekArgs = movieNowPlayingArgs.copy(
-    listType = ListType.AIRING_THIS_WEEK,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-  )
   protected val movieRecommendationArgs = movieNowPlayingArgs.copy(
     listType = ListType.RECOMMENDATION,
     title = "Movie Title",
-    id = 12344,
-  )
-  protected val tvRecommendationArgs = movieNowPlayingArgs.copy(
-    listType = ListType.RECOMMENDATION,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "Tv Title",
     id = 12344,
   )
   protected val trendingTodayArgs = movieNowPlayingArgs.copy(
@@ -85,31 +73,20 @@ abstract class BaseListActivityTest {
     mediaType = MediaSource.Trending,
     title = "",
   )
-  protected val animeAllTimeArgs = movieNowPlayingArgs.copy(
-    listType = ListType.ANIME_ALL_TIME,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "",
+  protected val tvPopularArgs = tvArgs.copy(listType = ListType.POPULAR)
+  protected val tvTopRatedArgs = tvArgs.copy(listType = ListType.TOP_RATED)
+  protected val tvAiringThisWeekArgs = tvArgs.copy(listType = ListType.AIRING_THIS_WEEK)
+  protected val tvRecommendationArgs = tvArgs.copy(
+    listType = ListType.RECOMMENDATION,
+    title = "Tv Title",
+    id = 12344,
   )
-  protected val animeThisSeasonArgs = movieNowPlayingArgs.copy(
-    listType = ListType.ANIME_THIS_SEASON,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "",
-  )
-  protected val costumeDramaArgs = movieNowPlayingArgs.copy(
-    listType = ListType.COSTUME_DRAMA,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "",
-  )
-  protected val donghuaArgs = movieNowPlayingArgs.copy(
-    listType = ListType.DONGHUA,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "",
-  )
-  protected val romanceDramaArgs = movieNowPlayingArgs.copy(
-    listType = ListType.ROMANCE_DRAMA,
-    mediaType = MediaSource.Typed(TV_MEDIA_TYPE),
-    title = "",
-  )
+  protected val animeAllTimeArgs = tvArgs.copy(listType = ListType.ANIME_ALL_TIME)
+  protected val animeThisSeasonArgs = tvArgs.copy(listType = ListType.ANIME_THIS_SEASON)
+  protected val costumeDramaArgs = tvArgs.copy(listType = ListType.COSTUME_DRAMA)
+  protected val donghuaArgs = tvArgs.copy(listType = ListType.DONGHUA)
+  protected val romanceDramaArgs = tvArgs.copy(listType = ListType.ROMANCE_DRAMA)
+  protected val realityShow = tvArgs.copy(listType = ListType.REALITY_SHOW)
 
   protected fun setupMock(viewModel: ListViewModel, navigator: INavigator) {
     every { viewModel.getAiringThisWeekTv() } returns listResultsFlow
