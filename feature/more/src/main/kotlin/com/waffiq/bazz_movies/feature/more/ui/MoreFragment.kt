@@ -33,6 +33,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
 import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.sign_out_success
+import com.waffiq.bazz_movies.core.designsystem.R.string.user_no_name
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_mode
 import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
@@ -50,6 +51,7 @@ import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.databinding.FragmentMoreBinding
 import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreLocalViewModel
 import com.waffiq.bazz_movies.feature.more.ui.viewmodel.MoreUserViewModel
+import com.waffiq.bazz_movies.feature.more.utils.Helper.validName
 import com.waffiq.bazz_movies.navigation.INavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -266,7 +268,7 @@ class MoreFragment : Fragment() {
 
   private fun setData(user: UserModel) {
     binding.apply {
-      tvFullName.text = user.name
+      tvFullName.text = user.name.validName(getString(user_no_name))
       tvUsername.text = user.username
       val link = if (!user.gravatarHash.isNullOrEmpty()) {
         "$GRAVATAR_LINK${user.gravatarHash}" + ".jpg?s=200"
