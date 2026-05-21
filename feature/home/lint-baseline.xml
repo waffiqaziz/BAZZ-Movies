@@ -1,4 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.12.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.12.0)" variant="all" version="8.12.0">
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+
+    <issue
+        id="Orientation"
+        message="Wrong orientation? No orientation specified, and the default is horizontal, yet this layout has multiple children where at least one has `layout_width=&quot;match_parent&quot;`"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shimmer_item_wide_horizontal.xml"
+            line="13"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_900&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shimmer_asian.xml"
+            line="6"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_900&quot;>"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shimmer_featured.xml"
+            line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_900&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shimmer_movie.xml"
+            line="6"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_900` with a theme that also paints a background (inferred theme is `@android:style/Theme.Holo`)"
+        errorLine1="  android:background=&quot;@color/gray_900&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shimmer_tv_series.xml"
+            line="6"
+            column="3"/>
+    </issue>
 
 </issues>

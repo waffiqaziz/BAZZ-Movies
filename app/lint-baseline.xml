@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 9.2.0" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.0)" variant="all" version="9.2.0">
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
 
     <issue
         id="OldTargetApi"
@@ -10,6 +10,17 @@
             file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/libs.versions.toml"
             line="3"
             column="13"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 9.5.0 is available: 9.5.1"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/work/BAZZ-Movies/BAZZ-Movies/gradle/wrapper/gradle-wrapper.properties"
+            line="4"
+            column="17"/>
     </issue>
 
     <issue
