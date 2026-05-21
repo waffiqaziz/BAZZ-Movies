@@ -73,6 +73,7 @@
   <string name="no_series_airing_this_week">It seems there are no series scheduled to air this week in %1$s. Try selecting a different country to explore more options.</string>
 
   <!-- MORE -->
+  <string name="user_no_name">Name not set</string>
   <string name="guest_user">Guest User</string>
   <string name="image_profile">Image Profile</string>
   <string name="faq">FAQ</string>
