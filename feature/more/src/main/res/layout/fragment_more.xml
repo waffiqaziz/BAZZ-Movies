@@ -28,6 +28,7 @@
           android:id="@+id/img_avatar"
           android:layout_width="48dp"
           android:layout_height="48dp"
+          android:layout_gravity="center_vertical"
           android:contentDescription="@string/image_profile"
           app:shapeAppearanceOverlay="@style/circleImage"
           tools:src="@drawable/ic_bazz_logo" />
@@ -36,6 +37,7 @@
           android:id="@+id/linearLayout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:gravity="center_vertical"
           android:layout_marginStart="16dp"
           android:orientation="vertical">
 

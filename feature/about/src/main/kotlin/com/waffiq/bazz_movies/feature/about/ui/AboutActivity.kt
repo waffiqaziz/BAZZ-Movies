@@ -18,7 +18,7 @@ open class AboutActivity : AppCompatActivity() {
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    setupActionBar()
+    binding.btnBack.setOnClickListener { finish() }
 
     // setup tmdb logo
     binding.ivTmdbLogo.setOnClickListener {
@@ -31,20 +31,5 @@ open class AboutActivity : AppCompatActivity() {
 
     justifyTextView(binding.tvTmdbAttribute)
     justifyTextView(binding.tvAboutText)
-  }
-
-  protected open fun setupActionBar() {
-    setSupportActionBar(binding.toolbarLayout.toolbar)
-    val actionBar = supportActionBar
-
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true)
-      actionBar.setDisplayShowHomeEnabled(true)
-    }
-  }
-
-  override fun onSupportNavigateUp(): Boolean {
-    finish()
-    return true
   }
 }

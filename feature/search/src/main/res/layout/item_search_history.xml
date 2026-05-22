@@ -33,8 +33,8 @@
   <Button
     android:id="@+id/btn_delete"
     style="?attr/materialIconButtonFilledStyle"
-    android:layout_width="44dp"
-    android:layout_height="44dp"
+    android:layout_width="@dimen/button_size"
+    android:layout_height="@dimen/button_size"
     android:layout_gravity="center_vertical"
     android:contentDescription="@string/delete_search_history"
     android:insetLeft="0dp"
