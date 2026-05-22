@@ -293,7 +293,7 @@ class ListActivity : AppCompatActivity() {
   }
 
   private fun buttonAction() {
-    binding.btnClose.setOnClickListener { finish() }
+    binding.btnBack.setOnClickListener { finish() }
     binding.swipeRefresh.setOnRefreshListener {
       adapter.refresh()
       binding.swipeRefresh.isRefreshing = false

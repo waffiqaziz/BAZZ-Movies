@@ -16,10 +16,22 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <include
-      android:id="@+id/toolbar_layout"
-      layout="@layout/custom_toolbar_scroll_snap" />
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="52dp"
+      android:background="?attr/colorPrimary"
+      android:minHeight="0dp"
+      android:paddingVertical="0dp">
 
+      <Button
+        android:id="@+id/btn_back"
+        style="@style/BackButton"
+        android:layout_marginRight="@dimen/margin_each_item" />
+
+      <include layout="@layout/custom_toolbar_item" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
   </com.google.android.material.appbar.AppBarLayout>
   <!-- End of HEADER SECTION -->
 

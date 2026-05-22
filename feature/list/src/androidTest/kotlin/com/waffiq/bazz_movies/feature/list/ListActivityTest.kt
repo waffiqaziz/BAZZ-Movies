@@ -21,7 +21,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotD
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
-import com.waffiq.bazz_movies.feature.list.R.id.btn_close
+import com.waffiq.bazz_movies.feature.list.R.id.btn_back
 import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
 import com.waffiq.bazz_movies.feature.list.R.id.collapse
 import com.waffiq.bazz_movies.feature.list.R.id.illustration_error
@@ -265,7 +265,7 @@ class ListActivityTest : BaseListActivityTest() {
   @Test
   fun buttonClose_whenClicked_finishTheActivity() {
     context.launchListActivity { scenario ->
-      btn_close.performClick()
+      btn_back.performClick()
 
       // check if the activity is finished
       scenario.moveToState(Lifecycle.State.DESTROYED)
