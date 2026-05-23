@@ -1,11 +1,16 @@
 package com.waffiq.bazz_movies.feature.about.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
+import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
+import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.feature.about.databinding.ActivityAboutBinding
 
@@ -15,9 +20,19 @@ open class AboutActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    binding.appBar.handleOverHeightAppBar()
+    addPaddingWhenNavigationEnable(binding.root)
+
+    justifyTextView(binding.tvTmdbAttribute)
+    justifyTextView(binding.tvAboutText)
+    buttonAction()
+  }
+
+  private fun buttonAction() {
     binding.btnBack.setOnClickListener { finish() }
 
     // setup tmdb logo
@@ -28,8 +43,5 @@ open class AboutActivity : AppCompatActivity() {
     binding.btnAboutUs.setOnClickListener {
       startActivity(Intent(Intent.ACTION_VIEW, BAZZ_MOVIES_LINK.toUri()))
     }
-
-    justifyTextView(binding.tvTmdbAttribute)
-    justifyTextView(binding.tvAboutText)
   }
 }

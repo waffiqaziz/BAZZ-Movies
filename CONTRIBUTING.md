@@ -116,28 +116,24 @@ discuss your intended approach for solving the problem in the comments for an ex
   everyone!
 
 - **Coordinate bigger changes**. For larger or more complex changes, it’s a good idea to open an
-  issue
-  and discuss your plan with the maintainers. This way, we can make sure your work is on the right
-  track and avoid unnecessary rework.
+  issue and discuss your plan with the maintainers. This way, we can make sure your work is on the
+  right track and avoid unnecessary rework.
 
 - **Prioritize clarity over cleverness**. Code is read far more often than it is written. Focus on
   making your code clear and easy to understand. If something’s not immediately obvious, don’t
   hesitate to add a comment to explain it. Clear code makes everyone’s life easier!
 
 - **Follow the existing coding style and conventions**. Keeping your code consistent with the rest
-  of
-  the
-  project helps everyone work together smoothly. We use a linter to help enforce this, but feel free
-  to ask if you’re unsure about something!
+  of the project helps everyone work together smoothly. We use a linter to help enforce this, but
+  feel free to ask if you’re unsure about something!
 
 - **Include test coverage**. If you’re adding or changing functionality, it’s always helpful to add
-  unit
-  or UI tests to go along with it. If there’s an existing pattern for tests in the project, please
+  unit or UI tests to go along with it. If there’s an existing pattern for tests in the project,
+  please
   follow it to keep things consistent.
 
 - **Add documentation**. Be sure to update any relevant documentation, whether it’s inline code
-  comments
-  or external guides. This makes it easier for others to use and understand your work.
+  comments or external guides. This makes it easier for others to use and understand your work.
 
 - **Use the repo's default branch**. When you’re ready to create your pull request, make sure you
   branch from and
@@ -147,14 +143,16 @@ discuss your intended approach for solving the problem in the comments for an ex
   that occur.
 
 - **Promptly address any CI failures**. If your pull request fails to build or pass tests, please
-  push another commit to fix it. If you believe the failure is a false positive (e.g., caused by code analysis tools), please provide write a comment and tag the maintainer.
+  push another commit to fix it. If you believe the failure is a false positive (e.g., caused by
+  code analysis tools), please provide write a comment and tag the maintainer.
 
 - **Writing a comment**, use properly constructed sentences, including punctuation.
 
 ## 📝 Writing Commit Messages
 
 Please
-read [commit guidelines](https://ec.europa.eu/component-library/v1.15.0/eu/docs/conventions/git/) and
+read [commit guidelines](https://ec.europa.eu/component-library/v1.15.0/eu/docs/conventions/git/)
+and
 [commit guidelines addition](https://karma-runner.github.io/6.3/dev/git-commit-msg.html).
 
 ## :white_check_mark: Code Review
@@ -193,9 +191,8 @@ For testing name convention, please
 >
 > When in doubt, feel free to ask or look for similar patterns in the codebase.
 >
-> To help ensure consistency, you can run `./gradlew detekt` to check the code style before
-> submitting
-> your changes. It’s a handy tool to catch most issues early!
+> To help ensure consistency, you can run `./gradlew detekt` and `./gradlew detektTest` to check the
+> code style before> submitting your changes. It’s a handy tool to catch most issues early!
 
 ## :medal_sports: Certificate of Origin
 

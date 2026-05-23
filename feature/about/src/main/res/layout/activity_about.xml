@@ -12,17 +12,14 @@
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
-      android:layout_height="52dp"
+      android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
-      android:minHeight="0dp"
-      android:paddingVertical="0dp">
+      android:minHeight="0dp">
 
       <Button
         android:id="@+id/btn_back"
@@ -37,10 +34,12 @@
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/default_margin_parent_20"
-    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_height="match_parent"
+    android:layout_marginTop="80dp"
+    android:background="@color/gray_900"
     android:orientation="vertical"
+    android:paddingTop="@dimen/margin_between_item"
+    android:paddingHorizontal="@dimen/default_margin_parent_20"
     tools:context=".ui.AboutActivity">
 
     <!-- ========================== -->
@@ -68,6 +67,7 @@
       android:layout_height="80dp"
       android:layout_gravity="center"
       android:contentDescription="@string/tmdb_full"
+      android:background="?attr/selectableItemBackgroundBorderless"
       android:src="@drawable/ic_tmdb" />
 
     <TextView
