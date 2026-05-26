@@ -16,11 +16,12 @@ object DummyData {
     releaseDate = "2016-07-16",
   )
 
-  val fakePagingMediaItem =
-    PagingData.from(
-      listOf(
-        mediaItem,
-        mediaItem.copy(id = 2, title = "movie title 2"),
-      ),
-    )
+  val fakePagingMediaItem = PagingData.from(
+    (1..10).map { i ->
+      mediaItem.copy(
+        id = i,
+        title = "movie title $i",
+      )
+    }
+  )
 }

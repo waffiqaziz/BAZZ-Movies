@@ -20,6 +20,7 @@ import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisp
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isTextVisible
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomVisibilityMatchers.isVisible
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.feature.list.R.id.btn_back
 import com.waffiq.bazz_movies.feature.list.R.id.btn_toggle_layout
@@ -214,15 +215,15 @@ class ListActivityTest : BaseListActivityTest() {
   fun listActivity_toggleButtonPressed_changesTheLayout() {
     context.launchListActivity {
       // should use grid layout on initial
-      "movie title".doesNotExist()
+      "movie title 1".doesNotExist()
 
       // switch to linear layout
       triggerListButton()
-      "movie title".isVisible()
+      "movie title 1".isVisible()
 
       // back to grid layout
       btn_toggle_layout.performClick()
-      "movie title".doesNotExist()
+      "movie title 1".doesNotExist()
     }
   }
 
@@ -237,6 +238,7 @@ class ListActivityTest : BaseListActivityTest() {
   fun swipeRefreshMovie_whenScroll_runsWithoutProblem() {
     context.launchListActivity {
       rv_list.performSwipeDown()
+      shortDelay()
       rv_list.performSwipeDown()
     }
   }

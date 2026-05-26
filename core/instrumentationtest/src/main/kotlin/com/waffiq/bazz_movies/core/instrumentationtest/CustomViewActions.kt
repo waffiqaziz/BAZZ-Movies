@@ -2,6 +2,10 @@ package com.waffiq.bazz_movies.core.instrumentationtest
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.GeneralLocation
+import androidx.test.espresso.action.GeneralSwipeAction
+import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -44,7 +48,14 @@ object CustomViewActions {
   }
 
   fun Int.performSwipeDown() {
-    onView(withId(this)).perform(swipeDown())
+    onView(withId(this)).perform(
+      GeneralSwipeAction(
+        Swipe.FAST,
+        GeneralLocation.TOP_CENTER,
+        GeneralLocation.BOTTOM_CENTER,
+        Press.FINGER
+      )
+    )
   }
 
   fun Int.performType(text: String) {

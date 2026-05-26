@@ -11,6 +11,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumptech.glide.Glide
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.MediaCastItem
 import com.waffiq.bazz_movies.core.models.MediaItem
 import com.waffiq.bazz_movies.core.models.MediaState
@@ -151,6 +152,7 @@ class MediaDetailActivityTestHelper : MediaDetailActivityTestSetup {
 
     ActivityScenario.launch<MediaDetailActivity>(intent).use { scenario ->
       scenario.onActivity { /* do nothing */ }
+      shortDelay()
       block(scenario)
     }
   }

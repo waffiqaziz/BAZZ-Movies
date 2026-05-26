@@ -25,6 +25,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.btn_view_all_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.btn_watchlist
 import com.waffiq.bazz_movies.feature.detail.R.id.iv_poster
 import com.waffiq.bazz_movies.feature.detail.R.id.rating_bar_action
+import com.waffiq.bazz_movies.feature.detail.R.id.rv_cast
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_genre
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_recommendation
 import com.waffiq.bazz_movies.feature.detail.R.id.score_scrollview
@@ -387,8 +388,7 @@ class MediaDetailActivityInteractionTest :
   fun showBottomSheet_whenButtonClicked_showsTheView() {
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(credits = testMediaCredits) }
-      btn_view_all_cast.performScrollTo()
-      btn_view_all_cast.performClick()
+      performOpenBottomSheet()
 
       // test cast value
       "Cast (2)".performClick()
@@ -408,12 +408,17 @@ class MediaDetailActivityInteractionTest :
   fun showBottomSheet_whenCreditsIsNull_showsNothing() {
     context.launchMediaDetailActivity {
       uiState.update { s -> s.copy(credits = null) }
-      btn_view_all_cast.performScrollTo()
-      btn_view_all_cast.performClick()
+      performOpenBottomSheet()
 
       "Cast".doesNotExist()
       "Crew".doesNotExist()
     }
+  }
+  
+  private fun performOpenBottomSheet() {
+    btn_view_all_cast.performScrollTo()
+    rv_cast.performScrollTo()
+    btn_view_all_cast.performClick()
   }
 
   private fun performClickButtonFavorite() {

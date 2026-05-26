@@ -19,6 +19,7 @@ import com.waffiq.bazz_movies.feature.detail.R.id.layout_rent
 import com.waffiq.bazz_movies.feature.detail.R.id.layout_streaming
 import com.waffiq.bazz_movies.feature.detail.R.id.progress_bar
 import com.waffiq.bazz_movies.feature.detail.R.id.rv_streaming
+import com.waffiq.bazz_movies.feature.detail.R.id.tv_summary_header
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_toggle_watch_providers
 import com.waffiq.bazz_movies.feature.detail.R.id.tv_watch_providers_message
 import com.waffiq.bazz_movies.feature.detail.testutils.MediaDetailActivityTestHelper
@@ -115,6 +116,7 @@ class MediaDetailActivityWatchProvidersTest :
     context.launchMediaDetailActivity {
       performClickWatchProvidersButton()
       btn_justwatch.performScrollTo()
+      tv_summary_header.performScrollTo()
       btn_justwatch.performClick()
       checkIntentData(JUSTWATCH_LINK_MAIN)
     }
