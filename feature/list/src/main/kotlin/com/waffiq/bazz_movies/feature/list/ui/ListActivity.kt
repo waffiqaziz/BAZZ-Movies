@@ -45,6 +45,7 @@ import com.waffiq.bazz_movies.core.designsystem.R.string.upcoming
 import com.waffiq.bazz_movies.core.uihelper.mappers.UIStateMapper.toUiState
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.uihelper.state.isLoading
+import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.utils.FlowUtils.load
 import com.waffiq.bazz_movies.core.utils.GenreHelper.getGenreName
 import com.waffiq.bazz_movies.feature.list.databinding.ActivityListBinding
@@ -84,6 +85,7 @@ class ListActivity : AppCompatActivity() {
     )
     binding = ActivityListBinding.inflate(layoutInflater)
     setContentView(binding.root)
+    binding.root.setupWindowInsets()
 
     // get data extra
     val args = extractDataFromIntent() ?: run {

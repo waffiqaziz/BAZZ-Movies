@@ -8,12 +8,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.waffiq.bazz_movies.core.common.utils.Constants.MOVIE_MEDIA_TYPE
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
+import com.waffiq.bazz_movies.core.designsystem.R.color.gray_900
 import com.waffiq.bazz_movies.core.models.MediaItem
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
-import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
+import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.scrollActionBarBehavior
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectFlow
 import com.waffiq.bazz_movies.core.utils.FlowUtils.collectPagingData
@@ -55,7 +56,7 @@ class MediaDetailActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge(
       statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+      navigationBarStyle = SystemBarStyle.dark(ContextCompat.getColor(this, gray_900)),
     )
     setupActivity()
 
@@ -73,9 +74,9 @@ class MediaDetailActivity : AppCompatActivity() {
     binding = ActivityMediaDetailBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    binding.appBarLayout.handleOverHeightAppBar()
-    scrollActionBarBehavior(window, binding.appBarLayout, binding.nestedScrollView)
-    addPaddingWhenNavigationEnable(binding.root)
+    binding.root.setupWindowInsets()
+
+    scrollActionBarBehavior(binding.appBarLayout, binding.nestedScrollView)
     justifyTextView(binding.tvOverview as TextView)
   }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/Widget.Material3.SideSheet.Modal"
@@ -8,99 +8,110 @@
   android:layout_gravity="end"
   android:clickable="true"
   android:focusable="true"
-  android:orientation="vertical"
-  android:padding="24dp"
   app:behavior_draggable="true"
   app:layout_behavior="com.google.android.material.sidesheet.SideSheetBehavior"
   app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
   tools:layout_width="300dp">
 
-  <TextView
-    android:id="@+id/tv_title"
-    style="@style/TextHeader1"
+  <ScrollView
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:maxLines="3"
-    android:textStyle="bold"
-    tools:text="Zootopia 2" />
+    android:layout_height="match_parent">
 
-  <TextView
-    style="@style/TextHeader2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="@string/status" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="24dp">
 
-  <TextView
-    android:id="@+id/tv_status"
-    style="@style/TextMetadata"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    tools:text="Released" />
+      <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextHeader1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textStyle="bold"
+        tools:text="Zootopia 2" />
 
-  <TextView
-    style="@style/TextHeader2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="@string/original_language" />
+      <TextView
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/status" />
 
-  <TextView
-    android:id="@+id/tv_language"
-    style="@style/TextMetadata"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    tools:text="English" />
+      <TextView
+        android:id="@+id/tv_status"
+        style="@style/TextMetadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        tools:text="Released" />
 
-  <TextView
-    android:id="@+id/tv_budget_header"
-    style="@style/TextHeader2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="@string/budget" />
+      <TextView
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/original_language" />
 
-  <TextView
-    android:id="@+id/tv_budget"
-    style="@style/TextMetadata"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    tools:text="$150,000,000.00" />
+      <TextView
+        android:id="@+id/tv_language"
+        style="@style/TextMetadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        tools:text="English" />
 
-  <TextView
-    android:id="@+id/tv_revenue_header"
-    style="@style/TextHeader2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="@string/revenue" />
+      <TextView
+        android:id="@+id/tv_budget_header"
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/budget" />
 
-  <TextView
-    android:id="@+id/tv_revenue"
-    style="@style/TextMetadata"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
-    tools:text="$1,744,338,246.00" />
+      <TextView
+        android:id="@+id/tv_budget"
+        style="@style/TextMetadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        tools:text="$150,000,000.00" />
 
-  <TextView
-    style="@style/TextHeader2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="@string/keywords" />
+      <TextView
+        android:id="@+id/tv_revenue_header"
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/revenue" />
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_keywords"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-    tools:listitem="@layout/chip_genre"
-    tools:orientation="horizontal" />
+      <TextView
+        android:id="@+id/tv_revenue"
+        style="@style/TextMetadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        tools:text="$1,744,338,246.00" />
 
-</LinearLayout>
+      <TextView
+        style="@style/TextHeader2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/keywords" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_keywords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+        tools:listitem="@layout/chip_genre"
+        tools:orientation="horizontal" />
+
+    </LinearLayout>
+  </ScrollView>
+</FrameLayout>
