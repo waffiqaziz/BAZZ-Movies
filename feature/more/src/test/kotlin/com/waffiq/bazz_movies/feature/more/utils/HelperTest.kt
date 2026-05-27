@@ -7,12 +7,12 @@ import org.junit.Test
 class HelperTest {
 
   @Test
-  fun validName_whenNameIsValid_returnsTheName(){
-    assertEquals("Name not set","".validName("Name not set"))
+  fun validName_whenNameIsValid_returnsTheName() {
+    assertEquals("Name not set", "".validName("Name not set"))
   }
 
   @Test
-  fun validName_whenNameIsEmpty_returnsFallback(){
-    assertEquals("Name User","Name User".validName(""))
+  fun validName_whenNameIsEmpty_returnsFallback() {
+    assertEquals("Name User", "Name User".validName(""))
   }
 }

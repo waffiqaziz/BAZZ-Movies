@@ -442,12 +442,17 @@
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="CollapsedHeaderTitleStyle" parent="TextAppearance.Material3.HeadlineMedium.Emphasized">
+  <style name="CollapsedSubtitleStyle" parent="TextAppearance.Material3.BodySmall">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
   </style>
 
-  <style name="ExpandedTitleStyle" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
+  <style name="ExtendedTitleStyle" parent="TextAppearance.Material3.HeadlineSmall.Emphasized">
+    <item name="fontFamily">@font/nunito_sans_bold</item>
+    <item name="android:fontFamily">@font/nunito_sans_bold</item>
+  </style>
+
+  <style name="ExpandedSubtitleStyle" parent="TextAppearance.Material3.BodyLarge">
     <item name="fontFamily">@font/nunito_sans_bold</item>
     <item name="android:fontFamily">@font/nunito_sans_bold</item>
     <item name="android:maxLines">2</item>
@@ -510,7 +515,6 @@
     <item name="iconTint">@color/white</item>
   </style>
 
-
   <style name="More.TrailingIcon">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
@@ -541,6 +545,41 @@
     <item name="android:contentDescription">@string/back</item>
     <item name="icon">@drawable/ic_left_icon</item>
     <item name="iconSize">28dp</item>
+  </style>
+
+  <style name="AppBarLayoutStyle">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:background">@null</item>
+    <item name="android:translationZ">0.1dp</item>
+  </style>
+
+  <style name="MaterialToolbarStyle">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">@dimen/toolbar_height</item>
+    <item name="android:clipToPadding">false</item>
+    <item name="android:minHeight">0dp</item>
+  </style>
+
+  <style name="CollapsingToolbarLayoutStyle">
+    <item name="collapsedTitleTextColor">@color/white</item>
+    <item name="collapsedTitleGravity">bottom</item>
+    <item name="collapsedTitleTextAppearance">@style/CollapsedTitleStyle</item>
+    <item name="contentScrim">@color/gray_1000</item>
+    <item name="expandedTitleGravity">bottom|center_horizontal</item>
+    <item name="expandedTitleTextColor">@color/white</item>
+    <item name="layout_scrollFlags">scroll|exitUntilCollapsed|enterAlwaysCollapsed</item>
+    <item name="expandedTitleTextAppearance">@style/ExtendedTitleStyle</item>
+    <item name="titleCollapseMode">fade</item>
+  </style>
+
+  <style name="CollapseImageViewStyle">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:foreground">@drawable/bg_gradient_shape</item>
+    <item name="android:scaleType">centerCrop</item>
+    <item name="layout_collapseMode">parallax</item>
+    <item name="layout_collapseParallaxMultiplier">0.7</item>
   </style>
 
 </resources>

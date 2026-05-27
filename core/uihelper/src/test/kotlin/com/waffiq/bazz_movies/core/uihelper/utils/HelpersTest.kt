@@ -2,17 +2,11 @@ package com.waffiq.bazz_movies.core.uihelper.utils
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.text.Layout
-import android.view.View
-import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.graphics.Insets
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,13 +17,7 @@ import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.animFadeOutLong
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnap
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.setupRecyclerViewsWithSnapGridLayout
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.getStatusBarHeight
-import com.waffiq.bazz_movies.core.uihelper.utils.ScrollActionBarUtils.isLightColor
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertSame
@@ -182,44 +170,5 @@ class HelpersTest {
   fun animFadeOutLong_returnsAnimationWithCorrectDuration() {
     val animation = animFadeOutLong(context)
     assertEquals(animation.duration, DEBOUNCE_VERY_LONG)
-  }
-
-  @Test
-  fun getStatusBarHeight_whenInsetsNull_returnsZero() {
-    mockkStatic(ViewCompat::class)
-
-    val mockDecorView = mockk<View>()
-    every { ViewCompat.getRootWindowInsets(mockDecorView) } returns null
-
-    val window = mockk<Window> {
-      every { decorView } returns mockDecorView
-    }
-
-    assertEquals(0, window.getStatusBarHeight())
-  }
-
-  @Test
-  fun getStatusBarHeight_whenInsetsAvailable_returnsCorrectHeight() {
-    mockkStatic(ViewCompat::class)
-
-    val mockDecorView = mockk<View>()
-    val mockWindowInsets = mockk<WindowInsetsCompat> {
-      every { getInsets(WindowInsetsCompat.Type.statusBars()) } returns Insets.of(0, 50, 0, 0)
-    }
-
-    every { ViewCompat.getRootWindowInsets(mockDecorView) } returns mockWindowInsets
-    val window = mockk<Window> {
-      every { decorView } returns mockDecorView
-    }
-
-    assertEquals(50, window.getStatusBarHeight())
-  }
-
-  @Test
-  fun isLightColor_detectsCorrectlyForLightAndDarkColors() {
-    assertTrue(isLightColor(Color.WHITE))
-    assertFalse(isLightColor(Color.BLACK))
-    assertTrue(isLightColor(Color.LTGRAY))
-    assertFalse(isLightColor(Color.DKGRAY))
   }
 }

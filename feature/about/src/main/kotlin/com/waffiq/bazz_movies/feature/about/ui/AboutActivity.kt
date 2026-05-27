@@ -9,9 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.waffiq.bazz_movies.core.common.utils.Constants.BAZZ_MOVIES_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TMDB_LINK_MAIN
-import com.waffiq.bazz_movies.core.uihelper.utils.ActionBarBehavior.handleOverHeightAppBar
-import com.waffiq.bazz_movies.core.uihelper.utils.GestureHelper.addPaddingWhenNavigationEnable
 import com.waffiq.bazz_movies.core.uihelper.utils.Helpers.justifyTextView
+import com.waffiq.bazz_movies.core.uihelper.utils.InsetHelper.setupWindowInsets
 import com.waffiq.bazz_movies.feature.about.databinding.ActivityAboutBinding
 
 open class AboutActivity : AppCompatActivity() {
@@ -20,12 +19,14 @@ open class AboutActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
+    enableEdgeToEdge(
+      statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+      navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+    )
     binding = ActivityAboutBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    binding.appBar.handleOverHeightAppBar()
-    addPaddingWhenNavigationEnable(binding.root)
+    binding.root.setupWindowInsets()
 
     justifyTextView(binding.tvTmdbAttribute)
     justifyTextView(binding.tvAboutText)

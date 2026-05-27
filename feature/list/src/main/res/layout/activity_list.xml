@@ -10,74 +10,51 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:fitsSystemWindows="true"
-    android:translationZ="0.1dp"
-    app:subtitleCentered="false"
-    app:titleCentered="false">
+    style="@style/AppBarLayoutStyle">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:id="@+id/collapse"
+      style="@style/CollapsingToolbarLayoutStyle"
       android:layout_width="match_parent"
-      android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-      app:collapsedSubtitleTextColor="@color/gray_400"
-      app:collapsedTitleTextAppearance="@style/CollapsedTitleStyle"
-      app:collapsedTitleTextColor="@color/gray_200"
-      app:contentScrim="@color/gray_1000"
-      app:expandedSubtitleTextAppearance="@style/CollapsedTitleStyle"
-      app:expandedSubtitleTextColor="@color/gray_400"
-      app:expandedTitleGravity="bottom|center_horizontal"
-      app:expandedTitleTextAppearance="@style/CollapsedHeaderTitleStyle"
-      app:expandedTitleTextColor="@color/gray_200"
-      app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-      app:subtitleCentered="false"
-      app:titleCentered="false"
-      app:titleCollapseMode="fade">
+      android:layout_height="190dp"
+      app:collapsedSubtitleTextColor="@color/gray_300"
+      app:collapsedSubtitleTextAppearance="@style/CollapsedSubtitleStyle"
+      app:expandedSubtitleTextAppearance="@style/ExpandedSubtitleStyle"
+      app:expandedSubtitleTextColor="@color/gray_300">
 
       <ImageView
         android:id="@+id/iv_picture"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/CollapseImageViewStyle"
         android:contentDescription="@string/poster"
-        android:fitsSystemWindows="true"
-        android:foreground="@drawable/bg_gradient_shape"
-        android:scaleType="centerCrop"
-        app:layout_collapseMode="parallax"
-        app:layout_collapseParallaxMultiplier="0.7"
         tools:layout_height="350dp"
         tools:src="@tools:sample/backgrounds/scenic" />
 
       <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        android:translationY="-4dp"
+        style="@style/MaterialToolbarStyle"
+        android:paddingBottom="8dp"
         app:layout_collapseMode="pin"
-        app:subtitleCentered="false"
-        app:titleCentered="false"
         tools:subtitle="Medium Subtitle"
         tools:title="Medium Title">
 
         <Button
           android:id="@+id/btn_back"
           style="@style/BackButton"
-          android:layout_marginStart="@dimen/margin_each_item"/>
+          android:layout_gravity="start|bottom"
+          android:translationY="2dp" />
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btn_toggle_layout"
           style="@style/CircleButton"
-          android:layout_gravity="end"
+          android:layout_gravity="end|bottom"
           android:layout_marginEnd="16dp"
           android:contentDescription="@string/toggle_list_layout"
           android:paddingVertical="8dp"
           android:paddingLeft="10.5dp"
+          android:translationY="2dp"
           app:icon="@drawable/ic_grid" />
 
       </com.google.android.material.appbar.MaterialToolbar>
-
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 

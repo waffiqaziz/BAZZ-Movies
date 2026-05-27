@@ -11,6 +11,7 @@
   <dimen name="margin_reduce_20">-20dp</dimen>
   <dimen name="button_radius">8dp</dimen>
   <dimen name="bottom_nav_min_height">100dp</dimen>
+  <dimen name="toolbar_height">82dp</dimen>
 
   <!-- disable bottom navigation shifting -->
   <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>

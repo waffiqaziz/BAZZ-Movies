@@ -414,6 +414,7 @@ class DetailUIManager(
    */
   fun showLoadingDim(isLoading: Boolean) {
     if (isLoading) {
+      binding.appBarLayout.isVisible = false
       binding.progressBar.isVisible = true
     } else {
       binding.appBarLayout.isVisible = true
