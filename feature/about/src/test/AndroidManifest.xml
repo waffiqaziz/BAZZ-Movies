@@ -6,16 +6,5 @@
     android:theme="@style/Base.Theme.BAZZ_movies"
     tools:ignore="AllowBackup">
 
-    <activity
-      android:name="com.waffiq.bazz_movies.feature.about.ui.TestableAboutActivity"
-      android:autofillHints=""
-      android:exported="true"
-      android:windowSoftInputMode="stateHidden" />
-
-    <activity
-      android:name="com.waffiq.bazz_movies.feature.about.ui.AboutActivityWithNoToolbar"
-      android:autofillHints=""
-      android:exported="true"
-      android:windowSoftInputMode="stateHidden" />
   </application>
 </manifest>

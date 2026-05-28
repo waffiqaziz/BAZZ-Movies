@@ -414,7 +414,7 @@ class MediaDetailActivityInteractionTest :
       "Crew".doesNotExist()
     }
   }
-  
+
   private fun performOpenBottomSheet() {
     btn_view_all_cast.performScrollTo()
     rv_cast.performScrollTo()

@@ -25,7 +25,7 @@ class SetupWindowInsetsTest {
     view = View(activity).apply {
       layoutParams = ViewGroup.MarginLayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT
+        ViewGroup.LayoutParams.MATCH_PARENT,
       )
     }
     activity.setContentView(view)

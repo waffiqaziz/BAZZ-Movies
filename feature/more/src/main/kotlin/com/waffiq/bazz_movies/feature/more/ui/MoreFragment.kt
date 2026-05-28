@@ -4,10 +4,13 @@ package com.waffiq.bazz_movies.feature.more.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -31,14 +34,8 @@ import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_bazz_logo
 import com.waffiq.bazz_movies.core.designsystem.R.drawable.ic_broken_image
 import com.waffiq.bazz_movies.core.designsystem.R.string.all_data_deleted
 import com.waffiq.bazz_movies.core.designsystem.R.string.binding_error
-import com.waffiq.bazz_movies.core.designsystem.R.string.no
 import com.waffiq.bazz_movies.core.designsystem.R.string.sign_out_success
 import com.waffiq.bazz_movies.core.designsystem.R.string.user_no_name
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_guest_mode
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
-import com.waffiq.bazz_movies.core.designsystem.R.string.yes
-import com.waffiq.bazz_movies.core.designsystem.R.style.CustomAlertDialogTheme
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
@@ -57,6 +54,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SuppressLint("ClickableViewAccessibility")
 @AndroidEntryPoint
 class MoreFragment : Fragment() {
 
@@ -77,16 +75,50 @@ class MoreFragment : Fragment() {
   private var mSnackbar: Snackbar? = null
   private var mDialog: MaterialAlertDialogBuilder? = null
 
+  private val backupLauncher =
+    registerForActivityResult(
+      ActivityResultContracts.CreateDocument("application/octet-stream"),
+    ) { uri ->
+      uri?.let { moreLocalViewModel.backupDatabase(it) }
+    }
+
+  private val restoreLauncher =
+    registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+      uri?.let { handleRestoreUri(it) }
+    }
+
+  @VisibleForTesting
+  internal fun handleRestoreUri(uri: Uri) {
+    MoreDialogManager(
+      context = requireContext(),
+      onSignOutLoggedIn = {},
+      onSignOutGuest = {},
+      onRestoreConfirmed = { moreLocalViewModel.restoreDatabase(it) },
+    ).showConfirmRestore(uri)
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // initialize for guest user
+    // initialize user
     userPreferenceViewModel.getUserPref().observe(viewLifecycleOwner) { user ->
-      if (user.token != NAN) signOutStateObserver(true) else signOutStateObserver(false)
+      signOutStateObserver(user.token != NAN)
       setData(user)
       btnAction(user)
+      setupBackupViews(user.token != NAN)
     }
     updateListItemAppearance()
+
+    MoreStateObserver(
+      lifecycleScope = viewLifecycleOwner.lifecycleScope,
+      viewModel = moreLocalViewModel,
+      onProgress = { progressIsVisible(it) },
+      onSuccess = { requireContext().toastShort(getString(it)) },
+      onError = { mSnackbar = snackbar.showSnackbarWarning(it) },
+    ).apply {
+      observeBackup()
+      observeRestore()
+    }
   }
 
   override fun onCreateView(
@@ -141,58 +173,68 @@ class MoreFragment : Fragment() {
     }
   }
 
-  @SuppressLint("ClickableViewAccessibility")
+  private fun setupBackupViews(isLogin: Boolean) {
+    binding.backupLayout.isVisible = !isLogin
+  }
+
   private fun btnAction(user: UserModel) {
+    setupRegion()
+    setupButtons()
+    setupBackupActions()
+    setupSignOut(user)
+  }
+
+  private fun setupRegion() {
     binding.apply {
-      btnFaq.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, FAQ_LINK.toUri())) }
-      btnFaq.setOnTouchListener { _, event ->
-        cardFaq.onTouchEvent(event)
-        false
-      }
+      bindCardAction(btnRegion, cardRegion) { btnCountryPicker.performClick() }
 
-      btnPrivacyPolicy.setOnClickListener {
-        startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_LINK.toUri()))
-      }
-      btnPrivacyPolicy.setOnTouchListener { _, event ->
-        cardPrivacyPolicy.onTouchEvent(event)
-        false
-      }
-
-      btnTermsCondition.setOnClickListener {
-        startActivity(Intent(Intent.ACTION_VIEW, TERMS_CONDITIONS_LINK.toUri()))
-      }
-      btnTermsCondition.setOnTouchListener { _, event ->
-        cardTermsCondition.onTouchEvent(event)
-        false
-      }
-
-      btnSuggestion.setOnClickListener {
-        startActivity(Intent(Intent.ACTION_VIEW, FORM_HELPER.toUri()))
-      }
-      btnSuggestion.setOnTouchListener { _, event ->
-        cardSuggestion.onTouchEvent(event)
-        false
-      }
-
-      btnAboutUs.setOnClickListener { navigator.openAboutActivity(requireContext()) }
-      btnAboutUs.setOnTouchListener { _, event ->
-        cardAboutUs.onTouchEvent(event)
-        false
+      btnCountryPicker.onCountrySelectedListener = {
+        userPreferenceViewModel.saveRegionPref(
+          btnCountryPicker.selectedCountryCode.isoCode,
+        )
       }
     }
+  }
 
+  private fun setupButtons() {
+    binding.apply {
+      bindCardAction(btnFaq, cardFaq) { openUrl(FAQ_LINK) }
+      bindCardAction(btnSuggestion, cardSuggestion) { openUrl(FORM_HELPER) }
+      bindCardAction(btnAboutUs, cardAboutUs) { navigator.openAboutActivity(requireContext()) }
+      bindCardAction(btnPrivacyPolicy, cardPrivacyPolicy) { openUrl(PRIVACY_POLICY_LINK) }
+      bindCardAction(btnTermsCondition, cardTermsCondition) { openUrl(TERMS_CONDITIONS_LINK) }
+    }
+  }
+
+  private fun setupBackupActions() {
+    binding.apply {
+      bindCardAction(btnBackup, cardBackup) { backupLauncher.launch("bazz_movies_backup.json") }
+      bindCardAction(btnRestore, cardRestore) { restoreLauncher.launch(arrayOf("*/*")) }
+    }
+  }
+
+  private fun setupSignOut(user: UserModel) {
     binding.btnSignout.setOnClickListener {
-      if (user.token == NAN) {
-        dialogSignOutGuestMode()
-      } else {
-        dialogSignOutLoggedIn(user.token)
-      }
-    }
-    binding.btnRegion.setOnClickListener { binding.btnCountryPicker.performClick() }
-    binding.btnCountryPicker.onCountrySelectedListener = {
-      userPreferenceViewModel.saveRegionPref(
-        binding.btnCountryPicker.selectedCountryCode.isoCode,
+      val dialogManager = MoreDialogManager(
+        context = requireContext(),
+        onSignOutLoggedIn = { sessionId ->
+          fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+          btnSignOutIsEnable(false)
+          moreUserViewModel.deleteSession(sessionId)
+        },
+        onSignOutGuest = {
+          fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
+          moreLocalViewModel.deleteAllSearchHistory()
+          moreLocalViewModel.deleteAll()
+        },
+        onRestoreConfirmed = {},
       )
+
+      if (user.token == NAN) {
+        dialogManager.showSignOutGuestMode()
+      } else {
+        dialogManager.showSignOutLoggedIn(user.token)
+      }
     }
   }
 
@@ -203,54 +245,11 @@ class MoreFragment : Fragment() {
       itemSuggestion.updateAppearance(ListItemLayout.POSITION_MIDDLE)
       itemAboutUs.updateAppearance(ListItemLayout.POSITION_LAST)
 
+      itemBackup.updateAppearance(ListItemLayout.POSITION_FIRST)
+      itemRestore.updateAppearance(ListItemLayout.POSITION_LAST)
+
       itemTermsCondition.updateAppearance(ListItemLayout.POSITION_FIRST)
       itemPrivacyPolicy.updateAppearance(ListItemLayout.POSITION_LAST)
-    }
-  }
-
-  private fun dialogSignOutLoggedIn(sessionId: String) {
-    mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
-      setTitle(resources.getString(warning))
-      setMessage(resources.getString(warning_signOut_logged_user))
-      setNegativeButton(resources.getString(no)) { dialog, _ ->
-        dialog.dismiss()
-      }
-      setPositiveButton(resources.getString(yes)) { dialog, _ ->
-        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-        btnSignOutIsEnable(false)
-        moreUserViewModel.deleteSession(sessionId) // revoke session for login user
-        dialog.dismiss()
-      }
-    }
-
-    mDialog?.show().also { dialog ->
-      // Ensure dialog is shown if the activity is not finishing
-      if (requireActivity().isFinishing) {
-        dialog?.dismiss()
-      }
-    }
-  }
-
-  private fun dialogSignOutGuestMode() {
-    mDialog = MaterialAlertDialogBuilder(requireContext(), CustomAlertDialogTheme).apply {
-      setTitle(resources.getString(warning))
-      setMessage(resources.getString(warning_signOut_guest_mode))
-      setNegativeButton(resources.getString(no)) { dialog, _ ->
-        dialog.dismiss()
-      }
-      setPositiveButton(resources.getString(yes)) { dialog, _ ->
-        fadeInAlpha50(binding.layoutBackground.bgAlpha, ANIM_DURATION)
-        moreLocalViewModel.deleteAllSearchHistory()
-        moreLocalViewModel.deleteAll()
-        dialog.dismiss()
-      }
-    }
-
-    mDialog?.show().also { dialog ->
-      // Ensure dialog is shown if the activity is not finishing
-      if (requireActivity().isFinishing) {
-        dialog?.dismiss()
-      }
     }
   }
 
@@ -314,6 +313,23 @@ class MoreFragment : Fragment() {
 
   private fun progressIsVisible(isVisible: Boolean) {
     binding.progressBar.isVisible = isVisible
+  }
+
+  private fun bindCardAction(
+    button: View,
+    card: View,
+    onClick: () -> Unit,
+  ) {
+    button.setOnClickListener { onClick() }
+
+    button.setOnTouchListener { _, event ->
+      card.onTouchEvent(event)
+      false
+    }
+  }
+
+  private fun openUrl(url: String) {
+    startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
   }
 
   override fun onResume() {

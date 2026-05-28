@@ -37,8 +37,8 @@
           android:id="@+id/linearLayout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="center_vertical"
           android:layout_marginStart="16dp"
+          android:gravity="center_vertical"
           android:orientation="vertical">
 
           <TextView
@@ -152,7 +152,9 @@
               android:layout_weight="1"
               android:text="@string/faq" />
 
-            <ImageView style="@style/More.TrailingIcon" />
+            <ImageView
+              style="@style/More.TrailingIcon"
+              android:contentDescription="@null" />
 
           </LinearLayout>
         </com.google.android.material.listitem.ListItemCardView>
@@ -184,7 +186,9 @@
               android:layout_weight="1"
               android:text="@string/suggestion" />
 
-            <ImageView style="@style/More.TrailingIcon" />
+            <ImageView
+              style="@style/More.TrailingIcon"
+              android:contentDescription="@null" />
 
           </LinearLayout>
         </com.google.android.material.listitem.ListItemCardView>
@@ -215,11 +219,83 @@
               android:layout_weight="1"
               android:text="@string/about" />
 
-            <ImageView style="@style/More.TrailingIcon" />
+            <ImageView
+              style="@style/More.TrailingIcon"
+              android:contentDescription="@null" />
 
           </LinearLayout>
         </com.google.android.material.listitem.ListItemCardView>
       </com.google.android.material.listitem.ListItemLayout>
+
+      <LinearLayout
+        android:id="@+id/backup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Space
+          android:layout_width="match_parent"
+          android:layout_height="16dp" />
+
+        <com.google.android.material.listitem.ListItemLayout
+          android:id="@+id/item_backup"
+          style="@style/More.ListItemLayout"
+          android:layout_marginBottom="2dp">
+
+          <com.google.android.material.listitem.ListItemCardView
+            android:id="@+id/card_backup"
+            style="@style/More.ListItemCardView">
+
+            <LinearLayout
+              android:id="@+id/btn_backup"
+              style="@style/More.CardLayout"
+              tools:ignore="UseCompoundDrawables">
+
+              <TextView
+                style="@style/TextBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/backup"
+                android:textColor="@color/gray_400" />
+
+              <ImageView
+                style="@style/More.TrailingIcon"
+                android:contentDescription="@null" />
+
+            </LinearLayout>
+          </com.google.android.material.listitem.ListItemCardView>
+        </com.google.android.material.listitem.ListItemLayout>
+
+        <com.google.android.material.listitem.ListItemLayout
+          android:id="@+id/item_restore"
+          style="@style/More.ListItemLayout">
+
+          <com.google.android.material.listitem.ListItemCardView
+            android:id="@+id/card_restore"
+            style="@style/More.ListItemCardView">
+
+            <LinearLayout
+              android:id="@+id/btn_restore"
+              style="@style/More.CardLayout"
+              tools:ignore="UseCompoundDrawables">
+
+              <TextView
+                style="@style/TextBody"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/restore"
+                android:textColor="@color/gray_400" />
+
+              <ImageView
+                style="@style/More.TrailingIcon"
+                android:contentDescription="@null" />
+
+            </LinearLayout>
+          </com.google.android.material.listitem.ListItemCardView>
+        </com.google.android.material.listitem.ListItemLayout>
+      </LinearLayout>
 
       <Space
         android:layout_width="match_parent"
@@ -236,7 +312,8 @@
 
           <LinearLayout
             android:id="@+id/btn_terms_condition"
-            style="@style/More.CardLayout">
+            style="@style/More.CardLayout"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
               style="@style/TextBody"
@@ -246,7 +323,9 @@
               android:text="@string/terms_amp_condition"
               android:textColor="@color/gray_400" />
 
-            <ImageView style="@style/More.TrailingIcon" />
+            <ImageView
+              style="@style/More.TrailingIcon"
+              android:contentDescription="@null" />
 
           </LinearLayout>
         </com.google.android.material.listitem.ListItemCardView>
@@ -262,7 +341,8 @@
 
           <LinearLayout
             android:id="@+id/btn_privacy_policy"
-            style="@style/More.CardLayout">
+            style="@style/More.CardLayout"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
               style="@style/TextBody"
@@ -272,7 +352,9 @@
               android:text="@string/privacy_amp_policy"
               android:textColor="@color/gray_400" />
 
-            <ImageView style="@style/More.TrailingIcon" />
+            <ImageView
+              style="@style/More.TrailingIcon"
+              android:contentDescription="@null" />
 
           </LinearLayout>
         </com.google.android.material.listitem.ListItemCardView>

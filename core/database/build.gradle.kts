@@ -11,6 +11,14 @@ android {
   sourceSets {
     getByName("test").assets.directories.add("$projectDir/schemas")
   }
+
+  buildFeatures {
+    buildConfig = true
+  }
+
+  defaultConfig {
+    buildConfigField("String", "APP_VERSION", "\"${libs.versions.versionName.get()}\"")
+  }
 }
 
 ksp {
@@ -22,6 +30,7 @@ dependencies {
   api(project(":core:models"))
   implementation(project(":core:coroutines"))
   implementation(project(":core:utils"))
+  implementation("com.google.code.gson:gson:2.14.0")
 
   testImplementation(project(":core:test"))
   testImplementation(libs.androidx.core.testing)

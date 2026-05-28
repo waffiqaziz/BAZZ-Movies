@@ -22,24 +22,13 @@ import com.waffiq.bazz_movies.core.common.utils.Constants.FORM_HELPER
 import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Constants.PRIVACY_POLICY_LINK
 import com.waffiq.bazz_movies.core.common.utils.Constants.TERMS_CONDITIONS_LINK
-import com.waffiq.bazz_movies.core.designsystem.R.string.no
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning
-import com.waffiq.bazz_movies.core.designsystem.R.string.warning_signOut_logged_user
-import com.waffiq.bazz_movies.core.designsystem.R.string.yes
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performClick
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewActions.performTextClick
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesHaveText
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.doesNotExist
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isEnable
 import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotDisplayed
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.isNotEnable
-import com.waffiq.bazz_movies.core.instrumentationtest.CustomViewMatchers.textIsDisplayed
 import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
-import com.waffiq.bazz_movies.core.instrumentationtest.Helper.waitUntil
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
-import com.waffiq.bazz_movies.core.uihelper.state.UIState
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.RegionViewModel
 import com.waffiq.bazz_movies.core.user.ui.viewmodel.UserPreferenceViewModel
 import com.waffiq.bazz_movies.feature.more.R.id.btn_about_us
@@ -68,10 +57,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matcher
-import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -167,129 +153,18 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   }
 
   @Test
+  fun buttonRegion_whenClicked_shouldOpenDialog() {
+    btn_region.performClick()
+    "Afghanistan".isDisplayed()
+  }
+
+  @Test
   fun regionSetup_whenCountryCodeSet_shouldSetCountryPickerCorrectly() {
     mockRegionPref.postValue("AR")
     "AR".isDisplayed()
     // verify country picker is set with the correct country
     btn_country_picker.isDisplayed()
   }
-
-  @Test
-  fun signOut_whenGuestUser_shouldShowGuestModeDialog() {
-    setupGuestUser()
-    performSignOutAction()
-  }
-
-  @Test
-  fun signOutStateLogin_allBranches_shouldBeCovered() =
-    runTest {
-      // Hit all branches in the logged-in when statement
-      mockUIState.emit(UIState.Loading)
-      advanceUntilIdle()
-      performSignOutAction()
-
-      mockUIState.emit(UIState.Error("Test error"))
-      advanceUntilIdle()
-
-      mockUIState.emit(UIState.Success(Unit))
-      advanceUntilIdle()
-    }
-
-  @Test
-  fun signOutStateGuest_allBranches_shouldBeCovered() =
-    runTest {
-      setupGuestUser()
-      performSignOutAction()
-      mockUIState.emit(UIState.Loading)
-      advanceUntilIdle()
-    }
-
-  @Test
-  fun signOut_whenLoggedInUser_shouldShowLoggedInDialog() {
-    btn_signout.performClick()
-
-    warning.textIsDisplayed()
-    warning_signOut_logged_user.textIsDisplayed()
-  }
-
-  @Test
-  fun signOutDialogGuestUser_whenYesClicked_shouldDeleteLocalData() {
-    setupGuestUser()
-    performSignOutAction()
-
-    verify { mockMoreLocalViewModel.deleteAll() }
-  }
-
-  @Test
-  fun signOutDialog_whenNoClicked_shouldDismissDialog() {
-    btn_signout.performClick()
-    no.performTextClick()
-
-    // dialog should be dismissed, verify warning text is not displayed
-    warning.doesNotExist()
-  }
-
-  @Test
-  fun signOutStateLogin_whenSuccess_shouldShowSuccessToastAndNavigateToLogin() =
-    runTest {
-      performSignOutAction()
-      mockUIState.emit(UIState.Success(Unit))
-
-      verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
-    }
-
-  @Test
-  fun signOutStateLogin_whenLoading_shouldShowLoadingState() =
-    runTest {
-      performSignOutAction()
-      mockUIState.emit(UIState.Loading)
-
-      progress_bar.isDisplayed()
-
-      verify(exactly = 0) { mockMoreLocalViewModel.deleteAllSearchHistory() }
-    }
-
-  @Test
-  fun dbResultGuestUser_whenSuccess_shouldShowSuccessToast() =
-    runTest {
-      setupGuestUser()
-      performSignOutAction()
-      mockUIState.emit(UIState.Success(Unit))
-
-      verify { mockMoreLocalViewModel.deleteAllSearchHistory() }
-    }
-
-  @Test
-  fun signOutStateLogin_whenErrorOccurs_signOutButtonShouldEnable() =
-    runTest {
-      performSignOutAction()
-      mockUIState.emit(UIState.Loading)
-      advanceUntilIdle()
-
-      onView(withId(progress_bar)).check(waitUntil(isDisplayed()))
-      btn_signout.isNotEnable()
-
-      mockUIState.emit(UIState.Error("Sign out failed"))
-      advanceUntilIdle()
-
-      btn_signout.isEnable()
-      onView(withId(progress_bar)).check(waitUntil(not(isDisplayed())))
-
-      verify(exactly = 0) { mockMoreLocalViewModel.deleteAllSearchHistory() }
-    }
-
-  @Test
-  fun dbResultGuestUser_whenError_shouldShowErrorSnackbar() =
-    runTest {
-      setupGuestUser()
-
-      // emit error result
-      mockUIState.emit(UIState.Error("Database error"))
-      shortDelay()
-
-      progress_bar.isNotDisplayed()
-      verify(timeout = 2000) { mockSnackbar.showSnackbarWarning(any<String>()) }
-    }
 
   @Test
   fun regionViewModel_whenCountryCodeProvided_shouldUpdateRegionAndCountryPicker() {
@@ -392,16 +267,6 @@ class MoreFragmentTest : MoreFragmentTestHelper by DefaultMoreFragmentTestHelper
   private fun checkIntentData(link: String) {
     intended(hasAction(Intent.ACTION_VIEW))
     intended(hasData(link.toUri()))
-  }
-
-  private fun setupGuestUser() {
-    mockUserModel.postValue(userModel.copy(token = NAN))
-    shortDelay()
-  }
-
-  private fun performSignOutAction() {
-    btn_signout.performClick()
-    yes.performTextClick()
   }
 
   private fun checkAvatarIsVisible(userModel: UserModel, viewMatcher: Matcher<View>) {

@@ -20,13 +20,13 @@
       android:background="?attr/colorPrimary"
       android:clipToPadding="false"
       android:minHeight="0dp"
-      android:paddingBottom="12dp">
+      android:paddingBottom="14dp">
 
       <Button
         android:id="@+id/btn_back"
         style="@style/BackButton"
         android:layout_gravity="start|bottom"
-        android:layout_marginRight="@dimen/margin_each_item"
+        android:layout_marginRight="@dimen/margin_between_item"
         android:translationY="7dp" />
 
       <include
