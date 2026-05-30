@@ -2,6 +2,7 @@ package com.waffiq.bazz_movies.core.database.utils
 
 import androidx.annotation.VisibleForTesting
 import com.waffiq.bazz_movies.core.common.utils.Constants.NOT_AVAILABLE
+import com.waffiq.bazz_movies.core.database.data.model.FavoriteBackupEntry
 import com.waffiq.bazz_movies.core.database.data.model.FavoriteEntity
 import com.waffiq.bazz_movies.core.models.Favorite
 import com.waffiq.bazz_movies.core.models.MediaItem
@@ -56,6 +57,39 @@ object FavoriteMapper {
   fun Favorite.toFavoriteEntity() =
     FavoriteEntity(
       id = id,
+      mediaId = mediaId,
+      mediaType = mediaType,
+      genre = genre,
+      backDrop = backDrop,
+      poster = poster,
+      overview = overview,
+      title = title,
+      releaseDate = releaseDate,
+      popularity = popularity,
+      rating = rating,
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist,
+    )
+
+  fun FavoriteEntity.toBackupEntry() =
+    FavoriteBackupEntry(
+      mediaId = mediaId,
+      mediaType = mediaType,
+      genre = genre,
+      backDrop = backDrop,
+      poster = poster,
+      overview = overview,
+      title = title,
+      releaseDate = releaseDate,
+      popularity = popularity,
+      rating = rating,
+      isFavorite = isFavorite,
+      isWatchlist = isWatchlist,
+    )
+
+  fun FavoriteBackupEntry.toEntity() =
+    FavoriteEntity(
+      id = 0, // let Room auto-generate
       mediaId = mediaId,
       mediaType = mediaType,
       genre = genre,

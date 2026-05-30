@@ -22,6 +22,8 @@ interface MoreFragmentTestHelper {
 
   val mockRegionPref: MutableLiveData<String>
   val mockUIState: MutableStateFlow<UIState<Unit>>
+  val mockBackupState: MutableStateFlow<UIState<Unit>>
+  val mockRestoreState: MutableStateFlow<UIState<Unit>>
   val mockCountryCode: MutableLiveData<String>
   val mockUserModel: MutableLiveData<UserModel>
 
@@ -33,6 +35,8 @@ interface MoreFragmentTestHelper {
     mockRegionViewModel: RegionViewModel,
     mockUserPrefViewModel: UserPreferenceViewModel,
   )
+
+  fun setupGuestUser()
 
   @Before
   fun setUp() {

@@ -22,6 +22,6 @@ object DummyData {
         id = i,
         title = "movie title $i",
       )
-    }
+    },
   )
 }

@@ -89,6 +89,11 @@
   <string name="all_data_deleted">Sign Out success, all data has been deleted</string>
   <string name="warning_signOut_guest_mode">You are currently logged in as a guest. All data, including your favorites and watchlist, will be deleted if you sign out. Do you want to continue?</string>
   <string name="warning_signOut_logged_user">Signing out will end your session. Are you sure you want to continue?</string>
+  <string name="warning_restore_will_overwrite">Restore will overwrite the current database. Are you sure you want to continue?</string>
+  <string name="backup">Backup</string>
+  <string name="backup_success">Backup success</string>
+  <string name="restore">Restore</string>
+  <string name="restore_success">Restore success</string>
   <string name="select_region">Select Region</string>
   <string name="open_help">open help</string>
   <string name="open_about_us">open about us</string>

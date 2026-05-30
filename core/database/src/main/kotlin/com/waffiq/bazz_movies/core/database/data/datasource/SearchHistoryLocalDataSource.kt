@@ -5,6 +5,7 @@ import com.waffiq.bazz_movies.core.database.data.model.SearchHistoryEntity
 import com.waffiq.bazz_movies.core.database.data.room.SearchHistoryDao
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,7 +16,7 @@ class SearchHistoryLocalDataSource @Inject constructor(
 ) : SearchHistoryLocalDataSourceInterface {
 
   override fun getSearchHistory(): Flow<List<SearchHistoryEntity>> =
-    searchHistoryDao.getSearchHistory()
+    searchHistoryDao.getSearchHistory().flowOn(ioDispatcher)
 
   override suspend fun insert(item: SearchHistoryEntity) = searchHistoryDao.insert(item)
 

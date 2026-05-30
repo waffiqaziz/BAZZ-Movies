@@ -1,7 +1,9 @@
 package com.waffiq.bazz_movies.feature.more.testutils
 
 import androidx.lifecycle.MutableLiveData
+import com.waffiq.bazz_movies.core.common.utils.Constants.NAN
 import com.waffiq.bazz_movies.core.common.utils.Event
+import com.waffiq.bazz_movies.core.instrumentationtest.Helper.shortDelay
 import com.waffiq.bazz_movies.core.models.UserModel
 import com.waffiq.bazz_movies.core.uihelper.snackbar.ISnackbar
 import com.waffiq.bazz_movies.core.uihelper.state.UIState
@@ -23,6 +25,8 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
 
   override val mockRegionPref = MutableLiveData<String>()
   override val mockUIState = MutableStateFlow<UIState<Unit>>(UIState.Idle)
+  override val mockBackupState = MutableStateFlow<UIState<Unit>>(UIState.Idle)
+  override val mockRestoreState = MutableStateFlow<UIState<Unit>>(UIState.Idle)
   override val mockCountryCode = MutableLiveData<String>()
   override val mockUserModel = MutableLiveData<UserModel>()
 
@@ -30,6 +34,7 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
     every { mockNavigator.openLoginActivity(any()) } just Runs
     every { mockNavigator.openAboutActivity(any()) } just Runs
     every { mockSnackbar.showSnackbarWarning(any<Event<String>>()) } returns mockk(relaxed = true)
+    every { mockSnackbar.showSnackbarWarning(any<String>()) } returns mockk(relaxed = true)
   }
 
   override fun setupViewModelMocks(
@@ -41,8 +46,12 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
     mockUserModel.postValue(userModel)
 
     every { mockMoreLocalViewModel.state } returns mockUIState
+    every { mockMoreLocalViewModel.backupState } returns mockBackupState
+    every { mockMoreLocalViewModel.restoreState } returns mockRestoreState
     every { mockMoreLocalViewModel.deleteAll() } just Runs
     every { mockMoreLocalViewModel.deleteAllSearchHistory() } just Runs
+    every { mockMoreLocalViewModel.backupDatabase(any()) } just Runs
+    every { mockMoreLocalViewModel.restoreDatabase(any()) } just Runs
     every { mockUserViewModel.state } returns mockUIState
     every { mockUserViewModel.deleteSession(any()) } just Runs
     every { mockUserViewModel.removeState() } just Runs
@@ -52,5 +61,10 @@ class DefaultMoreFragmentTestHelper : MoreFragmentTestHelper {
     every { mockUserPrefViewModel.getUserRegionPref() } returns mockRegionPref
     every { mockUserPrefViewModel.removeUserDataPref() } just Runs
     every { mockUserPrefViewModel.saveUserPref(userModel) } just Runs
+  }
+
+  override fun setupGuestUser() {
+    mockUserModel.postValue(userModel.copy(token = NAN))
+    shortDelay()
   }
 }

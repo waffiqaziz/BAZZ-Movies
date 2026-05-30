@@ -68,6 +68,31 @@ class FavoriteDaoTest {
     }
 
   @Test
+  fun getAllFavorite_whenSuccessful_returnAllDataCorrectly() =
+    runTest {
+      // use insert all
+      favoriteDao.insertAll(listOf(favoriteTvEntity, favoriteMovieEntity))
+
+      val favorites = favoriteDao.getAllFavorites()
+      assertEquals(2, favorites.size)
+      assertEquals(favoriteTvEntity.copy(id = 1), favorites[0]) // test with generated id
+      assertEquals(favoriteMovieEntity.copy(id = 2), favorites[1])
+    }
+
+  @Test
+  fun clearAndInsert_whenSuccessful_deleteAllAndInsertCorrectly() =
+    runTest {
+      val data = listOf(favoriteTvEntity, favoriteMovieEntity)
+      favoriteDao.insertAll(data)
+      favoriteDao.clearAndInsert(data)
+
+      val favorites = favoriteDao.getAllFavorites()
+      assertEquals(2, favorites.size)
+      assertEquals(favoriteTvEntity.copy(id = 3), favorites[0]) // the id should continue
+      assertEquals(favoriteMovieEntity.copy(id = 4), favorites[1])
+    }
+
+  @Test
   fun getWatchlistMovies_whenSuccessful_returnDataCorrectly() =
     runTest(UnconfinedTestDispatcher()) {
       favoriteDao.insert(watchlistMovieEntity)
@@ -159,7 +184,7 @@ class FavoriteDaoTest {
       val favoritesMovie = favoriteDao.getFavoriteMovies().first()
       assertEquals(1, favoritesMovie.size)
 
-      val deleteCount = favoriteDao.deleteALl()
+      val deleteCount = favoriteDao.deleteAll()
 
       assertEquals(2, deleteCount)
       assertEquals(0, favoriteDao.getFavoriteTv().first().size)

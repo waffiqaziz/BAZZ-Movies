@@ -85,5 +85,4 @@ class FavoriteLocalDatabaseRepositoryImpl @Inject constructor(
         mediaType = fav.mediaType,
       )
     }
-// endregion DATABASE
 }

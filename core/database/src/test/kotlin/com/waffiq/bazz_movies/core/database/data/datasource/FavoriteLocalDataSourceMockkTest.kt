@@ -70,7 +70,7 @@ class FavoriteLocalDataSourceMockkTest {
   @Test
   fun deleteAll_whenSuccessful_returnSuccess() =
     runTest {
-      coEvery { favoriteDao.deleteALl() } returns 1
+      coEvery { favoriteDao.deleteAll() } returns 1
 
       val result = localDataSource.deleteAll()
 

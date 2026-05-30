@@ -11,6 +11,7 @@
     android:id="@+id/img_crew_photo"
     android:layout_width="52dp"
     android:layout_height="52dp"
+    android:contentDescription="@string/picture"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent" />
